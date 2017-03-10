@@ -1,0 +1,7 @@
+apt-get install nodejs
+apt-get install npm
+pip install ims
+pip install gTTS
+pip install pyowm
+pip install instantmusic
+pip install SpeechRecognition
