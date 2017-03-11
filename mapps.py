@@ -1,6 +1,7 @@
 import os, json, requests
 from colorama import init
 from colorama import Fore, Back, Style
+import webbrowser
 
 def directions(data):
 	data = data.split(" ")
@@ -8,7 +9,7 @@ def directions(data):
 	to_city = data[6]
 	url = "https://www.google.co.in/maps/dir/"
 	url = url + str(from_city) + "/" + str(to_city)
-	os.system("google-chrome-stable -app=" +  url)
+	webbrowser.open(url)
 
 def locateme():
 	send_url = 'http://freegeoip.net/json'
@@ -36,5 +37,6 @@ def nearme(data):
 	send_url = 'http://freegeoip.net/json'
 	r = requests.get(send_url)
 	j = json.loads(r.text)
-	os.system("google-chrome-stable -app=https://www.google.co.in/maps/search/" + str(things) + "/@" + str(j['latitude']) + "," + str(j['longitude']))
+	url = "https://www.google.co.in/maps/search/" + str(things) + "/@" + str(j['latitude']) + "," + str(j['longitude'])
+	webbrowser.open(url)
 
