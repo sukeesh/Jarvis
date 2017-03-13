@@ -1,0 +1,10 @@
+beautifulsoup4==4.5.3
+bs4==0.0.1
+colorama==0.3.7
+gTTS==1.1.8
+gTTS-token==1.1.1
+lxml==3.7.3
+pyowm==2.6.1
+PySocks==1.6.6
+requests==2.13.0
+SpeechRecognition==3.6.3
