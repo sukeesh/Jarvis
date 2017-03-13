@@ -64,8 +64,13 @@ def Jarvis(data):
         os.system("sudo ap-hotspot stop")
 
     if "search for a string in file" in data:
-        file_name = raw_input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
-        stringg = raw_input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
+        try:
+            file_name = raw_input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
+            stringg = raw_input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
+        except:
+            file_name = input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
+            stringg = input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
+
         os.system("grep '" + stringg + "' " + file_name)
 
     if "check ram" in data:
