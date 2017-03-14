@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import speech_recognition
 
 recognizer = speech_recognition.Recognizer()

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os, sys, json
 from time import ctime
 from pprint import pprint
@@ -6,7 +7,7 @@ import pyowm, requests
 from colorama import init
 from colorama import Fore, Back, Style
 
-import newws, mapps, picshow, evaluator, audioHandler
+import todo, newws, mapps, picshow, evaluator, audioHandler
 
 #reload(sys)
 #sys.setdefaultencoding('utf-8')

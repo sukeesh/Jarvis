@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import webbrowser
 
 import requests
@@ -27,7 +28,7 @@ def show_news():
     divs = soup.findAll("div")
     cnt = 1
     for i in divs:
-        if not i.get('class') and "esc-lead-snippet-wrapper" in i.get('class'):
+        if i.get('class')!=None and "esc-lead-snippet-wrapper" in i.get('class'):
             news_contents.append(str(i.get_text()))
             cnt += 1
             if cnt == 5:

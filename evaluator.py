@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 def calc(s):
     s = str.lower(s)
     s = s.replace("power", "**")

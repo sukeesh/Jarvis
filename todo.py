@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 
 from colorama import init
@@ -48,7 +49,7 @@ def todoHandler(data):
         elif(c == "remove"):
             x = int(s)
             if(x<0 or x>=len(completed_list)+len(notcompleted_list)):
-                print("no such todo")
+                print("No such todo")
                 continue
             if(x < len(completed_list)):
                 completed_list.remove(completed_list[x])
@@ -59,7 +60,7 @@ def todoHandler(data):
         elif(c == "move"):
             x = int(s)
             if(x<0 or x>=len(completed_list)+len(notcompleted_list)):
-                print("no such todo")
+                print("No such todo")
                 continue
             if(x < len(completed_list)):
                 p = completed_list[x]

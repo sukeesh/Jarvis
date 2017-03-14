@@ -5,7 +5,6 @@ import requests
 from colorama import init
 from colorama import Fore, Back, Style
 
-
 def directions(data):
     data = data.split(" ")
     from_city = data[4]
@@ -43,5 +42,5 @@ def nearme(data):
     send_url = 'http://freegeoip.net/json'
     r = requests.get(send_url)
     j = json.loads(r.text)
-    url = "https://www.google.co.in/maps/search/{1}/@{2},{3}".format(things, j['latitude'], j['longitude'])
+    url = "https://www.google.co.in/maps/search/{0}/@{1},{2}".format(things, j['latitude'], j['longitude'])
     webbrowser.open(url)
