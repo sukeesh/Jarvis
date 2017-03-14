@@ -27,12 +27,12 @@ def weatherr():
     hcity = j['city']
     send_url = (
         "http://api.openweathermap.org/data/2.5/weather?q={}"
-        "&APPID=ab6ec687d641ced80cc0c935f9dd8ac9".format(hcity)
+        "&APPID=ab6ec687d641ced80cc0c935f9dd8ac9&units=metric".format(hcity)
     )
     r = requests.get(send_url)
     j = json.loads(r.text)
     weath = j['main']['temp']
-    print(Fore.BLUE + "It's " + str(weath) + " Fahrenheit" + Fore.RESET)
+    print(Fore.BLUE + "It's " + str(weath) + " °C" + Fore.RESET)
 
 
 def nearme(data):
