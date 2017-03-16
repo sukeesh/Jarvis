@@ -3,7 +3,7 @@ import os, sys, json
 from time import ctime
 from pprint import pprint
 
-import pyowm, requests
+import pyowm, requests, killprocess
 from colorama import init
 from colorama import Fore, Back, Style
 
@@ -51,6 +51,11 @@ def Jarvis(data):
 
     if "music" in data:
         os.system("instantmusic")
+        
+    if "kill" in data:
+        data = data.split(" ")
+        app = data[1]
+        killprocess.check_kill_process(app)
 
     if "increase volume" in data:
         os.system("pactl -- set-sink-volume 0 +3%")
