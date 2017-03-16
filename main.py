@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-import os, sys, json
+import os, sys, json, re
 from time import ctime
 from pprint import pprint
 
-import pyowm, requests, killprocess
+import pyowm, requests
 from colorama import init
 from colorama import Fore, Back, Style
 
-import todo, newws, mapps, picshow, evaluator, audioHandler
+import todo, newws, mapps, picshow, evaluator, audioHandler, killprocess
 
 #reload(sys)
 #sys.setdefaultencoding('utf-8')
@@ -51,6 +51,17 @@ def Jarvis(data):
 
     if "music" in data:
         os.system("instantmusic")
+        path = '*.webm'
+        files = glob.glob(path)
+        i = len(files)
+
+        for file in files:
+            newname = re.sub(r'\([^)]*\)', '', files[i-1])
+            newname = newname.replace(" ", "")
+            print(newname)
+            os.renames(files[i-1], newname)
+            os.system("xdg-open " + newname)
+            i -= 1
         
     if "kill" in data:
         data = data.split(" ")
@@ -103,7 +114,7 @@ def Jarvis(data):
 
 while 1:
     if isSpeech:
-        speak(Fore.RED + "Hi, What can I do for you?" + Fore.RESET)
+        audioHandler.speak(Fore.RED + "Hi, What can I do for you?" + Fore.RESET)
         some = audioHandler.recordAudio()
         Jarvis(some)
     else:
