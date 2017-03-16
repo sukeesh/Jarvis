@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import os, sys, json
+import os, sys, json, re
 from time import ctime
 from pprint import pprint
 
@@ -51,6 +51,17 @@ def Jarvis(data):
 
     if "music" in data:
         os.system("instantmusic")
+        path = '*.webm'
+        files = glob.glob(path)
+        i = len(files)
+
+        for file in files:
+            newname = re.sub(r'\([^)]*\)', '', files[i-1])
+            newname = newname.replace(" ", "")
+            print(newname)
+            os.renames(files[i-1], newname)
+            os.system("xdg-open " + newname)
+            i -= 1
         
     if "kill" in data:
         data = data.split(" ")
