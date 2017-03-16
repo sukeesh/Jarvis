@@ -95,6 +95,9 @@ def Jarvis(data):
 
     if "show me directions from" in data:
         mapps.directions(data)
+    
+    if "quit" or "exit"  in data:
+	exit();
 
 while 1:
     if isSpeech:
