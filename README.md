@@ -9,7 +9,7 @@ Personal Assistant for Linux
 
 > **How to use?**
 
-- Just clone the repository and run `python main.py`
+- Just clone the repository and run `python Jarvis`
 - Please check `requirements.txt` to install dependencies.
 
 > **Youtube Video**
