@@ -37,12 +37,14 @@ def weather(city = 0):
     print(Fore.BLUE + "It's " + str(temperature) + " °C in " + str(city) + Fore.RESET)
 
 
-def nearme(data):
-    data = data.split(" ")
-    things = data[0]
-    print(Fore.GREEN + "Hold on!, I'll show " + things + " near you" + Fore.RESET)
-    send_url = 'http://freegeoip.net/json'
-    r = requests.get(send_url)
-    j = json.loads(r.text)
-    url = "https://www.google.co.in/maps/search/{0}/@{1},{2}".format(things, j['latitude'], j['longitude'])
+def searchNear(things, city = 0):
+    if city:
+        print(Fore.GREEN + "Hold on!, I'll show " + things + " near " + city + Fore.RESET)        
+        url = "https://www.google.co.in/maps/search/{0}+{1}".format(things, city)
+    else:
+        print(Fore.GREEN + "Hold on!, I'll show " + things + " near you" + Fore.RESET)
+        send_url = 'http://freegeoip.net/json'
+        r = requests.get(send_url)
+        j = json.loads(r.text)
+        url = "https://www.google.co.in/maps/search/{0}/@{1},{2}".format(things, j['latitude'], j['longitude'])
     webbrowser.open(url)
