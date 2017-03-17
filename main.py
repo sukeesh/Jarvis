@@ -7,7 +7,7 @@ import pyowm, requests
 from colorama import init
 from colorama import Fore, Back, Style
 
-import todo, newws, mapps, picshow, evaluator, audioHandler
+import todo, newws, mapps, picshow, evaluator, audioHandler, music
 
 #reload(sys)
 #sys.setdefaultencoding('utf-8')
@@ -50,17 +50,7 @@ def Jarvis(data):
         os.system("ims " + movie_name)
 
     if "music" in data:
-        os.system("instantmusic")
-        path = '*.webm'
-        files = glob.glob(path)
-        i = len(files)
-        for file in files:
-            newname = re.sub(r'\([^)]*\)', '', file)
-            newname = newname.replace(" ", "")
-            newname = newname.replace("webm", "mp3")
-            os.renames(file, newname)
-            os.system("xdg-open " + newname)
-            i -= 1
+        music.play(data)
 
     if "increase volume" in data:
         os.system("pactl -- set-sink-volume 0 +3%")
