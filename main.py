@@ -95,9 +95,9 @@ def Jarvis(data):
 
     if "show me directions from" in data:
         mapps.directions(data)
-    
+	
     if "quit" in data or "exit" in data or "goodbye" in data:
-        print(Fore.RED + "Goodbye, see you later!" + Fore.RESET)
+	print(Fore.RED + "Goodbye, see you later!" + Fore.RESET)
 	exit();
 
 while 1:
