@@ -50,7 +50,6 @@ def Jarvis(data):
     if "near" in data:
         wordList = data.split()
         things = " ".join(wordList[0:wordIndex(data, "near")])
-        print things
         if " me" in data:
             city = 0
         else:
