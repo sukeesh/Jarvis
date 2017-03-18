@@ -5,7 +5,7 @@ class Jarvis:
                         "open camera": "cheese",
                         }
 
-    def actions(self, key):
+    def reactions(self, key):
 
         def trash_talk():
             print ("good")
