@@ -8,16 +8,19 @@ from colorama import Fore, Back, Style
 
 from packages import todo, newws, mapps, picshow, evaluator, audioHandler, music
 
-#reload(sys)
-#sys.setdefaultencoding('utf-8')
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
 
+global isSpeech
 isSpeech = 0
+
 
 def go(data):
     if isSpeech:
         audioHandler.speak(data)
     else:
         print(data)
+
 
 def Jarvis(data):
     data = str.lower(data)
@@ -94,21 +97,25 @@ def Jarvis(data):
 
     if "show me directions from" in data:
         mapps.directions(data)
-	
+
     if "quit" in data or "exit" in data or "goodbye" in data:
         print(Fore.RED + "Goodbye, see you later!" + Fore.RESET)
         exit();
 
-while 1:
-    if isSpeech:
-        speak(Fore.RED + "Hi, What can I do for you?" + Fore.RESET)
-        some = audioHandler.recordAudio()
-        Jarvis(some)
-    else:
-        print(Fore.RED + "Hi, What can I do for you?" + Fore.RESET)
-        try:
-            some = raw_input()
-        except:
-            some = input()
-        Jarvis(some)
+def main():
+    flag = True
+    while flag:
+        if isSpeech:
+            speak(Fore.RED + "Hi, What can I do for you?" + Fore.RESET)
+            some = audioHandler.recordAudio()
+            Jarvis(some)
+        else:
+            print(Fore.RED + "Hi, What can I do for you?" + Fore.RESET)
+            try:
+                some = raw_input()
+            except:
+                some = input()
+            Jarvis(some)
 
+if __name__ == '__main__':
+    main()
