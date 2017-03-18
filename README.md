@@ -1,6 +1,5 @@
-# Jarvis MacOsx support
-This Project is a fork of the original Jarvis for linux found here: https://github.com/sukeesh/Jarvis
-This fork works on both macOS and linux based distrubution
+# Jarvis
+This works on both macOS and linux based distrubution
 
 > **Setup**
 
@@ -12,7 +11,7 @@ This fork works on both macOS and linux based distrubution
 
 
 ## More info about Jarvis
-Personal Assistant for Linux
+Personal Assistant for Linux and macOS
 
 > **What is this?**
 
