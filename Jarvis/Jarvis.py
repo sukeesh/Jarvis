@@ -6,10 +6,13 @@ class Jarvis:
                         }
 
     def actions(self, key):
+
         def trash_talk():
             pass
+
         def weather():
             pass
+
         def cheese():
             pass
         locals()[key]()
