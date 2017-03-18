@@ -22,8 +22,8 @@ class Jarvis:
             user_wish = input()
         except:
             user_wish = input()
-
-        self.first_reaction = False
+        finally:
+            self.first_reaction = False
 
         if user_wish in self.actions.keys():
             return user_wish
