@@ -8,7 +8,7 @@ class Jarvis:
     def actions(self, key):
 
         def trash_talk():
-            pass
+            print ("good")
 
         def weather():
             pass
