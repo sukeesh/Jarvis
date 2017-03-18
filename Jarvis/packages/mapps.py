@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 import json, webbrowser
-
 import requests
-from colorama import init
-from colorama import Fore, Back, Style
+from colorama import Fore
+
 
 def directions(data):
     data = data.split(" ")
@@ -13,12 +12,14 @@ def directions(data):
     url += "{0}/{1}".format(from_city, to_city)
     webbrowser.open(url)
 
+
 def locateme():
     send_url = 'http://freegeoip.net/json'
     r = requests.get(send_url)
     j = json.loads(r.text)
     hcity = j['city']
     print(Fore.BLUE + "You are at " + hcity + Fore.RESET)
+
 
 def weatherr():
     send_url = 'http://freegeoip.net/json'
@@ -33,6 +34,7 @@ def weatherr():
     j = json.loads(r.text)
     weath = j['main']['temp']
     print(Fore.BLUE + "It's " + str(weath) + " °C" + Fore.RESET)
+
 
 
 def nearme(data):

@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import os, glob, re
+import os, re
 from colorama import Fore
-from colorama import init
-import instantmusic
+
 
 def play(data):
     if len(data[5:]) == 0:

@@ -3,6 +3,7 @@ import speech_recognition
 
 recognizer = speech_recognition.Recognizer()
 
+
 def listen():
     with speech_recognition.Microphone() as source:
         recognizer.adjust_for_ambient_noise(source)

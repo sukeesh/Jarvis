@@ -6,6 +6,7 @@ from time import ctime
 # import pyowm, requests
 from colorama import Fore, Back, Style
 
+from packages.audioHandler import speak
 from packages import todo, newws, mapps, picshow, evaluator, audioHandler, music
 
 # reload(sys)
