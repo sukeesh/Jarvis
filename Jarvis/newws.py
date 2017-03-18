@@ -8,7 +8,7 @@ from colorama import Fore, Back, Style
 
 def show_news():
 
-    url = "https://news.google.co.in/"
+    url = "https://news.google.com/"
     wp = requests.get(url)
     soup = BeautifulSoup(wp.text, "lxml")
     title_to_be_shown = soup.findAll("span")
