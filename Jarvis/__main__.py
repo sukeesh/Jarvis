@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 import os, sys, json
 from time import ctime
-from pprint import pprint
+# from pprint import pprint
 
-import pyowm, requests
-from colorama import init
+# import pyowm, requests
 from colorama import Fore, Back, Style
 
-import todo, newws, mapps, picshow, evaluator, audioHandler, music
+from packages import todo, newws, mapps, picshow, evaluator, audioHandler, music
 
 #reload(sys)
 #sys.setdefaultencoding('utf-8')
