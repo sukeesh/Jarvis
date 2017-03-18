@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os, glob, re
 from colorama import Fore
 from colorama import init
