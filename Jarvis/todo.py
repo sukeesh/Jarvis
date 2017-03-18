@@ -18,6 +18,8 @@ def _print(data):
         if 'priority' in l and l['priority'] >= 100:
             sys.stdout.write(Fore.RED)
         print("<{2}> {0} [{1}%]".format(l['name'], l['complete'], x) + Fore.RESET)
+        if 'comment' in l:
+            print("\t{0}".format(l['comment']))
         x += 1
 
 def sort(data):
@@ -29,8 +31,21 @@ def todoHandler(data):
     s = words[1] if len(words) > 1 else "0"
     arg = words[2] if len(words) > 2 else 0
     if "add" in data:
-        name = " ".join(words[1:])
-        todoList['items'].append({'name':name, 'complete':0})
+        if "comment" in data:
+            index = int(arg)
+            if(index<0 or index>=len(todoList['items'])):
+                print("No such todo")
+                return
+            todoList['items'][index]['comment'] = " ".join(words[3:])
+        else:
+            newItem = {'complete':0}
+            if " - " in data:
+                parts = data.split(" - ")
+                newItem['name'] = parts[0].replace("add ", "", 1)
+                newItem['comment'] = parts[1]
+            else:
+                newItem['name'] = data.replace("add ", "", 1)
+            todoList['items'].append(newItem)
     elif "remove" in data:
         index = int(s)
         if(index<0 or index>=len(todoList['items'])):
