@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-import os
+from os import system
 from time import ctime
 from colorama import Fore
-
 from packages.audioHandler import speak
 from packages import todo, newws, mapps, picshow, evaluator, audioHandler, music
 
@@ -28,7 +27,7 @@ def Jarvis(data):
 
     if "open camera" in data:
         go("Opening Cheese ...... ")
-        os.system("cheese")
+        system("cheese")
 
     if "where am i" in data:
         mapps.locateme()
@@ -45,22 +44,22 @@ def Jarvis(data):
         except:
             movie_name = input(Fore.RED + "What do you want to watch?\n" + Fore.RESET)
 
-        os.system("ims " + movie_name)
+        system("ims " + movie_name)
 
     if "music" in data:
         music.play(data)
 
     if "increase volume" in data:
-        os.system("pactl -- set-sink-volume 0 +3%")
+        system("pactl -- set-sink-volume 0 +3%")
 
     if "decrease volume" in data:
-        os.system("pactl -- set-sink-volume 0 -10%")
+        system("pactl -- set-sink-volume 0 -10%")
 
     if "hotspot start" in data:
-        os.system("sudo ap-hotspot start")
-
+        system("sudo ap-hotspot start")
+    # TODO sudo command is not working properly
     if "hotspot stop" in data:
-        os.system("sudo ap-hotspot stop")
+        system("sudo ap-hotspot stop")
 
     if "search for a string in file" in data:
         try:
@@ -70,10 +69,10 @@ def Jarvis(data):
             file_name = input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
             stringg = input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
 
-        os.system("grep '" + stringg + "' " + file_name)
+        system("grep '" + stringg + "' " + file_name)
 
     if "check ram" in data:
-        os.system("free -lm")
+        system("free -lm")
 
     if "todo" in data:
         todo.todoHandler(data)
@@ -96,7 +95,8 @@ def Jarvis(data):
 
     if "quit" in data or "exit" in data or "goodbye" in data:
         print(Fore.RED + "Goodbye, see you later!" + Fore.RESET)
-        exit();
+        exit()
+
 
 def main():
     flag = True

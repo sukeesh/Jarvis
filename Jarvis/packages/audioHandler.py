@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os
-
 from gtts import gTTS
 import speech_recognition as sr
 
@@ -25,3 +24,6 @@ def speak(audioString):
     tts = gTTS(text=audioString, lang='en')
     tts.save("here.mp3")
     os.system("mpg123 here.mp3")
+
+if __name__ == '__main__':
+    speak("Trollarw")

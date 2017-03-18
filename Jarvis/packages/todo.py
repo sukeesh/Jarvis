@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-
-from colorama import Fore, Back, Style
+from colorama import Fore
 
 
 def writeToFile(l1,l2):
