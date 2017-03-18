@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os, glob, re
 from colorama import Fore
 from colorama import init
@@ -18,7 +20,7 @@ def play(data):
         else:
             song = isthere[0]
             song = song.replace("\n", "")
-            newname = re.sub(r'\([^)]*\)', '', song).replace("-", "").replace("_", "")
+            newname = re.sub(r'\([^)]*\)', '', song).replace("-", "").replace("_", "").replace("&", "").replace("©", "")
             os.renames(song, newname)
             os.system("xdg-open " + newname.replace(" ", "\ "))
             txt.seek(0)
