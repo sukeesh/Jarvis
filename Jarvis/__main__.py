@@ -7,7 +7,7 @@ import pyowm, requests
 from colorama import init
 from colorama import Fore, Back, Style
 
-import todo, newws, mapps, picshow, evaluator, audioHandler
+import todo, newws, mapps, picshow, evaluator, audioHandler, music
 
 #reload(sys)
 #sys.setdefaultencoding('utf-8')
@@ -50,7 +50,7 @@ def Jarvis(data):
         os.system("ims " + movie_name)
 
     if "music" in data:
-        os.system("instantmusic")
+        music.play(data)
 
     if "increase volume" in data:
         os.system("pactl -- set-sink-volume 0 +3%")
@@ -97,8 +97,8 @@ def Jarvis(data):
         mapps.directions(data)
 	
     if "quit" in data or "exit" in data or "goodbye" in data:
-	print(Fore.RED + "Goodbye, see you later!" + Fore.RESET)
-	exit();
+        print(Fore.RED + "Goodbye, see you later!" + Fore.RESET)
+        exit();
 
 while 1:
     if isSpeech:
