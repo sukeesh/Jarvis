@@ -3,7 +3,6 @@ class Jarvis:
         self.actions = {"how are you": "trash_talk",
                         "weather": "weather",
                         "open camera": "cheese",
-
                         }
 
     def actions(self, key):
