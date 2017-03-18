@@ -1,40 +1,29 @@
 # -*- coding: utf-8 -*-
 import os
+import json
 
 from colorama import init
 from colorama import Fore, Back, Style
 
-def writeToFile(l1,l2):
+todoList = {}
+todoList['items'] = []
+
+def writeToFile():
     with open("todolist.txt", "w+") as f:
-        for l in l1:
-            f.write("{}@@@@1\n".format(l))
+        json.dump(todoList, f)
 
-        for l in l2:
-            f.write("{}@@@@0\n".format(l))
-
-
-def _print(l1,l2):
-    print("Pending => ")
+def _print(list):
     x = 0
-    for l in l1:
-        print("[{0}] {1}".format(x, l))
+    for l in list:
+        print("<{2}> {0} [{1}%]".format(l['name'], l['complete'], x))
         x += 1
-    print("Completed => ")
-    for l in l2:
-        print("[{0}] {1}".format(x, l))
-        x += 1
-    print(Fore.RED +"Commands Avaliable {add <todo>, remove <index>, move<index>}"+Fore.RESET)
+    print(Fore.RED +"Commands Avaliable {add <todo description>, remove <index>, complete <index>}"+Fore.RESET)
 
 def todoHandler(data):
+    global todoList
     with open("todolist.txt", "r+") as f:
-        lines = f.readlines()
-    completed_list = []
-    notcompleted_list = []
-    for l in lines:
-        x,y = l.split("@@@@")
-        if(y[0]=='1'): completed_list.append(x)
-        else : notcompleted_list.append(x)
-    _print(completed_list,notcompleted_list)
+        todoList = json.load(f)
+    _print(todoList['items'])
 
     while 1:
         try:
@@ -45,42 +34,29 @@ def todoHandler(data):
         c = temp[0]
         s = temp[1] if len(temp) > 1 else "0"
         if(c == "add"):
-            completed_list.append(s)
+            todoList['items'].append({'name':s, 'complete':0})
         elif(c == "remove"):
-            x = int(s)
-            if(x<0 or x>=len(completed_list)+len(notcompleted_list)):
+            index = int(s)
+            if(index<0 or index>=len(todoList['items'])):
                 print("No such todo")
                 continue
-            if(x < len(completed_list)):
-                completed_list.remove(completed_list[x])
-            else:
-                x -= len(completed_list)
-                notcompleted_list.remove(notcompleted_list[x])
+            todoList['items'].remove(todoList['items'][index])
 
-        elif(c == "move"):
-            x = int(s)
-            if(x<0 or x>=len(completed_list)+len(notcompleted_list)):
+        elif(c == "complete"):
+            index = int(s)
+            if(index<0 or index>=len(todoList['items'])):
                 print("No such todo")
                 continue
-            if(x < len(completed_list)):
-                p = completed_list[x]
-                completed_list.remove(p)
-                notcompleted_list.append(p)
-            else:
-                x -= len(completed_list)
-                p = notcompleted_list[x]
-                notcompleted_list.remove(p)
-                completed_list.append(p)
-        elif(c == "exit"):
+            todoList['items'][index]['complete'] = 100;
+        elif(c == "exit" or c == "quit"):
             break;
         else:
             print("No such command")
             continue;
         print("Update list =>")
-        _print(completed_list,notcompleted_list)
-        writeToFile(completed_list,notcompleted_list)
-
+        _print(todoList['items'])
+        writeToFile()
 
 if not os.path.exists("todolist.txt"):
-    with open("todolist.txt", 'w'):
-        pass
+    with open("todolist.txt", 'w') as f:
+        json.dump(todoList, f)
