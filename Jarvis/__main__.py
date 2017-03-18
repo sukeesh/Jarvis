@@ -1,16 +1,11 @@
 # -*- coding: utf-8 -*-
-import os, sys, json
+import os
 from time import ctime
-# from pprint import pprint
-
-# import pyowm, requests
-from colorama import Fore, Back, Style
+from colorama import Fore
 
 from packages.audioHandler import speak
 from packages import todo, newws, mapps, picshow, evaluator, audioHandler, music
 
-# reload(sys)
-# sys.setdefaultencoding('utf-8')
 
 global isSpeech
 isSpeech = 0
