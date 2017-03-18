@@ -78,7 +78,7 @@ def Jarvis(data):
         os.system("free -lm")
 
     if "todo" in data:
-        data = data.replace("todo ", "", 1)
+        data = data.replace("todo", "", 1)
         todo.todoHandler(data)
 
     if "news" in data:
