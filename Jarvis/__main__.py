@@ -13,6 +13,7 @@ import todo, newws, mapps, picshow, evaluator, audioHandler, music
 #sys.setdefaultencoding('utf-8')
 
 isSpeech = 0
+platform = sys.platform  #to set mac specific programs 'darwin'
 
 def go(data):
     if isSpeech:
@@ -55,7 +56,7 @@ def Jarvis(data):
         else:
             wordList = data.split()
             city = " ".join(wordList[wordIndex(data, "near") + 1:])
-            print city
+            print(city)
         mapps.searchNear(things, city)
 
     if "directions" in data and " to " in data:
@@ -125,7 +126,7 @@ def Jarvis(data):
             evaluator.calc(tempt[1])
         else:
             print(Fore.RED + "Error : Not in correct format" + Fore.RESET)
-	
+
     if "quit" in data or "exit" in data or "goodbye" in data:
         print(Fore.RED + "Goodbye, see you later!" + Fore.RESET)
         exit();
@@ -142,4 +143,3 @@ while 1:
         except:
             some = input()
         Jarvis(some)
-
