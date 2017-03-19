@@ -34,8 +34,12 @@ def Jarvis(data):
         go(Fore.BLUE + ctime() + Fore.RESET)
 
     if "open camera" in data:
-        go("Opening Cheese ...... ")
-        os.system("cheese")
+        if platform == "darwin":
+            go("Opening Photo Booth ......")
+            os.system("osascript -e \"tell application \\\"Photo Booth\\\" to activate\"")
+        else:
+            go("Opening Cheese ...... ")
+            os.system("cheese")
 
     if "where am i" in data:
         mapps.locateme()
@@ -87,16 +91,34 @@ def Jarvis(data):
         music.play(data)
 
     if "increase volume" in data:
-        os.system("pactl -- set-sink-volume 0 +3%")
+        if platform == "darwin":
+            #applescript to increase volume
+            os.system('osascript -e "set volume output volume (output volume of (get volume settings) + 10) --1%"')
+        else :
+            os.system("pactl -- set-sink-volume 0 +3%")
 
     if "decrease volume" in data:
-        os.system("pactl -- set-sink-volume 0 -10%")
+        if platform == "darwin":
+            #applescript to decrease volume
+            os.system('osascript -e "set volume output volume (output volume of (get volume settings) - 10) --1%"')
+        else :
+            os.system("pactl -- set-sink-volume 0 -10%")
 
     if "hotspot start" in data:
-        os.system("sudo ap-hotspot start")
+        # osx does not have a feature to turn on and off hotspot from terminal
+        # maybe add an applscript to handle it?
+        if platform == "darwin":
+            os.system('open "x-apple.systempreferences:com.apple.preferences.sharing"')
+        else:
+            os.system("sudo ap-hotspot start")
 
     if "hotspot stop" in data:
-        os.system("sudo ap-hotspot stop")
+        # osx does not have a feature to turn on and off hotspot from terminal
+        # maybe add an applscript to handle it?
+        if platform == "darwin":
+            os.system('open "x-apple.systempreferences:com.apple.preferences.sharing"')
+        else:
+            os.system("sudo ap-hotspot stop")
 
     if "search for a string in file" in data:
         try:
@@ -109,7 +131,10 @@ def Jarvis(data):
         os.system("grep '" + stringg + "' " + file_name)
 
     if "check ram" in data:
-        os.system("free -lm")
+        if platform == "darwin":
+            os.system("vm_stat")
+        else:
+            os.system("free -lm")
 
     if "todo" in data:
         todo.todoHandler(data)
