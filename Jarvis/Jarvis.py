@@ -10,11 +10,18 @@ from packages import newws, mapps, picshow, evaluator
         So we decided to create this Jarvis Class which
         implements the core functionality of Jarvis in a
         simpler way than the original __main__.py.
+    HOW TO EXTEND JARVIS:
+        If you would like to add extra functionality to
+        Jarvis (for example new actions like "record" etc.)
+        you only need to add this action to the action dict
+        (look on __init__(self)) along with a apropriate
+        function name. Then you need to implement this function
+        as a local function on reactions() method.
 """
 
 
 class Jarvis:
-    # We use this variable at Breakpoint #1 (line 140).
+    # We use this variable at Breakpoint #1.
     # We use this in order to allow Jarvis say "Hi", only at the first interaction.
     first_reaction = True
 
