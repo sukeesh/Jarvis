@@ -17,6 +17,14 @@ from packages import newws, mapps, picshow, evaluator
         (look on __init__(self)) along with a apropriate
         function name. Then you need to implement this function
         as a local function on reactions() method.
+    DETECTED ISSUES:
+        * We would like to report that "weather" command is not
+        running and it crashes the whole program. We DID NOT
+        modified any lines of code from weather, it was
+        probably with bug the whole time. We will work on this
+        issue and we hope we will find a way to overcome it.
+        * Furthermore, "near me" command is unable to find
+        the actual location of our laptops.
 """
 
 
