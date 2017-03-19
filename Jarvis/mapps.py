@@ -10,7 +10,7 @@ location = 0
 def getLocation():
     global location
     if not location:
-        print "Get Location"
+        print("Get Location")
         send_url = 'http://freegeoip.net/json'
         r = requests.get(send_url)
         location = json.loads(r.text)
@@ -41,7 +41,7 @@ def weather(city = 0):
 
 def searchNear(things, city = 0):
     if city:
-        print(Fore.GREEN + "Hold on!, I'll show " + things + " near " + city + Fore.RESET)        
+        print(Fore.GREEN + "Hold on!, I'll show " + things + " near " + city + Fore.RESET)
         url = "https://www.google.co.in/maps/search/{0}+{1}".format(things, city)
     else:
         print(Fore.GREEN + "Hold on!, I'll show " + things + " near you" + Fore.RESET)
