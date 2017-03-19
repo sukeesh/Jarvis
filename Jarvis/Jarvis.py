@@ -1,12 +1,27 @@
 from os import system
 from time import ctime
 from colorama import Fore
-from packages import todo, newws, mapps, picshow, evaluator, audioHandler, music
+from packages import newws, mapps, picshow, evaluator
+
+"""
+    AUTHORS' SCOPE:
+        We thought that the source code of Jarvis would
+        be more organized if we treat Jarvis as Object.
+        So we decided to create this Jarvis Class which
+        implements the core functionality of Jarvis in a
+        simpler way than the original __main__.py.
+"""
 
 
 class Jarvis:
+    # We use this variable at Breakpoint #1 (line 140).
+    # We use this in order to allow Jarvis say "Hi", only at the first interaction.
     first_reaction = True
+
     def __init__(self):
+        """
+        This constructor contains a dictionary with Jarvis Actions (what Jarvis can do).
+        """
         self.actions = {"how are you?": "how_are_you",
                         "weather": "weather",
                         "open camera": "open_camera",
@@ -33,7 +48,14 @@ class Jarvis:
                         }
 
     def reactions(self, key):
-
+        """
+        This function contains local functions which are implementing
+        Jarvis' actions.
+        :param key: the action which corresponds to a local function
+                    eg. key = (How are you) (according to actions dictionary)
+                    corresponds to how_are_you() function.
+        :return: This method does not return any objects.
+        """
         def how_are_you():
             print(Fore.BLUE + "I am fine, How about you" + Fore.RESET)
 
@@ -111,10 +133,25 @@ class Jarvis:
             exit()
 
         def error():
+            """
+            In case of an error or typo during user's input we notify the
+            user that something went wrong or the command he send is not
+            supported by Jarvis.
+            :return: Nothing to return.
+            """
             print Fore.RED + "I could not identify your command..." + Fore.RESET
-        locals()[key]()
+        locals()[key]()  # we are calling the proper function which satisfies the user's command.
 
     def user_input(self):
+        """
+        This method is responsible for getting the user's input.
+        We are using first_reaction variable in order to prompt
+        "Hi" only the first time we "meet" our user (in your first version
+        whenever you asked for a command Jarvis where saying "Hi").
+        :return: user_wish, a variable containing the Jarvis' action
+                 that user wants to execute.
+        """
+        # BREAKPOINT #1
         if self.first_reaction:
             print Fore.RED + "Hi, What can i do for you?" + Fore.RESET
         else:
@@ -127,14 +164,22 @@ class Jarvis:
         except:
             user_wish = input()
         finally:
+            # Set first_reaction to False in order to stop say "Hi" to user.
             self.first_reaction = False
 
         if user_wish in self.actions.keys():
             return user_wish
         return "error"
 
-
     def executor(self):
+        """
+        This method is opening a terminal session with the user.
+        We can say that it is the core function of this whole class
+        and it joins all the function above to work together like a
+        clockwork. (Terminates when the user send the "exit", "quit"
+        or "goodbye command")
+        :return: Nothing to return.
+        """
         while True:
             wish = self.actions[self.user_input()]
             self.reactions(wish)
