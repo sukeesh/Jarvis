@@ -135,6 +135,7 @@ class Jarvis:
 
 
     def executor(self):
-        wish = self.actions[self.user_input()]
-        self.reactions(wish)
+        while True:
+            wish = self.actions[self.user_input()]
+            self.reactions(wish)
 
