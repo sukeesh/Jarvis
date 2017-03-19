@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-from os import system
-from time import ctime
-from colorama import Fore
-from packages.audioHandler import speak
-from packages import todo, newws, mapps, picshow, evaluator, audioHandler, music
+from packages import audioHandler
 import Jarvis
 
 global isSpeech
