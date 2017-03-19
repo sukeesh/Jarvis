@@ -1,12 +1,13 @@
-from colorama import Fore
 from os import system
+from time import ctime
+from colorama import Fore
 from packages import todo, newws, mapps, picshow, evaluator, audioHandler, music
 
 
 class Jarvis:
-    #first_reaction = True
+    first_reaction = True
     def __init__(self):
-        self.actions = {"how are you": "how_are_you",
+        self.actions = {"how are you?": "how_are_you",
                         "weather": "weather",
                         "open camera": "open_camera",
                         "what time is it": "clock",
@@ -27,9 +28,10 @@ class Jarvis:
                         "show me directions from": "get_directions",
                         "quit": "quit",
                         "exit": "quit",
-                        "goodbye": "quit"
+                        "goodbye": "quit",
+                        "error": "error"
                         }
-                        
+
     def reactions(self, key):
 
         def how_are_you():
@@ -42,14 +44,14 @@ class Jarvis:
             print(Fore.BLUE + ctime() + Fore.RESET)
 
         def open_camera():
-            go("Opening Cheese ...... ")
+            print "Opening Cheese ...... "
             system("cheese")
 
         def pinpoint():
             mapps.locateme()
 
         def near_me():
-            mapps.nearme(data)
+            mapps.nearme(key)
 
         def movies():
             try:
@@ -59,7 +61,7 @@ class Jarvis:
             system("ims " + movie_name)
 
         def music():
-            music.play(data)
+            music.play(key)
 
         def increase_volume():
             system("pactl -- set-sink-volume 0 +3%")
@@ -86,23 +88,23 @@ class Jarvis:
             system("free -lm")
 
         def todo():
-            todo.todoHandler(data)
+            todo.todoHandler(key)
 
         def news():
             newws.show_news()
 
         def display_pics():
-            picshow.showpics(data)
+            picshow.showpics(key)
 
         def evaluate():
-            tempt = data.split(" ", 1) or ""
+            tempt = key.split(" ", 1) or ""
             if len(tempt) > 1:
                 evaluator.calc(tempt[1])
             else:
                 print(Fore.RED + "Error : Not in correct format" + Fore.RESET)
 
         def get_directions():
-            mapps.directions(data)
+            mapps.directions(key)
 
         def quit():
             print(Fore.RED + "Goodbye, see you later!" + Fore.RESET)
@@ -113,17 +115,13 @@ class Jarvis:
         locals()[key]()
 
     def user_input(self):
-        """
         if self.first_reaction:
             print Fore.RED + "Hi, What can i do for you?" + Fore.RESET
         else:
             print Fore.RED + "What can i do for you?" + Fore.RESET
 
         try:
-        """
-        print Fore.RED + "Hi, What can i do for you?" + Fore.RESET
-        user_wish = raw_input()
-        """
+            user_wish = raw_input()
         except ValueError:
             user_wish = input()
         except:
@@ -134,10 +132,9 @@ class Jarvis:
         if user_wish in self.actions.keys():
             return user_wish
         return "error"
-        """
-        return user_wish
+
 
     def executor(self):
-        wish = self.user_input()
+        wish = self.actions[self.user_input()]
         self.reactions(wish)
 
