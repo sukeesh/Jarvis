@@ -38,12 +38,15 @@ def printItem(item, index):
 
 def _print(data, index = ""):
     for x, element in enumerate(data):
-        px = index + "{}".format(x)
+        px = index + "{}".format(x + 1)
         printItem(element, px)
         if 'items' in element:
             _print(element['items'], px + ".")
 
 def sort(data):
+    for l in data:
+        if 'items' in l:
+            l['items'] = sort(l['items'])
     return sorted(data, key = lambda k: (-k['priority'] if 'priority' in k else 0, k['complete']))
 
 def parseNumber(string, numwords = {}):
@@ -162,7 +165,7 @@ def getItem(string, todoList):
     words = string.split(".")
     retList = []
     for w in words:
-        index = int(w)
+        index = int(w) - 1
         if not 'items' in todoList:
             break
         elif(index<0 or index>=len(todoList['items'])):
@@ -200,7 +203,7 @@ def todoHandler(data):
                 item = todoList
                 for i in index:
                     item = item['items'][i]
-                    data = " ".join(data.split()[1:])
+                data = " ".join(data.split()[1:])
             except ValueError:
                 item = todoList
             newItem = {'complete':0}
