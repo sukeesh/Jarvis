@@ -77,7 +77,7 @@ class Jarvis:
             print(Fore.BLUE + "I am fine, How about you" + Fore.RESET)
 
         def weather():
-            mapps.weatherr()
+            mapps.weather()
 
         def clock():
             print(Fore.BLUE + ctime() + Fore.RESET)
@@ -90,7 +90,7 @@ class Jarvis:
             mapps.locateme()
 
         def near_me():
-            mapps.nearme(key)
+            mapps.searchNear(key)
 
         def movies():
             try:
