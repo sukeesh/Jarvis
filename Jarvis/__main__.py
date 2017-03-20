@@ -20,6 +20,10 @@ def go(data):
     else:
         print(data)
 
+def wordIndex(data, word):
+    wordList = data.split()
+    return wordList.index(word)
+
 def Jarvis(data):
     data = str.lower(data)
     if "how are you" in data:
@@ -36,10 +40,39 @@ def Jarvis(data):
         mapps.locateme()
 
     if "weather" in data:
-        mapps.weatherr()
+        if " in " in data:
+            wordList = data.split()
+            city = " ".join(wordList[wordIndex(data, "in") + 1:])
+            mapps.weather(city)
+        else:
+            mapps.weather()
 
-    if "near me" in data:
-        mapps.nearme(data)
+    if "near" in data:
+        wordList = data.split()
+        things = " ".join(wordList[0:wordIndex(data, "near")])
+        if " me" in data:
+            city = 0
+        else:
+            wordList = data.split()
+            city = " ".join(wordList[wordIndex(data, "near") + 1:])
+            print city
+        mapps.searchNear(things, city)
+
+    if "directions" in data and " to " in data:
+        wordList = data.split()
+        to_index = wordIndex(data, "to")
+        if " from " in data:
+            from_index = wordIndex(data, "from")
+            if from_index > to_index:
+                toCity = " ".join(wordList[to_index + 1:from_index])
+                fromCity = " ".join(wordList[from_index + 1:])
+            else:
+                fromCity = " ".join(wordList[from_index + 1:to_index])
+                toCity = " ".join(wordList[to_index + 1:])
+        else:
+            toCity = " ".join(wordList[to_index + 1:])
+            fromCity = 0
+        mapps.directions(toCity, fromCity)
 
     if "movies" in data:
         try:
@@ -93,9 +126,6 @@ def Jarvis(data):
             evaluator.calc(tempt[1])
         else:
             print(Fore.RED + "Error : Not in correct format" + Fore.RESET)
-
-    if "show me directions from" in data:
-        mapps.directions(data)
 	
     if "quit" in data or "exit" in data or "goodbye" in data:
         print(Fore.RED + "Goodbye, see you later!" + Fore.RESET)
