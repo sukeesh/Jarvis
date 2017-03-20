@@ -5,6 +5,7 @@ import json
 
 from datetime import datetime as dt
 from datetime import date, time, timedelta
+from dateutil.relativedelta import relativedelta
 import re
 
 from colorama import init
@@ -40,22 +41,24 @@ def sort(data):
     return sorted(data, key = lambda k: (-k['priority'] if 'priority' in k else 0, k['complete']))
 
 def parseNumber(string):
+    ret = {'skip':1, 'value':1}
     try:
-        return int(string)
+        ret['value'] = int(string)
     except ValueError:
         #TODO Turn words into integers/floats
         print("number words not yet supported")
-        return 1
+    return ret
     
 def parseDate(data):
     elements = data.split()
 
     parseDay = False
-    parseDelta = 0
+    parseDeltaValue = False
+    parseDeltaUnit = 0
     deltaValue = 0
     retDate = dt.now().date()
     retTime = time(23, 59, 59)
-    for d in elements:
+    for index, d in enumerate(elements):
         if parseDay:
             d += dt.today().strftime(" %Y %W")
             try:
@@ -70,36 +73,37 @@ def parseDate(data):
             if retDate <= dt.now().date():
                 retDate += timedelta(days = 7)
             parseDay = False
-        elif parseDelta:
-            if parseDelta == 1:
-                if "year" in d:
-                    #TODO Use calendar
-                    retDate += timedelta(days = 365*deltaValue)
-                elif "month" in d:
-                    #TODO Use calendar
-                    retDate += timedelta(days = 30*deltaValue)
-                elif "week" in d:
-                    retDate += timedelta(weeks = deltaValue)
-                elif "day" in d:
-                    retDate += timedelta(days = deltaValue)
-                elif "hour" in d:
-                    newTime = dt.now() + timedelta(hours = deltaValue)
-                    retDate = newTime.date()
-                    retTime = newTime.time()
-                elif "minute" in d:
-                    newTime = dt.now() + timedelta(minutes = deltaValue)
-                    retDate = newTime.date()
-                    retTime = newTime.time()
-                elif "second" in d:
-                    newTime = dt.now() + timedelta(seconds = deltaValue)
-                    retDate = newTime.date()
-                    retTime = newTime.time()
-                else:
-                    print("Missing time unit")
+        elif parseDeltaValue:
+            tmp = parseNumber(d)
+            deltaValue = tmp['value']
+            parseDeltaUnit = tmp['skip']
+            parseDeltaValue = False
+        elif parseDeltaUnit:
+            if parseDeltaUnit > 1:
+                parseDeltaUnit += 1
+            elif "year" in d:
+                retDate += relativedelta(years = deltaValue)
+            elif "month" in d:
+                retDate += relativedelta(months = deltaValue)
+            elif "week" in d:
+                retDate += timedelta(weeks = deltaValue)
+            elif "day" in d:
+                retDate += timedelta(days = deltaValue)
+            elif "hour" in d:
+                newTime = dt.now() + timedelta(hours = deltaValue)
+                retDate = newTime.date()
+                retTime = newTime.time()
+            elif "minute" in d:
+                newTime = dt.now() + timedelta(minutes = deltaValue)
+                retDate = newTime.date()
+                retTime = newTime.time()
+            elif "second" in d:
+                newTime = dt.now() + timedelta(seconds = deltaValue)
+                retDate = newTime.date()
+                retTime = newTime.time()
             else:
-                deltaValue = parseNumber(d)
+                print("Missing time unit")
 
-            parseDelta -= 1
         elif re.match("^[0-9]{2}-[0-1][0-9]-[0-3][0-9]", d):
             retDate = dt.strptime(d, "%y-%m-%d").date()
         elif re.match("^[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]", d):
@@ -117,7 +121,7 @@ def parseDate(data):
         elif d == "next":
             parseDay = True
         elif d == "in":
-            parseDelta = 2
+            parseDeltaValue = True
         else:
             print("Unknown Format: {0}".format(d))
             continue
