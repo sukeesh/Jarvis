@@ -5,6 +5,7 @@ from colorama import Fore
 
 location = 0
 
+
 def getLocation():
     global location
     if not location:
@@ -13,6 +14,7 @@ def getLocation():
         r = requests.get(send_url)
         location = json.loads(r.text)
     return location
+
 
 def directions(toCity, fromCity = 0):
     if not fromCity:
@@ -25,6 +27,7 @@ def locateme():
     hcity = getLocation()['city']
     print(Fore.BLUE + "You are at " + hcity + Fore.RESET)
 
+
 def weather(city = 0):
     if not city:
         city = getLocation()['city']
@@ -36,6 +39,7 @@ def weather(city = 0):
     j = json.loads(r.text)
     temperature = j['main']['temp']
     print(Fore.BLUE + "It's " + str(temperature) + " °C in " + str(city) + Fore.RESET)
+
 
 def searchNear(things, city = 0):
     if city:
