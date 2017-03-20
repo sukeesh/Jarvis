@@ -15,7 +15,7 @@ def json_serial(obj):
     """JSON serializer for objects not serializable by default json code"""
 
     if isinstance(obj, dt):
-        serial = obj.isoformat()
+        serial = obj.strftime("%Y-%m-%d %H:%M:%S")
         return serial
     raise TypeError ("Type not serializable")
 
@@ -32,7 +32,9 @@ def _print(data):
             sys.stdout.write(Fore.RED)
         print("<{2}> {0} [{1}%]".format(l['name'], l['complete'], x) + Fore.RESET)
         if 'due' in l:
-            print("\tDue at {0}".format(l['due']))
+            if l['due'] < dt.now():
+                sys.stdout.write(Fore.RED)
+            print("\tDue at {0}".format(l['due'].strftime("%Y-%m-%d %H:%M:%S")) + Fore.RESET)
         if 'comment' in l:
             print("\t{0}".format(l['comment']))
         x += 1
@@ -176,12 +178,10 @@ def todoHandler(data):
         else:
             data = " ".join(data.split())
             newItem = {'complete':0}
+            parts = data.split(" - ")
+            newItem['name'] = parts[0]
             if " - " in data:
-                parts = data.split(" - ")
-                newItem['name'] = parts[0]
                 newItem['comment'] = parts[1]
-            else:
-                newItem['name'] = data
             todoList['items'].append(newItem)
     elif "remove" in data:
         data = data.replace("remove", "", 1)
@@ -237,4 +237,7 @@ else:
     with open("todolist.txt", "r+") as f:
         todoList = json.load(f)
         todoList['items'] = sort(todoList['items'])
+        for i in todoList['items']:
+            if 'due' in i:
+                i['due'] = dt.strptime(i['due'], "%Y-%m-%d %H:%M:%S")
 
