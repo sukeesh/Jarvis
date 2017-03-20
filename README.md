@@ -14,8 +14,6 @@ Personal Assistant for Linux
 
 > **Youtube Video**
 
-[![YoutubeVideo](https://img.youtube.com/vi/PR-nxqmG3V8/0.jpg)](https://www.youtube.com/watch?v=PR-nxqmG3V8)
-
+[Click here](https://www.youtube.com/watch?v=PR-nxqmG3V8)
 
 PR's are accepted!!
-

@@ -10,7 +10,7 @@ location = 0
 def getLocation():
     global location
     if not location:
-        print "Get Location"
+        print("Getting Location ... ")
         send_url = 'http://freegeoip.net/json'
         r = requests.get(send_url)
         location = json.loads(r.text)
@@ -19,7 +19,7 @@ def getLocation():
 def directions(toCity, fromCity = 0):
     if not fromCity:
         fromCity = getLocation()['city']
-    url = "https://www.google.co.in/maps/dir/{0}/{1}".format(fromCity, toCity)
+    url = "https://www.google.com/maps/dir/{0}/{1}".format(fromCity, toCity)
     webbrowser.open(url)
 
 def locateme():
@@ -42,8 +42,8 @@ def weather(city = 0):
 def searchNear(things, city = 0):
     if city:
         print(Fore.GREEN + "Hold on!, I'll show " + things + " near " + city + Fore.RESET)        
-        url = "https://www.google.co.in/maps/search/{0}+{1}".format(things, city)
+        url = "https://www.google.com/maps/search/{0}+{1}".format(things, city)
     else:
         print(Fore.GREEN + "Hold on!, I'll show " + things + " near you" + Fore.RESET)
-        url = "https://www.google.co.in/maps/search/{0}/@{1},{2}".format(things, getLocation()['latitude'], getLocation()['longitude'])
+        url = "https://www.google.com/maps/search/{0}/@{1},{2}".format(things, getLocation()['latitude'], getLocation()['longitude'])
     webbrowser.open(url)
