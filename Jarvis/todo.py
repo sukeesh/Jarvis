@@ -40,13 +40,37 @@ def _print(data):
 def sort(data):
     return sorted(data, key = lambda k: (-k['priority'] if 'priority' in k else 0, k['complete']))
 
-def parseNumber(string):
-    ret = {'skip':1, 'value':1}
+def parseNumber(string, numwords = {}):
+    if not numwords:
+        units = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" ]
+        tens = ["", "", "twenty", "thirty", "fourty", "fifty", "sixty", "seventy", "eighty", "ninety"]
+        scales = ["hundred", "thousand", "million", "billion", "trillion"]
+
+        numwords["and"] = (1, 0)
+        for idx, word in enumerate(units):    numwords[word] = (1, idx)
+        for idx, word in enumerate(tens):     numwords[word] = (1, idx * 10)
+        for idx, word in enumerate(scales):   numwords[word] = (10 ** (idx * 3 or 2), 0)
+
+    ret = {'skip':0, 'value':0}
     try:
-        ret['value'] = int(string)
+        ret['skip'] = 1
+        ret['value'] = int(string.split()[0])
     except ValueError:
-        #TODO Turn words into integers/floats
-        print("number words not yet supported")
+        elements = string.split()
+        current = 0
+        for d in elements:
+            number = d.split("-")
+            for word in number:
+                if word not in numwords:
+                    ret['value'] += current
+                    return ret
+                scale, increment = numwords[word]
+                current = current * scale + increment
+                if scale > 100:
+                    ret['value'] += current
+                    current = 0
+            ret['skip'] += 1
+        ret['value'] += current
     return ret
     
 def parseDate(data):
@@ -74,14 +98,12 @@ def parseDate(data):
                 retDate += timedelta(days = 7)
             parseDay = False
         elif parseDeltaValue:
-            tmp = parseNumber(d)
+            tmp = parseNumber(" ".join(elements[index:]))
             deltaValue = tmp['value']
             parseDeltaUnit = tmp['skip']
             parseDeltaValue = False
         elif parseDeltaUnit:
-            if parseDeltaUnit > 1:
-                parseDeltaUnit += 1
-            elif "year" in d:
+            if "year" in d:
                 retDate += relativedelta(years = deltaValue)
             elif "month" in d:
                 retDate += relativedelta(months = deltaValue)
@@ -101,8 +123,9 @@ def parseDate(data):
                 newTime = dt.now() + timedelta(seconds = deltaValue)
                 retDate = newTime.date()
                 retTime = newTime.time()
-            else:
+            elif parseDeltaUnit == 1:
                 print("Missing time unit")
+            parseDeltaUnit -= 1
 
         elif re.match("^[0-9]{2}-[0-1][0-9]-[0-3][0-9]", d):
             retDate = dt.strptime(d, "%y-%m-%d").date()
