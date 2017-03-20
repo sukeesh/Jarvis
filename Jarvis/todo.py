@@ -4,6 +4,7 @@ import sys
 import json
 
 from datetime import datetime as dt
+from datetime import date, time, timedelta
 import re
 
 from colorama import init
@@ -37,43 +38,90 @@ def _print(data):
 
 def sort(data):
     return sorted(data, key = lambda k: (-k['priority'] if 'priority' in k else 0, k['complete']))
+
+def parseNumber(string):
+    try:
+        return int(string)
+    except ValueError:
+        #TODO Turn words into integers/floats
+        print("number words not yet supported")
+        return 1
     
 def parseDate(data):
     elements = data.split()
-    parseString = ""
-    dateString = ""
-    hasDate = False
+
+    parseDay = False
+    parseDelta = 0
+    deltaValue = 0
+    retDate = dt.now().date()
+    retTime = time(23, 59, 59)
     for d in elements:
-        if re.match("^[0-9]{2}-[0-1][0-9]-[0-3][0-9]", d):
-            parseString += "%y-%m-%d "
-            hasDate = True
+        if parseDay:
+            d += dt.today().strftime(" %Y %W")
+            try:
+                retDate = dt.strptime(d, "%a %Y %W").date()
+            except ValueError:
+                try:
+                    retDate = dt.strptime(d, "%A %Y %W").date()
+                except ValueError:
+                    print("Could not parse word: {0}".format(d))
+                    parseDay = False
+                    continue
+            if retDate <= dt.now().date():
+                retDate += timedelta(days = 7)
+            parseDay = False
+        elif parseDelta:
+            if parseDelta == 1:
+                if "year" in d:
+                    #TODO Use calendar
+                    retDate += timedelta(days = 365*deltaValue)
+                elif "month" in d:
+                    #TODO Use calendar
+                    retDate += timedelta(days = 30*deltaValue)
+                elif "week" in d:
+                    retDate += timedelta(weeks = deltaValue)
+                elif "day" in d:
+                    retDate += timedelta(days = deltaValue)
+                elif "hour" in d:
+                    newTime = dt.now() + timedelta(hours = deltaValue)
+                    retDate = newTime.date()
+                    retTime = newTime.time()
+                elif "minute" in d:
+                    newTime = dt.now() + timedelta(minutes = deltaValue)
+                    retDate = newTime.date()
+                    retTime = newTime.time()
+                elif "second" in d:
+                    newTime = dt.now() + timedelta(seconds = deltaValue)
+                    retDate = newTime.date()
+                    retTime = newTime.time()
+                else:
+                    print("Missing time unit")
+            else:
+                deltaValue = parseNumber(d)
+
+            parseDelta -= 1
+        elif re.match("^[0-9]{2}-[0-1][0-9]-[0-3][0-9]", d):
+            retDate = dt.strptime(d, "%y-%m-%d").date()
         elif re.match("^[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]", d):
-            parseString += "%Y-%m-%d "
-            hasDate = True
+            retDate = dt.strptime(d, "%Y-%m-%d").date()
         elif re.match("^[0-3][0-9]-[0-1][0-9]-[0-9]{2}", d):
-            parseString += "%d.%m.%y "
-            hasDate = True
+            pretDate = dt.strptime(d, "%d.%m.%y").date()
         elif re.match("^[0-3][0-9]-[0-1][0-9]-[1-9][0-9]{3}", d):
-            parseString += "%d.%m.%Y "
-            hasDate = True
+            retDate = dt.strptime(d, "%d.%m.%Y").date()
 
         elif re.match("^[0-1][0-9]:[0-5][0-9][AP]M", d):
-            parseString += "%I:%M%p "
+            retTime = dt.strptime(d, "%I:%M%p").time
         elif re.match("^[0-2][0-9]:[0-5][0-9]", d):
-            parseString += "%H:%M "
+            retTime = dt.strptime(d, "%H:%M").time
 
+        elif d == "next":
+            parseDay = True
+        elif d == "in":
+            parseDelta = 2
         else:
             print("Unknown Format: {0}".format(d))
             continue
-        dateString += d + " "
-    if not hasDate:
-        dateString += dt.today().strftime("%Y-%m-%d")
-        parseString += "%Y-%m-%d"
-    try:
-        return dt.strptime(dateString, parseString)
-    except ValueError:
-        print(Fore.RED + "Date or time out of Range." + Fore.RESET)
-        return dt.today()
+    return dt.combine(retDate, retTime)
 
 def todoHandler(data):
     global todoList
