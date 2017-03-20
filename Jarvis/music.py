@@ -1,23 +1,27 @@
 # -*- coding: utf-8 -*-
 
-import os
+import os, glob, re
 from colorama import Fore
-
+from colorama import init
+import instantmusic
 
 def play(data):
     if len(data[5:]) == 0:
         print(Fore.BLUE + "Song name doesn't exist. (music '"'song name'"') " + Fore.RESET)
-
     else:
-        wanted = data[6:]
-        find = os.popen("ls | grep -i " +'"'+ wanted +'"')
-        music = str(find.readline())
+        song = data[6:]
+        music = os.system("ls | grep -i " +'"'+ song +'"' +" >> music.txt")
+        txt = open("music.txt", "r+")
+        isthere = txt.readlines()
 
-        if not music:
-            os.system("instantmusic -s " + wanted)
-            find = os.popen("ls -tc --hide='__*' --hide='*.py'")
-            music = str(find.readline()).replace("\n", "")
-            os.system("XDG_CURRENT_DESKTOP= DESKTOP_SESSION= xdg-open " + music.replace(" ", "\ ").replace(" (", " \("). replace(")", "\)"))
-
+        if len(isthere) == 0:
+            os.system("instantmusic -s " + song)
+            play(data)
         else:
-            os.system("XDG_CURRENT_DESKTOP= DESKTOP_SESSION= xdg-open " + music.replace(" ", "\ ").replace(" (", " \("). replace(")", "\)"))
+            song = isthere[0]
+            song = song.replace("\n", "")
+            newname = re.sub(r'\([^)]*\)', '', song).replace("-", "").replace("_", "").replace("&", "").replace("©", "")
+            os.renames(song, newname)
+            os.system("xdg-open " + newname.replace(" ", "\ "))
+            txt.seek(0)
+            txt.truncate()
