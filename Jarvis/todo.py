@@ -52,25 +52,27 @@ def parseNumber(string, numwords = {}):
         for idx, word in enumerate(scales):   numwords[word] = (10 ** (idx * 3 or 2), 0)
 
     ret = {'skip':0, 'value':0}
-    try:
-        ret['skip'] = 1
-        ret['value'] = int(string.split()[0])
-    except ValueError:
-        elements = string.split()
-        current = 0
-        for d in elements:
-            number = d.split("-")
-            for word in number:
-                if word not in numwords:
+    elements = string.replace(",", "").split()
+    current = 0
+    for d in elements:
+        number = d.split("-")
+        for word in number:
+            if word not in numwords:
+                try:
+                    scale, increment = (1, int(word))
+                except ValueError:
                     ret['value'] += current
                     return ret
+            else:
                 scale, increment = numwords[word]
-                current = current * scale + increment
-                if scale > 100:
-                    ret['value'] += current
-                    current = 0
-            ret['skip'] += 1
-        ret['value'] += current
+                if not current and scale > 100:
+                    current = 1
+            current = current * scale + increment
+            if scale > 100:
+                ret['value'] += current
+                current = 0
+        ret['skip'] += 1
+    ret['value'] += current
     return ret
     
 def parseDate(data):
