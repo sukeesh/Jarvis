@@ -61,6 +61,7 @@ class Jarvis:
                         "quit": "quit",
                         "exit": "quit",
                         "goodbye": "quit",
+                        "help": "help",
                         "error": "error"
                         }
 
@@ -154,8 +155,8 @@ class Jarvis:
             This method displays help about Jarvis.
             :return: Nothing to return.
             """
-            print Fore.BLUE + '-Usage: ' + Fore.RESET
-            print Fore.BLUE + ' Type any of the following commands to interact with Jarvis.' + Fore.RESET
+            print Fore.BLUE + '>>> Usage: ' + Fore.RESET
+            print Fore.BLUE + 'Type any of the following commands to interact with Jarvis.' + Fore.RESET
             print Fore.GREEN + '[*] Help: To see this message' + Fore.RESET
             print Fore.GREEN + '[*] How are you?: To react with Jarvis!' + Fore.RESET
             print Fore.GREEN + '[*] Open Camera: To open "cheese" program (camera).' + Fore.RESET
