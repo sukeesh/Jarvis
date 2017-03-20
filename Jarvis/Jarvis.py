@@ -1,6 +1,7 @@
 from os import system
 from time import ctime
 from colorama import Fore
+from packages.music import play
 from packages import newws, mapps, picshow, evaluator
 
 """
@@ -98,7 +99,7 @@ class Jarvis:
             system("ims " + movie_name)
 
         def music():
-            music.play(key)
+            play(key)
 
         def increase_volume():
             system("pactl -- set-sink-volume 0 +3%")
