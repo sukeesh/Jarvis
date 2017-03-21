@@ -151,10 +151,11 @@ def removeReminder(uuid):
     if uuid in timerList:
         timerList[uuid].cancel()
         timerList.pop(uuid)
-        for index, e in enumerate(reminderList['items']):
-            if uuid == e['uuid']:
-                reminderList['items'].remove(reminderList['items'][index])
-                break;
+    for index, e in enumerate(reminderList['items']):
+        if uuid == e['uuid']:
+            reminderList['items'].remove(reminderList['items'][index])
+            break;
+    writeFile("reminderlist.txt", reminderList)
 
 def handle(data):
     if "add" in data:
@@ -173,14 +174,18 @@ def handle(data):
         for index, e in enumerate(reminderList['items']):
             if not e['hidden']:
                 print("<{0}> {2}: {1}".format(index + 1, e['time'], e['name']))
+    elif "clear" in data:
+        reminderList['items'] = []
+        writeFile("reminderlist.txt", reminderList)
 
 def quit():
-    for e, v in timerList.iteritems():
-        v.cancel()
+    for index, el in timerList.iteritems():
+        el.cancel()
 
 timerList = {}
 reminderList = readFile("reminderlist.txt", {'items':[]})
 reminderList['items'] = sort(reminderList['items'])
+reminderList['items'] = [i for i in reminderList['items'] if not i['hidden']]
 for e in reminderList['items']:
     e['time'] = str2date(e['time'])
     waitTime = e['time'] - dt.now()
