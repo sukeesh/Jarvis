@@ -21,4 +21,5 @@ Personal Assistant for Linux
 PR's are accepted!!
 
 HOW TO EXTEND JARVIS:
+
 If you would like to add extra functionality to Jarvis (for example new actions like "record" etc.) you only need to add this action to the action dict (look on __init__(self) in Jarvis.py) along with a apropriate function name. Then you need to implement this function as a local function on reactions() method.
