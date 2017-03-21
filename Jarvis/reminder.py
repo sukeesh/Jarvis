@@ -7,6 +7,8 @@ from datetime import date, time, timedelta
 from dateutil.relativedelta import relativedelta
 from uuid import uuid4
 from threading import Timer
+import gi
+gi.require_version('Notify', '0.7')
 from gi.repository import Notify
 import re
 
@@ -141,7 +143,6 @@ def addReminder(name, time, uuid, hidden = True, body = '', urgency=Notify.Urgen
     n.set_urgency(urgency)
     timerList[uuid] = Timer(waitTime.total_seconds(), showAlarm, [n, name])
     timerList[uuid].start()
-    print("Reminder in {} seconds".format(waitTime.total_seconds()))
     newItem = {'name':name, 'time':time, 'hidden':hidden, 'uuid':uuid}
     reminderList['items'].append(newItem)
     reminderList['items'] = sort(reminderList['items'])
