@@ -4,7 +4,7 @@ import sys
 import json
 
 from datetime import datetime as dt
-import uuid
+from uuid import uuid4
 
 from reminder import parseNumber, parseDate, addReminder, removeReminder
 from fileHandler import writeFile, readFile, str2date
@@ -18,15 +18,13 @@ def printItem(item, index):
     if 'priority' in item and item['priority'] >= 100:
         sys.stdout.write(Fore.RED)
     print("<{2}> {0} [{1}%]".format(item['name'], item['complete'], index) + Fore.RESET)
-    if not isinstance(item['uuid'], uuid.UUID):
-        item['uuid'] = uuid.UUID(item['uuid'])
     if 'due' in item:
         if not isinstance(item['due'], dt):
             item['due'] = str2date(item['due'])
         if item['due'] < dt.now():
             sys.stdout.write(Fore.RED)
         print("\tDue at {0}".format(item['due'].strftime("%Y-%m-%d %H:%M:%S")) + Fore.RESET)
-    if 'comment' in item:
+    if item['comment']:
         print("\t{0}".format(item['comment']))
 
 def _print(data, index = ""):
@@ -75,9 +73,9 @@ def todoHandler(data):
             item = todoList
             for i in index:
                 item = item['items'][i]
-            removeReminder(item['uuid'].hex)
+            removeReminder(item['uuid'])
             item['due'] = parseDate(" ".join(words[1:]))
-            addReminder(name=item['uuid'].hex, time=item['due'])
+            addReminder(name=item['name'], body=item['comment'], uuid=item['uuid'], time=item['due'])
         else:
             data = " ".join(data.split())
             try:
@@ -88,7 +86,7 @@ def todoHandler(data):
                 data = " ".join(data.split()[1:])
             except ValueError:
                 item = todoList
-            newItem = {'complete':0, 'uuid':uuid.uuid4()}
+            newItem = {'complete':0, 'uuid':uuid4().hex, 'comment':0}
             parts = data.split(" - ")
             newItem['name'] = parts[0]
             if " - " in data:

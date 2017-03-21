@@ -12,9 +12,6 @@ def json_serial(obj):
     if isinstance(obj, dt):
         serial = obj.strftime(timeFormat)
         return serial
-    elif isinstance(obj, uuid.UUID):
-        serial = obj.hex
-        return serial
     raise TypeError ("Type not serializable")
 
 def readFile(name, default = []):

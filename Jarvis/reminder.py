@@ -5,6 +5,9 @@ import json
 from datetime import datetime as dt
 from datetime import date, time, timedelta
 from dateutil.relativedelta import relativedelta
+from uuid import uuid4
+from threading import Timer
+from gi.repository import Notify
 import re
 
 from colorama import init
@@ -127,36 +130,61 @@ def parseDate(data):
 def sort(data):
     return sorted(data, key = lambda k: (k['time']))
 
-def addReminder(name, time, hidden = True):
-    newItem = {'name': name, 'time': time, 'hidden': hidden}
+def showAlarm(name, body):
+    print(Fore.BLUE + name + Fore.RESET)
+    if body:
+        Notify.Notification.new(name, body).show()
+    else:
+        Notify.Notification.new(name).show()
+
+def addReminder(name, time, uuid, hidden = True, body = 0):
+    waitTime = time - dt.now()
+    timerList[uuid] = Timer(waitTime.total_seconds(), showAlarm, [name, body])
+    timerList[uuid].start()
+    print("Reminder in {} seconds".format(waitTime.total_seconds()))
+    newItem = {'name':name, 'time':time, 'hidden':hidden, 'uuid':uuid}
     reminderList['items'].append(newItem)
     reminderList['items'] = sort(reminderList['items'])
     writeFile("reminderlist.txt", reminderList)
 
-def removeReminder(name):
-    for index, e in enumerate(reminderList['items']):
-        if name == e['name']:
-            reminderList['items'].remove(reminderList['items'][index])
-            break;
+def removeReminder(uuid):
+    if uuid in timerList:
+        timerList[uuid].cancel()
+        timerList.pop(uuid)
+        for index, e in enumerate(reminderList['items']):
+            if uuid == e['uuid']:
+                reminderList['items'].remove(reminderList['items'][index])
+                break;
 
 def handle(data):
     if "add" in data:
         newItem = {}
         data = data.replace("add", "", 1)
         words = data.split()
-        addReminder(name=words[0], time=parseDate(" ".join(words[1:])), hidden=False)
+        addReminder(name=words[0], time=parseDate(" ".join(words[1:])), hidden=False, uuid=uuid4().hex)
     elif "remove" in data:
         data = data.replace("remove", "", 1)
         index = parseNumber(data)['value'] - 1
-        reminderList['items'].remove(reminderList['items'][index])
-        writeFile("reminderlist.txt", reminderList)
+        removeReminder(reminderList['items'][index]['uuid'])
     elif "print" in data or "list" in data:
         for index, e in enumerate(reminderList['items']):
             if not e['hidden']:
                 print("<{0}> {2}: {1}".format(index + 1, e['time'], e['name']))
 
+def quit():
+    for e, v in timerList.iteritems():
+        v.cancel()
+
+timerList = {}
 reminderList = readFile("reminderlist.txt", {'items':[]})
 reminderList['items'] = sort(reminderList['items'])
 for e in reminderList['items']:
     e['time'] = str2date(e['time'])
+    waitTime = e['time'] - dt.now()
+    timerList[e['uuid']] = Timer(waitTime.total_seconds(), showAlarm, [e['name'], 0])
+    timerList[e['uuid']].start()
+
+Notify.init("Jarvis")
+notification = Notify.Notification.new("What can i do for you?")
+notification.show()
 

@@ -132,6 +132,7 @@ def Jarvis(data):
             print(Fore.RED + "Error : Not in correct format" + Fore.RESET)
 	
     if "quit" in data or "exit" in data or "goodbye" in data:
+        reminder.quit()
         print(Fore.RED + "Goodbye, see you later!" + Fore.RESET)
         exit();
 
