@@ -83,6 +83,12 @@ class Jarvis:
             self.engine.runAndWait()
         self.destroy()
 
+    def text_to_speech(self, text):
+        self.create()
+        self.engine.say(text.encode('utf-8'))
+        self.engine.runAndWait()
+        self.destroy()
+
     def destroy(self):
         """
         This method destroys a pyttsx object...
@@ -180,6 +186,7 @@ class Jarvis:
             mapps.directions(key)
 
         def quit():
+            self.text_to_speech("Goodbye, see you later!")
             print(Fore.RED + "Goodbye, see you later!" + Fore.RESET)
             exit()
 
@@ -219,6 +226,7 @@ class Jarvis:
             supported by Jarvis.
             :return: Nothing to return.
             """
+            self.text_to_speech("I could not identify your command")
             print Fore.RED + "I could not identify your command..." + Fore.RESET
         locals()[key]()  # we are calling the proper function which satisfies the user's command.
 
