@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-
 import os
 from colorama import Fore
-
 
 def play(data):
     if len(data[5:]) == 0:

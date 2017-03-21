@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
+from colorama import Fore
 
-from colorama import init
-from colorama import Fore, Back, Style
 
 def writeToFile(l1,l2):
     with open("todolist.txt", "w+") as f:

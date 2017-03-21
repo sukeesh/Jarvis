@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 import json, webbrowser
-
 import requests
-from colorama import init
-from colorama import Fore, Back, Style
+from colorama import Fore
 
 location = 0
+
 
 def getLocation():
     global location
@@ -16,15 +15,18 @@ def getLocation():
         location = json.loads(r.text)
     return location
 
+
 def directions(toCity, fromCity = 0):
     if not fromCity:
         fromCity = getLocation()['city']
     url = "https://www.google.com/maps/dir/{0}/{1}".format(fromCity, toCity)
     webbrowser.open(url)
 
+
 def locateme():
     hcity = getLocation()['city']
     print(Fore.BLUE + "You are at " + hcity + Fore.RESET)
+
 
 def weather(city = 0):
     if not city:

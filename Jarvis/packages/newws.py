@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 import webbrowser
-
 import requests
 from bs4 import BeautifulSoup
-from colorama import init
-from colorama import Fore, Back, Style
+from colorama import Fore
+
 
 def show_news():
 
