@@ -26,7 +26,8 @@ def parseNumber(string, numwords = {}):
         for idx, word in enumerate(tens):     numwords[word] = (1, idx * 10)
         for idx, word in enumerate(scales):   numwords[word] = (10 ** (idx * 3 or 2), 0)
 
-    ret = {'skip':0, 'value':0}
+    skip = 0
+    value = 0
     elements = string.replace(",", "").split()
     current = 0
     for d in elements:
@@ -36,19 +37,19 @@ def parseNumber(string, numwords = {}):
                 try:
                     scale, increment = (1, int(word))
                 except ValueError:
-                    ret['value'] += current
-                    return ret
+                    value += current
+                    return (skip, value)
             else:
                 scale, increment = numwords[word]
                 if not current and scale > 100:
                     current = 1
             current = current * scale + increment
             if scale > 100:
-                ret['value'] += current
+                value += current
                 current = 0
-        ret['skip'] += 1
-    ret['value'] += current
-    return ret
+        skip += 1
+    skip += current
+    return (skip, value)
     
 def parseDate(data):
     elements = data.split()
@@ -59,6 +60,7 @@ def parseDate(data):
     deltaValue = 0
     retDate = dt.now().date()
     retTime = time(23, 59, 59)
+    skip = 0
     for index, d in enumerate(elements):
         if parseDay:
             d += dt.today().strftime(" %Y %W")
@@ -70,14 +72,12 @@ def parseDate(data):
                 except ValueError:
                     print("Could not parse word: {0}".format(d))
                     parseDay = False
-                    continue
+                    break
             if retDate <= dt.now().date():
                 retDate += timedelta(days = 7)
             parseDay = False
         elif parseDeltaValue:
-            tmp = parseNumber(" ".join(elements[index:]))
-            deltaValue = tmp['value']
-            parseDeltaUnit = tmp['skip']
+            parseDeltaUnit, deltaValue = parseNumber(" ".join(elements[index:]))
             parseDeltaValue = False
         elif parseDeltaUnit:
             if "year" in d:
@@ -124,22 +124,22 @@ def parseDate(data):
             parseDeltaValue = True
         else:
             print("Unknown Format: {0}".format(d))
-            continue
-    return dt.combine(retDate, retTime)
+            break
+        skip += 1
+    return (skip, dt.combine(retDate, retTime))
         
 def sort(data):
     return sorted(data, key = lambda k: (k['time']))
 
-def showAlarm(name, body):
+def showAlarm(notification, name):
     print(Fore.BLUE + name + Fore.RESET)
-    if body:
-        Notify.Notification.new(name, body).show()
-    else:
-        Notify.Notification.new(name).show()
+    notification.show()
 
-def addReminder(name, time, uuid, hidden = True, body = 0):
+def addReminder(name, time, uuid, hidden = True, body = '', urgency=Notify.Urgency.LOW):
     waitTime = time - dt.now()
-    timerList[uuid] = Timer(waitTime.total_seconds(), showAlarm, [name, body])
+    n = Notify.Notification.new(name, body)
+    n.set_urgency(urgency)
+    timerList[uuid] = Timer(waitTime.total_seconds(), showAlarm, [n, name])
     timerList[uuid].start()
     print("Reminder in {} seconds".format(waitTime.total_seconds()))
     newItem = {'name':name, 'time':time, 'hidden':hidden, 'uuid':uuid}
@@ -158,14 +158,17 @@ def removeReminder(uuid):
 
 def handle(data):
     if "add" in data:
-        newItem = {}
         data = data.replace("add", "", 1)
-        words = data.split()
-        addReminder(name=words[0], time=parseDate(" ".join(words[1:])), hidden=False, uuid=uuid4().hex)
+        skip, time = parseDate(data)
+        if skip:
+            addReminder(name=" ".join(data.split()[skip:]), time=time, hidden=False, uuid=uuid4().hex)
     elif "remove" in data:
         data = data.replace("remove", "", 1)
-        index = parseNumber(data)['value'] - 1
-        removeReminder(reminderList['items'][index]['uuid'])
+        skip, number = parseNumber(data)
+        if skip:
+            index = number - 1
+            if index >= 0 and index < len(reminderList['items']):
+                removeReminder(reminderList['items'][index]['uuid'])
     elif "print" in data or "list" in data:
         for index, e in enumerate(reminderList['items']):
             if not e['hidden']:
@@ -181,7 +184,9 @@ reminderList['items'] = sort(reminderList['items'])
 for e in reminderList['items']:
     e['time'] = str2date(e['time'])
     waitTime = e['time'] - dt.now()
-    timerList[e['uuid']] = Timer(waitTime.total_seconds(), showAlarm, [e['name'], 0])
+    n = Notify.Notification.new(e['name'])
+    n.set_urgency(Notify.Urgency.LOW)
+    timerList[e['uuid']] = Timer(waitTime.total_seconds(), showAlarm, [n, e['name']])
     timerList[e['uuid']].start()
 
 Notify.init("Jarvis")

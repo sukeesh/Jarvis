@@ -6,7 +6,7 @@ import json
 from datetime import datetime as dt
 from uuid import uuid4
 
-from reminder import parseNumber, parseDate, addReminder, removeReminder
+from reminder import parseDate, addReminder, removeReminder
 from fileHandler import writeFile, readFile, str2date
 
 from colorama import init
@@ -19,8 +19,6 @@ def printItem(item, index):
         sys.stdout.write(Fore.RED)
     print("<{2}> {0} [{1}%]".format(item['name'], item['complete'], index) + Fore.RESET)
     if 'due' in item:
-        if not isinstance(item['due'], dt):
-            item['due'] = str2date(item['due'])
         if item['due'] < dt.now():
             sys.stdout.write(Fore.RED)
         print("\tDue at {0}".format(item['due'].strftime("%Y-%m-%d %H:%M:%S")) + Fore.RESET)
@@ -39,6 +37,15 @@ def sort(data):
         if 'items' in l:
             l['items'] = sort(l['items'])
     return sorted(data, key = lambda k: (-k['priority'] if 'priority' in k else 0, k['complete']))
+
+def fixTypes(data):
+    for l in data:
+        if 'due' in l:
+            l['due'] = str2date(l['due'])
+            addReminder(name=l['name'], body=l['comment'], uuid=l['uuid'], time=l['due'])
+        if 'items' in l:
+            l['items'] = fixTypes(l['items'])
+    return data
 
 def getItem(string, todoList):
     words = string.split(".")
@@ -74,8 +81,14 @@ def todoHandler(data):
             for i in index:
                 item = item['items'][i]
             removeReminder(item['uuid'])
-            item['due'] = parseDate(" ".join(words[1:]))
-            addReminder(name=item['name'], body=item['comment'], uuid=item['uuid'], time=item['due'])
+            skip, item['due'] = parseDate(" ".join(words[1:]))
+            urgency = 0
+            if 'priority' in item:
+                if item['priority'] >= 100:
+                    urgency = 2
+                elif item['priority'] >= 50:
+                    urgency = 1
+            addReminder(name=item['name'], body=item['comment'], uuid=item['uuid'], time=item['due'], urgency=urgency)
         else:
             data = " ".join(data.split())
             try:
@@ -86,7 +99,7 @@ def todoHandler(data):
                 data = " ".join(data.split()[1:])
             except ValueError:
                 item = todoList
-            newItem = {'complete':0, 'uuid':uuid4().hex, 'comment':0}
+            newItem = {'complete':0, 'uuid':uuid4().hex, 'comment':""}
             parts = data.split(" - ")
             newItem['name'] = parts[0]
             if " - " in data:
@@ -101,7 +114,7 @@ def todoHandler(data):
         item = todoList
         for i in index:
             item = item['items'][i]
-        item['items'].remove(todoList['items'][deleteIndex])
+        item['items'].remove(item['items'][deleteIndex])
     elif "priority" in data:
         data = data.replace("priority", "", 1)
         if "critical" in data:
@@ -142,5 +155,5 @@ def todoHandler(data):
     writeFile("todolist.txt", todoList)
 
 todoList = readFile("todolist.txt", {'items':[]})
-todoList['items'] = sort(todoList['items'])
+todoList['items'] = fixTypes(sort(todoList['items']))
 
