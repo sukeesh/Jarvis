@@ -275,3 +275,10 @@ class Jarvis:
             wish = self.actions[self.user_input()]
             self.reactions(wish)
 
+"""
+    NOTE:
+        Text to speech functions may be better if they where implemented
+        on a different class outside of Jarvis.
+        I am not sure yet. If you agree please create an issue and we will
+        fix it ASAP.
+"""
