@@ -68,6 +68,12 @@ class Jarvis:
         self.create()
 
     def speak(self):
+        """
+        This method allows Jarvis to speak!
+        In order to learn more about the module used to perform this action
+        go to the following link: https://pyttsx.readthedocs.io/en/latest/engine.html
+        :return: Nothing to return.
+        """
         if self.first_reaction:
             self.engine.say('Hi what can i do for you?'.encode('utf-8'))
             self.engine.runAndWait()
@@ -78,9 +84,17 @@ class Jarvis:
         self.destroy()
 
     def destroy(self):
+        """
+        This method destroys a pyttsx object...
+        :return: Nothing to return.
+        """
         del self.engine
 
     def create(self):
+        """
+        This method creates a pyttsx object.
+        :return: Nothing to return
+        """
         self.engine = pyttsx.init()
         self.engine.setProperty('rate', 120)
 
