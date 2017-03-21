@@ -4,6 +4,7 @@ from colorama import Fore
 from packages.music import play
 from packages.todo import todoHandler
 from packages import newws, mapps, picshow, evaluator
+import pyttsx
 
 """
     AUTHORS' SCOPE:
@@ -64,6 +65,24 @@ class Jarvis:
                         "help": "help",
                         "error": "error"
                         }
+        self.create()
+
+    def speak(self):
+        if self.first_reaction:
+            self.engine.say('Hi what can i do for you?'.encode('utf-8'))
+            self.engine.runAndWait()
+        else:
+            self.create()
+            self.engine.say("What can i do for you".encode('utf-8'))
+            self.engine.runAndWait()
+        self.destroy()
+
+    def destroy(self):
+        del self.engine
+
+    def create(self):
+        self.engine = pyttsx.init()
+        self.engine.setProperty('rate', 120)
 
     def reactions(self, key):
         """
@@ -200,8 +219,10 @@ class Jarvis:
         """
         # BREAKPOINT #1
         if self.first_reaction:
+            #self.speak()
             print Fore.RED + "Hi, What can i do for you?" + Fore.RESET
         else:
+            #self.speak()
             print Fore.RED + "What can i do for you?" + Fore.RESET
 
         try:
@@ -228,6 +249,7 @@ class Jarvis:
         :return: Nothing to return.
         """
         while True:
+            self.speak()
             wish = self.actions[self.user_input()]
             self.reactions(wish)
 
