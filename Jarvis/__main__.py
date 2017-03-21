@@ -7,7 +7,7 @@ import pyowm, requests
 from colorama import init
 from colorama import Fore, Back, Style
 
-import todo, newws, mapps, picshow, evaluator, audioHandler, music
+import todo, newws, mapps, picshow, evaluator, audioHandler, music, reminder
 
 #reload(sys)
 #sys.setdefaultencoding('utf-8')
@@ -73,6 +73,10 @@ def Jarvis(data):
             toCity = " ".join(wordList[to_index + 1:])
             fromCity = 0
         mapps.directions(toCity, fromCity)
+
+    if "remind" in data:
+        data = data.replace("remind", "", 1)
+        reminder.handle(data)
 
     if "movies" in data:
         try:
