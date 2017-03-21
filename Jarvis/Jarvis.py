@@ -179,4 +179,57 @@ class Jarvis:
             mapps.weather()
 
         locals()[key]()  # we are calling the proper function which satisfies the user's command.
- 
+
+    def user_input(self):
+        """
+        This method is responsible for getting the user's input.
+        We are using first_reaction variable in order to prompt
+        "Hi" only the first time we "meet" our user (in your first version
+        whenever you asked for a command Jarvis where saying "Hi").
+        :return: user_data, a variable containing the Jarvis' action
+                 that user wants to execute.
+        """
+        # BREAKPOINT #1
+        if self.first_reaction:
+            print Fore.RED + "Hi, What can i do for you?" + Fore.RESET
+        else:
+            print Fore.RED + "What can i do for you?" + Fore.RESET
+
+        try:
+            user_data = raw_input()
+        except ValueError:
+            user_data = input()
+        except:
+            user_data = input()
+        finally:
+            # Set first_reaction to False in order to stop say "Hi" to user.
+            self.first_reaction = False
+
+        user_data = str.lower(user_data)
+        return user_data
+
+    def find_action(self, data):
+        """
+        This method gets the data and assigns it to an action
+        """
+        user_wish = "null"
+        for key in self.actions:
+            if key in data:
+                user_wish = self.actions[key]
+        if user_wish in self.actions.values():
+            return user_wish
+        return "error"
+
+    def executor(self):
+        """
+        This method is opening a terminal session with the user.
+        We can say that it is the core function of this whole class
+        and it joins all the function above to work together like a
+        clockwork. (Terminates when the user send the "exit", "quit"
+        or "goodbye command")
+        :return: Nothing to return.
+        """
+        while True:
+            data = self.user_input()
+            wish = self.find_action(data)
+            self.reactions(wish, data)
