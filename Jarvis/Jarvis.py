@@ -1,7 +1,10 @@
 from os import system
+from platform import system as sys
+from platform import architecture, release, dist
 from time import ctime
 from colorama import Fore
 from utilities.GeneralUtilities import wordIndex
+from utilities import voice
 from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminderHandler, reminderQuit
@@ -30,6 +33,7 @@ class Jarvis:
     # We use this variable at Breakpoint #1.
     # We use this in order to allow Jarvis say "Hi", only at the first interaction.
     first_reaction = True
+    enable_voice = False
 
     def __init__(self):
         """
@@ -59,9 +63,15 @@ class Jarvis:
                         "todo": "todo",
                         "weather": "weather", 
                         "what time is it": "clock", 
-                        "where am i": "pinpoint"        
+                        "where am i": "pinpoint",
+                        "about os": "os_detection",
+                        "help": "help_jarvis",
+                        "enable sound": "enable_sound",
+                        "disable sound": "disable_sound"
                         }
+        self.speech = voice.Voice()
 
+    #@staticmethod
     def reactions(self, key, data):
         """
         This function contains local functions which are implementing
@@ -109,6 +119,8 @@ class Jarvis:
             supported by Jarvis.
             :return: Nothing to return.
             """
+            if self.enable_voice:
+                self.speech.text_to_speech("I could not identify your command")
             print(Fore.RED + "I could not identify your command..." + Fore.RESET)
 
         def evaluate():
@@ -163,6 +175,8 @@ class Jarvis:
 
         def quit():
             reminderQuit()
+            if self.enable_voice:
+                self.speech.text_to_speech("Goodbye, see you later")
             print(Fore.RED + "Goodbye, see you later!" + Fore.RESET)
             exit()
 
@@ -184,6 +198,57 @@ class Jarvis:
         def weather():
             mapps.weather()
 
+        def os_detection():
+            """
+            This method displays a detailed operating system
+            information
+            :return: Nothing to return.
+            """
+            print Fore.BLUE + '[!] Operating System Information' + Fore.RESET
+            print Fore.GREEN + '[*] ' + sys() + Fore.RESET
+            print Fore.GREEN + '[*] ' + release() + Fore.RESET
+            print Fore.GREEN + '[*] ' + dist()[0] + Fore.RESET
+            for _ in architecture():
+                print Fore.GREEN + '[*] ' + _ + Fore.RESET
+
+        def enable_sound():
+            self.enable_voice = True
+
+        def disable_sound():
+            self.enable_voice = False
+
+        def help_jarvis():
+            """
+            This method displays help about Jarvis.
+            :return: Nothing to return.
+            """
+            print Fore.BLUE + '>>> Usage: ' + Fore.RESET
+            print Fore.BLUE + 'Type any of the following commands to interact with Jarvis.' + Fore.RESET
+            print Fore.GREEN + '[*] Help: To see this message' + Fore.RESET
+            print Fore.GREEN + '[*] How are you?: To react with Jarvis!' + Fore.RESET
+            print Fore.GREEN + '[*] Open Camera: To open "cheese" program (camera).' + Fore.RESET
+            print Fore.GREEN + '[*] What time is it: To check the time.' + Fore.RESET
+            print Fore.GREEN + '[*] Where am i: To pinpoint your location.' + Fore.RESET
+            print Fore.GREEN + '[*] Near me: To see nearby locations.' + Fore.RESET
+            print Fore.GREEN + '[*] Music: To listen some good Music!' + Fore.RESET
+            print Fore.GREEN + '[*] Increase Volume: To increase your system volume.' + Fore.RESET
+            print Fore.GREEN + '[*] Decrease Volume: To decrease your system volume.' + Fore.RESET
+            print Fore.GREEN + '[*] Hotspot Start: To set up your own hotspot.' + Fore.RESET
+            print Fore.GREEN + '[*] Hotspot Stop: To stop your personal hotspot.' + Fore.RESET
+            print Fore.GREEN + '[*] Search for a string in a file: Match patterns in a string using regex.' + Fore.RESET
+            print Fore.GREEN + '[*] Check RAM: Detailed RAM usage.' + Fore.RESET
+            print Fore.GREEN + '[*] Todo: An ordinary TODO list.' + Fore.RESET
+            print Fore.GREEN + '[*] News: Get an update about the news!' + Fore.RESET
+            print Fore.GREEN + '[*] Show me pics of: Displays the selected pics.' + Fore.RESET
+            print Fore.GREEN + '[*] Evaluate: To get your calculations done!' + Fore.RESET
+            print Fore.GREEN + '[*] Show me directions from: Get directions about your destination!' + Fore.RESET
+            print Fore.GREEN + '[*] enable sound: Jarvis will start talking to you' + Fore.RESET
+            print Fore.GREEN + '[*] disable sound: Jarvis will no longer talks out loud...' + Fore.RESET
+            print Fore.GREEN + '[*] about os: Dispays detailed information about your operating system' + Fore.RESET
+            print Fore.GREEN + '[*] quit: Close the session with Jarvis...' + Fore.RESET
+            print Fore.GREEN + '[*] exit: Close the session with Jarvis...' + Fore.RESET
+            print Fore.GREEN + '[*] Goodbye: Close the session with Jarvis...' + Fore.RESET
+
         locals()[key]()  # we are calling the proper function which satisfies the user's command.
 
     def user_input(self):
@@ -197,9 +262,15 @@ class Jarvis:
         """
         # BREAKPOINT #1
         if self.first_reaction:
-            print Fore.RED + "Hi, What can i do for you?" + Fore.RESET
+            self.speak()
+            print Fore.BLUE + 'Jarvis\' is by default disabled.' + Fore.RESET
+            print Fore.BLUE + 'In order to let Jarvis talk out loud type: ' +\
+                  Fore.RESET + Fore.RED + 'enable sound' + Fore.RESET
+            print ''
+            print Fore.RED + "~> Hi, What can i do for you?" + Fore.RESET
         else:
-            print Fore.RED + "What can i do for you?" + Fore.RESET
+            self.speak()
+            print Fore.RED + "~> What can i do for you?" + Fore.RESET
 
         try:
             user_data = raw_input()
@@ -213,6 +284,10 @@ class Jarvis:
 
         user_data = str.lower(user_data)
         return user_data
+
+    def speak(self):
+        if self.enable_voice:
+            self.speech.speak(self.first_reaction)
 
     def find_action(self, data):
         """
