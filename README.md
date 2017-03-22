@@ -11,6 +11,7 @@ Personal Assistant for Linux
 
 - Just clone the repository and run `python Jarvis`
 - Please check `requirements.txt` to install dependencies.
+- Tip: use the command: pip install -r requirements.txt to install the requirements
 
 > **Youtube Video**
 
