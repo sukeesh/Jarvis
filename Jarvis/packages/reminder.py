@@ -142,9 +142,13 @@ def parseDate(string):
             retDate = dt.strptime(d, "%d.%m.%Y").date()
 
         elif re.match("^[0-1][0-9]:[0-5][0-9][AP]M", d):
-            retTime = dt.strptime(d, "%I:%M%p").time
+            retTime = dt.strptime(d, "%I:%M%p").time()
+        elif re.match("^[1-9]:[0-5][0-9][AP]M", d):
+            retTime = dt.strptime("0" + d, "%I:%M%p").time()
         elif re.match("^[0-2][0-9]:[0-5][0-9]", d):
-            retTime = dt.strptime(d, "%H:%M").time
+            retTime = dt.strptime(d, "%H:%M").time()
+        elif re.match("^[1-9]:[0-5][0-9]", d):
+            retTime = dt.strptime("0" + d, "%H:%M").time()
 
         elif d == "next":
             parseDay = True
