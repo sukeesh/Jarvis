@@ -72,7 +72,6 @@ def parseDate(data):
                 try:
                     retDate = dt.strptime(d, "%A %Y %W").date()
                 except ValueError:
-                    print("Could not parse word: {0}".format(d))
                     parseDay = False
                     break
             if retDate <= dt.now().date():
@@ -125,7 +124,6 @@ def parseDate(data):
         elif d == "in":
             parseDeltaValue = True
         else:
-            print("Unknown Format: {0}".format(d))
             break
         skip += 1
     return (skip, dt.combine(retDate, retTime))
@@ -158,7 +156,7 @@ def removeReminder(uuid):
             break;
     writeFile("reminderlist.txt", reminderList)
 
-def handle(data):
+def reminderHandler(data):
     if "add" in data:
         data = data.replace("add", "", 1)
         skip, time = parseDate(data)
