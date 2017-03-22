@@ -18,6 +18,15 @@ from colorama import Fore, Back, Style
 from fileHandler import writeFile, readFile, str2date
 
 def parseNumber(string, numwords = {}):
+    """
+    Parse the given string to an integer.
+
+    This supports pure numerals with or without ',' as a separator between digets.
+    Other supported formats include literal numbers like 'four' and mixed numerals
+    and literals like '24 thousand'.
+    :return: (skip, value) containing the number of words separated by whitespace,
+             that were parsed for the number and the value of the integer itself.
+    """
     if not numwords:
         units = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" ]
         tens = ["", "", "twenty", "thirty", "fourty", "fifty", "sixty", "seventy", "eighty", "ninety"]
@@ -53,15 +62,32 @@ def parseNumber(string, numwords = {}):
     skip += current
     return (skip, value)
     
-def parseDate(data):
-    elements = data.split()
+def parseDate(string):
+    """
+    Parse the given string for a date or timespan.
+
+    The number for a timespan can be everything supported by parseNumber().
+
+    Supported date formats:
+        2017-03-22 and 17-03-22
+        22.03.2017 and 22.03.17
+    Supported time formats:
+        17:30
+        5:30PM
+    Supported timespan formats:
+        in one second/minute/hour/day/week/month/year
+        next monday
+    :return: (skip, time) containing the number of words separated by whitespace,
+             that were parsed for the date and the date itself as datetime.
+    """
+    elements = string.split()
 
     parseDay = False
     parseDeltaValue = False
     parseDeltaUnit = 0
     deltaValue = 0
     retDate = dt.now().date()
-    retTime = time(23, 59, 59)
+    retTime = dt.now().time()
     skip = 0
     for index, d in enumerate(elements):
         if parseDay:
@@ -81,6 +107,7 @@ def parseDate(data):
             parseDeltaUnit, deltaValue = parseNumber(" ".join(elements[index:]))
             parseDeltaValue = False
         elif parseDeltaUnit:
+            newTime = dt.combine(retDate, retTime)
             if "year" in d:
                 retDate += relativedelta(years = deltaValue)
             elif "month" in d:
@@ -90,15 +117,15 @@ def parseDate(data):
             elif "day" in d:
                 retDate += timedelta(days = deltaValue)
             elif "hour" in d:
-                newTime = dt.now() + timedelta(hours = deltaValue)
+                newTime += timedelta(hours = deltaValue)
                 retDate = newTime.date()
                 retTime = newTime.time()
             elif "minute" in d:
-                newTime = dt.now() + timedelta(minutes = deltaValue)
+                newTime += timedelta(minutes = deltaValue)
                 retDate = newTime.date()
                 retTime = newTime.time()
             elif "second" in d:
-                newTime = dt.now() + timedelta(seconds = deltaValue)
+                newTime += timedelta(seconds = deltaValue)
                 retDate = newTime.date()
                 retTime = newTime.time()
             elif parseDeltaUnit == 1:
@@ -121,7 +148,7 @@ def parseDate(data):
 
         elif d == "next":
             parseDay = True
-        elif d == "in":
+        elif d == "in" or d == "and":
             parseDeltaValue = True
         else:
             break
@@ -135,7 +162,26 @@ def showAlarm(notification, name):
     print(Fore.BLUE + name + Fore.RESET)
     notification.show()
 
-def addReminder(name, time, uuid, hidden = True, body = '', urgency=Notify.Urgency.LOW):
+def showNotification(name, body):
+    """
+    Show a notification immediately.
+    """
+    Notify.Notification.new(name, body).show()
+
+def addReminder(name, time, uuid, body = '', urgency=Notify.Urgency.LOW, hidden = True):
+    """
+    Queue reminder.
+
+    Show notification at the specified time. With the given name as title and an optional body
+    for further information.
+    The mandatory is used to identify the reminder and remove it with removeReminder().
+    If the reminder should show up in the list printed by 'remind print' hidden (default: True)
+    should be set to false. In this case the reminder is requeued at startup. If reminders are
+    used e.g. with a todo list for due dates, hidden should probably be set to true so that the
+    list is not cluttered with automatically created data.
+    If the reminder needs a different priority, it can be set with urgency to critical (=2),
+    high (=1) or normal (=0, default).
+    """
     waitTime = time - dt.now()
     n = Notify.Notification.new(name, body)
     n.set_urgency(urgency)
@@ -147,6 +193,9 @@ def addReminder(name, time, uuid, hidden = True, body = '', urgency=Notify.Urgen
     writeFile("reminderlist.txt", reminderList)
 
 def removeReminder(uuid):
+    """
+    Remove and cancel previously added reminder identified by the given uuid.
+    """
     if uuid in timerList:
         timerList[uuid].cancel()
         timerList.pop(uuid)
@@ -177,7 +226,10 @@ def reminderHandler(data):
         reminderList['items'] = []
         writeFile("reminderlist.txt", reminderList)
 
-def quit():
+def reminderQuit():
+    """
+    This function has to be called when shutting down. It terminates all waiting threads.
+    """
     for index, el in timerList.iteritems():
         el.cancel()
 
@@ -194,6 +246,4 @@ for e in reminderList['items']:
     timerList[e['uuid']].start()
 
 Notify.init("Jarvis")
-notification = Notify.Notification.new("What can i do for you?")
-notification.show()
 

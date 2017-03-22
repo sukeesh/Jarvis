@@ -4,7 +4,7 @@ from colorama import Fore
 from utilities.GeneralUtilities import wordIndex
 from packages.music import play
 from packages.todo import todoHandler
-from packages.reminder import reminderHandler
+from packages.reminder import reminderHandler, reminderQuit
 from packages import newws, mapps, picshow, evaluator
  
 """
@@ -162,6 +162,7 @@ class Jarvis:
             mapps.locateme()
 
         def quit():
+            reminderQuit()
             print(Fore.RED + "Goodbye, see you later!" + Fore.RESET)
             exit()
 
