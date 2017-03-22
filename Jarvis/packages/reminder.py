@@ -59,7 +59,7 @@ def parseNumber(string, numwords = {}):
                 value += current
                 current = 0
         skip += 1
-    skip += current
+    value += current
     return (skip, value)
     
 def parseDate(string):
