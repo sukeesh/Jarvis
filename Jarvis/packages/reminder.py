@@ -132,22 +132,22 @@ def parseDate(string):
                 print("Missing time unit")
             parseDeltaUnit -= 1
 
-        elif re.match("^[0-9]{2}-[0-1][0-9]-[0-3][0-9]", d):
+        elif re.match("^[0-9]{2}-[0-1][0-9]-[0-3][0-9]$", d):
             retDate = dt.strptime(d, "%y-%m-%d").date()
-        elif re.match("^[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]", d):
+        elif re.match("^[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]$", d):
             retDate = dt.strptime(d, "%Y-%m-%d").date()
-        elif re.match("^[0-3][0-9]-[0-1][0-9]-[0-9]{2}", d):
-            pretDate = dt.strptime(d, "%d.%m.%y").date()
-        elif re.match("^[0-3][0-9]-[0-1][0-9]-[1-9][0-9]{3}", d):
+        elif re.match("^[0-3][0-9]\.[0-1][0-9]\.[0-9]{2}$", d):
+            retDate = dt.strptime(d, "%d.%m.%y").date()
+        elif re.match("^[0-3][0-9]\.[0-1][0-9]\.[1-9][0-9]{3}$", d):
             retDate = dt.strptime(d, "%d.%m.%Y").date()
 
-        elif re.match("^[0-1][0-9]:[0-5][0-9][AP]M", d):
+        elif re.match("^[0-1][0-9]:[0-5][0-9][AP]M$", d):
             retTime = dt.strptime(d, "%I:%M%p").time()
-        elif re.match("^[1-9]:[0-5][0-9][AP]M", d):
+        elif re.match("^[1-9]:[0-5][0-9][AP]M$", d):
             retTime = dt.strptime("0" + d, "%I:%M%p").time()
-        elif re.match("^[0-2][0-9]:[0-5][0-9]", d):
+        elif re.match("^[0-2][0-9]:[0-5][0-9]$", d):
             retTime = dt.strptime(d, "%H:%M").time()
-        elif re.match("^[1-9]:[0-5][0-9]", d):
+        elif re.match("^[1-9]:[0-5][0-9]$", d):
             retTime = dt.strptime("0" + d, "%H:%M").time()
 
         elif d == "next":
