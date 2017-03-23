@@ -39,13 +39,17 @@ class Jarvis:
         This constructor contains a dictionary with Jarvis Actions (what Jarvis can do).
         In alphabetically order.
         """
-        self.actions = {"check ram": "check_ram",
+        self.actions = {"about os": "os_detection",
+                        "check ram": "check_ram",
                         "decrease volume": "decrease_volume",
                         "directions": "directions",           # Doesn't check if 'to' exist
+                        "disable sound": "disable_sound",
+                        "enable sound": "enable_sound",
                         "error": "error",
                         "evaluate": "evaluate",
                         "exit": "quit",
                         "goodbye": "quit",
+                        "help": "help_jarvis",
                         "hotspot start": "hotspot_start",
                         "hotspot stop": "hotspot_stop",
                         "how are you?": "how_are_you",
@@ -61,11 +65,7 @@ class Jarvis:
                         "todo": "todo",
                         "weather": "weather", 
                         "what time is it": "clock", 
-                        "where am i": "pinpoint",
-                        "about os": "os_detection",
-                        "help": "help_jarvis",
-                        "enable sound": "enable_sound",
-                        "disable sound": "disable_sound"
+                        "where am i": "pinpoint"
                         }
         self.speech = voice.Voice()
 
@@ -106,9 +106,15 @@ class Jarvis:
                 toCity = " ".join(wordList[to_index + 1:])
                 fromCity = 0
             mapps.directions(toCity, fromCity)
+            
+        def disable_sound():
+            self.enable_voice = False
 
         def display_pics():
             picshow.showpics(data)
+          
+        def enable_sound():
+            self.enable_voice = True
 
         def error():
             """
@@ -127,6 +133,38 @@ class Jarvis:
                 evaluator.calc(tempt[1])
             else:
                 print(Fore.RED + "Error : Not in correct format" + Fore.RESET)
+              
+        def help_jarvis():
+            """
+            This method displays help about Jarvis.
+            :return: Nothing to return.
+            """
+            print Fore.BLUE + '>>> Usage: ' + Fore.RESET
+            print Fore.BLUE + 'Type any of the following commands to interact with Jarvis.' + Fore.RESET
+            print Fore.GREEN + '[*] Help: To see this message' + Fore.RESET
+            print Fore.GREEN + '[*] How are you?: To react with Jarvis!' + Fore.RESET
+            print Fore.GREEN + '[*] Open Camera: To open "cheese" program (camera).' + Fore.RESET
+            print Fore.GREEN + '[*] What time is it: To check the time.' + Fore.RESET
+            print Fore.GREEN + '[*] Where am i: To pinpoint your location.' + Fore.RESET
+            print Fore.GREEN + '[*] Near me: To see nearby locations.' + Fore.RESET
+            print Fore.GREEN + '[*] Music: To listen some good Music!' + Fore.RESET
+            print Fore.GREEN + '[*] Increase Volume: To increase your system volume.' + Fore.RESET
+            print Fore.GREEN + '[*] Decrease Volume: To decrease your system volume.' + Fore.RESET
+            print Fore.GREEN + '[*] Hotspot Start: To set up your own hotspot.' + Fore.RESET
+            print Fore.GREEN + '[*] Hotspot Stop: To stop your personal hotspot.' + Fore.RESET
+            print Fore.GREEN + '[*] Search for a string in a file: Match patterns in a string using regex.' + Fore.RESET
+            print Fore.GREEN + '[*] Check RAM: Detailed RAM usage.' + Fore.RESET
+            print Fore.GREEN + '[*] Todo: An ordinary TODO list.' + Fore.RESET
+            print Fore.GREEN + '[*] News: Get an update about the news!' + Fore.RESET
+            print Fore.GREEN + '[*] Show me pics of: Displays the selected pics.' + Fore.RESET
+            print Fore.GREEN + '[*] Evaluate: To get your calculations done!' + Fore.RESET
+            print Fore.GREEN + '[*] Show me directions from: Get directions about your destination!' + Fore.RESET
+            print Fore.GREEN + '[*] enable sound: Jarvis will start talking to you' + Fore.RESET
+            print Fore.GREEN + '[*] disable sound: Jarvis will no longer talks out loud...' + Fore.RESET
+            print Fore.GREEN + '[*] about os: Dispays detailed information about your operating system' + Fore.RESET
+            print Fore.GREEN + '[*] quit: Close the session with Jarvis...' + Fore.RESET
+            print Fore.GREEN + '[*] exit: Close the session with Jarvis...' + Fore.RESET
+            print Fore.GREEN + '[*] Goodbye: Close the session with Jarvis...' + Fore.RESET
 
         def hotspot_start():
             system("sudo ap-hotspot start")
@@ -170,6 +208,19 @@ class Jarvis:
         def open_camera():
             print "Opening Cheese ...... "
             system("cheese")
+           
+        def os_detection():
+            """
+            This method displays a detailed operating system
+            information
+            :return: Nothing to return.
+            """
+            print Fore.BLUE + '[!] Operating System Information' + Fore.RESET
+            print Fore.GREEN + '[*] ' + sys() + Fore.RESET
+            print Fore.GREEN + '[*] ' + release() + Fore.RESET
+            print Fore.GREEN + '[*] ' + dist()[0] + Fore.RESET
+            for _ in architecture():
+                print Fore.GREEN + '[*] ' + _ + Fore.RESET
 
         def pinpoint():
             mapps.locateme()
@@ -197,57 +248,6 @@ class Jarvis:
                 mapps.weather()
             except:
                 print Fore.RED + "I couldn't locate you" + Fore.RESET
-
-        def os_detection():
-            """
-            This method displays a detailed operating system
-            information
-            :return: Nothing to return.
-            """
-            print Fore.BLUE + '[!] Operating System Information' + Fore.RESET
-            print Fore.GREEN + '[*] ' + sys() + Fore.RESET
-            print Fore.GREEN + '[*] ' + release() + Fore.RESET
-            print Fore.GREEN + '[*] ' + dist()[0] + Fore.RESET
-            for _ in architecture():
-                print Fore.GREEN + '[*] ' + _ + Fore.RESET
-
-        def enable_sound():
-            self.enable_voice = True
-
-        def disable_sound():
-            self.enable_voice = False
-
-        def help_jarvis():
-            """
-            This method displays help about Jarvis.
-            :return: Nothing to return.
-            """
-            print Fore.BLUE + '>>> Usage: ' + Fore.RESET
-            print Fore.BLUE + 'Type any of the following commands to interact with Jarvis.' + Fore.RESET
-            print Fore.GREEN + '[*] Help: To see this message' + Fore.RESET
-            print Fore.GREEN + '[*] How are you?: To react with Jarvis!' + Fore.RESET
-            print Fore.GREEN + '[*] Open Camera: To open "cheese" program (camera).' + Fore.RESET
-            print Fore.GREEN + '[*] What time is it: To check the time.' + Fore.RESET
-            print Fore.GREEN + '[*] Where am i: To pinpoint your location.' + Fore.RESET
-            print Fore.GREEN + '[*] Near me: To see nearby locations.' + Fore.RESET
-            print Fore.GREEN + '[*] Music: To listen some good Music!' + Fore.RESET
-            print Fore.GREEN + '[*] Increase Volume: To increase your system volume.' + Fore.RESET
-            print Fore.GREEN + '[*] Decrease Volume: To decrease your system volume.' + Fore.RESET
-            print Fore.GREEN + '[*] Hotspot Start: To set up your own hotspot.' + Fore.RESET
-            print Fore.GREEN + '[*] Hotspot Stop: To stop your personal hotspot.' + Fore.RESET
-            print Fore.GREEN + '[*] Search for a string in a file: Match patterns in a string using regex.' + Fore.RESET
-            print Fore.GREEN + '[*] Check RAM: Detailed RAM usage.' + Fore.RESET
-            print Fore.GREEN + '[*] Todo: An ordinary TODO list.' + Fore.RESET
-            print Fore.GREEN + '[*] News: Get an update about the news!' + Fore.RESET
-            print Fore.GREEN + '[*] Show me pics of: Displays the selected pics.' + Fore.RESET
-            print Fore.GREEN + '[*] Evaluate: To get your calculations done!' + Fore.RESET
-            print Fore.GREEN + '[*] Show me directions from: Get directions about your destination!' + Fore.RESET
-            print Fore.GREEN + '[*] enable sound: Jarvis will start talking to you' + Fore.RESET
-            print Fore.GREEN + '[*] disable sound: Jarvis will no longer talks out loud...' + Fore.RESET
-            print Fore.GREEN + '[*] about os: Dispays detailed information about your operating system' + Fore.RESET
-            print Fore.GREEN + '[*] quit: Close the session with Jarvis...' + Fore.RESET
-            print Fore.GREEN + '[*] exit: Close the session with Jarvis...' + Fore.RESET
-            print Fore.GREEN + '[*] Goodbye: Close the session with Jarvis...' + Fore.RESET
 
         locals()[key]()  # we are calling the proper function which satisfies the user's command.
 
