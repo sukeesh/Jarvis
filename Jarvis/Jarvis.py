@@ -1,4 +1,5 @@
 from os import system
+import requests
 from platform import system as sys
 from platform import architecture, release, dist
 from time import ctime
@@ -9,7 +10,7 @@ from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminderHandler, reminderQuit
 from packages import newws, mapps, picshow, evaluator
- 
+
 """
     AUTHORS' SCOPE:
         We thought that the source code of Jarvis would
@@ -28,7 +29,7 @@ from packages import newws, mapps, picshow, evaluator
         * Furthermore, "near me" command is unable to find
         the actual location of our laptops.
 """
- 
+
 class Jarvis:
     # We use this variable at Breakpoint #1.
     # We use this in order to allow Jarvis say "Hi", only at the first interaction.
@@ -65,9 +66,10 @@ class Jarvis:
                         "search for a string in file": "string_pattern",
                         "show me pics of": "display_pics",
                         "todo": "todo",
-                        "weather": "weather", 
-                        "what time is it": "clock", 
-                        "where am i": "pinpoint"
+                        "weather": "weather",
+                        "what time is it": "clock",
+                        "where am i": "pinpoint",
+                        "what about chuck": "what_about_chuck",
                         }
         self.speech = voice.Voice()
 
@@ -108,13 +110,13 @@ class Jarvis:
                 toCity = " ".join(wordList[to_index + 1:])
                 fromCity = 0
             mapps.directions(toCity, fromCity)
-            
+
         def disable_sound():
             self.enable_voice = False
 
         def display_pics():
             picshow.showpics(data)
-          
+
         def enable_sound():
             self.enable_voice = True
 
@@ -170,11 +172,13 @@ class Jarvis:
 
         def hotspot_start():
             system("sudo ap-hotspot start")
- 
+
         def hotspot_stop():
             system("sudo ap-hotspot stop")
 
         def how_are_you():
+            if self.enable_voice:
+                self.speech.text_to_speech("I am fine, thank you")
             print(Fore.BLUE + "I am fine, How about you" + Fore.RESET)
 
         def increase_volume():
@@ -210,7 +214,7 @@ class Jarvis:
         def open_camera():
             print "Opening Cheese ...... "
             system("cheese")
-           
+
         def os_detection():
             """
             This method displays a detailed operating system
@@ -254,6 +258,25 @@ class Jarvis:
                 mapps.weather()
             except:
                 print Fore.RED + "I couldn't locate you" + Fore.RESET
+
+        def what_about_chuck():
+            try:
+                req = requests.get("https://api.chucknorris.io/jokes/random")
+                chuck_json = req.json()
+
+                chuck_fact = chuck_json["value"]
+                if self.enable_voice:
+                    print(Fore.RED + chuck_fact + Fore.RESET)
+                    self.speech.text_to_speech(chuck_fact)
+                else:
+                    print(Fore.RED + chuck_fact + Fore.RESET)
+
+            except:
+                if self.enable_voice:
+                    self.speech.text_to_speech("Looks like Chuck broke the Internet.")
+                else:
+                    print(Fore.RED + "Looks like Chuck broke the Internet..." + Fore.RESET)
+
 
         locals()[key]()  # we are calling the proper function which satisfies the user's command.
 
