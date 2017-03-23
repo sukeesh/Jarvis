@@ -8,7 +8,7 @@ from utilities import voice
 from packages.music import play
 from packages.todo import todoHandler
 from packages import newws, mapps, picshow, evaluator
- 
+
 """
     AUTHORS' SCOPE:
         We thought that the source code of Jarvis would
@@ -135,6 +135,8 @@ class Jarvis:
             system("sudo ap-hotspot stop")
 
         def how_are_you():
+            if self.enable_voice:
+                self.speech.text_to_speech("I am fine, thank you")
             print(Fore.BLUE + "I am fine, How about you" + Fore.RESET)
 
         def increase_volume():
