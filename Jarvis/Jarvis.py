@@ -162,7 +162,10 @@ class Jarvis:
             mapps.searchNear(things, city)
 
         def news():
-            newws.show_news()
+            try:
+                newws.show_news()
+            except:
+                print Fore.RED + "I couldn't find news" + Fore.RESET
 
         def open_camera():
             print "Opening Cheese ...... "
@@ -190,7 +193,10 @@ class Jarvis:
             todoHandler(data)
 
         def weather():
-            mapps.weather()
+            try:
+                mapps.weather()
+            except:
+                print Fore.RED + "I couldn't locate you" + Fore.RESET
 
         def os_detection():
             """
