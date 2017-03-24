@@ -3,6 +3,7 @@ import os
 import json
 from datetime import datetime as dt
 import uuid
+from colorama import Fore
 
 timeFormat = "%Y-%m-%d %H:%M:%S"
 
@@ -16,8 +17,12 @@ def json_serial(obj):
 
 def readFile(name, default = []):
     if os.path.exists(name):
-        with open(name, "r+") as f:
-            return json.load(f)
+        try:
+            with open(name, "r+") as f:
+                return json.load(f)
+        except ValueError:
+            print(Fore.RED + "Storage file not in right format. Backup stored as {0}.bak".format(name) + Fore.RESET)
+            os.rename(name, name + ".bak")
     return default
 
 def writeFile(name, obj):
