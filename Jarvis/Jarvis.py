@@ -8,7 +8,6 @@ from utilities.GeneralUtilities import wordIndex
 from utilities import voice
 from packages.music import play
 from packages.todo import todoHandler
-from packages.reminder import reminderHandler, reminderQuit
 from packages import newws, mapps, picshow, evaluator
 
 """
@@ -62,7 +61,6 @@ class Jarvis:
                         "news": "news",
                         "open camera": "open_camera",
                         "quit": "quit",
-                        "remind": "remind",
                         "search for a string in file": "string_pattern",
                         "show me pics of": "display_pics",
                         "todo": "todo",
@@ -151,7 +149,7 @@ class Jarvis:
             if len(tempt) > 1:
                 evaluator.calc(tempt[1])
             else:
-                print(Fore.RED + "Error: Not in correct format" + Fore.RESET)
+                print(Fore.RED + "Error : Not in correct format" + Fore.RESET)
 
         def help_jarvis():
             """
@@ -282,14 +280,10 @@ class Jarvis:
             """
             Closing Jarvis.
             """
-            reminderQuit()
             if self.enable_voice:
                 self.speech.text_to_speech("Goodbye, see you later")
             print(Fore.RED + "Goodbye, see you later!" + Fore.RESET)
             exit()
-
-        def remind():
-            reminderHandler(data.replace("remind", "", 1))
 
         def string_pattern():
             """
@@ -307,7 +301,7 @@ class Jarvis:
             """
             Create your personal TODO list!
             """
-            todoHandler(data.replace("todo", "", 1))
+            todoHandler(data)
             
         def os_detection():
             """
@@ -454,4 +448,3 @@ class Jarvis:
             data = self.user_input()
             wish = self.find_action(data)
             self.reactions(wish, data)
-
