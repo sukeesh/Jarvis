@@ -6,7 +6,7 @@ import json
 from datetime import datetime as dt
 from uuid import uuid4
 
-from reminder import parseDate, addReminder, removeReminder
+from reminder import parseDate, parseNumber, addReminder, removeReminder
 from fileHandler import writeFile, readFile, str2date
 
 from colorama import init
@@ -159,8 +159,8 @@ def todoHandler(data):
         elif "normal" in data:
             data = data.replace("normal", "", 1)
             priority = 0
-        elif numWords > 3:
-            priority = parseNumber(" ".join(words[1:]))
+        elif numWords > 2:
+            skip, priority = parseNumber(" ".join(words[1:]))
         else:
             priority = 0
         words = data.split()
