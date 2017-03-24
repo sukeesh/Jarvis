@@ -321,8 +321,6 @@ class Jarvis:
             Create your personal TODO list!
             """
             todoHandler(data)
-
-
         def os_detection():
             """
             Displays information about your operating system.
