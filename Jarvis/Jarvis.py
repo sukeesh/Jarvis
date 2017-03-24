@@ -1,4 +1,5 @@
 from os import system
+import requests
 from platform import system as sys
 from platform import architecture, release, dist
 from time import ctime
@@ -27,7 +28,7 @@ from packages import newws, mapps, picshow, evaluator
         * Furthermore, "near me" command is unable to find
         the actual location of our laptops.
 """
- 
+
 class Jarvis:
     # We use this variable at Breakpoint #1.
     # We use this in order to allow Jarvis say "Hi", only at the first interaction.
@@ -39,13 +40,17 @@ class Jarvis:
         This constructor contains a dictionary with Jarvis Actions (what Jarvis can do).
         In alphabetically order.
         """
-        self.actions = {"check ram": "check_ram",
+        self.actions = {"about os": "os_detection",
+                        "check ram": "check_ram",
                         "decrease volume": "decrease_volume",
                         "directions": "directions",           # Doesn't check if 'to' exist
+                        "disable sound": "disable_sound",
+                        "enable sound": "enable_sound",
                         "error": "error",
                         "evaluate": "evaluate",
                         "exit": "quit",
                         "goodbye": "quit",
+                        "help": "help_jarvis",
                         "hotspot start": "hotspot_start",
                         "hotspot stop": "hotspot_stop",
                         "how are you?": "how_are_you",
@@ -59,13 +64,10 @@ class Jarvis:
                         "search for a string in file": "string_pattern",
                         "show me pics of": "display_pics",
                         "todo": "todo",
-                        "weather": "weather", 
-                        "what time is it": "clock", 
+                        "weather": "weather",
+                        "what time is it": "clock",
                         "where am i": "pinpoint",
-                        "about os": "os_detection",
-                        "help": "help_jarvis",
-                        "enable sound": "enable_sound",
-                        "disable sound": "disable_sound"
+                        "what about chuck": "what_about_chuck",
                         }
         self.speech = voice.Voice()
 
@@ -119,11 +121,17 @@ class Jarvis:
                 fromCity = 0
             mapps.directions(toCity, fromCity)
 
+        def disable_sound():
+            self.enable_voice = False
+
         def display_pics():
             """
             Displays photos.
             """
             picshow.showpics(data)
+
+        def enable_sound():
+            self.enable_voice = True
 
         def error():
             """
@@ -143,12 +151,44 @@ class Jarvis:
             else:
                 print(Fore.RED + "Error : Not in correct format" + Fore.RESET)
 
+        def help_jarvis():
+            """
+            This method displays help about Jarvis.
+            :return: Nothing to return.
+            """
+            print Fore.BLUE + '>>> Usage: ' + Fore.RESET
+            print Fore.BLUE + 'Type any of the following commands to interact with Jarvis.' + Fore.RESET
+            print Fore.GREEN + '[*] Help: To see this message' + Fore.RESET
+            print Fore.GREEN + '[*] How are you?: To react with Jarvis!' + Fore.RESET
+            print Fore.GREEN + '[*] Open Camera: To open "cheese" program (camera).' + Fore.RESET
+            print Fore.GREEN + '[*] What time is it: To check the time.' + Fore.RESET
+            print Fore.GREEN + '[*] Where am i: To pinpoint your location.' + Fore.RESET
+            print Fore.GREEN + '[*] Near me: To see nearby locations.' + Fore.RESET
+            print Fore.GREEN + '[*] Music: To listen some good Music!' + Fore.RESET
+            print Fore.GREEN + '[*] Increase Volume: To increase your system volume.' + Fore.RESET
+            print Fore.GREEN + '[*] Decrease Volume: To decrease your system volume.' + Fore.RESET
+            print Fore.GREEN + '[*] Hotspot Start: To set up your own hotspot.' + Fore.RESET
+            print Fore.GREEN + '[*] Hotspot Stop: To stop your personal hotspot.' + Fore.RESET
+            print Fore.GREEN + '[*] Search for a string in a file: Match patterns in a string using regex.' + Fore.RESET
+            print Fore.GREEN + '[*] Check RAM: Detailed RAM usage.' + Fore.RESET
+            print Fore.GREEN + '[*] Todo: An ordinary TODO list.' + Fore.RESET
+            print Fore.GREEN + '[*] News: Get an update about the news!' + Fore.RESET
+            print Fore.GREEN + '[*] Show me pics of: Displays the selected pics.' + Fore.RESET
+            print Fore.GREEN + '[*] Evaluate: To get your calculations done!' + Fore.RESET
+            print Fore.GREEN + '[*] Show me directions from: Get directions about your destination!' + Fore.RESET
+            print Fore.GREEN + '[*] enable sound: Jarvis will start talking to you' + Fore.RESET
+            print Fore.GREEN + '[*] disable sound: Jarvis will no longer talks out loud...' + Fore.RESET
+            print Fore.GREEN + '[*] about os: Dispays detailed information about your operating system' + Fore.RESET
+            print Fore.GREEN + '[*] quit: Close the session with Jarvis...' + Fore.RESET
+            print Fore.GREEN + '[*] exit: Close the session with Jarvis...' + Fore.RESET
+            print Fore.GREEN + '[*] Goodbye: Close the session with Jarvis...' + Fore.RESET
+
         def hotspot_start():
             """
             Jarvis will set up your own hotspot.
             """
             system("sudo ap-hotspot start")
- 
+
         def hotspot_stop():
             """
             Jarvis will turn of the hotspot.
@@ -200,10 +240,15 @@ class Jarvis:
             mapps.searchNear(things, city)
 
         def news():
+
             """
             Time to get an update about the local news.
             """
-            newws.show_news()
+            try:
+                newws.show_news()
+            except:
+                print Fore.RED + "I couldn't find news" + Fore.RESET
+
 
         def open_camera():
             """
@@ -211,6 +256,19 @@ class Jarvis:
             """
             print "Opening Cheese ...... "
             system("cheese")
+
+        def os_detection():
+            """
+            This method displays a detailed operating system
+            information
+            :return: Nothing to return.
+            """
+            print Fore.BLUE + '[!] Operating System Information' + Fore.RESET
+            print Fore.GREEN + '[*] ' + sys() + Fore.RESET
+            print Fore.GREEN + '[*] ' + release() + Fore.RESET
+            print Fore.GREEN + '[*] ' + dist()[0] + Fore.RESET
+            for _ in architecture():
+                print Fore.GREEN + '[*] ' + _ + Fore.RESET
 
         def pinpoint():
             """
@@ -244,13 +302,7 @@ class Jarvis:
             Create your personal TODO list!
             """
             todoHandler(data)
-
-        def weather():
-            """
-            Get information about today's weather.
-            """
-            mapps.weather()
-
+            
         def os_detection():
             """
             Displays information about your operating system.
@@ -304,6 +356,33 @@ class Jarvis:
             print Fore.GREEN + '[*] quit: Close the session with Jarvis...' + Fore.RESET
             print Fore.GREEN + '[*] exit: Close the session with Jarvis...' + Fore.RESET
             print Fore.GREEN + '[*] Goodbye: Close the session with Jarvis...' + Fore.RESET
+
+        def weather():
+            """
+            Get information about today's weather.
+            """
+            mapps.weather()
+            try:
+                mapps.weather()
+            except:
+                print(Fore.RED + "I couldn't locate you" + Fore.RESET)
+
+        def what_about_chuck():
+            try:
+                req = requests.get("https://api.chucknorris.io/jokes/random")
+                chuck_json = req.json()
+
+                chuck_fact = chuck_json["value"]
+                if self.enable_voice:
+                    print(Fore.RED + chuck_fact + Fore.RESET)
+                    self.speech.text_to_speech(chuck_fact)
+                else:
+                    print(Fore.RED + chuck_fact + Fore.RESET)
+            except:
+                if self.enable_voice:
+                    self.speech.text_to_speech("Looks like Chuck broke the Internet.")
+                else:
+                    print(Fore.RED + "Looks like Chuck broke the Internet..." + Fore.RESET)
 
         locals()[key]()  # we are calling the proper function which satisfies the user's command.
 
