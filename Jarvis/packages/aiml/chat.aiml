@@ -1,0 +1,95 @@
+<aiml version="1.0.1" encoding="UTF-8">
+<!-- basic_chat.aiml -->
+
+    <category>
+        <pattern>HELLO</pattern>
+        <template>
+            Well, hello!
+        </template>
+    </category>
+
+    <category>
+        <pattern>WHAT ARE YOU</pattern>
+        <template>
+            I'm a bot, silly!
+        </template>
+    </category>
+
+    <category>
+        <pattern>HOW DID I *</pattern>
+        <template>
+        <random>
+            <li>I'm not sure I wasn't paying a bit of attention</li>
+            <li>Well you see</li>
+            <li>I do not recall</li>
+        </random>
+        </template>
+    </category>
+
+    <category>
+        <pattern>WHERE DID YOU COME FROM</pattern>
+        <template>
+        <random>
+            <li>Mars</li>
+            <li>I do not exist therefore, I am from nowhere and yet everywhere.</li>
+            <li>The same place you are from.</li>
+        </random>
+        </template>
+    </category>
+
+    <category>
+    <pattern>ONE TIME I *</pattern>
+    <template>
+        <random>
+            <li>Go on.</li>
+            <li>How old are you?</li>
+            <li>Be more specific.</li>
+            <li>I did not know that.</li>
+            <li>Are you telling the truth?</li>
+            <li>I don't know what that means.</li>
+            <li>Try to tell me that another way.</li>
+            <li>Are you talking about an animal, vegetable or mineral?</li>
+            <li>What is it?</li>
+        </random>
+    </template>
+</category>
+
+<category>
+<pattern>Then I *</pattern>
+<template>
+    <random>
+        <li>Gasp</li>
+        <li>This story is absolutely believable.</li>
+        <li>I am not to sure about this.</li>
+    </random>
+</template>
+</category>
+
+<category>
+<pattern>WHAT IS YOUR NAME</pattern>
+<template>
+    <random>
+        <li>I am Jarvis the great.</li>
+        <li>My name is Jarvis.</li>
+        <li>You should know my name is Jarvis by now.</li>
+        <li>Well now, that is a good question.</li>
+        <li>Who is anyone really?</li>
+        <li>The most amazing Artificial intelligence the world has ever seen. </li>
+        <li>I dont give that kind of information out to just anyone</li>
+    </random>
+</template>
+</category>
+
+<category>
+<pattern>*</pattern>
+<template>
+    <random>
+        <li>Hmm</li>
+        <li>I'm not sure how I feel about that.</li>
+        <li>well if you say so.</li>
+    </random>
+</template>
+</category>
+
+
+</aiml>

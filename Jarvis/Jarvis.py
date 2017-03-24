@@ -9,6 +9,7 @@ from utilities import voice
 from packages.music import play
 from packages.todo import todoHandler
 from packages import newws, mapps, picshow, evaluator
+from packages.aiml.brain import Brain
 
 """
     AUTHORS' SCOPE:
@@ -41,6 +42,7 @@ class Jarvis:
         In alphabetically order.
         """
         self.actions = {"about os": "os_detection",
+                        "ask jarvis": "ask_jarvis",
                         "check ram": "check_ram",
                         "decrease volume": "decrease_volume",
                         "directions": "directions",           # Doesn't check if 'to' exist
@@ -83,6 +85,23 @@ class Jarvis:
                     eg. music method needs a song name. (music closer)
         :return: This method does not return any objects.
         """
+
+        def ask_jarvis():
+            brain = Brain()
+            print(Fore.BLUE + "Ask me anything\n type 'leave' to stop" + Fore.RESET)
+            stay = True
+
+            while stay:
+                try:
+                    text = str.upper(raw_input(Fore.RED + ">> " + Fore.RESET))
+                except:
+                    text = str.upper(input(Fore.RED + ">> " + Fore.RESET))
+                if text == "LEAVE":
+                    print("thanks for talking to me")
+                    stay = False
+                else:
+                    print(brain.respond(text))
+
 
         def check_ram():
             """
@@ -302,7 +321,7 @@ class Jarvis:
             Create your personal TODO list!
             """
             todoHandler(data)
-            
+
         def os_detection():
             """
             Displays information about your operating system.
