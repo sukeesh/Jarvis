@@ -56,29 +56,46 @@ def getItem(string, todoList):
         index = int(w) - 1
         if not 'items' in todoList:
             break
-        elif(index<0 or index>=len(todoList['items'])):
-            print("No such todo")
-            break
         todoList = todoList['items'][index]
         retList.append(index)
     return retList
 
 def todoHandler(data):
+    numWords = len(data.split())
     if "add" in data:
         data = data.replace("add", "", 1)
         if "comment" in data:
+            if numWords < 4:
+                print(Fore.RED + "Not enough arguments for 'todo add comment <index> <comment>'" + Fore.RESET)
+                return
             data = data.replace("comment", "", 1)
             words = data.split()
-            index = getItem(words[0], todoList)
+            try:
+                index = getItem(words[0], todoList)
+            except ValueError:
+                print(Fore.RED + "The Index must be composed of numbers. Subitems are separated by a dot." + Fore.RESET)
+                return
+            except IndexError:
+                print(Fore.RED + "The Index for this item is out of range." + Fore.RESET)
+                return
             item = todoList
             for i in index:
                 item = item['items'][i]
             item['comment'] = " ".join(words[1:])
-        elif "due" in data or "due date" in data:
-            data = data.replace("due date", "", 1)
+        elif "due" in data:
+            if numWords < 4:
+                print(Fore.RED + "Not enough arguments for 'todo add due <index> <time>'" + Fore.RESET)
+                return
             data = data.replace("due", "", 1)
             words = data.split()
-            index = getItem(words[0], todoList)
+            try:
+                index = getItem(words[0], todoList)
+            except ValueError:
+                print(Fore.RED + "The Index must be composed of numbers. Subitems are separated by a dot." + Fore.RESET)
+                return
+            except IndexError:
+                print(Fore.RED + "The Index for this item is out of range." + Fore.RESET)
+                return
             item = todoList
             for i in index:
                 item = item['items'][i]
@@ -92,6 +109,9 @@ def todoHandler(data):
                     urgency = 1
             addReminder(name=item['name'], body=item['comment'], uuid=item['uuid'], time=item['due'], urgency=urgency)
         else:
+            if numWords < 2:
+                print(Fore.RED + "Not enough arguments for 'todo add <title>'" + Fore.RESET)
+                return
             data = " ".join(data.split())
             try:
                 index = getItem(data.split()[0], todoList)
@@ -101,6 +121,9 @@ def todoHandler(data):
                 data = " ".join(data.split()[1:])
             except ValueError:
                 item = todoList
+            except IndexError:
+                print(Fore.RED + "The Index for this item is out of range." + Fore.RESET)
+                return
             newItem = {'complete':0, 'uuid':uuid4().hex, 'comment':""}
             parts = data.split(" - ")
             newItem['name'] = parts[0]
@@ -109,16 +132,24 @@ def todoHandler(data):
             if not 'items' in item:
                 item['items'] = []
             item['items'].append(newItem)
-    elif "remove" in data:
+    elif "remove" in data and numWords == 2:
         data = data.replace("remove", "", 1)
-        index = getItem(data.split()[0], todoList)
-        deleteIndex = index.pop()
+        try:
+            index = getItem(data.split()[0], todoList)
+            deleteIndex = index.pop()
+        except ValueError:
+            print(Fore.RED + "The Index must be composed of numbers. Subitems are separated by a dot." + Fore.RESET)
+            return
+        except IndexError:
+            print(Fore.RED + "The Index for this item is out of range." + Fore.RESET)
+            return
         item = todoList
         for i in index:
             item = item['items'][i]
         item['items'].remove(item['items'][deleteIndex])
-    elif "priority" in data:
+    elif "priority" in data and numWords > 2:
         data = data.replace("priority", "", 1)
+        words = data.split()
         if "critical" in data:
             data = data.replace("critical", "", 1)
             priority = 100
@@ -128,24 +159,39 @@ def todoHandler(data):
         elif "normal" in data:
             data = data.replace("normal", "", 1)
             priority = 0
-        else:
-            words = data.split()
+        elif numWords > 3:
             priority = int(words[1])
+        else:
+            priority = 0
         words = data.split()
-        index = getItem(words[0], todoList)
+        try:
+            index = getItem(words[0], todoList)
+        except ValueError:
+            print(Fore.RED + "The Index must be composed of numbers. Subitems are separated by a dot." + Fore.RESET)
+            return
+        except IndexError:
+            print(Fore.RED + "The Index for this item is out of range." + Fore.RESET)
+            return
         item = todoList
         for i in index:
             item = item['items'][i]
         item['priority'] = priority
-    elif "complete" in data:
+    elif "complete" in data and numWords > 2:
         data = data.replace("complete", "", 1)
         words = data.split()
-        index = getItem(words[0], todoList)
+        try:
+            index = getItem(words[0], todoList)
+        except ValueError:
+            print(Fore.RED + "The Index must be composed of numbers. Subitems are separated by a dot." + Fore.RESET)
+            return
+        except IndexError:
+            print(Fore.RED + "The Index for this item is out of range." + Fore.RESET)
+            return
         item = todoList
         for i in index:
             item = item['items'][i]
         complete = 100
-        if words[1]:
+        if len(words) > 1:
             complete = int(words[1])
         item['complete'] = complete
     elif "list" in data:
