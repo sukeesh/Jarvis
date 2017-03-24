@@ -192,7 +192,11 @@ def todoHandler(data):
             item = item['items'][i]
         complete = 100
         if len(words) > 1:
-            complete = int(words[1])
+            try:
+                complete = min(max(0, int(words[1])), 100)
+            except ValueError:
+                print(Fore.RED + "The completion level must be an integer between 0 and 100." + Fore.RESET)
+                return
         item['complete'] = complete
     elif "list" in data:
         pass
