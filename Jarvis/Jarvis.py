@@ -361,7 +361,6 @@ class Jarvis:
             """
             Get information about today's weather.
             """
-            mapps.weather()
             try:
                 mapps.weather()
             except:
