@@ -83,15 +83,27 @@ class Jarvis:
         """
 
         def check_ram():
+            """
+            Checks your system's RAM stats.
+            """
             system("free -lm")
 
         def clock():
+            """
+            Gives information about time.
+            """
             print(Fore.BLUE + ctime() + Fore.RESET)
 
         def decrease_volume():
+            """
+            Decreases you speakers' sound.
+            """
             system("pactl -- set-sink-volume 0 -10%")
 
         def directions():
+            """
+            Get directions about a destination you are interested to.
+            """
             wordList = data.split()
             to_index = wordIndex(data, "to")
             if " from " in data:
@@ -108,20 +120,23 @@ class Jarvis:
             mapps.directions(toCity, fromCity)
 
         def display_pics():
+            """
+            Displays photos.
+            """
             picshow.showpics(data)
 
         def error():
             """
-            In case of an error or typo during user's input we notify the
-            user that something went wrong or the command he send is not
-            supported by Jarvis.
-            :return: Nothing to return.
+            Jarvis let you know if an error has occurred.
             """
             if self.enable_voice:
                 self.speech.text_to_speech("I could not identify your command")
             print(Fore.RED + "I could not identify your command..." + Fore.RESET)
 
         def evaluate():
+            """
+            Jarvis will get your calculations done!
+            """
             tempt = data.split(" ", 1) or ""
             if len(tempt) > 1:
                 evaluator.calc(tempt[1])
@@ -129,20 +144,35 @@ class Jarvis:
                 print(Fore.RED + "Error : Not in correct format" + Fore.RESET)
 
         def hotspot_start():
+            """
+            Jarvis will set up your own hotspot.
+            """
             system("sudo ap-hotspot start")
  
         def hotspot_stop():
+            """
+            Jarvis will turn of the hotspot.
+            """
             system("sudo ap-hotspot stop")
 
         def how_are_you():
+            """
+            Jarvis will inform you about his status.
+            """
             if self.enable_voice:
                 self.speech.text_to_speech("I am fine, thank you")
             print(Fore.BLUE + "I am fine, How about you" + Fore.RESET)
 
         def increase_volume():
+            """
+            Increases your speakers' volume.
+            """
             system("pactl -- set-sink-volume 0 +3%")
 
         def movies():
+            """
+            Jarvis will find a good movie for you.
+            """
             try:
                 movie_name = raw_input(Fore.RED + "What do you want to watch?\n" + Fore.RESET)
             except:
@@ -150,9 +180,15 @@ class Jarvis:
             system("ims " + movie_name)
 
         def music():
+            """
+            Jarvis will find you a good song to relax!
+            """
             play(data)
 
         def near():
+            """
+            Jarvis can find what is near you!
+            """
             wordList = data.split()
             things = " ".join(wordList[0:wordIndex(data, "near")])
             if " me" in data:
@@ -164,22 +200,37 @@ class Jarvis:
             mapps.searchNear(things, city)
 
         def news():
+            """
+            Time to get an update about the local news.
+            """
             newws.show_news()
 
         def open_camera():
+            """
+            Jarvis will open the camera for you.
+            """
             print "Opening Cheese ...... "
             system("cheese")
 
         def pinpoint():
+            """
+            Jarvis will pinpoint your location.
+            """
             mapps.locateme()
 
         def quit():
+            """
+            Closing Jarvis.
+            """
             if self.enable_voice:
                 self.speech.text_to_speech("Goodbye, see you later")
             print(Fore.RED + "Goodbye, see you later!" + Fore.RESET)
             exit()
 
         def string_pattern():
+            """
+            Matches patterns in a string by using regex.
+            """
             try:
                 file_name = raw_input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
                 stringg = raw_input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
@@ -189,16 +240,20 @@ class Jarvis:
             system("grep '" + stringg + "' " + file_name)
 
         def todo():
+            """
+            Create your personal TODO list!
+            """
             todoHandler(data)
 
         def weather():
+            """
+            Get information about today's weather.
+            """
             mapps.weather()
 
         def os_detection():
             """
-            This method displays a detailed operating system
-            information
-            :return: Nothing to return.
+            Displays information about your operating system.
             """
             print Fore.BLUE + '[!] Operating System Information' + Fore.RESET
             print Fore.GREEN + '[*] ' + sys() + Fore.RESET
@@ -208,15 +263,20 @@ class Jarvis:
                 print Fore.GREEN + '[*] ' + _ + Fore.RESET
 
         def enable_sound():
+            """
+            Let Jarvis use his voice.
+            """
             self.enable_voice = True
 
         def disable_sound():
+            """
+            Deny Jarvis to use his voice.
+            """
             self.enable_voice = False
 
         def help_jarvis():
             """
             This method displays help about Jarvis.
-            :return: Nothing to return.
             """
             print Fore.BLUE + '>>> Usage: ' + Fore.RESET
             print Fore.BLUE + 'Type any of the following commands to interact with Jarvis.' + Fore.RESET
