@@ -1,86 +1,159 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
+import json
+
+from datetime import datetime as dt
+from uuid import uuid4
+
+from reminder import parseDate, addReminder, removeReminder
+from fileHandler import writeFile, readFile, str2date
 
 from colorama import init
 from colorama import Fore, Back, Style
 
-def writeToFile(l1,l2):
-    with open("todolist.txt", "w+") as f:
-        for l in l1:
-            f.write("{}@@@@1\n".format(l))
+def printItem(item, index):
+    if 'priority' in item and item['priority'] >= 50:
+        sys.stdout.write(Fore.YELLOW)
+    if 'priority' in item and item['priority'] >= 100:
+        sys.stdout.write(Fore.RED)
+    print("<{2}> {0} [{1}%]".format(item['name'], item['complete'], index) + Fore.RESET)
+    if 'due' in item:
+        if item['due'] < dt.now():
+            sys.stdout.write(Fore.RED)
+        print("\tDue at {0}".format(item['due'].strftime("%Y-%m-%d %H:%M:%S")) + Fore.RESET)
+    if item['comment']:
+        print("\t{0}".format(item['comment']))
 
-        for l in l2:
-            f.write("{}@@@@0\n".format(l))
+def _print(data, index = ""):
+    for x, element in enumerate(data):
+        px = index + "{}".format(x + 1)
+        printItem(element, px)
+        if 'items' in element:
+            _print(element['items'], px + ".")
 
+def sort(data):
+    for l in data:
+        if 'items' in l:
+            l['items'] = sort(l['items'])
+    return sorted(data, key = lambda k: (-k['priority'] if 'priority' in k else 0, k['complete']))
 
-def _print(l1,l2):
-    print("Pending => ")
-    x = 0
-    for l in l1:
-        print("[{0}] {1}".format(x, l))
-        x += 1
-    print("Completed => ")
-    for l in l2:
-        print("[{0}] {1}".format(x, l))
-        x += 1
-    print(Fore.RED +"Commands Avaliable {add <todo>, remove <index>, move<index>}"+Fore.RESET)
+def fixTypes(data):
+    for l in data:
+        if 'due' in l:
+            l['due'] = str2date(l['due'])
+            addReminder(name=l['name'], body=l['comment'], uuid=l['uuid'], time=l['due'])
+        if 'items' in l:
+            l['items'] = fixTypes(l['items'])
+    return data
+
+def getItem(string, todoList):
+    words = string.split(".")
+    retList = []
+    for w in words:
+        index = int(w) - 1
+        if not 'items' in todoList:
+            break
+        elif(index<0 or index>=len(todoList['items'])):
+            print("No such todo")
+            break
+        todoList = todoList['items'][index]
+        retList.append(index)
+    return retList
 
 def todoHandler(data):
-    with open("todolist.txt", "r+") as f:
-        lines = f.readlines()
-    completed_list = []
-    notcompleted_list = []
-    for l in lines:
-        x,y = l.split("@@@@")
-        if(y[0]=='1'): completed_list.append(x)
-        else : notcompleted_list.append(x)
-    _print(completed_list,notcompleted_list)
-
-    while 1:
-        try:
-            inp = raw_input()
-        except:
-            inp = input()
-        temp = inp.split(" ", 1)
-        c = temp[0]
-        s = temp[1] if len(temp) > 1 else "0"
-        if(c == "add"):
-            completed_list.append(s)
-        elif(c == "remove"):
-            x = int(s)
-            if(x<0 or x>=len(completed_list)+len(notcompleted_list)):
-                print("No such todo")
-                continue
-            if(x < len(completed_list)):
-                completed_list.remove(completed_list[x])
-            else:
-                x -= len(completed_list)
-                notcompleted_list.remove(notcompleted_list[x])
-
-        elif(c == "move"):
-            x = int(s)
-            if(x<0 or x>=len(completed_list)+len(notcompleted_list)):
-                print("No such todo")
-                continue
-            if(x < len(completed_list)):
-                p = completed_list[x]
-                completed_list.remove(p)
-                notcompleted_list.append(p)
-            else:
-                x -= len(completed_list)
-                p = notcompleted_list[x]
-                notcompleted_list.remove(p)
-                completed_list.append(p)
-        elif(c == "exit"):
-            break;
+    if "add" in data:
+        data = data.replace("add", "", 1)
+        if "comment" in data:
+            data = data.replace("comment", "", 1)
+            words = data.split()
+            index = getItem(words[0], todoList)
+            item = todoList
+            for i in index:
+                item = item['items'][i]
+            item['comment'] = " ".join(words[1:])
+        elif "due" in data or "due date" in data:
+            data = data.replace("due date", "", 1)
+            data = data.replace("due", "", 1)
+            words = data.split()
+            index = getItem(words[0], todoList)
+            item = todoList
+            for i in index:
+                item = item['items'][i]
+            removeReminder(item['uuid'])
+            skip, item['due'] = parseDate(" ".join(words[1:]))
+            urgency = 0
+            if 'priority' in item:
+                if item['priority'] >= 100:
+                    urgency = 2
+                elif item['priority'] >= 50:
+                    urgency = 1
+            addReminder(name=item['name'], body=item['comment'], uuid=item['uuid'], time=item['due'], urgency=urgency)
         else:
-            print("No such command")
-            continue;
-        print("Update list =>")
-        _print(completed_list,notcompleted_list)
-        writeToFile(completed_list,notcompleted_list)
+            data = " ".join(data.split())
+            try:
+                index = getItem(data.split()[0], todoList)
+                item = todoList
+                for i in index:
+                    item = item['items'][i]
+                data = " ".join(data.split()[1:])
+            except ValueError:
+                item = todoList
+            newItem = {'complete':0, 'uuid':uuid4().hex, 'comment':""}
+            parts = data.split(" - ")
+            newItem['name'] = parts[0]
+            if " - " in data:
+                newItem['comment'] = parts[1]
+            if not 'items' in item:
+                item['items'] = []
+            item['items'].append(newItem)
+    elif "remove" in data:
+        data = data.replace("remove", "", 1)
+        index = getItem(data.split()[0], todoList)
+        deleteIndex = index.pop()
+        item = todoList
+        for i in index:
+            item = item['items'][i]
+        item['items'].remove(item['items'][deleteIndex])
+    elif "priority" in data:
+        data = data.replace("priority", "", 1)
+        if "critical" in data:
+            data = data.replace("critical", "", 1)
+            priority = 100
+        elif "high" in data:
+            data = data.replace("high", "", 1)
+            priority = 50
+        elif "normal" in data:
+            data = data.replace("normal", "", 1)
+            priority = 0
+        else:
+            words = data.split()
+            priority = int(words[1])
+        words = data.split()
+        index = getItem(words[0], todoList)
+        item = todoList
+        for i in index:
+            item = item['items'][i]
+        item['priority'] = priority
+    elif "complete" in data:
+        data = data.replace("complete", "", 1)
+        words = data.split()
+        index = getItem(words[0], todoList)
+        item = todoList
+        for i in index:
+            item = item['items'][i]
+        complete = 100
+        if words[1]:
+            complete = int(words[1])
+        item['complete'] = complete
+    elif "help" in data:
+        print(Fore.GREEN + "Commands: {add <todo description>, remove <index>, complete <index> [<completion>], priority <index> [<level>]}" + Fore.RESET)
+        return
 
+    todoList['items'] = sort(todoList['items'])
+    _print(todoList['items'])
+    writeFile("todolist.txt", todoList)
 
-if not os.path.exists("todolist.txt"):
-    with open("todolist.txt", 'w'):
-        pass
+todoList = readFile("todolist.txt", {'items':[]})
+todoList['items'] = fixTypes(sort(todoList['items']))
+
