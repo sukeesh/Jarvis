@@ -146,8 +146,15 @@ def todoHandler(data):
         if words[1]:
             complete = int(words[1])
         item['complete'] = complete
-    elif "help" in data:
-        print(Fore.GREEN + "Commands: {add <todo description>, remove <index>, complete <index> [<completion>], priority <index> [<level>]}" + Fore.RESET)
+    elif "list" in data:
+        pass
+    else:
+        print(Fore.GREEN + "Supported Commands: todo <command>" + Fore.RESET)
+        print(Fore.GREEN + "\tadd [<index>] <todo - comment>, add comment <index> <comment>, add due <index> <time>" + Fore.RESET)
+        print(Fore.GREEN + "\tremove <index>" + Fore.RESET)
+        print(Fore.GREEN + "\tcomplete <index> [<completion>]" + Fore.RESET)
+        print(Fore.GREEN + "\tpriority <index> [<level>]" + Fore.RESET)
+        print(Fore.GREEN + "\tlist" + Fore.RESET)
         return
 
     todoList['items'] = sort(todoList['items'])
