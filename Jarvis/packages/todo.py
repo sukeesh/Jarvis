@@ -160,7 +160,7 @@ def todoHandler(data):
             data = data.replace("normal", "", 1)
             priority = 0
         elif numWords > 3:
-            priority = int(words[1])
+            priority = parseNumber(" ".join(words[1:]))
         else:
             priority = 0
         words = data.split()
