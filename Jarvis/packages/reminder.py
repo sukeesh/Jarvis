@@ -223,9 +223,13 @@ def reminderHandler(data):
             if index >= 0 and index < len(reminderList['items']):
                 removeReminder(reminderList['items'][index]['uuid'])
     elif "print" in data or "list" in data:
+        count = 0
         for index, e in enumerate(reminderList['items']):
             if not e['hidden']:
                 print("<{0}> {2}: {1}".format(index + 1, e['time'], e['name']))
+                count += 1
+        if count == 0:
+            print("Reminder list is empty, add a new entry with 'remind add <time>'")
     elif "clear" in data:
         reminderList['items'] = []
         writeFile("reminderlist.txt", reminderList)

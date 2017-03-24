@@ -26,6 +26,8 @@ def printItem(item, index):
         print("\t{0}".format(item['comment']))
 
 def _print(data, index = ""):
+    if len(data) == 0:
+        print("ToDo list is empty, add a new entry with 'todo add <name>'")
     for x, element in enumerate(data):
         px = index + "{}".format(x + 1)
         printItem(element, px)
