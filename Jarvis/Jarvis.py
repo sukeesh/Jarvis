@@ -42,8 +42,8 @@ class Jarvis:
         This constructor contains a dictionary with Jarvis Actions (what Jarvis can do).
         In alphabetically order.
         """
-        self.actions = {"about os": "os_detection",
-                        "ask jarvis": "ask_jarvis",
+        self.actions = {"ask jarvis": "ask_jarvis",
+                        "chat": "ask_jarvis",
                         "check ram": "check_ram",
                         "decrease volume": "decrease_volume",
                         "directions": "directions",           # Doesn't check if 'to' exist
@@ -56,13 +56,14 @@ class Jarvis:
                         "help": "help_jarvis",
                         "hotspot start": "hotspot_start",
                         "hotspot stop": "hotspot_stop",
-                        "how are you?": "how_are_you",
+                        "how are you": "how_are_you",
                         "increase volume": "increase_volume",
                         "movies": "movies",
                         "music": "music",
                         "near": "near",
                         "news": "news",
                         "open camera": "open_camera",
+                        "os": "os_detection",
                         "quit": "quit",
                         "remind": "remind",
                         "search for a string in file": "string_pattern",

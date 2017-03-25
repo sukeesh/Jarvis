@@ -69,12 +69,12 @@
 <pattern>WHAT IS YOUR NAME</pattern>
 <template>
     <random>
-        <li>I am Jarvis the great.</li>
+        <li>I am Jarvis, the great.</li>
         <li>My name is Jarvis.</li>
         <li>You should know my name is Jarvis by now.</li>
         <li>Well now, that is a good question.</li>
         <li>Who is anyone really?</li>
-        <li>The most amazing Artificial intelligence the world has ever seen. </li>
+        <li>The most amazing Artificial Intelligence the world has ever seen. </li>
         <li>I dont give that kind of information out to just anyone</li>
     </random>
 </template>

@@ -5,6 +5,7 @@ colorama==0.3.7
 eyeD3==0.7.11
 gTTS==1.1.8
 gTTS-token==1.1.1
+youtube-dl==2017.3.16
 instantmusic==2.2
 lxml==3.7.3
 packaging==16.8
@@ -14,6 +15,6 @@ PySocks==1.6.6
 requests==2.13.0
 six==1.10.0
 SpeechRecognition==3.6.3
-youtube-dl==2017.3.16
 pyttsx == 1.1
 aiml
+python-dateutil
