@@ -51,8 +51,8 @@ class Jarvis:
                         "enable sound": "enable_sound",
                         "error": "error",
                         "evaluate": "evaluate",
-                        "exit": "quit",
-                        "goodbye": "quit",
+                        "exit": "close",
+                        "goodbye": "close",
                         "help": "help_jarvis",
                         "hotspot start": "hotspot_start",
                         "hotspot stop": "hotspot_stop",
@@ -64,7 +64,7 @@ class Jarvis:
                         "news": "news",
                         "open camera": "open_camera",
                         "os": "os_detection",
-                        "quit": "quit",
+                        "quit": "close",
                         "remind": "remind",
                         "search for a string in file": "string_pattern",
                         "show me pics of": "display_pics",
@@ -247,7 +247,7 @@ class Jarvis:
             """
             mapps.locateme()
 
-        def quit():
+        def close():
             """
             Closing Jarvis.
             """
