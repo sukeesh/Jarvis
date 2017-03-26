@@ -1,0 +1,20 @@
+<aiml version="1.0.1" encoding="UTF-8">
+
+    <category>
+
+        <pattern>LOAD AIML B</pattern>
+
+        <template>
+          <!-- ADD MORE AIML FILES HERE -->
+          <learn>Jarvis/packages/aiml/chat.aiml</learn>
+          <learn>Jarvis/packages/aiml/emotion.aiml</learn>
+          <!--<learn>PATH-TO-AIML-FILE</learn> -->
+
+          <!--- This file contains wildcards and should be loaded last -->
+          <learn>Jarvis/packages/aiml/default.aiml</learn>
+
+        </template>
+
+    </category>
+
+</aiml>
