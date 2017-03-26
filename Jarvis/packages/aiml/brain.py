@@ -10,7 +10,7 @@ class Brain:
 
     def __init__(self):
         self.kernel = aiml.Kernel()
-        #self.kernel.verbose(False) # rmove system output
+        self.kernel.verbose(False) # rmove system output
 
         # brain file already exists load it
         if os.path.isfile(os.path.join(module_path,"bot_brain.brn")):
