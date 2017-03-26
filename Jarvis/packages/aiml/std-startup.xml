@@ -5,8 +5,9 @@
         <pattern>LOAD AIML B</pattern>
 
         <template>
-            <learn>Jarvis/packages/aiml/chat.aiml</learn>
             <!-- ADD MORE AIML FILES HERE -->
+            <learn>Jarvis/packages/aiml/chat.aiml</learn>
+            <!--<learn>PATH-TO-AIML-FILE</learn> -->
 
         </template>
 

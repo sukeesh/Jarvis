@@ -17,6 +17,7 @@ class Brain:
             self.kernel.bootstrap(brainFile = os.path.join(module_path, "bot_brain.brn"))
         # if brain file doesnt exist load std-startup.xml and create and save brain file
         else:
+            #when new aiml files need to be added. Add them to std-startup.xml
             self.kernel.bootstrap(learnFiles = os.path.join(module_path, "std-startup.xml"), commands = "load aiml b")
             self.kernel.saveBrain(os.path.join(module_path, "bot_brain.brn"))
 
