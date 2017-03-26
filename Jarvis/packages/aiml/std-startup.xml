@@ -1,0 +1,15 @@
+<aiml version="1.0.1" encoding="UTF-8">
+
+    <category>
+
+        <pattern>LOAD AIML B</pattern>
+
+        <template>
+            <learn>Jarvis/packages/aiml/chat.aiml</learn>
+            <!-- ADD MORE AIML FILES HERE -->
+
+        </template>
+
+    </category>
+
+</aiml>
