@@ -1,16 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
-import json
-
 from datetime import datetime as dt
 from uuid import uuid4
-
 from reminder import parseDate, parseNumber, addReminder, removeReminder
 from fileHandler import writeFile, readFile, str2date
-
-from colorama import init
-from colorama import Fore, Back, Style
+from colorama import Fore, Back
 
 def printItem(item, index):
     if 'priority' in item and item['priority'] >= 50:

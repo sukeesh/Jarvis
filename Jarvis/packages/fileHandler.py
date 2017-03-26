@@ -2,7 +2,6 @@
 import os
 import json
 from datetime import datetime as dt
-import uuid
 from colorama import Fore
 
 timeFormat = "%Y-%m-%d %H:%M:%S"
