@@ -11,7 +11,7 @@ from packages.todo import todoHandler
 from packages.reminder import reminderHandler, reminderQuit
 from packages import newws, mapps, picshow, evaluator
 from packages.aiml.brain import Brain
-from packages.shutdown import shutdown_system, cancelShutdown
+from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
 
 """
     AUTHORS' SCOPE:
@@ -71,6 +71,7 @@ class Jarvis:
                         "show me pics of": "display_pics",
                         "shutdown -c": "cancel_shutdown",
                         "shutdown system": "shutdown",
+                        "reboot system": "reboot",
                         "todo": "todo",
                         "weather": "weather",
                         "what time is it": "clock",
@@ -163,6 +164,12 @@ class Jarvis:
             Shutdown the system.
             """
             shutdown_system()
+
+        def reboot():
+            """
+            Reboot the system.
+            """
+            reboot_system()
 
         def error():
             """
