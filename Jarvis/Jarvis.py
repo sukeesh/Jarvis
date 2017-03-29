@@ -336,6 +336,7 @@ class Jarvis:
             print Fore.GREEN + '[*] Where am i: To pinpoint your location.' + Fore.RESET
             print Fore.GREEN + '[*] Near me: To see nearby locations.' + Fore.RESET
             print Fore.GREEN + '[*] Music: To listen some good Music!' + Fore.RESET
+            print Fore.GREEN + '[*] Movie: Jarvis will find a good movie for you.' + Fore.RESET
             print Fore.GREEN + '[*] Increase Volume: To increase your system volume.' + Fore.RESET
             print Fore.GREEN + '[*] Decrease Volume: To decrease your system volume.' + Fore.RESET
             print Fore.GREEN + '[*] Hotspot Start: To set up your own hotspot.' + Fore.RESET
@@ -350,6 +351,13 @@ class Jarvis:
             print Fore.GREEN + '[*] enable sound: Jarvis will start talking to you' + Fore.RESET
             print Fore.GREEN + '[*] disable sound: Jarvis will no longer talks out loud...' + Fore.RESET
             print Fore.GREEN + '[*] about os: Dispays detailed information about your operating system' + Fore.RESET
+            print Fore.GREEN + '[*] ask jarvis: Ask anything and Jarvis will answer you.' + Fore.RESET
+            print Fore.GREEN + '[*] chat: Ask anything and Jarvis will answer you.' + Fore.RESET
+            print Fore.GREEN + '[*] shutdown system: Shutdown the system in X minutes.' + Fore.RESET
+            print Fore.GREEN + '[*] reboot system: Reboot the system in X minutes.' + Fore.RESET
+            print Fore.GREEN + '[*] shutdown -c: Cancel an active shutdown/reboot.' + Fore.RESET
+            print Fore.GREEN + '[*] weather: Get information about today weather.' + Fore.RESET
+            print Fore.GREEN + '[*] what about chuck: Get sentences about Chuck.' + Fore.RESET
             print Fore.GREEN + '[*] quit: Close the session with Jarvis...' + Fore.RESET
             print Fore.GREEN + '[*] exit: Close the session with Jarvis...' + Fore.RESET
             print Fore.GREEN + '[*] Goodbye: Close the session with Jarvis...' + Fore.RESET
