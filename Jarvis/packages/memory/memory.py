@@ -1,4 +1,7 @@
 import json
+import os
+
+
 
 '''
 
@@ -19,7 +22,8 @@ example:
     m.add_data('lastName', 'albert')
     m.save()
 '''
-
+#this sets the path to the modules directory not the directory it was call from
+module_path = os.path.dirname(__file__)
 
 class Memory:
 
@@ -28,7 +32,7 @@ class Memory:
         Initialize data with saved json file
     '''
     def __init__(self):
-        self.json_file = 'memory.json'
+        self.json_file = os.path.join(module_path,'memory.json')
         self.data = ''
         #Try to open file if it doesnt exist it will throw an error
         try:
