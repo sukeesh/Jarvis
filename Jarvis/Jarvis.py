@@ -388,7 +388,7 @@ class Jarvis:
             Get information about today's weather.
             """
 
-            location = MEMORY.get_data('city')
+            location = MEMORY.get_data('city') #Will return None if no value
             if location is None:
                 loc = str(location)
                 city = mapps.getLocation()['city']
@@ -398,17 +398,15 @@ class Jarvis:
                     i = raw_input()
                 except:
                     i = input()
-                if i == 'y' or i == 'yes':
-                    city = i
                 if i == 'n' or i == 'no':
-                    print("Name of city: ")
+                    print("Enter Name of city: ")
                     try:
                         i = raw_input()
                     except:
                         i = input()
                     city = i
 
-                mapps.weather(city)
+                mapps.weather(str(city))
 
                 MEMORY.update_data('city', city)
                 MEMORY.save()
@@ -434,6 +432,11 @@ class Jarvis:
                                 MEMORY.save()
 
                             mapps.weather(city)
+                        except:
+                            print(Fore.RED + "I couldn't locate you" + Fore.RESET)
+                    else:
+                        try:
+                            mapps.weather(loc)
                         except:
                             print(Fore.RED + "I couldn't locate you" + Fore.RESET)
                 else:
