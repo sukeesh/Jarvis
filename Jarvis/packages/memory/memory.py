@@ -70,6 +70,14 @@ class Memory:
         else:
             self.data[key] = value
 
+
+    '''
+        Updates a key with supplied value.
+    '''
+    def update_data(self, key, value):
+        self.data[key] = value
+
+
     '''
         delete a key from memory
     '''
