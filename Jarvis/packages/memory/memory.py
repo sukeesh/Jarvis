@@ -4,7 +4,6 @@ import os
 
 
 '''
-
 This class allows storage of values in json format. It adds an easy
 Interface to save values to disk.
 
@@ -38,7 +37,7 @@ class Memory:
         try:
             with open(self.json_file, 'r') as f:
                 self.data = json.load(f)
-        except:
+        except IOError:
             #create the new file with an empty json object
             with open(self.json_file, 'w') as f:
                 f.write('{}')
