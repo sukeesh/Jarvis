@@ -1,11 +1,8 @@
-5n8ke
-
-kennymccormick3
-
-pedrojanula
-
-RottenCrab
-
-StefanosChaliasos (Collaborator)
-
-x1ah
+## Contributors
+* regantinaveen (Collaborator)
+* 5n8ke
+* kennymccormick3
+* pedrojanula
+* RottenCrab
+* StefanosChaliasos (Collaborator)
+* x1ah
