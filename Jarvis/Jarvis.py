@@ -11,6 +11,7 @@ from packages.todo import todoHandler
 from packages.reminder import reminderHandler, reminderQuit
 from packages import newws, mapps, picshow, evaluator
 from packages.aiml.brain import Brain
+from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
 
 """
@@ -37,6 +38,9 @@ class Jarvis:
     # We use this in order to allow Jarvis say "Hi", only at the first interaction.
     first_reaction = True
     enable_voice = False
+
+    #This can be used to store user specific data
+    MEMORY = Memory()
 
     def __init__(self):
         """
@@ -299,7 +303,7 @@ class Jarvis:
             Create your personal TODO list!
             """
             todoHandler(data.replace("todo", "", 1))
- 
+
         def os_detection():
             """
             Displays information about your operating system.
@@ -453,4 +457,3 @@ class Jarvis:
             data = self.user_input()
             wish = self.find_action(data)
             self.reactions(wish, data)
-
