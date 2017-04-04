@@ -11,6 +11,7 @@ from packages.todo import todoHandler
 from packages.reminder import reminderHandler, reminderQuit
 from packages import newws, mapps, picshow, evaluator
 from packages.aiml.brain import Brain
+from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
 
 """
@@ -32,11 +33,16 @@ from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
         the actual location of our laptops.
 """
 
+MEMORY = Memory()
+
 class Jarvis:
     # We use this variable at Breakpoint #1.
     # We use this in order to allow Jarvis say "Hi", only at the first interaction.
     first_reaction = True
     enable_voice = False
+
+    #This can be used to store user specific data
+
 
     def __init__(self):
         """
@@ -73,6 +79,7 @@ class Jarvis:
                         "shutdown system": "shutdown",
                         "reboot system": "reboot",
                         "todo": "todo",
+                        "update location": "update_location",
                         "weather": "weather",
                         "what time is it": "clock",
                         "where am i": "pinpoint",
@@ -299,7 +306,7 @@ class Jarvis:
             Create your personal TODO list!
             """
             todoHandler(data.replace("todo", "", 1))
- 
+
         def os_detection():
             """
             Displays information about your operating system.
@@ -362,14 +369,82 @@ class Jarvis:
             print Fore.GREEN + '[*] exit: Close the session with Jarvis...' + Fore.RESET
             print Fore.GREEN + '[*] Goodbye: Close the session with Jarvis...' + Fore.RESET
 
+
+        def update_location():
+            location = MEMORY.get_data('city')
+            loc_str = str(location)
+            print("Your current location is set to " + loc_str)
+            print("What is your new location?")
+            try:
+                i = raw_input()
+            except:
+                i = input()
+            MEMORY.update_data('city', i)
+            MEMORY.save()
+
+
         def weather():
             """
             Get information about today's weather.
             """
-            try:
-                mapps.weather()
-            except:
-                print(Fore.RED + "I couldn't locate you" + Fore.RESET)
+
+            location = MEMORY.get_data('city') #Will return None if no value
+            if location is None:
+                loc = str(location)
+                city = mapps.getLocation()['city']
+                print(Fore.RED + "It appears you are in " + city + " Is this correct? (y/n)" + Fore.RESET)
+
+                try:
+                    i = raw_input()
+                except:
+                    i = input()
+                if i == 'n' or i == 'no':
+                    print("Enter Name of city: ")
+                    try:
+                        i = raw_input()
+                    except:
+                        i = input()
+                    city = i
+
+                mapps.weather(str(city))
+
+                MEMORY.update_data('city', city)
+                MEMORY.save()
+            else:
+                loc = str(location)
+                city = mapps.getLocation()['city']
+                if city != loc:
+                    print(Fore.RED + "It appears you are in " + city + ". But you set your location to " + loc + Fore.RESET)
+                    print(Fore.RED + "Do you want weather for " + city + " instead? (y/n)" + Fore.RESET)
+                    try:
+                        i = raw_input()
+                    except:
+                        i = input()
+                    if i == 'y' or i == 'yes':
+                        try:
+                            print(Fore.RED + "Would you like to set " + city + " as your new location? (y/n)" + Fore.RESET)
+                            try:
+                                i = raw_input()
+                            except:
+                                i = input()
+                            if i == 'y' or i == 'yes':
+                                MEMORY.update_data('city', city)
+                                MEMORY.save()
+
+                            mapps.weather(city)
+                        except:
+                            print(Fore.RED + "I couldn't locate you" + Fore.RESET)
+                    else:
+                        try:
+                            mapps.weather(loc)
+                        except:
+                            print(Fore.RED + "I couldn't locate you" + Fore.RESET)
+                else:
+                    try:
+                        mapps.weather(loc)
+                    except:
+                        print(Fore.RED + "I couldn't locate you" + Fore.RESET)
+
 
         def what_about_chuck():
             try:
@@ -389,6 +464,7 @@ class Jarvis:
                     print(Fore.RED + "Looks like Chuck broke the Internet..." + Fore.RESET)
 
         locals()[key]()  # we are calling the proper function which satisfies the user's command.
+
 
     def user_input(self):
         """
@@ -453,4 +529,3 @@ class Jarvis:
             data = self.user_input()
             wish = self.find_action(data)
             self.reactions(wish, data)
-
