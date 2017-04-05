@@ -73,6 +73,7 @@ class Jarvis:
                         "os": "os_detection",
                         "quit": "close",
                         "remind": "remind",
+                        "say": "say",
                         "search for a string in file": "string_pattern",
                         "show me pics of": "display_pics",
                         "shutdown -c": "cancel_shutdown",
@@ -317,6 +318,16 @@ class Jarvis:
             print Fore.GREEN + '[*] ' + dist()[0] + Fore.RESET
             for _ in architecture():
                 print Fore.GREEN + '[*] ' + _ + Fore.RESET
+
+        def say():
+            """
+            Reads what is typed.
+            """
+            voice_state = self.enable_voice
+            self.enable_voice = True
+            text = data.replace("say", "", 1)
+            self.speech.text_to_speech(text)
+            self.enable_voice = voice_state
 
         def enable_sound():
             """
