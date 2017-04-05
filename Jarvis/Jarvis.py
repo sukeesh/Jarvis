@@ -1,4 +1,5 @@
 from os import system
+from cmd import Cmd
 import requests
 from platform import system as sys
 from platform import architecture, release, dist
@@ -35,7 +36,8 @@ from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
 
 MEMORY = Memory()
 
-class Jarvis:
+
+class Jarvis(Cmd):
     # We use this variable at Breakpoint #1.
     # We use this in order to allow Jarvis say "Hi", only at the first interaction.
     first_reaction = True
@@ -43,12 +45,14 @@ class Jarvis:
 
     #This can be used to store user specific data
 
-
     def __init__(self):
         """
         This constructor contains a dictionary with Jarvis Actions (what Jarvis can do).
         In alphabetically order.
         """
+        Cmd.__init__(self)
+        self.prompt = Fore.RED + "~> What can i do for you?\n" + Fore.RESET
+
         self.actions = {"ask jarvis": "ask_jarvis",
                         "chat": "ask_jarvis",
                         "check ram": "check_ram",
@@ -86,6 +90,25 @@ class Jarvis:
                         "what about chuck": "what_about_chuck",
                         }
         self.speech = voice.Voice()
+
+    # def default(self, data):
+    #     wish = self.find_action(data)
+    #     self.reactions(wish, data)
+
+
+    def do_check(self, s):
+        """
+        Checks your system's RAM stats.
+        """
+        s = s.lower()
+        if s == "ram":
+            system("free -lm")
+
+    def help_check_ram(self):
+        """
+        Checks your system's RAM stats.
+        """
+        print("Checks your system's RAM stats.")
 
     #@staticmethod
     def reactions(self, key, data):
@@ -525,7 +548,12 @@ class Jarvis:
         or "goodbye command")
         :return: Nothing to return.
         """
-        while True:
-            data = self.user_input()
-            wish = self.find_action(data)
-            self.reactions(wish, data)
+        first_reaction_text = ""
+        first_reaction_text += Fore.BLUE + 'Jarvis\' is by default disabled.' + Fore.RESET
+        first_reaction_text += "\n"
+        first_reaction_text += Fore.BLUE + 'In order to let Jarvis talk out loud type: '
+        first_reaction_text += Fore.RESET + Fore.RED + 'enable sound' + Fore.RESET
+        first_reaction_text += "\n"
+
+        self.cmdloop(first_reaction_text)
+
