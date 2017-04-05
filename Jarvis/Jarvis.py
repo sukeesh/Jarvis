@@ -77,6 +77,7 @@ class Jarvis(Cmd):
                         "os": "os_detection",
                         "quit": "close",
                         "remind": "remind",
+                        "say": "say",
                         "search for a string in file": "string_pattern",
                         "show me pics of": "display_pics",
                         "shutdown -c": "cancel_shutdown",
@@ -341,6 +342,16 @@ class Jarvis(Cmd):
             for _ in architecture():
                 print Fore.GREEN + '[*] ' + _ + Fore.RESET
 
+        def say():
+            """
+            Reads what is typed.
+            """
+            voice_state = self.enable_voice
+            self.enable_voice = True
+            text = data.replace("say", "", 1)
+            self.speech.text_to_speech(text)
+            self.enable_voice = voice_state
+
         def enable_sound():
             """
             Let Jarvis use his voice.
@@ -386,6 +397,7 @@ class Jarvis(Cmd):
             print Fore.GREEN + '[*] shutdown system: Shutdown the system in X minutes.' + Fore.RESET
             print Fore.GREEN + '[*] reboot system: Reboot the system in X minutes.' + Fore.RESET
             print Fore.GREEN + '[*] shutdown -c: Cancel an active shutdown/reboot.' + Fore.RESET
+            print Fore.GREEN + '[*] say: Reads what it is typed.' + Fore.RESET
             print Fore.GREEN + '[*] weather: Get information about today weather.' + Fore.RESET
             print Fore.GREEN + '[*] what about chuck: Get sentences about Chuck.' + Fore.RESET
             print Fore.GREEN + '[*] quit: Close the session with Jarvis...' + Fore.RESET
