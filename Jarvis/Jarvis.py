@@ -374,6 +374,7 @@ class Jarvis:
             print Fore.GREEN + '[*] shutdown system: Shutdown the system in X minutes.' + Fore.RESET
             print Fore.GREEN + '[*] reboot system: Reboot the system in X minutes.' + Fore.RESET
             print Fore.GREEN + '[*] shutdown -c: Cancel an active shutdown/reboot.' + Fore.RESET
+            print Fore.GREEN + '[*] say: Reads what it is typed.' + Fore.RESET
             print Fore.GREEN + '[*] weather: Get information about today weather.' + Fore.RESET
             print Fore.GREEN + '[*] what about chuck: Get sentences about Chuck.' + Fore.RESET
             print Fore.GREEN + '[*] quit: Close the session with Jarvis...' + Fore.RESET
