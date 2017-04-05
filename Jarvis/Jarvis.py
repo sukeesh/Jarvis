@@ -13,6 +13,7 @@ from packages import newws, mapps, picshow, evaluator
 from packages.aiml.brain import Brain
 from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
+from packages.systemOptions import turn_off_screen
 
 """
     AUTHORS' SCOPE:
@@ -80,6 +81,7 @@ class Jarvis:
                         "shutdown system": "shutdown",
                         "reboot system": "reboot",
                         "todo": "todo",
+                        "turn off screen": "screen_off",
                         "update location": "update_location",
                         "weather": "weather",
                         "what time is it": "clock",
@@ -308,6 +310,12 @@ class Jarvis:
             """
             todoHandler(data.replace("todo", "", 1))
 
+        def screen_off():
+            """
+            Turns off the screen instantly.
+            """
+            turn_off_screen()
+
         def os_detection():
             """
             Displays information about your operating system.
@@ -373,6 +381,7 @@ class Jarvis:
             print Fore.GREEN + '[*] chat: Ask anything and Jarvis will answer you.' + Fore.RESET
             print Fore.GREEN + '[*] shutdown system: Shutdown the system in X minutes.' + Fore.RESET
             print Fore.GREEN + '[*] reboot system: Reboot the system in X minutes.' + Fore.RESET
+            print Fore.GREEN + '[*] turn off screen: Turns off the screen instantly.' + Fore.RESET
             print Fore.GREEN + '[*] shutdown -c: Cancel an active shutdown/reboot.' + Fore.RESET
             print Fore.GREEN + '[*] weather: Get information about today weather.' + Fore.RESET
             print Fore.GREEN + '[*] what about chuck: Get sentences about Chuck.' + Fore.RESET
