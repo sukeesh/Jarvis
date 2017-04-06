@@ -13,7 +13,7 @@ from packages import newws, mapps, picshow, evaluator
 from packages.aiml.brain import Brain
 from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
-from packages.systemOptions import turn_off_screen
+from packages.systemOptions import turn_off_screen, update_system
 
 """
     AUTHORS' SCOPE:
@@ -83,6 +83,7 @@ class Jarvis:
                         "todo": "todo",
                         "turn off screen": "screen_off",
                         "update location": "update_location",
+                        "update my system": "update_my_system",
                         "weather": "weather",
                         "what time is it": "clock",
                         "where am i": "pinpoint",
@@ -383,6 +384,7 @@ class Jarvis:
             print Fore.GREEN + '[*] reboot system: Reboot the system in X minutes.' + Fore.RESET
             print Fore.GREEN + '[*] turn off screen: Turns off the screen instantly.' + Fore.RESET
             print Fore.GREEN + '[*] shutdown -c: Cancel an active shutdown/reboot.' + Fore.RESET
+            print Fore.GREEN + '[*] update my system: Update the system using the /etc/apt/sources.list repositories.' + Fore.RESET
             print Fore.GREEN + '[*] weather: Get information about today weather.' + Fore.RESET
             print Fore.GREEN + '[*] what about chuck: Get sentences about Chuck.' + Fore.RESET
             print Fore.GREEN + '[*] quit: Close the session with Jarvis...' + Fore.RESET
@@ -402,6 +404,11 @@ class Jarvis:
             MEMORY.update_data('city', i)
             MEMORY.save()
 
+        def update_my_system():
+            """
+            Update the system using the /etc/apt/sources.list repositories.
+            """
+            update_system()
 
         def weather():
             """
