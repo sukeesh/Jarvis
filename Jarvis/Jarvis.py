@@ -116,7 +116,7 @@ class Jarvis(Cmd):
     def precmd(self, line):
         if len(line.split()) > 2:
             line = self.find_action(line)
-        return line
+        return line.lower()
 
     def postcmd(self, stop, line):
         """
@@ -133,7 +133,6 @@ class Jarvis(Cmd):
         """
         Checks your system's RAM stats.
         """
-        s = s.lower()
         # if s == "ram":
         if "ram" in s:
             system("free -lm")
@@ -255,7 +254,6 @@ class Jarvis(Cmd):
         Decreases you speakers' sound.
         """
         # TODO si solo ponemos decrease que pase algo
-        s = s.lower()
         if s == "volume":
             system("pactl -- set-sink-volume 0 -10%")
 
@@ -273,7 +271,6 @@ class Jarvis(Cmd):
         """
         Increases you speakers' sound.
         """
-        s = s.lower()
         if s == "volume":
             system("pactl -- set-sink-volume 0 +3%")
 
@@ -313,20 +310,35 @@ class Jarvis(Cmd):
         """
         print("Get directions about a destination you are interested to.")
 
+    def do_display(self, s):
+        """
+        Displays photos.
+        """
+        if "pics" in s:
+            s = s.replace("pics", "").strip()
+            picshow.showpics(s)
 
-    # # TODO seguir por aqui
-    # def display_pics():
-    #     """
-    #     Displays photos.
-    #     """
-    #     picshow.showpics(data)
-    #
-    # def cancel_shutdown():
-    #     """
-    #     Cancel an active shutdown.
-    #     """
-    #     cancelShutdown()
-    #
+    def help_display(self):
+        """
+        Prints help about display command
+        """
+        print("Displays photos.")
+
+    def do_cancel(self, s):
+        """
+        Cancel an active shutdown.
+        """
+        # TODO en el precmd creo que puedo hacerlo y asi no me hace falta para todos
+        if "shutdown" in s:
+            cancelShutdown()
+
+    def help_cancel(self):
+        """
+        Prints help about cancel command.
+        """
+        print("shutdown: Cancel an active shutdown.")
+        # add here more prints
+
     def do_shutdown(self, s):
         """
         Shutdown the system.
@@ -374,27 +386,23 @@ class Jarvis(Cmd):
         Print help about evaluate command.
         """
         print("Jarvis will get your calculations done!")
-    #
-    # def hotspot_start():
-    #     """
-    #     Jarvis will set up your own hotspot.
-    #     """
-    #     system("sudo ap-hotspot start")
-    #
-    # def hotspot_stop():
-    #     """
-    #     Jarvis will turn of the hotspot.
-    #     """
-    #     system("sudo ap-hotspot stop")
-    #
-    # def how_are_you():
-    #     """
-    #     Jarvis will inform you about his status.
-    #     """
-    #     if self.enable_voice:
-    #         self.speech.text_to_speech("I am fine, thank you")
-    #     print(Fore.BLUE + "I am fine, How about you" + Fore.RESET)
-    #
+
+    def do_hotspot(self, s):
+        """
+        Jarvis will set up your own hotspot.
+        """
+        if "start" in s:
+            system("sudo ap-hotspot start")
+        elif "stop" in s:
+            system("sudo ap-hotspot stop")
+
+    def help_hotspot(self):
+        """
+        Print help about hotspot commando.
+        """
+        print("start: Jarvis will set up your own hotspot.")
+        print("stop: Jarvis will stop your hotspot.")
+
     def do_movies(self, s):
         """
         Jarvis will find a good movie for you.
@@ -457,15 +465,21 @@ class Jarvis(Cmd):
         Print help about news command.
         """
         print("Time to get an update about the local news.")
-    #
-    #
-    # def open_camera():
-    #     """
-    #     Jarvis will open the camera for you.
-    #     """
-    #     print "Opening Cheese ...... "
-    #     system("cheese")
-    #
+
+    def do_open(self, s):
+        """
+        Jarvis will open the camera for you.
+        """
+        if "camera" in s:
+            print "Opening Cheese ...... "
+            system("cheese")
+
+    def help_open(self):
+        """
+        Print help about open command.
+        """
+        print("camera: Jarvis will open the camera for you.")
+
     def do_pinpoint(self, s):
         """
         Jarvis will pinpoint your location.
@@ -489,7 +503,7 @@ class Jarvis(Cmd):
         Print help about remind command.
         """
         print("Handles reminders")
-    #
+    # TODO
     # def string_pattern():
     #     """
     #     Matches patterns in a string by using regex.
@@ -531,19 +545,33 @@ class Jarvis(Cmd):
         Displays information about your operating system.
         """
         print("Displays information about your operating system.")
-    #
-    # def enable_sound():
-    #     """
-    #     Let Jarvis use his voice.
-    #     """
-    #     self.enable_voice = True
-    #
-    # def disable_sound():
-    #     """
-    #     Deny Jarvis to use his voice.
-    #     """
-    #     self.enable_voice = False
-    #
+
+    def do_enable(self, s):
+        """
+        Let Jarvis use his voice.
+        """
+        if "sound" in s:
+            self.enable_voice = True
+
+    def help_enable(self):
+        """
+        Displays help about enable command
+        """
+        print("Let Jarvis use his voice.")
+
+    def do_disable(self, s):
+        """
+        Deny Jarvis to use his voice.
+        """
+        if "sound" in s:
+            self.enable_voice = False
+
+    def help_disable(self):
+        """
+        Displays help about disable command
+        """
+        print("Deny Jarvis to use his voice.")
+
     # def update_location():
     #     location = MEMORY.get_data('city')
     #     loc_str = str(location)
@@ -625,7 +653,15 @@ class Jarvis(Cmd):
         Prints help about weather command.
         """
         print("Get information about today's weather.")
-    #
+
+    # Fixed responses
+    # def how_are_you():
+    #     """
+    #     Jarvis will inform you about his status.
+    #     """
+    #     if self.enable_voice:
+    #         self.speech.text_to_speech("I am fine, thank you")
+    #     print(Fore.BLUE + "I am fine, How about you" + Fore.RESET)
     #
     # def what_about_chuck():
     #     try:
