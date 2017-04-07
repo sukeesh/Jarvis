@@ -12,13 +12,17 @@ class Brain:
         self.kernel = aiml.Kernel()
         self.kernel.verbose(False) # rmove system output
 
+
         # brain file already exists load it
         if os.path.isfile(os.path.join(module_path,"bot_brain.brn")):
             self.kernel.bootstrap(brainFile = os.path.join(module_path, "bot_brain.brn"))
         # if brain file doesnt exist load std-startup.xml and create and save brain file
         else:
-            #when new aiml files need to be added. Add them to std-startup.xml
-            self.kernel.bootstrap(learnFiles = os.path.join(module_path, "std-startup.xml"), commands = "load aiml b")
+            self.kernel.learn(os.path.join(module_path, "chat.aiml"))
+            self.kernel.learn(os.path.join(module_path, "emotion.aiml"))
+
+            #This file should go last. It contains wild cards
+            self.kernel.learn(os.path.join(module_path, "default.aiml"))
             self.kernel.saveBrain(os.path.join(module_path, "bot_brain.brn"))
 
 

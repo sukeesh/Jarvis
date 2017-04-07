@@ -30,8 +30,8 @@ class Memory:
     '''
         Initialize data with saved json file
     '''
-    def __init__(self):
-        self.json_file = os.path.join(module_path,'memory.json')
+    def __init__(self, mfile='memory.json'):
+        self.json_file = os.path.join(module_path, mfile)
         self.data = ''
         #Try to open file if it doesnt exist it will throw an error
         try:
