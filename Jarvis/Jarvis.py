@@ -78,6 +78,7 @@ class Jarvis(Cmd):
                         "hotspot stop",
                         "how are you",
                         "increase volume",
+                        "match",
                         "movies",
                         "music",
                         "near",
@@ -87,7 +88,6 @@ class Jarvis(Cmd):
                         "quit",
                         "remind",
                         "say",
-                        "search for a string in file",
                         "show me pics of",
                         "shutdown -c",
                         "shutdown system",
@@ -127,7 +127,6 @@ class Jarvis(Cmd):
             Jarvis.first_reaction = False
         if self.enable_voice:
             self.speech.text_to_speech("What can i do for you?\n")
-
 
     def do_check(self, s):
         """
@@ -504,17 +503,23 @@ class Jarvis(Cmd):
         """
         print("Handles reminders")
 
-    # def string_pattern():
-    #     """
-    #     Matches patterns in a string by using regex.
-    #     """
-    #     try:
-    #         file_name = raw_input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
-    #         stringg = raw_input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
-    #     except:
-    #         file_name = input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
-    #         stringg = input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
-    #     system("grep '" + stringg + "' " + file_name)
+    def do_match(self, s):
+        """
+        Matches patterns in a string by using regex.
+        """
+        try:
+            file_name = raw_input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
+            stringg = raw_input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
+        except:
+            file_name = input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
+            stringg = input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
+        system("grep '" + stringg + "' " + file_name)
+
+    def help_match(self):
+        """
+        Prints help about match command
+        """
+        print("Matches patterns in a string by using regex.")
 
     def do_todo(self, data):
         """
