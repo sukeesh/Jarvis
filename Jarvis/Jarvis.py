@@ -109,9 +109,11 @@ class Jarvis(Cmd):
         print(Fore.RED + "I could not identify your command..." + Fore.RESET)
 
     def completedefault(self, text, line, begidx, endidx):
+        """Default completion"""
         return [i for i in self.actions if i.startswith(text)]
 
     def precmd(self, line):
+        """Hook that executes before every command."""
         if len(line.split()) > 2:
             line = self.find_action(line)
         return line.lower()
