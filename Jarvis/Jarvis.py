@@ -137,11 +137,10 @@ class Jarvis(Cmd):
                         "todo",
                         {"update": ("location", "system")},
                         "weather",
-                        "what time is it"
                         )
 
-        self.fixed_responses = {"where am i": "pinpoint",
-                                "what about chuck": "chuck",
+        self.fixed_responses = {"what time is it": "clock",
+                                "where am i": "pinpoint",
                                 "how are you": "how_are_you"
                                 }
 
@@ -159,9 +158,14 @@ class Jarvis(Cmd):
 
     def precmd(self, line):
         """Hook that executes before every command."""
-        if len(line.split()) > 2:
+        words = line.split()
+        if len(words) == 1:
+            pass
+        elif (len(words) > 2) or (words[0] not in self.actions):
+        #     line = self.find_action(line)
+        # elif words[0] not in self.actions:
             line = self.find_action(line)
-        return line.lower()
+        return line
 
     def postcmd(self, stop, line):
         """Hook that executes after every command."""
@@ -589,23 +593,43 @@ class Jarvis(Cmd):
 
     def find_action(self, data):
         """This method gets the data and assigns it to an action"""
-        user_wish = "null"
-        for key in self.actions:
-            print key
-            if type(key) is dict:
-                # TODO como manejar casos como my ram
-                # si el valor de la key es el nombre pues empezamos a crear el user wish poniendo como primer valor el
-                # nombre
-                # buscamos en el resto del text a ver si hay coincide con el contenido del dict
-                print "is a dict"
-            # if isinstance(dict, key):
-            #     print "is a dict"
-            elif key in data:
-                print "lol"
-                user_wish = key
-        if user_wish in self.actions:
-            return user_wish
-        return "error"
+        output = "None"
+
+        data = data.lower()
+        data = data.replace("?", "")
+
+        # Check if Jarvis has a fixed response to data
+        if data in self.fixed_responses:
+            output = self.fixed_responses[data]  # change return to output =
+        else:
+            # if it doesn't have a fixed response, look if the data corresponds to an action
+            words = data.split()
+            words_aux = data.split()
+
+            action_found = False
+            for word in words:
+                words_aux.remove(word)
+                for action in self.actions:
+                    if type(action) is dict and word in action.keys():
+                        action_found = True
+                        output = word
+                        if len(words_aux) != 0:
+                            words_aux_aux = list(words_aux)
+                            for word_aux in words_aux:
+                                words_aux_aux.remove(word_aux)
+                                for value in action[word]:
+                                    if word_aux == value:
+                                        output += " " + word_aux
+                                        output += " " + " ".join(words_aux_aux)
+                        break
+                    elif word == action:
+                        action_found = True
+                        output = word
+                        break
+                if action_found:
+                    break
+
+        return output
 
     def executor(self):
         """
