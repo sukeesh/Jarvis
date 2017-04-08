@@ -34,5 +34,5 @@ class Brain:
         self.kernel.saveBrain(os.path.join(module_path, "bot_brain.brn"))
 
 
-    def remove_brain():
+    def remove_brain(self):
         os.remove(os.path.join(module_path,"bot_brain.brn"))
