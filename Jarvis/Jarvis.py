@@ -62,50 +62,47 @@ class Jarvis(Cmd):
         self.first_reaction_text = first_reaction_text
         signal.signal(signal.SIGINT, self.interrupt_handler)  # Register do_quit() function to SIGINT signal (Ctrl-C)
 
-        self.actions = ("ask jarvis",
+        self.actions = ("ask",
                         "chat",
                         {"check": ("ram",)},
-                        "decrease volume",
+                        {"decrease": ("volume",)},
                         "directions",
-                        "disable sound",
-                        "enable sound",
+                        {"disable": ("sound",)},
+                        {"enable": ("sound",)},
                         "error",
                         "evaluate",
                         "exit",
                         "goodbye",
                         "help",
-                        "hotspot start",
-                        "hotspot stop",
+                        {"hotspot": ("start", "stop")},
                         "how are you",
-                        "increase volume",
+                        {"increase": ("volume",)},
                         "match",
                         "movies",
                         "music",
                         "near",
                         "news",
-                        "open camera",
+                        {"open": ("camera",)},
                         "os",
                         "quit",
                         "remind",
                         "say",
                         "show me pics of",
-                        "shutdown -c",
-                        "shutdown system",
-                        "reboot system",
+                        "shutdown",
+                        "reboot",
                         "todo",
-                        "update location",
+                        {"update": ("location",)},
                         "weather",
                         "what time is it",
+                        # "where am i", # pinpoint function
                         "where am i",
                         "what about chuck"
-        )
+                        )
 
         self.speech = voice.Voice()
 
     def default(self, data):
-        """
-        Jarvis let's you know if an error has occurred.
-        """
+        """Jarvis let's you know if an error has occurred."""
         if self.enable_voice:
             self.speech.text_to_speech("I could not identify your command")
         print(Fore.RED + "I could not identify your command..." + Fore.RESET)
@@ -119,9 +116,7 @@ class Jarvis(Cmd):
         return line.lower()
 
     def postcmd(self, stop, line):
-        """
-        Hook that executes after every command.
-        """
+        """Hook that executes after every command."""
         if Jarvis.first_reaction:
             self.prompt = self.prompt = Fore.RED + "~> What can i do for you?\n" + Fore.RESET
             Jarvis.first_reaction = False
@@ -129,49 +124,44 @@ class Jarvis(Cmd):
             self.speech.text_to_speech("What can i do for you?\n")
 
     def do_check(self, s):
-        """
-        Checks your system's RAM stats.
-        """
+        """Checks your system's RAM stats."""
         # if s == "ram":
         if "ram" in s:
             system("free -lm")
 
     def help_check(self):
-        """
-        Prints check command help.
-        """
+        """Prints check command help."""
         print("ram: checks your system's RAM stats.")
         # add here more prints
 
+    def get_completions(self, command, text):
+        """Returns a list with the completions of a command."""
+        dict_target = (item for item in self.actions
+                       if type(item) == dict and command in item).next()  # next() will return the first match
+        completions_list = dict_target[command]
+        return [i for i in completions_list if i.startswith(text)]
+
     def complete_check(self, text, line, begidx, endidx):
-        check_completions = ("ram",)  # add here more command completions to check
-        return [i for i in check_completions if i.startswith(text)]
+        """Completions for check command"""
+        return self.get_completions("check", text)
 
     def do_say(self, s):
-        """
-        Reads what is typed.
-        """
+        """Reads what is typed."""
         voice_state = self.enable_voice
         self.enable_voice = True
         self.speech.text_to_speech(s)
         self.enable_voice = voice_state
 
     def help_say(self):
-        """
-        Prints help text from say command.
-        """
+        """Prints help text from say command."""
         print("Reads what is typed.")
 
     def interrupt_handler(self, signal, frame):
-        """
-        Closes Jarvis on SIGINT signal. (Crtl-C)
-        """
+        """Closes Jarvis on SIGINT signal. (Crtl-C)"""
         self.close()
 
     def close(self):
-        """
-        Closing Jarvis.
-        """
+        """Closing Jarvis."""
         reminderQuit()
         if self.enable_voice:
             self.speech.text_to_speech("Goodbye, see you later")
@@ -179,39 +169,27 @@ class Jarvis(Cmd):
         exit()
 
     def do_exit(self, s=None):
-        """
-        Closing Jarvis.
-        """
+        """Closing Jarvis."""
         self.close()
 
     def do_goodbye(self, s=None):
-        """
-        Closing Jarvis.
-        """
+        """Closing Jarvis."""
         self.close()
 
     def do_quit(self, s=None):
-        """
-        Closing Jarvis.
-        """
+        """Closing Jarvis."""
         self.close()
 
     def help_exit(self):
-        """
-        Closing Jarvis.
-        """
+        """Closing Jarvis."""
         print("Close Jarvis")
 
     def help_goodbye(self):
-        """
-        Closing Jarvis.
-        """
+        """Closing Jarvis."""
         print("Close Jarvis")
 
     def help_quit(self):
-        """
-        Closing Jarvis.
-        """
+        """Closing Jarvis."""
         print("Close Jarvis")
 
     def do_ask(self, s):
@@ -231,35 +209,25 @@ class Jarvis(Cmd):
                 print(brain.respond(text))
 
     def help_ask(self):
-        """
-        Prints help about ask command.
-        """
+        """Prints help about ask command."""
         print("Ask something to Jarvis")
 
     def do_clock(self, s):
-        """
-        Gives information about time.
-        """
+        """Gives information about time."""
         print(Fore.BLUE + ctime() + Fore.RESET)
 
     def help_clock(self):
-        """
-        Prints help about clock command.
-        """
+        """Prints help about clock command."""
         print("Gives information about time.")
 
     def do_decrease(self, s):
-        """
-        Decreases you speakers' sound.
-        """
+        """Decreases you speakers' sound."""
         # TODO si solo ponemos decrease que pase algo
         if s == "volume":
             system("pactl -- set-sink-volume 0 -10%")
 
     def help_decrease(self):
-        """
-        Print help about decrease command.
-        """
+        """Print help about decrease command."""
         print("volume: Decreases you speaker's sound.")
 
     def complete_decrease(self, text, line, begidx, endidx):
@@ -267,16 +235,12 @@ class Jarvis(Cmd):
         return [i for i in completions if i.startswith(text)]
 
     def do_increase(self, s):
-        """
-        Increases you speakers' sound.
-        """
+        """Increases you speakers' sound."""
         if s == "volume":
             system("pactl -- set-sink-volume 0 +3%")
 
     def help_increase(self):
-        """
-        Print help about increase command.
-        """
+        """Print help about increase command."""
         print("volume: Increases your speaker's sound.")
 
     def complete_increase(self, text, line, begidx, endidx):
@@ -284,10 +248,7 @@ class Jarvis(Cmd):
         return [i for i in completions if i.startswith(text)]
 
     def do_directions(self, data):
-        # TODO no va
-        """
-        Get directions about a destination you are interested to.
-        """
+        """Get directions about a destination you are interested to."""
         wordList = data.split()
         to_index = wordIndex(data, "to")
         if " from " in data:
@@ -304,76 +265,54 @@ class Jarvis(Cmd):
         mapps.directions(toCity, fromCity)
 
     def help_directions(self):
-        """
-        Prints help about directions command
-        """
+        """Prints help about directions command"""
         print("Get directions about a destination you are interested to.")
 
     def do_display(self, s):
-        """
-        Displays photos.
-        """
+        """Displays photos."""
         if "pics" in s:
             s = s.replace("pics", "").strip()
             picshow.showpics(s)
 
     def help_display(self):
-        """
-        Prints help about display command
-        """
+        """Prints help about display command"""
         print("Displays photos.")
 
     def do_cancel(self, s):
-        """
-        Cancel an active shutdown.
-        """
+        """Cancel an active shutdown."""
         # TODO en el precmd creo que puedo hacerlo y asi no me hace falta para todos
         if "shutdown" in s:
             cancelShutdown()
 
     def help_cancel(self):
-        """
-        Prints help about cancel command.
-        """
+        """Prints help about cancel command."""
         print("shutdown: Cancel an active shutdown.")
         # add here more prints
 
     def do_shutdown(self, s):
-        """
-        Shutdown the system.
-        """
+        """Shutdown the system."""
         shutdown_system()
 
     def help_shutdown(self):
-        """
-        Print help about shutdown command.
-        """
+        """Print help about shutdown command."""
         print("Shutdown the system.")
 
     def do_reboot(self, s):
-        """
-        Reboot the system.
-        """
+        """Reboot the system."""
         reboot_system()
 
     def help_reboot(self):
-        """
-        Print help about reboot command.
-        """
+        """Print help about reboot command."""
         print("Reboot the system.")
 
     def error(self):
-        """
-        Jarvis let you know if an error has occurred.
-        """
+        """Jarvis let you know if an error has occurred."""
         if self.enable_voice:
             self.speech.text_to_speech("I could not identify your command")
         print(Fore.RED + "I could not identify your command..." + Fore.RESET)
 
     def do_evaluate(self, s):
-        """
-        Jarvis will get your calculations done!
-        """
+        """Jarvis will get your calculations done!"""
         tempt = s.split(" ", 1) or ""
         if len(tempt) > 1:
             evaluator.calc(tempt[1])
@@ -381,31 +320,23 @@ class Jarvis(Cmd):
             print(Fore.RED + "Error: Not in correct format" + Fore.RESET)
 
     def help_evaluate(self):
-        """
-        Print help about evaluate command.
-        """
+        """Print help about evaluate command."""
         print("Jarvis will get your calculations done!")
 
     def do_hotspot(self, s):
-        """
-        Jarvis will set up your own hotspot.
-        """
+        """Jarvis will set up your own hotspot."""
         if "start" in s:
             system("sudo ap-hotspot start")
         elif "stop" in s:
             system("sudo ap-hotspot stop")
 
     def help_hotspot(self):
-        """
-        Print help about hotspot commando.
-        """
+        """Print help about hotspot commando."""
         print("start: Jarvis will set up your own hotspot.")
         print("stop: Jarvis will stop your hotspot.")
 
     def do_movies(self, s):
-        """
-        Jarvis will find a good movie for you.
-        """
+        """Jarvis will find a good movie for you."""
         try:
             movie_name = raw_input(Fore.RED + "What do you want to watch?\n" + Fore.RESET)
         except:
@@ -413,27 +344,19 @@ class Jarvis(Cmd):
         system("ims " + movie_name)
 
     def help_movies(self):
-        """
-        Print help about movies command.
-        """
+        """Print help about movies command."""
         print("Jarvis will find a good movie for you")
 
     def do_music(self, s):
-        """
-        Jarvis will find you a good song to relax!
-        """
+        """Jarvis will find you a good song to relax!"""
         play(s)
 
     def help_music(self):
-        """
-        Print help about music command.
-        """
+        """Print help about music command."""
         print("Jarvis will find you a good song to relax")
 
     def do_near(self, data):
-        """
-        Jarvis can find what is near you!
-        """
+        """Jarvis can find what is near you!"""
         wordList = data.split()
         things = " ".join(wordList[0:wordIndex(data, "near")])
         if " me" in data:
@@ -445,68 +368,48 @@ class Jarvis(Cmd):
         mapps.searchNear(things, city)
 
     def help_near(self, s):
-        """
-        Print help about near command.
-        """
+        """Print help about near command."""
         print("Jarvis can find what is near you!")
 
     def do_news(self, s):
-        """
-        Time to get an update about the local news.
-        """
+        """Time to get an update about the local news."""
         try:
             newws.show_news()
         except:
             print Fore.RED + "I couldn't find news" + Fore.RESET
 
     def help_news(self):
-        """
-        Print help about news command.
-        """
+        """Print help about news command."""
         print("Time to get an update about the local news.")
 
     def do_open(self, s):
-        """
-        Jarvis will open the camera for you.
-        """
+        """Jarvis will open the camera for you."""
         if "camera" in s:
             print "Opening Cheese ...... "
             system("cheese")
 
     def help_open(self):
-        """
-        Print help about open command.
-        """
+        """Print help about open command."""
         print("camera: Jarvis will open the camera for you.")
 
     def do_pinpoint(self, s):
-        """
-        Jarvis will pinpoint your location.
-        """
+        """Jarvis will pinpoint your location."""
         mapps.locateme()
 
     def help_pinpoint(self):
-        """
-        Print help about pinpoint command.
-        """
+        """Print help about pinpoint command."""
         print("Jarvis will pinpoint your location.")
 
     def do_remind(self, data):
-        """
-        Handles reminders
-        """
+        """Handles reminders"""
         reminderHandler(data.replace("remind", "", 1))
 
     def help_remind(self, data):
-        """
-        Print help about remind command.
-        """
+        """Print help about remind command."""
         print("Handles reminders")
 
     def do_match(self, s):
-        """
-        Matches patterns in a string by using regex.
-        """
+        """Matches patterns in a string by using regex."""
         try:
             file_name = raw_input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
             stringg = raw_input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
@@ -516,28 +419,20 @@ class Jarvis(Cmd):
         system("grep '" + stringg + "' " + file_name)
 
     def help_match(self):
-        """
-        Prints help about match command
-        """
+        """Prints help about match command"""
         print("Matches patterns in a string by using regex.")
 
     def do_todo(self, data):
-        """
-        Create your personal TODO list!
-        """
+        """Create your personal TODO list!"""
         # TODO data replace no longer necesary?
         todoHandler(data.replace("todo", "", 1))
 
     def help_todo(self):
-        """
-        Print help about help command.
-        """
+        """Print help about help command."""
         print("Create your personal TODO list!")
 
     def do_os(self, s):
-        """
-        Displays information about your operating system.
-        """
+        """Displays information about your operating system."""
         print Fore.BLUE + '[!] Operating System Information' + Fore.RESET
         print Fore.GREEN + '[*] ' + sys() + Fore.RESET
         print Fore.GREEN + '[*] ' + release() + Fore.RESET
@@ -546,41 +441,29 @@ class Jarvis(Cmd):
             print Fore.GREEN + '[*] ' + _ + Fore.RESET
 
     def help_os(self):
-        """
-        Displays information about your operating system.
-        """
+        """Displays information about your operating system."""
         print("Displays information about your operating system.")
 
     def do_enable(self, s):
-        """
-        Let Jarvis use his voice.
-        """
+        """Let Jarvis use his voice."""
         if "sound" in s:
             self.enable_voice = True
 
     def help_enable(self):
-        """
-        Displays help about enable command
-        """
+        """Displays help about enable command"""
         print("Let Jarvis use his voice.")
 
     def do_disable(self, s):
-        """
-        Deny Jarvis to use his voice.
-        """
+        """Deny Jarvis to use his voice."""
         if "sound" in s:
             self.enable_voice = False
 
     def help_disable(self):
-        """
-        Displays help about disable command
-        """
+        """Displays help about disable command"""
         print("Deny Jarvis to use his voice.")
 
     def do_update(self, s):
-        """
-        Updates location.
-        """
+        """Updates location."""
         if "location" in s:
             location = MEMORY.get_data('city')
             loc_str = str(location)
@@ -594,15 +477,11 @@ class Jarvis(Cmd):
             MEMORY.save()
 
     def help_update(self, s):
-        """
-        Prints help about update command
-        """
+        """Prints help about update command"""
         print("Updates location.")
 
     def do_weather(self, s):
-        """
-        Get information about today's weather.
-        """
+        """Get information about today's weather."""
 
         location = MEMORY.get_data('city') #Will return None if no value
         if location is None:
@@ -662,9 +541,7 @@ class Jarvis(Cmd):
                     print(Fore.RED + "I couldn't locate you" + Fore.RESET)
 
     def help_weather(self):
-        """
-        Prints help about weather command.
-        """
+        """Prints help about weather command."""
         print("Get information about today's weather.")
 
     # Fixed responses
@@ -717,9 +594,7 @@ class Jarvis(Cmd):
 #                 output += " " + word
 
     def find_action(self, data):
-        """
-        This method gets the data and assigns it to an action
-        """
+        """This method gets the data and assigns it to an action"""
         user_wish = "null"
         for key in self.actions:
             print key
