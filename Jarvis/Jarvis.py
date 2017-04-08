@@ -49,17 +49,18 @@ class Jarvis(Cmd):
     first_reaction_text += Fore.BLUE + 'In order to let Jarvis talk out loud type: '
     first_reaction_text += Fore.RESET + Fore.RED + 'enable sound' + Fore.RESET
     first_reaction_text += "\n"
+    prompt = Fore.RED + "~> Hi, what can i do for you?\n" + Fore.RESET
 
     #This can be used to store user specific data
 
-    def __init__(self, first_reaction_text=first_reaction_text):
+    def __init__(self, first_reaction_text=first_reaction_text, prompt=prompt):
         """
         This constructor contains a dictionary with Jarvis Actions (what Jarvis can do).
         In alphabetically order.
         """
         Cmd.__init__(self)
-        self.prompt = Fore.RED + "~> Hi, what can i do for you?\n" + Fore.RESET
         self.first_reaction_text = first_reaction_text
+        self.prompt = prompt
         signal.signal(signal.SIGINT, self.interrupt_handler)  # Register do_quit() function to SIGINT signal (Ctrl-C)
 
         self.actions = ("ask",
