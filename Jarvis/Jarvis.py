@@ -1,18 +1,17 @@
 from os import system
-import requests
 from platform import system as sys
 from platform import architecture, release, dist
 from time import ctime
 from colorama import Fore
-from utilities.GeneralUtilities import wordIndex
 from utilities import voice
 from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminderHandler, reminderQuit
 from packages import newws, mapps, picshow, evaluator
-from packages.aiml.brain import Brain
+from packages import chat, directions_to, near_me, weather_pinpoint, chuck
 from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
+from packages.systemOptions import turn_off_screen, update_system
 
 """
     AUTHORS' SCOPE:
@@ -35,14 +34,15 @@ from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
 
 MEMORY = Memory()
 
+
 class Jarvis:
     # We use this variable at Breakpoint #1.
-    # We use this in order to allow Jarvis say "Hi", only at the first interaction.
+    # We use this in order to allow Jarvis say "Hi", only at the first
+    # interaction.
     first_reaction = True
     enable_voice = False
 
-    #This can be used to store user specific data
-
+    # This can be used to store user specific data
 
     def __init__(self):
         """
@@ -80,7 +80,9 @@ class Jarvis:
                         "shutdown system": "shutdown",
                         "reboot system": "reboot",
                         "todo": "todo",
+                        "turn off screen": "screen_off",
                         "update location": "update_location",
+                        "update my system": "update_my_system",
                         "weather": "weather",
                         "what time is it": "clock",
                         "where am i": "pinpoint",
@@ -88,7 +90,7 @@ class Jarvis:
                         }
         self.speech = voice.Voice()
 
-    #@staticmethod
+    # @staticmethod
     def reactions(self, key, data):
         """
         This function contains local functions which are implementing
@@ -102,95 +104,50 @@ class Jarvis:
         """
 
         def ask_jarvis():
-            brain = Brain()
-            print(Fore.BLUE + "Ask me anything\n type 'leave' to stop" + Fore.RESET)
-            stay = True
-
-            while stay:
-                try:
-                    text = str.upper(raw_input(Fore.RED + ">> " + Fore.RESET))
-                except:
-                    text = str.upper(input(Fore.RED + ">> " + Fore.RESET))
-                if text == "LEAVE":
-                    print("thanks for talking to me")
-                    stay = False
-                else:
-                    print(brain.respond(text))
-
+            """Start chating with Jarvis"""
+            chat.main()
 
         def check_ram():
-            """
-            Checks your system's RAM stats.
-            """
+            """Checks your system's RAM stats."""
             system("free -lm")
 
         def clock():
-            """
-            Gives information about time.
-            """
+            """Gives information about time."""
             print(Fore.BLUE + ctime() + Fore.RESET)
 
         def decrease_volume():
-            """
-            Decreases you speakers' sound.
-            """
+            """Decreases you speakers' sound."""
             system("pactl -- set-sink-volume 0 -10%")
 
         def directions():
-            """
-            Get directions about a destination you are interested to.
-            """
-            wordList = data.split()
-            to_index = wordIndex(data, "to")
-            if " from " in data:
-                from_index = wordIndex(data, "from")
-                if from_index > to_index:
-                    toCity = " ".join(wordList[to_index + 1:from_index])
-                    fromCity = " ".join(wordList[from_index + 1:])
-                else:
-                    fromCity = " ".join(wordList[from_index + 1:to_index])
-                    toCity = " ".join(wordList[to_index + 1:])
-            else:
-                toCity = " ".join(wordList[to_index + 1:])
-                fromCity = 0
-            mapps.directions(toCity, fromCity)
+            """Get directions about a destination you are interested to."""
+            directions_to.main(data)
 
         def display_pics():
-            """
-            Displays photos.
-            """
+            """Displays photos."""
             picshow.showpics(data)
 
         def cancel_shutdown():
-            """
-            Cancel an active shutdown.
-            """
+            """Cancel an active shutdown."""
             cancelShutdown()
 
         def shutdown():
-            """
-            Shutdown the system.
-            """
+            """Shutdown the system."""
             shutdown_system()
 
         def reboot():
-            """
-            Reboot the system.
-            """
+            """Reboot the system."""
             reboot_system()
 
         def error():
-            """
-            Jarvis let you know if an error has occurred.
-            """
+            """Jarvis let you know if an error has occurred."""
             if self.enable_voice:
                 self.speech.text_to_speech("I could not identify your command")
-            print(Fore.RED + "I could not identify your command..." + Fore.RESET)
+            print(Fore.RED +
+                  "I could not identify your command..." + Fore.RESET)
 
         def evaluate():
-            """
-            Jarvis will get your calculations done!
-            """
+            """Jarvis will get your calculations done!"""
             tempt = data.split(" ", 1) or ""
             if len(tempt) > 1:
                 evaluator.calc(tempt[1])
@@ -198,89 +155,59 @@ class Jarvis:
                 print(Fore.RED + "Error: Not in correct format" + Fore.RESET)
 
         def hotspot_start():
-            """
-            Jarvis will set up your own hotspot.
-            """
+            """Jarvis will set up your own hotspot."""
             system("sudo ap-hotspot start")
 
         def hotspot_stop():
-            """
-            Jarvis will turn of the hotspot.
-            """
+            """Jarvis will turn of the hotspot."""
             system("sudo ap-hotspot stop")
 
         def how_are_you():
-            """
-            Jarvis will inform you about his status.
-            """
+            """Jarvis will inform you about his status."""
             if self.enable_voice:
                 self.speech.text_to_speech("I am fine, thank you")
             print(Fore.BLUE + "I am fine, How about you" + Fore.RESET)
 
         def increase_volume():
-            """
-            Increases your speakers' volume.
-            """
+            """Increases your speakers' volume."""
             system("pactl -- set-sink-volume 0 +3%")
 
         def movies():
-            """
-            Jarvis will find a good movie for you.
-            """
+            """Jarvis will find a good movie for you."""
             try:
-                movie_name = raw_input(Fore.RED + "What do you want to watch?\n" + Fore.RESET)
+                movie_name = raw_input(
+                    Fore.RED + "What do you want to watch?\n" + Fore.RESET)
             except:
-                movie_name = input(Fore.RED + "What do you want to watch?\n" + Fore.RESET)
+                movie_name = input(
+                    Fore.RED + "What do you want to watch?\n" + Fore.RESET)
             system("ims " + movie_name)
 
         def music():
-            """
-            Jarvis will find you a good song to relax!
-            """
+            """Jarvis will find you a good song to relax!"""
             play(data)
 
         def near():
-            """
-            Jarvis can find what is near you!
-            """
-            wordList = data.split()
-            things = " ".join(wordList[0:wordIndex(data, "near")])
-            if " me" in data:
-                city = 0
-            else:
-                wordList = data.split()
-                city = " ".join(wordList[wordIndex(data, "near") + 1:])
-                print city
-            mapps.searchNear(things, city)
+            """Jarvis can find what is near you!"""
+            near_me.main(data)
 
         def news():
-
-            """
-            Time to get an update about the local news.
-            """
+            """Time to get an update about the local news."""
             try:
                 newws.show_news()
             except:
                 print Fore.RED + "I couldn't find news" + Fore.RESET
 
-
         def open_camera():
-            """
-            Jarvis will open the camera for you.
-            """
+            """Jarvis will open the camera for you."""
             print "Opening Cheese ...... "
             system("cheese")
 
         def pinpoint():
-            """
-            Jarvis will pinpoint your location.
-            """
+            """Jarvis will pinpoint your location."""
             mapps.locateme()
 
         def close():
-            """
-            Closing Jarvis.
-            """
+            """Closing Jarvis."""
             reminderQuit()
             if self.enable_voice:
                 self.speech.text_to_speech("Goodbye, see you later")
@@ -291,27 +218,28 @@ class Jarvis:
             reminderHandler(data.replace("remind", "", 1))
 
         def string_pattern():
-            """
-            Matches patterns in a string by using regex.
-            """
+            """Matches patterns in a string by using regex."""
             try:
-                file_name = raw_input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
-                stringg = raw_input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
+                file_name = raw_input(
+                    Fore.RED + "Enter file name?:\n" + Fore.RESET)
+                stringg = raw_input(
+                    Fore.GREEN + "Enter string:\n" + Fore.RESET)
             except:
-                file_name = input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
+                file_name = input(
+                    Fore.RED + "Enter file name?:\n" + Fore.RESET)
                 stringg = input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
             system("grep '" + stringg + "' " + file_name)
 
         def todo():
-            """
-            Create your personal TODO list!
-            """
+            """Create your personal TODO list!"""
             todoHandler(data.replace("todo", "", 1))
 
+        def screen_off():
+            """Turns off the screen instantly."""
+            turn_off_screen()
+
         def os_detection():
-            """
-            Displays information about your operating system.
-            """
+            """Displays information about your operating system."""
             print Fore.BLUE + '[!] Operating System Information' + Fore.RESET
             print Fore.GREEN + '[*] ' + sys() + Fore.RESET
             print Fore.GREEN + '[*] ' + release() + Fore.RESET
@@ -320,9 +248,7 @@ class Jarvis:
                 print Fore.GREEN + '[*] ' + _ + Fore.RESET
 
         def say():
-            """
-            Reads what is typed.
-            """
+            """Reads what is typed."""
             voice_state = self.enable_voice
             self.enable_voice = True
             text = data.replace("say", "", 1)
@@ -330,21 +256,15 @@ class Jarvis:
             self.enable_voice = voice_state
 
         def enable_sound():
-            """
-            Let Jarvis use his voice.
-            """
+            """Let Jarvis use his voice."""
             self.enable_voice = True
 
         def disable_sound():
-            """
-            Deny Jarvis to use his voice.
-            """
+            """Deny Jarvis to use his voice."""
             self.enable_voice = False
 
         def help_jarvis():
-            """
-            This method displays help about Jarvis.
-            """
+            """This method displays help about Jarvis."""
             print Fore.BLUE + '>>> Usage: ' + Fore.RESET
             print Fore.BLUE + 'Type any of the following commands to interact with Jarvis.' + Fore.RESET
             print Fore.GREEN + '[*] Help: To see this message' + Fore.RESET
@@ -373,14 +293,15 @@ class Jarvis:
             print Fore.GREEN + '[*] chat: Ask anything and Jarvis will answer you.' + Fore.RESET
             print Fore.GREEN + '[*] shutdown system: Shutdown the system in X minutes.' + Fore.RESET
             print Fore.GREEN + '[*] reboot system: Reboot the system in X minutes.' + Fore.RESET
+            print Fore.GREEN + '[*] turn off screen: Turns off the screen instantly.' + Fore.RESET
             print Fore.GREEN + '[*] shutdown -c: Cancel an active shutdown/reboot.' + Fore.RESET
             print Fore.GREEN + '[*] say: Reads what it is typed.' + Fore.RESET
+            print Fore.GREEN + '[*] update my system: Update the system using the /etc/apt/sources.list repositories.' + Fore.RESET
             print Fore.GREEN + '[*] weather: Get information about today weather.' + Fore.RESET
             print Fore.GREEN + '[*] what about chuck: Get sentences about Chuck.' + Fore.RESET
             print Fore.GREEN + '[*] quit: Close the session with Jarvis...' + Fore.RESET
             print Fore.GREEN + '[*] exit: Close the session with Jarvis...' + Fore.RESET
             print Fore.GREEN + '[*] Goodbye: Close the session with Jarvis...' + Fore.RESET
-
 
         def update_location():
             location = MEMORY.get_data('city')
@@ -394,89 +315,22 @@ class Jarvis:
             MEMORY.update_data('city', i)
             MEMORY.save()
 
+        def update_my_system():
+            """
+            Update the system using the /etc/apt/sources.list repositories.
+            """
+            update_system()
 
         def weather():
-            """
-            Get information about today's weather.
-            """
-
-            location = MEMORY.get_data('city') #Will return None if no value
-            if location is None:
-                loc = str(location)
-                city = mapps.getLocation()['city']
-                print(Fore.RED + "It appears you are in " + city + " Is this correct? (y/n)" + Fore.RESET)
-
-                try:
-                    i = raw_input()
-                except:
-                    i = input()
-                if i == 'n' or i == 'no':
-                    print("Enter Name of city: ")
-                    try:
-                        i = raw_input()
-                    except:
-                        i = input()
-                    city = i
-
-                mapps.weather(str(city))
-
-                MEMORY.update_data('city', city)
-                MEMORY.save()
-            else:
-                loc = str(location)
-                city = mapps.getLocation()['city']
-                if city != loc:
-                    print(Fore.RED + "It appears you are in " + city + ". But you set your location to " + loc + Fore.RESET)
-                    print(Fore.RED + "Do you want weather for " + city + " instead? (y/n)" + Fore.RESET)
-                    try:
-                        i = raw_input()
-                    except:
-                        i = input()
-                    if i == 'y' or i == 'yes':
-                        try:
-                            print(Fore.RED + "Would you like to set " + city + " as your new location? (y/n)" + Fore.RESET)
-                            try:
-                                i = raw_input()
-                            except:
-                                i = input()
-                            if i == 'y' or i == 'yes':
-                                MEMORY.update_data('city', city)
-                                MEMORY.save()
-
-                            mapps.weather(city)
-                        except:
-                            print(Fore.RED + "I couldn't locate you" + Fore.RESET)
-                    else:
-                        try:
-                            mapps.weather(loc)
-                        except:
-                            print(Fore.RED + "I couldn't locate you" + Fore.RESET)
-                else:
-                    try:
-                        mapps.weather(loc)
-                    except:
-                        print(Fore.RED + "I couldn't locate you" + Fore.RESET)
-
+            """Get information about today's weather."""
+            weather_pinpoint.main(MEMORY)
 
         def what_about_chuck():
-            try:
-                req = requests.get("https://api.chucknorris.io/jokes/random")
-                chuck_json = req.json()
+            chuck.main(self)
 
-                chuck_fact = chuck_json["value"]
-                if self.enable_voice:
-                    print(Fore.RED + chuck_fact + Fore.RESET)
-                    self.speech.text_to_speech(chuck_fact)
-                else:
-                    print(Fore.RED + chuck_fact + Fore.RESET)
-            except:
-                if self.enable_voice:
-                    self.speech.text_to_speech("Looks like Chuck broke the Internet.")
-                else:
-                    print(Fore.RED + "Looks like Chuck broke the Internet..." + Fore.RESET)
-
-        locals()[key]()  # we are calling the proper function which satisfies the user's command.
-
+        # we are calling the proper function which satisfies the user's
+        # command.
+        locals()[key]()
 
     def user_input(self):
         """
@@ -492,7 +346,7 @@ class Jarvis:
             self.speak()
             print Fore.BLUE + 'Jarvis\' is by default disabled.' + Fore.RESET
             print Fore.BLUE + 'In order to let Jarvis talk out loud type: ' +\
-                  Fore.RESET + Fore.RED + 'enable sound' + Fore.RESET
+                Fore.RESET + Fore.RED + 'enable sound' + Fore.RESET
             print ''
             print Fore.RED + "~> Hi, What can i do for you?" + Fore.RESET
         else:

@@ -1,5 +1,12 @@
 <aiml version="1.0.1" encoding="UTF-8">
 
+
+<category>
+<pattern>TEST</pattern>
+<template>TEST</template>
+</category>
+
+
 <category>
 <pattern>*</pattern>
 <template>
