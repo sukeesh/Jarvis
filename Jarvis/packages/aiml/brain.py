@@ -2,7 +2,7 @@ import aiml
 
 import os
 
-#this sets the path to the modules directory not the directory it was call from
+# this sets the path to the modules directory not the directory it was call from
 module_path = os.path.dirname(__file__)
 
 
@@ -29,7 +29,7 @@ class Brain:
         self.kernel.learn(os.path.join(module_path, "chat.aiml"))
         self.kernel.learn(os.path.join(module_path, "emotion.aiml"))
 
-        #This file should go last. It contains wild cards
+        # This file should go last. It contains wild cards
         self.kernel.learn(os.path.join(module_path, "default.aiml"))
         self.kernel.saveBrain(os.path.join(module_path, "bot_brain.brn"))
 
