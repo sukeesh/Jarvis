@@ -503,7 +503,7 @@ class Jarvis(Cmd):
         Print help about remind command.
         """
         print("Handles reminders")
-    # TODO
+
     # def string_pattern():
     #     """
     #     Matches patterns in a string by using regex.
@@ -515,7 +515,7 @@ class Jarvis(Cmd):
     #         file_name = input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
     #         stringg = input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
     #     system("grep '" + stringg + "' " + file_name)
-    #
+
     def do_todo(self, data):
         """
         Create your personal TODO list!
@@ -572,19 +572,27 @@ class Jarvis(Cmd):
         """
         print("Deny Jarvis to use his voice.")
 
-    # def update_location():
-    #     location = MEMORY.get_data('city')
-    #     loc_str = str(location)
-    #     print("Your current location is set to " + loc_str)
-    #     print("What is your new location?")
-    #     try:
-    #         i = raw_input()
-    #     except:
-    #         i = input()
-    #     MEMORY.update_data('city', i)
-    #     MEMORY.save()
-    #
-    #
+    def do_update(self, s):
+        """
+        Updates location.
+        """
+        if "location" in s:
+            location = MEMORY.get_data('city')
+            loc_str = str(location)
+            print("Your current location is set to " + loc_str)
+            print("What is your new location?")
+            try:
+                i = raw_input()
+            except:
+                i = input()
+            MEMORY.update_data('city', i)
+            MEMORY.save()
+
+    def help_update(self, s):
+        """
+        Prints help about update command
+        """
+        print("Updates location.")
 
     def do_weather(self, s):
         """
