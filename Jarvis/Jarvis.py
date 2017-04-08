@@ -597,6 +597,7 @@ class Jarvis(Cmd):
 
         data = data.lower()
         data = data.replace("?", "")
+        data = data.replace(",", "")
 
         # Check if Jarvis has a fixed response to data
         if data in self.fixed_responses:
