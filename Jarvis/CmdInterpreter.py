@@ -58,6 +58,7 @@ class CmdInterpreter(Cmd):
                         "near",
                         "news",
                         {"open": ("camera",)},
+                        "play",
                         "pinpoint",
                         "os",
                         "quit",
@@ -296,6 +297,14 @@ class CmdInterpreter(Cmd):
 
     def help_music(self):
         """Print help about music command."""
+        print("Jarvis will find you a good song to relax")
+
+    def do_play(self, s):
+        """Jarvis will find you a good song to relax!"""
+        play(s)
+
+    def help_play(self):
+        """Print help about play command."""
         print("Jarvis will find you a good song to relax")
 
     def do_near(self, data):
