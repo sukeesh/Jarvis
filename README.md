@@ -21,8 +21,14 @@ Use the command `pip install -r requirements.txt` to install the requirements.
 
 - PR's are accepted!!
 - If you have some ideas for new features and you don't have time to implement them please open an issue with the tag new_feature
-- If you have time to add extra functionality to Jarvis (for example new actions like "record" etc.) you only need to add this action to the action dict (look on init(self) in Jarvis.py) along with a apropriate function name. Then you need to implement this function as a local function on reactions() method.
+- If you have time to add extra functionality to Jarvis (for example new actions like "record" etc.) you only need to add this action to the actions tuple (look on init(self) in CmdInterpreter.py) as a string if it's a one word command or as a dict if it's a two word command. Then, add **appropriate methods** (substitute `record` for the name of your command):
+  + `do_record(self, s)`: implement here your command functionality. `s` is where Jarvis will pass the arguments of your command.
+  + `help_record(self)`: print what your command does.
+  + **(optional)** `complete_record(self)`: useful to get completions, if it's a two word command use `get_completions` method: 
+    + `return self.get_completions("record", text)`
 - Please don't forget to comment (document) your code
+
+**Note**: one word command examples are: `say [text that Jarvis will speak]`, `weather`. Two word command examples are: `hotspot start`, `hotspot stop`, `increase volume`, `decrease volume`.
 
  ### How to run tests:
  Change into the Jarvis/Jarvis directory
