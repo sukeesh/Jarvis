@@ -7,27 +7,27 @@ class ParserTest(unittest.TestCase):
     def setUp(self):
         self.jarvis = Jarvis()
 
-    def test_chuck(self,):
+    def test_chuck(self):
         user_input = "Jarvis, I want to hear a joke about Chuck Norris, can you help me?"
         parsed_input = self.jarvis.parse_input(user_input).split()
         self.assertEqual("chuck", parsed_input[0])
 
-    def test_weather(self,):
+    def test_weather(self):
         user_input = "Mmm... I want to go for a walk. What's the weather like today?"
         parsed_input = self.jarvis.parse_input(user_input).split()
         self.assertEqual("weather", parsed_input[0])
 
-    def test_goodbye(self,):
+    def test_goodbye(self):
         user_input = "Thanks for your hard work Jarvis, goodbye!"
         parsed_input = self.jarvis.parse_input(user_input).split()
         self.assertEqual("goodbye", parsed_input[0])
 
-    def test_check_ram(self,):
+    def test_check_ram(self):
         user_input = "It would be cool if you could check my computers ram"
         parsed_input = self.jarvis.parse_input(user_input).split()
         self.assertEqual(["check", "ram"], parsed_input[0:2])
 
-    def test_say(self,):
+    def test_say(self):
         user_input = "Can you sAY I'm a robot?"
         parsed_input = self.jarvis.parse_input(user_input).split()
         self.assertEqual(["say", "i'm", "a", "robot"], parsed_input[0:])
