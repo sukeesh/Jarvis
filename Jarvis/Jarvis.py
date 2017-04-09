@@ -114,7 +114,9 @@ class Jarvis(Cmd):
     def precmd(self, line):
         """Hook that executes before every command."""
         words = line.split()
-        if len(words) == 1:
+        if len(words) == 0:
+            line = "None"
+        elif len(words) == 1:
             pass
         elif (len(words) > 2) or (words[0] not in self.actions):
             line = self.find_action(line)
