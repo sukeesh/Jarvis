@@ -1,6 +1,5 @@
 from os import system
 from cmd import Cmd
-# import requests
 import signal
 from platform import system as sys
 from platform import architecture, release, dist
@@ -16,7 +15,6 @@ from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
 from packages.systemOptions import turn_off_screen, update_system
 
-# TODO esto de aqui mirar si en Jarvis o aqui
 MEMORY = Memory()
 
 
@@ -81,34 +79,9 @@ class CmdInterpreter(Cmd):
 
         self.speech = voice.Voice()
 
-    def default(self, data):
-        """Jarvis let's you know if an error has occurred."""
-        if self.enable_voice:
-            self.speech.text_to_speech("I could not identify your command")
-        print(Fore.RED + "I could not identify your command..." + Fore.RESET)
-
     def completedefault(self, text, line, begidx, endidx):
         """Default completion"""
         return [i for i in self.actions if i.startswith(text)]
-
-    def precmd(self, line):
-        """Hook that executes before every command."""
-        words = line.split()
-        if len(words) == 0:
-            line = "None"
-        elif len(words) == 1:
-            pass
-        elif (len(words) > 2) or (words[0] not in self.actions):
-            line = self.find_action(line)
-        return line
-
-    def postcmd(self, stop, line):
-        """Hook that executes after every command."""
-        if self.first_reaction:
-            self.prompt = self.prompt = Fore.RED + "~> What can i do for you?\n" + Fore.RESET
-            self.first_reaction = False
-        if self.enable_voice:
-            self.speech.text_to_speech("What can i do for you?\n")
 
     def do_check(self, s):
         """Checks your system's RAM stats."""
@@ -473,41 +446,6 @@ class CmdInterpreter(Cmd):
         print("location: Updates location.")
         print("system: Updates system.")
 
-    # TODO delete this method
-    def user_input(self):
-        """
-        This method is responsible for getting the user's input.
-        We are using first_reaction variable in order to prompt
-        "Hi" only the first time we "meet" our user (in your first version
-        whenever you asked for a command Jarvis where saying "Hi").
-        :return: user_data, a variable containing the Jarvis' action
-                 that user wants to execute.
-        """
-        # BREAKPOINT #1
-        if self.first_reaction:
-            self.speak()
-            print Fore.BLUE + 'Jarvis\' is by default disabled.' + Fore.RESET
-            print Fore.BLUE + 'In order to let Jarvis talk out loud type: ' + \
-                  Fore.RESET + Fore.RED + 'enable sound' + Fore.RESET
-            print ''
-            print Fore.RED + "~> Hi, What can i do for you?" + Fore.RESET
-        else:
-            self.speak()
-            print Fore.RED + "~> What can i do for you?" + Fore.RESET
-
-        try:
-            user_data = raw_input()
-        except ValueError:
-            user_data = input()
-        except:
-            user_data = input()
-        finally:
-            # Set first_reaction to False in order to stop say "Hi" to user.
-            self.first_reaction = False
-
-        user_data = str.lower(user_data)
-        return user_data
-
     def do_weather(self, s):
         """Get information about today's weather."""
         weather_pinpoint.main(MEMORY)
@@ -533,60 +471,3 @@ class CmdInterpreter(Cmd):
     def help_chuck(self):
         """Print info about Chuck command"""
         print("Tell a joke about Chuck Norris")
-
-    def speak(self):
-        if self.enable_voice:
-            self.speech.speak(self.first_reaction)
-
-    def find_action(self, data):
-        """This method gets the data and assigns it to an action"""
-        output = "None"
-
-        data = data.lower()
-        data = data.replace("?", "")
-        data = data.replace(",", "")
-
-        # Check if Jarvis has a fixed response to data
-        if data in self.fixed_responses:
-            output = self.fixed_responses[data]  # change return to output =
-        else:
-            # if it doesn't have a fixed response, look if the data corresponds to an action
-            words = data.split()
-            words_aux = data.split()
-
-            action_found = False
-            for word in words:
-                words_aux.remove(word)
-                for action in self.actions:
-                    if type(action) is dict and word in action.keys():
-                        action_found = True
-                        output = word
-                        if len(words_aux) != 0:
-                            words_aux_aux = list(words_aux)
-                            for word_aux in words_aux:
-                                words_aux_aux.remove(word_aux)
-                                for value in action[word]:
-                                    if word_aux == value:
-                                        output += " " + word_aux
-                                        output += " " + " ".join(words_aux_aux)
-                        break
-                    elif word == action:
-                        action_found = True
-                        output = word
-                        break
-                if action_found:
-                    break
-
-        return output
-
-    def executor(self):
-        """
-        This method is opening a terminal session with the user.
-        We can say that it is the core function of this whole class
-        and it joins all the function above to work together like a
-        clockwork. (Terminates when the user send the "exit", "quit"
-        or "goodbye command")
-        :return: Nothing to return.
-        """
-        self.speak()
-        self.cmdloop(self.first_reaction_text)

@@ -2,8 +2,6 @@ from colorama import Fore
 
 from CmdInterpreter import CmdInterpreter
 
-# from packages.memory.memory import Memory
-
 """
     AUTHORS' SCOPE:
         We thought that the source code of Jarvis would
@@ -35,51 +33,33 @@ class Jarvis(CmdInterpreter):
 
     def __init__(self, first_reaction_text=first_reaction_text,
                  prompt=prompt, first_reaction=True, enable_voice=False):
-        """
-        This constructor contains a dictionary with Jarvis Actions (what Jarvis can do).
-        In alphabetically order.
-        """
-        CmdInterpreter.__init__(self, first_reaction_text, prompt, first_reaction, enable_voice)
+        CmdInterpreter.__init__(self, first_reaction_text, prompt,
+                                first_reaction, enable_voice)
 
-        self.actions = ("ask",
-                        "chat",
-                        {"check": ("ram",)},
-                        "chuck",
-                        {"decrease": ("volume",)},
-                        "directions",
-                        {"disable": ("sound",)},
-                        {"enable": ("sound",)},
-                        "error",
-                        "evaluate",
-                        "exit",
-                        "goodbye",
-                        "help",
-                        {"hotspot": ("start", "stop")},
-                        {"increase": ("volume",)},
-                        "match",
-                        "movies",
-                        "music",
-                        "near",
-                        "news",
-                        {"open": ("camera",)},
-                        "pinpoint",
-                        "os",
-                        "quit",
-                        "remind",
-                        "say",
-                        {"screen": ("off",)},
-                        {"display": ("pics",)},
-                        "shutdown",
-                        "reboot",
-                        "todo",
-                        {"update": ("location", "system")},
-                        "weather",
-                        )
+    def default(self, data):
+        """Jarvis let's you know if an error has occurred."""
+        if self.enable_voice:
+            self.speech.text_to_speech("I could not identify your command")
+        print(Fore.RED + "I could not identify your command..." + Fore.RESET)
 
-        self.fixed_responses = {"what time is it": "clock",
-                                "where am i": "pinpoint",
-                                "how are you": "how_are_you"
-                                }
+    def precmd(self, line):
+        """Hook that executes before every command."""
+        words = line.split()
+        if len(words) == 0:
+            line = "None"
+        elif len(words) == 1:
+            pass
+        elif (len(words) > 2) or (words[0] not in self.actions):
+            line = self.find_action(line)
+        return line
+
+    def postcmd(self, stop, line):
+        """Hook that executes after every command."""
+        if self.first_reaction:
+            self.prompt = self.prompt = Fore.RED + "~> What can i do for you?\n" + Fore.RESET
+            self.first_reaction = False
+        if self.enable_voice:
+            self.speech.text_to_speech("What can i do for you?\n")
 
     def speak(self):
         if self.enable_voice:
