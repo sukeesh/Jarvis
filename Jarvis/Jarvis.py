@@ -85,6 +85,7 @@ class Jarvis(Cmd):
                         "quit",
                         "remind",
                         "say",
+                        {"screen": ("off",)},
                         {"display": ("pics",)},
                         "shutdown",
                         "reboot",
@@ -223,8 +224,8 @@ class Jarvis(Cmd):
         print("volume: Decreases you speaker's sound.")
 
     def complete_decrease(self, text, line, begidx, endidx):
-        completions = ("volume",)  # add here more command completions to decrease
-        return [i for i in completions if i.startswith(text)]
+        """Completions for decrease command"""
+        return self.get_completions("decrease", text)
 
     def do_increase(self, s):
         """Increases you speakers' sound."""
@@ -236,8 +237,8 @@ class Jarvis(Cmd):
         print("volume: Increases your speaker's sound.")
 
     def complete_increase(self, text, line, begidx, endidx):
-        completions = ("volume",)  # add here more command completions to increase
-        return [i for i in completions if i.startswith(text)]
+        """Completions for increase command"""
+        return self.get_completions("increase", text)
 
     def do_directions(self, data):
         """Get directions about a destination you are interested to."""
@@ -256,6 +257,10 @@ class Jarvis(Cmd):
     def help_display(self):
         """Prints help about display command"""
         print("Displays photos.")
+
+    def complete_display(self, text, line, begidx, endidx):
+        """Completions for display command"""
+        return self.get_completions("display", text)
 
     def do_cancel(self, s):
         """Cancel an active shutdown."""
@@ -314,6 +319,10 @@ class Jarvis(Cmd):
         print("start: Jarvis will set up your own hotspot.")
         print("stop: Jarvis will stop your hotspot.")
 
+    def complete_hotspot(self, text, line, begidx, endidx):
+        """Completions for enable command"""
+        return self.get_completions("hotspot", text)
+
     def do_movies(self, s):
         """Jarvis will find a good movie for you."""
         try:
@@ -363,6 +372,10 @@ class Jarvis(Cmd):
         """Print help about open command."""
         print("camera: Jarvis will open the camera for you.")
 
+    def complete_open(self, text, line, begidx, endidx):
+        """Completions for open command"""
+        return self.get_completions("open", text)
+
     def do_pinpoint(self, s):
         """Jarvis will pinpoint your location."""
         mapps.locateme()
@@ -397,14 +410,22 @@ class Jarvis(Cmd):
         """Create your personal TODO list!"""
         todoHandler(data)
 
+    def help_todo(self):
+        """Print help about help command."""
+        print("Create your personal TODO list!")
+
     def do_screen(self, s):
         """Turns off the screen instantly"""
         if "off" in s:
             turn_off_screen()
 
-    def help_todo(self):
-        """Print help about help command."""
-        print("Create your personal TODO list!")
+    def help_screen(self, s):
+        """Print help about screen command."""
+        print("Turns off the screen instantly")
+
+    def complete_screen(self, text, line, begidx, endidx):
+        """Completions for screen command"""
+        return self.get_completions("screen", text)
 
     def do_os(self, s):
         """Displays information about your operating system."""
@@ -428,6 +449,10 @@ class Jarvis(Cmd):
         """Displays help about enable command"""
         print("Let Jarvis use his voice.")
 
+    def complete_enable(self, text, line, begidx, endidx):
+        """Completions for enable command"""
+        return self.get_completions("enable", text)
+
     def do_disable(self, s):
         """Deny Jarvis to use his voice."""
         if "sound" in s:
@@ -437,8 +462,12 @@ class Jarvis(Cmd):
         """Displays help about disable command"""
         print("Deny Jarvis to use his voice.")
 
+    def complete_disable(self, text, line, begidx, endidx):
+        """Completions for check command"""
+        return self.get_completions("disable", text)
+
     def do_update(self, s):
-        """Updates location."""
+        """Updates location or system."""
         if "location" in s:
             location = MEMORY.get_data('city')
             loc_str = str(location)
@@ -453,6 +482,16 @@ class Jarvis(Cmd):
         elif "system" in s:
             update_system()
 
+    def complete_update(self, text, line, begidx, endidx):
+        """Completions for update command"""
+        return self.get_completions("update", text)
+
+    def help_update(self):
+        """Prints help about update command"""
+        print("location: Updates location.")
+        print("system: Updates system.")
+
+    # TODO delete this method
     def user_input(self):
         """
         This method is responsible for getting the user's input.
@@ -486,10 +525,6 @@ class Jarvis(Cmd):
 
         user_data = str.lower(user_data)
         return user_data
-
-    def help_update(self):
-        """Prints help about update command"""
-        print("Updates location.")
 
     def do_weather(self, s):
         """Get information about today's weather."""
