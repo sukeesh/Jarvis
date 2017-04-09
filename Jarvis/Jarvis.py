@@ -71,6 +71,8 @@ class Jarvis(CmdInterpreter):
 
         data = data.lower()
         data = data.replace("?", "")
+        data = data.replace("!", "")
+        data = data.replace(".", "")
         data = data.replace(",", "")
 
         # Check if Jarvis has a fixed response to this data
