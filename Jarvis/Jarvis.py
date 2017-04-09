@@ -103,7 +103,7 @@ class Jarvis(CmdInterpreter):
                     break
                 elif word == action:  # command name exists
                     action_found = True
-                    output = word
+                    output = word + " " + " ".join(words_remaining)
                     break
             if action_found:
                 break
