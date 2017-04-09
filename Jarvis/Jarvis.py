@@ -24,12 +24,7 @@ from packages.systemOptions import turn_off_screen, update_system
         implements the core functionality of Jarvis in a
         simpler way than the original __main__.py.
     HOW TO EXTEND JARVIS:
-        If you would like to add extra functionality to
-        Jarvis (for example new actions like "record" etc.)
-        you only need to add this action to the action dict
-        (look on __init__(self)) along with a apropriate
-        function name. Then you need to implement this function
-        as a local function on reactions() method.
+        In progress..
     DETECTED ISSUES:
         * Furthermore, "near me" command is unable to find
         the actual location of our laptops.
@@ -59,47 +54,6 @@ class Jarvis(Cmd):
         This constructor contains a dictionary with Jarvis Actions (what Jarvis can do).
         In alphabetically order.
         """
-        # self.actions = {"ask jarvis": "ask_jarvis",
-        #                 "chat": "ask_jarvis",
-        #                 "check ram": "check_ram",
-        #                 "decrease volume": "decrease_volume",
-        #                 "directions": "directions",           # Doesn't check if 'to' exist
-        #                 "disable sound": "disable_sound",
-        #                 "enable sound": "enable_sound",
-        #                 "error": "error",
-        #                 "evaluate": "evaluate",
-        #                 "exit": "close",
-        #                 "goodbye": "close",
-        #                 "help": "help_jarvis",
-        #                 "hotspot start": "hotspot_start",
-        #                 "hotspot stop": "hotspot_stop",
-        #                 "how are you": "how_are_you",
-        #                 "increase volume": "increase_volume",
-        #                 "movies": "movies",
-        #                 "music": "music",
-        #                 "near": "near",
-        #                 "news": "news",
-        #                 "open camera": "open_camera",
-        #                 "os": "os_detection",
-        #                 "quit": "close",
-        #                 "remind": "remind",
-        #                 "say": "say",
-        #                 "search for a string in file": "string_pattern",
-        #                 "show me pics of": "display_pics",
-        #                 "shutdown -c": "cancel_shutdown",
-        #                 "shutdown system": "shutdown",
-        #                 "reboot system": "reboot",
-        #                 "todo": "todo",
-        #                 "turn off screen": "screen_off",
-        #                 "update location": "update_location",
-        #                 "update my system": "update_my_system",
-        #                 "weather": "weather",
-        #                 "what time is it": "clock",
-        #                 "where am i": "pinpoint",
-        #                 "what about chuck": "what_about_chuck",
-        #                 }
-        # self.speech = voice.Voice()
-
         Cmd.__init__(self)
         self.first_reaction_text = first_reaction_text
         self.prompt = prompt
@@ -162,8 +116,6 @@ class Jarvis(Cmd):
         if len(words) == 1:
             pass
         elif (len(words) > 2) or (words[0] not in self.actions):
-        #     line = self.find_action(line)
-        # elif words[0] not in self.actions:
             line = self.find_action(line)
         return line
 
@@ -574,22 +526,6 @@ class Jarvis(Cmd):
         if self.enable_voice:
             self.speech.speak(self.first_reaction)
 
-
-# a = (
-#     "lol",
-#     {"food": ("banana",)},
-#     "z"
-# )
-#
-# output = ""
-# resto_frase = "banana"
-# for item in a:
-#     if type(item) is dict:
-#         output = item.keys()[0]
-#         for word in resto_frase.split():
-#             print word
-#             if word in item.values()[0]:
-#                 output += " " + word
 
     def find_action(self, data):
         """This method gets the data and assigns it to an action"""
