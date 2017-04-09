@@ -90,25 +90,16 @@ class Jarvis(CmdInterpreter):
 
         words = data.split()
         words_remaining = data.split()  # this will help us to stop the iteration
-        # or to find arguments
 
         # check word by word if exists an action with the same name
         for word in words:
             words_remaining.remove(word)
             for action in self.actions:
+                # action can be a string or a dict
                 if type(action) is dict and word in action.keys():
                     # command name exists, assign it to the output
                     action_found = True
-                    output = word
-                    # command is a dictionary, let's check if remaining words are one of it's completions
-                    if len(words_remaining) != 0:
-                        command_arguments = list(words_remaining)
-                        for argument in words_remaining:
-                            command_arguments.remove(argument)
-                            for value in action[word]:
-                                if argument == value:
-                                    output += " " + argument
-                                    output += " " + " ".join(command_arguments)
+                    output = self._generate_output_if_dict(action, word, words_remaining)
                     break
                 elif word == action:  # command name exists
                     action_found = True
@@ -116,6 +107,22 @@ class Jarvis(CmdInterpreter):
                     break
             if action_found:
                 break
+        return output
+
+    @staticmethod
+    def _generate_output_if_dict(action, word, words_remaining):
+        """Generates the correct output if action is a dict"""
+        output = word
+
+        # command is a dictionary, let's check if remaining words are one of it's completions
+        if len(words_remaining) != 0:
+            command_arguments = list(words_remaining)  # make a copy
+            for argument in words_remaining:
+                command_arguments.remove(argument)
+                for value in action[word]:
+                    if argument == value:
+                        output += " " + argument
+                        output += " " + " ".join(command_arguments)
         return output
 
     def executor(self):
