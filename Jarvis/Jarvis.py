@@ -50,7 +50,7 @@ class Jarvis(CmdInterpreter):
         elif len(words) == 1:
             pass
         elif (len(words) > 2) or (words[0] not in self.actions):
-            line = self.find_action(line)
+            line = self.parse_input(line)
         return line
 
     def postcmd(self, stop, line):
@@ -65,7 +65,7 @@ class Jarvis(CmdInterpreter):
         if self.enable_voice:
             self.speech.speak(self.first_reaction)
 
-    def find_action(self, data):
+    def parse_input(self, data):
         """This method gets the data and assigns it to an action"""
         output = "None"
 
@@ -73,37 +73,49 @@ class Jarvis(CmdInterpreter):
         data = data.replace("?", "")
         data = data.replace(",", "")
 
-        # Check if Jarvis has a fixed response to data
+        # Check if Jarvis has a fixed response to this data
         if data in self.fixed_responses:
             output = self.fixed_responses[data]  # change return to output =
         else:
             # if it doesn't have a fixed response, look if the data corresponds to an action
-            words = data.split()
-            words_aux = data.split()
+            output = self._find_action(data)
 
-            action_found = False
-            for word in words:
-                words_aux.remove(word)
-                for action in self.actions:
-                    if type(action) is dict and word in action.keys():
-                        action_found = True
-                        output = word
-                        if len(words_aux) != 0:
-                            words_aux_aux = list(words_aux)
-                            for word_aux in words_aux:
-                                words_aux_aux.remove(word_aux)
-                                for value in action[word]:
-                                    if word_aux == value:
-                                        output += " " + word_aux
-                                        output += " " + " ".join(words_aux_aux)
-                        break
-                    elif word == action:
-                        action_found = True
-                        output = word
-                        break
-                if action_found:
+        return output
+
+    def _find_action(self, data):
+        """Checks if input is a defined action.
+        :return: returns the action"""
+        output = "None"
+        action_found = False
+
+        words = data.split()
+        words_remaining = data.split()  # this will help us to stop the iteration
+        # or to find arguments
+
+        # check word by word if exists an action with the same name
+        for word in words:
+            words_remaining.remove(word)
+            for action in self.actions:
+                if type(action) is dict and word in action.keys():
+                    # command name exists, assign it to the output
+                    action_found = True
+                    output = word
+                    # command is a dictionary, let's check if remaining words are one of it's completions
+                    if len(words_remaining) != 0:
+                        command_arguments = list(words_remaining)
+                        for argument in words_remaining:
+                            command_arguments.remove(argument)
+                            for value in action[word]:
+                                if argument == value:
+                                    output += " " + argument
+                                    output += " " + " ".join(command_arguments)
                     break
-
+                elif word == action:  # command name exists
+                    action_found = True
+                    output = word
+                    break
+            if action_found:
+                break
         return output
 
     def executor(self):
