@@ -238,8 +238,13 @@ def reminderQuit():
     """
     This function has to be called when shutting down. It terminates all waiting threads.
     """
-    for index, el in timerList.iteritems():
-        el.cancel()
+    try:
+        for index, el in timerList.iteritems():
+            el.cancel()
+    except:
+        for index, el in timerList.items():
+            el.cancel()
+
 
 timerList = {}
 reminderList = readFile("reminderlist.txt", {'items':[]})
