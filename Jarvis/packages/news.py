@@ -1,0 +1,162 @@
+# !!! This uses the https://newsapi.org/ api. TO comply with the TOU
+# !!! we must link back to this site whenever we display results.
+
+import urllib, json
+import webbrowser
+from packages.memory.memory import Memory
+from colorama import init
+from colorama import Fore, Back, Style
+
+'''
+    CLASS News
+    To run the full news class run:
+        news_options
+        THEN
+        get_news
+    For quick news run:
+        request_news
+
+    example:
+    n = News()
+    n.news_options()
+    n.get_news()
+    OR
+    News.request_news()
+'''
+class News:
+
+    def __init__(self, source="google-news", apiKey="7488ba8ff8dc43459d36f06e7141c9e5"):
+        self.apiKey = apiKey
+        self.source = source
+        self.url = "https://newsapi.org/v1/articles?source=google-news&sortBy=top&apiKey=7488ba8ff8dc43459d36f06e7141c9e5"
+
+    '''
+        This sets the users options and loads them from Memory
+        if they exist
+    '''
+    def news_options(self):
+        m = Memory()
+
+        # check to see if user already has default news source
+        if m.get_date('news-source'):
+            print("your default news source is " + m.get_date('news-source'))
+            print("Would you like news from this source? (yes/no): ")
+            try:
+                x = raw_input()
+            except:
+                x = input()
+            if x == 'y' or x == 'yes':
+                self.source = m.get_date('news-source')
+        # if not set get users preference
+        else:
+
+            print("Select Source (1-5):")
+            print("1: BBC")
+            print("2: BUZZFEED")
+            print("3: Google")
+            print("4: Reddit")
+            print("5: TechCrunch")
+
+            try:
+                i = int(raw_input())
+            except:
+                i = int(input())
+
+            if i == 1:
+                self.source = "bbc-news"
+            elif i == 2:
+                self.source = "buzzfeed"
+            elif i == 3:
+                self.source = "google-news"
+            elif i == 4:
+                self.source = "reddit-r-all"
+            elif i == 5:
+                self.source = "techcrunch"
+
+            print("would you like to set this as your defualt? (yes/no): ")
+            try:
+                x = raw_input()
+            except:
+                x = input()
+            if x == 'y' or x == 'yes':
+                m.update_data('news-source', self.source) # save to memory
+                m.save()
+
+
+    '''
+        This sets the url and sends it to request_news()
+    '''
+    def get_news(self):
+        u = "https://newsapi.org/v1/articles?source=" + self.source + "&sortby=top&apiKey=" + self.apiKey
+        self.request_news(u)
+
+    '''
+        This has all the logic to request and parse the json.
+        This function DOES NOT check user preferences.
+        It also includes user interactions for getting more info on an articles
+    '''
+    def request_news(self, url=None):
+        # check to see if a url was passed
+        if url is None:
+            url = self.url
+        # News API URL. This is pulling from google news source.
+        # Other sources available here: https://newsapi.org/sources
+        #url = "https://newsapi.org/v1/articles?source=google-news&sortBy=top&apiKey=7488ba8ff8dc43459d36f06e7141c9e5"
+        response = urllib.urlopen(url)
+        # Load json
+        data = json.loads(response.read())
+        article_list = {}
+        index = 1
+        # print articles with their index
+        print("Top News Articles from" + source)
+        for article in data['articles']:
+            # print (Fore.GREEN + str(index) + ": " + article['title'] + Fore.RESET)
+            print(str(index) + ": " + article['title'])
+            article_list[index] = article
+            index += 1
+
+        # Attribution link for News API to comply with TOU
+        print("Powered by News API. Type NewsAPI to learn more")
+        print("Type index to expand news\n")
+
+        # Check to see if index or NewsAPI was enterd
+        try:
+            idx = raw_input()
+        except:
+            idx = input()
+        if idx.lower() == "newsapi":
+            webbrowser.open('https://newsapi.org/')
+            return
+
+        # check if we have a valid index
+        try:
+            int(idx)
+            if int(idx) > index:
+                print("Not a valid index")
+                return
+        except:
+            print("Not a valid index")
+            return
+
+        # if index valid print article description
+        print(article_list[int(idx)]['description'])
+
+        print("Do you want to read more? (yes/no): ")
+        try:
+            i = raw_input()
+        except:
+            i = input()
+        # if user wants to read more open browser to article url
+        if i.lower() == "yes" or i.lower() == 'y':
+            webbrowser.open(article_list[int(idx)]['url'])
+            return
+        else:
+            return
+
+
+
+
+#n = News()
+
+#n.news_options()
+#n.get_news()
