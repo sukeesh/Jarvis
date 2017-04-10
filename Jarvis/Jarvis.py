@@ -70,10 +70,13 @@ class Jarvis(CmdInterpreter):
         output = "None"
 
         data = data.lower()
-        data = data.replace("?", "")
-        data = data.replace("!", "")
-        data = data.replace(".", "")
-        data = data.replace(",", "")
+
+        # say command is better if data has punctuation marks
+        if "say" not in data:
+            data = data.replace("?", "")
+            data = data.replace("!", "")
+            data = data.replace(".", "")
+            data = data.replace(",", "")
 
         # Check if Jarvis has a fixed response to this data
         if data in self.fixed_responses:
