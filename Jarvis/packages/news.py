@@ -20,7 +20,8 @@ from colorama import Fore, Back, Style
     n = News()
     n.news()
     OR
-    News.quick_news()
+    n = News()
+    n.quick_news()
 '''
 class News:
 
