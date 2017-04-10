@@ -320,7 +320,7 @@ class CmdInterpreter(Cmd):
         try:
             newws.show_news()
         except:
-            print Fore.RED + "I couldn't find news" + Fore.RESET
+            print(Fore.RED + "I couldn't find news" + Fore.RESET)
 
     def help_news(self):
         """Print help about news command."""
@@ -329,7 +329,7 @@ class CmdInterpreter(Cmd):
     def do_open(self, s):
         """Jarvis will open the camera for you."""
         if "camera" in s:
-            print "Opening Cheese ...... "
+            print("Opening Cheese ...... ")
             system("cheese")
 
     def help_open(self):
@@ -393,12 +393,12 @@ class CmdInterpreter(Cmd):
 
     def do_os(self, s):
         """Displays information about your operating system."""
-        print Fore.BLUE + '[!] Operating System Information' + Fore.RESET
-        print Fore.GREEN + '[*] ' + sys() + Fore.RESET
-        print Fore.GREEN + '[*] ' + release() + Fore.RESET
-        print Fore.GREEN + '[*] ' + dist()[0] + Fore.RESET
+        print(Fore.BLUE + '[!] Operating System Information' + Fore.RESET)
+        print(Fore.GREEN + '[*] ' + sys() + Fore.RESET)
+        print(Fore.GREEN + '[*] ' + release() + Fore.RESET)
+        print(Fore.GREEN + '[*] ' + dist()[0] + Fore.RESET)
         for _ in architecture():
-            print Fore.GREEN + '[*] ' + _ + Fore.RESET
+            print(Fore.GREEN + '[*] ' + _ + Fore.RESET)
 
     def help_os(self):
         """Displays information about your operating system."""
