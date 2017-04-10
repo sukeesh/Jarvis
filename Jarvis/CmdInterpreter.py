@@ -57,7 +57,7 @@ class CmdInterpreter(Cmd):
                         "movies",
                         "music",
                         "near",
-                        {"news": ("quick",)},
+                        "news",
                         {"open": ("camera",)},
                         "play",
                         "pinpoint",
