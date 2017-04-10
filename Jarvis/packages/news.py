@@ -29,6 +29,7 @@ class News:
         self.apiKey = apiKey
         self.source = source
         self.url = "https://newsapi.org/v1/articles?source=google-news&sortBy=top&apiKey=7488ba8ff8dc43459d36f06e7141c9e5"
+        self.m = Memory()
 
     '''
         This is the defualt news function. It checks to see if the
@@ -57,53 +58,58 @@ class News:
         if they exist
     '''
     def news_options(self):
-        m = Memory()
+
 
         # check to see if user already has default news source
-        if m.get_data('news-source'):
-            print("your default news source is " + m.get_data('news-source'))
+        if self.m.get_data('news-source'):
+            print("your default news source is " + self.m.get_data('news-source'))
             print("Would you like news from this source? (yes/no): ")
             try:
                 x = raw_input()
             except:
                 x = input()
             if x == 'y' or x == 'yes':
-                self.source = m.get_data('news-source')
+                self.source = self.m.get_data('news-source')
             # if not set get users preference
             else:
-                # Other sources available here: https://newsapi.org/sources
-                print("Select Source (1-5):")
-                print("1: BBC")
-                print("2: BUZZFEED")
-                print("3: Google")
-                print("4: Reddit")
-                print("5: TechCrunch")
+                self.get_opt()
+        else:
+            self.get_opt()
 
-                try:
-                    i = int(raw_input())
-                except:
-                    i = int(input())
 
-                if i == 1:
-                    self.source = "bbc-news"
-                elif i == 2:
-                    self.source = "buzzfeed"
-                elif i == 3:
-                    self.source = "google-news"
-                elif i == 4:
-                    self.source = "reddit-r-all"
-                elif i == 5:
-                    self.source = "techcrunch"
+    def get_opt(self):
+        # Other sources available here: https://newsapi.org/sources
+        print("Select Source (1-5):")
+        print("1: BBC")
+        print("2: BUZZFEED")
+        print("3: Google")
+        print("4: Reddit")
+        print("5: TechCrunch")
 
-                print("would you like to set this as your defualt? (yes/no): ")
-                try:
-                    x = raw_input()
-                except:
-                    x = input()
-                if x == 'y' or x == 'yes':
-                    m.update_data('news-source', self.source) # save to memory
-                    m.save()
+        try:
+            i = int(raw_input())
+        except:
+            i = int(input())
 
+        if i == 1:
+            self.source = "bbc-news"
+        elif i == 2:
+            self.source = "buzzfeed"
+        elif i == 3:
+            self.source = "google-news"
+        elif i == 4:
+            self.source = "reddit-r-all"
+        elif i == 5:
+            self.source = "techcrunch"
+
+        print("would you like to set this as your defualt? (yes/no): ")
+        try:
+            x = raw_input()
+        except:
+            x = input()
+        if x == 'y' or x == 'yes':
+            self.m.update_data('news-source', self.source) # save to memory
+            self.m.save()
 
     '''
         This sets the url and sends it to request_news()
@@ -127,7 +133,7 @@ class News:
         article_list = {}
         index = 1
         # print articles with their index
-        print("Top News Articles:")
+        print("Top News Articles from " + self.source)
         for article in data['articles']:
             # print (Fore.GREEN + str(index) + ": " + article['title'] + Fore.RESET)
             print(str(index) + ": " + article['title'])
