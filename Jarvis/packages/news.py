@@ -45,6 +45,13 @@ class News:
         self.request_news()
 
     '''
+        Gets and returns JSON data of news
+    '''
+    def get_news_json(self):
+        response = urllib.urlopen(self.url)
+        return json.loads(response.read())
+
+    '''
         This sets the users options and loads them from Memory
         if they exist
     '''
