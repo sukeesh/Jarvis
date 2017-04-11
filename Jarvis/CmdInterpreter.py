@@ -253,7 +253,7 @@ class CmdInterpreter(Cmd):
         """Jarvis will get your calculations done!"""
         tempt = s.split(" ", 1) or ""
         if len(tempt) > 1:
-            evaluator.calc(tempt[1])
+            evaluator.calc(tempt[1], self)
         else:
         	print_say("Error: Not in correct format", self, Fore.RED)
 
