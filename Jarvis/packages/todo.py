@@ -4,11 +4,12 @@ import os
 import sys
 from datetime import datetime as dt
 from uuid import uuid4
-from reminder import parseDate, parseNumber, addReminder, removeReminder
+from reminder import addReminder, removeReminder
 from colorama import Fore, Back
 
 from fileHandler import writeFile, readFile, str2date
 from utilities.lexicalSimilarity import findTrigger
+from utilities.textParser import parseDate, parseNumber
 
 def printItem(item, index):
     if 'priority' in item and item['priority'] >= 50:
