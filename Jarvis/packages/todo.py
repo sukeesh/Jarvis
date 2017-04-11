@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
+
 import os
 import sys
 from datetime import datetime as dt
 from uuid import uuid4
 from reminder import parseDate, parseNumber, addReminder, removeReminder
-from fileHandler import writeFile, readFile, str2date
 from colorama import Fore, Back
+
+from fileHandler import writeFile, readFile, str2date
+from utilities.lexicalSimilarity import findTrigger
 
 def printItem(item, index):
     if 'priority' in item and item['priority'] >= 50:
@@ -55,12 +58,19 @@ def getItem(string, todoList):
         retList.append(index)
     return retList
 
-def todoHandler(data):
-    numWords = len(data.split())
-    if "add" in data:
-        data = data.replace("add", "", 1)
+actions = { "add": "handlerAdd",
+            "new": "handlerAdd",
+            "remove": "handlerRemove",
+            "delete": "handlerRemove",
+            "priority": "handlerPriority",
+            "complete": "handlerComplete",
+            "list": "handlerList",
+            "show": "handlerList",
+            "print": "handlerList"}
+def reactions(key, data):
+    def handlerAdd(data):
         if "comment" in data:
-            if numWords < 4:
+            if numWords < 3:
                 print(Fore.RED + "Not enough arguments for 'todo add comment <index> <comment>'" + Fore.RESET)
                 return
             data = data.replace("comment", "", 1)
@@ -78,7 +88,7 @@ def todoHandler(data):
                 item = item['items'][i]
             item['comment'] = " ".join(words[1:])
         elif "due" in data:
-            if numWords < 4:
+            if numWords < 3:
                 print(Fore.RED + "Not enough arguments for 'todo add due <index> <time>'" + Fore.RESET)
                 return
             data = data.replace("due", "", 1)
@@ -104,7 +114,7 @@ def todoHandler(data):
                     urgency = 1
             addReminder(name=item['name'], body=item['comment'], uuid=item['uuid'], time=item['due'], urgency=urgency)
         else:
-            if numWords < 2:
+            if numWords < 1:
                 print(Fore.RED + "Not enough arguments for 'todo add <title>'" + Fore.RESET)
                 return
             data = " ".join(data.split())
@@ -127,8 +137,11 @@ def todoHandler(data):
             if not 'items' in item:
                 item['items'] = []
             item['items'].append(newItem)
-    elif "remove" in data and numWords == 2:
-        data = data.replace("remove", "", 1)
+        writeFile("todolist.txt", todoList)
+
+    def handlerRemove(data):
+        if not numWords == 1:
+            return
         try:
             index = getItem(data.split()[0], todoList)
             deleteIndex = index.pop()
@@ -142,8 +155,11 @@ def todoHandler(data):
         for i in index:
             item = item['items'][i]
         item['items'].remove(item['items'][deleteIndex])
-    elif "priority" in data and numWords > 2:
-        data = data.replace("priority", "", 1)
+        writeFile("todolist.txt", todoList)
+
+    def handlerPriority(data):
+        if not numWords >= 2:
+            return
         words = data.split()
         if "critical" in data:
             data = data.replace("critical", "", 1)
@@ -171,8 +187,11 @@ def todoHandler(data):
         for i in index:
             item = item['items'][i]
         item['priority'] = priority
-    elif "complete" in data and numWords > 2:
-        data = data.replace("complete", "", 1)
+        writeFile("todolist.txt", todoList)
+
+    def handlerComplete(data):
+        if not numWords >= 1:
+            return
         words = data.split()
         try:
             index = getItem(words[0], todoList)
@@ -193,20 +212,30 @@ def todoHandler(data):
                 print(Fore.RED + "The completion level must be an integer between 0 and 100." + Fore.RESET)
                 return
         item['complete'] = complete
-    elif "list" in data:
-        pass
-    else:
-        print(Fore.GREEN + "Supported Commands: todo <command>" + Fore.RESET)
-        print(Fore.GREEN + "\tadd [<index>] <todo - comment>, add comment <index> <comment>, add due <index> <time>" + Fore.RESET)
-        print(Fore.GREEN + "\tremove <index>" + Fore.RESET)
-        print(Fore.GREEN + "\tcomplete <index> [<completion>]" + Fore.RESET)
-        print(Fore.GREEN + "\tpriority <index> [<level>]" + Fore.RESET)
-        print(Fore.GREEN + "\tlist" + Fore.RESET)
-        return
+        writeFile("todolist.txt", todoList)
 
-    todoList['items'] = sort(todoList['items'])
-    _print(todoList['items'])
-    writeFile("todolist.txt", todoList)
+    def handlerList(data):
+        todoList['items'] = sort(todoList['items'])
+        _print(todoList['items'])
+
+    numWords = len(data.split())
+    locals()[key](data)
+
+def todoHandler(data):
+    index = 100
+    action = 0
+    for key in actions:
+        newIndex = findTrigger(data, key)
+        if not newIndex == -1:
+            if newIndex < index:
+                index = newIndex
+                action = actions[key]
+    if not action:
+        return
+    data = data.split();
+    data.pop(index)
+    data = " ".join(data)
+    reactions(action, data)
 
 todoList = readFile("todolist.txt", {'items':[]})
 todoList['items'] = fixTypes(sort(todoList['items']))

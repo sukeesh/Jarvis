@@ -384,8 +384,14 @@ class CmdInterpreter(Cmd):
         todoHandler(data)
 
     def help_todo(self):
-        """Print help about help command."""
+        """Print help about todo command."""
         print("Create your personal TODO list!")
+        print("Supported Commands: todo <command>")
+        print("\tadd [<index>] <todo - comment>, add comment <index> <comment>, add due <index> <time>")
+        print("\tremove <index>")
+        print("\tcomplete <index> [<completion>]")
+        print("\tpriority <index> [<level>]")
+        print("\tlist")
 
     def do_screen(self, s):
         """Turns off the screen instantly"""

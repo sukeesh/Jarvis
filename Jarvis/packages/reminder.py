@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 import os
 import json
 
@@ -16,6 +17,7 @@ from colorama import init
 from colorama import Fore, Back, Style
 
 from fileHandler import writeFile, readFile, str2date
+from utilities.lexicalSimilarity import findTrigger, compareSentence
 
 def parseNumber(string, numwords = {}):
     """
@@ -162,96 +164,6 @@ def parseDate(string):
 def sort(data):
     return sorted(data, key = lambda k: (k['time']))
 
-def compareWord(targets, word, distancePenalty = 0):
-    scores = list()
-    for index, e in enumerate(targets):
-        scores.append({"i": index, "s": scoreWord(e, word) + index*distancePenalty})
-    scores = sorted(scores, key = lambda k: (k["s"]))
-    return (scores[0]["i"], scores[0]["s"])
-
-def scoreWord(target, word):
-    lastIndex = -1
-    score = 0
-    notFound = 0
-    found = 0
-    target = list(target)
-    for e in word:
-        index = findLetter(target, e, lastIndex)
-        if index == -1:
-            notFound += 1
-            continue
-        elif index < lastIndex:
-            score += (lastIndex - index) * 0.5
-        lastIndex = max(index, lastIndex)
-        found += 1
-    score += notFound * 2
-    score += (len(target) - found) * 1
-    return score*1.0/len(target)
-
-def findLetter(letters, l, index):
-    try:
-        indexOffset = letters.index(l, index + 1)
-    except ValueError:
-        letters.reverse()
-        try:
-            indexOffset = len(letters) - letters.index(l, len(letters) - index) - 1
-        except ValueError:
-            indexOffset = -1
-    return indexOffset
-
-def compareSentence(targets, sentence):
-    scores = list()
-    for index, e in enumerate(targets):
-        score, indexList = scoreSentence(e, sentence)
-        scores.append({"i": index, "s": score, "l": indexList})
-    scores = sorted(scores, key = lambda k: (k["s"]))
-    return (scores[0]["i"], scores[0]["s"], scores[0]["l"])
-
-def scoreSentence(target, sentence):
-    lastIndex = -1
-    score = 0
-    notFound = 0
-    found = 0
-    indexList = list()
-    target = target.split()
-    sentence = sentence.split()
-    for e in sentence:
-        index = findWord(target, e, lastIndex)
-        if index == -1:
-            notFound += 1
-            continue
-        elif index < lastIndex:
-            score += (lastIndex - index) * 0.5
-        if index in indexList:
-            notFound += 1
-            continue
-        else:
-            lastIndex = max(index, lastIndex)
-            found += 1
-            indexList.append(index)
-    score += notFound * 2
-    score += (len(target) - found) * 1
-    return (score*1.0/len(target), indexList)
-
-def findWord(words, w, index, distancePenalty = 0):
-    index = min(len(words), max(index, -1))
-    if index < len(words) - 1:
-        indexOffset, relScore = compareWord(words[index + 1:], w, distancePenalty)
-        indexOffset += index + 1
-    else:
-        relScore = 2
-    if relScore > 1:
-        if index > 0:
-            words = words[:index]
-            words.reverse()
-            indexOffset, relScore = compareWord(words, w, distancePenalty)
-            indexOffset = index - indexOffset - 1
-        else:
-            relScore = 2
-        if relScore > 1:
-            indexOffset = -1
-    return indexOffset
-
 def findReminder(string):
     """
     Find reminder by name.
@@ -266,10 +178,6 @@ def findReminder(string):
     if score < 1.0 and not reminderList['items'][index]['hidden']:
         return (index, indexList)
     return (-1, [])
-
-def findTrigger(string, trigger):
-    index = findWord(string.split(), trigger, -1, 0.5)
-    return index
 
 def showAlarm(notification, name):
     print(Fore.BLUE + name + Fore.RESET)
@@ -318,7 +226,6 @@ def removeReminder(uuid):
             break;
     writeFile("reminderlist.txt", reminderList)
 
-
 actions = { "add": "handlerAdd",
             "remove": "handlerRemove",
             "delete": "handlerRemove",
@@ -326,12 +233,12 @@ actions = { "add": "handlerAdd",
             "print": "handlerList",
             "clear": "handlerClear"}
 def reactions(key, data):
-    def handlerAdd():
+    def handlerAdd(data):
         skip, time = parseDate(data)
         if skip:
             addReminder(name=" ".join(data.split()[skip:]), time=time, hidden=False, uuid=uuid4().hex)
 
-    def handlerRemove():
+    def handlerRemove(data):
         skip, number = parseNumber(data)
         if skip:
             index = number - 1
@@ -343,7 +250,7 @@ def reactions(key, data):
         else:
             print("Could not find selected reminder")
 
-    def handlerList():
+    def handlerList(data):
         count = 0
         for index, e in enumerate(reminderList['items']):
             if not e['hidden']:
@@ -352,11 +259,11 @@ def reactions(key, data):
         if count == 0:
             print("Reminder list is empty, add a new entry with 'remind add <time> <name>'")
 
-    def handlerClear():
+    def handlerClear(data):
         reminderList['items'] = [k for k in reminderList['items'] if k['hidden']]
         writeFile("reminderlist.txt", reminderList)
 
-    locals()[key]()
+    locals()[key](data)
 
 def reminderHandler(data):
     index = 100
@@ -366,7 +273,7 @@ def reminderHandler(data):
         if not newIndex == -1:
             if newIndex < index:
                 index = newIndex
-                key = actions[key]
+                action = actions[key]
     if not action:
         return
     data = data.split();
