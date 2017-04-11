@@ -1,17 +1,6 @@
-from os import system
-from platform import system as sys
-from platform import architecture, release, dist
-from time import ctime
 from colorama import Fore
-from utilities import voice
-from packages.music import play
-from packages.todo import todoHandler
-from packages.reminder import reminderHandler, reminderQuit
-from packages import newws, mapps, picshow, evaluator
-from packages import chat, directions_to, near_me, weather_pinpoint, chuck
-from packages.memory.memory import Memory
-from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
-from packages.systemOptions import turn_off_screen, update_system
+
+from CmdInterpreter import CmdInterpreter
 
 """
     AUTHORS' SCOPE:
@@ -21,365 +10,125 @@ from packages.systemOptions import turn_off_screen, update_system
         implements the core functionality of Jarvis in a
         simpler way than the original __main__.py.
     HOW TO EXTEND JARVIS:
-        If you would like to add extra functionality to
-        Jarvis (for example new actions like "record" etc.)
-        you only need to add this action to the action dict
-        (look on __init__(self)) along with a apropriate
-        function name. Then you need to implement this function
-        as a local function on reactions() method.
+        In progress..
     DETECTED ISSUES:
         * Furthermore, "near me" command is unable to find
         the actual location of our laptops.
 """
 
-MEMORY = Memory()
 
-
-class Jarvis:
+class Jarvis(CmdInterpreter):
     # We use this variable at Breakpoint #1.
     # We use this in order to allow Jarvis say "Hi", only at the first
     # interaction.
-    first_reaction = True
-    enable_voice = False
+    first_reaction_text = ""
+    first_reaction_text += Fore.BLUE + 'Jarvi\'s sound is by default disabled.' + Fore.RESET
+    first_reaction_text += "\n"
+    first_reaction_text += Fore.BLUE + 'In order to let Jarvis talk out loud type: '
+    first_reaction_text += Fore.RESET + Fore.RED + 'enable sound' + Fore.RESET
+    first_reaction_text += "\n"
+    prompt = Fore.RED + "~> Hi, what can i do for you?\n" + Fore.RESET
 
     # This can be used to store user specific data
 
-    def __init__(self):
-        """
-        This constructor contains a dictionary with Jarvis Actions (what Jarvis can do).
-        In alphabetically order.
-        """
-        self.actions = {"ask jarvis": "ask_jarvis",
-                        "chat": "ask_jarvis",
-                        "check ram": "check_ram",
-                        "decrease volume": "decrease_volume",
-                        "directions": "directions",           # Doesn't check if 'to' exist
-                        "disable sound": "disable_sound",
-                        "enable sound": "enable_sound",
-                        "error": "error",
-                        "evaluate": "evaluate",
-                        "exit": "close",
-                        "goodbye": "close",
-                        "help": "help_jarvis",
-                        "hotspot start": "hotspot_start",
-                        "hotspot stop": "hotspot_stop",
-                        "how are you": "how_are_you",
-                        "increase volume": "increase_volume",
-                        "movies": "movies",
-                        "music": "music",
-                        "near": "near",
-                        "news": "news",
-                        "open camera": "open_camera",
-                        "os": "os_detection",
-                        "quit": "close",
-                        "remind": "remind",
-                        "say": "say",
-                        "search for a string in file": "string_pattern",
-                        "show me pics of": "display_pics",
-                        "shutdown -c": "cancel_shutdown",
-                        "shutdown system": "shutdown",
-                        "reboot system": "reboot",
-                        "todo": "todo",
-                        "turn off screen": "screen_off",
-                        "update location": "update_location",
-                        "update my system": "update_my_system",
-                        "weather": "weather",
-                        "what time is it": "clock",
-                        "where am i": "pinpoint",
-                        "what about chuck": "what_about_chuck",
-                        }
-        self.speech = voice.Voice()
+    def __init__(self, first_reaction_text=first_reaction_text,
+                 prompt=prompt, first_reaction=True, enable_voice=False):
+        CmdInterpreter.__init__(self, first_reaction_text, prompt,
+                                first_reaction, enable_voice)
 
-    # @staticmethod
-    def reactions(self, key, data):
-        """
-        This function contains local functions which are implementing
-        Jarvis' actions. In alphabetically order.
-        :param key: the action which corresponds to a local function
-                    eg. key = (How are you) (according to actions dictionary)
-                    corresponds to how_are_you() function.
-                Data: the data which corresponds to an extra input needed
-                    eg. music method needs a song name. (music closer)
-        :return: This method does not return any objects.
-        """
+    def default(self, data):
+        """Jarvis let's you know if an error has occurred."""
+        if self.enable_voice:
+            self.speech.text_to_speech("I could not identify your command")
+        print(Fore.RED + "I could not identify your command..." + Fore.RESET)
 
-        def ask_jarvis():
-            """Start chating with Jarvis"""
-            chat.main()
+    def precmd(self, line):
+        """Hook that executes before every command."""
+        words = line.split()
+        if len(words) == 0:
+            line = "None"
+        elif len(words) == 1:
+            pass
+        elif (len(words) > 2) or (words[0] not in self.actions):
+            line = self.parse_input(line)
+        return line
 
-        def check_ram():
-            """Checks your system's RAM stats."""
-            system("free -lm")
-
-        def clock():
-            """Gives information about time."""
-            print(Fore.BLUE + ctime() + Fore.RESET)
-
-        def decrease_volume():
-            """Decreases you speakers' sound."""
-            system("pactl -- set-sink-volume 0 -10%")
-
-        def directions():
-            """Get directions about a destination you are interested to."""
-            directions_to.main(data)
-
-        def display_pics():
-            """Displays photos."""
-            picshow.showpics(data)
-
-        def cancel_shutdown():
-            """Cancel an active shutdown."""
-            cancelShutdown()
-
-        def shutdown():
-            """Shutdown the system."""
-            shutdown_system()
-
-        def reboot():
-            """Reboot the system."""
-            reboot_system()
-
-        def error():
-            """Jarvis let you know if an error has occurred."""
-            if self.enable_voice:
-                self.speech.text_to_speech("I could not identify your command")
-            print(Fore.RED +
-                  "I could not identify your command..." + Fore.RESET)
-
-        def evaluate():
-            """Jarvis will get your calculations done!"""
-            tempt = data.split(" ", 1) or ""
-            if len(tempt) > 1:
-                evaluator.calc(tempt[1])
-            else:
-                print(Fore.RED + "Error: Not in correct format" + Fore.RESET)
-
-        def hotspot_start():
-            """Jarvis will set up your own hotspot."""
-            system("sudo ap-hotspot start")
-
-        def hotspot_stop():
-            """Jarvis will turn of the hotspot."""
-            system("sudo ap-hotspot stop")
-
-        def how_are_you():
-            """Jarvis will inform you about his status."""
-            if self.enable_voice:
-                self.speech.text_to_speech("I am fine, thank you")
-            print(Fore.BLUE + "I am fine, How about you" + Fore.RESET)
-
-        def increase_volume():
-            """Increases your speakers' volume."""
-            system("pactl -- set-sink-volume 0 +3%")
-
-        def movies():
-            """Jarvis will find a good movie for you."""
-            try:
-                movie_name = raw_input(
-                    Fore.RED + "What do you want to watch?\n" + Fore.RESET)
-            except:
-                movie_name = input(
-                    Fore.RED + "What do you want to watch?\n" + Fore.RESET)
-            system("ims " + movie_name)
-
-        def music():
-            """Jarvis will find you a good song to relax!"""
-            play(data)
-
-        def near():
-            """Jarvis can find what is near you!"""
-            near_me.main(data)
-
-        def news():
-            """Time to get an update about the local news."""
-            try:
-                newws.show_news()
-            except:
-                print Fore.RED + "I couldn't find news" + Fore.RESET
-
-        def open_camera():
-            """Jarvis will open the camera for you."""
-            print "Opening Cheese ...... "
-            system("cheese")
-
-        def pinpoint():
-            """Jarvis will pinpoint your location."""
-            mapps.locateme()
-
-        def close():
-            """Closing Jarvis."""
-            reminderQuit()
-            if self.enable_voice:
-                self.speech.text_to_speech("Goodbye, see you later")
-            print(Fore.RED + "Goodbye, see you later!" + Fore.RESET)
-            exit()
-
-        def remind():
-            reminderHandler(data.replace("remind", "", 1))
-
-        def string_pattern():
-            """Matches patterns in a string by using regex."""
-            try:
-                file_name = raw_input(
-                    Fore.RED + "Enter file name?:\n" + Fore.RESET)
-                stringg = raw_input(
-                    Fore.GREEN + "Enter string:\n" + Fore.RESET)
-            except:
-                file_name = input(
-                    Fore.RED + "Enter file name?:\n" + Fore.RESET)
-                stringg = input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
-            system("grep '" + stringg + "' " + file_name)
-
-        def todo():
-            """Create your personal TODO list!"""
-            todoHandler(data.replace("todo", "", 1))
-
-        def screen_off():
-            """Turns off the screen instantly."""
-            turn_off_screen()
-
-        def os_detection():
-            """Displays information about your operating system."""
-            print Fore.BLUE + '[!] Operating System Information' + Fore.RESET
-            print Fore.GREEN + '[*] ' + sys() + Fore.RESET
-            print Fore.GREEN + '[*] ' + release() + Fore.RESET
-            print Fore.GREEN + '[*] ' + dist()[0] + Fore.RESET
-            for _ in architecture():
-                print Fore.GREEN + '[*] ' + _ + Fore.RESET
-
-        def say():
-            """Reads what is typed."""
-            voice_state = self.enable_voice
-            self.enable_voice = True
-            text = data.replace("say", "", 1)
-            self.speech.text_to_speech(text)
-            self.enable_voice = voice_state
-
-        def enable_sound():
-            """Let Jarvis use his voice."""
-            self.enable_voice = True
-
-        def disable_sound():
-            """Deny Jarvis to use his voice."""
-            self.enable_voice = False
-
-        def help_jarvis():
-            """This method displays help about Jarvis."""
-            print Fore.BLUE + '>>> Usage: ' + Fore.RESET
-            print Fore.BLUE + 'Type any of the following commands to interact with Jarvis.' + Fore.RESET
-            print Fore.GREEN + '[*] Help: To see this message' + Fore.RESET
-            print Fore.GREEN + '[*] How are you?: To react with Jarvis!' + Fore.RESET
-            print Fore.GREEN + '[*] Open Camera: To open "cheese" program (camera).' + Fore.RESET
-            print Fore.GREEN + '[*] What time is it: To check the time.' + Fore.RESET
-            print Fore.GREEN + '[*] Where am i: To pinpoint your location.' + Fore.RESET
-            print Fore.GREEN + '[*] Near me: To see nearby locations.' + Fore.RESET
-            print Fore.GREEN + '[*] Music: To listen some good Music!' + Fore.RESET
-            print Fore.GREEN + '[*] Movie: Jarvis will find a good movie for you.' + Fore.RESET
-            print Fore.GREEN + '[*] Increase Volume: To increase your system volume.' + Fore.RESET
-            print Fore.GREEN + '[*] Decrease Volume: To decrease your system volume.' + Fore.RESET
-            print Fore.GREEN + '[*] Hotspot Start: To set up your own hotspot.' + Fore.RESET
-            print Fore.GREEN + '[*] Hotspot Stop: To stop your personal hotspot.' + Fore.RESET
-            print Fore.GREEN + '[*] Search for a string in a file: Match patterns in a string using regex.' + Fore.RESET
-            print Fore.GREEN + '[*] Check RAM: Detailed RAM usage.' + Fore.RESET
-            print Fore.GREEN + '[*] Todo: An ordinary TODO list.' + Fore.RESET
-            print Fore.GREEN + '[*] News: Get an update about the news!' + Fore.RESET
-            print Fore.GREEN + '[*] Show me pics of: Displays the selected pics.' + Fore.RESET
-            print Fore.GREEN + '[*] Evaluate: To get your calculations done!' + Fore.RESET
-            print Fore.GREEN + '[*] Show me directions from: Get directions about your destination!' + Fore.RESET
-            print Fore.GREEN + '[*] enable sound: Jarvis will start talking to you' + Fore.RESET
-            print Fore.GREEN + '[*] disable sound: Jarvis will no longer talks out loud...' + Fore.RESET
-            print Fore.GREEN + '[*] about os: Dispays detailed information about your operating system' + Fore.RESET
-            print Fore.GREEN + '[*] ask jarvis: Ask anything and Jarvis will answer you.' + Fore.RESET
-            print Fore.GREEN + '[*] chat: Ask anything and Jarvis will answer you.' + Fore.RESET
-            print Fore.GREEN + '[*] shutdown system: Shutdown the system in X minutes.' + Fore.RESET
-            print Fore.GREEN + '[*] reboot system: Reboot the system in X minutes.' + Fore.RESET
-            print Fore.GREEN + '[*] turn off screen: Turns off the screen instantly.' + Fore.RESET
-            print Fore.GREEN + '[*] shutdown -c: Cancel an active shutdown/reboot.' + Fore.RESET
-            print Fore.GREEN + '[*] update my system: Update the system using the /etc/apt/sources.list repositories.' + Fore.RESET
-            print Fore.GREEN + '[*] weather: Get information about today weather.' + Fore.RESET
-            print Fore.GREEN + '[*] what about chuck: Get sentences about Chuck.' + Fore.RESET
-            print Fore.GREEN + '[*] quit: Close the session with Jarvis...' + Fore.RESET
-            print Fore.GREEN + '[*] exit: Close the session with Jarvis...' + Fore.RESET
-            print Fore.GREEN + '[*] Goodbye: Close the session with Jarvis...' + Fore.RESET
-
-        def update_location():
-            location = MEMORY.get_data('city')
-            loc_str = str(location)
-            print("Your current location is set to " + loc_str)
-            print("What is your new location?")
-            try:
-                i = raw_input()
-            except:
-                i = input()
-            MEMORY.update_data('city', i)
-            MEMORY.save()
-
-        def update_my_system():
-            """
-            Update the system using the /etc/apt/sources.list repositories.
-            """
-            update_system()
-
-        def weather():
-            """Get information about today's weather."""
-            weather_pinpoint.main(MEMORY)
-
-        def what_about_chuck():
-            chuck.main(self)
-
-        # we are calling the proper function which satisfies the user's
-        # command.
-        locals()[key]()
-
-    def user_input(self):
-        """
-        This method is responsible for getting the user's input.
-        We are using first_reaction variable in order to prompt
-        "Hi" only the first time we "meet" our user (in your first version
-        whenever you asked for a command Jarvis where saying "Hi").
-        :return: user_data, a variable containing the Jarvis' action
-                 that user wants to execute.
-        """
-        # BREAKPOINT #1
+    def postcmd(self, stop, line):
+        """Hook that executes after every command."""
         if self.first_reaction:
-            self.speak()
-            print Fore.BLUE + 'Jarvis\' is by default disabled.' + Fore.RESET
-            print Fore.BLUE + 'In order to let Jarvis talk out loud type: ' +\
-                Fore.RESET + Fore.RED + 'enable sound' + Fore.RESET
-            print ''
-            print Fore.RED + "~> Hi, What can i do for you?" + Fore.RESET
-        else:
-            self.speak()
-            print Fore.RED + "~> What can i do for you?" + Fore.RESET
-
-        try:
-            user_data = raw_input()
-        except ValueError:
-            user_data = input()
-        except:
-            user_data = input()
-        finally:
-            # Set first_reaction to False in order to stop say "Hi" to user.
+            self.prompt = self.prompt = Fore.RED + "~> What can i do for you?\n" + Fore.RESET
             self.first_reaction = False
-
-        user_data = str.lower(user_data)
-        return user_data
+        if self.enable_voice:
+            self.speech.text_to_speech("What can i do for you?\n")
 
     def speak(self):
         if self.enable_voice:
             self.speech.speak(self.first_reaction)
 
-    def find_action(self, data):
-        """
-        This method gets the data and assigns it to an action
-        """
-        user_wish = "null"
-        for key in self.actions:
-            if key in data:
-                user_wish = self.actions[key]
-        if user_wish in self.actions.values():
-            return user_wish
-        return "error"
+    def parse_input(self, data):
+        """This method gets the data and assigns it to an action"""
+        output = "None"
+
+        data = data.lower()
+
+        # say command is better if data has punctuation marks
+        if "say" not in data:
+            data = data.replace("?", "")
+            data = data.replace("!", "")
+            data = data.replace(".", "")
+            data = data.replace(",", "")
+
+        # Check if Jarvis has a fixed response to this data
+        if data in self.fixed_responses:
+            output = self.fixed_responses[data]  # change return to output =
+        else:
+            # if it doesn't have a fixed response, look if the data corresponds to an action
+            output = self._find_action(data)
+
+        return output
+
+    def _find_action(self, data):
+        """Checks if input is a defined action.
+        :return: returns the action"""
+        output = "None"
+        action_found = False
+
+        words = data.split()
+        words_remaining = data.split()  # this will help us to stop the iteration
+
+        # check word by word if exists an action with the same name
+        for word in words:
+            words_remaining.remove(word)
+            for action in self.actions:
+                # action can be a string or a dict
+                if type(action) is dict and word in action.keys():
+                    # command name exists, assign it to the output
+                    action_found = True
+                    output = self._generate_output_if_dict(action, word, words_remaining)
+                    break
+                elif word == action:  # command name exists
+                    action_found = True
+                    output = word + " " + " ".join(words_remaining)
+                    break
+            if action_found:
+                break
+        return output
+
+    @staticmethod
+    def _generate_output_if_dict(action, word, words_remaining):
+        """Generates the correct output if action is a dict"""
+        output = word
+
+        # command is a dictionary, let's check if remaining words are one of it's completions
+        if len(words_remaining) != 0:
+            command_arguments = list(words_remaining)  # make a copy
+            for argument in words_remaining:
+                command_arguments.remove(argument)
+                for value in action[word]:
+                    if argument == value:
+                        output += " " + argument
+                        output += " " + " ".join(command_arguments)
+        return output
 
     def executor(self):
         """
@@ -390,7 +139,6 @@ class Jarvis:
         or "goodbye command")
         :return: Nothing to return.
         """
-        while True:
-            data = self.user_input()
-            wish = self.find_action(data)
-            self.reactions(wish, data)
+        self.speak()
+        self.cmdloop(self.first_reaction_text)
+
