@@ -155,7 +155,7 @@ class CmdInterpreter(Cmd):
 
     def do_ask(self, s):
         """Start chating with Jarvis"""
-        chat.main()
+        chat.main(self)
 
     def help_ask(self):
         """Prints help about ask command."""
