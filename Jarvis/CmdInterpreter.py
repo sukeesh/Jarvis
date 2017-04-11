@@ -463,7 +463,7 @@ class CmdInterpreter(Cmd):
 
     def do_weather(self, s):
         """Get information about today's weather."""
-        weather_pinpoint.main(MEMORY)
+        weather_pinpoint.main(MEMORY, self)
 
     def help_weather(self):
         """Prints help about weather command."""
