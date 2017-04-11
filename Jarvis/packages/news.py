@@ -102,7 +102,7 @@ class News:
         elif i == 5:
             self.source = "techcrunch"
 
-        print("would you like to set this as your defualt? (yes/no): ")
+        print("would you like to set this as your default? (yes/no): ")
         try:
             x = raw_input()
         except:
