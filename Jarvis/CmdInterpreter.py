@@ -9,7 +9,7 @@ from utilities import voice
 from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminderHandler, reminderQuit
-from packages import newws, mapps, picshow, evaluator
+from packages import mapps, picshow, evaluator
 from packages import chat, directions_to, near_me, weather_pinpoint, chuck
 from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
