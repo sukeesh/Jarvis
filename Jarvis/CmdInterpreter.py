@@ -14,6 +14,7 @@ from packages import chat, directions_to, near_me, weather_pinpoint, chuck
 from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
 from packages.systemOptions import turn_off_screen, update_system
+from packages.news import News
 
 MEMORY = Memory()
 
@@ -317,10 +318,18 @@ class CmdInterpreter(Cmd):
 
     def do_news(self, s):
         """Time to get an update about the local news."""
-        try:
-            newws.show_news()
-        except:
-            print Fore.RED + "I couldn't find news" + Fore.RESET
+        if s == "quick":
+            try:
+                n = News()
+                n.quick_news()
+            except:
+                print Fore.RED + "I couldn't find news" + Fore.RESET
+        else:
+            try:
+                n = News()
+                n.news()
+            except:
+                print Fore.RED + "I couldn't find news" + Fore.RESET
 
     def help_news(self):
         """Print help about news command."""
