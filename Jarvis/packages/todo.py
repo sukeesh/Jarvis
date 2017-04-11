@@ -59,15 +59,11 @@ def getItem(string, todoList):
         retList.append(index)
     return retList
 
-actions = { "add": "handlerAdd",
-            "new": "handlerAdd",
-            "remove": "handlerRemove",
-            "delete": "handlerRemove",
-            "priority": "handlerPriority",
-            "complete": "handlerComplete",
-            "list": "handlerList",
-            "show": "handlerList",
-            "print": "handlerList"}
+actions = { "handlerAdd": ["add", "new"],
+            "handlerRemove": ["remove", "delete"],
+            "handlerPriority" : ["priority"],
+            "handlerComplete": ["complete"],
+            "handlerList": ["list", "show", "print"]}
 def reactions(key, data):
     def handlerAdd(data):
         if "comment" in data:
@@ -226,11 +222,12 @@ def todoHandler(data):
     index = 100
     action = 0
     for key in actions:
-        newIndex = findTrigger(data, key)
-        if not newIndex == -1:
-            if newIndex < index:
-                index = newIndex
-                action = actions[key]
+        for trigger in actions[key]:
+            newIndex = findTrigger(data, trigger)
+            if not newIndex == -1:
+                if newIndex < index:
+                    index = newIndex
+                    action = key
     if not action:
         return
     data = data.split();

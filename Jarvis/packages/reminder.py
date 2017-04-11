@@ -83,12 +83,10 @@ def removeReminder(uuid):
             break;
     writeFile("reminderlist.txt", reminderList)
 
-actions = { "add": "handlerAdd",
-            "remove": "handlerRemove",
-            "delete": "handlerRemove",
-            "list": "handlerList",
-            "print": "handlerList",
-            "clear": "handlerClear"}
+actions = { "handlerAdd": ["add", "new"],
+            "handlerRemove": ["remove", "delete"],
+            "handlerList": ["list", "print", "show"],
+            "handlerClear": ["clear"]}
 def reactions(key, data):
     def handlerAdd(data):
         skip, time = parseDate(data)
@@ -126,11 +124,12 @@ def reminderHandler(data):
     index = 100
     action = 0
     for key in actions:
-        newIndex = findTrigger(data, key)
-        if not newIndex == -1:
-            if newIndex < index:
-                index = newIndex
-                action = actions[key]
+        for trigger in actions[key]:
+            newIndex = findTrigger(data, trigger)
+            if not newIndex == -1:
+                if newIndex < index:
+                    index = newIndex
+                    action = key
     if not action:
         return
     data = data.split();
