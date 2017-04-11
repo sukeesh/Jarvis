@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
+from utilities.GeneralUtilities import print_say
 
-def calc(s):
+def calc(s, self):
     s = str.lower(s)
     s = s.replace("power", "**")
     s = s.replace("plus", "+")
@@ -10,7 +11,6 @@ def calc(s):
     s = s.replace("^", "**")
     try:
         x = eval(s)
-        print(x)
+        print_say(x, self)
     except Exception:
-        print("Error : Not in correct format")
-
+        print_say("Error : Not in correct format", self)

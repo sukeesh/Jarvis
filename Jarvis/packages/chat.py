@@ -1,11 +1,11 @@
 from colorama import Fore
 from aiml.brain import Brain
+from utilities.GeneralUtilities import print_say
 
 
-def main():
+def main(self):
     brain = Brain()
-    print(Fore.BLUE +
-          "Ask me anything\n type 'leave' to stop" + Fore.RESET)
+    print_say("Ask me anything\n type 'leave' to stop", self, Fore.BLUE)
     stay = True
 
     while stay:
@@ -14,7 +14,7 @@ def main():
         except:
             text = str.upper(input(Fore.RED + ">> " + Fore.RESET))
         if text == "LEAVE":
-            print("thanks for talking to me")
+            print_say("thanks for talking to me", self)
             stay = False
         else:
-            print(brain.respond(text))
+            print_say(brain.respond(text), self)
