@@ -162,10 +162,10 @@ def parseDate(string):
 def sort(data):
     return sorted(data, key = lambda k: (k['time']))
 
-def compareWord(targets, word):
+def compareWord(targets, word, distancePenalty = 0):
     scores = list()
     for index, e in enumerate(targets):
-        scores.append({"i": index, "s": scoreWord(e, word)})
+        scores.append({"i": index, "s": scoreWord(e, word) + index*distancePenalty})
     scores = sorted(scores, key = lambda k: (k["s"]))
     return (scores[0]["i"], scores[0]["s"])
 
@@ -233,10 +233,10 @@ def scoreSentence(target, sentence):
     score += (len(target) - found) * 1
     return (score*1.0/len(target), indexList)
 
-def findWord(words, w, index):
+def findWord(words, w, index, distancePenalty = 0):
     index = min(len(words), max(index, -1))
     if index < len(words) - 1:
-        indexOffset, relScore = compareWord(words[index + 1:], w)
+        indexOffset, relScore = compareWord(words[index + 1:], w, distancePenalty)
         indexOffset += index + 1
     else:
         relScore = 2
@@ -244,7 +244,7 @@ def findWord(words, w, index):
         if index > 0:
             words = words[:index]
             words.reverse()
-            indexOffset, relScore = compareWord(words, w)
+            indexOffset, relScore = compareWord(words, w, distancePenalty)
             indexOffset = index - indexOffset - 1
         else:
             relScore = 2
@@ -259,15 +259,17 @@ def findReminder(string):
     Search for the given name in the reminderList. A match is determined by similarity
     between request and the available reminder names.
     """
-    nameList = [k['name'] for k in reminderList['items'] if not k['hidden']]
+    nameList = [k['name'] for k in reminderList['items']]
     if not len(nameList):
-        return
+        return (-1, [])
     index, score, indexList = compareSentence(nameList, string)
-    print index
-    print score
-    print indexList
-    if score < 1.0:
-        return index
+    if score < 1.0 and not reminderList['items'][index]['hidden']:
+        return (index, indexList)
+    return (-1, [])
+
+def findTrigger(string, trigger):
+    index = findWord(string.split(), trigger, -1, 0.5)
+    return index
 
 def showAlarm(notification, name):
     print(Fore.BLUE + name + Fore.RESET)
@@ -316,25 +318,32 @@ def removeReminder(uuid):
             break;
     writeFile("reminderlist.txt", reminderList)
 
-def reminderHandler(data):
-    if "add" in data:
-        data = data.replace("add", "", 1)
+
+actions = { "add": "handlerAdd",
+            "remove": "handlerRemove",
+            "delete": "handlerRemove",
+            "list": "handlerList",
+            "print": "handlerList",
+            "clear": "handlerClear"}
+def reactions(key, data):
+    def handlerAdd():
         skip, time = parseDate(data)
         if skip:
             addReminder(name=" ".join(data.split()[skip:]), time=time, hidden=False, uuid=uuid4().hex)
-    elif "remove" in data:
-        data = data.replace("remove", "", 1)
+
+    def handlerRemove():
         skip, number = parseNumber(data)
         if skip:
             index = number - 1
         else:
-            index = findReminder(data)
+            index, indexList = findReminder(data)
         if index >= 0 and index < len(reminderList['items']):
             print("Removed reminder: \"{0}\"".format(reminderList['items'][index]['name']))
             removeReminder(reminderList['items'][index]['uuid'])
         else:
             print("Could not find selected reminder")
-    elif "print" in data or "list" in data:
+
+    def handlerList():
         count = 0
         for index, e in enumerate(reminderList['items']):
             if not e['hidden']:
@@ -342,9 +351,28 @@ def reminderHandler(data):
                 count += 1
         if count == 0:
             print("Reminder list is empty, add a new entry with 'remind add <time> <name>'")
-    elif "clear" in data:
+
+    def handlerClear():
         reminderList['items'] = [k for k in reminderList['items'] if k['hidden']]
         writeFile("reminderlist.txt", reminderList)
+
+    locals()[key]()
+
+def reminderHandler(data):
+    index = 100
+    action = 0
+    for key in actions:
+        newIndex = findTrigger(data, key)
+        if not newIndex == -1:
+            if newIndex < index:
+                index = newIndex
+                key = actions[key]
+    if not action:
+        return
+    data = data.split();
+    data.pop(index)
+    data = " ".join(data)
+    reactions(action, data)
 
 def reminderQuit():
     """
