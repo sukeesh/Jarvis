@@ -8,7 +8,7 @@ from reminder import addReminder, removeReminder
 from colorama import Fore, Back
 
 from fileHandler import writeFile, readFile, str2date
-from utilities.lexicalSimilarity import findTrigger
+from utilities.lexicalSimilarity import scoreSentence
 from utilities.textParser import parseDate, parseNumber
 
 def printItem(item, index):
@@ -60,80 +60,83 @@ def getItem(string, todoList):
     return retList
 
 actions = { "handlerAdd": ["add", "new"],
+            "handlerAddDue": ["add due", "due"],
+            "handlerAddComment": ["add comment", "comment"],
             "handlerRemove": ["remove", "delete"],
             "handlerPriority" : ["priority"],
             "handlerComplete": ["complete"],
             "handlerList": ["list", "show", "print"]}
 def reactions(key, data):
     def handlerAdd(data):
-        if "comment" in data:
-            if numWords < 3:
-                print(Fore.RED + "Not enough arguments for 'todo add comment <index> <comment>'" + Fore.RESET)
-                return
-            data = data.replace("comment", "", 1)
-            words = data.split()
-            try:
-                index = getItem(words[0], todoList)
-            except ValueError:
-                print(Fore.RED + "The Index must be composed of numbers. Subitems are separated by a dot." + Fore.RESET)
-                return
-            except IndexError:
-                print(Fore.RED + "The Index for this item is out of range." + Fore.RESET)
-                return
+        if not numWords:
+            print(Fore.RED + "Not enough arguments for 'todo add <title>'" + Fore.RESET)
+            return
+        data = " ".join(data.split())
+        try:
+            index = getItem(data.split()[0], todoList)
             item = todoList
             for i in index:
                 item = item['items'][i]
-            item['comment'] = " ".join(words[1:])
-        elif "due" in data:
-            if numWords < 3:
-                print(Fore.RED + "Not enough arguments for 'todo add due <index> <time>'" + Fore.RESET)
-                return
-            data = data.replace("due", "", 1)
-            words = data.split()
-            try:
-                index = getItem(words[0], todoList)
-            except ValueError:
-                print(Fore.RED + "The Index must be composed of numbers. Subitems are separated by a dot." + Fore.RESET)
-                return
-            except IndexError:
-                print(Fore.RED + "The Index for this item is out of range." + Fore.RESET)
-                return
+            data = " ".join(data.split()[1:])
+        except ValueError:
             item = todoList
-            for i in index:
-                item = item['items'][i]
-            removeReminder(item['uuid'])
-            skip, item['due'] = parseDate(" ".join(words[1:]))
-            urgency = 0
-            if 'priority' in item:
-                if item['priority'] >= 100:
-                    urgency = 2
-                elif item['priority'] >= 50:
-                    urgency = 1
-            addReminder(name=item['name'], body=item['comment'], uuid=item['uuid'], time=item['due'], urgency=urgency)
-        else:
-            if numWords < 1:
-                print(Fore.RED + "Not enough arguments for 'todo add <title>'" + Fore.RESET)
-                return
-            data = " ".join(data.split())
-            try:
-                index = getItem(data.split()[0], todoList)
-                item = todoList
-                for i in index:
-                    item = item['items'][i]
-                data = " ".join(data.split()[1:])
-            except ValueError:
-                item = todoList
-            except IndexError:
-                print(Fore.RED + "The Index for this item is out of range." + Fore.RESET)
-                return
-            newItem = {'complete':0, 'uuid':uuid4().hex, 'comment':""}
-            parts = data.split(" - ")
-            newItem['name'] = parts[0]
-            if " - " in data:
-                newItem['comment'] = parts[1]
-            if not 'items' in item:
-                item['items'] = []
-            item['items'].append(newItem)
+        except IndexError:
+            print(Fore.RED + "The Index for this item is out of range." + Fore.RESET)
+            return
+        newItem = {'complete':0, 'uuid':uuid4().hex, 'comment':""}
+        parts = data.split(" - ")
+        newItem['name'] = parts[0]
+        if " - " in data:
+            newItem['comment'] = parts[1]
+        if not 'items' in item:
+            item['items'] = []
+        item['items'].append(newItem)
+        writeFile("todolist.txt", todoList)
+
+    def handlerAddComment(data):
+        if numWords < 2:
+            print(Fore.RED + "Not enough arguments for 'todo add comment <index> <comment>'" + Fore.RESET)
+            return
+        words = data.split()
+        try:
+            index = getItem(words[0], todoList)
+        except ValueError:
+            print(Fore.RED + "The Index must be composed of numbers. Subitems are separated by a dot." + Fore.RESET)
+            return
+        except IndexError:
+            print(Fore.RED + "The Index for this item is out of range." + Fore.RESET)
+            return
+        item = todoList
+        for i in index:
+            item = item['items'][i]
+        item['comment'] = " ".join(words[1:])
+        writeFile("todolist.txt", todoList)
+
+    def handlerAddDue(data):
+        if numWords < 2:
+            print(Fore.RED + "Not enough arguments for 'todo add due <index> <time>'" + Fore.RESET)
+            return
+        words = data.split()
+        try:
+            index = getItem(words[0], todoList)
+        except ValueError:
+            print(Fore.RED + "The Index must be composed of numbers. Subitems are separated by a dot." + Fore.RESET)
+            return
+        except IndexError:
+            print(Fore.RED + "The Index for this item is out of range." + Fore.RESET)
+            return
+        item = todoList
+        for i in index:
+            item = item['items'][i]
+        removeReminder(item['uuid'])
+        skip, item['due'] = parseDate(" ".join(words[1:]))
+        urgency = 0
+        if 'priority' in item:
+            if item['priority'] >= 100:
+                urgency = 2
+            elif item['priority'] >= 50:
+                urgency = 1
+        addReminder(name=item['name'], body=item['comment'], uuid=item['uuid'], time=item['due'], urgency=urgency)
         writeFile("todolist.txt", todoList)
 
     def handlerRemove(data):
@@ -158,6 +161,7 @@ def reactions(key, data):
         if not numWords >= 2:
             return
         words = data.split()
+        #TODO move to lexical similarity
         if "critical" in data:
             data = data.replace("critical", "", 1)
             priority = 100
@@ -219,20 +223,32 @@ def reactions(key, data):
     locals()[key](data)
 
 def todoHandler(data):
-    index = 100
+    indices = []
+    score = 100
     action = 0
     for key in actions:
+        foundMatch = False
         for trigger in actions[key]:
-            newIndex = findTrigger(data, trigger)
-            if not newIndex == -1:
-                if newIndex < index:
-                    index = newIndex
-                    action = key
+            newScore, indexList = scoreSentence(data, trigger, distancePenalty = 0.5, additionalTargetPenalty = 0, wordMatchPenalty = 0.5)
+            print trigger
+            print newScore
+            print indexList
+            if foundMatch and len(indexList) > len(indices):
+                indices = indexList
+            if newScore < score:
+                if not foundMatch:
+                    indices = indexList
+                    foundMatch = True
+                score = newScore
+                action = key
     if not action:
         return
     data = data.split();
-    data.pop(index)
+    for i in sorted(indices, reverse=True):
+        del data[i]
     data = " ".join(data)
+    print data
+    print action
     reactions(action, data)
 
 todoList = readFile("todolist.txt", {'items':[]})

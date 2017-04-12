@@ -45,7 +45,7 @@ def compareSentence(targets, sentence):
     scores = sorted(scores, key = lambda k: (k["s"]))
     return (scores[0]["i"], scores[0]["s"], scores[0]["l"])
 
-def scoreSentence(target, sentence):
+def scoreSentence(target, sentence, distancePenalty = 0, additionalTargetPenalty = 1, wordMatchPenalty = 0):
     lastIndex = -1
     score = 0
     notFound = 0
@@ -54,21 +54,21 @@ def scoreSentence(target, sentence):
     target = target.split()
     sentence = sentence.split()
     for e in sentence:
-        index = findWord(target, e, lastIndex)
-        if index == -1:
-            notFound += 1
-            continue
-        elif index < lastIndex:
-            score += (lastIndex - index) * 0.5
-        if index in indexList:
+        index, wordScore = findWord(target, e, lastIndex)
+        if index == -1 or index in indexList:
             notFound += 1
             continue
         else:
+            if index < lastIndex:
+                score += (lastIndex - index) * 0.5
+            else:
+                score += (index - lastIndex - 1) * distancePenalty
+            score += wordScore * wordMatchPenalty
             lastIndex = max(index, lastIndex)
             found += 1
             indexList.append(index)
     score += notFound * 2
-    score += (len(target) - found) * 1
+    score += (len(target) - found) * additionalTargetPenalty
     return (score*1.0/len(target), indexList)
 
 def findWord(words, w, index, distancePenalty = 0):
@@ -88,9 +88,9 @@ def findWord(words, w, index, distancePenalty = 0):
             relScore = 2
         if relScore > 1:
             indexOffset = -1
-    return indexOffset
+    return (indexOffset, relScore)
 
 def findTrigger(string, trigger):
-    index = findWord(string.split(), trigger, -1, 0.5)
+    index, score = findWord(string.split(), trigger, -1, 0.5)
     return index
 

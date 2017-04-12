@@ -112,7 +112,7 @@ def reactions(key, data):
                 print("<{0}> {2}: {1}".format(index + 1, e['time'], e['name']))
                 count += 1
         if count == 0:
-            print("Reminder list is empty, add a new entry with 'remind add <time> <name>'")
+            print("Reminder list is empty. Add a new entry with 'remind add <time> <name>'")
 
     def handlerClear(data):
         reminderList['items'] = [k for k in reminderList['items'] if k['hidden']]
