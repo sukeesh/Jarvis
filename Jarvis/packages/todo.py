@@ -63,7 +63,19 @@ actions = {}
 def addAction(function, trigger = [], minArgs = 0):
     actions[function] = {'trigger': trigger, 'minArgs': minArgs}
 
-addAction("handlerAdd", ["add", "new", "add entry", "new entry"], minArgs = 1)
+def mixLists(a, b):
+    ret = list()
+    for x in a:
+        for y in b:
+            if x == "":
+                ret.append(y)
+            elif y == "":
+                ret.append(x)
+            else:
+                ret.append(x + " " + y)
+    return ret
+
+addAction("handlerAdd", mixLists(["add", "new", "create"], ["", "entry", "item"]), minArgs = 1)
 def handlerAdd(data):
     try:
         index = getItem(data.split()[0], todoList)
@@ -128,7 +140,7 @@ def handlerAddComment(data):
     item['comment'] = " ".join(words[1:])
     writeFile("todolist.txt", todoList)
 
-addAction("handlerRemove", ["remove", "delete", "remove entry", "delete entry"], minArgs = 1)
+addAction("handlerRemove", mixLists(["remove", "delete", "destroy"], ["", "entry", "item"]), minArgs = 1)
 def handlerRemove(data):
     try:
         index = getItem(data.split()[0], todoList)
@@ -148,21 +160,23 @@ def handlerRemove(data):
 addAction("handlerPriority", ["priority"], minArgs = 2)
 def handlerPriority(data):
     words = data.split()
-    #TODO move to lexical similarity
-    if "critical" in data:
-        data = data.replace("critical", "", 1)
-        priority = 100
-    elif "high" in data:
-        data = data.replace("high", "", 1)
-        priority = 50
-    elif "normal" in data:
-        data = data.replace("normal", "", 1)
-        priority = 0
-    elif numWords > 2:
+    names = ["normal", "high", "critical"]
+    score = 100
+    index = 0
+    indexList = list()
+    for i, key in enumerate(names):
+        newScore, newList = scoreSentence(data, key)
+        if newScore < score:
+            score = newScore
+            index = i
+            indexList = newList
+    if score < 1:
+        words.pop(indexList[0])
+        priority = index * 50
+    elif len(words) > 2:
         skip, priority = parseNumber(" ".join(words[1:]))
     else:
         priority = 0
-    words = data.split()
     try:
         index = getItem(words[0], todoList)
     except ValueError:
@@ -205,8 +219,6 @@ addAction("handlerList", ["list", "show", "print"])
 def handlerList(data):
     todoList['items'] = sort(todoList['items'])
     _print(todoList['items'])
-
-print actions
 
 def todoHandler(data):
     indices = []
