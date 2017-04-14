@@ -399,12 +399,12 @@ class CmdInterpreter(Cmd):
 
     def do_os(self, s):
         """Displays information about your operating system."""
-        print Fore.BLUE + '[!] Operating System Information' + Fore.RESET
-        print Fore.GREEN + '[*] ' + sys() + Fore.RESET
-        print Fore.GREEN + '[*] ' + release() + Fore.RESET
-        print Fore.GREEN + '[*] ' + dist()[0] + Fore.RESET
+        print(Fore.BLUE + '[!] Operating System Information' + Fore.RESET)
+        print(Fore.GREEN + '[*] ' + sys() + Fore.RESET)
+        print(Fore.GREEN + '[*] ' + release() + Fore.RESET)
+        print(Fore.GREEN + '[*] ' + dist()[0] + Fore.RESET)
         for _ in architecture():
-            print Fore.GREEN + '[*] ' + _ + Fore.RESET
+            print(Fore.GREEN + '[*] ' + _ + Fore.RESET)
 
     def help_os(self):
         """Displays information about your operating system."""
