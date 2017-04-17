@@ -251,9 +251,9 @@ class CmdInterpreter(Cmd):
 
     def do_evaluate(self, s):
         """Jarvis will get your calculations done!"""
-        tempt = s.split(" ", 1) or ""
+        tempt = s.replace(" ", "")
         if len(tempt) > 1:
-            evaluator.calc(tempt[1], self)
+            evaluator.calc(tempt, self)
         else:
         	print_say("Error: Not in correct format", self, Fore.RED)
 
