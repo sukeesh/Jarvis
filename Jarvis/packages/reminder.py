@@ -1,22 +1,16 @@
 # -*- coding: utf-8 -*-
 
-import os
-import json
-
 from datetime import datetime as dt
-from datetime import date, time, timedelta
 from uuid import uuid4
 from threading import Timer
 import gi
 gi.require_version('Notify', '0.7')
 from gi.repository import Notify
 
-from colorama import init
-from colorama import Fore, Back, Style
-
 from fileHandler import writeFile, readFile, str2date
 from utilities.lexicalSimilarity import scoreSentence, compareSentence
 from utilities.textParser import parseNumber, parseDate
+from utilities.GeneralUtilities import error, info
 
 def sort(data):
     return sorted(data, key = lambda k: (k['time']))
@@ -37,7 +31,7 @@ def findReminder(string):
     return (-1, [])
 
 def showAlarm(notification, name):
-    print(Fore.BLUE + name + Fore.RESET)
+    info(name)
     notification.show()
 
 def showNotification(name, body):
@@ -101,10 +95,10 @@ def handlerRemove(data):
     else:
         index, indexList = findReminder(data)
     if index >= 0 and index < len(reminderList['items']):
-        print("Removed reminder: \"{0}\"".format(reminderList['items'][index]['name']))
+        info("Removed reminder: \"{0}\"".format(reminderList['items'][index]['name']))
         removeReminder(reminderList['items'][index]['uuid'])
     else:
-        print("Could not find selected reminder")
+        error("Could not find selected reminder")
 
 addAction("handlerList", ["list", "print", "show"])
 def handlerList(data):
@@ -114,7 +108,7 @@ def handlerList(data):
             print("<{0}> {2}: {1}".format(count + 1, e['time'], e['name']))
             count += 1
     if count == 0:
-        print("Reminder list is empty. Add a new entry with 'remind add <time> <name>'")
+        info("Reminder list is empty. Add a new entry with 'remind add <time> <name>'")
 
 addAction("handlerClear", ["clear"])
 def handlerClear(data):
@@ -145,7 +139,7 @@ def reminderHandler(data):
     for i in sorted(indices, reverse=True):
         del data[i]
     if len(data) < minArgs:
-        print "Not enough arguments for specified command"
+        error("Not enough arguments for specified command")
         return
     data = " ".join(data)
     globals()[action](data)
@@ -160,7 +154,6 @@ def reminderQuit():
     except:
         for index, el in timerList.items():
             el.cancel()
-
 
 timerList = {}
 reminderList = readFile("reminderlist.txt", {'items':[]})

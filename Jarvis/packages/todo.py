@@ -1,30 +1,15 @@
 # -*- coding: utf-8 -*-
 
-import os
-import sys
 from datetime import datetime as dt
 from uuid import uuid4
 from reminder import addReminder, removeReminder
-from colorama import Fore, Back
 
 from fileHandler import writeFile, readFile, str2date
 from utilities.lexicalSimilarity import scoreSentence
 from utilities.textParser import parseDate, parseNumber
 
-def critical(string):
-    print(Fore.RED + string + Fore.RESET)
 
-def error(string):
-    critical(string)
-
-def important(string):
-    print(Fore.YELLOW + string + Fore.RESET)
-
-def warning(string):
-    important(string)
-
-def info(string):
-    print(Fore.BLUE + string + Fore.RESET)
+from utilities.GeneralUtilities import error, info, critical, important, warning
 
 def printItem(item, index):
     text = "<{2}> {0} [{1}%]".format(item['name'], item['complete'], index)

@@ -18,3 +18,18 @@ def print_say(text, self, color=""):
 		self.speech.text_to_speech(text)
 	print(color + text + Fore.RESET)
 
+def critical(string):
+    print(Fore.RED + string + Fore.RESET)
+
+def error(string):
+    critical(string)
+
+def important(string):
+    print(Fore.YELLOW + string + Fore.RESET)
+
+def warning(string):
+    important(string)
+
+def info(string):
+    print(Fore.BLUE + string + Fore.RESET)
+
