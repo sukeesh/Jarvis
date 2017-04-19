@@ -11,22 +11,41 @@ from fileHandler import writeFile, readFile, str2date
 from utilities.lexicalSimilarity import scoreSentence
 from utilities.textParser import parseDate, parseNumber
 
+def critical(string):
+    print(Fore.RED + string + Fore.RESET)
+
+def error(string):
+    critical(string)
+
+def important(string):
+    print(Fore.YELLOW + string + Fore.RESET)
+
+def warning(string):
+    important(string)
+
+def info(string):
+    print(Fore.BLUE + string + Fore.RESET)
+
 def printItem(item, index):
-    if 'priority' in item and item['priority'] >= 50:
-        sys.stdout.write(Fore.YELLOW)
+    text = "<{2}> {0} [{1}%]".format(item['name'], item['complete'], index)
     if 'priority' in item and item['priority'] >= 100:
-        sys.stdout.write(Fore.RED)
-    print("<{2}> {0} [{1}%]".format(item['name'], item['complete'], index) + Fore.RESET)
+        critical(text)
+    elif 'priority' in item and item['priority'] >= 50:
+        important(text)
+    else:
+        print(text)
     if 'due' in item:
+        text = "\tDue at {0}".format(item['due'].strftime("%Y-%m-%d %H:%M:%S"))
         if item['due'] < dt.now():
-            sys.stdout.write(Fore.RED)
-        print("\tDue at {0}".format(item['due'].strftime("%Y-%m-%d %H:%M:%S")) + Fore.RESET)
+            critical(text)
+        else:
+            print(text)
     if item['comment']:
         print("\t{0}".format(item['comment']))
 
 def _print(data, index = ""):
     if len(data) == 0:
-        print("ToDo list is empty, add a new entry with 'todo add <name>'")
+        info("ToDo list is empty, add a new entry with 'todo add <name>'")
     for x, element in enumerate(data):
         px = index + "{}".format(x + 1)
         printItem(element, px)
@@ -86,7 +105,7 @@ def handlerAdd(data):
     except ValueError:
         item = todoList
     except IndexError:
-        print(Fore.RED + "The Index for this item is out of range." + Fore.RESET)
+        error("The Index for this item is out of range.")
         return
     newItem = {'complete':0, 'uuid':uuid4().hex, 'comment':""}
     parts = data.split(" - ")
@@ -104,10 +123,10 @@ def handlerAddDue(data):
     try:
         index = getItem(words[0], todoList)
     except ValueError:
-        print(Fore.RED + "The Index must be composed of numbers. Subitems are separated by a dot." + Fore.RESET)
+        error("The Index must be composed of numbers. Subitems are separated by a dot.")
         return
     except IndexError:
-        print(Fore.RED + "The Index for this item is out of range." + Fore.RESET)
+        error("The Index for this item is out of range.")
         return
     item = todoList
     for i in index:
@@ -129,10 +148,10 @@ def handlerAddComment(data):
     try:
         index = getItem(words[0], todoList)
     except ValueError:
-        print(Fore.RED + "The Index must be composed of numbers. Subitems are separated by a dot." + Fore.RESET)
+        error("The Index must be composed of numbers. Subitems are separated by a dot.")
         return
     except IndexError:
-        print(Fore.RED + "The Index for this item is out of range." + Fore.RESET)
+        error("The Index for this item is out of range.")
         return
     item = todoList
     for i in index:
@@ -146,10 +165,10 @@ def handlerRemove(data):
         index = getItem(data.split()[0], todoList)
         deleteIndex = index.pop()
     except ValueError:
-        print(Fore.RED + "The Index must be composed of numbers. Subitems are separated by a dot." + Fore.RESET)
+        error("The Index must be composed of numbers. Subitems are separated by a dot.")
         return
     except IndexError:
-        print(Fore.RED + "The Index for this item is out of range." + Fore.RESET)
+        error("The Index for this item is out of range.")
         return
     item = todoList
     for i in index:
@@ -180,10 +199,10 @@ def handlerPriority(data):
     try:
         index = getItem(words[0], todoList)
     except ValueError:
-        print(Fore.RED + "The Index must be composed of numbers. Subitems are separated by a dot." + Fore.RESET)
+        error("The Index must be composed of numbers. Subitems are separated by a dot.")
         return
     except IndexError:
-        print(Fore.RED + "The Index for this item is out of range." + Fore.RESET)
+        error("The Index for this item is out of range.")
         return
     item = todoList
     for i in index:
@@ -191,16 +210,16 @@ def handlerPriority(data):
     item['priority'] = priority
     writeFile("todolist.txt", todoList)
 
-addAction("handlerComplete", ["complete"], minArgs = 1)
+addAction("handlerComplete", ["complete", "finish"], minArgs = 1)
 def handlerComplete(data):
     words = data.split()
     try:
         index = getItem(words[0], todoList)
     except ValueError:
-        print(Fore.RED + "The Index must be composed of numbers. Subitems are separated by a dot." + Fore.RESET)
+        error("The Index must be composed of numbers. Subitems are separated by a dot.")
         return
     except IndexError:
-        print(Fore.RED + "The Index for this item is out of range." + Fore.RESET)
+        error("The Index for this item is out of range.")
         return
     item = todoList
     for i in index:
@@ -210,7 +229,7 @@ def handlerComplete(data):
         try:
             complete = min(max(0, int(words[1])), 100)
         except ValueError:
-            print(Fore.RED + "The completion level must be an integer between 0 and 100." + Fore.RESET)
+            error("The completion level must be an integer between 0 and 100.")
             return
     item['complete'] = complete
     writeFile("todolist.txt", todoList)
@@ -244,7 +263,7 @@ def todoHandler(data):
     for i in sorted(indices, reverse=True):
         del data[i]
     if len(data) < minArgs:
-        print "Not enough arguments for specified command"
+        warning("Not enough arguments for specified command")
         return
     data = " ".join(data)
     globals()[action](data)

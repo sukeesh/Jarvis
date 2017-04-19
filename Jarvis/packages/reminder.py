@@ -15,7 +15,7 @@ from colorama import init
 from colorama import Fore, Back, Style
 
 from fileHandler import writeFile, readFile, str2date
-from utilities.lexicalSimilarity import findTrigger, compareSentence
+from utilities.lexicalSimilarity import scoreSentence, compareSentence
 from utilities.textParser import parseNumber, parseDate
 
 def sort(data):
@@ -83,59 +83,72 @@ def removeReminder(uuid):
             break;
     writeFile("reminderlist.txt", reminderList)
 
-actions = { "handlerAdd": ["add", "new"],
-            "handlerRemove": ["remove", "delete"],
-            "handlerList": ["list", "print", "show"],
-            "handlerClear": ["clear"]}
-def reactions(key, data):
-    def handlerAdd(data):
-        skip, time = parseDate(data)
-        if skip:
-            addReminder(name=" ".join(data.split()[skip:]), time=time, hidden=False, uuid=uuid4().hex)
+actions = {}
+def addAction(function, trigger = [], minArgs = 0):
+    actions[function] = {'trigger': trigger, 'minArgs': minArgs}
 
-    def handlerRemove(data):
-        skip, number = parseNumber(data)
-        if skip:
-            index = number - 1
-        else:
-            index, indexList = findReminder(data)
-        if index >= 0 and index < len(reminderList['items']):
-            print("Removed reminder: \"{0}\"".format(reminderList['items'][index]['name']))
-            removeReminder(reminderList['items'][index]['uuid'])
-        else:
-            print("Could not find selected reminder")
+addAction("handlerAdd", ["add", "new", "create"], minArgs = 1)
+def handlerAdd(data):
+    skip, time = parseDate(data)
+    if skip:
+        addReminder(name=" ".join(data.split()[skip:]), time=time, hidden=False, uuid=uuid4().hex)
 
-    def handlerList(data):
-        count = 0
-        for index, e in enumerate(reminderList['items']):
-            if not e['hidden']:
-                print("<{0}> {2}: {1}".format(index + 1, e['time'], e['name']))
-                count += 1
-        if count == 0:
-            print("Reminder list is empty. Add a new entry with 'remind add <time> <name>'")
+addAction("handlerRemove", ["remove", "delete", "destroy"], minArgs = 1)
+def handlerRemove(data):
+    skip, number = parseNumber(data)
+    if skip:
+        index = number - 1
+    else:
+        index, indexList = findReminder(data)
+    if index >= 0 and index < len(reminderList['items']):
+        print("Removed reminder: \"{0}\"".format(reminderList['items'][index]['name']))
+        removeReminder(reminderList['items'][index]['uuid'])
+    else:
+        print("Could not find selected reminder")
 
-    def handlerClear(data):
-        reminderList['items'] = [k for k in reminderList['items'] if k['hidden']]
-        writeFile("reminderlist.txt", reminderList)
+addAction("handlerList", ["list", "print", "show"])
+def handlerList(data):
+    count = 0
+    for index, e in enumerate(reminderList['items']):
+        if not e['hidden']:
+            print("<{0}> {2}: {1}".format(count + 1, e['time'], e['name']))
+            count += 1
+    if count == 0:
+        print("Reminder list is empty. Add a new entry with 'remind add <time> <name>'")
 
-    locals()[key](data)
+addAction("handlerClear", ["clear"])
+def handlerClear(data):
+    reminderList['items'] = [k for k in reminderList['items'] if k['hidden']]
+    writeFile("reminderlist.txt", reminderList)
 
 def reminderHandler(data):
-    index = 100
+    indices = []
+    score = 100
     action = 0
+    minArgs = 0
     for key in actions:
-        for trigger in actions[key]:
-            newIndex = findTrigger(data, trigger)
-            if not newIndex == -1:
-                if newIndex < index:
-                    index = newIndex
-                    action = key
+        foundMatch = False
+        for trigger in actions[key]['trigger']:
+            newScore, indexList = scoreSentence(data, trigger, distancePenalty = 0.5, additionalTargetPenalty = 0, wordMatchPenalty = 0.5)
+            if foundMatch and len(indexList) > len(indices):
+                indices = indexList
+            if newScore < score:
+                if not foundMatch:
+                    indices = indexList
+                    minArgs = actions[key]['minArgs']
+                    foundMatch = True
+                score = newScore
+                action = key
     if not action:
         return
     data = data.split();
-    data.pop(index)
+    for i in sorted(indices, reverse=True):
+        del data[i]
+    if len(data) < minArgs:
+        print "Not enough arguments for specified command"
+        return
     data = " ".join(data)
-    reactions(action, data)
+    globals()[action](data)
 
 def reminderQuit():
     """
