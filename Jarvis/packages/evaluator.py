@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+from utilities.GeneralUtilities import print_say
+from colorama import Fore
 
-def calc(s):
+def calc(s, self):
     s = str.lower(s)
     s = s.replace("power", "**")
     s = s.replace("plus", "+")
@@ -10,7 +12,6 @@ def calc(s):
     s = s.replace("^", "**")
     try:
         x = eval(s)
-        print(x)
+        print_say(str(x), self, Fore.BLUE)
     except Exception:
-        print("Error : Not in correct format")
-
+        print_say("Error : Not in correct format", self)
