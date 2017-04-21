@@ -18,6 +18,8 @@ def print_say(text, self, color=""):
 		self.speech.text_to_speech(text)
 	print(color + text + Fore.RESET)
 
+# Functions for printing user output
+#TODO decide which ones use print_say instead of print
 def critical(string):
     print(Fore.RED + string + Fore.RESET)
 

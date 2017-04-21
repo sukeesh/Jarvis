@@ -65,9 +65,19 @@ def getItem(string, todoList):
 
 actions = {}
 def addAction(function, trigger = [], minArgs = 0):
+    """
+    Add a new action to the list of all available actions.
+
+    :param function: Local function name that should be called when matched
+    :param trigger: List of trigger words or sentences
+    :param minArgs: Minimum number of arguments needed for given function
+    """
     actions[function] = {'trigger': trigger, 'minArgs': minArgs}
 
 def mixLists(a, b):
+    """
+    Concatenate every entry of both lists with eachother
+    """
     ret = list()
     for x in a:
         for y in b:
@@ -225,15 +235,21 @@ def handlerList(data):
     _print(todoList['items'])
 
 def todoHandler(data):
+    """
+    Handle the command string for todos.
+    """
     indices = []
     score = 100
     action = 0
     minArgs = 0
+    # Select the best trigger match from the actions list
     for key in actions:
         foundMatch = False
         for trigger in actions[key]['trigger']:
             newScore, indexList = scoreSentence(data, trigger, distancePenalty = 0.5, additionalTargetPenalty = 0, wordMatchPenalty = 0.5)
             if foundMatch and len(indexList) > len(indices):
+                # A match for this action was already found.
+                # But this trigger matches more words.
                 indices = indexList
             if newScore < score:
                 if not foundMatch:
