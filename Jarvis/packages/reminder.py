@@ -155,7 +155,7 @@ def reminderHandler(data):
     for i in sorted(indices, reverse=True):
         del data[i]
     if len(data) < minArgs:
-        error("Not enough arguments for specified command")
+        error("Not enough arguments for specified command {0}".format(action))
         return
     data = " ".join(data)
     globals()[action](data)

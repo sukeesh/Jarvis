@@ -264,7 +264,7 @@ def todoHandler(data):
     for i in sorted(indices, reverse=True):
         del data[i]
     if len(data) < minArgs:
-        warning("Not enough arguments for specified command")
+        warning("Not enough arguments for specified command {0}".format(action))
         return
     data = " ".join(data)
     globals()[action](data)
