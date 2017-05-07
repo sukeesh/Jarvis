@@ -34,7 +34,9 @@ def weather(city = 0):
     r = requests.get(send_url)
     j = json.loads(r.text)
     temperature = j['main']['temp']
-    print(Fore.BLUE + "It's " + str(temperature) + " °C in " + str(city) + Fore.RESET)
+    description = j['weather'][0]['main']
+    print(Fore.BLUE + "It's " + str(temperature) + " °C in " + str(city) + " (" + str(description) + ")" + Fore.RESET)
+
 
 
 def searchNear(things, city = 0):
