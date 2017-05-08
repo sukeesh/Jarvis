@@ -484,3 +484,8 @@ class CmdInterpreter(Cmd):
     def help_chuck(self):
         """Print info about Chuck command"""
         print_say("Tell a joke about Chuck Norris", self)
+
+    def help_umbrella(self):
+        """Print info about umbrella command."""
+        print_say("If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self, Fore.BLUE)
+
