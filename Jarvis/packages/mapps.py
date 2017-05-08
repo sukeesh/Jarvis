@@ -38,7 +38,6 @@ def weather(city = 0):
     print(Fore.BLUE + "It's " + str(temperature) + " °C in " + str(city) + " (" + str(description) + ")" + Fore.RESET)
 
 
-
 def searchNear(things, city = 0):
     if city:
         print(Fore.GREEN + "Hold on!, I'll show " + things + " near " + city + Fore.RESET)        
