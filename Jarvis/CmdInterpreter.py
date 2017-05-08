@@ -71,6 +71,7 @@ class CmdInterpreter(Cmd):
                         "shutdown",
                         "reboot",
                         "todo",
+                        "umbrella",
                         {"update": ("location", "system")},
                         "weather",
                         )
@@ -463,7 +464,7 @@ class CmdInterpreter(Cmd):
 
     def do_weather(self, s):
         """Get information about today's weather."""
-        weather_pinpoint.main(MEMORY, self)
+        weather_pinpoint.main(MEMORY, self, s)
 
     def help_weather(self):
         """Prints help about weather command."""
@@ -485,7 +486,11 @@ class CmdInterpreter(Cmd):
         """Print info about Chuck command"""
         print_say("Tell a joke about Chuck Norris", self)
 
+    def do_umbrella(self, s):
+        """If you're leaving your place, Jarvis will inform you if you might need an umbrella or not"""
+        s = 'umbrella'
+        weather_pinpoint.main(MEMORY, self, s)
+
     def help_umbrella(self):
         """Print info about umbrella command."""
         print_say("If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self, Fore.BLUE)
-
