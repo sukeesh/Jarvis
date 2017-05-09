@@ -1,3 +1,8 @@
+*09/05/2017*
+### Weather_in
+Inside the already existent check function, you can now check the current weather in any part of the globe.
+**To use this command just type**: check weather * or check weather in *, where * is the location you want to check the weather at.
+
 *08/05/2017*
 ### Umbrella
 Jarvis will tell you if an umbrella will be needed for the day or not.
