@@ -41,7 +41,7 @@ class CmdInterpreter(Cmd):
 
         self.actions = ("ask",
                         "chat",
-                        {"check": ("ram",)},
+                        {"check": ("ram", "time")},
                         "chuck",
                         {"decrease": ("volume",)},
                         "directions",
@@ -92,10 +92,14 @@ class CmdInterpreter(Cmd):
         # if s == "ram":
         if "ram" in s:
             system("free -lm")
+        # if s == "time"
+        if "time" in s:
+            //TODO
 
     def help_check(self):
         """Prints check command help."""
         print_say("ram: checks your system's RAM stats.", self)
+        print_say("time: checks the current time in any part of the globe.", self)
         # add here more prints
 
     def get_completions(self, command, text):
