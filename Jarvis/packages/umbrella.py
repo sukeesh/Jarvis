@@ -13,7 +13,7 @@ def main(city = 0):
     r = requests.get(send_url)
     j = json.loads(r.text)
     rain = j['list'][0]['weather'][0]['id']
-    if rain >= 300 and rain <= 321:  # In case of drizzle
+    if rain >= 300 and rain <= 500:  # In case of drizzle or light rain
         print(Fore.CYAN + "It appears that you might need an umbrella today." + Fore.RESET)
     elif rain > 700:
         print(Fore.CYAN + "Good news! You can leave your umbrella at home for today!" + Fore.RESET)
