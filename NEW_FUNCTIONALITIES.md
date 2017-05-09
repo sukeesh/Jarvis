@@ -1,3 +1,8 @@
+*09/05/2017*
+### TimeIn
+Jarvis' check module now allows users to request the current date and time from anywhere around the globe.
+**To use TimeIn just type**: check time * or check time in * where * is a city, country or region.
+
 *08/05/2017*
 ### Umbrella
 Jarvis will tell you if an umbrella will be needed for the day or not.
