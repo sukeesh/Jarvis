@@ -11,7 +11,7 @@ from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminderHandler, reminderQuit
 from packages import mapps, picshow, evaluator
-from packages import chat, directions_to, near_me, weather_pinpoint, chuck
+from packages import chat, directions_to, near_me, weather_pinpoint, chuck, weatherIn
 from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
 from packages.systemOptions import turn_off_screen, update_system
@@ -41,7 +41,7 @@ class CmdInterpreter(Cmd):
 
         self.actions = ("ask",
                         "chat",
-                        {"check": ("ram",)},
+                        {"check": ("ram", "weather")},
                         "chuck",
                         {"decrease": ("volume",)},
                         "directions",
@@ -92,10 +92,14 @@ class CmdInterpreter(Cmd):
         # if s == "ram":
         if "ram" in s:
             system("free -lm")
+        # if s == "weather"
+        if "weather" in s:
+            weatherIn.main(self, s)
 
     def help_check(self):
         """Prints check command help."""
         print_say("ram: checks your system's RAM stats.", self)
+        print_say("weather in *: checks the current weather in any part of the globe.", self)
         # add here more prints
 
     def get_completions(self, command, text):
