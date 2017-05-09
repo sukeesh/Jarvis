@@ -11,7 +11,7 @@ from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminderHandler, reminderQuit
 from packages import mapps, picshow, evaluator
-from packages import chat, directions_to, near_me, weather_pinpoint, chuck
+from packages import chat, directions_to, near_me, weather_pinpoint, chuck, timeIn
 from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
 from packages.systemOptions import turn_off_screen, update_system
@@ -94,7 +94,7 @@ class CmdInterpreter(Cmd):
             system("free -lm")
         # if s == "time"
         if "time" in s:
-            //TODO
+            timeIn.main(self, s)
 
     def help_check(self):
         """Prints check command help."""
