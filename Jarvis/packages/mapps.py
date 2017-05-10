@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json, webbrowser
 import requests
-from colorama import Fore
+from colorama import Fore, Black, Style
 
 location = 0
 
