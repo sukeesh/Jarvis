@@ -1,169 +1,40 @@
 # -*- coding: utf-8 -*-
-import os
-import json
 
 from datetime import datetime as dt
-from datetime import date, time, timedelta
-from dateutil.relativedelta import relativedelta
 from uuid import uuid4
 from threading import Timer
 import gi
 gi.require_version('Notify', '0.7')
 from gi.repository import Notify
-import re
-
-from colorama import init
-from colorama import Fore, Back, Style
 
 from fileHandler import writeFile, readFile, str2date
+from utilities.lexicalSimilarity import scoreSentence, compareSentence
+from utilities.textParser import parseNumber, parseDate
+from utilities.GeneralUtilities import error, info
 
-def parseNumber(string, numwords = {}):
-    """
-    Parse the given string to an integer.
-
-    This supports pure numerals with or without ',' as a separator between digets.
-    Other supported formats include literal numbers like 'four' and mixed numerals
-    and literals like '24 thousand'.
-    :return: (skip, value) containing the number of words separated by whitespace,
-             that were parsed for the number and the value of the integer itself.
-    """
-    if not numwords:
-        units = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" ]
-        tens = ["", "", "twenty", "thirty", "fourty", "fifty", "sixty", "seventy", "eighty", "ninety"]
-        scales = ["hundred", "thousand", "million", "billion", "trillion"]
-
-        numwords["and"] = (1, 0)
-        for idx, word in enumerate(units):    numwords[word] = (1, idx)
-        for idx, word in enumerate(tens):     numwords[word] = (1, idx * 10)
-        for idx, word in enumerate(scales):   numwords[word] = (10 ** (idx * 3 or 2), 0)
-
-    skip = 0
-    value = 0
-    elements = string.replace(",", "").split()
-    current = 0
-    for d in elements:
-        number = d.split("-")
-        for word in number:
-            if word not in numwords:
-                try:
-                    scale, increment = (1, int(word))
-                except ValueError:
-                    value += current
-                    return (skip, value)
-            else:
-                scale, increment = numwords[word]
-                if not current and scale > 100:
-                    current = 1
-            current = current * scale + increment
-            if scale > 100:
-                value += current
-                current = 0
-        skip += 1
-    value += current
-    return (skip, value)
-    
-def parseDate(string):
-    """
-    Parse the given string for a date or timespan.
-
-    The number for a timespan can be everything supported by parseNumber().
-
-    Supported date formats:
-        2017-03-22 and 17-03-22
-        22.03.2017 and 22.03.17
-    Supported time formats:
-        17:30
-        5:30PM
-    Supported timespan formats:
-        in one second/minute/hour/day/week/month/year
-        next monday
-    :return: (skip, time) containing the number of words separated by whitespace,
-             that were parsed for the date and the date itself as datetime.
-    """
-    elements = string.split()
-
-    parseDay = False
-    parseDeltaValue = False
-    parseDeltaUnit = 0
-    deltaValue = 0
-    retDate = dt.now().date()
-    retTime = dt.now().time()
-    skip = 0
-    for index, d in enumerate(elements):
-        if parseDay:
-            d += dt.today().strftime(" %Y %W")
-            try:
-                retDate = dt.strptime(d, "%a %Y %W").date()
-            except ValueError:
-                try:
-                    retDate = dt.strptime(d, "%A %Y %W").date()
-                except ValueError:
-                    parseDay = False
-                    break
-            if retDate <= dt.now().date():
-                retDate += timedelta(days = 7)
-            parseDay = False
-        elif parseDeltaValue:
-            parseDeltaUnit, deltaValue = parseNumber(" ".join(elements[index:]))
-            parseDeltaValue = False
-        elif parseDeltaUnit:
-            newTime = dt.combine(retDate, retTime)
-            if "year" in d:
-                retDate += relativedelta(years = deltaValue)
-            elif "month" in d:
-                retDate += relativedelta(months = deltaValue)
-            elif "week" in d:
-                retDate += timedelta(weeks = deltaValue)
-            elif "day" in d:
-                retDate += timedelta(days = deltaValue)
-            elif "hour" in d:
-                newTime += timedelta(hours = deltaValue)
-                retDate = newTime.date()
-                retTime = newTime.time()
-            elif "minute" in d:
-                newTime += timedelta(minutes = deltaValue)
-                retDate = newTime.date()
-                retTime = newTime.time()
-            elif "second" in d:
-                newTime += timedelta(seconds = deltaValue)
-                retDate = newTime.date()
-                retTime = newTime.time()
-            elif parseDeltaUnit == 1:
-                print("Missing time unit")
-            parseDeltaUnit -= 1
-
-        elif re.match("^[0-9]{2}-[0-1][0-9]-[0-3][0-9]$", d):
-            retDate = dt.strptime(d, "%y-%m-%d").date()
-        elif re.match("^[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]$", d):
-            retDate = dt.strptime(d, "%Y-%m-%d").date()
-        elif re.match("^[0-3][0-9]\.[0-1][0-9]\.[0-9]{2}$", d):
-            retDate = dt.strptime(d, "%d.%m.%y").date()
-        elif re.match("^[0-3][0-9]\.[0-1][0-9]\.[1-9][0-9]{3}$", d):
-            retDate = dt.strptime(d, "%d.%m.%Y").date()
-
-        elif re.match("^[0-1][0-9]:[0-5][0-9][AP]M$", d):
-            retTime = dt.strptime(d, "%I:%M%p").time()
-        elif re.match("^[1-9]:[0-5][0-9][AP]M$", d):
-            retTime = dt.strptime("0" + d, "%I:%M%p").time()
-        elif re.match("^[0-2][0-9]:[0-5][0-9]$", d):
-            retTime = dt.strptime(d, "%H:%M").time()
-        elif re.match("^[1-9]:[0-5][0-9]$", d):
-            retTime = dt.strptime("0" + d, "%H:%M").time()
-
-        elif d == "next":
-            parseDay = True
-        elif d == "in" or d == "and":
-            parseDeltaValue = True
-        else:
-            break
-        skip += 1
-    return (skip, dt.combine(retDate, retTime))
-        
 def sort(data):
+    """
+    Sort list of reminders by time (oldest first).
+    """
     return sorted(data, key = lambda k: (k['time']))
 
+def findReminder(string):
+    """
+    Find reminder by name.
+
+    Search for the given name in the reminderList. A match is determined by similarity
+    between request and the available reminder names.
+    """
+    nameList = [k['name'] for k in reminderList['items']]
+    if not len(nameList):
+        return (-1, [])
+    index, score, indexList = compareSentence(nameList, string)
+    if score < 1.0 and not reminderList['items'][index]['hidden']:
+        return (index, indexList)
+    return (-1, [])
+
 def showAlarm(notification, name):
-    print(Fore.BLUE + name + Fore.RESET)
+    info(name)
     notification.show()
 
 def showNotification(name, body):
@@ -209,30 +80,85 @@ def removeReminder(uuid):
             break;
     writeFile("reminderlist.txt", reminderList)
 
+actions = {}
+def addAction(function, trigger = [], minArgs = 0):
+    """
+    Add a new action to the list of all available actions.
+
+    :param function: Local function name that should be called when matched
+    :param trigger: List of trigger words or sentences
+    :param minArgs: Minimum number of arguments needed for given function
+    """
+    actions[function] = {'trigger': trigger, 'minArgs': minArgs}
+
+addAction("handlerAdd", ["add", "new", "create"], minArgs = 1)
+def handlerAdd(data):
+    skip, time = parseDate(data)
+    if skip:
+        addReminder(name=" ".join(data.split()[skip:]), time=time, hidden=False, uuid=uuid4().hex)
+
+addAction("handlerRemove", ["remove", "delete", "destroy"], minArgs = 1)
+def handlerRemove(data):
+    skip, number = parseNumber(data)
+    if skip:
+        index = number - 1
+    else:
+        index, indexList = findReminder(data)
+    if index >= 0 and index < len(reminderList['items']):
+        info("Removed reminder: \"{0}\"".format(reminderList['items'][index]['name']))
+        removeReminder(reminderList['items'][index]['uuid'])
+    else:
+        error("Could not find selected reminder")
+
+addAction("handlerList", ["list", "print", "show"])
+def handlerList(data):
+    count = 0
+    for index, e in enumerate(reminderList['items']):
+        if not e['hidden']:
+            print("<{0}> {2}: {1}".format(count + 1, e['time'], e['name']))
+            count += 1
+    if count == 0:
+        info("Reminder list is empty. Add a new entry with 'remind add <time> <name>'")
+
+addAction("handlerClear", ["clear"])
+def handlerClear(data):
+    reminderList['items'] = [k for k in reminderList['items'] if k['hidden']]
+    writeFile("reminderlist.txt", reminderList)
+
 def reminderHandler(data):
-    if "add" in data:
-        data = data.replace("add", "", 1)
-        skip, time = parseDate(data)
-        if skip:
-            addReminder(name=" ".join(data.split()[skip:]), time=time, hidden=False, uuid=uuid4().hex)
-    elif "remove" in data:
-        data = data.replace("remove", "", 1)
-        skip, number = parseNumber(data)
-        if skip:
-            index = number - 1
-            if index >= 0 and index < len(reminderList['items']):
-                removeReminder(reminderList['items'][index]['uuid'])
-    elif "print" in data or "list" in data:
-        count = 0
-        for index, e in enumerate(reminderList['items']):
-            if not e['hidden']:
-                print("<{0}> {2}: {1}".format(index + 1, e['time'], e['name']))
-                count += 1
-        if count == 0:
-            print("Reminder list is empty, add a new entry with 'remind add <time>'")
-    elif "clear" in data:
-        reminderList['items'] = []
-        writeFile("reminderlist.txt", reminderList)
+    """
+    Handle the command string for reminders.
+    """
+    indices = []
+    score = 100
+    action = 0
+    minArgs = 0
+    # Select the best trigger match from the actions list
+    for key in actions:
+        foundMatch = False
+        for trigger in actions[key]['trigger']:
+            newScore, indexList = scoreSentence(data, trigger, distancePenalty = 0.5, additionalTargetPenalty = 0, wordMatchPenalty = 0.5)
+            if foundMatch and len(indexList) > len(indices):
+                # A match for this action was already found.
+                # But this trigger matches more words.
+                indices = indexList
+            if newScore < score:
+                if not foundMatch:
+                    indices = indexList
+                    minArgs = actions[key]['minArgs']
+                    foundMatch = True
+                score = newScore
+                action = key
+    if not action:
+        return
+    data = data.split();
+    for i in sorted(indices, reverse=True):
+        del data[i]
+    if len(data) < minArgs:
+        error("Not enough arguments for specified command {0}".format(action))
+        return
+    data = " ".join(data)
+    globals()[action](data)
 
 def reminderQuit():
     """
@@ -244,7 +170,6 @@ def reminderQuit():
     except:
         for index, el in timerList.items():
             el.cancel()
-
 
 timerList = {}
 reminderList = readFile("reminderlist.txt", {'items':[]})

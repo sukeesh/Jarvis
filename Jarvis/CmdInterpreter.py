@@ -386,8 +386,14 @@ class CmdInterpreter(Cmd):
         todoHandler(data)
 
     def help_todo(self):
-        """Print help about help command."""
+        """Print help about todo command."""
         print_say("Create your personal TODO list!", self)
+        print("Supported Commands: todo <command>")
+        print("\tadd [<index>] <todo - comment>, add comment <index> <comment>, add due <index> <time>")
+        print("\tremove <index>")
+        print("\tcomplete <index> [<completion>]")
+        print("\tpriority <index> [<level>]")
+        print("\tlist")
 
     def do_screen(self, s):
         """Turns off the screen instantly"""
@@ -498,3 +504,4 @@ class CmdInterpreter(Cmd):
     def help_umbrella(self):
         """Print info about umbrella command."""
         print_say("If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self, Fore.BLUE)
+
