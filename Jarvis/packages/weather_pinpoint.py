@@ -1,9 +1,9 @@
 from colorama import Fore
 from utilities.GeneralUtilities import print_say
-import mapps
+import mapps, umbrella
 
 
-def main(MEMORY, self):
+def main(MEMORY, self, s):
     location = MEMORY.get_data('city')  # Will return None if no value
     if location is None:
         loc = str(location)
@@ -22,8 +22,10 @@ def main(MEMORY, self):
             except:
                 i = input()
             city = i
-
-        mapps.weather(str(city))
+        if s == 'umbrella':
+            umbrella.main(str(city))
+        else:
+            mapps.weather(str(city))
 
         MEMORY.update_data('city', city)
         MEMORY.save()
@@ -50,17 +52,25 @@ def main(MEMORY, self):
                     if i == 'y' or i == 'yes':
                         MEMORY.update_data('city', city)
                         MEMORY.save()
-
-                    mapps.weather(city)
+                    if s == 'umbrella':
+                        umbrella.main(city)
+                    else:
+                        mapps.weather(city)
                 except:
                     print_say("I couldn't locate you", self, Fore.RED)
             else:
                 try:
-                    mapps.weather(loc)
+                    if s == 'umbrella':
+                        umbrella.main(loc)
+                    else:
+                        mapps.weather(loc)
                 except:
                     print_say("I couldn't locate you", self, Fore.RED)
         else:
             try:
-                mapps.weather(loc)
+                if s == 'umbrella':
+                    umbrella.main(loc)
+                else:
+                    mapps.weather(loc)
             except:
                 print_say("I couldn't locate you", self, Fore.RED)

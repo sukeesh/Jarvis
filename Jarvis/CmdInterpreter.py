@@ -11,7 +11,7 @@ from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminderHandler, reminderQuit
 from packages import mapps, picshow, evaluator
-from packages import chat, directions_to, near_me, weather_pinpoint, chuck
+from packages import chat, directions_to, near_me, weather_pinpoint, chuck, weatherIn
 from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
 from packages.systemOptions import turn_off_screen, update_system
@@ -41,7 +41,7 @@ class CmdInterpreter(Cmd):
 
         self.actions = ("ask",
                         "chat",
-                        {"check": ("ram",)},
+                        {"check": ("ram", "weather")},
                         "chuck",
                         {"decrease": ("volume",)},
                         "directions",
@@ -71,6 +71,7 @@ class CmdInterpreter(Cmd):
                         "shutdown",
                         "reboot",
                         "todo",
+                        "umbrella",
                         {"update": ("location", "system")},
                         "weather",
                         )
@@ -91,10 +92,14 @@ class CmdInterpreter(Cmd):
         # if s == "ram":
         if "ram" in s:
             system("free -lm")
+        # if s == "weather"
+        if "weather" in s:
+            weatherIn.main(self, s)
 
     def help_check(self):
         """Prints check command help."""
         print_say("ram: checks your system's RAM stats.", self)
+        print_say("weather in *: checks the current weather in any part of the globe.", self)
         # add here more prints
 
     def get_completions(self, command, text):
@@ -469,7 +474,7 @@ class CmdInterpreter(Cmd):
 
     def do_weather(self, s):
         """Get information about today's weather."""
-        weather_pinpoint.main(MEMORY, self)
+        weather_pinpoint.main(MEMORY, self, s)
 
     def help_weather(self):
         """Prints help about weather command."""
@@ -490,4 +495,13 @@ class CmdInterpreter(Cmd):
     def help_chuck(self):
         """Print info about Chuck command"""
         print_say("Tell a joke about Chuck Norris", self)
+
+    def do_umbrella(self, s):
+        """If you're leaving your place, Jarvis will inform you if you might need an umbrella or not"""
+        s = 'umbrella'
+        weather_pinpoint.main(MEMORY, self, s)
+
+    def help_umbrella(self):
+        """Print info about umbrella command."""
+        print_say("If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self, Fore.BLUE)
 
