@@ -39,7 +39,8 @@ def scoreWord(target, word):
     lastIndex = -1
     score = 0
     notFound = 0
-    target = list(target)
+    word = word.lower()
+    target = list(target.lower())
     indexList = list()
     for e in word:
         index = findLetter(target, e, lastIndex)
