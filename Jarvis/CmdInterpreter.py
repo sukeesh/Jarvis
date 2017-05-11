@@ -387,7 +387,7 @@ class CmdInterpreter(Cmd):
 
     def help_todo(self):
         """Print help about todo command."""
-        print_say("Create your personal TODO list!")
+        print_say("Create your personal TODO list!", self)
         print("Supported Commands: todo <command>")
         print("\tadd [<index>] <todo - comment>, add comment <index> <comment>, add due <index> <time>")
         print("\tremove <index>")
