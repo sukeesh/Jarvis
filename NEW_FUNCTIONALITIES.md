@@ -1,9 +1,16 @@
+
+*11/05/2017*
+### TimeIn
+Jarvis' check module now allows users to request the current date and time from anywhere around the globe.
+**To use TimeIn just type**: check time * or check time in * where * is a city, country or region.
+
 *11/05/2017*
 ### Lexical Similarity
 When using the todo or reminder functionality some parts support command executing based on best guess and no longer just a single input.
 In all cases small typos are ignored.
 The remove subcommands received an additional upgrade such that instead of an index the content of the entry can be specified.
 The given text is read and the best matching element is deleted from the list.
+
 
 *09/05/2017*
 ### Weather_in
