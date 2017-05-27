@@ -1,11 +1,12 @@
 # !!! This uses the https://newsapi.org/ api. TO comply with the TOU
 # !!! we must link back to this site whenever we display results.
 
-import urllib, json
+import urllib
+import json
 import webbrowser
 from memory.memory import Memory
-from colorama import init
-from colorama import Fore, Back, Style
+# from colorama import init  # Not being used in code
+# from colorama import Fore, Back, Style  # Not being used in code
 
 '''
     CLASS News
@@ -23,6 +24,8 @@ from colorama import Fore, Back, Style
     n = News()
     n.quick_news()
 '''
+
+
 class News:
 
     def __init__(self, source="google-news", apiKey="7488ba8ff8dc43459d36f06e7141c9e5"):
@@ -35,6 +38,7 @@ class News:
         This is the defualt news function. It checks to see if the
         user has a preference and and goes through all choices.
     '''
+
     def news(self):
         self.news_options()
         self.get_news()
@@ -43,12 +47,14 @@ class News:
         This is the quickest way to get news it also has the
         least amount of options for the user.
     '''
+
     def quick_news(self):
         self.request_news()
 
     '''
         Gets and returns JSON data of news
     '''
+
     def get_news_json(self):
         response = urllib.urlopen(self.url)
         return json.loads(response.read())
@@ -57,8 +63,8 @@ class News:
         This sets the users options and loads them from Memory
         if they exist
     '''
-    def news_options(self):
 
+    def news_options(self):
 
         # check to see if user already has default news source
         if self.m.get_data('news-source'):
@@ -75,7 +81,6 @@ class News:
                 self.get_opt()
         else:
             self.get_opt()
-
 
     def get_opt(self):
         # Other sources available here: https://newsapi.org/sources
@@ -108,12 +113,13 @@ class News:
         except:
             x = input()
         if x == 'y' or x == 'yes':
-            self.m.update_data('news-source', self.source) # save to memory
+            self.m.update_data('news-source', self.source)  # save to memory
             self.m.save()
 
     '''
         This sets the url and sends it to request_news()
     '''
+
     def get_news(self):
         u = "https://newsapi.org/v1/articles?source=" + self.source + "&sortby=top&apiKey=" + self.apiKey
         self.request_news(u)
@@ -123,6 +129,7 @@ class News:
         This function DOES NOT check user preferences.
         It also includes user interactions for getting more info on an articles
     '''
+
     def request_news(self, url=None):
         # check to see if a url was passed
         if url is None:

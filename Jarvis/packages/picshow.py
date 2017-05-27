@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import webbrowser
 
+
 def showpics(strr):
     strr = strr.split(" ")
     query = strr[4]

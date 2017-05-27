@@ -3,7 +3,8 @@ import json
 import requests
 from colorama import Fore
 
-def main(city = 0):
+
+def main(city=0):
     if not city:
         city = getLocation()['city']
     send_url = (

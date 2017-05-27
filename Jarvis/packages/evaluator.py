@@ -2,6 +2,7 @@
 from utilities.GeneralUtilities import print_say
 from colorama import Fore
 
+
 def calc(s, self):
     s = str.lower(s)
     s = s.replace("power", "**")
