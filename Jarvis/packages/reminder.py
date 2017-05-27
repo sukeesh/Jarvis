@@ -12,11 +12,13 @@ from utilities.lexicalSimilarity import scoreSentence, compareSentence
 from utilities.textParser import parseNumber, parseDate
 from utilities.GeneralUtilities import error, info
 
+
 def sort(data):
     """
     Sort list of reminders by time (oldest first).
     """
-    return sorted(data, key = lambda k: (k['time']))
+    return sorted(data, key=lambda k: (k['time']))
+
 
 def findReminder(string):
     """
@@ -33,9 +35,11 @@ def findReminder(string):
         return (index, indexList)
     return (-1, [])
 
+
 def showAlarm(notification, name):
     info(name)
     notification.show()
+
 
 def showNotification(name, body):
     """
@@ -43,7 +47,8 @@ def showNotification(name, body):
     """
     Notify.Notification.new(name, body).show()
 
-def addReminder(name, time, uuid, body = '', urgency=Notify.Urgency.LOW, hidden = True):
+
+def addReminder(name, time, uuid, body='', urgency=Notify.Urgency.LOW, hidden=True):
     """
     Queue reminder.
 
@@ -62,10 +67,11 @@ def addReminder(name, time, uuid, body = '', urgency=Notify.Urgency.LOW, hidden 
     n.set_urgency(urgency)
     timerList[uuid] = Timer(waitTime.total_seconds(), showAlarm, [n, name])
     timerList[uuid].start()
-    newItem = {'name':name, 'time':time, 'hidden':hidden, 'uuid':uuid}
+    newItem = {'name': name, 'time': time, 'hidden': hidden, 'uuid': uuid}
     reminderList['items'].append(newItem)
     reminderList['items'] = sort(reminderList['items'])
     writeFile("reminderlist.txt", reminderList)
+
 
 def removeReminder(uuid):
     """
@@ -77,11 +83,14 @@ def removeReminder(uuid):
     for index, e in enumerate(reminderList['items']):
         if uuid == e['uuid']:
             reminderList['items'].remove(reminderList['items'][index])
-            break;
+            break
     writeFile("reminderlist.txt", reminderList)
 
+
 actions = {}
-def addAction(function, trigger = [], minArgs = 0):
+
+
+def addAction(function, trigger=[], minArgs=0):
     """
     Add a new action to the list of all available actions.
 
@@ -91,13 +100,19 @@ def addAction(function, trigger = [], minArgs = 0):
     """
     actions[function] = {'trigger': trigger, 'minArgs': minArgs}
 
-addAction("handlerAdd", ["add", "new", "create"], minArgs = 1)
+
+addAction("handlerAdd", ["add", "new", "create"], minArgs=1)
+
+
 def handlerAdd(data):
     skip, time = parseDate(data)
     if skip:
         addReminder(name=" ".join(data.split()[skip:]), time=time, hidden=False, uuid=uuid4().hex)
 
-addAction("handlerRemove", ["remove", "delete", "destroy"], minArgs = 1)
+
+addAction("handlerRemove", ["remove", "delete", "destroy"], minArgs=1)
+
+
 def handlerRemove(data):
     skip, number = parseNumber(data)
     if skip:
@@ -110,7 +125,10 @@ def handlerRemove(data):
     else:
         error("Could not find selected reminder")
 
+
 addAction("handlerList", ["list", "print", "show"])
+
+
 def handlerList(data):
     count = 0
     for index, e in enumerate(reminderList['items']):
@@ -120,10 +138,14 @@ def handlerList(data):
     if count == 0:
         info("Reminder list is empty. Add a new entry with 'remind add <time> <name>'")
 
+
 addAction("handlerClear", ["clear"])
+
+
 def handlerClear(data):
     reminderList['items'] = [k for k in reminderList['items'] if k['hidden']]
     writeFile("reminderlist.txt", reminderList)
+
 
 def reminderHandler(data):
     """
@@ -137,7 +159,8 @@ def reminderHandler(data):
     for key in actions:
         foundMatch = False
         for trigger in actions[key]['trigger']:
-            newScore, indexList = scoreSentence(data, trigger, distancePenalty = 0.5, additionalTargetPenalty = 0, wordMatchPenalty = 0.5)
+            newScore, indexList = scoreSentence(
+                data, trigger, distancePenalty=0.5, additionalTargetPenalty=0, wordMatchPenalty=0.5)
             if foundMatch and len(indexList) > len(indices):
                 # A match for this action was already found.
                 # But this trigger matches more words.
@@ -151,7 +174,7 @@ def reminderHandler(data):
                 action = key
     if not action:
         return
-    data = data.split();
+    data = data.split()
     for i in sorted(indices, reverse=True):
         del data[i]
     if len(data) < minArgs:
@@ -159,6 +182,7 @@ def reminderHandler(data):
         return
     data = " ".join(data)
     globals()[action](data)
+
 
 def reminderQuit():
     """
@@ -171,8 +195,9 @@ def reminderQuit():
         for index, el in timerList.items():
             el.cancel()
 
+
 timerList = {}
-reminderList = readFile("reminderlist.txt", {'items':[]})
+reminderList = readFile("reminderlist.txt", {'items': []})
 reminderList['items'] = sort(reminderList['items'])
 reminderList['items'] = [i for i in reminderList['items'] if not i['hidden']]
 for e in reminderList['items']:
@@ -184,4 +209,3 @@ for e in reminderList['items']:
     timerList[e['uuid']].start()
 
 Notify.init("Jarvis")
-

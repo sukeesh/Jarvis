@@ -6,7 +6,8 @@ from colorama import Fore
 
 
 def main(self, s):
-    loc = s.replace('weather ', '').replace('in ', '')  # Trim input command to get only the location
+    # Trim input command to get only the location
+    loc = s.replace('weather ', '').replace('in ', '')
 
     # Checks country
     country = mapps.getLocation()['country_name']
@@ -30,4 +31,5 @@ def main(self, s):
     j = json.loads(r.text)
     temperature = j['main']['temp']
     description = j['weather'][0]['main']
-    print(Fore.BLUE + "It's " + str(temperature) + unit + str(loc.title()) + " (" + str(description) + ")" + Fore.RESET)
+    print(Fore.BLUE + "It's " + str(temperature) + unit +
+          str(loc.title()) + " (" + str(description) + ")" + Fore.RESET)

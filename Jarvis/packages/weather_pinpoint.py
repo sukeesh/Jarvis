@@ -1,6 +1,7 @@
 from colorama import Fore
 from utilities.GeneralUtilities import print_say
-import mapps, umbrella
+import mapps
+import umbrella
 
 
 def main(MEMORY, self, s):
@@ -9,7 +10,7 @@ def main(MEMORY, self, s):
         loc = str(location)
         city = mapps.getLocation()['city']
         print_say("It appears you are in " +
-              city + " Is this correct? (y/n)", self, Fore.RED)
+                  city + " Is this correct? (y/n)", self, Fore.RED)
 
         try:
             i = raw_input()
@@ -34,9 +35,9 @@ def main(MEMORY, self, s):
         city = mapps.getLocation()['city']
         if city != loc:
             print_say("It appears you are in " + city +
-                  ". But you set your location to " + loc, self, Fore.RED)
+                      ". But you set your location to " + loc, self, Fore.RED)
             print_say("Do you want weather for " +
-                  city + " instead? (y/n)", self, Fore.RED)
+                      city + " instead? (y/n)", self, Fore.RED)
             try:
                 i = raw_input()
             except:
@@ -44,7 +45,7 @@ def main(MEMORY, self, s):
             if i == 'y' or i == 'yes':
                 try:
                     print_say("Would you like to set " + city +
-                          " as your new location? (y/n)", self, Fore.RED)
+                              " as your new location? (y/n)", self, Fore.RED)
                     try:
                         i = raw_input()
                     except:
