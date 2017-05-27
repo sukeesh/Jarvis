@@ -11,9 +11,9 @@ def update_system():
     release = subprocess.check_output('cat /etc/lsb-rel'
                                       + 'ease | grep'
                                       + ' DISTRIB_ID=', shell=True)
-    distribution = release.split('=')
+    get_line = release.split('=')
 
-    user_distribution = distribution[1]
+    user_distribution = get_line[1]
     print(user_distribution)
     if user_distribution == "Ubuntu\n":
         os.system('sudo apt-get update && sudo apt-get upgrade -y')
