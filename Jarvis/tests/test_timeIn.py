@@ -12,7 +12,6 @@ class TimeInTest(unittest.TestCase):
     def test_timeIn(self):
         """ test the timeIn.main function against time.ctime """
 
-
         # call timeIn.main and redirect stdout to a StringIO object
         timeIn.main(self, "time in Greenwich, UK")
         sys.stdout.seek(0)
