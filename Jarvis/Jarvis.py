@@ -114,8 +114,7 @@ class Jarvis(CmdInterpreter):
                 break
         return output
 
-    @staticmethod
-    def _generate_output_if_dict(action, word, words_remaining):
+    def _generate_output_if_dict(self, action, word, words_remaining):
         """Generates the correct output if action is a dict"""
         output = word
 
@@ -128,6 +127,10 @@ class Jarvis(CmdInterpreter):
                     if argument == value:
                         output += " " + argument
                         output += " " + " ".join(command_arguments)
+            # make Jarvis complain if none of the words_remaining are part
+            # of the word values (as in 'enable cat' or 'check whatever you fancy')
+            if output == word:
+                self.default(output)
         return output
 
     def executor(self):
