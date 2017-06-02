@@ -48,6 +48,11 @@ class Jarvis(CmdInterpreter):
         if len(words) == 0:
             line = "None"
         elif len(words) == 1:
+            # if the action is a dict action, the command should contain more than one word
+            # such as 'disable sound' or 'please, could you check the weather in Madrid'
+            dict_actions = [action.keys()[0] for action in self.actions if type(action) == dict]
+            if words[0] in dict_actions:
+                self.default(words)
             pass
         elif (len(words) > 2) or (words[0] not in self.actions):
             line = self.parse_input(line)
@@ -129,8 +134,8 @@ class Jarvis(CmdInterpreter):
                         output += " " + " ".join(command_arguments)
             # make Jarvis complain if none of the words_remaining are part
             # of the word values (as in 'enable cat' or 'check whatever you fancy')
-            if output == word:
-                self.default(output)
+        if output == word:
+            self.default(output)
         return output
 
     def executor(self):
