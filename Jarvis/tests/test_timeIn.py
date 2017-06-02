@@ -19,7 +19,7 @@ class TimeInTest(unittest.TestCase):
         result = output.split(' ')[10][0:8]
 
         # What is ctime in you current local?
-        time_here = time.ctime(time.time()).split(' ')[3]
+        time_here = time.ctime(time.time()).split(' ')[4]
 
         # Adjust 'result' variable for your current local's timezone
         adjustment = time.timezone / 3600
