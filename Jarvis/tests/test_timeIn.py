@@ -31,8 +31,8 @@ class TimeInTest(unittest.TestCase):
         adjustment = time.timezone / 3600
         result_list = result.split(':')
         hour = (int(result_list[0]) - adjustment) % 24
-        result = ':'.join([str(hour), result_list[1], result_list[2]])   
-            
+        result = ':'.join([str(hour), result_list[1], result_list[2]])
+
         self.assertEqual(result, time_here)
 
     def tearDown(self):
