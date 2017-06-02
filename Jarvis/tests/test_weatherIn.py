@@ -1,0 +1,19 @@
+import unittest
+from Jarvis import Jarvis
+from mock import patch
+from packages import weather_pinpoint, weatherIn
+
+
+class weatherInTest(unittest.TestCase):
+
+    def setUp(self):
+        self.jarvis = Jarvis()
+
+    def test_pinpoint_is_called_if_no_location_is_found(self):
+        with patch.object(weather_pinpoint, 'main') as pinpoint_mock:
+            weatherIn.main(self, 'weather in NowhereReally')
+            self.assertTrue(pinpoint_mock.called)
+
+        with patch.object(weather_pinpoint, 'main') as pinpoint_mock:
+            weatherIn.main(self, 'weather')
+            self.assertTrue(pinpoint_mock.called)
