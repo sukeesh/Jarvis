@@ -16,7 +16,6 @@ class TimeInTest(unittest.TestCase):
         timeIn.main(self, "time in Greenwich, UK")
         sys.stdout.seek(0)
         output = sys.stdout.read()
-        result = output.split(' ')[10][0:8]
 
         # What is ctime in you current local?
         time_here = time.ctime(time.time()).split(' ')
@@ -28,6 +27,7 @@ class TimeInTest(unittest.TestCase):
         time_here = time_here[3]
 
         # Adjust 'result' variable for your current local's timezone
+        result = output.split(' ')[10][0:8]
         adjustment = time.timezone / 3600
         result_list = result.split(':')
         hour = (int(result_list[0]) - adjustment) % 24
