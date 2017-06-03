@@ -53,7 +53,6 @@ class Jarvis(CmdInterpreter):
             dict_actions = [action.keys()[0] for action in self.actions if isinstance(action, dict)]
             if words[0] in dict_actions:
                 self.default(words)
-            pass
         elif (len(words) > 2) or (words[0] not in self.actions):
             line = self.parse_input(line)
         return line
