@@ -1,0 +1,5 @@
+# File containing all commands for the installation
+# of all prerequistes to reach complete Jarvis functionality
+
+sudo apt-get install ffmpeg
+sudo pip install -r requirements.txt

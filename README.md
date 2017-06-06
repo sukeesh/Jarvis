@@ -11,7 +11,7 @@ In order to start Jarvis just clone the repository and run the command: `python 
 
 ### Prerequisites
 
-Use the command `pip install -r requirements.txt` to install the requirements.
+Use the command `./Setup` to install the requirements.
 
 ## Youtube Video
 
