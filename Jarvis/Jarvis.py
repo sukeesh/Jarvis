@@ -17,7 +17,7 @@ from CmdInterpreter import CmdInterpreter
 """
 
 
-class Jarvis(CmdInterpreter):
+class Jarvis(CmdInterpreter, object):
     # We use this variable at Breakpoint #1.
     # We use this in order to allow Jarvis say "Hi", only at the first
     # interaction.
@@ -106,6 +106,10 @@ class Jarvis(CmdInterpreter):
                     action_found = True
                     output = self._generate_output_if_dict(action, word, words_remaining)
                     break
+                # For the 'near' keyword, the words before 'near' are also needed
+                elif word == "near":
+                    initial_words = words[:words.index('near')]
+                    output = word + " " + " ".join(initial_words + ["|"] + words_remaining)
                 elif word == action:  # command name exists
                     action_found = True
                     output = word + " " + " ".join(words_remaining)
