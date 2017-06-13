@@ -433,7 +433,7 @@ class CmdInterpreter(Cmd):
         if "off" in s:
             turn_off_screen()
 
-    def help_screen(self, s):
+    def help_screen(self):
         """Print help about screen command."""
         print_say("Turns off the screen instantly", self)
 
