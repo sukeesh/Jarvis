@@ -40,7 +40,7 @@ class Jarvis(CmdInterpreter, object):
         """Jarvis let's you know if an error has occurred."""
         if self.enable_voice:
             self.speech.text_to_speech("I could not identify your command")
-        print(Fore.RED + "I could not identify your command..." + Fore.RESET)
+        print_say("I could not identify your command...", self, Fore.RED)
 
     def precmd(self, line):
         """Hook that executes before every command."""
