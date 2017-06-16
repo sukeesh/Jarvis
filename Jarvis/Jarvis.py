@@ -1,5 +1,5 @@
 from colorama import Fore
-
+from utilities.GeneralUtilities import print_say
 from CmdInterpreter import CmdInterpreter
 
 """
@@ -38,8 +38,6 @@ class Jarvis(CmdInterpreter, object):
 
     def default(self, data):
         """Jarvis let's you know if an error has occurred."""
-        if self.enable_voice:
-            self.speech.text_to_speech("I could not identify your command")
         print_say("I could not identify your command...", self, Fore.RED)
 
     def precmd(self, line):
