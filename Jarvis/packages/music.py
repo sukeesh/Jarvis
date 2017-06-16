@@ -5,11 +5,11 @@ from colorama import Fore
 
 
 def play(data):
-    if len(data[5:]) == 0:
+    if len(data) == 0:
         print(Fore.BLUE + "Song name doesn't exist. (music '"'song name'"') " + Fore.RESET)
 
     else:
-        wanted = data[6:]
+        wanted = data
         find = os.popen("ls | grep -i " +'"'+ wanted +'"')
         music = str(find.readline())
 

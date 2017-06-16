@@ -5,7 +5,7 @@ colorama==0.3.7
 eyeD3==0.7.11
 gTTS==1.1.8
 gTTS-token==1.1.1
-youtube-dl==2017.3.16
+youtube-dl==2017.06.05
 instantmusic==2.2
 lxml==3.7.3
 packaging==16.8
