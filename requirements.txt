@@ -18,3 +18,4 @@ SpeechRecognition==3.6.3
 pyttsx == 1.1
 aiml
 python-dateutil
+mock==2.0.0
