@@ -104,6 +104,10 @@ class CmdInterpreter(Cmd):
         print_say("ram: checks your system's RAM stats.", self)
         print_say("time: checks the current time in any part of the globe.", self)
         print_say("weather in *: checks the current weather in any part of the globe.", self)
+        print_say("-- Examples:",self)
+        print_say("\tcheck ram", self)
+        print_say("\tcheck time in Manchester (UK)", self)
+        print_say("\tcheck weather in Canada", self)
         # add here more prints
 
     def get_completions(self, command, text):
@@ -212,6 +216,8 @@ class CmdInterpreter(Cmd):
     def help_directions(self):
         """Prints help about directions command"""
         print_say("Get directions about a destination you are interested to.", self)
+        print_say("-- Example:", self)
+        print_say("\tdirections to the Eiffel Tower", self)
 
     def do_display(self, s):
         """Displays photos."""
@@ -221,7 +227,9 @@ class CmdInterpreter(Cmd):
 
     def help_display(self):
         """Prints help about display command"""
-        print_say("Displays photos.", self)
+        print_say("Displays photos of the topic you choose.", self)
+        print_say("-- Example:", self)
+        print_say("\tdisplay pics of castles", self)
 
     def complete_display(self, text, line, begidx, endidx):
         """Completions for display command"""
@@ -269,6 +277,8 @@ class CmdInterpreter(Cmd):
     def help_evaluate(self):
         """Print help about evaluate command."""
         print_say("Jarvis will get your calculations done!", self)
+        print_say("-- Example:", self)
+        print_say("\tevaluate 3 + 5", self)
 
     def do_hotspot(self, s):
         """Jarvis will set up your own hotspot."""
@@ -304,7 +314,9 @@ class CmdInterpreter(Cmd):
 
     def help_music(self):
         """Print help about music command."""
-        print_say("Jarvis will find you a good song to relax", self)
+        print_say("Jarvis will find you the song you want", self)
+        print_say("-- Example:", self)
+        print_say("\tmusic wonderful tonight", self)
 
     def do_play(self, s):
         """Jarvis will find you a good song to relax!"""
@@ -312,15 +324,20 @@ class CmdInterpreter(Cmd):
 
     def help_play(self):
         """Print help about play command."""
-        print_say("Jarvis will find you a good song to relax", self)
+        print_say("Jarvis will find you the song you want", self)
+        print_say("-- Example:", self)
+        print_say("\tplay eye of the tiger", self)
 
     def do_near(self, data):
         """Jarvis can find what is near you!"""
         near_me.main(data)
 
-    def help_near(self, s):
+    def help_near(self):
         """Print help about near command."""
         print_say("Jarvis can find what is near you!", self)
+        print_say("-- Examples:", self)
+        print_say("\trestaurants near me", self)
+        print_say("\tmuseums near the eiffel tower", self)
 
     def do_news(self, s):
         """Time to get an update about the local news."""
@@ -340,6 +357,7 @@ class CmdInterpreter(Cmd):
     def help_news(self):
         """Print help about news command."""
         print_say("Time to get an update about the local news.", self)
+        print_say("Type \"news\" to choose your source or \"news quick\" for some headlines.", self)
 
     def do_open(self, s):
         """Jarvis will open the camera for you."""
@@ -367,9 +385,19 @@ class CmdInterpreter(Cmd):
         """Handles reminders"""
         reminderHandler(data)
 
-    def help_remind(self, data):
+    def help_remind(self):
         """Print help about remind command."""
         print_say("Handles reminders", self)
+        print_say("add: adds a reminder",self)
+        print_say("remove: removes a reminder", self)
+        print_say("list: lists all reminders", self)
+        print_say("clear: clears all reminders", self)
+        print_say("-- Examples:", self)
+        print_say("\tremind add 14:25 buy tomatoes", self)
+        print_say("\tremind add 14:26 buy potatoes too", self)
+        print_say("\tremind remove buy potatoes too", self)
+        print_say("\tremind list", self)
+        print_say("\tremind clear", self)
 
     def do_match(self, s):
         """Matches patterns in a string by using regex."""
@@ -383,7 +411,8 @@ class CmdInterpreter(Cmd):
 
     def help_match(self):
         """Prints help about match command"""
-        print_say("Matches patterns in a string by using regex.", self)
+        print_say("Matches a string pattern in a file using regex.", self)
+        print_say("Type \"match\" and you'll be prompted.", self)
 
     def do_todo(self, data):
         """Create your personal TODO list!"""
@@ -404,7 +433,7 @@ class CmdInterpreter(Cmd):
         if "off" in s:
             turn_off_screen()
 
-    def help_screen(self, s):
+    def help_screen(self):
         """Print help about screen command."""
         print_say("Turns off the screen instantly", self)
 
@@ -414,12 +443,12 @@ class CmdInterpreter(Cmd):
 
     def do_os(self, s):
         """Displays information about your operating system."""
-        print(Fore.BLUE + '[!] Operating System Information' + Fore.RESET)
-        print(Fore.GREEN + '[*] ' + sys() + Fore.RESET)
-        print(Fore.GREEN + '[*] ' + release() + Fore.RESET)
-        print(Fore.GREEN + '[*] ' + dist()[0] + Fore.RESET)
+        print_say('[!] Operating System Information', self, Fore.BLUE)
+        print_say('[*] ' + sys(), self, Fore.GREEN)
+        print_say('[*] ' + release(), self, Fore.GREEN)
+        print_say('[*] ' + dist()[0], self, Fore.GREEN)
         for _ in architecture():
-            print(Fore.GREEN + '[*] ' + _ + Fore.RESET)
+            print_say('[*] ' + _, self, Fore.GREEN)
 
     def help_os(self):
         """Displays information about your operating system."""
@@ -482,7 +511,7 @@ class CmdInterpreter(Cmd):
 
     def help_weather(self):
         """Prints help about weather command."""
-        print_say("Get information about today's weather.", self)
+        print_say("Get information about today's weather in your current location.", self)
 
     def do_how_are_you(self, s):
         """Jarvis will inform you about his status."""
