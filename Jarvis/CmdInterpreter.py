@@ -95,8 +95,6 @@ class CmdInterpreter(Cmd):
         # if s == "time"
         elif "time" in s:
             timeIn.main(self, s)
-        # forecast must be checked before weather so that
-        # 'check weather forecast' directs to the forecast functionality
         elif "forecast" in s:
             forecast.main(self, s)
         # if s == "weather"
