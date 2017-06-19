@@ -10,7 +10,7 @@ from utilities.GeneralUtilities import print_say
 from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminderHandler, reminderQuit
-from packages import mapps, picshow, evaluator
+from packages import mapps, picshow, evaluator, forecast
 from packages import chat, directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
 from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
@@ -98,7 +98,7 @@ class CmdInterpreter(Cmd):
         # forecast must be checked before weather so that
         # 'check weather forecast' directs to the forecast functionality
         elif "forecast" in s:
-            pass
+            forecast.main(self, s)
         # if s == "weather"
         elif "weather" in s:
             weatherIn.main(self, s)
