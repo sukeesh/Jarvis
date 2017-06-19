@@ -41,7 +41,7 @@ class CmdInterpreter(Cmd):
 
         self.actions = ("ask",
                         "chat",
-                        {"check": ("ram", "weather", "time")},
+                        {"check": ("ram", "weather", "time", "forecast")},
                         "chuck",
                         {"decrease": ("volume",)},
                         "directions",
@@ -93,10 +93,14 @@ class CmdInterpreter(Cmd):
         if "ram" in s:
             system("free -lm")
         # if s == "time"
-        if "time" in s:
+        elif "time" in s:
             timeIn.main(self, s)
+        # forecast must be checked before weather so that
+        # 'check weather forecast' directs to the forecast functionality
+        elif "forecast" in s:
+            pass
         # if s == "weather"
-        if "weather" in s:
+        elif "weather" in s:
             weatherIn.main(self, s)
 
     def help_check(self):
@@ -104,10 +108,13 @@ class CmdInterpreter(Cmd):
         print_say("ram: checks your system's RAM stats.", self)
         print_say("time: checks the current time in any part of the globe.", self)
         print_say("weather in *: checks the current weather in any part of the globe.", self)
+        print_say("forecast: checks the weather forecast for the next 7 days.", self)
         print_say("-- Examples:",self)
         print_say("\tcheck ram", self)
         print_say("\tcheck time in Manchester (UK)", self)
         print_say("\tcheck weather in Canada", self)
+        print_say("\tcheck forecast", self)
+        print_say("\tcheck forecast in Madrid", self)
         # add here more prints
 
     def get_completions(self, command, text):
