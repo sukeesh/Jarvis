@@ -64,7 +64,7 @@ def get_forecast(loc, units, unit):
     j = json.loads(r.text)
 
     # error checking
-    if ('message' in j.keys() and ('city not found' in str(j['message']) or 
+    if ('message' in j.keys() and ('city not found' in str(j['message']) or
         'Nothing to geocode' in str(j['message'])) ):
         return pinpoint.main(Memory(), self, s)
 
@@ -77,4 +77,4 @@ def get_forecast(loc, units, unit):
         print("\tDay {0}:  Min Temp = {1}".format(i+1, min_temp) + unit +
               "\tMax Temp = {0}".format(max_temp) + unit +
               "\t({0})".format(weather))
-    
+
