@@ -97,7 +97,10 @@ class CmdInterpreter(Cmd):
             timeIn.main(self, s)
         # if s == "weather"
         if "weather" in s:
-            weatherIn.main(self, s)
+            if "forecast" in s:
+                weatherIn.main(self, s, forecast='True')
+            else:
+                weatherIn.main(self, s)
 
     def help_check(self):
         """Prints check command help."""
