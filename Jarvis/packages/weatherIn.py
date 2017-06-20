@@ -9,7 +9,7 @@ from colorama import Fore
 
 def main(self, s, forecast=False):
     # Trim input command to get only the location
-    loc = s.replace('weather', '').replace('in ', '').strip()  
+    loc = s.replace('weather', '').replace('in ', '').strip()
 
     # Checks country to determine which units to output
     country = mapps.getLocation()['country_name']
@@ -19,7 +19,7 @@ def main(self, s, forecast=False):
     else:
         units = 'metric'
         unit  = ' ºC '
-    
+
     # request a forecast or the current weather?
     if forecast == False:
         get_weather(loc, units, unit)
@@ -40,7 +40,7 @@ def get_weather(loc, units, unit):
     j = json.loads(r.text)
 
     # error checking
-    if ('message' in j.keys() and ('city not found' in str(j['message']) or 
+    if ('message' in j.keys() and ('city not found' in str(j['message']) or
         'Nothing to geocode' in str(j['message'])) ):
         return pinpoint.main(Memory(), self, s)
 
@@ -48,7 +48,7 @@ def get_weather(loc, units, unit):
     temperature = j['main']['temp']
     description = j['weather'][0]['main']
     location = j['name']
-    print(Fore.BLUE + "It's " + str(temperature) + unit + "in " + str(location.title()) + 
+    print(Fore.BLUE + "It's " + str(temperature) + unit + "in " + str(location.title()) +
           " (" + str(description) + ")" + Fore.RESET)
 
 
@@ -61,7 +61,7 @@ def get_forecast(loc, units, unit):
 
     # send request and parse into JSON
     r = requests.get(send_url)
-    j = json.loads(r.text)    
+    j = json.loads(r.text)
 
     # error checking
     if ('message' in j.keys() and ('city not found' in str(j['message']) or 
@@ -74,7 +74,7 @@ def get_forecast(loc, units, unit):
         min_temp = j['list'][i]['temp']['min']
         max_temp = j['list'][i]['temp']['max']
         weather  = j['list'][i]['weather'][0]['main']
-        print("\tDay {0}:  Min Temp = {1}".format(i+1, min_temp) + unit +  
+        print("\tDay {0}:  Min Temp = {1}".format(i+1, min_temp) + unit +
               "\tMax Temp = {0}".format(max_temp) + unit +
               "\t({0})".format(weather))
     
