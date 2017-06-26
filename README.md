@@ -13,7 +13,7 @@ You can start by typing `help` within the Jarvis command line to check what Jarv
 
 ### Prerequisites
 
-Use the command `pip install -r requirements.txt` to install the requirements.
+Use the command `./Setup` to install the requirements.
 
 ## Youtube Video
 
