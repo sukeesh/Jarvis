@@ -1,12 +1,12 @@
 import unittest
-import cmath
 import sys
 from StringIO import StringIO
 
 from colorama import Fore
 
-from Jarvis import Jarvis
-from packages.evaluator import calc
+from ..Jarvis import Jarvis
+from ..packages.evaluator import calc
+
 
 class EvaluatorTest(unittest.TestCase):
 
@@ -24,7 +24,7 @@ class EvaluatorTest(unittest.TestCase):
 
         # And now for something a little more _complex_
         sys.stdout = StringIO()
-        x = calc("(1 pluS 9.1j)^3.14129 mINUS 2.712", self.jarvis)
+        calc("(1 pluS 9.1j)^3.14129 mINUS 2.712", self.jarvis)
         sys.stdout.seek(0)
         output = sys.stdout.read().strip()
         result = Fore.BLUE + str((1+9.1j)**3.14129 - 2.712) + Fore.RESET

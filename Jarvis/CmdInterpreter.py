@@ -9,11 +9,11 @@ from utilities import voice
 from utilities.GeneralUtilities import print_say
 from packages.music import play
 from packages.todo import todoHandler
-from packages.reminder import reminderHandler, reminderQuit
+from packages.reminder import reminder_handler, reminder_quit
 from packages import mapps, picshow, evaluator, forecast
 from packages import chat, directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
 from packages.memory.memory import Memory
-from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
+from packages.shutdown import shutdown_system, cancel_shutdown, reboot_system
 from packages.systemOptions import turn_off_screen, update_system
 from packages.news import News
 
@@ -143,7 +143,7 @@ class CmdInterpreter(Cmd):
 
     def close(self):
         """Closing Jarvis."""
-        reminderQuit()
+        reminder_quit()
         print_say("Goodbye, see you later!", self, Fore.RED)
         exit()
 
@@ -244,7 +244,7 @@ class CmdInterpreter(Cmd):
         """Cancel an active shutdown."""
         # TODO en el precmd creo que puedo hacerlo y asi no me hace falta para todos
         if "shutdown" in s:
-            cancelShutdown()
+            cancel_shutdown()
 
     def help_cancel(self):
         """Prints help about cancel command."""
@@ -380,7 +380,7 @@ class CmdInterpreter(Cmd):
 
     def do_pinpoint(self, s):
         """Jarvis will pinpoint your location."""
-        mapps.locateme()
+        mapps.locate_me()
 
     def help_pinpoint(self):
         """Print help about pinpoint command."""
@@ -388,7 +388,7 @@ class CmdInterpreter(Cmd):
 
     def do_remind(self, data):
         """Handles reminders"""
-        reminderHandler(data)
+        reminder_handler(data)
 
     def help_remind(self):
         """Print help about remind command."""

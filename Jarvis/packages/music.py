@@ -10,14 +10,16 @@ def play(data):
 
     else:
         wanted = data
-        find = os.popen("ls | grep -i " +'"'+ wanted +'"')
+        find = os.popen("ls | grep -i " + '"' + wanted + '"')
         music = str(find.readline())
 
         if not music:
             os.system("instantmusic -s " + wanted)
             find = os.popen("ls -tc --hide='__*' --hide='*.py'")
             music = str(find.readline()).replace("\n", "")
-            os.system("XDG_CURRENT_DESKTOP= DESKTOP_SESSION= xdg-open " + music.replace(" ", "\ ").replace(" (", " \("). replace(")", "\)"))
+            os.system("XDG_CURRENT_DESKTOP= DESKTOP_SESSION= xdg-open " +
+                      music.replace(" ", "\ ").replace(" (", " \("). replace(")", "\)"))
 
         else:
-            os.system("XDG_CURRENT_DESKTOP= DESKTOP_SESSION= xdg-open " + music.replace(" ", "\ ").replace(" (", " \("). replace(")", "\)"))
+            os.system("XDG_CURRENT_DESKTOP= DESKTOP_SESSION= xdg-open " +
+                      music.replace(" ", "\ ").replace(" (", " \("). replace(")", "\)"))
