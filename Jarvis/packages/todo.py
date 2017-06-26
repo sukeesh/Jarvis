@@ -277,7 +277,8 @@ def todoHandler(data):
     for key in actions:
         foundMatch = False
         for trigger in actions[key]['trigger']:
-            newScore, indexList = score_sentence(data, trigger, distancePenalty = 0.5, additionalTargetPenalty = 0, wordMatchPenalty = 0.5)
+            newScore, indexList = score_sentence(data, trigger, distance_penalty=0.5, additional_target_penalty=0,
+                                                 word_match_penalty=0.5)
             if foundMatch and len(indexList) > len(indices):
                 # A match for this action was already found.
                 # But this trigger matches more words.
@@ -291,7 +292,7 @@ def todoHandler(data):
                 action = key
     if not action:
         return
-    data = data.split();
+    data = data.split()
     for i in sorted(indices, reverse=True):
         del data[i]
     if len(data) < minArgs:

@@ -5,6 +5,8 @@ from platform import system as sys
 from platform import architecture, release, dist
 from time import ctime
 from colorama import Fore
+from requests import ConnectionError
+
 from utilities import voice
 from utilities.GeneralUtilities import print_say
 from packages.music import play
@@ -18,6 +20,9 @@ from packages.systemOptions import turn_off_screen, update_system
 from packages.news import News
 
 MEMORY = Memory()
+
+
+CONNECTION_ERROR_MSG = "You are not connected to Internet"
 
 
 class CmdInterpreter(Cmd):
@@ -99,7 +104,11 @@ class CmdInterpreter(Cmd):
             forecast.main(self, s)
         # if s == "weather"
         elif "weather" in s:
-            weatherIn.main(self, s)
+            try:
+                weatherIn.main(self, s)
+            except ConnectionError:
+                print(CONNECTION_ERROR_MSG)
+                
 
     def help_check(self):
         """Prints check command help."""
@@ -216,7 +225,12 @@ class CmdInterpreter(Cmd):
 
     def do_directions(self, data):
         """Get directions about a destination you are interested to."""
-        directions_to.main(data)
+        try:
+            directions_to.main(data)
+        except ValueError:
+            print("Please enter destination")
+        except ConnectionError:
+            print(CONNECTION_ERROR_MSG)
 
     def help_directions(self):
         """Prints help about directions command"""
@@ -380,7 +394,10 @@ class CmdInterpreter(Cmd):
 
     def do_pinpoint(self, s):
         """Jarvis will pinpoint your location."""
-        mapps.locate_me()
+        try:
+            mapps.locate_me()
+        except ConnectionError:
+            print(CONNECTION_ERROR_MSG)
 
     def help_pinpoint(self):
         """Print help about pinpoint command."""
@@ -408,11 +425,15 @@ class CmdInterpreter(Cmd):
         """Matches patterns in a string by using regex."""
         try:
             file_name = raw_input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
-            stringg = raw_input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
+            pattern = raw_input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
         except:
             file_name = input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
-            stringg = input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
-        system("grep '" + stringg + "' " + file_name)
+            pattern = input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
+        file_name = file_name.strip()
+        if file_name == "":
+            print("Invalid Filename")
+        else:
+            system("grep '" + pattern + "' " + file_name)
 
     def help_match(self):
         """Prints help about match command"""
@@ -512,7 +533,10 @@ class CmdInterpreter(Cmd):
 
     def do_weather(self, s):
         """Get information about today's weather."""
-        weather_pinpoint.main(MEMORY, self, s)
+        try:
+            weather_pinpoint.main(MEMORY, self, s)
+        except ConnectionError:
+            print(CONNECTION_ERROR_MSG)
 
     def help_weather(self):
         """Prints help about weather command."""
@@ -537,9 +561,11 @@ class CmdInterpreter(Cmd):
     def do_umbrella(self, s):
         """If you're leaving your place, Jarvis will inform you if you might need an umbrella or not"""
         s = 'umbrella'
-        weather_pinpoint.main(MEMORY, self, s)
+        try:
+            weather_pinpoint.main(MEMORY, self, s)
+        except ConnectionError:
+            print(CONNECTION_ERROR_MSG)
 
     def help_umbrella(self):
         """Print info about umbrella command."""
         print_say("If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self, Fore.BLUE)
-
