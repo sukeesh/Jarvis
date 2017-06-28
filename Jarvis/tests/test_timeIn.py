@@ -1,12 +1,12 @@
 import unittest
-from packages import timeIn
+from ..packages import timeIn
 import time
 import datetime
 import sys
 from StringIO import StringIO
 
-class TimeInTest(unittest.TestCase):
 
+class TimeInTest(unittest.TestCase):
     def setUp(self):
         sys.stdout = StringIO()
 

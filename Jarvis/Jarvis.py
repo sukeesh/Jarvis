@@ -69,24 +69,19 @@ class Jarvis(CmdInterpreter, object):
 
     def parse_input(self, data):
         """This method gets the data and assigns it to an action"""
-        output = "None"
-
         data = data.lower()
-
         # say command is better if data has punctuation marks
         if "say" not in data:
             data = data.replace("?", "")
             data = data.replace("!", "")
             data = data.replace(".", "")
             data = data.replace(",", "")
-
         # Check if Jarvis has a fixed response to this data
         if data in self.fixed_responses:
             output = self.fixed_responses[data]  # change return to output =
         else:
             # if it doesn't have a fixed response, look if the data corresponds to an action
             output = self._find_action(data)
-
         return output
 
     def _find_action(self, data):
@@ -150,4 +145,3 @@ class Jarvis(CmdInterpreter, object):
         """
         self.speak()
         self.cmdloop(self.first_reaction_text)
-

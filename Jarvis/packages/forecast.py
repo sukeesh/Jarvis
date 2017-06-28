@@ -6,19 +6,18 @@ import mapps
 import requests
 from utilities.dateTime import WeekDay
 
+
 def main(self, s):
     cmd_key_words = ['check', 'weather', 'forecast', 'in', 'for']
     cmd_words = s.strip().split()
     # location will be defined by the words given that are not the key words
     location = ' '.join(filter(lambda word: word.lower() not in cmd_key_words, cmd_words)).strip()
 
-    current_location = mapps.getLocation()
+    current_location = mapps.get_location()
 
     # if no location is given, use the current location
     if not location:
         location = "{},{}".format(current_location['city'], current_location['country_code'])
- 
-
     country = current_location['country_name']
 
     # If country is not US, shows weather in Celsius
