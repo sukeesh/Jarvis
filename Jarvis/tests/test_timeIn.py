@@ -1,6 +1,7 @@
 import unittest
 from packages import timeIn
 import time
+import datetime
 import sys
 from StringIO import StringIO
 
@@ -17,23 +18,24 @@ class TimeInTest(unittest.TestCase):
         sys.stdout.seek(0)
         output = sys.stdout.read()
 
-        # What is ctime in you current local?
-        time_here = time.ctime(time.time()).split(' ')
+        # What is ctime in your current locale?
+        time_here = datetime.datetime.now()
 
-        # fix indices if the day of month is one or two digits long
-        if '' in time_here:
-            index = time_here.index('')
-            time_here = time_here[0:index] + time_here[index+1:]
-        time_here = time_here[3]
+        # Create a datetime object for the api call
+        output_list = output.split(' ')
+        result = datetime.datetime.strptime(' '.join([output_list[-2],
+                                            output_list[-1][0:8]]),
+                                            '%Y-%m-%d %H:%M:%S')
 
-        # Adjust 'result' variable for your current local's timezone
-        result = output.split(' ')[10][0:8]
-        adjustment = time.timezone / 3600
-        result_list = result.split(':')
-        hour = (int(result_list[0]) - adjustment) % 24
-        result = ':'.join([str(hour), result_list[1], result_list[2]])
+        # Create a timedelta object to adjust for your locale's timezone
+        delta_tz = datetime.timedelta(hours=time.timezone/3600)
+        result -= delta_tz
 
-        self.assertEqual(result, time_here)
+        # Create another timedelta object to give the API call a margin
+        # of error since the HTTP request may have latency
+        delta_delay = datetime.timedelta(seconds=5)
+
+        self.assertAlmostEqual(result, time_here, delta=delta_delay)
 
     def tearDown(self):
         sys.stdout = sys.__stdout__
