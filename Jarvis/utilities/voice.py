@@ -1,5 +1,5 @@
 """
-ABOUT: 
+ABOUT:
 This class is the Voice of Jarvis. The methods included in this class 
 generate audio output of Jarvis while interacting with the user.
 DOCUMENTATION on gtts:
