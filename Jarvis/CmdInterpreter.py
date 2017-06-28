@@ -45,6 +45,7 @@ class CmdInterpreter(Cmd):
         signal.signal(signal.SIGINT, self.interrupt_handler)  # Register do_quit() function to SIGINT signal (Ctrl-C)
 
         self.actions = ("ask",
+                        "calculate",
                         "chat",
                         {"check": ("ram", "weather", "time", "forecast")},
                         "chuck",
@@ -295,6 +296,20 @@ class CmdInterpreter(Cmd):
 
     def help_evaluate(self):
         """Print help about evaluate command."""
+        print_say("Jarvis will get your calculations done!", self)
+        print_say("-- Example:", self)
+        print_say("\tevaluate 3 + 5", self)
+
+    def do_calculate(self, s):
+        """Jarvis will get your calculations done!"""
+        tempt = s.replace(" ", "")
+        if len(tempt) > 1:
+            evaluator.calc(tempt, self)
+        else:
+            print_say("Error: Not in correct format", self, Fore.RED)
+
+    def help_calculate(self):
+        """Print help about calculate command."""
         print_say("Jarvis will get your calculations done!", self)
         print_say("-- Example:", self)
         print_say("\tevaluate 3 + 5", self)
