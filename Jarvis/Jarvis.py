@@ -1,5 +1,5 @@
 from colorama import Fore
-from requests import ConnectionError
+from requests import ConnectionError as request_connection_error
 
 from utilities.GeneralUtilities import print_say
 from CmdInterpreter import CmdInterpreter
@@ -65,7 +65,7 @@ class Jarvis(CmdInterpreter, object):
         if self.enable_voice:
             try:
                 self.speech.text_to_speech("What can i do for you?\n")
-            except ConnectionError:
+            except request_connection_error:
                 print('You are not connected to Internet')
                 self.enable_voice = False
 
