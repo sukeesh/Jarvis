@@ -4,15 +4,15 @@ with open('requirements.txt') as f:
     required = f.read().splitlines()
 
 setup(
-    name='Jarvis',
-    version='',
+    name='jarviscli',
+    version='1.0',
     description='Personal Assistant for Linux',
     url='https://github.com/sukeesh/Jarvis',
     author='Sukeesh',
     author_email='vsukeeshbabu@gmail.com',
     keywords=['linux','personal-assistant'],
     license='MIT',
-    packages=['Jarvis'],
-    classifiers=['Programming Language :: Python :: 2.7','License :: MIT License'],
+    packages=['jarviscli'],
+    classifiers=['Programming Language :: Python :: 2.7','License :: OSI Approved :: MIT License'],
     install_requires=required
 )
