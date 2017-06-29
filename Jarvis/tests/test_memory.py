@@ -1,7 +1,8 @@
 import unittest
 import os
 
-from packages.memory.memory import Memory, module_path
+from ..packages.memory.memory import Memory, module_path
+
 
 class MemoryTest(unittest.TestCase):
 
@@ -11,7 +12,6 @@ class MemoryTest(unittest.TestCase):
         m.add_data('test', 'test_data')
 
         self.assertEqual(str(m.get_data('test')), 'test_data')
-
 
     def tearDown(self):
 

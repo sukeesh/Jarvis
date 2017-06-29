@@ -1,6 +1,6 @@
 import unittest
 
-from packages.aiml.brain import Brain
+from ..packages.aiml.brain import Brain
 
 
 class BrainTest(unittest.TestCase):
@@ -9,7 +9,7 @@ class BrainTest(unittest.TestCase):
 
         b = Brain()
 
-        #create all new brain file
+        # create all new brain file
         b.remove_brain()
         b.create_brain()
         response = b.respond("What are you")

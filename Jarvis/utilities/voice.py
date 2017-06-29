@@ -16,6 +16,7 @@ class Voice:
         This constructor creates a pyttsx object.
         """
         self.create()
+        self.engine = None
 
     def create(self):
         """

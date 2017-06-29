@@ -1,11 +1,10 @@
 # !!! This uses the https://newsapi.org/ api. TO comply with the TOU
 # !!! we must link back to this site whenever we display results.
 
-import urllib, json
+import urllib
+import json
 import webbrowser
 from memory.memory import Memory
-from colorama import init
-from colorama import Fore, Back, Style
 
 '''
     CLASS News
@@ -23,14 +22,15 @@ from colorama import Fore, Back, Style
     n = News()
     n.quick_news()
 '''
+
+
 class News:
-
-    def __init__(self, source="google-news", apiKey="7488ba8ff8dc43459d36f06e7141c9e5"):
-        self.apiKey = apiKey
+    def __init__(self, source="google-news", api_key="7488ba8ff8dc43459d36f06e7141c9e5"):
+        self.apiKey = api_key
         self.source = source
-        self.url = "https://newsapi.org/v1/articles?source=google-news&sortBy=top&apiKey=7488ba8ff8dc43459d36f06e7141c9e5"
+        self.url = "https://newsapi.org/v1/articles?source=google-news&sortBy=top" \
+                   "&apiKey=7488ba8ff8dc43459d36f06e7141c9e5"
         self.m = Memory()
-
     '''
         This is the defualt news function. It checks to see if the
         user has a preference and and goes through all choices.
@@ -58,8 +58,6 @@ class News:
         if they exist
     '''
     def news_options(self):
-
-
         # check to see if user already has default news source
         if self.m.get_data('news-source'):
             print("your default news source is " + self.m.get_data('news-source'))
@@ -75,7 +73,6 @@ class News:
                 self.get_opt()
         else:
             self.get_opt()
-
 
     def get_opt(self):
         # Other sources available here: https://newsapi.org/sources
@@ -108,7 +105,7 @@ class News:
         except:
             x = input()
         if x == 'y' or x == 'yes':
-            self.m.update_data('news-source', self.source) # save to memory
+            self.m.update_data('news-source', self.source)  # save to memory
             self.m.save()
 
     '''

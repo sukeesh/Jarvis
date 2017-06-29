@@ -5,19 +5,24 @@ from platform import system as sys
 from platform import architecture, release, dist
 from time import ctime
 from colorama import Fore
+from requests import ConnectionError
+
 from utilities import voice
 from utilities.GeneralUtilities import print_say
 from packages.music import play
 from packages.todo import todoHandler
-from packages.reminder import reminderHandler, reminderQuit
-from packages import mapps, picshow, evaluator
+from packages.reminder import reminder_handler, reminder_quit
+from packages import mapps, picshow, evaluator, forecast
 from packages import chat, directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
 from packages.memory.memory import Memory
-from packages.shutdown import shutdown_system, cancelShutdown, reboot_system
+from packages.shutdown import shutdown_system, cancel_shutdown, reboot_system
 from packages.systemOptions import turn_off_screen, update_system
 from packages.news import News
 
 MEMORY = Memory()
+
+
+CONNECTION_ERROR_MSG = "You are not connected to Internet"
 
 
 class CmdInterpreter(Cmd):
@@ -40,8 +45,9 @@ class CmdInterpreter(Cmd):
         signal.signal(signal.SIGINT, self.interrupt_handler)  # Register do_quit() function to SIGINT signal (Ctrl-C)
 
         self.actions = ("ask",
+                        "calculate",
                         "chat",
-                        {"check": ("ram", "weather", "time")},
+                        {"check": ("ram", "weather", "time", "forecast")},
                         "chuck",
                         {"decrease": ("volume",)},
                         "directions",
@@ -93,21 +99,30 @@ class CmdInterpreter(Cmd):
         if "ram" in s:
             system("free -lm")
         # if s == "time"
-        if "time" in s:
+        elif "time" in s:
             timeIn.main(self, s)
+        elif "forecast" in s:
+            forecast.main(self, s)
         # if s == "weather"
-        if "weather" in s:
-            weatherIn.main(self, s)
+        elif "weather" in s:
+            try:
+                weatherIn.main(self, s)
+            except ConnectionError:
+                print(CONNECTION_ERROR_MSG)
+                
 
     def help_check(self):
         """Prints check command help."""
         print_say("ram: checks your system's RAM stats.", self)
         print_say("time: checks the current time in any part of the globe.", self)
         print_say("weather in *: checks the current weather in any part of the globe.", self)
+        print_say("forecast: checks the weather forecast for the next 7 days.", self)
         print_say("-- Examples:",self)
         print_say("\tcheck ram", self)
         print_say("\tcheck time in Manchester (UK)", self)
         print_say("\tcheck weather in Canada", self)
+        print_say("\tcheck forecast", self)
+        print_say("\tcheck forecast in Madrid", self)
         # add here more prints
 
     def get_completions(self, command, text):
@@ -138,7 +153,7 @@ class CmdInterpreter(Cmd):
 
     def close(self):
         """Closing Jarvis."""
-        reminderQuit()
+        reminder_quit()
         print_say("Goodbye, see you later!", self, Fore.RED)
         exit()
 
@@ -211,7 +226,12 @@ class CmdInterpreter(Cmd):
 
     def do_directions(self, data):
         """Get directions about a destination you are interested to."""
-        directions_to.main(data)
+        try:
+            directions_to.main(data)
+        except ValueError:
+            print("Please enter destination")
+        except ConnectionError:
+            print(CONNECTION_ERROR_MSG)
 
     def help_directions(self):
         """Prints help about directions command"""
@@ -239,7 +259,7 @@ class CmdInterpreter(Cmd):
         """Cancel an active shutdown."""
         # TODO en el precmd creo que puedo hacerlo y asi no me hace falta para todos
         if "shutdown" in s:
-            cancelShutdown()
+            cancel_shutdown()
 
     def help_cancel(self):
         """Prints help about cancel command."""
@@ -276,6 +296,20 @@ class CmdInterpreter(Cmd):
 
     def help_evaluate(self):
         """Print help about evaluate command."""
+        print_say("Jarvis will get your calculations done!", self)
+        print_say("-- Example:", self)
+        print_say("\tevaluate 3 + 5", self)
+
+    def do_calculate(self, s):
+        """Jarvis will get your calculations done!"""
+        tempt = s.replace(" ", "")
+        if len(tempt) > 1:
+            evaluator.calc(tempt, self)
+        else:
+            print_say("Error: Not in correct format", self, Fore.RED)
+
+    def help_calculate(self):
+        """Print help about calculate command."""
         print_say("Jarvis will get your calculations done!", self)
         print_say("-- Example:", self)
         print_say("\tevaluate 3 + 5", self)
@@ -375,7 +409,10 @@ class CmdInterpreter(Cmd):
 
     def do_pinpoint(self, s):
         """Jarvis will pinpoint your location."""
-        mapps.locateme()
+        try:
+            mapps.locate_me()
+        except ConnectionError:
+            print(CONNECTION_ERROR_MSG)
 
     def help_pinpoint(self):
         """Print help about pinpoint command."""
@@ -383,7 +420,7 @@ class CmdInterpreter(Cmd):
 
     def do_remind(self, data):
         """Handles reminders"""
-        reminderHandler(data)
+        reminder_handler(data)
 
     def help_remind(self):
         """Print help about remind command."""
@@ -403,11 +440,15 @@ class CmdInterpreter(Cmd):
         """Matches patterns in a string by using regex."""
         try:
             file_name = raw_input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
-            stringg = raw_input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
+            pattern = raw_input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
         except:
             file_name = input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
-            stringg = input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
-        system("grep '" + stringg + "' " + file_name)
+            pattern = input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
+        file_name = file_name.strip()
+        if file_name == "":
+            print("Invalid Filename")
+        else:
+            system("grep '" + pattern + "' " + file_name)
 
     def help_match(self):
         """Prints help about match command"""
@@ -507,7 +548,10 @@ class CmdInterpreter(Cmd):
 
     def do_weather(self, s):
         """Get information about today's weather."""
-        weather_pinpoint.main(MEMORY, self, s)
+        try:
+            weather_pinpoint.main(MEMORY, self, s)
+        except ConnectionError:
+            print(CONNECTION_ERROR_MSG)
 
     def help_weather(self):
         """Prints help about weather command."""
@@ -532,9 +576,11 @@ class CmdInterpreter(Cmd):
     def do_umbrella(self, s):
         """If you're leaving your place, Jarvis will inform you if you might need an umbrella or not"""
         s = 'umbrella'
-        weather_pinpoint.main(MEMORY, self, s)
+        try:
+            weather_pinpoint.main(MEMORY, self, s)
+        except ConnectionError:
+            print(CONNECTION_ERROR_MSG)
 
     def help_umbrella(self):
         """Print info about umbrella command."""
         print_say("If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self, Fore.BLUE)
-

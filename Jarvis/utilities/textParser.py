@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime as dt
-from datetime import date, time, timedelta
+from datetime import timedelta
 from dateutil.relativedelta import relativedelta
 import re
 
-def parseNumber(string, numwords = {}):
+
+def parse_number(string, numwords=None):
     """
     Parse the given string to an integer.
 
@@ -15,15 +16,24 @@ def parseNumber(string, numwords = {}):
     :return: (skip, value) containing the number of words separated by whitespace,
              that were parsed for the number and the value of the integer itself.
     """
+    if numwords is None:
+        numwords = {}
     if not numwords:
-        units = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" ]
-        tens = ["", "", "twenty", "thirty", "fourty", "fifty", "sixty", "seventy", "eighty", "ninety"]
+        units = ["zero", "one", "two", "three",
+                 "four", "five", "six", "seven", "eight", "nine", "ten",
+                 "eleven", "twelve", "thirteen", "fourteen", "fifteen",
+                 "sixteen", "seventeen", "eighteen", "nineteen"]
+        tens = ["", "", "twenty", "thirty", "forty", "fifty",
+                "sixty", "seventy", "eighty", "ninety"]
         scales = ["hundred", "thousand", "million", "billion", "trillion"]
 
         numwords["and"] = (1, 0)
-        for idx, word in enumerate(units):    numwords[word] = (1, idx)
-        for idx, word in enumerate(tens):     numwords[word] = (1, idx * 10)
-        for idx, word in enumerate(scales):   numwords[word] = (10 ** (idx * 3 or 2), 0)
+        for idx, word in enumerate(units):
+            numwords[word] = (1, idx)
+        for idx, word in enumerate(tens):
+            numwords[word] = (1, idx * 10)
+        for idx, word in enumerate(scales):
+            numwords[word] = (10 ** (idx * 3 or 2), 0)
 
     skip = 0
     value = 0
@@ -37,7 +47,7 @@ def parseNumber(string, numwords = {}):
                     scale, increment = (1, int(word))
                 except ValueError:
                     value += current
-                    return (skip, value)
+                    return skip, value
             else:
                 scale, increment = numwords[word]
                 if not current and scale > 100:
@@ -48,9 +58,10 @@ def parseNumber(string, numwords = {}):
                 current = 0
         skip += 1
     value += current
-    return (skip, value)
-    
-def parseDate(string):
+    return skip, value
+
+
+def parse_date(string):
     """
     Parse the given string for a date or timespan.
 
@@ -70,79 +81,78 @@ def parseDate(string):
     """
     elements = string.split()
 
-    parseDay = False
-    parseDeltaValue = False
-    parseDeltaUnit = 0
-    deltaValue = 0
-    retDate = dt.now().date()
-    retTime = dt.now().time()
+    parse_day = False
+    parse_delta_value = False
+    parse_delta_unit = 0
+    delta_value = 0
+    ret_date = dt.now().date()
+    ret_time = dt.now().time()
     skip = 0
     for index, d in enumerate(elements):
-        if parseDay:
+        if parse_day:
             d += dt.today().strftime(" %Y %W")
             try:
-                retDate = dt.strptime(d, "%a %Y %W").date()
+                ret_date = dt.strptime(d, "%a %Y %W").date()
             except ValueError:
                 try:
-                    retDate = dt.strptime(d, "%A %Y %W").date()
+                    ret_date = dt.strptime(d, "%A %Y %W").date()
                 except ValueError:
-                    parseDay = False
                     break
-            if retDate <= dt.now().date():
-                retDate += timedelta(days = 7)
-            parseDay = False
-        elif parseDeltaValue:
-            parseDeltaUnit, deltaValue = parseNumber(" ".join(elements[index:]))
-            parseDeltaValue = False
-        elif parseDeltaUnit:
-            newTime = dt.combine(retDate, retTime)
+            if ret_date <= dt.now().date():
+                ret_date += timedelta(days=7)
+            parse_day = False
+        elif parse_delta_value:
+            parse_delta_unit, delta_value = parse_number(" ".join(elements[index:]))
+            parse_delta_value = False
+        elif parse_delta_unit:
+            new_time = dt.combine(ret_date, ret_time)
             if "year" in d:
-                retDate += relativedelta(years = deltaValue)
+                ret_date += relativedelta(years=delta_value)
             elif "month" in d:
-                retDate += relativedelta(months = deltaValue)
+                ret_date += relativedelta(months=delta_value)
             elif "week" in d:
-                retDate += timedelta(weeks = deltaValue)
+                ret_date += timedelta(weeks=delta_value)
             elif "day" in d:
-                retDate += timedelta(days = deltaValue)
+                ret_date += timedelta(days=delta_value)
             elif "hour" in d:
-                newTime += timedelta(hours = deltaValue)
-                retDate = newTime.date()
-                retTime = newTime.time()
+                new_time += timedelta(hours=delta_value)
+                ret_date = new_time.date()
+                ret_time = new_time.time()
             elif "minute" in d:
-                newTime += timedelta(minutes = deltaValue)
-                retDate = newTime.date()
-                retTime = newTime.time()
+                new_time += timedelta(minutes=delta_value)
+                ret_date = new_time.date()
+                ret_time = new_time.time()
             elif "second" in d:
-                newTime += timedelta(seconds = deltaValue)
-                retDate = newTime.date()
-                retTime = newTime.time()
-            elif parseDeltaUnit == 1:
+                new_time += timedelta(seconds=delta_value)
+                ret_date = new_time.date()
+                ret_time = new_time.time()
+            elif parse_delta_unit == 1:
                 print("Missing time unit")
-            parseDeltaUnit -= 1
+            parse_delta_unit -= 1
 
         elif re.match("^[0-9]{2}-[0-1][0-9]-[0-3][0-9]$", d):
-            retDate = dt.strptime(d, "%y-%m-%d").date()
+            ret_date = dt.strptime(d, "%y-%m-%d").date()
         elif re.match("^[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]$", d):
-            retDate = dt.strptime(d, "%Y-%m-%d").date()
+            ret_date = dt.strptime(d, "%Y-%m-%d").date()
         elif re.match("^[0-3][0-9]\.[0-1][0-9]\.[0-9]{2}$", d):
-            retDate = dt.strptime(d, "%d.%m.%y").date()
+            ret_date = dt.strptime(d, "%d.%m.%y").date()
         elif re.match("^[0-3][0-9]\.[0-1][0-9]\.[1-9][0-9]{3}$", d):
-            retDate = dt.strptime(d, "%d.%m.%Y").date()
+            ret_date = dt.strptime(d, "%d.%m.%Y").date()
 
         elif re.match("^[0-1][0-9]:[0-5][0-9][AP]M$", d):
-            retTime = dt.strptime(d, "%I:%M%p").time()
+            ret_time = dt.strptime(d, "%I:%M%p").time()
         elif re.match("^[1-9]:[0-5][0-9][AP]M$", d):
-            retTime = dt.strptime("0" + d, "%I:%M%p").time()
+            ret_time = dt.strptime("0" + d, "%I:%M%p").time()
         elif re.match("^[0-2][0-9]:[0-5][0-9]$", d):
-            retTime = dt.strptime(d, "%H:%M").time()
+            ret_time = dt.strptime(d, "%H:%M").time()
         elif re.match("^[1-9]:[0-5][0-9]$", d):
-            retTime = dt.strptime("0" + d, "%H:%M").time()
+            ret_time = dt.strptime("0" + d, "%H:%M").time()
 
         elif d == "next":
-            parseDay = True
+            parse_day = True
         elif d == "in" or d == "and":
-            parseDeltaValue = True
+            parse_delta_value = True
         else:
             break
         skip += 1
-    return (skip, dt.combine(retDate, retTime))
+    return skip, dt.combine(ret_date, ret_time)

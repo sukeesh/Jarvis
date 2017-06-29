@@ -6,6 +6,7 @@ from colorama import Fore
 
 timeFormat = "%Y-%m-%d %H:%M:%S"
 
+
 def json_serial(obj):
     """JSON serializer for objects not serializable by default json code"""
 
@@ -14,7 +15,8 @@ def json_serial(obj):
         return serial
     raise TypeError ("Type not serializable")
 
-def readFile(name, default = []):
+
+def read_file(name, default=None):
     if os.path.exists(name):
         try:
             with open(name, "r+") as f:
@@ -24,9 +26,11 @@ def readFile(name, default = []):
             os.rename(name, name + ".bak")
     return default
 
-def writeFile(name, obj):
+
+def write_file(name, obj):
     with open(name, "w+") as f:
         json.dump(obj, f, default=json_serial)
+
 
 def str2date(string):
     return dt.strptime(string, timeFormat)

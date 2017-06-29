@@ -23,6 +23,3 @@ def update_system():
 
     elif user_distribution == "Arch Linux\n":
         os.system('sudo pacman -Syu')
-
-    else:
-        ("Your distribution commands are not currently added")
