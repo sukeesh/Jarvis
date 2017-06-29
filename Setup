@@ -2,4 +2,5 @@
 # of all prerequistes to reach complete Jarvis functionality
 
 sudo apt-get install ffmpeg
+sudo apt-get install python-notify2
 sudo pip install -r requirements.txt

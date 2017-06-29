@@ -3,9 +3,8 @@
 from datetime import datetime as dt
 from uuid import uuid4
 from threading import Timer
-import gi
-gi.require_version('Notify', '0.7')
-from gi.repository import Notify
+import notify2
+
 
 from fileHandler import write_file, read_file, str2date
 from utilities.lexicalSimilarity import score_sentence, compare_sentence
@@ -43,9 +42,9 @@ def showNotification(name, body):
     """
     Show a notification immediately.
     """
-    Notify.Notification.new(name, body).show()
+    notify2.Notification(name, body).show()
 
-def addReminder(name, time, uuid, body = '', urgency=Notify.Urgency.LOW, hidden = True):
+def addReminder(name, time, uuid, body = '', urgency=0, hidden = True):
     """
     Queue reminder.
 
@@ -60,7 +59,7 @@ def addReminder(name, time, uuid, body = '', urgency=Notify.Urgency.LOW, hidden 
     high (=1) or normal (=0, default).
     """
     waitTime = time - dt.now()
-    n = Notify.Notification.new(name, body)
+    n = notify2.Notification(name, body)
     n.set_urgency(urgency)
     timerList[uuid] = Timer(waitTime.total_seconds(), showAlarm, [n, name])
     timerList[uuid].start()
@@ -192,12 +191,11 @@ timerList = {}
 reminderList = read_file("reminderlist.txt", {'items': []})
 reminderList['items'] = sort(reminderList['items'])
 reminderList['items'] = [i for i in reminderList['items'] if not i['hidden']]
+notify2.init("Jarvis")
 for e in reminderList['items']:
     e['time'] = str2date(e['time'])
     waitTime = e['time'] - dt.now()
-    n = Notify.Notification.new(e['name'])
-    n.set_urgency(Notify.Urgency.LOW)
+    n = notify2.Notification(e['name'])
+    n.set_urgency(0)
     timerList[e['uuid']] = Timer(waitTime.total_seconds(), showAlarm, [n, e['name']])
     timerList[e['uuid']].start()
-
-Notify.init("Jarvis")
