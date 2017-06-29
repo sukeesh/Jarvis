@@ -1,6 +1,6 @@
 """
 ABOUT:
-This class is the Voice of Jarvis. The methods included in this class 
+This class is the Voice of Jarvis. The methods included in this class
 generate audio output of Jarvis while interacting with the user.
 DOCUMENTATION on gtts:
 https://github.com/pndurette/gTTS
@@ -49,11 +49,10 @@ class Voice:
         self.tts_engine.save(savefile='curr_command.mp3')
         os.system('mpg321 curr_command.mp3 2> /dev/null')
 
-"""
-    The following block of code is a test for this class.
-    In order to execute it run this script from the terminal
-    as: ~$ python Voice.py
-"""
+
+# The following block of code is a test for this class.
+# In order to execute it run this script from the terminal
+# as: ~$ python Voice.py
 
 if __name__ == '__main__':
     jarvis = Voice()
