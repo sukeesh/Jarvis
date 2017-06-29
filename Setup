@@ -3,3 +3,4 @@
 
 sudo apt-get install ffmpeg
 sudo pip install -r requirements.txt
+sudo apt-get install mpg321

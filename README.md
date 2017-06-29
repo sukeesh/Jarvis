@@ -14,6 +14,7 @@ You can start by typing `help` within the Jarvis command line to check what Jarv
 ### Prerequisites
 
 Use the command `./Setup` to install the requirements.
+For enabling voice, you must be connected to Internet.
 
 ## Youtube Video
 
