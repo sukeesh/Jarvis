@@ -77,6 +77,7 @@ class CmdInterpreter(Cmd):
                         "shutdown",
                         "reboot",
                         "todo",
+                        {"tell": ("joke",)},
                         "umbrella",
                         {"update": ("location", "system")},
                         "weather",
@@ -564,6 +565,15 @@ class CmdInterpreter(Cmd):
     def help_how_are_you(self, s):
         """Print info about how_are_you command"""
         print_say("Jarvis will inform you about his status.", self)
+
+    def do_tell(self, s):
+        """Tell a joke about Chuck Norris"""
+        chuck.main(self)
+
+    def help_tell(self):
+        """Print info about tell command"""
+        print_say("Tell a joke about Chuck Norris", self)
+
 
     def do_chuck(self, s):
         """Tell a joke about Chuck Norris"""
