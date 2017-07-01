@@ -1,5 +1,5 @@
 import unittest
-from ..Jarvis import Jarvis
+from Jarvis import Jarvis
 from mock import patch
 
 

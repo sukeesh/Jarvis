@@ -7,7 +7,7 @@ Jarvis is a simple personal assistant for Linux which works on terminal. He can 
 
 ## Getting Started
 
-In order to start Jarvis just clone the repository and run the command: `python Jarvis`.
+In order to start Jarvis just clone the repository and run the command: `python jarviscli`.
 
 You can start by typing `help` within the Jarvis command line to check what Jarvis can do for you.
 
@@ -36,7 +36,7 @@ Use the command `./Setup` to install the requirements.
  ### How to run tests:
  Change into the Jarvis/Jarvis directory
  ```bash
- cd Jarvis/Jarvis
+ cd Jarvis/jarviscli
  ```
  Then run unittest discover
  ```python
