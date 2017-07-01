@@ -1,3 +1,4 @@
 todolist.txt
 reminderlist.txt
 *.bak
+*.egg-info
