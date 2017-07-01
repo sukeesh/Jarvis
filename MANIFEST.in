@@ -1,0 +1,6 @@
+include LICENCE
+include NEW_FUNCTIONALITIES.md
+include README.md
+include requirements.txt
+recursive-include Jarvis/ *
+include contributors.md
