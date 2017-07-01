@@ -1,0 +1,11 @@
+dist: trusty
+language: python
+python:
+  - "3.4"
+
+install:
+  - pip install coala-bears
+  - cd $TRAVIS_BUILD_DIR
+
+script:
+  - coala --ci

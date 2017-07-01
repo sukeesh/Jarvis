@@ -1,0 +1,15 @@
+# coafile for this project
+# Local fixing
+# coala --apply-patches -n
+
+# python files should only use spaces
+[Python Spacing]
+files = **/*.py
+bears = SpaceConsistencyBear
+use_spaces = True
+
+# python lint
+[pep8]
+files = **/*.py
+bears = PEP8Bear
+
