@@ -1,7 +1,7 @@
 import unittest
 import os
 from mock import call, patch
-from ..packages import music
+from packages import music
 
 
 class MusicTest(unittest.TestCase):

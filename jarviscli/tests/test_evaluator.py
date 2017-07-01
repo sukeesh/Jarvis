@@ -4,8 +4,8 @@ from StringIO import StringIO
 
 from colorama import Fore
 
-from ..Jarvis import Jarvis
-from ..packages.evaluator import calc
+from Jarvis import Jarvis
+from packages.evaluator import calc
 
 
 class EvaluatorTest(unittest.TestCase):

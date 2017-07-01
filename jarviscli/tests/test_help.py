@@ -1,5 +1,5 @@
 import unittest
-from .. import CmdInterpreter
+import CmdInterpreter
 from mock import patch
 
 

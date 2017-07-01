@@ -1,6 +1,6 @@
 import unittest
 
-from ..packages.aiml.brain import Brain
+from packages.aiml.brain import Brain
 
 
 class BrainTest(unittest.TestCase):
