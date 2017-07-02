@@ -2,5 +2,7 @@ include LICENCE
 include NEW_FUNCTIONALITIES.md
 include README.md
 include requirements.txt
-recursive-include Jarvis/ *
+recursive-include jarviscli/ *
 include contributors.md
+include setup.sh
+include setup.cfg
