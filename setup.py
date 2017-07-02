@@ -5,7 +5,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='jarviscli',
-    version='1.0',
+    version='1.0.1',
     description='Personal Assistant for Linux',
     url='https://github.com/sukeesh/Jarvis',
     author='Sukeesh',
