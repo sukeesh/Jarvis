@@ -42,7 +42,8 @@ class CmdInterpreter(Cmd):
         self.first_reaction_text = first_reaction_text
         self.prompt = prompt
         self.enable_voice = enable_voice
-        signal.signal(signal.SIGINT, self.interrupt_handler)  # Register do_quit() function to SIGINT signal (Ctrl-C)
+        # Register do_quit() function to SIGINT signal (Ctrl-C)
+        signal.signal(signal.SIGINT, self.interrupt_handler)
 
         self.actions = ("ask",
                         "calculate",
@@ -110,15 +111,16 @@ class CmdInterpreter(Cmd):
                 weatherIn.main(self, s)
             except ConnectionError:
                 print(CONNECTION_ERROR_MSG)
-                
 
     def help_check(self):
         """Prints check command help."""
         print_say("ram: checks your system's RAM stats.", self)
         print_say("time: checks the current time in any part of the globe.", self)
-        print_say("weather in *: checks the current weather in any part of the globe.", self)
-        print_say("forecast: checks the weather forecast for the next 7 days.", self)
-        print_say("-- Examples:",self)
+        print_say(
+            "weather in *: checks the current weather in any part of the globe.", self)
+        print_say(
+            "forecast: checks the weather forecast for the next 7 days.", self)
+        print_say("-- Examples:", self)
         print_say("\tcheck ram", self)
         print_say("\tcheck time in Manchester (UK)", self)
         print_say("\tcheck weather in Canada", self)
@@ -180,7 +182,7 @@ class CmdInterpreter(Cmd):
 
     def help_quit(self):
         """Closing Jarvis."""
-        print_say("Close Jarvis",self)
+        print_say("Close Jarvis", self)
 
     def do_ask(self, s):
         """Start chating with Jarvis"""
@@ -293,7 +295,7 @@ class CmdInterpreter(Cmd):
         if len(tempt) > 1:
             evaluator.calc(tempt, self)
         else:
-        	print_say("Error: Not in correct format", self, Fore.RED)
+            print_say("Error: Not in correct format", self, Fore.RED)
 
     def help_evaluate(self):
         """Print help about evaluate command."""
@@ -334,9 +336,11 @@ class CmdInterpreter(Cmd):
     def do_movies(self, s):
         """Jarvis will find a good movie for you."""
         try:
-            movie_name = raw_input(Fore.RED + "What do you want to watch?\n" + Fore.RESET)
+            movie_name = raw_input(
+                Fore.RED + "What do you want to watch?\n" + Fore.RESET)
         except:
-            movie_name = input(Fore.RED + "What do you want to watch?\n" + Fore.RESET)
+            movie_name = input(
+                Fore.RED + "What do you want to watch?\n" + Fore.RESET)
         system("ims " + movie_name)
 
     def help_movies(self):
@@ -392,7 +396,8 @@ class CmdInterpreter(Cmd):
     def help_news(self):
         """Print help about news command."""
         print_say("Time to get an update about the local news.", self)
-        print_say("Type \"news\" to choose your source or \"news quick\" for some headlines.", self)
+        print_say(
+            "Type \"news\" to choose your source or \"news quick\" for some headlines.", self)
 
     def do_open(self, s):
         """Jarvis will open the camera for you."""
@@ -426,7 +431,7 @@ class CmdInterpreter(Cmd):
     def help_remind(self):
         """Print help about remind command."""
         print_say("Handles reminders", self)
-        print_say("add: adds a reminder",self)
+        print_say("add: adds a reminder", self)
         print_say("remove: removes a reminder", self)
         print_say("list: lists all reminders", self)
         print_say("clear: clears all reminders", self)
@@ -440,7 +445,8 @@ class CmdInterpreter(Cmd):
     def do_match(self, s):
         """Matches patterns in a string by using regex."""
         try:
-            file_name = raw_input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
+            file_name = raw_input(
+                Fore.RED + "Enter file name?:\n" + Fore.RESET)
             pattern = raw_input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
         except:
             file_name = input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
@@ -464,7 +470,8 @@ class CmdInterpreter(Cmd):
         """Print help about todo command."""
         print_say("Create your personal TODO list!", self)
         print("Supported Commands: todo <command>")
-        print("\tadd [<index>] <todo - comment>, add comment <index> <comment>, add due <index> <time>")
+        print(
+            "\tadd [<index>] <todo - comment>, add comment <index> <comment>, add due <index> <time>")
         print("\tremove <index>")
         print("\tcomplete <index> [<completion>]")
         print("\tpriority <index> [<level>]")
@@ -556,7 +563,8 @@ class CmdInterpreter(Cmd):
 
     def help_weather(self):
         """Prints help about weather command."""
-        print_say("Get information about today's weather in your current location.", self)
+        print_say(
+            "Get information about today's weather in your current location.", self)
 
     def do_how_are_you(self, s):
         """Jarvis will inform you about his status."""
@@ -573,7 +581,6 @@ class CmdInterpreter(Cmd):
     def help_tell(self):
         """Print info about tell command"""
         print_say("Tell a joke about Chuck Norris", self)
-
 
     def do_chuck(self, s):
         """Tell a joke about Chuck Norris"""
@@ -593,4 +600,5 @@ class CmdInterpreter(Cmd):
 
     def help_umbrella(self):
         """Print info about umbrella command."""
-        print_say("If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self, Fore.BLUE)
+        print_say(
+            "If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self, Fore.BLUE)

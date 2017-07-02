@@ -40,7 +40,8 @@ def weather(city=None):
     if country == 'United States':
         send_url = (
             "http://api.openweathermap.org/data/2.5/weather?q={0}"
-            "&APPID=ab6ec687d641ced80cc0c935f9dd8ac9&units=imperial".format(city)
+            "&APPID=ab6ec687d641ced80cc0c935f9dd8ac9&units=imperial".format(
+                city)
         )
         unit = ' ºF in '
 
@@ -48,21 +49,26 @@ def weather(city=None):
     else:
         send_url = (
             "http://api.openweathermap.org/data/2.5/weather?q={0}"
-            "&APPID=ab6ec687d641ced80cc0c935f9dd8ac9&units=metric".format(city)
+            "&APPID=ab6ec687d641ced80cc0c935f9dd8ac9&units=metric".format(
+                city)
         )
         unit = ' ºC in '
     r = requests.get(send_url)
     j = json.loads(r.text)
     temperature = j['main']['temp']
     description = j['weather'][0]['main']
-    print(Fore.BLUE + "It's " + str(temperature) + unit + str(city) + " (" + str(description) + ")" + Fore.RESET)
+    print(Fore.BLUE + "It's " + str(temperature) + unit +
+          str(city) + " (" + str(description) + ")" + Fore.RESET)
 
 
-def search_near(things, city = 0):
+def search_near(things, city=0):
     if city:
-        print(Fore.GREEN + "Hold on!, I'll show " + things + " near " + city + Fore.RESET)        
+        print(Fore.GREEN + "Hold on!, I'll show " + things +
+              " near " + city + Fore.RESET)
         url = "https://www.google.com/maps/search/{0}+{1}".format(things, city)
     else:
-        print(Fore.GREEN + "Hold on!, I'll show " + things + " near you" + Fore.RESET)
-        url = "https://www.google.com/maps/search/{0}/@{1},{2}".format(things, get_location()['latitude'], get_location()['longitude'])
+        print(Fore.GREEN + "Hold on!, I'll show " +
+              things + " near you" + Fore.RESET)
+        url = "https://www.google.com/maps/search/{0}/@{1},{2}".format(
+            things, get_location()['latitude'], get_location()['longitude'])
     webbrowser.open(url)

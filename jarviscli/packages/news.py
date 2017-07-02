@@ -35,6 +35,7 @@ class News:
         This is the defualt news function. It checks to see if the
         user has a preference and and goes through all choices.
     '''
+
     def news(self):
         self.news_options()
         self.get_news()
@@ -43,12 +44,14 @@ class News:
         This is the quickest way to get news it also has the
         least amount of options for the user.
     '''
+
     def quick_news(self):
         self.request_news()
 
     '''
         Gets and returns JSON data of news
     '''
+
     def get_news_json(self):
         response = urllib.urlopen(self.url)
         return json.loads(response.read())
@@ -57,10 +60,12 @@ class News:
         This sets the users options and loads them from Memory
         if they exist
     '''
+
     def news_options(self):
         # check to see if user already has default news source
         if self.m.get_data('news-source'):
-            print("your default news source is " + self.m.get_data('news-source'))
+            print("your default news source is " +
+                  self.m.get_data('news-source'))
             print("Would you like news from this source? (yes/no): ")
             try:
                 x = raw_input()
@@ -111,8 +116,10 @@ class News:
     '''
         This sets the url and sends it to request_news()
     '''
+
     def get_news(self):
-        u = "https://newsapi.org/v1/articles?source=" + self.source + "&sortby=top&apiKey=" + self.apiKey
+        u = "https://newsapi.org/v1/articles?source=" + \
+            self.source + "&sortby=top&apiKey=" + self.apiKey
         self.request_news(u)
 
     '''
@@ -120,6 +127,7 @@ class News:
         This function DOES NOT check user preferences.
         It also includes user interactions for getting more info on an articles
     '''
+
     def request_news(self, url=None):
         # check to see if a url was passed
         if url is None:

@@ -14,7 +14,8 @@ def compare_word(targets, word, distance_penalty=0.0):
     """
     scores = list()
     for index, e in enumerate(targets):
-        scores.append({"i": index, "s": score_word(e, word) + index * distance_penalty})
+        scores.append({"i": index, "s": score_word(
+            e, word) + index * distance_penalty})
     scores = sorted(scores, key=lambda k: (k["s"]))
     if len(scores) == 0:
         return -1, -1
@@ -72,7 +73,8 @@ def find_letter(letters, l, index):
     except ValueError:
         letters.reverse()
         try:
-            index_offset = len(letters) - letters.index(l, len(letters) - index) - 1
+            index_offset = len(letters) - letters.index(l,
+                                                        len(letters) - index) - 1
         except ValueError:
             index_offset = -1
     return index_offset
@@ -153,7 +155,8 @@ def find_word(words, w, index, distance_penalty=0.0):
     index = min(len(words), max(index, -1))
     index_offset = -1
     if index < len(words) - 1:
-        index_offset, rel_score = compare_word(words[index + 1:], w, distance_penalty)
+        index_offset, rel_score = compare_word(
+            words[index + 1:], w, distance_penalty)
         index_offset += index + 1
     else:
         rel_score = 2

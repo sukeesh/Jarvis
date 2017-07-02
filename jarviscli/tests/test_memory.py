@@ -17,5 +17,6 @@ class MemoryTest(unittest.TestCase):
 
         os.remove(os.path.join(module_path, 'test-mem.json'))
 
+
 if __name__ == '__main__':
     unittest.main()

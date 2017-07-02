@@ -35,7 +35,8 @@ class ParserTest(unittest.TestCase):
     def test_near(self):
         user_input = "charities near Valencia"
         parsed_input = self.jarvis.parse_input(user_input).split()
-        self.assertEqual(["near", "charities", "|", "valencia"], parsed_input[0:])
+        self.assertEqual(
+            ["near", "charities", "|", "valencia"], parsed_input[0:])
 
 
 if __name__ == '__main__':

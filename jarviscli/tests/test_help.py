@@ -13,7 +13,8 @@ class HelpTest(unittest.TestCase):
 
     def test_print_say_called_for_all_cmd_help(self):
         unhelped_actions = ['help', 'chat', 'error']
-        helped_actions = [action for action in self.CI_instance.actions if action not in unhelped_actions]
+        helped_actions = [
+            action for action in self.CI_instance.actions if action not in unhelped_actions]
         for action in helped_actions:
             with patch('CmdInterpreter.print_say') as mock_print_say:
                 if isinstance(action, dict):

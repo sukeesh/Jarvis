@@ -24,7 +24,7 @@ class TimeInTest(unittest.TestCase):
         # Create a datetime object for the api call
         output_list = output.split(' ')
         result = datetime.datetime.strptime(' '.join([output_list[-2],
-                                            output_list[-1][0:8]]),
+                                                      output_list[-1][0:8]]),
                                             '%Y-%m-%d %H:%M:%S')
 
         # Create a timedelta object to adjust for your locale's timezone

@@ -22,7 +22,8 @@ def main(self, s):
     time = j['formatted']
 
     # Prints current date and time as YYYY-MM-DD HH:MM:SS
-    print(Fore.MAGENTA + "The current date and time in " + str(s).title() + " is: " + str(time) + Fore.RESET)
+    print(Fore.MAGENTA + "The current date and time in " +
+          str(s).title() + " is: " + str(time) + Fore.RESET)
 
 
 def getLocation(s):

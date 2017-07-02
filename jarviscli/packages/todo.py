@@ -30,7 +30,7 @@ def printItem(item, index):
         print("\t{0}".format(item['comment']))
 
 
-def _print(data, index = ""):
+def _print(data, index=""):
     if len(data) == 0:
         info("ToDo list is empty, add a new entry with 'todo add <name>'")
     for x, element in enumerate(data):
@@ -44,14 +44,15 @@ def sort(data):
     for l in data:
         if 'items' in l:
             l['items'] = sort(l['items'])
-    return sorted(data, key = lambda k: (-k['priority'] if 'priority' in k else 0, k['complete']))
+    return sorted(data, key=lambda k: (-k['priority'] if 'priority' in k else 0, k['complete']))
 
 
 def fixTypes(data):
     for l in data:
         if 'due' in l:
             l['due'] = str2date(l['due'])
-            addReminder(name=l['name'], body=l['comment'], uuid=l['uuid'], time=l['due'])
+            addReminder(name=l['name'], body=l['comment'],
+                        uuid=l['uuid'], time=l['due'])
         if 'items' in l:
             l['items'] = fixTypes(l['items'])
     return data
@@ -72,7 +73,7 @@ def getItem(string, todoList):
 actions = {}
 
 
-def addAction(function, trigger = [], minArgs = 0):
+def addAction(function, trigger=[], minArgs=0):
     """
     Add a new action to the list of all available actions.
 
@@ -99,7 +100,8 @@ def mixLists(a, b):
     return ret
 
 
-addAction("handlerAdd", mixLists(["add", "new", "create"], ["", "entry", "item"]), minArgs = 1)
+addAction("handlerAdd", mixLists(
+    ["add", "new", "create"], ["", "entry", "item"]), minArgs=1)
 
 
 def handlerAdd(data):
@@ -114,7 +116,7 @@ def handlerAdd(data):
     except IndexError:
         error("The Index for this item is out of range.")
         return
-    newItem = {'complete':0, 'uuid':uuid4().hex, 'comment':""}
+    newItem = {'complete': 0, 'uuid': uuid4().hex, 'comment': ""}
     parts = data.split(" - ")
     newItem['name'] = parts[0]
     if " - " in data:
@@ -125,7 +127,7 @@ def handlerAdd(data):
     write_file("todolist.txt", todoList)
 
 
-addAction("handlerAddDue", ["add due", "due"], minArgs = 2)
+addAction("handlerAddDue", ["add due", "due"], minArgs=2)
 
 
 def handlerAddDue(data):
@@ -149,11 +151,12 @@ def handlerAddDue(data):
             urgency = 2
         elif item['priority'] >= 50:
             urgency = 1
-    addReminder(name=item['name'], body=item['comment'], uuid=item['uuid'], time=item['due'], urgency=urgency)
+    addReminder(name=item['name'], body=item['comment'],
+                uuid=item['uuid'], time=item['due'], urgency=urgency)
     write_file("todolist.txt", todoList)
 
 
-addAction("handlerAddComment", ["add comment", "comment"], minArgs = 2)
+addAction("handlerAddComment", ["add comment", "comment"], minArgs=2)
 
 
 def handlerAddComment(data):
@@ -173,7 +176,8 @@ def handlerAddComment(data):
     write_file("todolist.txt", todoList)
 
 
-addAction("handlerRemove", mixLists(["remove", "delete", "destroy"], ["", "entry", "item"]), minArgs = 1)
+addAction("handlerRemove", mixLists(
+    ["remove", "delete", "destroy"], ["", "entry", "item"]), minArgs=1)
 
 
 def handlerRemove(data):
@@ -193,7 +197,7 @@ def handlerRemove(data):
     write_file("todolist.txt", todoList)
 
 
-addAction("handlerPriority", ["priority"], minArgs = 2)
+addAction("handlerPriority", ["priority"], minArgs=2)
 
 
 def handlerPriority(data):
@@ -230,7 +234,7 @@ def handlerPriority(data):
     write_file("todolist.txt", todoList)
 
 
-addAction("handlerComplete", ["complete", "finish"], minArgs = 1)
+addAction("handlerComplete", ["complete", "finish"], minArgs=1)
 
 
 def handlerComplete(data):
@@ -296,12 +300,12 @@ def todoHandler(data):
     for i in sorted(indices, reverse=True):
         del data[i]
     if len(data) < minArgs:
-        warning("Not enough arguments for specified command {0}".format(action))
+        warning(
+            "Not enough arguments for specified command {0}".format(action))
         return
     data = " ".join(data)
     globals()[action](data)
 
 
-todoList = read_file("todolist.txt", {'items':[]})
+todoList = read_file("todolist.txt", {'items': []})
 todoList['items'] = fixTypes(sort(todoList['items']))
-

@@ -13,7 +13,7 @@ def json_serial(obj):
     if isinstance(obj, dt):
         serial = obj.strftime(timeFormat)
         return serial
-    raise TypeError ("Type not serializable")
+    raise TypeError("Type not serializable")
 
 
 def read_file(name, default=None):
@@ -22,7 +22,8 @@ def read_file(name, default=None):
             with open(name, "r+") as f:
                 return json.load(f)
         except ValueError:
-            print(Fore.RED + "Storage file not in right format. Backup stored as {0}.bak".format(name) + Fore.RESET)
+            print(
+                Fore.RED + "Storage file not in right format. Backup stored as {0}.bak".format(name) + Fore.RESET)
             os.rename(name, name + ".bak")
     return default
 
