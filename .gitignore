@@ -1,5 +1,8 @@
 todolist.txt
 reminderlist.txt
 *.bak
-Jarvis/packages/memory/memory.json
+jarviscli/packages/memory/memory.json
 *.egg-info
+*.brn
+dist/
+build/
