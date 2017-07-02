@@ -12,33 +12,33 @@ import json
 class MyResponse(requests.models.Response):
     text = json.dumps({
             "city": {
-                "country": "GB", 
+                "country": "GB",
                 "name": "London"
-            }, 
+            },
             "list": [
                 {
                     "temp": {
-                        "min": 11.00, 
-                        "max": 21.00 
-                    }, 
+                        "min": 11.00,
+                        "max": 21.00
+                    },
                     "weather": [
                         {
-                            "main": "Clear" 
+                            "main": "Clear"
                         }
-                    ] 
-                }, 
+                    ]
+                },
                 {
                     "temp": {
-                        "min": 17.00, 
-                        "max": 27.00 
-                    }, 
+                        "min": 17.00,
+                        "max": 27.00
+                    },
                     "weather": [
                         {
-                            "main": "Rain" 
+                            "main": "Rain"
                         }
-                    ] 
+                    ]
                 }
-            ], 
+            ],
             "cnt": 2
         })
     status_code = 200
@@ -99,7 +99,8 @@ class ForecastTest(unittest.TestCase):
         with patch.object(requests, 'get', return_value=MyResponse) as get_mock:
             forecast.main(self.CI_instance, 'Some location')
             last_call = call(
-                "\tMin temperature: {} {}\n".format('17.0', self.units['str_units']),
+                "\tMin temperature: {} {}\n".format(
+                    '17.0', self.units['str_units']),
                 self.CI_instance,
                 Fore.BLUE
             )

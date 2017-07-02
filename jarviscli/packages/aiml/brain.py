@@ -10,20 +10,18 @@ class Brain:
 
     def __init__(self):
         self.kernel = aiml.Kernel()
-        self.kernel.verbose(False) # rmove system output
-
+        self.kernel.verbose(False)  # remove system output
 
         # brain file already exists load it
-        if os.path.isfile(os.path.join(module_path,"bot_brain.brn")):
-            self.kernel.bootstrap(brainFile = os.path.join(module_path, "bot_brain.brn"))
+        if os.path.isfile(os.path.join(module_path, "bot_brain.brn")):
+            self.kernel.bootstrap(brainFile=os.path.join(
+                module_path, "bot_brain.brn"))
         # if brain file doesnt exist load std-startup.xml and create and save brain file
         else:
             self.create_brain()
 
-
     def respond(self, text):
         return self.kernel.respond(text)
-
 
     def create_brain(self):
         self.kernel.learn(os.path.join(module_path, "chat.aiml"))
@@ -33,6 +31,5 @@ class Brain:
         self.kernel.learn(os.path.join(module_path, "default.aiml"))
         self.kernel.saveBrain(os.path.join(module_path, "bot_brain.brn"))
 
-
     def remove_brain(self):
-        os.remove(os.path.join(module_path,"bot_brain.brn"))
+        os.remove(os.path.join(module_path, "bot_brain.brn"))

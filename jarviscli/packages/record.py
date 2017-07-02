@@ -19,5 +19,6 @@ def listen():
 
     return ""
 
+
 print("Say something!")
 listen()

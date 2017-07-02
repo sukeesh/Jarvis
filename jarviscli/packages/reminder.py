@@ -16,7 +16,7 @@ def sort(data):
     """
     Sort list of reminders by time (oldest first).
     """
-    return sorted(data, key = lambda k: (k['time']))
+    return sorted(data, key=lambda k: (k['time']))
 
 
 def find_reminder(string):
@@ -34,9 +34,11 @@ def find_reminder(string):
         return (index, indexList)
     return (-1, [])
 
+
 def showAlarm(notification, name):
     info(name)
     notification.show()
+
 
 def showNotification(name, body):
     """
@@ -44,7 +46,8 @@ def showNotification(name, body):
     """
     notify2.Notification(name, body).show()
 
-def addReminder(name, time, uuid, body = '', urgency=0, hidden = True):
+
+def addReminder(name, time, uuid, body='', urgency=0, hidden=True):
     """
     Queue reminder.
 
@@ -63,10 +66,11 @@ def addReminder(name, time, uuid, body = '', urgency=0, hidden = True):
     n.set_urgency(urgency)
     timerList[uuid] = Timer(waitTime.total_seconds(), showAlarm, [n, name])
     timerList[uuid].start()
-    newItem = {'name':name, 'time':time, 'hidden':hidden, 'uuid':uuid}
+    newItem = {'name': name, 'time': time, 'hidden': hidden, 'uuid': uuid}
     reminderList['items'].append(newItem)
     reminderList['items'] = sort(reminderList['items'])
     write_file("reminderlist.txt", reminderList)
+
 
 def removeReminder(uuid):
     """
@@ -78,11 +82,14 @@ def removeReminder(uuid):
     for index, e in enumerate(reminderList['items']):
         if uuid == e['uuid']:
             reminderList['items'].remove(reminderList['items'][index])
-            break;
+            break
     write_file("reminderlist.txt", reminderList)
 
+
 actions = {}
-def addAction(function, trigger = [], minArgs = 0):
+
+
+def addAction(function, trigger=[], minArgs=0):
     """
     Add a new action to the list of all available actions.
 
@@ -93,13 +100,14 @@ def addAction(function, trigger = [], minArgs = 0):
     actions[function] = {'trigger': trigger, 'minArgs': minArgs}
 
 
-addAction("handlerAdd", ["add", "new", "create"], minArgs = 1)
+addAction("handlerAdd", ["add", "new", "create"], minArgs=1)
 
 
 def handler_add(data):
     skip, time = parse_date(data)
     if skip:
-        addReminder(name=" ".join(data.split()[skip:]), time=time, hidden=False, uuid=uuid4().hex)
+        addReminder(
+            name=" ".join(data.split()[skip:]), time=time, hidden=False, uuid=uuid4().hex)
 
 
 addAction("handlerRemove", ["remove", "delete", "destroy"], minArgs=1)
@@ -112,7 +120,8 @@ def handler_remove(data):
     else:
         index, index_list = find_reminder(data)
     if 0 <= index < len(reminderList['items']):
-        info("Removed reminder: \"{0}\"".format(reminderList['items'][index]['name']))
+        info("Removed reminder: \"{0}\"".format(
+            reminderList['items'][index]['name']))
         removeReminder(reminderList['items'][index]['uuid'])
     else:
         error("Could not find selected reminder")
@@ -187,6 +196,7 @@ def reminder_quit():
         for index, el in timerList.items():
             el.cancel()
 
+
 timerList = {}
 reminderList = read_file("reminderlist.txt", {'items': []})
 reminderList['items'] = sort(reminderList['items'])
@@ -197,5 +207,6 @@ for e in reminderList['items']:
     waitTime = e['time'] - dt.now()
     n = notify2.Notification(e['name'])
     n.set_urgency(0)
-    timerList[e['uuid']] = Timer(waitTime.total_seconds(), showAlarm, [n, e['name']])
+    timerList[e['uuid']] = Timer(
+        waitTime.total_seconds(), showAlarm, [n, e['name']])
     timerList[e['uuid']].start()

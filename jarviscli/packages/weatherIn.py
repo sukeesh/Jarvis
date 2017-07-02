@@ -8,7 +8,8 @@ from colorama import Fore
 
 
 def main(self, s):
-    loc = s.replace('weather', '').replace('in ', '').strip()  # Trim input command to get only the location
+    # Trim input command to get only the location
+    loc = s.replace('weather', '').replace('in ', '').strip()
 
     # Checks country
     country = mapps.get_location()['country_name']
@@ -17,7 +18,8 @@ def main(self, s):
     if country == 'United States':
         send_url = (
             "http://api.openweathermap.org/data/2.5/weather?q={0}"
-            "&APPID=ab6ec687d641ced80cc0c935f9dd8ac9&units=imperial".format(loc)
+            "&APPID=ab6ec687d641ced80cc0c935f9dd8ac9&units=imperial".format(
+                loc)
         )
         unit = ' ºF in '
 

@@ -102,7 +102,8 @@ def parse_date(string):
                 ret_date += timedelta(days=7)
             parse_day = False
         elif parse_delta_value:
-            parse_delta_unit, delta_value = parse_number(" ".join(elements[index:]))
+            parse_delta_unit, delta_value = parse_number(
+                " ".join(elements[index:]))
             parse_delta_value = False
         elif parse_delta_unit:
             new_time = dt.combine(ret_date, ret_time)

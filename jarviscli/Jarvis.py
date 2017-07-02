@@ -22,7 +22,8 @@ class Jarvis(CmdInterpreter, object):
     # We use this in order to allow Jarvis say "Hi", only at the first
     # interaction.
     first_reaction_text = ""
-    first_reaction_text += Fore.BLUE + 'Jarvi\'s sound is by default disabled.' + Fore.RESET
+    first_reaction_text += Fore.BLUE + \
+        'Jarvi\'s sound is by default disabled.' + Fore.RESET
     first_reaction_text += "\n"
     first_reaction_text += Fore.BLUE + 'In order to let Jarvis talk out loud type: '
     first_reaction_text += Fore.RESET + Fore.RED + 'enable sound' + Fore.RESET
@@ -48,7 +49,8 @@ class Jarvis(CmdInterpreter, object):
         elif len(words) == 1:
             # if the action is a dict action, the command should contain more than one word
             # such as 'disable sound' or 'please, could you check the weather in Madrid'
-            dict_actions = [action.keys()[0] for action in self.actions if isinstance(action, dict)]
+            dict_actions = [action.keys()[0]
+                            for action in self.actions if isinstance(action, dict)]
             if words[0] in dict_actions:
                 self.default(words)
         elif (len(words) > 2) or (words[0] not in self.actions):
@@ -101,12 +103,14 @@ class Jarvis(CmdInterpreter, object):
                 if type(action) is dict and word in action.keys():
                     # command name exists, assign it to the output
                     action_found = True
-                    output = self._generate_output_if_dict(action, word, words_remaining)
+                    output = self._generate_output_if_dict(
+                        action, word, words_remaining)
                     break
                 # For the 'near' keyword, the words before 'near' are also needed
                 elif word == "near":
                     initial_words = words[:words.index('near')]
-                    output = word + " " + " ".join(initial_words + ["|"] + words_remaining)
+                    output = word + " " +\
+                        " ".join(initial_words + ["|"] + words_remaining)
                 elif word == action:  # command name exists
                     action_found = True
                     output = word + " " + " ".join(words_remaining)
