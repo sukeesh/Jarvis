@@ -1,4 +1,7 @@
 # Jarvis
+
+[![Build Status](https://travis-ci.org/sukeesh/Jarvis.svg?branch=master)](https://travis-ci.org/sukeesh/Jarvis)
+
 A Personal Assistant for Linux
 
 ![Jarvis](http://i.imgur.com/xZ8x9ES.jpg)
