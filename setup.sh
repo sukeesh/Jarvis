@@ -8,7 +8,7 @@ if [[ "$OS" == "Fedora" ]]; then
   sudo dnf install python-dbus -y
 elif [[ "$OS" == "Ubuntu" ]]; then
   sudo apt-get install ffmpeg
-  sudo apt-get install python-notify2 python-dbus-common python2-dbus
+  sudo apt-get install python-notify2 python-dbus-dev python-dbus
   sudo -H pip install -r requirements.txt
 else
   echo "Operating System not supported"
