@@ -48,7 +48,7 @@ class ForecastTest(unittest.TestCase):
 
     def setUp(self):
         self.CI_instance = CmdInterpreter('', '')
-        self.current_location = mapps.getLocation()
+        self.current_location = mapps.get_location()
         self.units = units = {
             'url_units': 'metric',
             'str_units': 'ºC'
