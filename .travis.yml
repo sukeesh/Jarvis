@@ -4,9 +4,20 @@ python:
   - "2.7"
 
 install:
-  - sudo apt-get install python3
+  - sudo apt-get install python3 python-dbus-dev python-dbus libdbus-1-dev libdbus-glib-1-dev
   - pip3 install coala-bears
+  - pip install notify2
+  - pip install dbus-python
+  - ./setup.sh
   - cd $TRAVIS_BUILD_DIR
+
+before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
 
 script:
   - coala --ci
+  - pip install -r requirements.txt
+  - cd jarviscli/
+  - python -m unittest discover
