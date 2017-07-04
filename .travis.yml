@@ -5,9 +5,8 @@ python:
 
 install:
   - sudo apt-get install python3
-  - pip install -r requirements.txt
-  - ./setup.sh
   - pip3 install coala-bears
+  - ./setup.sh
   - cd $TRAVIS_BUILD_DIR
 
 script:
