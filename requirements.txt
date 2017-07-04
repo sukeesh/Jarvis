@@ -19,5 +19,3 @@ pyttsx == 1.1
 aiml
 python-dateutil
 mock==2.0.0
-notify2
-dbus-python
