@@ -9,7 +9,7 @@ class NearMeTest(unittest.TestCase):
         self.things = 'charities'
         self.city = 'Valencia'
 
-    @patch.object(mapps, 'searchNear')
+    @patch.object(mapps, 'search_near')
     def test_what_to_search_where_is_passed_to_mapps(self, mock_search_near):
         data = "{} | {}".format(self.things, self.city)
         near_me.main(data)
