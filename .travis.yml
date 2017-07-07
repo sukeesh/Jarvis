@@ -12,5 +12,5 @@ install:
 script:
   - coala --ci
   - pip install -r requirements.txt
-  - cd jarviscli/
+  - cd jarviscli/tests/
   - python -m unittest discover
