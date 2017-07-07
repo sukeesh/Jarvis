@@ -28,8 +28,9 @@ class TimeInTest(unittest.TestCase):
                                             '%Y-%m-%d %H:%M:%S')
 
         # Create a timedelta object to adjust for your locale's timezone
-        delta_tz = datetime.timedelta(hours=time.timezone/3600)
-        result -= delta_tz
+        # print self.dst
+        delta_tz = datetime.timedelta(hours=((time.timezone)/3600+int(self.dst)))
+        result -= (delta_tz)
 
         # Create another timedelta object to give the API call a margin
         # of error since the HTTP request may have latency
