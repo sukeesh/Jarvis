@@ -10,6 +10,10 @@ elif [[ "$OS" == "Ubuntu" ]]; then
   sudo apt-get install ffmpeg
   sudo apt-get install python-notify2
   sudo -H pip install -r requirements.txt
+elif [[ "$OS" == "Kali" ]]; then
+  apt-get install ffmpeg
+  apt-get install python-notify2
+  pip install -r requirements.txt
 else
   echo "Operating System not supported"
 fi
