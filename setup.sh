@@ -1,5 +1,15 @@
 #!/bin/bash
 
+UNAME=$(uname -s)
+if [[ "$UNAME" == "Darwin" ]]; then
+  brew install ffmpeg
+  brew install openssl
+  virtualenv env
+  . env/bin/activate
+  pip install -r requirements.txt
+  exit 0
+fi
+
 OS=$(lsb_release -si)
 if [[ "$OS" == "Fedora" ]]; then
   sudo dnf install ffmpeg
@@ -16,4 +26,6 @@ elif [[ "$OS" == "Kali" ]]; then
   pip install -r requirements.txt
 else
   echo "Operating System not supported"
+  exit 1
 fi
+exit 0

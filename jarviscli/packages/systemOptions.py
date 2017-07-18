@@ -2,12 +2,21 @@
 import os
 import subprocess
 
+from utilities.GeneralUtilities import IS_MACOS
+
 
 def turn_off_screen():
-    os.system('xset dpms force off')
+    if IS_MACOS:
+        os.system('pmset displaysleepnow')
+    else:
+        os.system('xset dpms force off')
 
 
 def update_system():
+    if IS_MACOS:
+        os.system('brew upgrade && brew update')
+        return
+
     release = subprocess.check_output('cat /etc/lsb-rel'
                                       + 'ease | grep'
                                       + ' DISTRIB_ID=', shell=True)
