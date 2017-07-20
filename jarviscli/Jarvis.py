@@ -33,7 +33,8 @@ class Jarvis(CmdInterpreter, object):
     first_reaction_text += Fore.RESET + Fore.RED + 'enable sound' + Fore.RESET
     first_reaction_text += "\n"
     prompt = (
-        Fore.RED + "{} Hi, what can I do for you?\n".format(PROMPT_CHAR) + Fore.RESET
+        Fore.RED +
+        "{} Hi, what can I do for you?\n".format(PROMPT_CHAR) + Fore.RESET
     )
 
     # This can be used to store user specific data
@@ -67,7 +68,8 @@ class Jarvis(CmdInterpreter, object):
         """Hook that executes after every command."""
         if self.first_reaction:
             self.prompt = (
-                Fore.RED + "{} What can i do for you?\n".format(PROMPT_CHAR) + Fore.RESET
+                Fore.RED +
+                "{} What can i do for you?\n".format(PROMPT_CHAR) + Fore.RESET
             )
             self.first_reaction = False
         if self.enable_voice:

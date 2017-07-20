@@ -202,11 +202,13 @@ def reminder_quit():
         for index, el in timerList.items():
             el.cancel()
 
+
 if not IS_MACOS:
     timerList = {}
     reminderList = read_file("reminderlist.txt", {'items': []})
     reminderList['items'] = sort(reminderList['items'])
-    reminderList['items'] = [i for i in reminderList['items'] if not i['hidden']]
+    reminderList['items'] = [
+        i for i in reminderList['items'] if not i['hidden']]
     notify2.init("Jarvis")
     for e in reminderList['items']:
         e['time'] = str2date(e['time'])

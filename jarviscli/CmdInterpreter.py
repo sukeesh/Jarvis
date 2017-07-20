@@ -381,6 +381,7 @@ class CmdInterpreter(Cmd):
     def do_play(self, s):
         """Jarvis will find you a good song to relax!"""
         play(s)
+
     @unsupported(platform=MACOS)
     def help_play(self):
         """Print help about play command."""
