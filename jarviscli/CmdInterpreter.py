@@ -331,6 +331,7 @@ class CmdInterpreter(Cmd):
         print_say("-- Example:", self)
         print_say("\tevaluate 3 + 5", self)
 
+    @unsupported(platform=MACOS)
     def do_hotspot(self, s):
         """Jarvis will set up your own hotspot."""
         if "start" in s:
@@ -338,6 +339,7 @@ class CmdInterpreter(Cmd):
         elif "stop" in s:
             system("sudo ap-hotspot stop")
 
+    @unsupported(platform=MACOS)
     def help_hotspot(self):
         """Print help about hotspot commando."""
         print_say("start: Jarvis will set up your own hotspot.", self)
@@ -358,6 +360,7 @@ class CmdInterpreter(Cmd):
                 Fore.RED + "What do you want to watch?\n" + Fore.RESET)
         system("ims " + movie_name)
 
+    @unsupported(platform=MACOS)
     def help_movies(self):
         """Print help about movies command."""
         print_say("Jarvis will find a good movie for you", self)
@@ -531,7 +534,7 @@ class CmdInterpreter(Cmd):
 
     def help_enable(self):
         """Displays help about enable command"""
-        print_say("Let Jarvis use his voice.", self)
+        print_say("sound: Let Jarvis use his voice.", self)
 
     def complete_enable(self, text, line, begidx, endidx):
         """Completions for enable command"""
@@ -544,7 +547,7 @@ class CmdInterpreter(Cmd):
 
     def help_disable(self):
         """Displays help about disable command"""
-        print_say("Deny Jarvis to use his voice.", self)
+        print_say("sound: Deny Jarvis his voice.", self)
 
     def complete_disable(self, text, line, begidx, endidx):
         """Completions for check command"""
