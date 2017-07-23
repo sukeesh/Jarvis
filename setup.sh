@@ -9,10 +9,12 @@ if [[ "$OS" == "Fedora" ]]; then
 elif [[ "$OS" == "Ubuntu" ]] || [[ "$OS" == "LinuxMint" ]]; then
   sudo apt-get install ffmpeg
   sudo apt-get install python-notify2
+  sudo apt-get install python-dbus
   sudo -H pip install -r requirements.txt
 elif [[ "$OS" == "Kali" ]]; then
   apt-get install ffmpeg
   apt-get install python-notify2
+  apt-get install python-dbus
   pip install -r requirements.txt
 else
   echo "Operating System not supported"
