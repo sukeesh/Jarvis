@@ -30,7 +30,7 @@ Use the command `./setup.sh` to install the requirements.
 - If you have time to add extra functionality to Jarvis (for example new actions like "record" etc.) you only need to add this action to the actions tuple (look on init(self) in CmdInterpreter.py) as a string if it's a one word command or as a dict if it's a two word command. Then, add **appropriate methods** (substitute `record` for the name of your command):
   + `do_record(self, s)`: implement here your command functionality. `s` is where Jarvis will pass the arguments of your command.
   + `help_record(self)`: print what your command does.
-  + **(optional)** `complete_record(self)`: useful to get completions, if it's a two word command use `get_completions` method: 
+  + **(optional)** `complete_record(self)`: useful to get completions, if it's a two word command use `get_completions` method:
     + `return self.get_completions("record", text)`
 - Please don't forget to comment (document) your code
 
@@ -48,10 +48,10 @@ Use the command `./setup.sh` to install the requirements.
 
 ## Authors
 
- **sukeesh** 
+ **sukeesh**
 
 See also the list of [contributors](contributors.md) who participated in this project.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
