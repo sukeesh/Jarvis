@@ -20,7 +20,7 @@ def main(self, s):
     r = requests.get(send_url)
     j = json.loads(r.text)
     time = j['formatted']
-
+    self.dst = j['dst']
     # Prints current date and time as YYYY-MM-DD HH:MM:SS
     print(Fore.MAGENTA + "The current date and time in " +
           str(s).title() + " is: " + str(time) + Fore.RESET)
