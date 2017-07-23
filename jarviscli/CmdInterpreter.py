@@ -151,7 +151,7 @@ class CmdInterpreter(Cmd):
         print_say("Reads what is typed.")
 
     def interrupt_handler(self, signal, frame):
-        """Closes Jarvis on SIGINT signal. (Crtl-C)"""
+        """Closes Jarvis on SIGINT signal. (Ctrl-C)"""
         self.close()
 
     def close(self):
