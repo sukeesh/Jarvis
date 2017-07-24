@@ -8,7 +8,7 @@ if [[ "$OS" == "Fedora" ]]; then
   sudo dnf install python-dbus -y
 elif [[ "$OS" == "Ubuntu" ]] || [[ "$OS" == "LinuxMint" ]]; then
   sudo apt-get install ffmpeg
-  sudo apt-get install python-notify2
+  sudo apt-get install python-notify2 python-imdbpy
   sudo -H pip install -r requirements.txt
 elif [[ "$OS" == "Kali" ]]; then
   apt-get install ffmpeg
