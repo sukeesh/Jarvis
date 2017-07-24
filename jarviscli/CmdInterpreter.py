@@ -71,6 +71,7 @@ class CmdInterpreter(Cmd):
                         "play",
                         "pinpoint",
                         "os",
+                        "q",
                         "quit",
                         "remind",
                         "say",
@@ -177,6 +178,14 @@ class CmdInterpreter(Cmd):
     def help_exit(self):
         """Closing Jarvis."""
         print_say("Close Jarvis", self)
+
+    def do_q(self, s=None):
+        """Closing Jarvis"""
+        self.close()
+
+    def help_q(self):
+        """Closing Jarvis"""
+        print_say("Closing Jarvis!!", self)
 
     def help_goodbye(self):
         """Closing Jarvis."""
