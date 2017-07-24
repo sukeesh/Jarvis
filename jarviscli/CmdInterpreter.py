@@ -18,6 +18,7 @@ from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancel_shutdown, reboot_system
 from packages.systemOptions import turn_off_screen, update_system
 from packages.news import News
+from packages.fb import fb_login
 
 MEMORY = Memory()
 
@@ -82,6 +83,7 @@ class CmdInterpreter(Cmd):
                         "umbrella",
                         {"update": ("location", "system")},
                         "weather",
+                        "fb_login"
                         )
 
         self.fixed_responses = {"what time is it": "clock",
@@ -602,3 +604,10 @@ class CmdInterpreter(Cmd):
         """Print info about umbrella command."""
         print_say(
             "If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self, Fore.BLUE)
+
+    def do_fb_login(self,s):
+        """Jarvis will login into your facebook account either by prompting id password or by using previously saved """
+        try:
+            fb_login()
+        except ConnectionError:
+            print(CONNECTION_ERROR_MSG)
