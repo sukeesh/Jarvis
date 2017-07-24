@@ -1,5 +1,5 @@
-from utilities.GeneralUtilities import wordIndex
-import CmdInterpreter
+from ..utilities.GeneralUtilities import wordIndex
+from .. import CmdInterpreter
 import mapps
 
 

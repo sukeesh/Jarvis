@@ -1,4 +1,4 @@
-from utilities.GeneralUtilities import wordIndex
+from ..utilities.GeneralUtilities import wordIndex
 import mapps
 
 

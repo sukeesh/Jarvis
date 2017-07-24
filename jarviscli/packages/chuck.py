@@ -1,5 +1,5 @@
 from colorama import Fore
-from utilities.GeneralUtilities import print_say
+from ..utilities.GeneralUtilities import print_say
 import requests
 
 

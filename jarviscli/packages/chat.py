@@ -1,6 +1,6 @@
 from colorama import Fore
 from aiml.brain import Brain
-from utilities.GeneralUtilities import print_say
+from ..utilities.GeneralUtilities import print_say
 
 
 def main(self):

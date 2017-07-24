@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from utilities.GeneralUtilities import print_say
+from ..utilities.GeneralUtilities import print_say
 from colorama import Fore
 
 

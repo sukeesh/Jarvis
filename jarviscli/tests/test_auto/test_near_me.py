@@ -1,6 +1,6 @@
 import unittest
 from mock import patch
-from packages import near_me, mapps
+from ...packages import near_me, mapps
 
 
 class NearMeTest(unittest.TestCase):

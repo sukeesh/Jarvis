@@ -6,3 +6,4 @@ jarviscli/packages/memory/memory.json
 *.brn
 dist/
 build/
+*.swp

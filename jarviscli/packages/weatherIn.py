@@ -2,8 +2,8 @@
 import json
 import requests
 import mapps
-from packages import weather_pinpoint as pinpoint
-from packages.memory.memory import Memory
+from ..packages import weather_pinpoint as pinpoint
+from ..packages.memory.memory import Memory
 from colorama import Fore
 
 
