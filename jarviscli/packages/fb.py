@@ -30,7 +30,7 @@ def get_details():
     return usr, pwd
 
 
-def fb_login():
+def fb_login(self):
     usr, pwd = get_details()
 
     driver = webdriver.Chrome()

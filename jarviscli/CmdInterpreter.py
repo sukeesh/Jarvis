@@ -58,6 +58,7 @@ class CmdInterpreter(Cmd):
                         "error",
                         "evaluate",
                         "exit",
+                        "fb_login",
                         "goodbye",
                         "help",
                         {"hotspot": ("start", "stop")},
@@ -83,8 +84,7 @@ class CmdInterpreter(Cmd):
                         {"tell": ("joke",)},
                         "umbrella",
                         {"update": ("location", "system")},
-                        "weather",
-                        "fb_login"
+                        "weather"
                         )
 
         self.fixed_responses = {"what time is it": "clock",
@@ -614,9 +614,9 @@ class CmdInterpreter(Cmd):
         print_say(
             "If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self, Fore.BLUE)
 
-    def do_fb_login(self,s):
+    def do_fb_login(self, s=None):
         """Jarvis will login into your facebook account either by prompting id password or by using previously saved """
         try:
-            fb_login()
+            fb_login(self)
         except ConnectionError:
             print(CONNECTION_ERROR_MSG)
