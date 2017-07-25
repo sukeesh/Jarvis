@@ -1,5 +1,5 @@
 import unittest
-from packages import timeIn
+from ...packages import timeIn
 import time
 import datetime
 import sys

@@ -1,6 +1,6 @@
 import unittest
 from mock import patch
-from packages import weather_pinpoint, weatherIn
+from ...packages import weather_pinpoint, weatherIn
 
 
 class WeatherInTest(unittest.TestCase):

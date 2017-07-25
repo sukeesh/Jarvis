@@ -7,9 +7,9 @@ import notify2
 
 
 from fileHandler import write_file, read_file, str2date
-from utilities.lexicalSimilarity import score_sentence, compare_sentence
-from utilities.textParser import parse_number, parse_date
-from utilities.GeneralUtilities import error, info
+from ..utilities.lexicalSimilarity import score_sentence, compare_sentence
+from ..utilities.textParser import parse_number, parse_date
+from ..utilities.GeneralUtilities import error, info
 
 
 def sort(data):

@@ -5,11 +5,11 @@ from uuid import uuid4
 from reminder import addReminder, removeReminder
 
 from fileHandler import write_file, read_file, str2date
-from utilities.lexicalSimilarity import score_sentence
-from utilities.textParser import parse_date, parse_number
+from ..utilities.lexicalSimilarity import score_sentence
+from ..utilities.textParser import parse_date, parse_number
 
 
-from utilities.GeneralUtilities import error, info, critical, important, warning
+from ..utilities.GeneralUtilities import error, info, critical, important, warning
 
 
 def printItem(item, index):

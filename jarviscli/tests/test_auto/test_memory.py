@@ -1,7 +1,7 @@
 import unittest
 import os
 
-from packages.memory.memory import Memory, module_path
+from ...packages.memory.memory import Memory, module_path
 
 
 class MemoryTest(unittest.TestCase):
