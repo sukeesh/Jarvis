@@ -614,9 +614,13 @@ class CmdInterpreter(Cmd):
         print_say(
             "If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self, Fore.BLUE)
 
+<<<<<<< HEAD
     def do_fb_login(self, s=None):
+=======
+    def do_fb_login(self,s=None):
+>>>>>>> 09aef9f89622ad9666ab516cc48c35117f05aae0
         """Jarvis will login into your facebook account either by prompting id password or by using previously saved """
         try:
-            fb_login(self)
+            fb_login()
         except ConnectionError:
             print(CONNECTION_ERROR_MSG)
