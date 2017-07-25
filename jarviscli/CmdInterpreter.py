@@ -503,6 +503,8 @@ class CmdInterpreter(Cmd):
     def help_screen(self):
         """Print help about screen command."""
         print_say("Turns off the screen instantly", self)
+        print_say("-- Example:", self)
+        print_say("screen off", self)
 
     def complete_screen(self, text, line, begidx, endidx):
         """Completions for screen command"""
