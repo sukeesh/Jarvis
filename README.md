@@ -37,6 +37,18 @@ Use the command `./setup.sh` to install the requirements.
 **Note**: one word command examples are: `say [text that Jarvis will speak]`, `weather`. Two word command examples are: `hotspot start`, `hotspot stop`, `increase volume`, `decrease volume`.
 
  ### How to run tests:
+ **For PEP8**
+ 
+ Change into Jarvis directory
+ ```bash
+ cd Jarvis
+ ```
+ Then run coala
+ ```bash
+ coala --ci
+ ```
+**For tests**
+
  Change into the Jarvis/jarviscli directory
  ```bash
  cd Jarvis/jarviscli
