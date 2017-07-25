@@ -48,7 +48,8 @@ Use the command `./setup.sh` to install the requirements.
  coala --ci
  ```
 **For tests**
-
+ Add `__init__.py` file in jarviscli/tests/test_manual/
+ 
  Change into the Jarvis/jarviscli directory
  ```bash
  cd Jarvis/jarviscli
