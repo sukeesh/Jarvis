@@ -3,6 +3,10 @@
 from datetime import datetime as dt
 from uuid import uuid4
 from threading import Timer
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7d281910ed134f3ae96fd6e8888c16ee5557a898
 
 from fileHandler import write_file, read_file, str2date
 from utilities.lexicalSimilarity import score_sentence, compare_sentence

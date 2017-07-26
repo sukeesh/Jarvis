@@ -28,7 +28,11 @@ class Jarvis(CmdInterpreter, object):
     first_reaction_text = ""
     first_reaction_text += Fore.BLUE + \
 <<<<<<< HEAD
+<<<<<<< HEAD
                            'Jarvi\'s sound is by default disabled.' + Fore.RESET
+=======
+        'Jarvis\' sound is by default disabled.' + Fore.RESET
+>>>>>>> 7d281910ed134f3ae96fd6e8888c16ee5557a898
 =======
         'Jarvis\' sound is by default disabled.' + Fore.RESET
 >>>>>>> 7d281910ed134f3ae96fd6e8888c16ee5557a898

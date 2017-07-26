@@ -2,6 +2,15 @@ import unittest
 import CmdInterpreter
 from mock import patch
 from utilities.GeneralUtilities import IS_MACOS
+<<<<<<< HEAD
+=======
+
+MACOS_BLACKLIST = {
+    'movies',
+    'music',
+    'play',
+}
+>>>>>>> 7d281910ed134f3ae96fd6e8888c16ee5557a898
 
 MACOS_BLACKLIST = {
     'movies',
