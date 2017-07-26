@@ -1,6 +1,13 @@
 import unittest
 import CmdInterpreter
 from mock import patch
+from utilities.GeneralUtilities import IS_MACOS
+
+MACOS_BLACKLIST = {
+    'movies',
+    'music',
+    'play',
+}
 
 
 class HelpTest(unittest.TestCase):
@@ -21,4 +28,7 @@ class HelpTest(unittest.TestCase):
                 help_cmd_name = "help_{}".format(action)
                 help_cmd = getattr(self.CI, help_cmd_name)
                 help_cmd(self.CI_instance)
-                mock_print_say.assert_called()
+                if action in MACOS_BLACKLIST and IS_MACOS:
+                    pass
+                else:
+                    mock_print_say.assert_called()

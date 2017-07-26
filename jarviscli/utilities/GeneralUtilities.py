@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
+import sys
+from functools import wraps
 
 from colorama import Fore
+
+MACOS = 'darwin'
+IS_MACOS = sys.platform == MACOS
 
 
 def wordIndex(data, word):
@@ -41,3 +46,19 @@ def warning(string):
 
 def info(string):
     print(Fore.BLUE + string + Fore.RESET)
+
+
+def unsupported(platform, silent=False):
+    def noop_wrapper(func):
+        def wrapped(*args, **kwargs):
+            if sys.platform == platform:
+                if not silent:
+                    print(
+                        Fore.RED
+                        + 'Command is unsupported for platform `{}`'.format(
+                            sys.platform
+                        ) + Fore.RESET)
+            else:
+                func(*args, **kwargs)
+        return wrapped
+    return noop_wrapper

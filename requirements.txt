@@ -12,7 +12,8 @@ packaging==16.8
 pyowm==2.6.1
 pyparsing==2.2.0
 PySocks==1.6.6
-requests==2.13.0
+cryptography==1.8.1
+requests[security]==2.13.0
 six==1.10.0
 SpeechRecognition==3.6.3
 pyttsx == 1.1
@@ -21,3 +22,4 @@ python-dateutil
 mock==2.0.0
 notify2
 selenium==3.4.3
+pync==1.6.1
