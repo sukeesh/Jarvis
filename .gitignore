@@ -7,3 +7,4 @@ jarviscli/packages/memory/memory.json
 dist/
 build/
 env/
+*.DS_Store
