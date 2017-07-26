@@ -1,4 +1,10 @@
-import pyttsx
+from utilities.GeneralUtilities import IS_MACOS
+
+
+if IS_MACOS:
+    from os import system
+else:
+    import pyttsx
 
 '''
     ABOUT: This class is the Voice of Jarvis.
@@ -15,8 +21,9 @@ class Voice:
         """
         This constructor creates a pyttsx object.
         """
-        self.create()
-        self.engine = None
+        if not IS_MACOS:
+            self.create()
+            self.engine = None
 
     def create(self):
         """
@@ -44,14 +51,9 @@ class Voice:
         :return: Nothing to return.
         """
         if first_run:
-            self.engine.say('Hi, what can i do for you?')
-            self.engine.runAndWait()
-            self.destroy()
+            self.text_to_speech('Hi, what can I do for you?')
         else:
-            self.create()
-            self.engine.say('What can i do for you?')
-            self.engine.runAndWait()
-            self.destroy()
+            self.text_to_speech('What can i do for you?')
 
     def text_to_speech(self, speech):
         """
@@ -59,10 +61,13 @@ class Voice:
         :param speech: The text we want Jarvis to generate as audio
         :return: Nothing to return.
         """
-        self.create()
-        self.engine.say(speech)
-        self.engine.runAndWait()
-        self.destroy()
+        if IS_MACOS:
+            system('say {}'.format(speech))
+        else:
+            self.create()
+            self.engine.say(speech)
+            self.engine.runAndWait()
+            self.destroy()
 
 
 '''
