@@ -1,0 +1,13 @@
+gTTS_token-1.1.1.dist-info/DESCRIPTION.rst,sha256=wjuO_6wmadplrMIROnIgpoygLQo9xZvFzmdQcgh8iDw,479
+gTTS_token-1.1.1.dist-info/METADATA,sha256=qEWZUMLSW2Qsv6p8TtlrG6LtfNN9NUgQh0KBIj2iMik,1340
+gTTS_token-1.1.1.dist-info/RECORD,,
+gTTS_token-1.1.1.dist-info/WHEEL,sha256=AXucK5-TNISW1dQAdsyH02xCRCCE1VKjhXIOWMW_lxI,93
+gTTS_token-1.1.1.dist-info/metadata.json,sha256=2oJCWNEK3cGizcUmyf5WBJmS5D-asIprl4ZWI8ajU2E,992
+gTTS_token-1.1.1.dist-info/top_level.txt,sha256=NCJH50RUTUwIOukDG4AvmP2sDf9MPWlo_sdUy9qcGyg,11
+gtts_token/__init__.py,sha256=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU,0
+gtts_token/gtts_token.py,sha256=8RTElJBuwDU-yFHNFe9DoMMjH0AVz21NTBBnMuqePh0,2611
+gtts_token/version.py,sha256=ta6I5vO0KnL-6Jq8dfzJ529b-Y7Jx7pTPxZEzA2vnsc,23
+gTTS_token-1.1.1.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
+gtts_token/__pycache__/__init__.cpython-35.pyc,,
+gtts_token/__pycache__/version.cpython-35.pyc,,
+gtts_token/__pycache__/gtts_token.cpython-35.pyc,,

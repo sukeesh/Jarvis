@@ -1,0 +1,40 @@
+Metadata-Version: 2.0
+Name: gTTS-token
+Version: 1.1.1
+Summary: Calculates a token to run the Google Translate text to speech
+Home-page: https://github.com/boudewijn26/gTTS-token
+Author: Boudewijn van Groos
+Author-email: boudewijn@vangroos.nl
+License: MIT
+Platform: UNKNOWN
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Unix
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Multimedia :: Sound/Audio :: Speech
+Requires-Dist: requests
+
+gTTS-token
+====
+
+**gTTS-token** (Google Text to Speech token): A python implementation of the token validation of Google Translate
+
+[![Build Status](https://travis-ci.org/Boudewijn26/gTTS-token.svg?branch=master)](https://travis-ci.org/Boudewijn26/gTTS-token)
+
+Install
+-------
+
+    pip install gTTS-token
+
+Description
+-------
+
+Google Translate requires a tk param when making a request to its translate API. This project provides an implementation for that algorithm in Python.
+

@@ -14,7 +14,7 @@ from utilities.GeneralUtilities import (
 from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminder_handler, reminder_quit
-from packages import mapps, picshow, evaluator, forecast
+from packages import mapps, picshow, evaluator, forecast, plot
 from packages import chat, directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
 from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancel_shutdown, reboot_system
@@ -71,6 +71,7 @@ class CmdInterpreter(Cmd):
                         "news",
                         {"open": ("camera",)},
                         "play",
+                        "plot",
                         "pinpoint",
                         "os",
                         "q",
@@ -458,6 +459,14 @@ class CmdInterpreter(Cmd):
     def help_pinpoint(self):
         """Print help about pinpoint command."""
         print_say("Jarvis will pinpoint your location.", self)
+
+    def do_plot(self, s="Iron Man"):
+        """Jarvis will get movie plot for you"""
+        plot.movie_plot(self, s)
+
+    def help_plot(self):
+        """Print help about plot command."""
+        print_say("Jarvis will get movie plot for you.", self)
 
     def do_remind(self, data):
         """Handles reminders"""
