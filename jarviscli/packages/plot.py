@@ -6,6 +6,9 @@ from utilities.GeneralUtilities import print_say
 def movie_plot(self, movie):
     app = imdb.IMDb()
     results = app.search_movie(movie)
+    if not results:
+        print_say("Movie not found", self)
+        return
     first = results[0]
     ID = first.movieID
     data = app.get_movie(ID)
