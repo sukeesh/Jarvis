@@ -1,6 +1,10 @@
+# -*- coding: utf-8 -*-
+
 from colorama import Fore
 from utilities.GeneralUtilities import print_say
 from CmdInterpreter import CmdInterpreter
+
+PROMPT_CHAR = '~>'
 
 """
     AUTHORS' SCOPE:
@@ -30,7 +34,10 @@ class Jarvis(CmdInterpreter, object):
     first_reaction_text += "\n"
     first_reaction_text += Fore.BLUE + "Type 'help' for a list of available actions." + Fore.RESET
     first_reaction_text += "\n"
-    prompt = Fore.RED + "~> Hi, what can i do for you?\n" + Fore.RESET
+    prompt = (
+        Fore.RED +
+        "{} Hi, what can I do for you?\n".format(PROMPT_CHAR) + Fore.RESET
+    )
 
     # This can be used to store user specific data
 
@@ -62,7 +69,10 @@ class Jarvis(CmdInterpreter, object):
     def postcmd(self, stop, line):
         """Hook that executes after every command."""
         if self.first_reaction:
-            self.prompt = self.prompt = Fore.RED + "~> What can i do for you?\n" + Fore.RESET
+            self.prompt = (
+                Fore.RED +
+                "{} What can i do for you?\n".format(PROMPT_CHAR) + Fore.RESET
+            )
             self.first_reaction = False
         if self.enable_voice:
             self.speech.text_to_speech("What can i do for you?\n")
