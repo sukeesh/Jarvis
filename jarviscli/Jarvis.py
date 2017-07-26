@@ -32,7 +32,8 @@ class Jarvis(CmdInterpreter, object):
     first_reaction_text += Fore.BLUE + 'In order to let Jarvis talk out loud type: '
     first_reaction_text += Fore.RESET + Fore.RED + 'enable sound' + Fore.RESET
     first_reaction_text += "\n"
-    first_reaction_text += Fore.BLUE + "Type 'help' for a list of available actions." + Fore.RESET
+    first_reaction_text += Fore.BLUE + \
+        "Type 'help' for a list of available actions." + Fore.RESET
     first_reaction_text += "\n"
     prompt = (
         Fore.RED +
