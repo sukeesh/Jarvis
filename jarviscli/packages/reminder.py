@@ -3,13 +3,17 @@
 from datetime import datetime as dt
 from uuid import uuid4
 from threading import Timer
-import notify2
 
 
 from fileHandler import write_file, read_file, str2date
 from utilities.lexicalSimilarity import score_sentence, compare_sentence
 from utilities.textParser import parse_number, parse_date
-from utilities.GeneralUtilities import error, info
+from utilities.GeneralUtilities import (
+    error, info, MACOS, IS_MACOS, unsupported
+)
+
+if not IS_MACOS:
+    import notify2
 
 
 def sort(data):
@@ -148,6 +152,7 @@ def handler_clear(data):
     write_file("reminderlist.txt", reminderList)
 
 
+@unsupported(platform=MACOS)
 def reminder_handler(data):
     """
     Handle the command string for reminders.
@@ -185,6 +190,7 @@ def reminder_handler(data):
     globals()[action](data)
 
 
+@unsupported(platform=MACOS, silent=True)
 def reminder_quit():
     """
     This function has to be called when shutting down. It terminates all waiting threads.
@@ -197,16 +203,18 @@ def reminder_quit():
             el.cancel()
 
 
-timerList = {}
-reminderList = read_file("reminderlist.txt", {'items': []})
-reminderList['items'] = sort(reminderList['items'])
-reminderList['items'] = [i for i in reminderList['items'] if not i['hidden']]
-notify2.init("Jarvis")
-for e in reminderList['items']:
-    e['time'] = str2date(e['time'])
-    waitTime = e['time'] - dt.now()
-    n = notify2.Notification(e['name'])
-    n.set_urgency(0)
-    timerList[e['uuid']] = Timer(
-        waitTime.total_seconds(), showAlarm, [n, e['name']])
-    timerList[e['uuid']].start()
+if not IS_MACOS:
+    timerList = {}
+    reminderList = read_file("reminderlist.txt", {'items': []})
+    reminderList['items'] = sort(reminderList['items'])
+    reminderList['items'] = [
+        i for i in reminderList['items'] if not i['hidden']]
+    notify2.init("Jarvis")
+    for e in reminderList['items']:
+        e['time'] = str2date(e['time'])
+        waitTime = e['time'] - dt.now()
+        n = notify2.Notification(e['name'])
+        n.set_urgency(0)
+        timerList[e['uuid']] = Timer(
+            waitTime.total_seconds(), showAlarm, [n, e['name']])
+        timerList[e['uuid']].start()

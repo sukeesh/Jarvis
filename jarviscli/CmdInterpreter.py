@@ -8,7 +8,9 @@ from colorama import Fore
 from requests import ConnectionError
 
 from utilities import voice
-from utilities.GeneralUtilities import print_say
+from utilities.GeneralUtilities import (
+    IS_MACOS, MACOS, print_say, unsupported
+)
 from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminder_handler, reminder_quit
@@ -213,7 +215,13 @@ class CmdInterpreter(Cmd):
         """Decreases you speakers' sound."""
         # TODO si solo ponemos decrease que pase algo
         if s == "volume":
-            system("pactl -- set-sink-volume 0 -10%")
+            if IS_MACOS:
+                system(
+                    'osascript -e "set volume output volume '
+                    '(output volume of (get volume settings) - 10) --100%"'
+                )
+            else:
+                system("pactl -- set-sink-volume 0 -10%")
 
     def help_decrease(self):
         """Print help about decrease command."""
@@ -226,7 +234,13 @@ class CmdInterpreter(Cmd):
     def do_increase(self, s):
         """Increases you speakers' sound."""
         if s == "volume":
-            system("pactl -- set-sink-volume 0 +3%")
+            if IS_MACOS:
+                system(
+                    'osascript -e "set volume output volume '
+                    '(output volume of (get volume settings) + 10) --100%"'
+                )
+            else:
+                system("pactl -- set-sink-volume 0 +3%")
 
     def help_increase(self):
         """Print help about increase command."""
@@ -326,6 +340,7 @@ class CmdInterpreter(Cmd):
         print_say("-- Example:", self)
         print_say("\tevaluate 3 + 5", self)
 
+    @unsupported(platform=MACOS)
     def do_hotspot(self, s):
         """Jarvis will set up your own hotspot."""
         if "start" in s:
@@ -333,6 +348,7 @@ class CmdInterpreter(Cmd):
         elif "stop" in s:
             system("sudo ap-hotspot stop")
 
+    @unsupported(platform=MACOS)
     def help_hotspot(self):
         """Print help about hotspot commando."""
         print_say("start: Jarvis will set up your own hotspot.", self)
@@ -342,6 +358,7 @@ class CmdInterpreter(Cmd):
         """Completions for enable command"""
         return self.get_completions("hotspot", text)
 
+    @unsupported(platform=MACOS)
     def do_movies(self, s):
         """Jarvis will find a good movie for you."""
         try:
@@ -352,24 +369,29 @@ class CmdInterpreter(Cmd):
                 Fore.RED + "What do you want to watch?\n" + Fore.RESET)
         system("ims " + movie_name)
 
+    @unsupported(platform=MACOS)
     def help_movies(self):
         """Print help about movies command."""
         print_say("Jarvis will find a good movie for you", self)
 
+    @unsupported(platform=MACOS)
     def do_music(self, s):
         """Jarvis will find you a good song to relax!"""
         play(s)
 
+    @unsupported(platform=MACOS)
     def help_music(self):
         """Print help about music command."""
         print_say("Jarvis will find you the song you want", self)
         print_say("-- Example:", self)
         print_say("\tmusic wonderful tonight", self)
 
+    @unsupported(platform=MACOS)
     def do_play(self, s):
         """Jarvis will find you a good song to relax!"""
         play(s)
 
+    @unsupported(platform=MACOS)
     def help_play(self):
         """Print help about play command."""
         print_say("Jarvis will find you the song you want", self)
@@ -411,8 +433,11 @@ class CmdInterpreter(Cmd):
     def do_open(self, s):
         """Jarvis will open the camera for you."""
         if "camera" in s:
-            print_say("Opening cheese.......", self, Fore.RED)
-            system("cheese")
+            if IS_MACOS:
+                system('open /Applications/Photo\ Booth.app')
+            else:
+                print_say("Opening cheese.......", self, Fore.RED)
+                system("cheese")
 
     def help_open(self):
         """Print help about open command."""
@@ -521,7 +546,7 @@ class CmdInterpreter(Cmd):
 
     def help_enable(self):
         """Displays help about enable command"""
-        print_say("Let Jarvis use his voice.", self)
+        print_say("sound: Let Jarvis use his voice.", self)
 
     def complete_enable(self, text, line, begidx, endidx):
         """Completions for enable command"""
@@ -534,7 +559,7 @@ class CmdInterpreter(Cmd):
 
     def help_disable(self):
         """Displays help about disable command"""
-        print_say("Deny Jarvis to use his voice.", self)
+        print_say("sound: Deny Jarvis his voice.", self)
 
     def complete_disable(self, text, line, begidx, endidx):
         """Completions for check command"""
