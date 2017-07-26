@@ -12,7 +12,7 @@ def main(self, s):
     cmd_words = s.strip().split()
     # location will be defined by the words given that are not the key words
     location = ' '.join(filter(lambda word: word.lower()
-                               not in cmd_key_words, cmd_words)).strip()
+                                            not in cmd_key_words, cmd_words)).strip()
 
     current_location = mapps.get_location()
 

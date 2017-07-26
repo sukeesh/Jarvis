@@ -22,7 +22,6 @@ from packages.fb import fb_login
 
 MEMORY = Memory()
 
-
 CONNECTION_ERROR_MSG = "You are not connected to Internet"
 
 
@@ -614,10 +613,10 @@ class CmdInterpreter(Cmd):
     def help_umbrella(self):
         """Print info about umbrella command."""
         print_say(
-            "If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self, Fore.BLUE)
+            "If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self,
+            Fore.BLUE)
 
-
-    def do_fb_login(self,s=None):
+    def do_fb_login(self, s=None):
         """Jarvis will login into your facebook account either by prompting id password or by using previously saved """
         try:
             fb_login(self)

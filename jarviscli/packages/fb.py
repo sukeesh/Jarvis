@@ -49,4 +49,3 @@ def fb_login(self):
 
     raw_input('Enter anything to end the session: ')
     driver.quit()
-

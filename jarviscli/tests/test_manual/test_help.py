@@ -4,7 +4,6 @@ from mock import patch
 
 
 class HelpTest(unittest.TestCase):
-
     def setUp(self):
         self.CI = CmdInterpreter.CmdInterpreter
         initial_text = "This is Jarvis"

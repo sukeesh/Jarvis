@@ -23,7 +23,7 @@ class Jarvis(CmdInterpreter, object):
     # interaction.
     first_reaction_text = ""
     first_reaction_text += Fore.BLUE + \
-        'Jarvi\'s sound is by default disabled.' + Fore.RESET
+                           'Jarvi\'s sound is by default disabled.' + Fore.RESET
     first_reaction_text += "\n"
     first_reaction_text += Fore.BLUE + 'In order to let Jarvis talk out loud type: '
     first_reaction_text += Fore.RESET + Fore.RED + 'enable sound' + Fore.RESET
@@ -111,8 +111,8 @@ class Jarvis(CmdInterpreter, object):
                 # For the 'near' keyword, the words before 'near' are also needed
                 elif word == "near":
                     initial_words = words[:words.index('near')]
-                    output = word + " " +\
-                        " ".join(initial_words + ["|"] + words_remaining)
+                    output = word + " " + \
+                             " ".join(initial_words + ["|"] + words_remaining)
                 elif word == action:  # command name exists
                     action_found = True
                     output = word + " " + " ".join(words_remaining)
@@ -134,8 +134,8 @@ class Jarvis(CmdInterpreter, object):
                     if argument == value:
                         output += " " + argument
                         output += " " + " ".join(command_arguments)
-            # make Jarvis complain if none of the words_remaining are part
-            # of the word values (as in 'enable cat' or 'check whatever you fancy')
+                        # make Jarvis complain if none of the words_remaining are part
+                        # of the word values (as in 'enable cat' or 'check whatever you fancy')
         if output == word:
             self.default(output)
         return output

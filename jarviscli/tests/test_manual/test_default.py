@@ -4,7 +4,6 @@ from mock import patch
 
 
 class DefaultTest(unittest.TestCase):
-
     def setUp(self):
         self.jarvis = Jarvis()
         self.action = {"enable": ("sound",)}
