@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.org/sukeesh/Jarvis.svg?branch=master)](https://travis-ci.org/sukeesh/Jarvis)
 
-A Personal Assistant for Linux
+A Personal Assistant for Linux and MacOS
 
 ![Jarvis](http://i.imgur.com/xZ8x9ES.jpg)
 
-Jarvis is a simple personal assistant for Linux which works on terminal. He can talk to you if you enable his voice. He can tell you the weather, he can find restaurants and and other places near you. He can do some great stuff for you. Stay updated about [new functionalities](NEW_FUNCTIONALITIES.md).
+Jarvis is a simple personal assistant for Linux and MacOS which works on terminal. He can talk to you if you enable his voice. He can tell you the weather, he can find restaurants and and other places near you. He can do some great stuff for you. Stay updated about [new functionalities](NEW_FUNCTIONALITIES.md).
 
 ## Getting Started
 
