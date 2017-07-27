@@ -21,4 +21,5 @@ aiml
 python-dateutil
 mock==2.0.0
 notify2
+selenium==3.4.3
 pync==1.6.1

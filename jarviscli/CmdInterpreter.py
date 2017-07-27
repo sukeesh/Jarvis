@@ -20,9 +20,9 @@ from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancel_shutdown, reboot_system
 from packages.systemOptions import turn_off_screen, update_system
 from packages.news import News
+from packages.fb import fb_login
 
 MEMORY = Memory()
-
 
 CONNECTION_ERROR_MSG = "You are not connected to Internet"
 
@@ -59,6 +59,7 @@ class CmdInterpreter(Cmd):
                         "error",
                         "evaluate",
                         "exit",
+                        "fb_login",
                         "goodbye",
                         "help",
                         {"hotspot": ("start", "stop")},
@@ -85,7 +86,7 @@ class CmdInterpreter(Cmd):
                         {"tell": ("joke",)},
                         "umbrella",
                         {"update": ("location", "system")},
-                        "weather",
+                        "weather"
                         )
 
         self.fixed_responses = {"what time is it": "clock",
@@ -646,4 +647,12 @@ class CmdInterpreter(Cmd):
     def help_umbrella(self):
         """Print info about umbrella command."""
         print_say(
-            "If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self, Fore.BLUE)
+            "If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self,
+            Fore.BLUE)
+
+    def do_fb_login(self, s=None):
+        """Jarvis will login into your facebook account either by prompting id password or by using previously saved """
+        try:
+            fb_login(self)
+        except ConnectionError:
+            print(CONNECTION_ERROR_MSG)

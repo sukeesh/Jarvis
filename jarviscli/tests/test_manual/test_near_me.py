@@ -4,7 +4,6 @@ from packages import near_me, mapps
 
 
 class NearMeTest(unittest.TestCase):
-
     def setUp(self):
         self.things = 'charities'
         self.city = 'Valencia'

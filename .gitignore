@@ -6,6 +6,7 @@ jarviscli/packages/memory/memory.json
 *.brn
 dist/
 build/
+.idea/
 env/
 *.DS_Store
 *.pyc
