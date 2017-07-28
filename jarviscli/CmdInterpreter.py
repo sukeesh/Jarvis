@@ -20,9 +20,9 @@ from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancel_shutdown, reboot_system
 from packages.systemOptions import turn_off_screen, update_system
 from packages.news import News
+from packages.clear import clear_scr
 
 MEMORY = Memory()
-
 
 CONNECTION_ERROR_MSG = "You are not connected to Internet"
 
@@ -52,6 +52,7 @@ class CmdInterpreter(Cmd):
                         "chat",
                         {"check": ("ram", "weather", "time", "forecast")},
                         "chuck",
+                        "clear_scr",
                         {"decrease": ("volume",)},
                         "directions",
                         {"disable": ("sound",)},
@@ -646,4 +647,9 @@ class CmdInterpreter(Cmd):
     def help_umbrella(self):
         """Print info about umbrella command."""
         print_say(
-            "If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self, Fore.BLUE)
+            "If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self,
+            Fore.BLUE)
+
+    def do_clear(self, s=None):
+        """Clear terminal screen. """
+        clear_scr()

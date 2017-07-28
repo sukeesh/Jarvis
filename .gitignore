@@ -9,3 +9,4 @@ build/
 env/
 *.DS_Store
 *.pyc
+.idea/
