@@ -22,3 +22,4 @@ python-dateutil
 mock==2.0.0
 notify2
 pync==1.6.1
+IMDbPY
