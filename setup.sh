@@ -22,6 +22,7 @@ elif [[ "$OS" == "Ubuntu" ]] || [[ "$OS" == "LinuxMint" ]]; then
   sudo apt-get install python-notify2
   sudo apt-get install python-dbus
   sudo -H pip install -r requirements.txt
+  sudo apt-get install chromium-chromedriver
 elif [[ "$OS" == "Kali" ]]; then
   apt-get install ffmpeg
   apt-get install python-notify2

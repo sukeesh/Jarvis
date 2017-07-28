@@ -21,6 +21,7 @@ from packages.shutdown import shutdown_system, cancel_shutdown, reboot_system
 from packages.systemOptions import turn_off_screen, update_system
 from packages.news import News
 from packages.clear import clear_scr
+from packages.fb import fb_login
 
 MEMORY = Memory()
 
@@ -60,6 +61,7 @@ class CmdInterpreter(Cmd):
                         "error",
                         "evaluate",
                         "exit",
+                        "fb_login",
                         "goodbye",
                         "help",
                         {"hotspot": ("start", "stop")},
@@ -653,3 +655,10 @@ class CmdInterpreter(Cmd):
     def do_clear(self, s=None):
         """Clear terminal screen. """
         clear_scr()
+
+    def do_fb_login(self, s=None):
+        """Jarvis will login into your facebook account either by prompting id-password or by using previously saved"""
+        try:
+            fb_login(self)
+        except ConnectionError:
+            print(CONNECTION_ERROR_MSG)
