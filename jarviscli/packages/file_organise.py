@@ -3,7 +3,6 @@ from colorama import Fore
 import os
 
 
-
 def source_path(dir_name):
     all_paths = []
     for root, dirs, files in os.walk("/home"):
