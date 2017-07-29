@@ -3,7 +3,6 @@ from Jarvis import Jarvis
 
 
 class ParserTest(unittest.TestCase):
-
     def setUp(self):
         self.jarvis = Jarvis()
 

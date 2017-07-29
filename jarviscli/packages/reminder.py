@@ -4,7 +4,6 @@ from datetime import datetime as dt
 from uuid import uuid4
 from threading import Timer
 
-
 from fileHandler import write_file, read_file, str2date
 from utilities.lexicalSimilarity import score_sentence, compare_sentence
 from utilities.textParser import parse_number, parse_date

@@ -56,7 +56,7 @@ def score_word(target, word):
         last_index = max(index, last_index)
     score += not_found * 2
     score += (len(target) - len(index_list)) * 1
-    return score*1.0/len(word)
+    return score * 1.0 / len(word)
 
 
 def find_letter(letters, l, index):
@@ -135,7 +135,7 @@ def score_sentence(target, sentence, distance_penalty=0,
         index_list.append(index)
     score += not_found * 2
     score += (len(target) - found) * additional_target_penalty
-    return score*1.0/len(sentence), index_list
+    return score * 1.0 / len(sentence), index_list
 
 
 def find_word(words, w, index, distance_penalty=0.0):

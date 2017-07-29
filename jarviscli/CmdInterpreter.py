@@ -704,6 +704,7 @@ class CmdInterpreter(Cmd):
 
     def do_fb_login(self, s=None):
         """Jarvis will login into your facebook account either by prompting id-password or by using previously saved"""
+
     try:
         fb_login(self)
     except ConnectionError:
