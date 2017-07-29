@@ -314,6 +314,17 @@ class CmdInterpreter(Cmd):
         """Closing Jarvis."""
         print_say("Close Jarvis", self)
 
+    def do_file_organise(self, s=None):
+        """Jarvis will organise the given folder and group the files"""
+        file_manage(self)
+
+    def do_fb_login(self, s=None):
+        """Jarvis will login into your facebook account either by prompting id-password or by using previously saved"""
+        try:
+            fb_login(self)
+        except ConnectionError:
+            print(CONNECTION_ERROR_MSG)
+
     def do_goodbye(self, s=None):
         """Closing Jarvis."""
         self.close()
@@ -657,56 +668,3 @@ class CmdInterpreter(Cmd):
         """Prints help about weather command."""
         print_say(
             "Get information about today's weather in your current location.", self)
-
-    def do_how_are_you(self, s):
-        """Jarvis will inform you about his status."""
-        print_say("I am fine, How about you?", self, Fore.BLUE)
-
-    def help_how_are_you(self, s):
-        """Print info about how_are_you command"""
-        print_say("Jarvis will inform you about his status.", self)
-
-    def do_tell(self, s):
-        """Tell a joke about Chuck Norris"""
-        chuck.main(self)
-
-    def help_tell(self):
-        """Print info about tell command"""
-        print_say("Tell a joke about Chuck Norris", self)
-
-    def do_chuck(self, s):
-        """Tell a joke about Chuck Norris"""
-        chuck.main(self)
-
-    def help_chuck(self):
-        """Print info about Chuck command"""
-        print_say("Tell a joke about Chuck Norris", self)
-
-    def do_umbrella(self, s):
-        """If you're leaving your place, Jarvis will inform you if you might need an umbrella or not"""
-        s = 'umbrella'
-        try:
-            weather_pinpoint.main(MEMORY, self, s)
-        except ConnectionError:
-            print(CONNECTION_ERROR_MSG)
-
-    def help_umbrella(self):
-        """Print info about umbrella command."""
-        print_say(
-            "If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self,
-            Fore.BLUE)
-
-    def do_clear(self, s=None):
-        """Clear terminal screen. """
-        clear_scr()
-
-    def do_fb_login(self, s=None):
-        """Jarvis will login into your facebook account either by prompting id-password or by using previously saved"""
-        try:
-            fb_login(self)
-        except ConnectionError:
-            print(CONNECTION_ERROR_MSG)
-
-    def do_file_organise(self, s=None):
-        """Jarvis will organise the given folder and group the files"""
-        file_manage(self)

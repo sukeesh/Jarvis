@@ -9,9 +9,9 @@ def source_path(dir_name):
         if dir_name == root.split('/')[-1]:
             all_paths.append(root)
 
-    for i in range(len(all_paths)):
+    for i, path_info in enumerate(all_paths):
         print()
-        print("{}. {}".format(i + 1, all_paths[i]))
+        print("{}. {}".format(i + 1, path_info))
 
     if len(all_paths) == 0:
         print(Fore.LIGHTRED_EX + 'No directory found')
