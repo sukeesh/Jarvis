@@ -5,9 +5,9 @@ import os
 
 def source_path(dir_name):
     all_paths = []
-    for root, dirs, files in os.walk("/home"):
-        if dir_name == root.split('/')[-1]:
-            all_paths.append(root)
+    for root in os.walk("/home"):
+        if dir_name == root[0].split('/')[-1]:
+            all_paths.append(root[0])
 
     for i, path_info in enumerate(all_paths):
         print()
