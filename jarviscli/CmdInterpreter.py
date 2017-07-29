@@ -82,7 +82,6 @@ class CmdInterpreter(Cmd):
                         "say",
                         {"screen": ("off",)},
                         "shutdown",
-                        
                         "todo",
                         {"tell": ("joke",)},
                         "umbrella",
