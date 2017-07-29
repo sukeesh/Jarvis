@@ -20,12 +20,8 @@ from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancel_shutdown, reboot_system
 from packages.systemOptions import turn_off_screen, update_system
 from packages.news import News
-from packages.clear import clear_scr
-<< << << < HEAD
+from packages.clear import clear_scrg
 from packages.fb import fb_login
-== == == =
->> >> >> > 9196
-fd411fb6fc332771d9da23aa3df74a6fac48
 
 MEMORY = Memory()
 
