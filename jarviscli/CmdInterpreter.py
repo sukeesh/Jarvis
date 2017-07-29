@@ -22,6 +22,7 @@ from packages.systemOptions import turn_off_screen, update_system
 from packages.news import News
 from packages.clear import clear_scr
 from packages.fb import fb_login
+from packages.file_organise import file_manage
 
 MEMORY = Memory()
 
@@ -63,6 +64,7 @@ class CmdInterpreter(Cmd):
                         "evaluate",
                         "exit",
                         "fb_login",
+                        "file_organise",
                         "goodbye",
                         {"hotspot": ("start", "stop")},
                         "how_are_you",
@@ -704,3 +706,7 @@ class CmdInterpreter(Cmd):
             fb_login(self)
         except ConnectionError:
             print(CONNECTION_ERROR_MSG)
+
+    def do_file_organise(self, s=None):
+        """Jarvis will organise the given folder and group the files"""
+        file_manage(self)
