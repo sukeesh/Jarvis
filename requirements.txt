@@ -24,6 +24,4 @@ notify2
 pync==1.6.1
 <<<<<<< HEAD
 selenium==3.4.3
-=======
 IMDbPY
->>>>>>> 9196fd411fb6fc332771d9da23aa3df74a6fac48
