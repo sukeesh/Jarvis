@@ -49,20 +49,21 @@ class CmdInterpreter(Cmd):
 
         self.actions = ("ask",
                         "calculate",
-                        "chat",
+                        "cancel",
                         {"check": ("ram", "weather", "time", "forecast")},
                         "chuck",
-                        "clear_scr",
+                        "clear",
+                        "clock",
                         {"decrease": ("volume",)},
                         "directions",
                         {"disable": ("sound",)},
+                        {"display": ("pics",)},
                         {"enable": ("sound",)},
-                        "error",
                         "evaluate",
                         "exit",
                         "goodbye",
-                        "help",
                         {"hotspot": ("start", "stop")},
+                        "how_are_you",
                         {"increase": ("volume",)},
                         "match",
                         "movies",
@@ -70,18 +71,18 @@ class CmdInterpreter(Cmd):
                         "near",
                         "news",
                         {"open": ("camera",)},
+                        "os",
+                        "pinpoint",
                         "play",
                         "plot",
-                        "pinpoint",
-                        "os",
                         "q",
                         "quit",
+                        "reboot",
                         "remind",
                         "say",
                         {"screen": ("off",)},
-                        {"display": ("pics",)},
                         "shutdown",
-                        "reboot",
+                        
                         "todo",
                         {"tell": ("joke",)},
                         "umbrella",
@@ -121,6 +122,39 @@ class CmdInterpreter(Cmd):
         """Closes Jarvis on SIGINT signal. (Ctrl-C)"""
         self.close()
 
+    def do_ask(self, s):
+        """Start chating with Jarvis"""
+        chat.main(self)
+
+    def help_ask(self):
+        """Prints help about ask command."""
+        print_say("Start chating with Jarvis", self)
+
+    def do_calculate(self, s):
+        """Jarvis will get your calculations done!"""
+        tempt = s.replace(" ", "")
+        if len(tempt) > 1:
+            evaluator.calc(tempt, self)
+        else:
+            print_say("Error: Not in correct format", self, Fore.RED)
+
+    def help_calculate(self):
+        """Print help about calculate command."""
+        print_say("Jarvis will get your calculations done!", self)
+        print_say("-- Example:", self)
+        print_say("\tcalculate 3 + 5", self)
+
+    def do_cancel(self, s):
+        """Cancel an active shutdown."""
+        # TODO en el precmd creo que puedo hacerlo y asi no me hace falta para todos
+        if "shutdown" in s:
+            cancel_shutdown()
+
+    def help_cancel(self):
+        """Prints help about cancel command."""
+        print_say("shutdown: Cancel an active shutdown.", self)
+        # add here more prints
+
     def do_check(self, s):
         """Checks your system's RAM stats."""
         # if s == "ram":
@@ -157,39 +191,6 @@ class CmdInterpreter(Cmd):
     def complete_check(self, text, line, begidx, endidx):
         """Completions for check command"""
         return self.get_completions("check", text)
-
-    def do_ask(self, s):
-        """Start chating with Jarvis"""
-        chat.main(self)
-
-    def help_ask(self):
-        """Prints help about ask command."""
-        print_say("Start chating with Jarvis", self)
-
-    def do_cancel(self, s):
-        """Cancel an active shutdown."""
-        # TODO en el precmd creo que puedo hacerlo y asi no me hace falta para todos
-        if "shutdown" in s:
-            cancel_shutdown()
-
-    def do_calculate(self, s):
-        """Jarvis will get your calculations done!"""
-        tempt = s.replace(" ", "")
-        if len(tempt) > 1:
-            evaluator.calc(tempt, self)
-        else:
-            print_say("Error: Not in correct format", self, Fore.RED)
-
-    def help_calculate(self):
-        """Print help about calculate command."""
-        print_say("Jarvis will get your calculations done!", self)
-        print_say("-- Example:", self)
-        print_say("\tcalculate 3 + 5", self)
-
-    def help_cancel(self):
-        """Prints help about cancel command."""
-        print_say("shutdown: Cancel an active shutdown.", self)
-        # add here more prints
 
     def do_chuck(self, s):
         """Tell a joke about Chuck Norris"""
@@ -579,6 +580,14 @@ class CmdInterpreter(Cmd):
     def help_shutdown(self):
         """Print help about shutdown command."""
         print_say("Shutdown the system.", self)
+
+    def do_tell(self, s):
+        """Tell a joke about Chuck Norris"""
+        chuck.main(self)
+
+    def help_tell(self):
+        """Print info about tell command"""
+        print_say("Tell a joke about Chuck Norris", self)
 
     def do_todo(self, data):
         """Create your personal TODO list!"""
