@@ -10,11 +10,10 @@ class lyrics(object):
         self.artist = None
         self.album = None
 
-    """
-    info[0] = song
-    info[1] = artist
-    info[2] = either options or album, depending on how i extend the functionality
-    """
+
+    #info[0] = song
+    #info[1] = artist
+    #info[2] = either options or album, depending on how i extend the functionality
     def find(self, s):
         info = self.parse(s)
         #TODO: implement find album/song functions
@@ -37,7 +36,7 @@ class lyrics(object):
         else:
             return "Song or Singer does not exist or the API does not have lyrics"
 
-
+    @classmethod
     def parse(self, s):
         #separate song/artist/album by a -
         information = s.split('-')

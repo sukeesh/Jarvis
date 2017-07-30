@@ -3,15 +3,15 @@
 All credit for this code goes to https://github.com/geekpradd
 I only fixed some of the issues I was having with some requests, but since he does not mantain his repository anymore and forking it just to use it for this project was too much work I just copied and fix the methods used in PyLyrics
 """
-import sys, codecs, json
 import requests
-from bs4 import BeautifulSoup, Comment, NavigableString
+from bs4 import BeautifulSoup, Comment
 
 
 class py_lyrics(object):
     def __init__(self):
         pass
 
+    @classmethod
     def get_track(self, album):
         url = "http://lyrics.wikia.com/api.php?action=lyrics&artist={0}&fmt=xml".format(album.artist())
         soup = BeautifulSoup(requests.get(url).text,"lxml")
@@ -23,6 +23,7 @@ class py_lyrics(object):
         songs =[Track(song.text,album,album.artist()) for song in currentAlbum.findNext('songs').findAll('item')]
         return songs
 
+    @classmethod
     def get_albums(self, singer):
         singer = singer.replace(' ', '_')
         url = 'http://lyrics.wikia.com/{0}'.format(singer)
@@ -30,17 +31,13 @@ class py_lyrics(object):
         spans = s.findAll('span', {'class': 'mw-headline'})
         albums = []
         for tag in spans:
-            try:
-                a = tag.findAll('a')[0]
-                albums.append(Album(a.text, 'http://lyrics.wikia.com' + a['href'], singer))
-            except:
-                pass
+            a = tag.findAll('a')[0]
+            albums.append(Album(a.text, 'http://lyrics.wikia.com' + a['href'], singer))
         if not albums:
-            #maybe change this to, couldn't find artist
-            raise ValueError("Unknown Artist Name given")
             return None
         return albums
 
+    @classmethod
     def get_lyric(self, singer, song):
         #Replace spaces with _
         singer = singer.replace(' ', '_')
@@ -56,7 +53,6 @@ class py_lyrics(object):
         [s.extract() for s in lyrics('script')]
         #Remove comments
         comments = lyrics.findAll(text = lambda text:isinstance(text, Comment))
-        [comment.extract() for comment in comments]
         #Remove unecessary tags
         for tag in ['div','i','b','a']:
             for match in lyrics.findAll(tag):

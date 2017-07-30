@@ -1,6 +1,4 @@
 import unittest
-import os
-from mock import call, patch
 from packages.lyrics import lyrics
 
 #TODO: add tests for PyLyricsClone
