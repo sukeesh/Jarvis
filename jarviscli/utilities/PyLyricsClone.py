@@ -22,7 +22,7 @@ class py_lyrics(object):
                 currentAlbum = al
                 break
         songs = [Track(song.text,album,album.artist())
-                for song in currentAlbum.findNext('songs').findAll('item')]
+                 for song in currentAlbum.findNext('songs').findAll('item')]
         return songs
 
     @classmethod
@@ -49,7 +49,7 @@ class py_lyrics(object):
         req = requests.get(url)
         s = BeautifulSoup(req.text, "lxml")
         # Get main lyrics holder
-        lyrics = s.find("div", {'class':'lyricbox'})
+        lyrics = s.find("div", {'class': 'lyricbox'})
         if lyrics is None:
             return None
         # Remove Scripts
