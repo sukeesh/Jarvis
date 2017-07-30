@@ -21,7 +21,6 @@ class Lyrics_Test(unittest.TestCase):
 
     def test_lyrics_not_found_given_wrong_parameter(self):
         self.assertEqual(self.module.find(self.wrong_info), "Song or Singer does not exist or the API does not have lyrics")
-        self.assertIsNone(self.module.find(self.wrong_info))
 
     def test_split_works(self):
         self.assertEqual(self.module.parse(self.complete_info), ["everybody dies", "ayreon"])
