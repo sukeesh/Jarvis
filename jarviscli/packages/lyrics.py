@@ -3,13 +3,13 @@ from utilities.PyLyricsClone import py_lyrics
 
 # TODO: handle errors and instructions better
 
+
 class lyrics(object):
     def __init__(self):
         self.lyrics = py_lyrics()
         self.song = None
         self.artist = None
         self.album = None
-
 
     # info[0] = song
     # info[1] = artist

@@ -2,6 +2,8 @@ import unittest
 from packages.lyrics import lyrics
 
 # TODO: add tests for PyLyricsClone
+
+
 class Lyrics_Test(unittest.TestCase):
 
     def setUp(self):
@@ -16,7 +18,7 @@ class Lyrics_Test(unittest.TestCase):
 
     def test_lyrics_not_found_given_incomplete_parameter(self):
         self.assertEqual(self.module.find(self.song_name),
-            "you forgot to add either song name or artist name")
+                        "you forgot to add either song name or artist name")
 
     def test_lyrics_not_found_given_wrong_parameter(self):
         self.assertEqual(self.module.find(

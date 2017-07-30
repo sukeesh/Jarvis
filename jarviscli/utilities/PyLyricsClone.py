@@ -15,14 +15,14 @@ class py_lyrics(object):
     def get_track(self, album):
         url = "http://lyrics.wikia.com/api.php?action=lyrics&artist={0}&fmt=xml".format(
             album.artist())
-        soup = BeautifulSoup(requests.get(url).text,"lxml")
+        soup = BeautifulSoup(requests.get(url).text, "lxml")
         currentAlbum = None
         for al in soup.find_all('album'):
             if al.text.lower().strip() == album.name.strip().lower():
                 currentAlbum = al
                 break
         songs = [Track(song.text,album,album.artist())
-            for song in currentAlbum.findNext('songs').findAll('item')]
+                for song in currentAlbum.findNext('songs').findAll('item')]
         return songs
 
     @classmethod
@@ -49,15 +49,15 @@ class py_lyrics(object):
         req = requests.get(url)
         s = BeautifulSoup(req.text, "lxml")
         # Get main lyrics holder
-        lyrics = s.find("div",{'class':'lyricbox'})
+        lyrics = s.find("div", {'class':'lyricbox'})
         if lyrics is None:
             return None
         # Remove Scripts
         [s.extract() for s in lyrics('script')]
         # Remove comments
-        comments = lyrics.findAll(text = lambda text:isinstance(text, Comment))
+        comments = lyrics.findAll(text=lambda text: isinstance(text, Comment))
         # Remove unecessary tags
-        for tag in ['div','i','b','a']:
+        for tag in ['div', 'i', 'b', 'a']:
             for match in lyrics.findAll(tag):
                 match.replaceWithChildren()
 
