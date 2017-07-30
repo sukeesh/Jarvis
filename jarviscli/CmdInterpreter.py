@@ -99,7 +99,6 @@ class CmdInterpreter(Cmd):
 
         self.speech = voice.Voice()
 
-
     def help_lyrics(self):
         """explains how lyrics work"""
         print_say("finds lyrics\n", self)
@@ -107,10 +106,10 @@ class CmdInterpreter(Cmd):
         print_say("song and artist are separated by a - \n", self)
 
     def do_lyrics(self, s):
-        #TODO: maybe add option to download lyrics not just print them there
+        # TODO: maybe add option to download lyrics not just print them there
         lyr = lyrics()
         response = lyr.find(s)
-        print_say(response,self)
+        print_say(response, self)
 
     def close(self):
         """Closing Jarvis."""

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from utilities.PyLyricsClone import py_lyrics
 
-#TODO: handle errors and instructions better
+# TODO: handle errors and instructions better
 
 class lyrics(object):
     def __init__(self):
@@ -11,13 +11,13 @@ class lyrics(object):
         self.album = None
 
 
-    #info[0] = song
-    #info[1] = artist
-    #info[2] = either options or album, depending on how i extend the functionality
+    # info[0] = song
+    # info[1] = artist
+    # info[2] = either options or album, depending on how i extend the functionality
     def find(self, s):
         info = self.parse(s)
-        #TODO: implement find album/song functions
-        #TODO: implement actual searches in case of not knowing the correct full name of song or artist
+        # TODO: implement find album/song functions
+        # TODO: implement actual searches in case of not knowing the correct full name of song or artist
         if info:
             self.song = info[0]
             info.pop(0)
@@ -28,7 +28,7 @@ class lyrics(object):
             self.album = info[0]
             info.pop(0)
         if not self.song or not self.artist:
-            #error if artist or song don't exist
+            # error if artist or song don't exist
             return "you forgot to add either song name or artist name"
         response = self.lyrics.get_lyric(self.artist, self.song)
         if response:
@@ -38,6 +38,6 @@ class lyrics(object):
 
     @classmethod
     def parse(self, s):
-        #separate song/artist/album by a -
+        # separate song/artist/album by a -
         information = s.split('-')
         return information
