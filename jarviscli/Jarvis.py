@@ -122,7 +122,7 @@ class Jarvis(CmdInterpreter, object):
                 # For the 'near' keyword, the words before 'near' are also needed
                 elif word == "near":
                     initial_words = words[:words.index('near')]
-                    output = word + " " +\
+                    output = word + " " + \
                         " ".join(initial_words + ["|"] + words_remaining)
                 elif word == action:  # command name exists
                     action_found = True
@@ -145,8 +145,8 @@ class Jarvis(CmdInterpreter, object):
                     if argument == value:
                         output += " " + argument
                         output += " " + " ".join(command_arguments)
-            # make Jarvis complain if none of the words_remaining are part
-            # of the word values (as in 'enable cat' or 'check whatever you fancy')
+                        # make Jarvis complain if none of the words_remaining are part
+                        # of the word values (as in 'enable cat' or 'check whatever you fancy')
         if output == word:
             self.default(output)
         return output

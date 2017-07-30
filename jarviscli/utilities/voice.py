@@ -1,6 +1,5 @@
 from utilities.GeneralUtilities import IS_MACOS
 
-
 if IS_MACOS:
     from os import system
 else:

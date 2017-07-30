@@ -5,7 +5,6 @@ from packages import music
 
 
 class MusicTest(unittest.TestCase):
-
     def setUp(self):
         self.song_name = 'torero chayanne'
 

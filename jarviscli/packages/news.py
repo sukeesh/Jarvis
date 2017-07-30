@@ -31,6 +31,7 @@ class News:
         self.url = "https://newsapi.org/v1/articles?source=google-news&sortBy=top" \
                    "&apiKey=7488ba8ff8dc43459d36f06e7141c9e5"
         self.m = Memory()
+
     '''
         This is the defualt news function. It checks to see if the
         user has a preference and and goes through all choices.
