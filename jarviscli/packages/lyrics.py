@@ -11,12 +11,15 @@ class lyrics(object):
         self.artist = None
         self.album = None
 
+    """
+    info[0] = song
+    info[1] = artist
+    info[2] = either options or album, depending on how i extend the functionality
+    """
     def find(self, s):
         info = self.parse(s)
-        #info 0 = song
-        #info 1 = artist
-        #info 2 = album
         #TODO: implement find album/song functions
+        #TODO: implement actual searches in case of not knowing the correct full name of song or artist
         if info:
             self.song = info[0]
             info.pop(0)
@@ -31,7 +34,7 @@ class lyrics(object):
             return "you forgot to add either song name or artist name"
         response = self.lyrics.get_lyric(self.artist, self.song)
         if response:
-            return self.lyrics.get_lyric(self.artist, self.song)
+            return response
         else:
             return "Song or Singer does not exist or the API does not have lyrics"
 
