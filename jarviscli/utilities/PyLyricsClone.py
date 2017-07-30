@@ -3,10 +3,9 @@
 All credit for this code goes to https://github.com/geekpradd
 I only fixed some of the issues I was having with some requests, but since he does not mantain his repository anymore and forking it just to use it for this project was too much work I just copied and fix the methods used in PyLyrics
 """
-from PyLyrics import *
+import sys, codecs, json
 import requests
 from bs4 import BeautifulSoup, Comment, NavigableString
-import sys, codecs, json
 
 
 class py_lyrics(object):
