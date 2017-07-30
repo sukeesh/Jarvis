@@ -11,6 +11,8 @@ from utilities import voice
 from utilities.GeneralUtilities import (
     IS_MACOS, MACOS, print_say, unsupported
 )
+
+from packages.lyrics import lyrics
 from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminder_handler, reminder_quit
@@ -65,6 +67,7 @@ class CmdInterpreter(Cmd):
                         {"hotspot": ("start", "stop")},
                         "how_are_you",
                         {"increase": ("volume",)},
+                        "lyrics",
                         "match",
                         "movies",
                         "music",
@@ -95,6 +98,18 @@ class CmdInterpreter(Cmd):
                                 }
 
         self.speech = voice.Voice()
+
+    def help_lyrics(self):
+        """explains how lyrics work"""
+        print_say("finds lyrics\n", self)
+        print_say("the format is song,artist\n", self)
+        print_say("song and artist are separated by a - \n", self)
+
+    def do_lyrics(self, s):
+        # TODO: maybe add option to download lyrics not just print them there
+        lyr = lyrics()
+        response = lyr.find(s)
+        print_say(response, self)
 
     def close(self):
         """Closing Jarvis."""
