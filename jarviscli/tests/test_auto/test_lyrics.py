@@ -17,9 +17,10 @@ class Lyrics_Test(unittest.TestCase):
         self.assertIsNotNone(self.module.find(self.complete_info))
 
     def test_lyrics_not_found_given_incomplete_parameter(self):
-        self.assertEqual(self.module.find(self.song_name), ["you forgot to add either song name or artist name"])
+        self.assertEqual(self.module.find(self.song_name), "you forgot to add either song name or artist name")
 
     def test_lyrics_not_found_given_wrong_parameter(self):
+        self.assertEqual(self.module.find(self.wrong_info), "Song or Singer does not exist or the API does not have lyrics")
         self.assertIsNone(self.module.find(self.wrong_info))
 
     def test_split_works(self):
