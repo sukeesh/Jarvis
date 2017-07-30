@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from PyLyrics import *
 from utilities.PyLyricsClone import py_lyrics
 
 #TODO: handle errors and instructions better
