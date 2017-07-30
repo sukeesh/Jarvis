@@ -1,5 +1,18 @@
 #!/bin/bash
 
+jarvispath=$PWD
+touch jarvis
+chmod +rwx jarvis
+exec 3<> jarvis
+
+    # Let's print some text to fd 3
+    echo "#!/bin/bash" >&3
+    echo "python $jarvispath/jarviscli/" >&3
+
+# Close fd 3
+exec 3>&-
+sudo mv jarvis /usr/local/bin/jarvis
+
 UNAME=$(uname -s)
 if [[ "$UNAME" == "Darwin" ]]; then
   brew install ffmpeg
