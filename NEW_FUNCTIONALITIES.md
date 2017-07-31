@@ -27,3 +27,6 @@ Jarvis will tell you if an umbrella will be needed for the day or not.
 News command now works properly. You can select to see news from (BBC, BUZZFEED, Google, Reddit or TechCrunch). You can also select a default source.
 **To see the news just type**: news or a sentence with the word news.
 
+### FB
+Jarvis will log into your facebook account by asking id and password from user or use saved passwords (if saved previously).
+**To log in just type**: fb_login and follow the directions given.
