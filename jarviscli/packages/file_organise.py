@@ -101,9 +101,3 @@ def file_manage(self):
     new_dir_path, new_dir, extension = destination_path(dir_path)
     organise(new_dir_path, new_dir, dir_path, extension)
     print_after(dir_path)
-
-
-
-
-
-
