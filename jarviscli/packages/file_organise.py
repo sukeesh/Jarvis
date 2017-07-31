@@ -36,7 +36,7 @@ def print_before(path):
     print(Fore.LIGHTBLUE_EX + "Folders before cleaning\n" + Fore.RESET)
 
     for files in os.listdir(path):
-        print(files)
+        print(files, end='\t')
     print()
 
 
