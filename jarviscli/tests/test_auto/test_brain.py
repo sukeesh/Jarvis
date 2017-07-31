@@ -4,9 +4,7 @@ from packages.aiml.brain import Brain
 
 
 class BrainTest(unittest.TestCase):
-
     def test_memory(self):
-
         b = Brain()
 
         # create all new brain file

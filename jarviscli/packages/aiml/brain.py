@@ -7,7 +7,6 @@ module_path = os.path.dirname(__file__)
 
 
 class Brain:
-
     def __init__(self):
         self.kernel = aiml.Kernel()
         self.kernel.verbose(False)  # remove system output

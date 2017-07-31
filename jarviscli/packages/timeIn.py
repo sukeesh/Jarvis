@@ -13,9 +13,9 @@ def main(self, s):
 
     # Gets current date and time using TimeZoneDB API
     send_url = (
-            "http://api.timezonedb.com/v2/get-time-zone?"
-            "key=BFA6XBCZ8AL5&format=json"
-            "&by=position&lat={:.6f}&lng={:.6f}".format(*loc)
+        "http://api.timezonedb.com/v2/get-time-zone?"
+        "key=BFA6XBCZ8AL5&format=json"
+        "&by=position&lat={:.6f}&lng={:.6f}".format(*loc)
     )
     r = requests.get(send_url)
     j = json.loads(r.text)
@@ -31,7 +31,7 @@ def getLocation(s):
                 )
     r = requests.get(send_url)
     j = json.loads(r.text)
-    lat = j['results'][0]['geometry']['location']['lat']    # Latitude
-    lng = j['results'][0]['geometry']['location']['lng']    # Longitude
+    lat = j['results'][0]['geometry']['location']['lat']  # Latitude
+    lng = j['results'][0]['geometry']['location']['lng']  # Longitude
     # Returns both latitude and longitude as a tupple
     return lat, lng

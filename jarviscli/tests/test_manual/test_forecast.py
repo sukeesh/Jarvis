@@ -11,41 +11,40 @@ import json
 
 class MyResponse(requests.models.Response):
     text = json.dumps({
-            "city": {
-                "country": "GB",
-                "name": "London"
-            },
-            "list": [
-                {
-                    "temp": {
-                        "min": 11.00,
-                        "max": 21.00
-                    },
-                    "weather": [
-                        {
-                            "main": "Clear"
-                        }
-                    ]
+        "city": {
+            "country": "GB",
+            "name": "London"
+        },
+        "list": [
+            {
+                "temp": {
+                    "min": 11.00,
+                    "max": 21.00
                 },
-                {
-                    "temp": {
-                        "min": 17.00,
-                        "max": 27.00
-                    },
-                    "weather": [
-                        {
-                            "main": "Rain"
-                        }
-                    ]
-                }
-            ],
-            "cnt": 2
-        })
+                "weather": [
+                    {
+                        "main": "Clear"
+                    }
+                ]
+            },
+            {
+                "temp": {
+                    "min": 17.00,
+                    "max": 27.00
+                },
+                "weather": [
+                    {
+                        "main": "Rain"
+                    }
+                ]
+            }
+        ],
+        "cnt": 2
+    })
     status_code = 200
 
 
 class ForecastTest(unittest.TestCase):
-
     def setUp(self):
         self.CI_instance = CmdInterpreter('', '')
         self.current_location = mapps.get_location()

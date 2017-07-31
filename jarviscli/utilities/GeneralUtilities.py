@@ -60,5 +60,7 @@ def unsupported(platform, silent=False):
                         ) + Fore.RESET)
             else:
                 func(*args, **kwargs)
+
         return wrapped
+
     return noop_wrapper
