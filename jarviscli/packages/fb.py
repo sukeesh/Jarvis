@@ -31,8 +31,10 @@ def get_details():
 
 def fb_login(self):
     usr, pwd = get_details()
-
-    driver = webdriver.Chrome('/usr/bin/chromedriver')
+    try:
+        driver = webdriver.Chrome('/usr/bin/chromedriver')
+    except:
+        driver = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
     driver.get('https://www.facebook.com/')
 
     user_id = driver.find_element_by_id('email')

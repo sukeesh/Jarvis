@@ -64,7 +64,7 @@ class CmdInterpreter(Cmd):
                         {"enable": ("sound",)},
                         "evaluate",
                         "exit",
-                        "fb_login",
+                        "fb",
                         "goodbye",
                         {"hotspot": ("start", "stop")},
                         "how_are_you",
@@ -327,7 +327,7 @@ class CmdInterpreter(Cmd):
         """Closing Jarvis."""
         print_say("Close Jarvis", self)
 
-    def do_fb_login(self, s=None):
+    def do_fb(self, s=None):
         """Jarvis will login into your facebook account either by prompting id-password or by using previously saved"""
         try:
             fb_login(self)
