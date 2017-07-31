@@ -10,13 +10,13 @@ Jarvis is a simple personal assistant for Linux and MacOS which works on termina
 
 ## Getting Started
 
-In order to start Jarvis just clone the repository and run the command: `python jarviscli`.
+In order to start Jarvis just clone the repository and run `./setup.sh`
+
+Run **Jarvis** from anywhere by command `jarvis`
+
 
 You can start by typing `help` within the Jarvis command line to check what Jarvis can do for you.
 
-### Prerequisites
-
-Use the command `./setup.sh` to install the requirements.
 
 ## Youtube Video
 
