@@ -14,6 +14,7 @@ pyparsing==2.2.0
 PySocks==1.6.6
 cryptography==1.8.1
 requests[security]==2.13.0
+selenium>=2.33
 six==1.10.0
 SpeechRecognition==3.6.3
 pyttsx == 1.1
