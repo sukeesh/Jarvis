@@ -37,10 +37,8 @@ if [[ "$OS" == "Fedora" ]]; then
   sudo chmod +x /usr/bin/chromedriver
   sudo chmod 755 /usr/bin/chromedriver
 elif [[ "$OS" == "Ubuntu" ]] || [[ "$OS" == "LinuxMint" ]]; then
-  sudo apt-get install ffmpeg
-  sudo apt-get install python-imdbpy
-  sudo apt-get install python-notify2
-  sudo apt-get install python-dbus
+  sudo apt-get install ffmpeg python-imdbpy python-notify2
+  sudo apt-get install python-dbus libssl-dev libffi-dev
   sudo -H pip install -r requirements.txt
   sudo apt-get install chromium-chromedriver
 elif [[ "$OS" == "Kali" ]]; then
