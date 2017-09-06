@@ -25,6 +25,7 @@ from packages.news import News
 from packages.clear import clear_scr
 from packages.file_organise import file_manage
 from packages.fb import fb_login
+from packages.twitter import twitter_login, twitter_tweet, twitter_end
 
 MEMORY = Memory()
 
@@ -91,6 +92,7 @@ class CmdInterpreter(Cmd):
                         "shutdown",
                         "todo",
                         {"tell": ("joke",)},
+                        {"twitter": ("login", "tweet")},
                         "umbrella",
                         {"update": ("location", "system")},
                         "weather",
@@ -632,6 +634,21 @@ class CmdInterpreter(Cmd):
         print("\tcomplete <index> [<completion>]")
         print("\tpriority <index> [<level>]")
         print("\tlist")
+
+    def do_twitter(self, s):
+        """Jarvis will login into your facebook account either by prompting id-password or by using previously saved"""
+        if "login" in s:
+            try:
+                driver = twitter_login(self)
+                twitter_end(self, driver)
+            except ConnectionError:
+                print(CONNECTION_ERROR_MSG)
+        elif "tweet" in s:
+            try:
+                driver = twitter_tweet(self)
+                twitter_end(self, driver)
+            except ConnectionError:
+                print(CONNECTION_ERROR_MSG)
 
     def do_umbrella(self, s):
         """If you're leaving your place, Jarvis will inform you if you might need an umbrella or not"""
