@@ -94,7 +94,6 @@ class CmdInterpreter(Cmd):
                         "umbrella",
                         {"update": ("location", "system")},
                         "weather",
-                        "4",
                         )
 
         self.fixed_responses = {"what time is it": "clock",

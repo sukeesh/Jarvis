@@ -141,7 +141,6 @@ class Jarvis(CmdInterpreter, object):
     def _generate_output_if_dict(self, action, word, words_remaining):
         """Generates the correct output if action is a dict"""
         output = word
-        print("generate")
         # check if first char is number
         if words_remaining[0].isdigit():
             print_say("here", self)
@@ -157,7 +156,6 @@ class Jarvis(CmdInterpreter, object):
             # make Jarvis complain if none of the words_remaining are part
             # of the word values (as in 'enable cat' or 'check whatever you fancy')
         if output == word:
-            print("here again?")
             self.default(output)
         return output
 
@@ -170,6 +168,5 @@ class Jarvis(CmdInterpreter, object):
         or "goodbye command")
         :return: Nothing to return.
         """
-        print("executor")
         self.speak()
         self.cmdloop(self.first_reaction_text)
