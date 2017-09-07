@@ -94,6 +94,7 @@ class CmdInterpreter(Cmd):
                         "umbrella",
                         {"update": ("location", "system")},
                         "weather",
+                        "4",
                         )
 
         self.fixed_responses = {"what time is it": "clock",
@@ -683,3 +684,7 @@ class CmdInterpreter(Cmd):
         """Prints help about weather command."""
         print_say(
             "Get information about today's weather in your current location.", self)
+
+    def do_4(self, s):
+        print_say("hello from do 4", self)
+        print_say(s, self)

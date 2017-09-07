@@ -54,6 +54,12 @@ class Jarvis(CmdInterpreter, object):
     def precmd(self, line):
         """Hook that executes before every command."""
         words = line.split()
+
+        # append calculate keyword to front of leading char digit in line
+        if len(words) > 0 and (words[0].isdigit() or line[0] == "-"):
+            line = "calculate " + line
+            words = line.split()
+
         if len(words) == 0:
             line = "None"
         elif len(words) == 1:
@@ -91,6 +97,7 @@ class Jarvis(CmdInterpreter, object):
             data = data.replace("!", "")
             data = data.replace(".", "")
             data = data.replace(",", "")
+
         # Check if Jarvis has a fixed response to this data
         if data in self.fixed_responses:
             output = self.fixed_responses[data]  # change return to output =
@@ -104,7 +111,6 @@ class Jarvis(CmdInterpreter, object):
         :return: returns the action"""
         output = "None"
         action_found = False
-
         words = data.split()
         words_remaining = data.split()  # this will help us to stop the iteration
 
@@ -135,7 +141,10 @@ class Jarvis(CmdInterpreter, object):
     def _generate_output_if_dict(self, action, word, words_remaining):
         """Generates the correct output if action is a dict"""
         output = word
-
+        print("generate")
+        # check if first char is number
+        if words_remaining[0].isdigit():
+            print_say("here", self)
         # command is a dictionary, let's check if remaining words are one of it's completions
         if len(words_remaining) != 0:
             command_arguments = list(words_remaining)  # make a copy
@@ -148,6 +157,7 @@ class Jarvis(CmdInterpreter, object):
             # make Jarvis complain if none of the words_remaining are part
             # of the word values (as in 'enable cat' or 'check whatever you fancy')
         if output == word:
+            print("here again?")
             self.default(output)
         return output
 
@@ -160,5 +170,6 @@ class Jarvis(CmdInterpreter, object):
         or "goodbye command")
         :return: Nothing to return.
         """
+        print("executor")
         self.speak()
         self.cmdloop(self.first_reaction_text)
