@@ -684,7 +684,3 @@ class CmdInterpreter(Cmd):
         """Prints help about weather command."""
         print_say(
             "Get information about today's weather in your current location.", self)
-
-    def do_4(self, s):
-        print_say("hello from do 4", self)
-        print_say(s, self)
