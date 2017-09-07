@@ -141,9 +141,6 @@ class Jarvis(CmdInterpreter, object):
     def _generate_output_if_dict(self, action, word, words_remaining):
         """Generates the correct output if action is a dict"""
         output = word
-        # check if first char is number
-        if words_remaining[0].isdigit():
-            print_say("here", self)
         # command is a dictionary, let's check if remaining words are one of it's completions
         if len(words_remaining) != 0:
             command_arguments = list(words_remaining)  # make a copy
