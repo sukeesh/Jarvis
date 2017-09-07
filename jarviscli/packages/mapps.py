@@ -55,10 +55,19 @@ def weather(city=None):
         unit = ' ºC in '
     r = requests.get(send_url)
     j = json.loads(r.text)
-    temperature = j['main']['temp']
-    description = j['weather'][0]['main']
-    print(Fore.BLUE + "It's " + str(temperature) + unit +
-          str(city) + " (" + str(description) + ")" + Fore.RESET)
+
+    # check if the city entered is not found
+    if 'message' in j and j['message'] == 'city not found':
+        print(Fore.BLUE + "City Not Found" + Fore.RESET)
+        return False
+
+    else:
+        temperature = j['main']['temp']
+        description = j['weather'][0]['main']
+        print(Fore.BLUE + "It's " + str(temperature) + unit +
+              str(city) + " (" + str(description) + ")" + Fore.RESET)
+
+    return True
 
 
 def search_near(things, city=0):

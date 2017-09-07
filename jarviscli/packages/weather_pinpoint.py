@@ -22,13 +22,14 @@ def main(memory, self, s):
             except:
                 i = input()
             city = i
+        city_found = True
         if s == 'umbrella':
             umbrella.main(str(city))
         else:
-            mapps.weather(str(city))
-
-        memory.update_data('city', city)
-        memory.save()
+            city_found = mapps.weather(str(city))
+        if city_found:
+            memory.update_data('city', city)
+            memory.save()
     else:
         loc = str(location)
         city = mapps.get_location()['city']
