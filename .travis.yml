@@ -4,8 +4,8 @@ python:
   - "2.7"
 
 install:
-  - sudo apt-get install python3 python-dbus-dev python-dbus libdbus-1-dev libdbus-glib-1-dev
-  - pip3 install coala-bears
+  - sudo apt-get install python3 python-dbus-dev python-dbus libdbus-1-dev libdbus-glib-1-dev python3-pip
+  - sudo python3 -m pip install coala-bears
   - pip install notify2
   - pip install dbus-python
   - cd $TRAVIS_BUILD_DIR
