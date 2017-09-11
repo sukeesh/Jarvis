@@ -5,14 +5,11 @@ python:
 
 install:
   - sudo apt-get install python3 python-dbus-dev python-dbus libdbus-1-dev libdbus-glib-1-dev
-  - pip3 install coala-bears
-  - pip install notify2
   - pip install dbus-python
   - cd $TRAVIS_BUILD_DIR
   - ./setup.sh
 
 script:
-  - coala --ci
   - pip install -r requirements.txt
   - cd jarviscli/
   - python -m unittest discover
