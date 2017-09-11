@@ -37,18 +37,7 @@ You can start by typing `help` within the Jarvis command line to check what Jarv
 **Note**: one word command examples are: `say [text that Jarvis will speak]`, `weather`. Two word command examples are: `hotspot start`, `hotspot stop`, `increase volume`, `decrease volume`.
 
  ### How to run tests:
- **For PEP8**
  
- Change into Jarvis directory
- ```bash
- cd Jarvis
- ```
- Then run coala
- ```bash
- coala --ci
- ```
-**For tests**
-
  Add `__init__.py` file in jarviscli/tests/test_manual/
  
  Change into the Jarvis/jarviscli directory
