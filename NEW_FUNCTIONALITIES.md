@@ -1,3 +1,9 @@
+*11/09/2017*
+### Movie Details
+Jarvis can now get movie details for you. If you want to know plot outline, director, producer, cast,
+year, IMDb rating of a movie use `movie` command.
+**To use movie just type**: movie followed by plot if you want to know plot, rating for rating or 
+year, director, cast, or producer.
 
 *11/05/2017*
 ### TimeIn

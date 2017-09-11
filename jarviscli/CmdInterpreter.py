@@ -16,7 +16,7 @@ from packages.lyrics import lyrics
 from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminder_handler, reminder_quit
-from packages import mapps, picshow, evaluator, forecast, plot
+from packages import mapps, picshow, evaluator, forecast, movie
 from packages import chat, directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
 from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancel_shutdown, reboot_system
@@ -74,6 +74,7 @@ class CmdInterpreter(Cmd):
                         {"increase": ("volume",)},
                         "lyrics",
                         "match",
+                        {"movie": ("cast","director","plot","producer","rating","year",)},
                         "movies",
                         "music",
                         "near",
@@ -82,7 +83,6 @@ class CmdInterpreter(Cmd):
                         "os",
                         "pinpoint",
                         "play",
-                        "plot",
                         "q",
                         "quit",
                         "reboot",
@@ -104,18 +104,6 @@ class CmdInterpreter(Cmd):
                                 }
 
         self.speech = voice.Voice()
-
-    def help_lyrics(self):
-        """explains how lyrics work"""
-        print_say("finds lyrics\n", self)
-        print_say("the format is song,artist\n", self)
-        print_say("song and artist are separated by a - \n", self)
-
-    def do_lyrics(self, s):
-        # TODO: maybe add option to download lyrics not just print them there
-        lyr = lyrics()
-        response = lyr.find(s)
-        print_say(response, self)
 
     def close(self):
         """Closing Jarvis."""
@@ -395,6 +383,18 @@ class CmdInterpreter(Cmd):
         """Completions for increase command"""
         return self.get_completions("increase", text)
 
+    def help_lyrics(self):
+        """explains how lyrics work"""
+        print_say("finds lyrics\n", self)
+        print_say("the format is song,artist\n", self)
+        print_say("song and artist are separated by a - \n", self)
+
+    def do_lyrics(self, s):
+        # TODO: maybe add option to download lyrics not just print them there
+        lyr = lyrics()
+        response = lyr.find(s)
+        print_say(response, self)
+
     def do_match(self, s):
         """Matches patterns in a string by using regex."""
         try:
@@ -414,6 +414,42 @@ class CmdInterpreter(Cmd):
         """Prints help about match command"""
         print_say("Matches a string pattern in a file using regex.", self)
         print_say("Type \"match\" and you'll be prompted.", self)
+
+    def do_movie(self, s):
+        """Jarvis will get movie details for you"""
+        k = s.split(' ', 1)
+        if k[0] == "cast":
+            data = movie.cast(k[1])
+            for d in data:
+                print_say(d['name'],self)
+        elif k[0] == "director":
+            data = movie.director(k[1])
+            for d in data:
+                print_say(d['name'],self)
+        elif k[0] == "plot":
+            data = movie.plot(k[1])
+            print_say(data,self)
+        elif k[0] == "producer":
+            data = movie.producer(k[1])
+            for d in data:
+                print_say(d['name'],self)
+        elif k[0] == "rating":
+            data = movie.rating(k[1])
+            print_say(data,self)
+        elif k[0] == "year":
+            data = movie.year(k[1])
+            print_say(data,self)
+
+    def help_movie(self):
+        """Print help about movie command."""
+        print_say("Jarvis - movie command", self)
+        print_say("List of commands:", self)
+        print_say("movie cast", self)
+        print_say("movie director", self)
+        print_say("movie plot", self)
+        print_say("movie producer", self)
+        print_say("movie rating", self)
+        print_say("movie year", self)
 
     @unsupported(platform=MACOS)
     def do_movies(self, s):
@@ -527,14 +563,6 @@ class CmdInterpreter(Cmd):
         print_say("Jarvis will find you the song you want", self)
         print_say("-- Example:", self)
         print_say("\tplay eye of the tiger", self)
-
-    def do_plot(self, s="Iron Man"):
-        """Jarvis will get movie plot for you"""
-        plot.movie_plot(self, s)
-
-    def help_plot(self):
-        """Print help about plot command."""
-        print_say("Jarvis will get movie plot for you.", self)
 
     def do_q(self, s=None):
         """Closing Jarvis"""
