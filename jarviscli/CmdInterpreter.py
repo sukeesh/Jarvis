@@ -435,10 +435,10 @@ class CmdInterpreter(Cmd):
                 print_say(d['name'],self)
         elif k[0] == "rating":
             data = movie.rating(k[1])
-            print_say(data,self)
+            print_say(str(data),self)
         elif k[0] == "year":
             data = movie.year(k[1])
-            print_say(data,self)
+            print_say(str(data),self)
 
     def help_movie(self):
         """Print help about movie command."""
