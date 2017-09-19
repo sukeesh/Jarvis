@@ -30,7 +30,7 @@ if [[ "$OS" == "Fedora" ]]; then
   sudo -H pip install -r requirements.txt
   sudo dnf install python-dbus -y
   # chromedriver-install
-  wget https://chromedriver.googlecode.com/files/chromedriver_linux64_2.3.zip
+  wget https://chromedriver.storage.googleapis.com/2.32/chromedriver_linux64.zip
   unzip chromedriver_linux64_2.3.zip
   sudo cp chromedriver /usr/bin/chromedriver
   sudo chown root /usr/bin/chromedriver
