@@ -28,7 +28,7 @@ class ParserTest(unittest.TestCase):
         self.assertEqual(["check", "ram"], parsed_input[0:2])
 
     def test_say(self):
-        user_input = "Can you sAY I'm a robot"
+        user_input = "Can you say I'm a robot?"
         parsed_input = self.jarvis.parse_input(user_input).split()
         self.assertEqual(["say", "i'm", "a", "robot"], parsed_input[0:])
 
