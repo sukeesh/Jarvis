@@ -36,3 +36,11 @@ News command now works properly. You can select to see news from (BBC, BUZZFEED,
 ### FB
 Jarvis will log into your facebook account by asking id and password from user or use saved passwords (if saved previously).
 **To log in just type**: fb_login and follow the directions given.
+
+### Twitter
+Jarvis will log into your twitter account by asking id and password from user or use saved passwords (if saved previously).
+**To log in just type**: twitter login and follow the directions given.
+
+It also has the feature to tweet in two different ways, either by writing the tweet manually or by using the copied text on clipboard.
+**To tweet just type**: twitter tweet and follow the directions given.
+
