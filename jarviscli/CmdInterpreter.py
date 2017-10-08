@@ -26,7 +26,7 @@ from packages.clear import clear_scr
 from packages.file_organise import file_manage
 from packages.fb import fb_login
 from packages.twitter import twitter_login, twitter_tweet, twitter_end
-
+from packages.cricket import score
 MEMORY = Memory()
 
 CONNECTION_ERROR_MSG = "You are not connected to Internet"
@@ -59,6 +59,7 @@ class CmdInterpreter(Cmd):
                         "chuck",
                         "clear",
                         "clock",
+                        "cricket",
                         {"decrease": ("volume",)},
                         "directions",
                         {"disable": ("sound",)},
@@ -219,6 +220,13 @@ class CmdInterpreter(Cmd):
     def help_clock(self):
         """Prints help about clock command."""
         print_say("Gives information about time.", self)
+
+    def do_cricket(self, s=None):
+        """Jarvis will show current matches and their score for you"""
+        try:
+            score(self)
+        except ConnectionError:
+            print(CONNECTION_ERROR_MSG)
 
     def do_decrease(self, s):
         """Decreases you speakers' sound."""
