@@ -44,3 +44,6 @@ Jarvis will log into your twitter account by asking id and password from user or
 It also has the feature to tweet in two different ways, either by writing the tweet manually or by using the copied text on clipboard.
 **To tweet just type**: twitter tweet and follow the directions given.
 
+### Cricket Scores
+Jarvis will fetch data of ongoing cricket matches and shows list of matches, live score, full scorecard and commentary.
+**To get cricket score just type**: cricket and follow the directions given.
