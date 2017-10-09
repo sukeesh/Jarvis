@@ -16,7 +16,7 @@ from packages.lyrics import lyrics
 from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminder_handler, reminder_quit
-from packages import mapps, picshow, evaluator, forecast, movie
+from packages import mapps, picshow, evaluator, forecast, movie, wiki
 from packages import chat, directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
 from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancel_shutdown, reboot_system
@@ -96,6 +96,7 @@ class CmdInterpreter(Cmd):
                         "umbrella",
                         {"update": ("location", "system")},
                         "weather",
+                        {"wiki": ("search", "suggest", "summary", "page", "random", "donate")}
                         )
 
         self.fixed_responses = {"what time is it": "clock",
@@ -728,3 +729,24 @@ class CmdInterpreter(Cmd):
         """Prints help about weather command."""
         print_say(
             "Get information about today's weather in your current location.", self)
+
+    def do_wiki(self, s):
+        """Jarvis will get wiki details for you"""
+        k = s.split(' ', 1)
+        if k[0] == "search":
+            data = wiki.search(" ".join(k[1:]))
+            print(data)
+        elif k[0] == "suggest":
+            data = wiki.suggest(" ".join(k[1:]))
+            print(data)
+        elif k[0] == "summary":
+            data = wiki.summary(" ".join(k[1:]))
+            print(data)
+        elif k[0] == "page":
+            data = wiki.page(" ".join(k[1:]))
+            print(data)
+        elif k[0] == "random":
+            data = wiki.random()
+            print(data)
+        elif k[0] == "donate":
+            wiki.donate()
