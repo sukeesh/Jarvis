@@ -96,7 +96,7 @@ class CmdInterpreter(Cmd):
                         "umbrella",
                         {"update": ("location", "system")},
                         "weather",
-                        {"wiki": ("search", "suggest", "summary", "page", "random", "donate")}
+                        {"wiki": ("search", "summary", "content")}
                         )
 
         self.fixed_responses = {"what time is it": "clock",
@@ -735,18 +735,14 @@ class CmdInterpreter(Cmd):
         k = s.split(' ', 1)
         if k[0] == "search":
             data = wiki.search(" ".join(k[1:]))
-            print(data)
-        elif k[0] == "suggest":
-            data = wiki.suggest(" ".join(k[1:]))
-            print(data)
         elif k[0] == "summary":
             data = wiki.summary(" ".join(k[1:]))
-            print(data)
-        elif k[0] == "page":
-            data = wiki.page(" ".join(k[1:]))
-            print(data)
-        elif k[0] == "random":
-            data = wiki.random()
-            print(data)
-        elif k[0] == "donate":
-            wiki.donate()
+        elif k[0] == "content":
+            data = wiki.content(" ".join(k[1:]))
+
+        if isinstance(data, list):
+            print "\nDid you mean one of these pages?\n"
+            for d in range(len(data)):
+                print(str(d+1) + ": " + data[d])
+        else:
+            print("\n" + data)

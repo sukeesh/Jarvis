@@ -11,13 +11,6 @@ class WikiTest(unittest.TestCase):
         d = wiki.search("sldjflsfkdslfjsl")
         self.assertEqual(d, "No articles with that name, try another item.")
 
-    def test_suggest(self):
-        d = wiki.suggest("barak obama")
-        self.assertEqual(d, "barack obama")
-
-        d = wiki.suggest("Barak")
-        self.assertEqual(d, "No article with that name, try another item.")
-
     def test_summary(self):
         d = wiki.summary("Obama")
         self.assertIsInstance(d, unicode)
@@ -29,19 +22,14 @@ class WikiTest(unittest.TestCase):
         self.assertIsInstance(d, list)
         self.assertEqual(len(d), 5)
 
-    def test_page(self):
-        d = wiki.page("adfsklfdlksf")
-        self.assertEqual(d, "No page matches, try another item.")
-
-        d = wiki.page("mercury")
-        self.assertIsInstance(d, list)
-        self.assertEqual(len(d), 5)
-
-    def test_random(self):
-        d = wiki.random(1)
+    def test_content(self):
+        d = wiki.content("Obama")
         self.assertIsInstance(d, unicode)
 
-        d = wiki.random(5)
+        d = wiki.content("adfsklfdlksf")
+        self.assertEqual(d, "No page matches, try another item.")
+
+        d = wiki.content("mercury")
         self.assertIsInstance(d, list)
         self.assertEqual(len(d), 5)
 
