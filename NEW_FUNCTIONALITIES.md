@@ -2,7 +2,7 @@
 ### Movie Details
 Jarvis can now get movie details for you. If you want to know plot outline, director, producer, cast,
 year, IMDb rating of a movie use `movie` command.
-**To use movie just type**: movie followed by plot if you want to know plot, rating for rating or 
+**To use movie just type**: movie followed by plot if you want to know plot, rating for rating or
 year, director, cast, or producer.
 
 *11/05/2017*
@@ -36,3 +36,8 @@ News command now works properly. You can select to see news from (BBC, BUZZFEED,
 ### FB
 Jarvis will log into your facebook account by asking id and password from user or use saved passwords (if saved previously).
 **To log in just type**: fb_login and follow the directions given.
+
+### Wiki
+Jarvis will get information from wikipedia.
+**To use wiki just type**: wiki followed by search if you want to get pages related to the query, summary to get the summary of page, and content to get all the plain text information
+on a page.
