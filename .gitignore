@@ -10,3 +10,6 @@ env/
 *.DS_Store
 *.pyc
 .idea/
+MANIFEST.in
+setup.cfg
+setup.py
