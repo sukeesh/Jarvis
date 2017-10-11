@@ -25,4 +25,5 @@ notify2
 pync==1.6.1
 IMDbPY
 pyperclip
+pycricbuzz
 wikipedia
