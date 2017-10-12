@@ -16,7 +16,7 @@ from packages.lyrics import lyrics
 from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminder_handler, reminder_quit
-from packages import mapps, picshow, evaluator, forecast, movie
+from packages import mapps, picshow, evaluator, forecast, movie, wiki
 from packages import chat, directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
 from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancel_shutdown, reboot_system
@@ -97,6 +97,7 @@ class CmdInterpreter(Cmd):
                         "umbrella",
                         {"update": ("location", "system")},
                         "weather",
+                        {"wiki": ("search", "summary", "content")}
                         )
 
         self.fixed_responses = {"what time is it": "clock",
@@ -736,3 +737,20 @@ class CmdInterpreter(Cmd):
         """Prints help about weather command."""
         print_say(
             "Get information about today's weather in your current location.", self)
+
+    def do_wiki(self, s):
+        """Jarvis will get wiki details for you"""
+        k = s.split(' ', 1)
+        if k[0] == "search":
+            data = wiki.search(" ".join(k[1:]))
+        elif k[0] == "summary":
+            data = wiki.summary(" ".join(k[1:]))
+        elif k[0] == "content":
+            data = wiki.content(" ".join(k[1:]))
+
+        if isinstance(data, list):
+            print "\nDid you mean one of these pages?\n"
+            for d in range(len(data)):
+                print(str(d+1) + ": " + data[d])
+        else:
+            print("\n" + data)
