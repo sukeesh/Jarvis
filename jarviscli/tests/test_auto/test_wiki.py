@@ -1,6 +1,7 @@
 import unittest
 import packages.wiki as wiki
 
+
 class WikiTest(unittest.TestCase):
 
     def test_search(self):
@@ -32,6 +33,7 @@ class WikiTest(unittest.TestCase):
         d = wiki.content("mercury")
         self.assertIsInstance(d, list)
         self.assertEqual(len(d), 5)
+
 
 if __name__ == '__main__':
     unittest.main()

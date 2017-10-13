@@ -27,7 +27,7 @@ class EvaluatorTest(unittest.TestCase):
         calc("(1 pluS 9.1j)^3.14129 mINUS 2.712", self.jarvis)
         sys.stdout.seek(0)
         output = sys.stdout.read().strip()
-        result = Fore.BLUE + str((1+9.1j)**3.14129 - 2.712) + Fore.RESET
+        result = Fore.BLUE + str((1 + 9.1j)**3.14129 - 2.712) + Fore.RESET
         self.assertEqual(output, result)
 
     def tearDown(self):

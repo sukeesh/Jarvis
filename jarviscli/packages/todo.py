@@ -63,7 +63,7 @@ def getItem(string, todoList):
     retList = []
     for w in words:
         index = int(w) - 1
-        if not 'items' in todoList:
+        if 'items' not in todoList:
             break
         todoList = todoList['items'][index]
         retList.append(index)
@@ -121,7 +121,7 @@ def handlerAdd(data):
     newItem['name'] = parts[0]
     if " - " in data:
         newItem['comment'] = parts[1]
-    if not 'items' in item:
+    if 'items' not in item:
         item['items'] = []
     item['items'].append(newItem)
     write_file("todolist.txt", todoList)

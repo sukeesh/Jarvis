@@ -27,3 +27,5 @@ IMDbPY
 pyperclip
 pycricbuzz
 wikipedia
+flake8
+autopep8
