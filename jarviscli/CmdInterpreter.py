@@ -27,6 +27,8 @@ from packages.file_organise import file_manage
 from packages.fb import fb_login
 from packages.twitter import twitter_login, twitter_tweet, twitter_end
 from packages.cricket import score
+from packages.quote import show_quote
+
 MEMORY = Memory()
 
 CONNECTION_ERROR_MSG = "You are not connected to Internet"
@@ -85,6 +87,7 @@ class CmdInterpreter(Cmd):
                         "pinpoint",
                         "play",
                         "q",
+                        "quote",
                         "quit",
                         "reboot",
                         "remind",
@@ -580,6 +583,10 @@ class CmdInterpreter(Cmd):
     def help_q(self):
         """Closing Jarvis"""
         print_say("Closing Jarvis!!", self)
+
+    def do_quote(self, s=None):
+        """Clear terminal screen. """
+        show_quote(self)
 
     def do_quit(self, s=None):
         """Closing Jarvis."""
