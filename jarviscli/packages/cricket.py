@@ -32,7 +32,7 @@ def live_score(desc):
 
     text = ''
     text += Fore.LIGHTYELLOW_EX + score['matchinfo'] + '\n' + score['status'] + '\n\n'
-    text += Fore.BLUE + score['batting']['team'] + '\n'+ Fore.BLACK
+    text += Fore.BLUE + score['batting']['team'] + '\n' + Fore.BLACK
 
     for scr in reversed(score['batting']['score']):
         text += "{} :- {}/{} in {} overs\n".format(scr['desc'], scr['runs'], scr['wickets'], scr['overs'])
@@ -75,18 +75,18 @@ def scorecard(desc):
 
     for scr in reversed(card['scorecard']):
         text += Fore.LIGHTYELLOW_EX + "{} {}\n{}/{} in {} overs\n\n".format(scr['batteam'], scr['inngdesc'], scr['runs'], scr['wickets'],
-                                                      scr['overs'])
+                                                                            scr['overs'])
         text += Fore.BLUE + "Batting\n"
         text += Fore.RED + "{:<17} {:<3} {:<3} {:<3} {}\n\n".format('Name', 'R', 'B', '4', '6')
         for b in scr['batcard']:
             text += Fore.BLACK + "{:<17} {:<3} {:<3} {:<3} {}\n{}\n\n".format(b['name'], b['runs'], b['balls'], b['fours'], b['six'],
-                                                                 b['dismissal'])
+                                                                              b['dismissal'])
         text += Fore.LIGHTYELLOW_EX + "-" * 35 + "\n\n"
         text += Fore.BLUE + "Bowling\n"
         text += Fore.RED + "{:<17} {:<5} {:<3} {:<3} {}\n\n".format('Name', 'O', 'M', 'R', 'W')
         for b in scr['bowlcard']:
             text += Fore.BLACK + "{:<17} {:<5} {:<3} {:<3} {}\n\n".format(b['name'], b['overs'], b['maidens'], b['runs'],
-                                                             b['wickets'])
+                                                                          b['wickets'])
         text += Fore.BLUE + '*' * 35 + '\n\n'
     return text
 
@@ -136,4 +136,3 @@ def score(self):
             print(live_score(desc))
             ref = raw_input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
             print('\n')
-

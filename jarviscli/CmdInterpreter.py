@@ -75,7 +75,7 @@ class CmdInterpreter(Cmd):
                         {"increase": ("volume",)},
                         "lyrics",
                         "match",
-                        {"movie": ("cast","director","plot","producer","rating","year",)},
+                        {"movie": ("cast", "director", "plot", "producer", "rating", "year",)},
                         "movies",
                         "music",
                         "near",
@@ -430,24 +430,24 @@ class CmdInterpreter(Cmd):
         if k[0] == "cast":
             data = movie.cast(k[1])
             for d in data:
-                print_say(d['name'],self)
+                print_say(d['name'], self)
         elif k[0] == "director":
             data = movie.director(k[1])
             for d in data:
-                print_say(d['name'],self)
+                print_say(d['name'], self)
         elif k[0] == "plot":
             data = movie.plot(k[1])
-            print_say(data,self)
+            print_say(data, self)
         elif k[0] == "producer":
             data = movie.producer(k[1])
             for d in data:
-                print_say(d['name'],self)
+                print_say(d['name'], self)
         elif k[0] == "rating":
             data = movie.rating(k[1])
-            print_say(str(data),self)
+            print_say(str(data), self)
         elif k[0] == "year":
             data = movie.year(k[1])
-            print_say(str(data),self)
+            print_say(str(data), self)
 
     def help_movie(self):
         """Print help about movie command."""
@@ -751,6 +751,6 @@ class CmdInterpreter(Cmd):
         if isinstance(data, list):
             print "\nDid you mean one of these pages?\n"
             for d in range(len(data)):
-                print(str(d+1) + ": " + data[d])
+                print(str(d + 1) + ": " + data[d])
         else:
             print("\n" + data)

@@ -13,11 +13,13 @@ def main(movie):
     data = app.get_movie(ID)
     return data
 
+
 def cast(movie):
     data = main(movie)
     if data == "error 404":
         return data
     return data['cast']
+
 
 def director(movie):
     data = main(movie)
@@ -25,11 +27,13 @@ def director(movie):
         return data
     return data['director']
 
+
 def plot(movie):
     data = main(movie)
     if data == "error 404":
         return data
     return data['plot outline']
+
 
 def producer(movie):
     data = main(movie)
@@ -37,11 +41,13 @@ def producer(movie):
         return data
     return data['producer']
 
+
 def rating(movie):
     data = main(movie)
     if data == "error 404":
         return data
     return data['rating']
+
 
 def year(movie):
     data = main(movie)
