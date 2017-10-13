@@ -17,9 +17,9 @@ def update_system():
         os.system('brew upgrade && brew update')
         return
 
-    release = subprocess.check_output('cat /etc/lsb-rel'
-                                      + 'ease | grep'
-                                      + ' DISTRIB_ID=', shell=True)
+    release = subprocess.check_output('cat /etc/lsb-rel' +
+                                      'ease | grep' +
+                                      ' DISTRIB_ID=', shell=True)
     get_line = release.split('=')
 
     user_distribution = get_line[1]
