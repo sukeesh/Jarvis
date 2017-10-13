@@ -10,6 +10,6 @@ install:
   - pip install -r requirements.txt
 script:
   - cd $TRAVIS_BUILD_DIR/
-  - flake8 --ignore E501 .
+  - flake8 --select E W --ignore E501 .
   - cd jarviscli/
   - python -m unittest discover
