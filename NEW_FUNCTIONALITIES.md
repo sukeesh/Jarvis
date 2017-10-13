@@ -51,3 +51,7 @@ Jarvis will fetch data of ongoing cricket matches and shows list of matches, liv
 Jarvis will get information from wikipedia.
 **To use wiki just type**: wiki followed by search if you want to get pages related to the query, summary to get the summary of page, and content to get all the plain text information
 on a page.
+
+### Quote
+Jarvis will fetch quote of the day.
+**To run quote feature type**: quote 
