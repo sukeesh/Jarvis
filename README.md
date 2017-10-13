@@ -14,6 +14,7 @@ In order to start Jarvis just clone the repository and run `./setup.sh`
 
 Run **Jarvis** from anywhere by command `jarvis`
 
+On Mac OS X don't forget to activate virtual enviroment before run jarvis with the command `. env/bin/activate`
 
 You can start by typing `help` within the Jarvis command line to check what Jarvis can do for you.
 
