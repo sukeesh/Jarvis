@@ -584,7 +584,6 @@ class CmdInterpreter(Cmd):
         """Closing Jarvis"""
         print_say("Closing Jarvis!!", self)
 
-
     def do_quit(self, s=None):
         """Closing Jarvis."""
         self.close()
