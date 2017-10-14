@@ -48,7 +48,7 @@ You can start by typing `help` within the Jarvis command line to check what Jarv
 
  **sukeesh**
 
-See also the list of [contributors](contributors.md) who participated in this project.
+See also the list of [contributors](https://github.com/sukeesh/Jarvis/graphs/contributors) who participated in this project.
 
 ## License
 
