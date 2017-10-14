@@ -1,6 +1,4 @@
-from colorama import Fore
 import imdb
-from utilities.GeneralUtilities import print_say
 
 
 def main(movie):

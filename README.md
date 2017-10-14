@@ -39,15 +39,9 @@ You can start by typing `help` within the Jarvis command line to check what Jarv
 
  ### How to run tests:
  
- Add `__init__.py` file in jarviscli/tests/test_manual/
- 
- Change into the Jarvis/jarviscli directory
+ Run `test.sh`
  ```bash
- cd Jarvis/jarviscli
- ```
- Then run unittest discover
- ```python
- python -m unittest discover
+ ./test.sh
  ```
 
 ## Authors
