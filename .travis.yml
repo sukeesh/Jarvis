@@ -5,7 +5,6 @@ python:
 before_install:
   - sudo apt-get install python-dbus-dev python-dbus libdbus-1-dev libdbus-glib-1-dev libssl-dev libffi-dev
   - sudo apt-get install python-imdbpy python-notify2
-  - pip install dbus-python
 install:
   - pip install -r requirements.txt
 script:
