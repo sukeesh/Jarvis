@@ -217,6 +217,10 @@ class CmdInterpreter(Cmd):
         """Clear terminal screen. """
         clear_scr()
 
+    def help_clear(self):
+        """Help:Clear terminal screen"""
+        print_say("Clears terminal", self)
+
     def do_clock(self, s):
         """Gives information about time."""
         print_say(ctime(), self, Fore.BLUE)
@@ -231,6 +235,10 @@ class CmdInterpreter(Cmd):
             score(self)
         except ConnectionError:
             print(CONNECTION_ERROR_MSG)
+
+    def help_cricket(self):
+        """cricket package for Jarvis"""
+        print_say("Enter cricket and follow the instructions", self)
 
     def do_decrease(self, s):
         """Decreases you speakers' sound."""
@@ -335,12 +343,21 @@ class CmdInterpreter(Cmd):
         """Jarvis will organise the given folder and group the files"""
         file_manage(self)
 
+    def help_file_organise(self):
+        """Help for file organise"""
+        print_say("Type file_organise and follow instructions", self)
+        print_say("It organises selected folder based on extension", self)
+
     def do_fb(self, s=None):
         """Jarvis will login into your facebook account either by prompting id-password or by using previously saved"""
         try:
             fb_login(self)
         except ConnectionError:
             print(CONNECTION_ERROR_MSG)
+
+    def help_fb(self):
+        """Help for fb"""
+        print_say("type fb and follow instructions", self)
 
     def do_goodbye(self, s=None):
         """Closing Jarvis."""
@@ -372,7 +389,7 @@ class CmdInterpreter(Cmd):
         """Jarvis will inform you about his status."""
         print_say("I am fine, How about you?", self, Fore.BLUE)
 
-    def help_how_are_you(self, s):
+    def help_how_are_you(self):
         """Print info about how_are_you command"""
         print_say("Jarvis will inform you about his status.", self)
 
@@ -395,17 +412,17 @@ class CmdInterpreter(Cmd):
         """Completions for increase command"""
         return self.get_completions("increase", text)
 
-    def help_lyrics(self):
-        """explains how lyrics work"""
-        print_say("finds lyrics\n", self)
-        print_say("the format is song,artist\n", self)
-        print_say("song and artist are separated by a - \n", self)
-
     def do_lyrics(self, s):
         # TODO: maybe add option to download lyrics not just print them there
         lyr = lyrics()
         response = lyr.find(s)
         print_say(response, self)
+
+    def help_lyrics(self):
+        """explains how lyrics work"""
+        print_say("finds lyrics\n", self)
+        print_say("the format is song,artist\n", self)
+        print_say("song and artist are separated by a - \n", self)
 
     def do_match(self, s):
         """Matches patterns in a string by using regex."""
@@ -596,6 +613,10 @@ class CmdInterpreter(Cmd):
         """Show quote of the day"""
         show_quote(self)
 
+    def help_quote(self):
+        """Help for quote"""
+        print_say("quote prints quote for the day for you", self)
+
     def do_reboot(self, s):
         """Reboot the system."""
         reboot_system()
@@ -694,6 +715,10 @@ class CmdInterpreter(Cmd):
             except ConnectionError:
                 print(CONNECTION_ERROR_MSG)
 
+    def help_twitter(self):
+        """help for twitter"""
+        print_say("enter twitter and follow the instructions", self)
+
     def do_umbrella(self, s):
         """If you're leaving your place, Jarvis will inform you if you might need an umbrella or not"""
         s = 'umbrella'
@@ -761,3 +786,10 @@ class CmdInterpreter(Cmd):
                 print(str(d + 1) + ": " + data[d])
         else:
             print("\n" + data)
+
+    def help_wiki(self):
+        """Help for wiki"""
+        print_say("Jarvis has now wiki feature", self)
+        print_say("enter wiki search for searching related topics", self)
+        print_say("enter wiki summary for getting summary of the topic", self)
+        print_say("wiki content for full page article of topic", self)
