@@ -38,10 +38,9 @@ if [[ "$OS" == "Fedora" ]]; then
 elif [[ "$OS" == "Ubuntu" ]] || [[ "$OS" == "LinuxMint" ]]; then
   sudo apt-get install ffmpeg python-imdbpy python-notify2
   sudo apt-get install python-dbus python-dbus-dev libssl-dev libffi-dev libdbus-1-dev libdbus-glib-1-dev
-  sudo apt-get install chromium-chromedriver
+  sudo apt-get install chromium-chromedriver python2.7
   sudo pip install virtualenv
-  virtualenv env
-  virtualenv -p /usr/bin/python2.7 env
+  virtualenv env --python=python2.7
   source env/bin/activate
   pip install -r requirements.txt
 elif [[ "$OS" == "Kali" ]]; then
