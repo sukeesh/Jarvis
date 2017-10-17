@@ -46,8 +46,8 @@ elif [[ "$OS" == "Kali" ]]; then
   apt-get install python-dbus
   pip install -r requirements.txt
 elif [[ "$OS" == "Arch" ]] || [[ "$OS" == "ManjaroLinux" ]]; then
-  sudo pacman -S --noconfirm ffmpeg imdbpy
-  sudo pacman -S --noconfirm python2-dbus openssl libffi
+  sudo pacman -S --noconfirm ffmpeg
+  sudo pacman -S --noconfirm openssl libffi
   pip install -r requirements.txt
 else
   echo "Operating System not supported"
