@@ -2,7 +2,7 @@
 
 echo ""
 echo "Checking for linting errors"
-flake8 --select E W --ignore E501 .
+flake8 --select E W --ignore E501 jarviscli/
 echo "lint errors checked"
 echo ""
 cd jarviscli/
