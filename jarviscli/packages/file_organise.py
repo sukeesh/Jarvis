@@ -95,7 +95,7 @@ def print_after(path):
 
 
 def file_manage(self):
-    dir_name = raw_input('Enter the name of directory you want to clear: ')
+    dir_name = input('Enter the name of directory you want to clear: ')
     dir_path = source_path(dir_name)
     print_before(dir_path)
     new_dir_path, new_dir, extension = destination_path(dir_path)

@@ -36,7 +36,7 @@ if [[ "$OS" == "Fedora" ]]; then
   sudo chown root /usr/bin/chromedriver
   sudo chmod 755 /usr/bin/chromedriver
 elif [[ "$OS" == "Ubuntu" ]] || [[ "$OS" == "LinuxMint" ]]; then
-  sudo apt-get install ffmpeg python-imdbpy python-notify2
+  sudo apt-get install ffmpeg python-notify2
   sudo apt-get install python-dbus python-dbus-dev libssl-dev libffi-dev libdbus-1-dev libdbus-glib-1-dev
   sudo apt-get install chromium-chromedriver python2.7
   sudo pip install virtualenv
