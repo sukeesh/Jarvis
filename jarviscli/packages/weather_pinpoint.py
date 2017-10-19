@@ -10,8 +10,6 @@ def main(memory, self, s):
         city = mapps.get_location()['city']
         print_say("It appears you are in " +
                   city + " Is this correct? (y/n)", self, Fore.RED)
-
-        
         i = input()
         if i == 'n' or i == 'no':
             print_say("Enter Name of city: ", self)

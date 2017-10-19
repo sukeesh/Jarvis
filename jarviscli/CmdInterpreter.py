@@ -54,8 +54,7 @@ class CmdInterpreter(Cmd):
         # Register do_quit() function to SIGINT signal (Ctrl-C)
         signal.signal(signal.SIGINT, self.interrupt_handler)
 
-        self.actions = (#"ask",
-                        "calculate",
+        self.actions = ("calculate",
                         "cancel",
                         {"check": ("ram", "weather", "time", "forecast")},
                         "chuck",
@@ -77,7 +76,6 @@ class CmdInterpreter(Cmd):
                         {"increase": ("volume",)},
                         "lyrics",
                         "match",
-                        # {"movie": ("cast", "director", "plot", "producer", "rating", "year",)},
                         "movies",
                         "music",
                         "near",
@@ -769,7 +767,7 @@ class CmdInterpreter(Cmd):
             data = wiki.content(" ".join(k[1:]))
 
         if isinstance(data, list):
-            print ("\nDid you mean one of these pages?\n")
+            print("\nDid you mean one of these pages?\n")
             for d in range(len(data)):
                 print(str(d + 1) + ": " + data[d])
         else:

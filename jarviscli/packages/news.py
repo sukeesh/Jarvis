@@ -1,8 +1,10 @@
 # !!! This uses the https://newsapi.org/ api. TO comply with the TOU
 # !!! we must link back to this site whenever we display results.
-try: # python3.5
-    import urllib.request, urllib.parse, urllib.error
-except: # python 2.7
+try:  # python3.5
+    import urllib.request
+    import urllib.parse
+    import urllib.error
+except:  # python 2.7
     import urllib
 import json
 import webbrowser
@@ -59,7 +61,7 @@ class News:
             response = urllib.request.urlopen(self.url)
         except:
             response = urllib.urlopen(self.url)
-        return json.loads(response.read())
+        return json.loads(response.read().decode('utf-8'))
 
     '''
         This sets the users options and loads them from Memory
