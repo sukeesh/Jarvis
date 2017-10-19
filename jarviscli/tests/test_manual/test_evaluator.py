@@ -1,7 +1,9 @@
 import unittest
 import sys
-from StringIO import StringIO
-
+try: # for python2.7
+    from StringIO import StringIO
+except: # for python3.5
+    from io import StringIO
 from colorama import Fore
 
 from Jarvis import Jarvis

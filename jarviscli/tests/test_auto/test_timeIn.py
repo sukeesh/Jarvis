@@ -3,8 +3,10 @@ from packages import timeIn
 import time
 import datetime
 import sys
-from StringIO import StringIO
-
+try: # python2.7
+    from StringIO import StringIO
+except: # python3.5
+    from io import StringIO
 
 class TimeInTest(unittest.TestCase):
     def setUp(self):
