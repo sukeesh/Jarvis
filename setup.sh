@@ -40,7 +40,7 @@ elif [[ "$OS" == "Ubuntu" ]] || [[ "$OS" == "LinuxMint" ]]; then
   sudo apt-get install python-dbus python-dbus-dev libssl-dev libffi-dev libdbus-1-dev libdbus-glib-1-dev
   sudo apt-get install chromium-chromedriver python2.7
   sudo pip install virtualenv
-  virtualenv env --python=python2.7
+  virtualenv env
   source env/bin/activate
   pip install -r requirements.txt
 elif [[ "$OS" == "Kali" ]]; then
