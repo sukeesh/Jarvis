@@ -1,7 +1,9 @@
 # !!! This uses the https://newsapi.org/ api. TO comply with the TOU
 # !!! we must link back to this site whenever we display results.
-
-import urllib
+try: # python3.5
+    import urllib.request, urllib.parse, urllib.error
+except: # python 2.7
+    import urllib
 import json
 import webbrowser
 from .memory.memory import Memory
@@ -53,7 +55,10 @@ class News:
     '''
 
     def get_news_json(self):
-        response = urllib.urlopen(self.url)
+        try:
+            response = urllib.request.urlopen(self.url)
+        except:
+            response = urllib.urlopen(self.url)
         return json.loads(response.read())
 
     '''
@@ -67,10 +72,7 @@ class News:
             print("your default news source is " +
                   self.m.get_data('news-source'))
             print("Would you like news from this source? (yes/no): ")
-            try:
-                x = raw_input()
-            except:
-                x = input()
+            x = input()
             if x == 'y' or x == 'yes':
                 self.source = self.m.get_data('news-source')
             # if not set get users preference
@@ -88,10 +90,7 @@ class News:
         print("4: Reddit")
         print("5: TechCrunch")
 
-        try:
-            i = int(raw_input())
-        except:
-            i = int(input())
+        i = int(input())
 
         if i == 1:
             self.source = "bbc-news"
@@ -105,10 +104,7 @@ class News:
             self.source = "techcrunch"
 
         print("would you like to set this as your default? (yes/no): ")
-        try:
-            x = raw_input()
-        except:
-            x = input()
+        x = input()
         if x == 'y' or x == 'yes':
             self.m.update_data('news-source', self.source)  # save to memory
             self.m.save()
@@ -132,7 +128,10 @@ class News:
         # check to see if a url was passed
         if url is None:
             url = self.url
-        response = urllib.urlopen(url)
+        try:
+            response = urllib.request.urlopen(url)
+        except:
+            response = urllib.urlopen(url)
         # Load json
         data = json.loads(response.read())
         article_list = {}
@@ -172,10 +171,7 @@ class News:
         print(article_list[int(idx)]['description'])
 
         print("Do you want to read more? (yes/no): ")
-        try:
-            i = raw_input()
-        except:
-            i = input()
+        i = input()
         # if user wants to read more open browser to article url
         if i.lower() == "yes" or i.lower() == 'y':
             webbrowser.open(article_list[int(idx)]['url'])
