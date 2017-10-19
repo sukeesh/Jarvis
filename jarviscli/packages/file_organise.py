@@ -17,7 +17,7 @@ def source_path(dir_name):
         print(Fore.LIGHTRED_EX + 'No directory found')
         exit()
 
-    choice = int(raw_input('\nEnter the option number: '))
+    choice = int(input('\nEnter the option number: '))
 
     if choice < 1 or choice > len(all_paths):
         path = ''

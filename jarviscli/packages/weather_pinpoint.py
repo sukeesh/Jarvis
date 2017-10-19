@@ -11,10 +11,8 @@ def main(memory, self, s):
         print_say("It appears you are in " +
                   city + " Is this correct? (y/n)", self, Fore.RED)
 
-        try:
-            i = raw_input()
-        except:
-            i = input()
+        
+        i = input()
         if i == 'n' or i == 'no':
             print_say("Enter Name of city: ", self)
             try:
@@ -46,10 +44,7 @@ def main(memory, self, s):
                 try:
                     print_say("Would you like to set " + city +
                               " as your new location? (y/n)", self, Fore.RED)
-                    try:
-                        i = raw_input()
-                    except:
-                        i = input()
+                    i = input()
                     if i == 'y' or i == 'yes':
                         memory.update_data('city', city)
                         memory.save()

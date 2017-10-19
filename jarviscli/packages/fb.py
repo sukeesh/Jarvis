@@ -20,7 +20,7 @@ def get_details():
     else:
         usr = input('Enter Email Id: ')
         pwd = getpass.getpass('Enter Password: ')
-        choice = raw_input('Do you want to save the id and password (y/n): ')
+        choice = input('Do you want to save the id and password (y/n): ')
         if choice == 'y' or choice == 'Y':
             with open(file, 'w') as f:
                 f.write(usr)

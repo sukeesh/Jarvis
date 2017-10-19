@@ -119,7 +119,7 @@ class Jarvis(CmdInterpreter, object):
             words_remaining.remove(word)
             for action in self.actions:
                 # action can be a string or a dict
-                if type(action) is dict and word in action.keys():
+                if type(action) is dict and word in list(action.keys()):
                     # command name exists, assign it to the output
                     action_found = True
                     output = self._generate_output_if_dict(
