@@ -7,8 +7,10 @@ before_install:
   - sudo apt-get install python-imdbpy python-notify2
 install:
   - pip install -r requirements.txt
+  - pip install codecov
 script:
   - cd $TRAVIS_BUILD_DIR/
   - flake8 --select E W --ignore E501 .
   - cd jarviscli/
   - python -m unittest discover
+  - codecov
