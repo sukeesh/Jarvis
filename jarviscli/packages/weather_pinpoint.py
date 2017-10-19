@@ -1,7 +1,7 @@
 from colorama import Fore
 from utilities.GeneralUtilities import print_say
-import mapps
-import umbrella
+from . import mapps
+from . import umbrella
 
 
 def main(memory, self, s):

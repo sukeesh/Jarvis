@@ -1,6 +1,6 @@
 from utilities.GeneralUtilities import wordIndex
 import CmdInterpreter
-import mapps
+from . import mapps
 
 
 def main(data):
