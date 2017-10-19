@@ -15,7 +15,7 @@ requests[security]==2.13.0
 selenium>=2.33
 six==1.10.0
 SpeechRecognition==3.6.3
-pyttsx == 1.1
+pyttsx3
 aiml
 python-dateutil
 mock==2.0.0

@@ -4,22 +4,22 @@ from utilities.GeneralUtilities import IS_MACOS
 if IS_MACOS:
     from os import system
 else:
-    import pyttsx
+    import pyttsx3
 
 '''
     ABOUT: This class is the Voice of Jarvis.
            The methods included in this class
            generate audio output of Jarvis while
            interacting with the user.
-    DOCUMENTATION on pyttsx:
-           https://pyttsx.readthedocs.io/en/latest/
+    DOCUMENTATION on pyttsx3:
+           https://pyttsx3.readthedocs.io/en/latest/
 '''
 
 
 class Voice:
     def __init__(self):
         """
-        This constructor creates a pyttsx object.
+        This constructor creates a pyttsx3 object.
         """
         if not IS_MACOS:
             self.create()
@@ -27,15 +27,15 @@ class Voice:
 
     def create(self):
         """
-        This method creates a pyttsx object.
+        This method creates a pyttsx3 object.
         :return: Nothing to return.
         """
-        self.engine = pyttsx.init()
+        self.engine = pyttsx3.init()
         self.engine.setProperty('rate', 120)
 
     def destroy(self):
         """
-        This method destroys a pyttsx object in order
+        This method destroys a pyttsx3 object in order
         to create a new one in the next interaction.
         :return: Nothing to return.
         """
@@ -68,18 +68,3 @@ class Voice:
             self.engine.say(speech)
             self.engine.runAndWait()
             self.destroy()
-
-
-'''
-    The following block of code is a test for this class.
-    In order to execute it run this script from the terminal
-    as: ~$ python Voice.py
-'''
-
-if __name__ == '__main__':
-    jarvis = Voice()
-    jarvis.speak(True)
-    text = ['Say hello to my little friend', 'What time is it',
-            'Welcome to Jarvis', 'I am trolling you']
-    for _ in text:
-        jarvis.text_to_speech(_)
