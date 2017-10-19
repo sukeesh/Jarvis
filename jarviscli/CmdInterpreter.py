@@ -77,7 +77,7 @@ class CmdInterpreter(Cmd):
                         {"increase": ("volume",)},
                         "lyrics",
                         "match",
-                        {"movie": ("cast", "director", "plot", "producer", "rating", "year",)},
+                        # {"movie": ("cast", "director", "plot", "producer", "rating", "year",)},
                         "movies",
                         "music",
                         "near",
