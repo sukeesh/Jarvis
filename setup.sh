@@ -27,6 +27,7 @@ OS=$(lsb_release -si)
 if [[ "$OS" == "Fedora" ]]; then
   sudo dnf install ffmpeg
   sudo dnf install notify-python -y
+  sudo -H pip install dbus-python
   sudo -H pip install -r requirements.txt
   sudo dnf install python-dbus -y
   # chromedriver-install
@@ -37,7 +38,7 @@ if [[ "$OS" == "Fedora" ]]; then
   sudo chmod 755 /usr/bin/chromedriver
 elif [[ "$OS" == "Ubuntu" ]] || [[ "$OS" == "LinuxMint" ]]; then
   sudo apt-get install ffmpeg python-notify2
-  sudo apt-get install python-dbus python-dbus-dev libssl-dev libffi-dev libdbus-1-dev libdbus-glib-1-dev
+  sudo apt-get install python-dbus python3-dbus python-dbus-dev libssl-dev libffi-dev libdbus-1-dev libdbus-glib-1-dev
   sudo apt-get install chromium-chromedriver python2.7
   sudo pip install dbus-python
   sudo pip install virtualenv
@@ -48,10 +49,12 @@ elif [[ "$OS" == "Kali" ]]; then
   apt-get install ffmpeg
   apt-get install python-notify2
   apt-get install python-dbus
+  pip install dbus-python
   pip install -r requirements.txt
 elif [[ "$OS" == "Arch" ]] || [[ "$OS" == "ManjaroLinux" ]]; then
   sudo pacman -S --noconfirm ffmpeg
   sudo pacman -S --noconfirm openssl libffi
+  pip install dbus-python
   pip install -r requirements.txt
 else
   echo "Operating System not supported"
