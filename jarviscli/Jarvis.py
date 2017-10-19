@@ -65,7 +65,7 @@ class Jarvis(CmdInterpreter, object):
         elif len(words) == 1:
             # if the action is a dict action, the command should contain more than one word
             # such as 'disable sound' or 'please, could you check the weather in Madrid'
-            dict_actions = [action.keys()[0]
+            dict_actions = [list(action.keys())[0]
                             for action in self.actions if isinstance(action, dict)]
             if words[0] in dict_actions:
                 self.default(words)
@@ -119,7 +119,7 @@ class Jarvis(CmdInterpreter, object):
             words_remaining.remove(word)
             for action in self.actions:
                 # action can be a string or a dict
-                if type(action) is dict and word in action.keys():
+                if type(action) is dict and word in list(action.keys()):
                     # command name exists, assign it to the output
                     action_found = True
                     output = self._generate_output_if_dict(

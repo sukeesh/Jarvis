@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 import requests
-import mapps
+from . import mapps
 from packages import weather_pinpoint as pinpoint
 from packages.memory.memory import Memory
 from colorama import Fore
@@ -33,7 +33,7 @@ def main(self, s):
     r = requests.get(send_url)
     j = json.loads(r.text)
 
-    if 'message' in j.keys() and ('city not found' in j['message'] or 'Nothing to geocode' in j['message']):
+    if 'message' in list(j.keys()) and ('city not found' in j['message'] or 'Nothing to geocode' in j['message']):
         return pinpoint.main(Memory(), self, s)
 
     temperature = j['main']['temp']

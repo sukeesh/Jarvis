@@ -4,7 +4,7 @@
 import urllib
 import json
 import webbrowser
-from memory.memory import Memory
+from .memory.memory import Memory
 
 '''
     CLASS News

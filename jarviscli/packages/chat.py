@@ -9,10 +9,7 @@ def main(self):
     stay = True
 
     while stay:
-        try:
-            text = str.upper(raw_input(Fore.RED + ">> " + Fore.RESET))
-        except:
-            text = str.upper(input(Fore.RED + ">> " + Fore.RESET))
+        text = str.upper(input(Fore.RED + ">> " + Fore.RESET))
         if text == "LEAVE":
             print_say("thanks for talking to me", self)
             stay = False

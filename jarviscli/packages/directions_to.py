@@ -1,5 +1,5 @@
 from utilities.GeneralUtilities import wordIndex
-import mapps
+from . import mapps
 
 
 def main(data):

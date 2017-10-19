@@ -16,8 +16,8 @@ from packages.lyrics import lyrics
 from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminder_handler, reminder_quit
-from packages import mapps, picshow, evaluator, forecast, movie, wiki
-from packages import chat, directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
+from packages import mapps, picshow, evaluator, forecast, wiki
+from packages import directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
 from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancel_shutdown, reboot_system
 from packages.systemOptions import turn_off_screen, update_system
@@ -54,7 +54,7 @@ class CmdInterpreter(Cmd):
         # Register do_quit() function to SIGINT signal (Ctrl-C)
         signal.signal(signal.SIGINT, self.interrupt_handler)
 
-        self.actions = ("ask",
+        self.actions = (#"ask",
                         "calculate",
                         "cancel",
                         {"check": ("ram", "weather", "time", "forecast")},
@@ -426,13 +426,8 @@ class CmdInterpreter(Cmd):
 
     def do_match(self, s):
         """Matches patterns in a string by using regex."""
-        try:
-            file_name = raw_input(
-                Fore.RED + "Enter file name?:\n" + Fore.RESET)
-            pattern = raw_input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
-        except:
-            file_name = input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
-            pattern = input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
+        file_name = input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
+        pattern = input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
         file_name = file_name.strip()
         if file_name == "":
             print("Invalid Filename")
@@ -483,12 +478,8 @@ class CmdInterpreter(Cmd):
     @unsupported(platform=MACOS)
     def do_movies(self, s):
         """Jarvis will find a good movie for you."""
-        try:
-            movie_name = raw_input(
-                Fore.RED + "What do you want to watch?\n" + Fore.RESET)
-        except:
-            movie_name = input(
-                Fore.RED + "What do you want to watch?\n" + Fore.RESET)
+        movie_name = input(
+            Fore.RED + "What do you want to watch?\n" + Fore.RESET)
         system("ims " + movie_name)
 
     @unsupported(platform=MACOS)
@@ -740,10 +731,7 @@ class CmdInterpreter(Cmd):
             loc_str = str(location)
             print_say("Your current location is set to " + loc_str, self)
             print_say("What is your new location?", self)
-            try:
-                i = raw_input()
-            except:
-                i = input()
+            i = input()
             MEMORY.update_data('city', i)
             MEMORY.save()
         elif "system" in s:
