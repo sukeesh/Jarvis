@@ -29,7 +29,7 @@ def get_details():
     # passwords are not saved
 
     else:
-        usr = raw_input('Enter Email Id: ')
+        usr = input('Enter Email Id: ')
         pwd = getpass.getpass('Enter Password: ')
         choice = raw_input('Do you want to save the id and password (y/n): ')
         if choice == 'y' or choice == 'Y':
@@ -62,10 +62,10 @@ def twitter_tweet(self):
     print("1. write tweet")
     print("2. copy from clipboard")
 
-    choice = raw_input('Enter choice:')
+    choice = input('Enter choice:')
 
     if int(choice) == 1:
-        tweet = raw_input('Enter tweet here:')
+        tweet = input('Enter tweet here:')
     else:
         tweet = pyperclip.paste()
 
@@ -81,5 +81,5 @@ def twitter_tweet(self):
 
 
 def twitter_end(self, driver):
-    raw_input('Enter anything to end session: ')
+    input('Enter anything to end session: ')
     driver.quit()

@@ -18,7 +18,7 @@ def get_details():
     # passwords are not saved
 
     else:
-        usr = raw_input('Enter Email Id: ')
+        usr = input('Enter Email Id: ')
         pwd = getpass.getpass('Enter Password: ')
         choice = raw_input('Do you want to save the id and password (y/n): ')
         if choice == 'y' or choice == 'Y':
@@ -48,5 +48,5 @@ def fb_login(self):
     submit = driver.find_element_by_id('loginbutton')
     submit.click()
 
-    raw_input('Enter anything to end the session: ')
+    input('Enter anything to end the session: ')
     driver.quit()
