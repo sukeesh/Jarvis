@@ -14,8 +14,10 @@ class WikiTest(unittest.TestCase):
 
     def test_summary(self):
         d = wiki.summary("Obama")
-        self.assertIsInstance(d, str)
-
+        try:  # python2.7
+            self.assertIsInstance(d, unicode)
+        except:  # python3.5
+            self.assertIsInstance(d, str)
         d = wiki.summary("adfsklfdlksf")
         self.assertEqual(d, "No page matches, try another item.")
 
@@ -25,7 +27,10 @@ class WikiTest(unittest.TestCase):
 
     def test_content(self):
         d = wiki.content("Obama")
-        self.assertIsInstance(d, str)
+        try:  # python2.7
+            self.assertIsInstance(d, unicode)
+        except:  # python3.5
+            self.assertIsInstance(d, str)
 
         d = wiki.content("adfsklfdlksf")
         self.assertEqual(d, "No page matches, try another item.")
