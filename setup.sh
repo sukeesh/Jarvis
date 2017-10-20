@@ -29,6 +29,15 @@ if [[ "$OS" == "Fedora" ]]; then
   sudo dnf install notify-python -y
   sudo -H pip install -r requirements.txt
   sudo dnf install python-dbus -y
+# Check if sudo is required
+pip install virtualenv
+if [[ "$?" -eq 2 ]]; then
+  sudo pip install virtualenv
+fi
+
+virtualenv env --python=python2.7
+source env/bin/activate
+pip install -r requirements.txt
   # chromedriver-install
   wget https://chromedriver.storage.googleapis.com/2.32/chromedriver_linux64.zip
   unzip chromedriver_linux64_2.3.zip
