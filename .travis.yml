@@ -3,6 +3,7 @@ language: python
 python:
   - "2.7"
   - "3.5"
+  - "3.6"
 before_install:
   - sudo apt-get install python-dbus-dev python-dbus libdbus-1-dev libdbus-glib-1-dev libssl-dev libffi-dev
   - sudo apt-get install python3-dbus

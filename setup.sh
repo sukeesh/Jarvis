@@ -26,7 +26,7 @@ if [[ "$?" -eq 2 ]]; then
   sudo pip install virtualenv
 fi
 
-virtualenv env --python
+virtualenv env
 source env/bin/activate
 pip install -r requirements.txt
 
