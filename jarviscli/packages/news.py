@@ -1,10 +1,10 @@
 # !!! This uses the https://newsapi.org/ api. TO comply with the TOU
 # !!! we must link back to this site whenever we display results.
-try:  # python3.5
+try:  # python3
     import urllib.request
     import urllib.parse
     import urllib.error
-except:  # python 2.7
+except ImportError:  # python2
     import urllib
 import json
 import webbrowser
@@ -59,7 +59,7 @@ class News:
     def get_news_json(self):
         try:
             response = urllib.request.urlopen(self.url)
-        except:
+        except AttributeError:
             response = urllib.urlopen(self.url)
         return json.loads(response.read().decode('utf-8'))
 
@@ -132,7 +132,7 @@ class News:
             url = self.url
         try:
             response = urllib.request.urlopen(url)
-        except:
+        except AttributeError:
             response = urllib.urlopen(url)
         # Load json
         data = json.loads(response.read())

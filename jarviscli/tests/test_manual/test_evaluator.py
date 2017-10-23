@@ -1,8 +1,8 @@
 import unittest
 import sys
-try:  # for python2.7
+try:  # for python2
     from StringIO import StringIO
-except:  # for python3.5
+except ImportError:  # for python3
     from io import StringIO
 from colorama import Fore
 

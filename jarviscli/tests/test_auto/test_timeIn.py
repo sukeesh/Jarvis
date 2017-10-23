@@ -3,9 +3,9 @@ from packages import timeIn
 import time
 import datetime
 import sys
-try:  # python2.7
+try:  # python2
     from StringIO import StringIO
-except:  # python3.5
+except ImportError:  # python3
     from io import StringIO
 
 
