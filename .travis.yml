@@ -10,7 +10,8 @@ install:
   - pip install codecov
 script:
   - cd $TRAVIS_BUILD_DIR/
-  - flake8 --select E W --ignore E501 .
+  - flake8 --select E W --ignore E501 jarviscli/
   - cd jarviscli/
-  - python -m unittest discover
+  - coverage run -m unittest discover
+after_success:
   - codecov
