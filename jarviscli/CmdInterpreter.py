@@ -759,6 +759,7 @@ class CmdInterpreter(Cmd):
     def do_wiki(self, s):
         """Jarvis will get wiki details for you"""
         k = s.split(' ', 1)
+        data = None
         if k[0] == "search":
             data = wiki.search(" ".join(k[1:]))
         elif k[0] == "summary":
