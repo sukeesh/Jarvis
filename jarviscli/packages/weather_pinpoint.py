@@ -18,9 +18,9 @@ def main(memory, self, s):
         if i == 'n' or i == 'no':
             print_say("Enter Name of city: ", self)
             if six.PY2:
-               i = raw_input()
+                i = raw_input()
             else:
-               i = input()
+                i = input()
             city = i
         city_found = True
         if s == 'umbrella':
@@ -47,7 +47,7 @@ def main(memory, self, s):
                     print_say("Would you like to set " + city +
                               " as your new location? (y/n)", self, Fore.RED)
                     if six.PY2:
-                       i = raw_input()
+                        i = raw_input()
                     else:
                         i = input()
                     if i == 'y' or i == 'yes':

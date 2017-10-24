@@ -97,15 +97,15 @@ def score(self):
     print(Fore.RED + "\nALL MATCHES\n" + Fore.LIGHTBLUE_EX)
     for i, m in enumerate(matches, 1):
         print("{}. {}".format(str(i), m))
-    if six.PY2:    
+    if six.PY2:
         choice = int(raw_input(Fore.RED + '\nEnter choice (number): ' + Fore.RESET))
-    else:    
+    else:
         choice = int(input(Fore.RED + '\nEnter choice (number): ' + Fore.RESET))
     while choice < 1 or choice > len(matches):
         print(Fore.BLACK + '\nWrong choice')
-        if six.PY2:    
+        if six.PY2:
             choice = int(raw_input(Fore.RED + '\nEnter choice again: ' + Fore.RESET))
-        else:    
+        else:
             choice = int(input(Fore.RED + '\nEnter choice again: ' + Fore.RESET))
 
     desc = matches[choice - 1].title()
@@ -123,7 +123,7 @@ def score(self):
         choice = int(input(Fore.RED + '\nEnter choice (number): ' + Fore.RESET))
     while choice < 1 or choice > 4:
         print(Fore.BLACK + '\nWrong choice')
-        if six.PY2:    
+        if six.PY2:
             choice = int(raw_input(Fore.RED + '\nEnter choice again: ' + Fore.RESET))
         else:
             choice = int(input(Fore.RED + '\nEnter choice again: ' + Fore.RESET))

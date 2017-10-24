@@ -161,9 +161,9 @@ class News:
 
         # Check to see if index or NewsAPI was enterd
         if six.PY2:
-            idx = int(raw_input())
+            idx = raw_input()
         else:
-            idx = int(input())
+            idx = input()
         if idx.lower() == "newsapi":
             webbrowser.open('https://newsapi.org/')
             return
@@ -183,9 +183,9 @@ class News:
 
         print("Do you want to read more? (yes/no): ")
         if six.PY2:
-            i = int(raw_input())
+            i = raw_input()
         else:
-            i = int(input())
+            i = input()
         # if user wants to read more open browser to article url
         if i.lower() == "yes" or i.lower() == 'y':
             webbrowser.open(article_list[int(idx)]['url'])

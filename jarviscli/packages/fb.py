@@ -24,7 +24,7 @@ def get_details():
         else:
             usr = input('Enter Email Id: ')
         pwd = getpass.getpass('Enter Password: ')
-        if six.PY2:    
+        if six.PY2:
             choice = raw_input('Do you want to save the id and password (y/n): ')
         else:
             choice = input('Do you want to save the id and password (y/n): ')
