@@ -1,5 +1,6 @@
 from colorama import Fore
 from pycricbuzz import Cricbuzz
+import six
 
 c = Cricbuzz()
 
@@ -96,10 +97,16 @@ def score(self):
     print(Fore.RED + "\nALL MATCHES\n" + Fore.LIGHTBLUE_EX)
     for i, m in enumerate(matches, 1):
         print("{}. {}".format(str(i), m))
-    choice = int(input(Fore.RED + '\nEnter choice (number): ' + Fore.RESET))
+    if six.PY2:    
+        choice = int(raw_input(Fore.RED + '\nEnter choice (number): ' + Fore.RESET))
+    else:    
+        choice = int(input(Fore.RED + '\nEnter choice (number): ' + Fore.RESET))
     while choice < 1 or choice > len(matches):
         print(Fore.BLACK + '\nWrong choice')
-        choice = int(input(Fore.RED + '\nEnter choice again: ' + Fore.RESET))
+        if six.PY2:    
+            choice = int(raw_input(Fore.RED + '\nEnter choice again: ' + Fore.RESET))
+        else:    
+            choice = int(input(Fore.RED + '\nEnter choice again: ' + Fore.RESET))
 
     desc = matches[choice - 1].title()
     print('')
@@ -110,29 +117,44 @@ def score(self):
     print('3. Refresh Score')
     print('4. Quit' + Fore.RESET)
 
-    choice = int(input(Fore.RED + '\nEnter choice (number): ' + Fore.RESET))
+    if six.PY2:
+        choice = int(raw_input(Fore.RED + '\nEnter choice (number): ' + Fore.RESET))
+    else:
+        choice = int(input(Fore.RED + '\nEnter choice (number): ' + Fore.RESET))
     while choice < 1 or choice > 4:
         print(Fore.BLACK + '\nWrong choice')
-        choice = int(input(Fore.RED + '\nEnter choice again: ' + Fore.RESET))
+        if six.PY2:    
+            choice = int(raw_input(Fore.RED + '\nEnter choice again: ' + Fore.RESET))
+        else:
+            choice = int(input(Fore.RED + '\nEnter choice again: ' + Fore.RESET))
     print('')
 
     if choice == 1:
         ref = 'y'
         while ref == 'y':
             print(scorecard(desc))
-            ref = input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
+            if six.PY2:
+                ref = input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
+            else:
+                ref = input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
             print('\n')
 
     elif choice == 2:
         ref = 'y'
         while ref == 'y':
             print(commentary(desc))
-            ref = input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
+            if six.PY2:
+                ref = input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
+            else:
+                ref = input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
             print('\n')
 
     elif choice == 3:
         ref = 'y'
         while ref == 'y':
             print(live_score(desc))
-            ref = input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
+            if six.PY2:
+                ref = input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
+            else:
+                ref = input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
             print('\n')

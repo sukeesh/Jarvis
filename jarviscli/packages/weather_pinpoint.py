@@ -1,5 +1,6 @@
 from colorama import Fore
 from utilities.GeneralUtilities import print_say
+import six
 from . import mapps
 from . import umbrella
 
@@ -10,13 +11,16 @@ def main(memory, self, s):
         city = mapps.get_location()['city']
         print_say("It appears you are in " +
                   city + " Is this correct? (y/n)", self, Fore.RED)
-        i = input()
+        if six.PY2:
+            i = raw_input()
+        else:
+            i = input()
         if i == 'n' or i == 'no':
             print_say("Enter Name of city: ", self)
-            try:
-                i = raw_input()
-            except:
-                i = input()
+            if six.PY2:
+               i = raw_input()
+            else:
+               i = input()
             city = i
         city_found = True
         if s == 'umbrella':
@@ -34,15 +38,18 @@ def main(memory, self, s):
                       ". But you set your location to " + loc, self, Fore.RED)
             print_say("Do you want weather for " +
                       city + " instead? (y/n)", self, Fore.RED)
-            try:
+            if six.PY2:
                 i = raw_input()
-            except:
+            else:
                 i = input()
             if i == 'y' or i == 'yes':
                 try:
                     print_say("Would you like to set " + city +
                               " as your new location? (y/n)", self, Fore.RED)
-                    i = input()
+                    if six.PY2:
+                       i = raw_input()
+                    else:
+                        i = input()
                     if i == 'y' or i == 'yes':
                         memory.update_data('city', city)
                         memory.save()
