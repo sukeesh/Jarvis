@@ -14,8 +14,17 @@ UNAME=$(uname -s)
 if [[ "$UNAME" == "Darwin" ]]; then
   brew install ffmpeg
   brew install openssl
-  virtualenv env
+  read -n 1 -p "Specify python version(2/3)(Default-3)" answer
+  case ${answer:0:1} in
+    2 )
+        virtualenv env --python=python2.7
+    ;;
+    * )
+        virtualenv env --python=python3
+    ;;
+  esac
   . env/bin/activate
+  python --version | echo
   pip install -r requirements.txt
   exit 0
 fi
@@ -26,8 +35,17 @@ if [[ "$?" -eq 2 ]]; then
   sudo pip install virtualenv
 fi
 
-virtualenv env
+read -n 1 -p "Specify python version(2/3)(Default-3)" answer
+case ${answer:0:1} in
+    2 )
+        virtualenv env --python=python2.7
+    ;;
+    * )
+        virtualenv env --python=python3
+    ;;
+esac
 source env/bin/activate
+python --version | echo
 pip install -r requirements.txt
 
 # Fedora based (>=22)
