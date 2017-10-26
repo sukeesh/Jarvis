@@ -54,8 +54,8 @@ def unsupported(platform, silent=False):
             if sys.platform == platform:
                 if not silent:
                     print(
-                        Fore.RED
-                        + 'Command is unsupported for platform `{}`'.format(
+                        Fore.RED +
+                        'Command is unsupported for platform `{}`'.format(
                             sys.platform
                         ) + Fore.RESET)
             else:
