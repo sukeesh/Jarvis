@@ -24,7 +24,7 @@ if [[ "$UNAME" == "Darwin" ]]; then
     ;;
   esac
   . env/bin/activate
-  python --version | echo
+  python --version
   pip install -r requirements.txt
   exit 0
 fi
@@ -45,7 +45,7 @@ case ${answer:0:1} in
     ;;
 esac
 source env/bin/activate
-python --version | echo
+python --version
 pip install -r requirements.txt
 
 # Fedora based (>=22)
