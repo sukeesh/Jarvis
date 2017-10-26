@@ -134,7 +134,7 @@ def score(self):
         while ref == 'y':
             print(scorecard(desc))
             if six.PY2:
-                ref = input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
+                ref = raw_input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
             else:
                 ref = input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
             print('\n')
@@ -144,7 +144,7 @@ def score(self):
         while ref == 'y':
             print(commentary(desc))
             if six.PY2:
-                ref = input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
+                ref = raw_input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
             else:
                 ref = input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
             print('\n')
@@ -154,7 +154,7 @@ def score(self):
         while ref == 'y':
             print(live_score(desc))
             if six.PY2:
-                ref = input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
+                ref = raw_input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
             else:
                 ref = input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
             print('\n')
