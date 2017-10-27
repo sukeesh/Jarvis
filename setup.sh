@@ -57,5 +57,6 @@ else
   echo "Operating system not supported"
   exit 1
 fi
+sudo pip install dbus-python
 
 exit 0
