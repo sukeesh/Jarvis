@@ -1,12 +1,18 @@
-os:
-  - osx
-  - linux
+
 language: python
-python:
-  - "2.7"
-before_install:
-  - sudo apt-get install python-dbus-dev python-dbus libdbus-1-dev libdbus-glib-1-dev libssl-dev libffi-dev
-  - sudo apt-get install python-imdbpy python-notify2
+matrix:
+  include:
+    - os: linux
+      python: 2.7
+      env: TOXENV=py27
+    - os: osx
+      language: generic
+      env: TOXENV=py27
+addons:
+  apt:
+    packages:
+      - python-dbus-dev python-dbus libdbus-1-dev libdbus-glib-1-dev
+      - python-imdbpy python-notify2 libssl-dev libffi-dev
 install:
   - pip install -r requirements.txt
   - pip install codecov
