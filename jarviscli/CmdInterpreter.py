@@ -17,8 +17,8 @@ from packages.lyrics import lyrics
 from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminder_handler, reminder_quit
-from packages import mapps, picshow, evaluator, forecast, wiki
-from packages import directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
+from packages import mapps, picshow, evaluator, forecast, movie, wiki
+from packages import chat, directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
 from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancel_shutdown, reboot_system
 from packages.systemOptions import turn_off_screen, update_system
@@ -55,7 +55,8 @@ class CmdInterpreter(Cmd):
         # Register do_quit() function to SIGINT signal (Ctrl-C)
         signal.signal(signal.SIGINT, self.interrupt_handler)
 
-        self.actions = ("calculate",
+        self.actions = ("ask",
+                        "calculate",
                         "cancel",
                         {"check": ("ram", "weather", "time", "forecast")},
                         "chuck",
@@ -77,6 +78,7 @@ class CmdInterpreter(Cmd):
                         {"increase": ("volume",)},
                         "lyrics",
                         "match",
+                        {"movie": ("cast", "director", "plot", "producer", "rating", "year",)},
                         "movies",
                         "music",
                         "near",
@@ -136,7 +138,10 @@ class CmdInterpreter(Cmd):
 
     def do_ask(self, s):
         """Start chating with Jarvis"""
-        chat.main(self)
+        if six.PY2:
+            chat.main(self)
+        else:
+            print_say("Faeture currently not available in Python 3", self, Fore.RED)
 
     def help_ask(self):
         """Prints help about ask command."""
@@ -444,29 +449,32 @@ class CmdInterpreter(Cmd):
 
     def do_movie(self, s):
         """Jarvis will get movie details for you"""
-        k = s.split(' ', 1)
-        if k[0] == "cast":
-            data = movie.cast(k[1])
-            for d in data:
-                print_say(d['name'], self)
-        elif k[0] == "director":
-            data = movie.director(k[1])
-            for d in data:
-                print_say(d['name'], self)
-        elif k[0] == "plot":
-            data = movie.plot(k[1])
-            print_say(data, self)
-        elif k[0] == "producer":
-            data = movie.producer(k[1])
-            for d in data:
-                print_say(d['name'], self)
-        elif k[0] == "rating":
-            data = movie.rating(k[1])
-            print_say(str(data), self)
-        elif k[0] == "year":
-            data = movie.year(k[1])
-            print_say(str(data), self)
-
+        if six.PY2:
+            k = s.split(' ', 1)
+            if k[0] == "cast":
+                data = movie.cast(k[1])
+                for d in data:
+                    print_say(d['name'], self)
+            elif k[0] == "director":
+                data = movie.director(k[1])
+                for d in data:
+                    print_say(d['name'], self)
+            elif k[0] == "plot":
+                data = movie.plot(k[1])
+                print_say(data, self)
+            elif k[0] == "producer":
+                data = movie.producer(k[1])
+                for d in data:
+                    print_say(d['name'], self)
+            elif k[0] == "rating":
+                data = movie.rating(k[1])
+                print_say(str(data), self)
+            elif k[0] == "year":
+                data = movie.year(k[1])
+                print_say(str(data), self)
+        else:
+            print_say("Faeture currently not available in Python 3", self, Fore.RED)
+        
     def help_movie(self):
         """Print help about movie command."""
         print_say("Jarvis - movie command", self)
