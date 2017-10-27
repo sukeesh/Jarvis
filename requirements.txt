@@ -16,12 +16,12 @@ selenium>=2.33
 six==1.10.0
 SpeechRecognition==3.6.3
 pyttsx3
-# aiml
+aiml
 python-dateutil
 mock==2.0.0
 notify2
 pync==1.6.1
-# IMDbPY
+IMDbPY
 pyperclip
 pycricbuzz
 wikipedia

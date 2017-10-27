@@ -1,13 +1,24 @@
-dist: trusty
+
 language: python
-python:
-  - "2.7"
-  - "3.5"
-  - "3.6"
-before_install:
-  - sudo apt-get install python-dbus-dev python-dbus libdbus-1-dev libdbus-glib-1-dev libssl-dev libffi-dev
-  - sudo apt-get install python3-dbus
-  - sudo apt-get install python-imdbpy python-notify2
+matrix:
+  include:
+    - os: linux
+      python: 2.7
+      env: TOXENV=py27
+    - os: osx
+      language: generic
+      env: TOXENV=py27
+    - os: linux
+      python: 3.6
+      env: TOXENV=py27
+    - os: osx
+      language: generic
+      env: TOXENV=py36
+addons:
+  apt:
+    packages:
+      - python-imdbpy
+      - python-notify2
 install:
   - pip install -r requirements.txt
   - pip install codecov

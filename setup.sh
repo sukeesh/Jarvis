@@ -20,7 +20,7 @@ if [[ "$UNAME" == "Darwin" ]]; then
         virtualenv env --python=python2.7
     ;;
     * )
-        virtualenv env --python=python3
+        virtualenv env --python=python3.6
     ;;
   esac
   . env/bin/activate
@@ -41,7 +41,7 @@ case ${answer:0:1} in
         virtualenv env --python=python2.7
     ;;
     * )
-        virtualenv env --python=python3
+        virtualenv env --python=python3.6
     ;;
 esac
 source env/bin/activate
@@ -72,7 +72,6 @@ else
   echo "Operating system not supported"
   exit 1
 fi
-
-pip install dbus-python
+sudo pip install dbus-python
 
 exit 0
