@@ -474,7 +474,7 @@ class CmdInterpreter(Cmd):
                 print_say(str(data), self)
         else:
             print_say("Faeture currently not available in Python 3", self, Fore.RED)
-        
+
     def help_movie(self):
         """Print help about movie command."""
         print_say("Jarvis - movie command", self)
