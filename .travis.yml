@@ -11,8 +11,8 @@ matrix:
 addons:
   apt:
     packages:
-      - python-dbus-dev python-dbus libdbus-1-dev libdbus-glib-1-dev
-      - python-imdbpy python-notify2 libssl-dev libffi-dev
+      - python-imdbpy
+      - python-notify2
 install:
   - pip install -r requirements.txt
   - pip install codecov
