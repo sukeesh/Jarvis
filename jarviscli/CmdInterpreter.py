@@ -17,8 +17,8 @@ from packages.lyrics import lyrics
 from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminder_handler, reminder_quit
-from packages import mapps, picshow, evaluator, forecast, movie, wiki
-from packages import chat, directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
+from packages import mapps, picshow, evaluator, forecast, wiki
+from packages import directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
 from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancel_shutdown, reboot_system
 from packages.systemOptions import turn_off_screen, update_system
@@ -29,6 +29,8 @@ from packages.fb import fb_login
 from packages.twitter import twitter_login, twitter_tweet, twitter_end
 from packages.cricket import score
 from packages.quote import show_quote
+if six.PY2:
+    from packages import chat, movie
 
 MEMORY = Memory()
 
