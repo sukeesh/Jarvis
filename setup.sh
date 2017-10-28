@@ -1,31 +1,62 @@
 #!/bin/bash
-
-jarvispath=$PWD
-touch jarvis
-chmod +rwx jarvis
-exec 3<> jarvis
-    echo "#!/bin/bash" >&3
-    echo "source $jarvispath/env/bin/activate" >&3
-    echo "python $jarvispath/jarviscli/" >&3
-exec 3>&-
-sudo mv jarvis /usr/local/bin/jarvis
+read -n 1 -p "Specify python version(2/3)(Default-3)" answer
+echo ""
+case ${answer:0:1} in
+2 )
+    echo "Selected python version 2"
+;;
+* )
+    echo "Selected python version 3"
+;;
+esac
 
 UNAME=$(uname -s)
+
+jarvispath=$PWD
+
+touch jarvis
+chmod +rwx jarvis
+
+exec 3<> jarvis
+
+    echo "#!/bin/bash" >&3
+
+    if [[ "$UNAME" == "Darwin" ]]; then
+      echo ". $jarvispath/env/bin/activate" >&3
+      
+      case ${answer:0:1} in
+      2 )
+          echo "python $jarvispath/jarviscli/" >&3
+      ;;
+      * )
+          echo "python3 $jarvispath/jarviscli/" >&3
+      ;;
+      esac
+
+    else
+      echo "source $jarvispath/env/bin/activate" >&3
+      echo "python $jarvispath/jarviscli/" >&3
+    fi
+
+exec 3>&-
+
+sudo mv jarvis /usr/local/bin/jarvis
+
 if [[ "$UNAME" == "Darwin" ]]; then
   brew install ffmpeg
   brew install openssl
-  read -n 1 -p "Specify python version(2/3)(Default-3)" answer
   case ${answer:0:1} in
     2 )
         virtualenv env --python=python2.7
+        . env/bin/activate
+        pip install -r requirements.txt
     ;;
     * )
         virtualenv env --python=python3.6
+        . env/bin/activate
+        pip3 install -r requirements.txt
     ;;
   esac
-  . env/bin/activate
-  python --version
-  pip install -r requirements.txt
   exit 0
 fi
 
@@ -35,17 +66,15 @@ if [[ "$?" -eq 2 ]]; then
   sudo pip install virtualenv
 fi
 
-read -n 1 -p "Specify python version(2/3)(Default-3)" answer
 case ${answer:0:1} in
-    2 )
-        virtualenv env --python=python2.7
-    ;;
-    * )
-        virtualenv env --python=python3.6
-    ;;
+  2 )
+      virtualenv env --python=python2.7
+  ;;
+  * )
+      virtualenv env --python=python3.6
+  ;;
 esac
 source env/bin/activate
-python --version
 pip install -r requirements.txt
 
 # Fedora based (>=22)
