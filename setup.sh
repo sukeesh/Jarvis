@@ -33,6 +33,7 @@ elif [[ -f "/etc/apt/sources.list" ]]; then
 elif [[ -f "/etc/pacman.conf" ]]; then
   sudo pacman -S --noconfirm ffmpeg openssl libffi python2-pip python-pip
 
+# MacOS
 UNAME=$(uname -s)
 if [[ "$UNAME" == "Darwin" ]]; then
   brew install ffmpeg
@@ -41,6 +42,9 @@ if [[ "$UNAME" == "Darwin" ]]; then
   . env/bin/activate
   pip install -r requirements.txt
   exit 0
+else
+  echo "Operating system not supported"
+  exit 1
 fi
 
 # Check if sudo is required
@@ -53,11 +57,6 @@ virtualenv env --python=python2.7
 source env/bin/activate
 pip install -r requirements.txt
 
-
-else
-  echo "Operating system not supported"
-  exit 1
-fi
 sudo pip install dbus-python
 
 exit 0
