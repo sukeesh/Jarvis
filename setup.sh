@@ -13,6 +13,8 @@ exec 3>&-
 
 sudo mv jarvis /usr/local/bin/jarvis
 
+UNAME=$(uname -s)
+
 # Fedora based (>=22)
 if [[ -f "/etc/dnf/dnf.conf" ]]; then
   sudo dnf install -y ffmpeg python-pip python-dbus notify-python
@@ -32,10 +34,8 @@ elif [[ -f "/etc/apt/sources.list" ]]; then
 # Arch based
 elif [[ -f "/etc/pacman.conf" ]]; then
   sudo pacman -S --noconfirm ffmpeg openssl libffi python2-pip python-pip
-
-# MacOS
-UNAME=$(uname -s)
-if [[ "$UNAME" == "Darwin" ]]; then
+#Mac
+elif [[ "$UNAME" == "Darwin" ]]; then
   brew install ffmpeg
   brew install openssl
   virtualenv env
@@ -57,5 +57,3 @@ virtualenv env --python=python2.7
 source env/bin/activate
 pip install -r requirements.txt
 pip install dbus-python
-
-exit 0
