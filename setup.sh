@@ -60,6 +60,39 @@ if [[ "$UNAME" == "Darwin" ]]; then
   exit 0
 fi
 
+# Fedora based (>=22)
+if [[ -f "/etc/dnf/dnf.conf" ]]; then
+  sudo dnf install -y ffmpeg python-pip python-dbus notify-python
+  # chromedriver-install
+  wget https://chromedriver.storage.googleapis.com/2.32/chromedriver_linux64.zip
+  unzip chromedriver_linux64_2.3.zip
+  sudo cp chromedriver /usr/bin/chromedriver
+  sudo chown root /usr/bin/chromedriver
+  sudo chmod 755 /usr/bin/chromedriver
+
+# Debian based
+elif [[ -f "/etc/apt/sources.list" ]]; then
+  sudo apt-get install ffmpeg python-imdbpy python-notify2 python3-dbus
+  sudo apt-get install python-dbus python-dbus-dev libssl-dev libffi-dev libdbus-1-dev libdbus-glib-1-dev
+  sudo apt-get install chromium-chromedriver
+
+# Arch based
+elif [[ -f "/etc/pacman.conf" ]]; then
+  sudo pacman -S --noconfirm ffmpeg openssl libffi python2-pip python-pip
+
+# MacOS
+elif [[ "$UNAME" == "Darwin" ]]; then
+  brew install ffmpeg
+  brew install openssl
+  virtualenv env
+  . env/bin/activate
+  pip install -r requirements.txt
+  exit 0
+else
+  echo "Operating system not supported"
+  exit 1
+fi
+
 # Check if sudo is required
 pip install virtualenv
 if [[ "$?" -eq 2 ]]; then
@@ -76,31 +109,6 @@ case ${answer:0:1} in
 esac
 source env/bin/activate
 pip install -r requirements.txt
-
-# Fedora based (>=22)
-if [[ -f "/etc/dnf/dnf.conf" ]]; then
-  sudo dnf install -y ffmpeg python-dbus notify-python
-  # chromedriver-install
-  wget https://chromedriver.storage.googleapis.com/2.32/chromedriver_linux64.zip
-  unzip chromedriver_linux64_2.3.zip
-  sudo cp chromedriver /usr/bin/chromedriver
-  sudo chown root /usr/bin/chromedriver
-  sudo chmod 755 /usr/bin/chromedriver
-
-# Debian based
-elif [[ -f "/etc/apt/sources.list" ]]; then
-  sudo apt-get install ffmpeg python-imdbpy python-notify2 python3-dbus
-  sudo apt-get install python-dbus python-dbus-dev libssl-dev libffi-dev libdbus-1-dev libdbus-glib-1-dev
-  sudo apt-get install chromium-chromedriver
-
-# Arch based
-elif [[ -f "/etc/pacman.conf" ]]; then
-  sudo pacman -S --noconfirm ffmpeg openssl libffi
-
-else
-  echo "Operating system not supported"
-  exit 1
-fi
-sudo pip install dbus-python
+pip install dbus-python
 
 exit 0
