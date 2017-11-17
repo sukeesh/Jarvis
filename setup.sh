@@ -56,7 +56,6 @@ fi
 virtualenv env --python=python2.7
 source env/bin/activate
 pip install -r requirements.txt
-
-sudo pip install dbus-python
+pip install dbus-python
 
 exit 0
