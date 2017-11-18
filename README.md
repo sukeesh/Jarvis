@@ -12,9 +12,9 @@ Jarvis is a simple personal assistant for Linux and MacOS which works on termina
 
 In order to start Jarvis just clone the repository and run `./setup.sh`
 
-Run **Jarvis** from anywhere by command `jarvis`
+Activate virtual enviroment `. env/bin/activate`
 
-On Mac OS X don't forget to activate virtual enviroment before run jarvis with the command `. env/bin/activate`
+Run **Jarvis** from anywhere by command `jarvis`
 
 You can start by typing `help` within the Jarvis command line to check what Jarvis can do for you.
 
