@@ -21,7 +21,8 @@ python-dateutil
 mock==2.0.0
 notify2
 pync==1.6.1
-IMDbPY; python_version <= '2.7'
+IMDbPY==5.1.1; python_version <= '2.7'
+IMDbPY==6.0; python_version >= '3.5'
 pyperclip
 pycricbuzz
 wikipedia
