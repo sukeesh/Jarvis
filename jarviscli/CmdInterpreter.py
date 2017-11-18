@@ -83,6 +83,7 @@ class CmdInterpreter(Cmd):
                         {"movie": ("cast", "director", "plot", "producer", "rating", "year",)},
                         "movies",
                         "music",
+                        "mute",
                         "near",
                         "news",
                         {"open": ("camera",)},
@@ -799,3 +800,14 @@ class CmdInterpreter(Cmd):
         print_say("enter wiki search for searching related topics", self)
         print_say("enter wiki summary for getting summary of the topic", self)
         print_say("wiki content for full page article of topic", self)
+
+    def do_mute(self, s):
+        """Silences your speaker's sound."""
+        if IS_MACOS:
+            pass
+        else:
+            system("pactl -- set-sink-mute 0 toggle")
+
+    def help_mute(self):
+        """Print help about mute command."""
+        print_say("mute: Silences your speaker's sound.", self)

@@ -42,6 +42,7 @@ exec 3>&-
 
 sudo mv jarvis /usr/local/bin/jarvis
 
+#MacOS
 if [[ "$UNAME" == "Darwin" ]]; then
   brew install ffmpeg
   brew install openssl
@@ -80,24 +81,12 @@ elif [[ -f "/etc/apt/sources.list" ]]; then
 elif [[ -f "/etc/pacman.conf" ]]; then
   sudo pacman -S --noconfirm ffmpeg openssl libffi python2-pip python-pip
 
-# MacOS
-elif [[ "$UNAME" == "Darwin" ]]; then
-  brew install ffmpeg
-  brew install openssl
-  virtualenv env
-  . env/bin/activate
-  pip install -r requirements.txt
-  exit 0
 else
   echo "Operating system not supported"
   exit 1
 fi
 
-# Check if sudo is required
-pip install virtualenv
-if [[ "$?" -eq 2 ]]; then
-  sudo pip install virtualenv
-fi
+sudo pip install virtualenv
 
 case ${answer:0:1} in
   2 )
@@ -107,8 +96,7 @@ case ${answer:0:1} in
       virtualenv env --python=python3.6
   ;;
 esac
+
 source env/bin/activate
 pip install -r requirements.txt
 pip install dbus-python
-
-exit 0
