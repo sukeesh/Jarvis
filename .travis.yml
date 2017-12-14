@@ -1,6 +1,7 @@
-
 language: python
 matrix:
+  allow_failures:
+    - os: osx
   include:
     - os: linux
       python: 2.7
@@ -19,6 +20,11 @@ addons:
     packages:
       - python-imdbpy
       - python-notify2
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sudo easy_install pip; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sudo pip install virtualenv; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then virtualenv env; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then . env/bin/activate; fi
 install:
   - pip install -r requirements.txt
 script:
