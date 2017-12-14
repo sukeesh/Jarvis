@@ -29,9 +29,9 @@ from packages.fb import fb_login
 from packages.twitter import twitter_login, twitter_tweet, twitter_end
 from packages.cricket import score
 from packages.quote import show_quote
+from packages.hackathon import find_hackathon
 if six.PY2:
     from packages import chat
-
 MEMORY = Memory()
 
 CONNECTION_ERROR_MSG = "You are not connected to Internet"
@@ -75,6 +75,7 @@ class CmdInterpreter(Cmd):
                         "file_organise",
                         "fb",
                         "goodbye",
+                        "hackathon",
                         {"hotspot": ("start", "stop")},
                         "how_are_you",
                         {"increase": ("volume",)},
@@ -373,6 +374,14 @@ class CmdInterpreter(Cmd):
     def help_goodbye(self):
         """Closing Jarvis."""
         print_say("Close Jarvis", self)
+
+    def do_hackathon(self, s=None):
+        """Find upcoming hackathons from hackerearth"""
+        find_hackathon(self)
+
+    def help_hackathon(self):
+        """Prints help about hackathon command."""
+        print_say("Find upcoming hackathons from hackerearth", self)
 
     @unsupported(platform=MACOS)
     def do_hotspot(self, s):
