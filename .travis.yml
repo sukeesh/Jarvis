@@ -1,4 +1,3 @@
-
 language: python
 matrix:
   include:
@@ -14,6 +13,7 @@ addons:
       - python-imdbpy
       - python-notify2
 install:
+  - ./.travis/install.sh
   - pip install -r requirements.txt
 script:
   - cd $TRAVIS_BUILD_DIR/
