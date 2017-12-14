@@ -13,3 +13,6 @@ env/
 MANIFEST.in
 setup.cfg
 setup.py
+jarviscli/packages/ghostdriver.log
+npm-debug.log
+ghostdriver.log
