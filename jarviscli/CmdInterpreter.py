@@ -29,6 +29,7 @@ from packages.twitter import twitter_login, twitter_tweet, twitter_end
 from packages.cricket import score
 from packages.quote import show_quote
 from packages.hackathon import find_hackathon
+from packages import translate
 MEMORY = Memory()
 
 CONNECTION_ERROR_MSG = "You are not connected to Internet"
@@ -102,7 +103,8 @@ class CmdInterpreter(Cmd):
                         "umbrella",
                         {"update": ("location", "system")},
                         "weather",
-                        {"wiki": ("search", "summary", "content")}
+                        {"wiki": ("search", "summary", "content")},
+                        "translate"
                         )
 
         self.fixed_responses = {"what time is it": "clock",
@@ -815,3 +817,11 @@ class CmdInterpreter(Cmd):
     def help_mute(self):
         """Print help about mute command."""
         print_say("mute: Silences your speaker's sound.", self)
+
+    def do_translate(self,s):
+        """Translates text from one language (source) to another(destination)"""
+        translate.main(self)
+
+    def help_translate(self):
+        """Print help for translate function"""
+        print_say("translates from one language to another." ,self)
