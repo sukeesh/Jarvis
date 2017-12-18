@@ -818,10 +818,10 @@ class CmdInterpreter(Cmd):
         """Print help about mute command."""
         print_say("mute: Silences your speaker's sound.", self)
 
-    def do_translate(self,s):
+    def do_translate(self, s):
         """Translates text from one language (source) to another(destination)"""
         translate.main(self)
 
     def help_translate(self):
         """Print help for translate function"""
-        print_say("translates from one language to another." ,self)
+        print_say("translates from one language to another.", self)
