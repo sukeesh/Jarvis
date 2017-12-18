@@ -19,11 +19,6 @@ def main(self):
         else:
             print_say("\nInvalid source language\nEnter again", self)
             srcs = raw_input()
-
-    '''
-        destination language
-    '''
-
     print_say('\nEnter destination language ', self)
     des = raw_input()
     while (des not in LANGUAGES) and (des not in SPECIAL_CASES) and (des not in LANGCODES):
