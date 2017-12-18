@@ -36,9 +36,9 @@ def main(self):
             des = raw_input()
 
     '''
-        text to be translated  
+        text to be translated
     '''
-    
+
     print_say('\nEnter text ', self)
     tex = raw_input()
     translator = Translator()
