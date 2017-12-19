@@ -28,3 +28,4 @@ pycricbuzz
 wikipedia
 flake8
 autopep8
+googletrans
