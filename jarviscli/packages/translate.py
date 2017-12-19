@@ -29,11 +29,6 @@ def main(self):
         else:
             print_say("\nInvalid destination language\nEnter again", self)
             des = raw_input()
-
-    '''
-        text to be translated
-    '''
-
     print_say('\nEnter text ', self)
     tex = raw_input()
     translator = Translator()
