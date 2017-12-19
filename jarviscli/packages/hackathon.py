@@ -20,4 +20,4 @@ def find_hackathon(self):
             date_time = hackathon.find('div', {'class': 'challenge-list-meta challenge-card-wrapper'}).text.replace("\n", " ").strip()
             print("[{}] {}\n{}\n{}\n\n".format(str(i), challenge_name, challenge_type, date_time))
     else:
-        print "No hackathon data found."
+        print("No hackathon data found.")
