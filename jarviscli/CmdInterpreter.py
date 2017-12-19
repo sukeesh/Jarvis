@@ -99,12 +99,12 @@ class CmdInterpreter(Cmd):
                         "shutdown",
                         "todo",
                         {"tell": ("joke",)},
+                        "translate",
                         {"twitter": ("login", "tweet")},
                         "umbrella",
                         {"update": ("location", "system")},
                         "weather",
-                        {"wiki": ("search", "summary", "content")},
-                        "translate"
+                        {"wiki": ("search", "summary", "content")}
                         )
 
         self.fixed_responses = {"what time is it": "clock",
@@ -712,6 +712,14 @@ class CmdInterpreter(Cmd):
         print("\tpriority <index> [<level>]")
         print("\tlist")
 
+    def do_translate(self, s):
+        """Translates text from one language (source) to another(destination)"""
+        translate.main(self)
+
+    def help_translate(self):
+        """Print help for translate function"""
+        print_say("translates from one language to another.", self)
+
     def do_twitter(self, s):
         """Jarvis will login into your facebook account either by prompting id-password or by using previously saved"""
         if "login" in s:
@@ -817,11 +825,3 @@ class CmdInterpreter(Cmd):
     def help_mute(self):
         """Print help about mute command."""
         print_say("mute: Silences your speaker's sound.", self)
-
-    def do_translate(self, s):
-        """Translates text from one language (source) to another(destination)"""
-        translate.main(self)
-
-    def help_translate(self):
-        """Print help for translate function"""
-        print_say("translates from one language to another.", self)
