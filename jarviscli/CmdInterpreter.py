@@ -30,6 +30,7 @@ from packages.cricket import score
 from packages.quote import show_quote
 from packages.hackathon import find_hackathon
 from packages import translate
+from packages.dictionary import dictionary
 MEMORY = Memory()
 
 CONNECTION_ERROR_MSG = "You are not connected to Internet"
@@ -64,6 +65,7 @@ class CmdInterpreter(Cmd):
                         "clock",
                         "cricket",
                         {"decrease": ("volume",)},
+                        "dictionary",
                         "directions",
                         {"disable": ("sound",)},
                         {"display": ("pics",)},
@@ -263,6 +265,14 @@ class CmdInterpreter(Cmd):
     def complete_decrease(self, text, line, begidx, endidx):
         """Completions for decrease command"""
         return self.get_completions("decrease", text)
+
+    def do_dictionary(self, s):
+        """Returns meaning, synonym and antonym of any english word"""
+        dictionary(self)
+
+    def help_dictionary(self):
+        """Print help about dictionary feature"""
+        print_say("Get meaning, synonym and antonym of any word", self)
 
     def do_directions(self, data):
         """Get directions about a destination you are interested to."""
