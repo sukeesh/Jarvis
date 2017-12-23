@@ -29,6 +29,7 @@ from packages.twitter import twitter_login, twitter_tweet, twitter_end
 from packages.cricket import score
 from packages.quote import show_quote
 from packages.hackathon import find_hackathon
+from packages import translate
 MEMORY = Memory()
 
 CONNECTION_ERROR_MSG = "You are not connected to Internet"
@@ -98,6 +99,7 @@ class CmdInterpreter(Cmd):
                         "shutdown",
                         "todo",
                         {"tell": ("joke",)},
+                        "translate",
                         {"twitter": ("login", "tweet")},
                         "umbrella",
                         {"update": ("location", "system")},
@@ -709,6 +711,14 @@ class CmdInterpreter(Cmd):
         print("\tcomplete <index> [<completion>]")
         print("\tpriority <index> [<level>]")
         print("\tlist")
+
+    def do_translate(self, s):
+        """Translates text from one language (source) to another(destination)"""
+        translate.main(self)
+
+    def help_translate(self):
+        """Print help for translate function"""
+        print_say("translates from one language to another.", self)
 
     def do_twitter(self, s):
         """Jarvis will login into your facebook account either by prompting id-password or by using previously saved"""

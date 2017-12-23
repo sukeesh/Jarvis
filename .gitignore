@@ -12,7 +12,7 @@ env/
 .idea/
 MANIFEST.in
 setup.cfg
-setup.pyjarviscli/CmdInterpreter.py
-jarviscli/packages/hackathon.py
+setup.py
 jarviscli/packages/ghostdriver.log
 npm-debug.log
+ghostdriver.log
