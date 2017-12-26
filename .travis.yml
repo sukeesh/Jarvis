@@ -13,8 +13,10 @@ matrix:
       env: TOXENV=py27
     - os: linux
       python: 3.6
+      cache: pip
       env: TOXENV=py36
     - os: osx
+      cache: pip
       language: generic
       env: TOXENV=py36
 addons:
