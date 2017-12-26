@@ -1,0 +1,33 @@
+
+  IMDb's web site redesign
+  ========================
+
+On September 2010 the IMDb web pages had a major redesign.
+With IMDbPY 4.7 we're trying to parse the new web pages,
+but it will take some time before all the bugs are fixed.
+
+Any help (fixing parsers or simple bug reports) is greatly
+appreciated.
+
+Beware that:
+- the "httpThin" data access method is badly broken and
+  probably it will not fixed.
+- the "mobile" data access method can be partially broken,
+  and will be fixed: please report any problem.
+- some of the information in these keys could be somewhat
+  ruined: soundtrack, awards, episodes rating, faqs.
+- information about series were not extensively tested.
+- it's possible that some information will be missing, like
+  "in development" movies.
+
+The above problems, with the exception of "httpThin" will be
+fixed in future releases.
+
+Notes about the code: we have a very powerful and efficient
+parsing infrastructure, but after many releases and so many
+changes of the IMDb pages, some of the main parsers are showing
+their age.  So, parsers for main information about movies and
+persons should be probably rewritten from scratch, and the same
+applies to helper functions like "build_person" and "build_movie"
+in imdb.parser.http.utils.
+

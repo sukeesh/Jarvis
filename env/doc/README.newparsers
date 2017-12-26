@@ -1,0 +1,81 @@
+  IMDbPY'S NEW HTML PARSERS
+  =========================
+
+Since version 3.7, IMDbPY has moved its parsers for the HTML of
+the IMDb's website from a set of subclasses of SGMLParser (they
+were finite-states machines, being SGMLParser a SAX parser) to
+a set of parsers based on the libxml2 library or on the BeautifulSoup
+module (and so, using a DOM/XPath-based approach).
+The idea and the implementation of these new parsers is mostly a
+work of H. Turgut Uyar, and can bring to parsers that are shorter,
+easier to write and maybe even faster.
+
+The old set of parsers was removed since IMDbYP 4.0.
+
+
+  LIBXML AND/OR BEAUTIFULSOUP
+  ===========================
+
+To use "lxml", you need the libxml2 library installed (and its
+python-lxml binding).  If it's not present on your system, you'll
+fall-back to BeautifulSoup - distributed alongside IMDbPY, and so
+you don't need to install anything.
+However, beware that being pure-Python, BeautifulSoup is much
+slower than lxml, so install it, if you can.
+
+If for some reason you can't get lxml and BeautifulSoup is too
+slow for your needs, consider the use of the 'mobile' data
+access system.
+
+
+  GETTING LIBXML, LIBXSLT AND PYTHON-LXML
+  =======================================
+
+If you're in a Microsoft Windows environment, all you need is
+python-lxml (it includes all the required libraries), which can
+be downloaded from here:
+  http://pypi.python.org/pypi/lxml/
+
+Otherwise, if you're in a Unix environment, you can download libxml2
+and libxslt from here (you need both, to install python-lxml):
+  http://xmlsoft.org/downloads.html
+  http://xmlsoft.org/XSLT/downloads.html
+
+The python-lxml package can be found here:
+  http://codespeak.net/lxml/index.html#download
+
+Obviously you should first check if these libraries are already
+packaged for your distribution/operating system.
+
+IMDbPY was tested with libxml2 2.7.1, libxslt 1.1.24 and
+python-lxml python-lxml 2.1.1.  Older versions can work, too; if
+you have problems, submit a bug report specifying your versions.
+
+You can also get the latest version of BeautifulSoup from here:
+  http://www.crummy.com/software/BeautifulSoup/
+but since it's distributed with IMDbPY, you don't need it (or
+you have to override the '_bsoup.py' file in the imdb/parser/http
+directory), and this is probably not a good idea, since newer versions
+of BeautifulSoup behave in new and unexpected ways.
+
+
+  USING THE OLD PARSERS
+  =====================
+
+The old set of parsers was removed since IMDbYP 4.0.
+
+
+  FORCING LXML OR BEAUTIFULSOUP
+  =============================
+
+By default, IMdbPY uses python-lxml, if it's installed.
+You can force the use of one given parser passing the 'useModule'
+parameter.  Valid values are 'lxml' and 'BeautifulSoup'.  E.g.:
+    from imdb import IMDb
+    ia = IMDb('http', useModule='BeautifulSoup')
+    ...
+
+useModule can also be a list/tuple of strings, to specify the
+preferred order.
+
+

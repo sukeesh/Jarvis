@@ -1,0 +1,97 @@
+Metadata-Version: 2.0
+Name: SQLObject
+Version: 3.5.0
+Summary: Object-Relational Manager, aka database wrapper
+Home-page: http://sqlobject.org/
+Author: Oleg Broytman
+Author-email: phd@phdru.name
+License: LGPL
+Download-URL: https://pypi.python.org/pypi/SQLObject/3.5.0
+Description-Content-Type: UNKNOWN
+Keywords: sql,orm,object-relational mapper
+Platform: Any
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: Database
+Classifier: Topic :: Database :: Front-Ends
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires: FormEncode
+Requires: PyDispatcher
+Requires-Dist: FormEncode (!=1.3.0,>=1.1.1)
+Requires-Dist: PyDispatcher (>=2.0.4)
+Provides-Extra: adodbapi
+Requires-Dist: adodbapi; extra == 'adodbapi'
+Provides-Extra: fdb
+Requires-Dist: fdb; extra == 'fdb'
+Provides-Extra: firebirdsql
+Requires-Dist: firebirdsql; extra == 'firebirdsql'
+Provides-Extra: kinterbasdb
+Requires-Dist: kinterbasdb; extra == 'kinterbasdb'
+Provides-Extra: mysql
+Requires-Dist: MySQLdb; extra == 'mysql'
+Provides-Extra: mysql-connector
+Requires-Dist: mysql-connector; extra == 'mysql-connector'
+Provides-Extra: odbc
+Requires-Dist: pyodbc; extra == 'odbc'
+Provides-Extra: oursql
+Requires-Dist: oursql; extra == 'oursql'
+Provides-Extra: pg8000
+Requires-Dist: pg8000; extra == 'pg8000'
+Provides-Extra: postgres
+Requires-Dist: psycopg2; extra == 'postgres'
+Provides-Extra: postgresql
+Requires-Dist: psycopg2; extra == 'postgresql'
+Provides-Extra: psycopg
+Requires-Dist: psycopg2; extra == 'psycopg'
+Provides-Extra: psycopg1
+Requires-Dist: psycopg1; extra == 'psycopg1'
+Provides-Extra: psycopg2
+Requires-Dist: psycopg2; extra == 'psycopg2'
+Provides-Extra: py-postgresql
+Requires-Dist: py-postgresql; extra == 'py-postgresql'
+Provides-Extra: pygresql
+Requires-Dist: pygresql; extra == 'pygresql'
+Provides-Extra: pymssql
+Requires-Dist: pymssql; extra == 'pymssql'
+Provides-Extra: pymysql
+Requires-Dist: pymysql; extra == 'pymysql'
+Provides-Extra: pyodbc
+Requires-Dist: pyodbc; extra == 'pyodbc'
+Provides-Extra: pypostgresql
+Requires-Dist: py-postgresql; extra == 'pypostgresql'
+Provides-Extra: pypyodbc
+Requires-Dist: pypyodbc; extra == 'pypyodbc'
+Provides-Extra: sapdb
+Requires-Dist: sapdb; extra == 'sapdb'
+Provides-Extra: sqlite
+Requires-Dist: pysqlite; extra == 'sqlite'
+Provides-Extra: sybase
+Requires-Dist: Sybase; extra == 'sybase'
+
+SQLObject is a popular *Object Relational Manager* for providing an
+object interface to your database, with tables as classes, rows as
+instances, and columns as attributes.
+
+SQLObject includes a Python-object-based query language that makes SQL
+more abstract, and provides substantial database independence for
+applications.
+
+Supports MySQL, PostgreSQL, SQLite, Firebird, Sybase, MSSQL and MaxDB (SAPDB).
+Python 2.7 or 3.4+ is required.
+
+For development see the projects at
+`SourceForge <https://sourceforge.net/projects/sqlobject/>`_
+and `GitHub <https://github.com/sqlobject>`_.
+
+.. image:: https://travis-ci.org/sqlobject/sqlobject.svg?branch=master
+  :target: https://travis-ci.org/sqlobject/sqlobject
+
+

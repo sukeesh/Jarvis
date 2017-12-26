@@ -1,0 +1,15 @@
+  DISCLAIMER
+  ==========
+
+IMDbPY (and the author) is not affiliated with Internet Movie Database Inc.
+
+IMDb is a trademark of Internet Movie Database Inc. and all contents
+and data included on the IMDb's site is the property of IMDb or its
+content suppliers and protected by United States and international
+copyright laws.
+
+Please, read the IMDb's conditions of use in their website:
+  - http://www.imdb.com/help/show_article?conditions
+  - http://www.imdb.com/help/show_leaf?usedatasoftware
+  - any other notice in the http://www.imdb.com/ site.
+

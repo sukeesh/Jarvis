@@ -1,0 +1,41 @@
+
+  KEYWORDS
+  ========
+
+Since version 4.0, it's possible (for every data access system) to
+search for movies' keywords.
+People's keywords are not supported.
+
+
+  SEARCH FOR A KEYWORD SIMILAR TO A GIVEN STRING
+  ==============================================
+
+The search_keyword(unicode_string) can be used to search amongst
+keywords: a list of keywords similar to the given string will be
+returned, sorted by similarity.  Notice that the keywords in the
+returned list are plain unicode strings, and not instances of
+some class (like the ones returned by other search_SOMETHING methods).
+
+E.g.:
+  from imdb import IMDb
+  ia = IMDb('http')
+  print ia.search_keyword(u'alabama')
+
+
+  GET A LIST OF MOVIES FOR A GIVEN KEYWORD
+  ========================================
+
+To get a list of movies that are tagged with the given keyword,
+use the get_keyword(unicode_string) method.
+E.g.:
+  from imdb import IMDb
+  ia = IMDb('http')
+  print ia.get_keyword(u'alabama')
+
+Beware that by default the list is limited to 100 movies, and
+it's not possible to get more results, using 'http'.
+Moreover, the lists returned using 'sql' are not sorted in any way.
+Another limit is that actually (as of february 2009), the IMDb's
+web server is unable to serve pages about non-ascii keywords.
+It's a known problem of their systems.
+

@@ -1,0 +1,15 @@
+
+  LOGGING
+  =======
+
+Since version 4.4 IMDbPY provides a logging facility, using the
+powerful "logging" module.
+You can find documentation about it here:
+  http://docs.python.org/library/logging.html
+
+By default information are logged on standard error; you can read
+on the module documentation how to stream them elsewhere.
+
+The default logging level is "warning"; this can be changed
+modifying the "loggingLevel" key of your imdbpy.cfg file.
+
