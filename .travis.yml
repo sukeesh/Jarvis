@@ -24,10 +24,29 @@ addons:
     packages:
       - python-imdbpy
       - python-notify2
+before_install:
+  - if [["$TRAVIS_OS_NAME" == "osx"] && ["$TOXENV" == "py27"]]; then
+      brew install python;
+    fi
+  - if [["$TRAVIS_OS_NAME" == "osx"] && ["$TOXENV" == "py36"]]; then
+      brew install python3;
+    fi
 install:
-  - pip install -r requirements.txt
+  - if [["$TRAVIS_OS_NAME" == "osx"] && ["$TOXENV" == "py27"]]; then
+      pip2 install -r requirements.txt;
+    elif [["$TRAVIS_OS_NAME" == "osx"] && ["$TOXENV" == "py27"]]; then
+      pip3 install -r requirements.txt;
+    else
+      pip install -r requirements.txt;
+    fi
 script:
   - cd $TRAVIS_BUILD_DIR/
   - flake8 --select E,W --max-line-length=140 --ignore E722 jarviscli/
   - cd jarviscli/
-  - python -m unittest discover
+  - if [["$TRAVIS_OS_NAME" == "osx"] && ["$TOXENV" == "py27"]]; then
+      python2 -m unittest discover
+    elif [["$TRAVIS_OS_NAME" == "osx"] && ["$TOXENV" == "py27"]]; then
+      python3 -m unittest discover
+    else
+      python -m unittest discover
+    fi
