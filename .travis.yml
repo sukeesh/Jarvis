@@ -5,9 +5,11 @@ matrix:
   include:
     - os: linux
       python: 2.7
+      cache: pip
       env: TOXENV=py27
     - os: osx
       language: generic
+      cache: pip
       env: TOXENV=py27
     - os: linux
       python: 3.6
