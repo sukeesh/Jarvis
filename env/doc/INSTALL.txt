@@ -1,0 +1,8 @@
+  INSTALLATION
+  ============
+
+See the "README.txt" file.
+
+You've to read it anyway, isn't it? <g>
+
+

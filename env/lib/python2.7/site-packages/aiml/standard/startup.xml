@@ -1,0 +1,47 @@
+<aiml version="1.0">
+
+<!-- This category works with the Standard AIML Set -->
+<category>
+<pattern>LOAD AIML B</pattern>
+<template>
+
+<!-- Load standard AIML set -->
+<learn>std-65percent.aiml</learn>
+<learn>std-atomic.aiml</learn>
+<learn>std-botmaster.aiml</learn>
+<learn>std-brain.aiml</learn>
+<learn>std-connect.aiml</learn>
+<learn>std-dictionary.aiml</learn>
+<learn>std-disconnect.aiml</learn>
+<learn>std-dont.aiml</learn>
+<learn>std-errors.aiml</learn>
+<learn>std-gender.aiml</learn>
+<learn>std-geography.aiml</learn>
+<learn>std-german.aiml</learn>
+<learn>std-gossip.aiml</learn>
+<learn>std-hello.aiml</learn>
+<learn>std-inactivity.aiml</learn>
+<learn>std-inventions.aiml</learn>
+<learn>std-knowledge.aiml</learn>
+<learn>std-lizards.aiml</learn>
+<learn>std-login.aiml</learn>
+<learn>std-numbers.aiml</learn>
+<learn>std-personality.aiml</learn>
+<learn>std-pickup.aiml</learn>
+<learn>std-politics.aiml</learn>
+<learn>std-profile.aiml</learn>
+<learn>std-religion.aiml</learn>
+<learn>std-robot.aiml</learn>
+<learn>std-sales.aiml</learn>
+<learn>std-sextalk.aiml</learn>
+<learn>std-sports.aiml</learn>
+<learn>std-srai.aiml</learn>
+<learn>std-suffixes.aiml</learn>
+<learn>std-that.aiml</learn>
+<learn>std-turing.aiml</learn>
+<learn>std-yesno.aiml</learn>
+
+</template>
+</category>
+
+</aiml>

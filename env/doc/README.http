@@ -1,0 +1,20 @@
+  IMDbPY HTTP CONNECTION
+  ======================
+
+HTTP is the default data access system of IMDbPY, meaning that by default
+data are requested at the IMDb web servers.
+For other kinds of data access, see README.sqldb and README.mobile.
+
+By default IMDbPY uses its own account to access the IMDb web server (this
+is done to enable searches on adult titles); if you want to uses your own
+account, see README.adult.
+
+  CONNECTION PROBLEMS
+  ===================
+
+It has been reported some kind of problems connecting to the IMDb servers;
+the problem seems to be related to the use of our cookie and the geographical
+location of the user.
+If you experience such a problem, report it and try to disable the use of the
+cookie (to do so, see README.adult).
+

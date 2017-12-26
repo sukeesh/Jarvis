@@ -1,0 +1,78 @@
+  OTHER AUTHORS
+  =============
+
+People who contributed with a substantial amount of work and that
+share the copyright over some portions of the code:
+
+NAME: H. Turgut Uyar
+EMAIL: <uyar --> tekir.org>
+CONTRIBUTION: the whole new "http" data access system (using a DOM and
+XPath-based approach) is based on his work.  The imdbpykit interface
+was mostly written by him and he holds the copyright over the whole
+code (with some portions shared with others).
+
+
+NAME: Giuseppe "Cowo" Corbelli
+EMAIL: <cowo --> lugbs.linux.it>
+CONTRIBUTION: provided a lot of code and hints to integrate IMDbPY
+with SQLObject, working on the imdbpy2sql.py script and the dbschema.py
+module.
+
+
+Actually, besides Turgut, Giuseppe and me, these other people are
+listed as developers for the IMDbPY project on sourceforge and may
+share copyright on some (minor) portions of the code:
+
+NAME: Alberto Malagoli
+CONTRIBUTION: developed the new web site, and detains the copyright of it,
+and provided helper functions and other code.
+
+
+NAME: Martin Kirst
+EMAIL: <martin.kirst --> s1998.tu-chemnitz.de>
+CONTRIBUTION: has done an important refactoring of the imdbpyweb
+program and shares with me the copyright on the whole program.
+
+
+NAME: Jesper Nøhr
+EMAIL: <jesper --> noehr.org>
+CONTRIBUTION: provided extensive testing and some patches for
+the 'http' data access system.
+
+
+NAME: Joachim Selke
+EMAIL: <j.selke --> tu-bs.de>
+CONTRIBUTION: many tests on IBM DB2 and work on the CSV support.
+
+
+NAME: Timo Schulz
+EMAIL: <gnuknight --> users.sourceforge.net>
+CONTRIBUTION: did a lot of work 'sql', DB2 and CSV support and
+extensive analysis aimed at diff files support.
+
+NAME: Roy Stead
+EMAIL: <roystead247 --> gmail.com>
+CONTRIBUTION: provided the download_applydiffs.py script.
+
+
+  TRANSLATORS
+  ===========
+
+Additional translations were provided by:
+ - strel (Spanish)
+ - Stéphane Aulery (French)
+ - RainDropR (Arabic)
+ - Atanas Kovachki (Bulgarian)
+ - lukophron (French)
+ - Raphael (German)
+
+
+  DONATIONS
+  =========
+
+We'd like to thank these persons for their donations:
+ - Oleg Peil
+ - Diego Sarmentero
+ - Fabian Winter
+ - Lacroix Scott
+

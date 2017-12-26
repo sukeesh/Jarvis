@@ -1,0 +1,114 @@
+  IMDbPY FOR SMALL SYSTEMS
+  ========================
+
+Since version 1.8, IMDbPY tries to be usable even on
+systems with very limited storage space, bandwidth and
+CPU power, like PDA, hand-held devices and mobile phones.
+
+Sections in this file:
+* INSTALLATION OPTIONS
+  how to save a little space installing IMDbPY.
+* THE "MOBILE" DATA ACCESS SYSTEM
+  useful for systems with very little CPU power and bandwidth.
+* THE "HTTPTHIN" DATA ACCESS SYSTEM
+  for systems with normal CPU power, but insufficient bandwidth.
+* OTHER TIPS
+
+Please read all the following section.
+
+
+  INSTALLATION OPTIONS
+  ====================
+
+You can call the setup.py script with some arguments:
+
+The --without-sql argument, if used, will excludes the parser.sql
+package; you don't need it if your system does not have any of the
+SQLObject or SQLAlchemy packages and/or you don't want to store the
+whole IMDb's plain text database files in a SQL database.
+
+Now, if you're installing IMDbPY (using ./setup.py install), you
+should take a look at some options, like "--no-compile" and "-O0"
+to exclude pyc  and pyo files, saving hundreds of KBs.
+
+Moreover, if you're creating a package (rpm, deb or whatever),
+in the setup.cfg you can exclude from your package things
+like the documentation (more than 200Kb) and the scripts in the
+./bin/ directory.
+
+
+  THE "MOBILE" DATA ACCESS SYSTEM
+  ===============================
+
+Intended to be used with PDA, smart phones and hand-held devices,
+the "mobile" data access system is a subclass of the default
+"httpThin" data access system, with some methods replaced with faster
+string methods, instead of the html parser.  Moreover, for
+the movies, only the main information are retrieved (see the 'httpThin'
+notes).  It should be, at usage time, from 2 to 20 times faster than
+the "http"/"httpThin" data access system.
+
+This code still needs tests on mobile phones!
+Please report any bugs/ideas/hints...
+
+Usage:
+  from imdb import IMDb
+  i = IMDb('mobile')
+  sp = i.search_person('mel gibson', results=10)
+  p = sp[0]
+  i.update(p)
+  sm = i.search_movie('mystic river', results=15)
+  m = sm[0]
+  i.update(m)
+  ...and so on...
+
+
+A GUI for Series 60 smart phones, is available at:
+  http://imdbpy.sourceforge.net/?page=mobile
+
+
+  THE "HTTPTHIN" DATA ACCESS SYSTEM
+  =================================
+
+Instead of the default data access system ('http'), you can
+also use 'httpThin' (or 'webThin' or 'htmlThin').
+
+I.e.:
+  from imdb import IMDb
+  i = IMDb('httpThin')
+  sp = i.search_person('mel gibson', results=10)
+  sm = i.search_movie('mystic river', results=15)
+  ...and so on...
+
+
+The main difference is that, parsing movies' information,
+the "maindetails" page is parsed, in place of the "combined" page.
+This reduces the required bandwidth and the CPU power needed.
+Obviously a lot of information are lost (and only the first 15
+people of the cast are listed), but it still retrieves everything
+you usually need (director, writer, runtime, country, language, akas,
+etc.)
+
+Another difference is that, if the "defaultModFuct" parameter is not
+provided (as default) calling the IMDb() function, no references
+to people or movie are collected from textual information (like
+the plot of a movie).
+
+
+  OTHER TIPS
+  ==========
+
+Remember that, calling the search_movie(), search_episode() and
+search_person() methods of the "IMDb" object, you can provide a "results"
+parameter, to download only a limited amount of results (20,
+by default).
+
+With the http, httpThin and mobile data access systems you can
+set a proxy with the set_proxy() method; e.g.:
+  i = IMDb('http')
+  i.set_proxy('http://localhost:8080/')
+
+Remember that the proxy is automatically used if the $HTTP_PROXY
+environment variable is set.
+
+

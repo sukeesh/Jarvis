@@ -1,0 +1,18 @@
+  LOCAL INSTALLATION
+  ==================
+
+Simple instruction: switch to 'sql' (see the README.sqldb file).
+
+The 'local' data access system was removed since IMDbPY 4.2, for
+a series of good reasons:
+- the moviedb program was no more distributed by IMDb.
+- the new format for movie titles ("The Title" instead of "Title, The")
+  created way too many problems almost impossible to fix, since a lot
+  of damage was done by the - never updated - moviedb program.
+- it was slower and less complete than 'sql'.
+- there were very few users of it.
+
+
+If you are veeery willing to resuscitate it, you can write in
+the mailing list about your crazy idea. :-)
+

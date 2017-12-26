@@ -1,0 +1,4 @@
+#!/bin/bash
+DIR="$( cd "$( dirname "$0" )" && pwd )"
+PYTHON=$(which python)
+exec $PYTHON $DIR/gtts-cli.py "$@" 

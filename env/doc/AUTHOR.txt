@@ -1,0 +1,22 @@
+
+NOTE: see also CONTRIBUTORS.txt for a list of developers of important
+portions of the code and CREDITS.txt for a list of people who
+contributed with hints, patches and so on.
+
+
+AUTHOR: Davide Alberani
+
+e-mail:		da@erlug.linux.it or alberanid@libero.it
+IMDbPY page:	http://imdbpy.sf.net/
+my homepage:	http://erlug.linux.it/~da/ (Italian)
+my cine-blog:	http://cinemelma.blogspot.com/ (Italian)
+Jabber ID:	alberanid@jabber.linux.it (I'm on-line only from time to time)
+ICQ UIN:	83641305 (nick 'Mad77') (I'm on-line only from time to time)
+PGP KeyID:	0x465BFD47 (the key is available in my homepage and
+				through every keyserver)
+
+Sometimes (very seldom) you can find me in IRC on channels #python,
+#linux-it and so on over irc.freenode.net with the nick 'Mad77'.
+
+Feel free to contact me for any ideas, bug reports and everything else. :-)
+

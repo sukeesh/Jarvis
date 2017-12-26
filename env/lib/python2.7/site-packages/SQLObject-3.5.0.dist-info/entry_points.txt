@@ -1,0 +1,4 @@
+
+    [paste.filter_app_factory]
+    main = sqlobject.wsgi_middleware:make_middleware
+    

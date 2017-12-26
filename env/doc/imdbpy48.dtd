@@ -1,0 +1,1061 @@
+<!--
+
+     XML Document Type Definition for IMDbPY 4.8.
+
+     http://imdbpy.sf.net/dtd/imdbpy48.dtd
+
+     Copyright 2009 H. Turgut Uyar <uyar@tekir.org>
+          2009-2011 Davide Alberani <da@erlug.linux.it>
+
+ -->
+
+<!ENTITY % common.attrs 'id	CDATA	#IMPLIED
+	key	CDATA	#IMPLIED
+	type	CDATA	#IMPLIED
+	keytype	CDATA	#IMPLIED
+	title	CDATA	#IMPLIED'>
+
+
+<!ELEMENT movie (
+    airing
+  | akas
+  | akas-from-release-info
+  | alternate-versions
+  | amazon-reviews
+  | animation-department
+  | arithmetic-mean
+  | art-department
+  | art-direction
+  | aspect-ratio
+  | assistant-director
+  | awards
+  | bottom-100-rank
+  | business
+  | camera
+  | camera-and-electrical-department
+  | canonical-episode-title
+  | canonical-series-title
+  | canonical-title
+  | cast
+  | casting-department
+  | casting-director
+  | certificates
+  | cinematographer
+  | cinematographic-process
+  | color-info
+  | complete-cast
+  | complete-crew
+  | connections
+  | costume-department
+  | costume-designer
+  | countries
+  | country-codes
+  | cover-url
+  | crazy-credits
+  | creator
+  | current-role
+  | demographic
+  | director
+  | distributors
+  | dvd
+  | editor
+  | editorial-department
+  | episode
+  | episode-of
+  | episodes
+  | episodes-rating
+  | episode-title
+  | external-reviews
+  | faqs
+  | film-length
+  | film-negative-format
+  | full-size-cover-url
+  | genres
+  | goofs
+  | item
+  | keywords
+  | kind
+  | laboratory
+  | languages
+  | language-codes
+  | laserdisc
+  | literature
+  | locations
+  | long-imdb-canonical-title
+  | long-imdb-episode-title
+  | long-imdb-title
+  | make-up
+  | median
+  | merchandising-links
+  | miscellaneous-companies
+  | miscellaneous-crew
+  | misc-links
+  | movie
+  | mpaa
+  | music-department
+  | news
+  | newsgroup-reviews
+  | notes
+  | number-of-episodes
+  | number-of-seasons
+  | number-of-votes
+  | official-sites
+  | original-air-date
+  | original-music
+  | parents-guide
+  | photo-sites
+  | plot
+  | plot-outline
+  | printed-film-format
+  | producer
+  | production-companies
+  | production-design
+  | production-manager
+  | quotes
+  | rating
+  | recommendations
+  | release-dates
+  | runtimes
+  | season
+  | series-animation-department
+  | series-art-department
+  | series-assistant-directors
+  | series-camera-department
+  | series-canonical-title
+  | series-casting-department
+  | series-cinematographers
+  | series-costume-department
+  | series-editorial-department
+  | series-editors
+  | series-make-up-department
+  | series-miscellaneous
+  | series-music-department
+  | series-producers
+  | series-production-designers
+  | series-production-managers
+  | series-special-effects-department
+  | series-sound-department
+  | series-stunts
+  | series-title
+  | series-transportation-department
+  | series-visual-effects-department
+  | series-writers
+  | series-years
+  | set-decoration
+  | smart-canonical-episode-title
+  | smart-canonical-series-title
+  | smart-canonical-title
+  | smart-long-imdb-canonical-title
+  | sound-clips
+  | sound-crew
+  | sound-mix
+  | soundtrack
+  | special-effects-companies
+  | special-effects-department
+  | stunt-performer
+  | synopsis
+  | taglines
+  | tech-info
+  | thanks
+  | title
+  | top-250-rank
+  | trivia
+  | transportation-department
+  | video-clips
+  | visual-effects
+  | votes
+  | votes-distribution
+  | writer
+  | year
+)*>
+<!ATTLIST movie %common.attrs; id CDATA #REQUIRED>
+
+<!ELEMENT person (
+    actor
+  | actress
+  | agent-address
+  | akas
+  | animation-department
+  | archive-footage
+  | art-department
+  | art-director
+  | article
+  | awards
+  | biographical-movies
+  | biography-print
+  | birth-date
+  | birth-name
+  | birth-notes
+  | camera-and-electrical-department
+  | canonical-name
+  | cinematographer
+  | composer
+  | current-role
+  | death-date
+  | death-notes
+  | director
+  | editor
+  | episodes
+  | full-size-headshot
+  | genres
+  | headshot
+  | height
+  | imdbindex
+  | in-development
+  | interview
+  | keywords
+  | long-imdb-canonical-name
+  | long-imdb-name
+  | magazine-cover-photo
+  | merchandising-links
+  | mini-biography
+  | miscellaneous-crew
+  | music-department
+  | name
+  | news
+  | nick-names
+  | notes
+  | official-sites
+  | other-works
+  | pictorial
+  | portrayed-in
+  | producer
+  | production-designer
+  | quotes
+  | salary-history
+  | second-unit-director-or-assistant-director
+  | self
+  | soundtrack
+  | special-effects
+  | spouse
+  | stunts
+  | thanks
+  | trade-mark
+  | trivia
+  | visual-effects
+  | where-now
+  | writer
+)*>
+<!ATTLIST person %common.attrs; id CDATA #REQUIRED>
+
+<!ELEMENT character (
+    akas
+  | archive-footage
+  | biography
+  | episodes
+  | feature
+  | filmography
+  | full-size-headshot
+  | headshot
+  | introduction
+  | long-imdb-name
+  | name
+  | quotes
+  | tv
+  | video
+)*>
+<!ATTLIST character %common.attrs; id CDATA #IMPLIED>
+
+<!ELEMENT company (
+    country
+  | distributors
+  | long-imdb-name
+  | miscellaneous-companies
+  | name
+  | notes
+  | production-companies
+  | special-effects-companies
+)*>
+<!ATTLIST company %common.attrs; id CDATA #IMPLIED>
+
+<!ELEMENT episodes (movie | season)*>
+<!ATTLIST episodes %common.attrs;>
+
+<!ELEMENT season (#PCDATA | episode)*>
+<!ATTLIST season %common.attrs; number CDATA #IMPLIED>
+
+<!ELEMENT episode (#PCDATA | movie)*>
+<!ATTLIST episode %common.attrs; number CDATA #IMPLIED>
+<!ELEMENT episode-of (movie)*>
+<!ATTLIST episode-of %common.attrs;>
+
+<!ELEMENT animation-department (movie | person)*>
+<!ATTLIST animation-department %common.attrs;>
+<!ELEMENT art-department (movie | person)*>
+<!ATTLIST art-department %common.attrs;>
+<!ELEMENT camera-and-electrical-department (movie | person)*>
+<!ATTLIST camera-and-electrical-department %common.attrs;>
+<!ELEMENT cinematographer (movie | person)*>
+<!ATTLIST cinematographer %common.attrs;>
+<!ELEMENT director (movie | person)*>
+<!ATTLIST director %common.attrs;>
+<!ELEMENT editor (movie | person)*>
+<!ATTLIST editor %common.attrs;>
+<!ELEMENT miscellaneous-crew (movie | person)*>
+<!ATTLIST miscellaneous-crew %common.attrs;>
+<!ELEMENT music-department (movie | person)*>
+<!ATTLIST music-department %common.attrs;>
+<!ELEMENT producer (movie | person)*>
+<!ATTLIST producer %common.attrs;>
+<!ELEMENT thanks (movie | person)*>
+<!ATTLIST thanks %common.attrs;>
+<!ELEMENT visual-effects (person | movie)*>
+<!ATTLIST visual-effects %common.attrs;>
+<!ELEMENT writer (movie | person)*>
+<!ATTLIST writer %common.attrs;>
+
+<!ELEMENT actor (movie)*>
+<!ATTLIST actor %common.attrs;>
+<!ELEMENT actress (movie)*>
+<!ATTLIST actress %common.attrs;>
+<!ELEMENT archive-footage (movie)*>
+<!ATTLIST archive-footage %common.attrs;>
+<!ELEMENT art-director (movie)*>
+<!ATTLIST art-director %common.attrs;>
+<!ELEMENT composer (movie)*>
+<!ATTLIST composer %common.attrs;>
+<!ELEMENT filmography (movie)*>
+<!ATTLIST filmography %common.attrs;>
+<!ELEMENT production-designer (movie)*>
+<!ATTLIST production-designer %common.attrs;>
+<!ELEMENT second-unit-director-or-assistant-director (movie)*>
+<!ATTLIST second-unit-director-or-assistant-director %common.attrs;>
+<!ELEMENT self (movie)*>
+<!ATTLIST self %common.attrs;>
+<!ELEMENT special-effects (movie)*>
+<!ATTLIST special-effects %common.attrs;>
+<!ELEMENT stunts (movie)*>
+<!ATTLIST stunts %common.attrs;>
+
+<!ELEMENT art-direction (person)*>
+<!ATTLIST art-direction %common.attrs;>
+<!ELEMENT assistant-director (person)*>
+<!ATTLIST assistant-director %common.attrs;>
+<!ELEMENT cast (person)*>
+<!ATTLIST cast %common.attrs;>
+<!ELEMENT casting-department (person)*>
+<!ATTLIST casting-department %common.attrs;>
+<!ELEMENT casting-director (person)*>
+<!ATTLIST casting-director %common.attrs;>
+<!ELEMENT costume-department (person)*>
+<!ATTLIST costume-department %common.attrs;>
+<!ELEMENT costume-designer (person)*>
+<!ATTLIST costume-designer %common.attrs;>
+<!ELEMENT creator (person)*>
+<!ATTLIST creator %common.attrs;>
+<!ELEMENT editorial-department (person)*>
+<!ATTLIST editorial-department %common.attrs;>
+<!ELEMENT make-up (person)*>
+<!ATTLIST make-up %common.attrs;>
+<!ELEMENT original-music (person)*>
+<!ATTLIST original-music %common.attrs;>
+<!ELEMENT production-design (person)*>
+<!ATTLIST production-design %common.attrs;>
+<!ELEMENT production-manager (person)*>
+<!ATTLIST production-manager %common.attrs;>
+<!ELEMENT series-animation-department (person)*>
+<!ATTLIST series-animation-department %common.attrs;>
+<!ELEMENT series-art-department (person)*>
+<!ATTLIST series-art-department %common.attrs;>
+<!ELEMENT series-assistant-directors (person)*>
+<!ATTLIST series-assistant-directors %common.attrs;>
+<!ELEMENT series-camera-department (person)*>
+<!ATTLIST series-camera-department %common.attrs;>
+<!ELEMENT series-casting-department (person)*>
+<!ATTLIST series-casting-department %common.attrs;>
+<!ELEMENT series-costume-department (person)*>
+<!ATTLIST series-costume-department %common.attrs;>
+<!ELEMENT series-cinematographers (person)*>
+<!ATTLIST series-cinematographers %common.attrs;>
+<!ELEMENT series-editors (person)*>
+<!ATTLIST series-editors %common.attrs;>
+<!ELEMENT series-editorial-department (person)*>
+<!ATTLIST series-editorial-department %common.attrs;>
+<!ELEMENT series-make-up-department (person)*>
+<!ATTLIST series-make-up-department %common.attrs;>
+<!ELEMENT series-miscellaneous (person)*>
+<!ATTLIST series-miscellaneous %common.attrs;>
+<!ELEMENT series-music-department (person)*>
+<!ATTLIST series-music-department %common.attrs;>
+<!ELEMENT series-producers (person)*>
+<!ATTLIST series-producers %common.attrs;>
+<!ELEMENT series-production-designers (person)*>
+<!ATTLIST series-production-designers %common.attrs;>
+<!ELEMENT series-production-managers (person)*>
+<!ATTLIST series-production-managers %common.attrs;>
+<!ELEMENT series-sound-department (person)*>
+<!ATTLIST series-sound-department %common.attrs;>
+<!ELEMENT series-special-effects-department (person)*>
+<!ATTLIST series-special-effects-department %common.attrs;>
+<!ELEMENT series-stunts (person)*>
+<!ATTLIST series-stunts %common.attrs;>
+<!ELEMENT series-transportation-department (person)*>
+<!ATTLIST series-transportation-department %common.attrs;>
+<!ELEMENT series-visual-effects-department (person)*>
+<!ATTLIST series-visual-effects-department %common.attrs;>
+<!ELEMENT series-writers (person)*>
+<!ATTLIST series-writers %common.attrs;>
+<!ELEMENT set-decoration (person)*>
+<!ATTLIST set-decoration %common.attrs;>
+<!ELEMENT sound-crew (person)*>
+<!ATTLIST sound-crew %common.attrs;>
+<!ELEMENT special-effects-department (person)*>
+<!ATTLIST special-effects-department %common.attrs;>
+<!ELEMENT stunt-performer (person)*>
+<!ATTLIST stunt-performer %common.attrs;>
+<!ELEMENT transportation-department (person)*>
+<!ATTLIST transportation-department %common.attrs;>
+
+<!ELEMENT distributors (company | movie)*>
+<!ATTLIST distributors %common.attrs;>
+<!ELEMENT miscellaneous-companies (company | movie)*>
+<!ATTLIST miscellaneous-companies %common.attrs;>
+<!ELEMENT production-companies (company | movie)*>
+<!ATTLIST production-companies %common.attrs;>
+<!ELEMENT special-effects-companies (company | movie)*>
+<!ATTLIST special-effects-companies %common.attrs;>
+
+<!ELEMENT current-role (character | notes | person)*>
+<!ATTLIST current-role %common.attrs;>
+
+<!ELEMENT agent-address (item)*>
+<!ATTLIST agent-address %common.attrs;>
+<!ELEMENT akas (item)*>
+<!ATTLIST akas %common.attrs;>
+<!ELEMENT akas-from-release-info (item)*>
+<!ATTLIST akas-from-release-info %common.attrs;>
+<!ELEMENT alternate-versions (item)*>
+<!ATTLIST alternate-versions %common.attrs;>
+<!ELEMENT article (item)*>
+<!ATTLIST article %common.attrs;>
+<!ELEMENT biography (item)*>
+<!ATTLIST biography %common.attrs;>
+<!ELEMENT biographical-movies (item)*>
+<!ATTLIST biographical-movies %common.attrs;>
+<!ELEMENT biography-print (item)*>
+<!ATTLIST biography-print %common.attrs;>
+<!ELEMENT camera (item)*>
+<!ATTLIST camera %common.attrs;>
+<!ELEMENT certificates (item)*>
+<!ATTLIST certificates %common.attrs;>
+<!ELEMENT cinematographic-process (item)*>
+<!ATTLIST cinematographic-process %common.attrs;>
+<!ELEMENT color-info (item)*>
+<!ATTLIST color-info %common.attrs;>
+<!ELEMENT complete-cast (item)*>
+<!ATTLIST complete-cast %common.attrs;>
+<!ELEMENT complete-crew (item)*>
+<!ATTLIST complete-crew %common.attrs;>
+<!ELEMENT countries (item)*>
+<!ATTLIST countries %common.attrs;>
+<!ELEMENT country-codes (item)*>
+<!ATTLIST country-codes %common.attrs;>
+<!ELEMENT crazy-credits (item)*>
+<!ATTLIST crazy-credits %common.attrs;>
+<!ELEMENT demographic (item)*>
+<!ATTLIST demographic %common.attrs;>
+<!ELEMENT episodes-rating (item)*>
+<!ATTLIST episodes-rating %common.attrs;>
+<!ELEMENT film-length (item)*>
+<!ATTLIST film-length %common.attrs;>
+<!ELEMENT film-negative-format (item)*>
+<!ATTLIST film-negative-format %common.attrs;>
+<!ELEMENT genres (item)*>
+<!ATTLIST genres %common.attrs;>
+<!ELEMENT goofs (item)*>
+<!ATTLIST goofs %common.attrs;>
+<!ELEMENT in-development (movie)*>
+<!ATTLIST in-development %common.attrs;>
+<!ELEMENT interview (item)*>
+<!ATTLIST interview %common.attrs;>
+<!ELEMENT keywords (item)*>
+<!ATTLIST keywords %common.attrs;>
+<!ELEMENT laboratory (item)*>
+<!ATTLIST laboratory %common.attrs;>
+<!ELEMENT languages (item)*>
+<!ATTLIST languages %common.attrs;>
+<!ELEMENT language-codes (item)*>
+<!ATTLIST language-codes %common.attrs;>
+<!ELEMENT locations (item)*>
+<!ATTLIST locations %common.attrs;>
+<!ELEMENT magazine-cover-photo (item)*>
+<!ATTLIST magazine-cover-photo %common.attrs;>
+<!ELEMENT mini-biography (item)*>
+<!ATTLIST mini-biography %common.attrs;>
+<!ELEMENT misc-links (item)*>
+<!ATTLIST misc-links %common.attrs;>
+<!ELEMENT newsgroup-reviews (item)*>
+<!ATTLIST newsgroup-reviews %common.attrs;>
+<!ELEMENT nick-names (item)*>
+<!ATTLIST nick-names %common.attrs;>
+<!ELEMENT number-of-votes (item)*>
+<!ATTLIST number-of-votes %common.attrs;>
+<!ELEMENT official-sites (item)*>
+<!ATTLIST official-sites %common.attrs;>
+<!ELEMENT other-works (item)*>
+<!ATTLIST other-works %common.attrs;>
+<!ELEMENT parents-guide (item)*>
+<!ATTLIST parents-guide %common.attrs;>
+<!ELEMENT photo-sites (item)*>
+<!ATTLIST photo-sites %common.attrs;>
+<!ELEMENT pictorial (item)*>
+<!ATTLIST pictorial %common.attrs;>
+<!ELEMENT plot (item)*>
+<!ATTLIST plot %common.attrs;>
+<!ELEMENT portrayed-in (item)*>
+<!ATTLIST portrayed-in %common.attrs;>
+<!ELEMENT printed-film-format (item)*>
+<!ATTLIST printed-film-format %common.attrs;>
+<!ELEMENT release-dates (item)*>
+<!ATTLIST release-dates %common.attrs;>
+<!ELEMENT runtimes (item)*>
+<!ATTLIST runtimes %common.attrs;>
+<!ELEMENT salary-history (item)*>
+<!ATTLIST salary-history %common.attrs;>
+<!ELEMENT sound-clips (item)*>
+<!ATTLIST sound-clips %common.attrs;>
+<!ELEMENT spouse (item)*>
+<!ATTLIST spouse %common.attrs;>
+<!ELEMENT taglines (item)*>
+<!ATTLIST taglines %common.attrs;>
+<!ELEMENT tech-info (item)*>
+<!ATTLIST tech-info %common.attrs;>
+<!ELEMENT trivia (item)*>
+<!ATTLIST trivia %common.attrs;>
+<!ELEMENT trade-mark (item)*>
+<!ATTLIST trade-mark %common.attrs;>
+<!ELEMENT sound-mix (item)*>
+<!ATTLIST sound-mix %common.attrs;>
+<!ELEMENT video-clips (item)*>
+<!ATTLIST video-clips %common.attrs;>
+<!ELEMENT where-now (item)*>
+<!ATTLIST where-now %common.attrs;>
+
+<!ELEMENT quotes (item | quote | movie)*>
+<!ATTLIST quotes %common.attrs;>
+<!ELEMENT quote (#PCDATA | line)*>
+<!ATTLIST quote %common.attrs;>
+<!ELEMENT line (#PCDATA)>
+<!ATTLIST line %common.attrs;>
+
+<!ELEMENT awards (item)*>
+<!ATTLIST awards %common.attrs;>
+<!ELEMENT assigner (#PCDATA)>
+<!ATTLIST assigner %common.attrs;>
+<!ELEMENT category (#PCDATA)>
+<!ATTLIST category %common.attrs;>
+<!ELEMENT award (#PCDATA)>
+<!ATTLIST award %common.attrs;>
+<!ELEMENT for (movie)*>
+<!ATTLIST for %common.attrs;>
+<!ELEMENT result (#PCDATA)>
+<!ATTLIST result %common.attrs;>
+<!ELEMENT to (person)*>
+<!ATTLIST to %common.attrs;>
+<!ELEMENT with (#PCDATA)>
+<!ATTLIST with %common.attrs;>
+
+<!ELEMENT aspect-ratio (#PCDATA | item)*>
+<!ATTLIST aspect-ratio %common.attrs;>
+
+<!ELEMENT business (
+    admissions
+  | budget
+  | copyright-holder
+  | filming-dates
+  | gross
+  | opening-weekend
+  | production-dates
+  | rentals
+  | studios
+  | weekend-gross
+)*>
+<!ATTLIST business %common.attrs;>
+<!ELEMENT admissions (item)*>
+<!ATTLIST admissions %common.attrs;>
+<!ELEMENT budget (item)*>
+<!ATTLIST budget %common.attrs;>
+<!ELEMENT copyright-holder (item)*>
+<!ATTLIST copyright-holder %common.attrs;>
+<!ELEMENT filming-dates (item)*>
+<!ATTLIST filming-dates %common.attrs;>
+<!ELEMENT gross (item)*>
+<!ATTLIST gross %common.attrs;>
+<!ELEMENT opening-weekend (item)*>
+<!ATTLIST opening-weekend %common.attrs;>
+<!ELEMENT production-dates (item)*>
+<!ATTLIST production-dates %common.attrs;>
+<!ELEMENT rentals (item)*>
+<!ATTLIST rentals %common.attrs;>
+<!ELEMENT studios (item)*>
+<!ATTLIST studios %common.attrs;>
+<!ELEMENT weekend-gross (item)*>
+<!ATTLIST weekend-gross %common.attrs;>
+
+<!ELEMENT amazon-reviews (item)*>
+<!ATTLIST amazon-reviews %common.attrs;>
+<!ELEMENT link (#PCDATA)>
+<!ATTLIST link %common.attrs;>
+<!ELEMENT review (#PCDATA)>
+<!ATTLIST review %common.attrs;>
+<!ELEMENT review-author (#PCDATA)>
+<!ATTLIST review-author %common.attrs;>
+<!ELEMENT review-kind (#PCDATA)>
+<!ATTLIST review-kind %common.attrs;>
+
+<!ELEMENT literature (
+    adaption
+  | book
+  | essays
+  | interviews
+  | novel
+  | other-literature
+  | printed-media-reviews
+  | production-process-protocol
+  | screenplay-teleplay
+)*>
+<!ATTLIST literature %common.attrs;>
+<!ELEMENT adaption (item)*>
+<!ATTLIST adaption %common.attrs;>
+<!ELEMENT book (item)*>
+<!ATTLIST book %common.attrs;>
+<!ELEMENT essays (item)*>
+<!ATTLIST essays %common.attrs;>
+<!ELEMENT novel (item)*>
+<!ATTLIST novel %common.attrs;>
+<!ELEMENT interviews (item)*>
+<!ATTLIST interviews %common.attrs;>
+<!ELEMENT other-literature (item)*>
+<!ATTLIST other-literature %common.attrs;>
+<!ELEMENT printed-media-reviews (item)*>
+<!ATTLIST printed-media-reviews %common.attrs;>
+<!ELEMENT production-process-protocol (item)*>
+<!ATTLIST production-process-protocol %common.attrs;>
+<!ELEMENT screenplay-teleplay (item)*>
+<!ATTLIST screenplay-teleplay %common.attrs;>
+
+<!ELEMENT soundtrack (item | movie)*>
+<!ATTLIST soundtrack %common.attrs;>
+<!ELEMENT by-arrangement-with (#PCDATA)>
+<!ATTLIST by-arrangement-with %common.attrs;>
+<!ELEMENT courtesy-of (#PCDATA)>
+<!ATTLIST courtesy-of %common.attrs;>
+<!ELEMENT from (#PCDATA)>
+<!ATTLIST from %common.attrs;>
+<!ELEMENT performed-by (#PCDATA)>
+<!ATTLIST performed-by %common.attrs;>
+<!ELEMENT under-license-from (#PCDATA)>
+<!ATTLIST under-license-from %common.attrs;>
+<!ELEMENT written-by (#PCDATA)>
+<!ATTLIST written-by %common.attrs;>
+
+<!ELEMENT connections (
+    alternate-language-version-of
+  | edited-from
+  | edited-into
+  | featured-in
+  | features
+  | followed-by
+  | follows
+  | referenced-in
+  | references
+  | remade-as
+  | remake-of
+  | similar-to
+  | spin-off
+  | spin-off-from
+  | spoofed-in
+  | spoofs
+  | version-of
+  | unknown-link
+)*>
+<!ATTLIST connections %common.attrs;>
+<!ELEMENT alternate-language-version-of (movie)*>
+<!ATTLIST alternate-language-version-of %common.attrs;>
+<!ELEMENT edited-from (movie)*>
+<!ATTLIST edited-from %common.attrs;>
+<!ELEMENT edited-into (movie)*>
+<!ATTLIST edited-into %common.attrs;>
+<!ELEMENT featured-in (movie)*>
+<!ATTLIST featured-in %common.attrs;>
+<!ELEMENT features (movie)*>
+<!ATTLIST features %common.attrs;>
+<!ELEMENT followed-by (movie)*>
+<!ATTLIST followed-by %common.attrs;>
+<!ELEMENT follows (movie)*>
+<!ATTLIST follows %common.attrs;>
+<!ELEMENT referenced-in (movie)*>
+<!ATTLIST referenced-in %common.attrs;>
+<!ELEMENT references (movie)*>
+<!ATTLIST references %common.attrs;>
+<!ELEMENT remade-as (movie)*>
+<!ATTLIST remade-as %common.attrs;>
+<!ELEMENT remake-of (movie)*>
+<!ATTLIST remake-of %common.attrs;>
+<!ELEMENT similar-to (movie)*>
+<!ATTLIST similar-to %common.attrs;>
+<!ELEMENT spin-off (movie)*>
+<!ATTLIST spin-off %common.attrs;>
+<!ELEMENT spin-off-from (movie)*>
+<!ATTLIST spin-off-from %common.attrs;>
+<!ELEMENT spoofed-in (movie)*>
+<!ATTLIST spoofed-in %common.attrs;>
+<!ELEMENT spoofs (movie)*>
+<!ATTLIST spoofs %common.attrs;>
+<!ELEMENT version-of (movie)*>
+<!ATTLIST version-of %common.attrs;>
+<!ELEMENT unknown-link (movie)*>
+<!ATTLIST unknown-link %common.attrs;>
+
+<!ELEMENT laserdisc (
+    additional-information
+  | analog-left
+  | analog-right
+  | audio-noise
+  | audio-quality
+  | catalog-number
+  | category
+  | certification
+  | close-captions-teletext-ld-g
+  | color-information
+  | color-rendition
+  | contrast
+  | dialogue-intellegibility
+  | digital-sound
+  | disc-format
+  | disc-size
+  | dynamic-range
+  | frequency-response
+  | group-genre
+  | label
+  | language
+  | laserdisc-title
+  | length
+  | master-format
+  | number
+  | number-of-chapter-stops
+  | number-of-sides
+  | official-retail-price
+  | original-title
+  | picture-format
+  | pressing-plant
+  | production-country
+  | quality-of-source
+  | quality-program
+  | release-country
+  | release-date
+  | review
+  | sharpness
+  | sound-encoding
+  | spaciality
+  | status-of-availablility
+  | subtitles
+  | supplement
+  | video-artifacts
+  | video-noise
+  | video-quality
+  | video-standard
+  | year
+)*>
+<!ATTLIST laserdisc %common.attrs;>
+<!ELEMENT additional-information (item)*>
+<!ATTLIST additional-information %common.attrs;>
+<!ELEMENT analog-left (item)*>
+<!ATTLIST analog-left %common.attrs;>
+<!ELEMENT analog-right (item)*>
+<!ATTLIST analog-right %common.attrs;>
+<!ELEMENT aspect-ratio (item)*>
+<!ATTLIST aspect-ratio %common.attrs;>
+<!ELEMENT audio-noise (item)*>
+<!ATTLIST audio-noise %common.attrs;>
+<!ELEMENT audio-quality (item)*>
+<!ATTLIST audio-quality %common.attrs;>
+<!ELEMENT catalog-number (item)*>
+<!ATTLIST catalog-number %common.attrs;>
+<!ELEMENT category (item)*>
+<!ATTLIST category %common.attrs;>
+<!ELEMENT certification (item)*>
+<!ATTLIST certification %common.attrs;>
+<!ELEMENT close-captions-teletext-ld-g (item)*>
+<!ATTLIST close-captions-teletext-ld-g %common.attrs;>
+<!ELEMENT color-information (item)*>
+<!ATTLIST color-information %common.attrs;>
+<!ELEMENT color-rendition (item)*>
+<!ATTLIST color-rendition %common.attrs;>
+<!ELEMENT contrast (item)*>
+<!ATTLIST contrast %common.attrs;>
+<!ELEMENT dialogue-intellegibility (item)*>
+<!ATTLIST dialogue-intellegibility %common.attrs;>
+<!ELEMENT digital-sound (item)*>
+<!ATTLIST digital-sound %common.attrs;>
+<!ELEMENT disc-format (item)*>
+<!ATTLIST disc-format %common.attrs;>
+<!ELEMENT disc-size (item)*>
+<!ATTLIST disc-size %common.attrs;>
+<!ELEMENT dynamic-range (item)*>
+<!ATTLIST dynamic-range %common.attrs;>
+<!ELEMENT frequency-response (item)*>
+<!ATTLIST frequency-response %common.attrs;>
+<!ELEMENT group-genre (item)*>
+<!ATTLIST group-genre %common.attrs;>
+<!ELEMENT language (item)*>
+<!ATTLIST language %common.attrs;>
+<!ELEMENT laserdisc-title (item)*>
+<!ATTLIST laserdisc-title %common.attrs;>
+<!ELEMENT length (item)*>
+<!ATTLIST length %common.attrs;>
+<!ELEMENT master-format (item)*>
+<!ATTLIST master-format %common.attrs;>
+<!ELEMENT number (item)*>
+<!ATTLIST number %common.attrs;>
+<!ELEMENT number-of-chapter-stops (item)*>
+<!ATTLIST number-of-chapter-stops %common.attrs;>
+<!ELEMENT number-of-sides (item)*>
+<!ATTLIST number-of-sides %common.attrs;>
+<!ELEMENT official-retail-price (item)*>
+<!ATTLIST official-retail-price %common.attrs;>
+<!ELEMENT original-title (item)*>
+<!ATTLIST original-title %common.attrs;>
+<!ELEMENT picture-format (item)*>
+<!ATTLIST picture-format %common.attrs;>
+<!ELEMENT pressing-plant (item)*>
+<!ATTLIST pressing-plant %common.attrs;>
+<!ELEMENT production-country (item)*>
+<!ATTLIST production-country %common.attrs;>
+<!ELEMENT quality-of-source (item)*>
+<!ATTLIST quality-of-source %common.attrs;>
+<!ELEMENT quality-program (item)*>
+<!ATTLIST quality-program %common.attrs;>
+<!ELEMENT release-country (item)*>
+<!ATTLIST release-country %common.attrs;>
+<!ELEMENT release-date (#PCDATA | item)*>
+<!ATTLIST release-date %common.attrs;>
+<!ELEMENT review (item)*>
+<!ATTLIST review %common.attrs;>
+<!ELEMENT sharpness (item)*>
+<!ATTLIST sharpness %common.attrs;>
+<!ELEMENT sound-encoding (item)*>
+<!ATTLIST sound-encoding %common.attrs;>
+<!ELEMENT spaciality (item)*>
+<!ATTLIST spaciality %common.attrs;>
+<!ELEMENT status-of-availablility (item)*>
+<!ATTLIST status-of-availablility %common.attrs;>
+<!ELEMENT subtitles (item)*>
+<!ATTLIST subtitles %common.attrs;>
+<!ELEMENT supplement (item)*>
+<!ATTLIST supplement %common.attrs;>
+<!ELEMENT video-artifacts (item)*>
+<!ATTLIST video-artifacts %common.attrs;>
+<!ELEMENT video-noise (item)*>
+<!ATTLIST video-noise %common.attrs;>
+<!ELEMENT video-quality (item)*>
+<!ATTLIST video-quality %common.attrs;>
+<!ELEMENT video-standard (item)*>
+<!ATTLIST video-standard %common.attrs;>
+<!ELEMENT faqs (item)*>
+<!ATTLIST faqs %common.attrs;>
+
+<!ELEMENT recommendations (database)*>
+<!ATTLIST recommendations %common.attrs;>
+<!ELEMENT database (movie)*>
+<!ATTLIST database %common.attrs;>
+
+<!ELEMENT dvd (item)*>
+<!ATTLIST dvd %common.attrs;>
+<!ELEMENT asin (#PCDATA)>
+<!ATTLIST asin %common.attrs;>
+<!ELEMENT certificate (#PCDATA)>
+<!ATTLIST certificate %common.attrs;>
+<!ELEMENT cover (#PCDATA)>
+<!ATTLIST cover %common.attrs;>
+<!ELEMENT dvd-features (#PCDATA)>
+<!ATTLIST dvd-features %common.attrs;>
+<!ELEMENT dvd-format (#PCDATA)>
+<!ATTLIST dvd-format %common.attrs;>
+<!ELEMENT label (#PCDATA | item)*>
+<!ATTLIST label %common.attrs;>
+<!ELEMENT rating (#PCDATA)>
+<!ATTLIST rating %common.attrs;>
+<!ELEMENT region (#PCDATA)>
+<!ATTLIST region %common.attrs;>
+<!ELEMENT runtime (#PCDATA)>
+<!ATTLIST runtime %common.attrs;>
+<!ELEMENT studio (#PCDATA)>
+<!ATTLIST studio %common.attrs;>
+<!ELEMENT supplements (item)*>
+<!ATTLIST supplements %common.attrs;>
+<!ELEMENT titles-in-this-product (#PCDATA)>
+<!ATTLIST titles-in-this-product %common.attrs;>
+<!ELEMENT upc (#PCDATA)>
+<!ATTLIST upc %common.attrs;>
+
+<!ELEMENT merchandising-links (
+    all-products
+  | auctions
+  | books
+  | dvds
+  | soundtrack
+  | vhs
+  | zshops
+  | item
+)*>
+<!ATTLIST merchandising-links %common.attrs;>
+<!ELEMENT all-products (item)*>
+<!ATTLIST all-products %common.attrs;>
+<!ELEMENT auctions (item)*>
+<!ATTLIST auctions %common.attrs;>
+<!ELEMENT books (item)*>
+<!ATTLIST books %common.attrs;>
+<!ELEMENT dvds (item)*>
+<!ATTLIST dvds %common.attrs;>
+<!ELEMENT soundtrack (item)*>
+<!ATTLIST soundtrack %common.attrs;>
+<!ELEMENT vhs (item)*>
+<!ATTLIST vhs %common.attrs;>
+<!ELEMENT zshops (item)*>
+<!ATTLIST zshops %common.attrs;>
+<!ELEMENT description (#PCDATA | notes)*>
+<!ATTLIST description %common.attrs;>
+<!ELEMENT link-text (#PCDATA)>
+<!ATTLIST link-text %common.attrs;>
+
+<!ELEMENT news (item)*>
+<!ATTLIST news %common.attrs;>
+<!ELEMENT body (#PCDATA)>
+<!ATTLIST body %common.attrs;>
+<!ELEMENT date (#PCDATA)>
+<!ATTLIST date %common.attrs;>
+<!ELEMENT full-article-link (#PCDATA)>
+<!ATTLIST full-article-link %common.attrs;>
+
+<!ELEMENT airing (item)*>
+<!ATTLIST airing %common.attrs;>
+<!ELEMENT channel (#PCDATA)>
+<!ATTLIST channel %common.attrs;>
+<!ELEMENT time (#PCDATA)>
+<!ATTLIST time %common.attrs;>
+
+<!ELEMENT item (
+    #PCDATA
+  | asin | certificate | cover | dvd-features | dvd-format | label | rating
+  | release-date | region | runtime | studio | supplements
+  | titles-in-this-product | upc
+  | assigner | award | category | for | result | to | with | year
+  | body | date | full-article-link
+  | by-arrangement-with | courtesy-of | from | performed-by
+  | under-license-from | written-by
+  | channel | season | time
+  | description | link-text
+  | item
+  | movie
+  | notes
+  | quote
+  | review | review-author | review-kind | link | title
+  | episode | votes
+)*>
+<!ATTLIST item %common.attrs;>
+
+<!ELEMENT arithmetic-mean (#PCDATA)>
+<!ATTLIST arithmetic-mean %common.attrs;>
+<!ELEMENT birth-date (#PCDATA)>
+<!ATTLIST birth-date %common.attrs;>
+<!ELEMENT birth-name (#PCDATA)>
+<!ATTLIST birth-name %common.attrs;>
+<!ELEMENT birth-notes (#PCDATA)>
+<!ATTLIST birth-notes %common.attrs;>
+<!ELEMENT bottom-100-rank (#PCDATA)>
+<!ATTLIST bottom-100-rank %common.attrs;>
+<!ELEMENT bottom-10-rank (#PCDATA)>
+<!ATTLIST bottom-10-rank %common.attrs;>
+<!ELEMENT canonical-name (#PCDATA)>
+<!ATTLIST canonical-name %common.attrs;>
+<!ELEMENT canonical-episode-title (#PCDATA)>
+<!ATTLIST canonical-episode-title %common.attrs;>
+<!ELEMENT canonical-series-title (#PCDATA)>
+<!ATTLIST canonical-series-title %common.attrs;>
+<!ELEMENT canonical-title (#PCDATA)>
+<!ATTLIST canonical-title %common.attrs;>
+<!ELEMENT country (#PCDATA)>
+<!ATTLIST country %common.attrs;>
+<!ELEMENT cover-url (#PCDATA)>
+<!ATTLIST cover-url %common.attrs;>
+<!ELEMENT death-date (#PCDATA)>
+<!ATTLIST death-date %common.attrs;>
+<!ELEMENT death-notes (#PCDATA)>
+<!ATTLIST death-notes %common.attrs;>
+<!ELEMENT episode-title (#PCDATA)>
+<!ATTLIST episode-title %common.attrs;>
+<!ELEMENT external-reviews (item)*>
+<!ATTLIST external-reviews %common.attrs;>
+<!ELEMENT feature (movie)*>
+<!ATTLIST feature %common.attrs;>
+<!ELEMENT full-size-cover-url (#PCDATA)>
+<!ATTLIST full-size-cover-url %common.attrs;>
+<!ELEMENT full-size-headshot (#PCDATA)>
+<!ATTLIST full-size-headshot %common.attrs;>
+<!ELEMENT headshot (#PCDATA)>
+<!ATTLIST headshot %common.attrs;>
+<!ELEMENT height (#PCDATA)>
+<!ATTLIST height %common.attrs;>
+<!ELEMENT imdbindex (#PCDATA)>
+<!ATTLIST imdbindex %common.attrs;>
+<!ELEMENT introduction (#PCDATA)>
+<!ATTLIST introduction %common.attrs;>
+<!ELEMENT kind (#PCDATA)>
+<!ATTLIST kind %common.attrs;>
+<!ELEMENT long-imdb-canonical-name (#PCDATA)>
+<!ATTLIST long-imdb-canonical-name %common.attrs;>
+<!ELEMENT long-imdb-canonical-title (#PCDATA)>
+<!ATTLIST long-imdb-canonical-title %common.attrs;>
+<!ELEMENT long-imdb-episode-title (#PCDATA)>
+<!ATTLIST long-imdb-episode-title %common.attrs;>
+<!ELEMENT long-imdb-name (#PCDATA)>
+<!ATTLIST long-imdb-name %common.attrs;>
+<!ELEMENT long-imdb-title (#PCDATA)>
+<!ATTLIST long-imdb-title %common.attrs;>
+<!ELEMENT median (#PCDATA)>
+<!ATTLIST median %common.attrs;>
+<!ELEMENT mpaa (#PCDATA)>
+<!ATTLIST mpaa %common.attrs;>
+<!ELEMENT name (#PCDATA)>
+<!ATTLIST name %common.attrs;>
+<!ELEMENT notes (#PCDATA)>
+<!ATTLIST notes %common.attrs;>
+<!ELEMENT number-of-episodes (#PCDATA)>
+<!ATTLIST number-of-episodes %common.attrs;>
+<!ELEMENT number-of-seasons (#PCDATA)>
+<!ATTLIST number-of-seasons %common.attrs;>
+<!ELEMENT original-air-date (#PCDATA)>
+<!ATTLIST original-air-date %common.attrs;>
+<!ELEMENT plot-outline (#PCDATA)>
+<!ATTLIST plot-outline %common.attrs;>
+<!ELEMENT rating (#PCDATA)>
+<!ATTLIST rating %common.attrs;>
+<!ELEMENT series-title (#PCDATA)>
+<!ATTLIST series-title %common.attrs;>
+<!ELEMENT series-years (#PCDATA)>
+<!ATTLIST series-years %common.attrs;>
+<!ELEMENT smart-canonical-episode-title (#PCDATA)>
+<!ATTLIST smart-canonical-episode-title %common.attrs;>
+<!ELEMENT smart-canonical-series-title (#PCDATA)>
+<!ATTLIST smart-canonical-series-title %common.attrs;>
+<!ELEMENT smart-canonical-title (#PCDATA)>
+<!ATTLIST smart-canonical-title %common.attrs;>
+<!ELEMENT smart-long-imdb-canonical-title (#PCDATA)>
+<!ATTLIST smart-long-imdb-canonical-title %common.attrs;>
+<!ELEMENT synopsis (#PCDATA)>
+<!ATTLIST synopsis %common.attrs;>
+<!ELEMENT title (#PCDATA)>
+<!ATTLIST title %common.attrs;>
+<!ELEMENT top-250-rank (#PCDATA)>
+<!ATTLIST top-250-rank %common.attrs;>
+<!ELEMENT tv (movie)*>
+<!ATTLIST tv %common.attrs;>
+<!ELEMENT video (movie)*>
+<!ATTLIST video %common.attrs;>
+<!ELEMENT votes (#PCDATA)>
+<!ATTLIST votes %common.attrs;>
+<!ELEMENT votes-distribution (#PCDATA)>
+<!ATTLIST votes-distribution %common.attrs;>
+<!ELEMENT year (#PCDATA | item)*>
+<!ATTLIST year %common.attrs;>

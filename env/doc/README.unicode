@@ -1,0 +1,164 @@
+  UNICODE SUPPORT
+  ===============
+
+Starting with release 2.4, IMDbPY internally manages (almost) every string
+using unicode, with UTF-8 encoding.
+Since release 3.0, every string containing some sort of information is
+guarantee to be unicode (notable exceptions are dictionary keywords and
+movieID/personID, where they are stored as strings).
+
+The good: we can correctly manage "foreign" names, titles and other
+          information.
+          Previously every string was stored in bytecode, losing information
+          about the original charset.
+          Without knowing the charset, how can you know that the bytecode
+          string 'Lina Wertm\xfcller' is west-European iso-8859-1 (and so
+          it's "Lina Wertmüller" - if you're reading this file as UTF-8)
+          and not Cyrillic KOI-8-R (resulting in "Lina WertmЭller")?
+          Using unicode, you can store every human language, and show/print
+          every char correctly, provided that your local charset (and font)
+          is right.
+
+The bad:  in primis, performances will suffer: IMDbPY does _a lot_ (and
+          with _a lot_ I mean _A BLOODY DAMN LOT_) of string operations
+          (moving, copying, splitting, searching, slicing, ...) and moving
+          to unicode the slow down will be measurable (and probably
+          noticeable).
+          Moreover, every IMDbPY-base program will need to be modified,
+          because utf-8 chars must be encoded-back to your local charset
+          before they can be printed on screen or on files.
+
+The ugly: converting to unicode a program so huge, born without unicode
+          support from start, is prone to errors, bugs, spontaneous
+          combustion and eternal damnation!
+          You can't mix bytecode strings (with unknown charset) and unicode
+          with impunity: an exception will be raised because python
+          doesn't know the encoding of the bytecode string, that must be
+          explicitly specified.
+
+
+  INPUT
+  =====
+
+Searching for a movie title or a person name, you (or another program)
+should pass a unicode string. Since input and output are always
+encoded (using some scheme for representing characters using bytes),
+you'll typically need to decode the input into a Python unicode
+string.
+
+The Python builtin function 'unicode' takes an encoded string and the
+name of the charset it's encoded in and returns a Python unicode
+string.
+
+E.g., you're writing on a terminal with iso-8859-1 charset (aka latin-1):
+ >>> from imdb import IMDb
+ >>> ia = IMDb()
+ >>>
+ >>> lat1_str = 'Lina Wertm�ler' # written on a latin-1 terminal
+ >>> unicode_str = unicode(lat1_str, 'iso-8859-1')
+ >>>
+ >>> results = ia.search_person(unicode_str)
+
+If you pass a non-Unicode string to search_person(), search_movie() or
+search_episode() functions, IMDbPY attempts to guess the encoding,
+using the sys.stdin.encoding or the value returned from the
+sys.getdefaultencoding function.  Trust me: you want to provide a
+Unicode string...
+
+Maybe in a future release the IMDb() function can take a "defaultInputEncoding"
+argument or something.
+
+
+  OUTPUT
+  ======
+
+You've searched for a person or a movie, you've retrieved the information you
+wanted.  Cool.  Now you're about to print these information to the screen,
+or send it to a file or over a network socket.  Ok, wait a minute.
+
+Before you proceed, you need to encode the unicode chars to strings
+in the charset you will use to display/save/send it:
+ >>> from imdb import IMDb
+ >>> ia = IMDb()
+ >>>
+ >>> gmv_str = unicode('gian maria volonte', 'ascii') # optional, IT'S ascii...
+ >>> gmv = ia.search_person(gmv_str)[0]
+ >>> ia.update(gmv) # fetch the default set of information.
+ >>>
+ >>> gmv['name']
+ u'Gian Maria Volont\xe9'
+ >>>
+ >>> type(gmv['name'])
+ >>> <type 'unicode'>
+ >>>
+ >>> print gmv['name'] # WRONG: because if you are on an ASCII only terminal...
+ Traceback (most recent call last):
+  File "<stdin>", line 1, in ?
+ UnicodeEncodeError: 'ascii' codec can't encode character u'\xe9' in position 17: ordinal not in range(128)
+ >>>
+ >>> print gmv['name'].encode(yourLocalEncoding, 'replace') # CORRECT.
+ Gian Maria Volonté
+
+
+You have to use the encode() method of unicode strings to obtain a string
+suited for your local configuration.
+The encoding depends on your system and on what you've to do with these
+strings.
+The second (optional) argument of the encode() method specifies what
+to do with the unicode chars that cannot be represented in the encoding
+of your choice.  If not specified, a UnicodeEncodeError exception is
+raised, so be prepared.
+Other values are 'ignore' to skip these chars, 'replace' to substitute
+these chars with question marks ('?'), 'xmlcharrefreplace' to replace
+the chars with XML references (e.g.: "&#233;" for "é").
+
+If at all possible, you're much better off using an encoding like 'utf-8',
+that can handle any unicode char, than older encodings like ASCII
+and Latin-1.
+
+
+  WRITING IMDbPY-based PROGRAMS
+  =============================
+
+In the imdb.helpers module you can find some functions useful to
+manage/translate unicode strings in some common situations.
+
+
+  RULE OF THUMB
+  =============
+
+Always convert to/from unicode at the I/O level: at the first moment
+you've got some strings from the user (terminal) or the net (sockets,
+web forms, whatever).  You need to know the encoding of the input,
+checking sys.stding.encoding, the LANG/LC_* environment variables,
+the headers of the http request and so on.
+Whenever you're outputting information about movies or persons,
+convert these unicode string to bytecode strings using the encoding
+of your output channel (terminal, net, web pages, ...)
+
+Remember: "u = unicode(string, inputEncoding)" convert your encoded input
+          string to unicode,
+
+          "s = u.encode(outputEncoding, manageErrors)" convert unicode
+          strings to strings encoded for your local environment.
+
+
+  LINKS
+  =====
+
+* The Absolute Minimum Every Software Developer Absolutely, Positively Must
+  Know About Unicode and Character Sets (No Excuses!):
+  http://www.joelonsoftware.com/articles/Unicode.html
+
+* Python Unicode HOWTO:
+  http://www.amk.ca/python/howto/unicode
+
+* Dive Into Python, unicode page:
+  http://diveintopython.org/xml_processing/unicode.html
+
+* How to Use UTF-8 with Python:
+  http://evanjones.ca/python-utf8.html
+
+* End to End Unicode Web Applications in Python:
+  http://dalchemy.com/opensource/unicodedoc/
+
