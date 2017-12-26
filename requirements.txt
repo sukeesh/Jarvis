@@ -3,8 +3,6 @@ beautifulsoup4==4.5.3
 bs4==0.0.1
 colorama==0.3.7
 eyeD3==0.7.11
-gTTS==1.1.8
-gTTS-token==1.1.1
 youtube-dl==2017.06.05
 instantmusic==2.2
 lxml==3.7.3
@@ -17,13 +15,14 @@ requests[security]==2.13.0
 selenium>=2.33
 six==1.10.0
 SpeechRecognition==3.6.3
-pyttsx == 1.1
-aiml
+pyttsx3
+aiml; python_version <= '2.7'
 python-dateutil
 mock==2.0.0
 notify2
 pync==1.6.1
-IMDbPY==5.1.1
+IMDbPY==5.1.1; python_version <= '2.7'
+IMDbPY==6.0; python_version >= '3.5'
 pyperclip
 pycricbuzz
 wikipedia

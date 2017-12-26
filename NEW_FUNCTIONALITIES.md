@@ -55,3 +55,5 @@ on a page.
 ### Quote
 Jarvis will fetch quote of the day.
 **To run quote feature type**: quote 
+
+### Python3 Support

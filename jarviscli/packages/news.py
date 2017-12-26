@@ -1,10 +1,15 @@
 # !!! This uses the https://newsapi.org/ api. TO comply with the TOU
 # !!! we must link back to this site whenever we display results.
-
-import urllib
+try:  # python3
+    import urllib.request
+    import urllib.parse
+    import urllib.error
+except ImportError:  # python2
+    import urllib
 import json
 import webbrowser
-from memory.memory import Memory
+import six
+from .memory.memory import Memory
 
 '''
     CLASS News
@@ -53,8 +58,11 @@ class News:
     '''
 
     def get_news_json(self):
-        response = urllib.urlopen(self.url)
-        return json.loads(response.read())
+        try:
+            response = urllib.request.urlopen(self.url)
+        except AttributeError:
+            response = urllib.urlopen(self.url)
+        return json.loads(response.read().decode('utf-8'))
 
     '''
         This sets the users options and loads them from Memory
@@ -67,9 +75,9 @@ class News:
             print("your default news source is " +
                   self.m.get_data('news-source'))
             print("Would you like news from this source? (yes/no): ")
-            try:
+            if six.PY2:
                 x = raw_input()
-            except:
+            else:
                 x = input()
             if x == 'y' or x == 'yes':
                 self.source = self.m.get_data('news-source')
@@ -88,11 +96,10 @@ class News:
         print("4: Reddit")
         print("5: TechCrunch")
 
-        try:
+        if six.PY2:
             i = int(raw_input())
-        except:
+        else:
             i = int(input())
-
         if i == 1:
             self.source = "bbc-news"
         elif i == 2:
@@ -105,9 +112,9 @@ class News:
             self.source = "techcrunch"
 
         print("would you like to set this as your default? (yes/no): ")
-        try:
+        if six.PY2:
             x = raw_input()
-        except:
+        else:
             x = input()
         if x == 'y' or x == 'yes':
             self.m.update_data('news-source', self.source)  # save to memory
@@ -132,7 +139,10 @@ class News:
         # check to see if a url was passed
         if url is None:
             url = self.url
-        response = urllib.urlopen(url)
+        try:
+            response = urllib.request.urlopen(url)
+        except AttributeError:
+            response = urllib.urlopen(url)
         # Load json
         data = json.loads(response.read())
         article_list = {}
@@ -150,9 +160,9 @@ class News:
         print("Type index to expand news\n")
 
         # Check to see if index or NewsAPI was enterd
-        try:
+        if six.PY2:
             idx = raw_input()
-        except:
+        else:
             idx = input()
         if idx.lower() == "newsapi":
             webbrowser.open('https://newsapi.org/')
@@ -172,9 +182,9 @@ class News:
         print(article_list[int(idx)]['description'])
 
         print("Do you want to read more? (yes/no): ")
-        try:
+        if six.PY2:
             i = raw_input()
-        except:
+        else:
             i = input()
         # if user wants to read more open browser to article url
         if i.lower() == "yes" or i.lower() == 'y':

@@ -25,7 +25,7 @@ class HelpTest(unittest.TestCase):
         for action in helped_actions:
             with patch('CmdInterpreter.print_say') as mock_print_say:
                 if isinstance(action, dict):
-                    action = action.keys()[0]
+                    action = list(action.keys())[0]
                 help_cmd_name = "help_{}".format(action)
                 help_cmd = getattr(self.CI, help_cmd_name)
                 help_cmd(self.CI_instance)

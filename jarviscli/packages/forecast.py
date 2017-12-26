@@ -2,7 +2,7 @@
 from utilities.GeneralUtilities import print_say
 from colorama import Fore
 import json
-import mapps
+from . import mapps
 import requests
 from utilities.dateTime import WeekDay
 

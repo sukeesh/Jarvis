@@ -1,6 +1,7 @@
 from os import system
 from cmd import Cmd
 import signal
+import six
 from platform import system as sys
 from platform import architecture, release, dist
 from time import ctime
@@ -16,8 +17,8 @@ from packages.lyrics import lyrics
 from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminder_handler, reminder_quit
-from packages import mapps, picshow, evaluator, forecast, movie, wiki
-from packages import chat, directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
+from packages import mapps, picshow, evaluator, forecast, wiki, movie
+from packages import directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
 from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancel_shutdown, reboot_system
 from packages.systemOptions import turn_off_screen, update_system
@@ -31,6 +32,8 @@ from packages.quote import show_quote
 from packages.hackathon import find_hackathon
 from packages import translate
 from packages.dictionary import dictionary
+if six.PY2:
+    from packages import chat
 MEMORY = Memory()
 
 CONNECTION_ERROR_MSG = "You are not connected to Internet"
@@ -143,7 +146,10 @@ class CmdInterpreter(Cmd):
 
     def do_ask(self, s):
         """Start chating with Jarvis"""
-        chat.main(self)
+        if six.PY2:
+            chat.main(self)
+        else:
+            print_say("Faeture currently not available in Python 3", self, Fore.RED)
 
     def help_ask(self):
         """Prints help about ask command."""
@@ -448,11 +454,10 @@ class CmdInterpreter(Cmd):
 
     def do_match(self, s):
         """Matches patterns in a string by using regex."""
-        try:
-            file_name = raw_input(
-                Fore.RED + "Enter file name?:\n" + Fore.RESET)
+        if six.PY2:
+            file_name = raw_input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
             pattern = raw_input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
-        except:
+        else:
             file_name = input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
             pattern = input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
         file_name = file_name.strip()
@@ -505,10 +510,10 @@ class CmdInterpreter(Cmd):
     @unsupported(platform=MACOS)
     def do_movies(self, s):
         """Jarvis will find a good movie for you."""
-        try:
+        if six.PY2:
             movie_name = raw_input(
                 Fore.RED + "What do you want to watch?\n" + Fore.RESET)
-        except:
+        else:
             movie_name = input(
                 Fore.RED + "What do you want to watch?\n" + Fore.RESET)
         system("ims " + movie_name)
@@ -770,9 +775,9 @@ class CmdInterpreter(Cmd):
             loc_str = str(location)
             print_say("Your current location is set to " + loc_str, self)
             print_say("What is your new location?", self)
-            try:
+            if six.PY2:
                 i = raw_input()
-            except:
+            else:
                 i = input()
             MEMORY.update_data('city', i)
             MEMORY.save()
@@ -812,7 +817,7 @@ class CmdInterpreter(Cmd):
             data = wiki.content(" ".join(k[1:]))
 
         if isinstance(data, list):
-            print "\nDid you mean one of these pages?\n"
+            print("\nDid you mean one of these pages?\n")
             for d in range(len(data)):
                 print(str(d + 1) + ": " + data[d])
         else:

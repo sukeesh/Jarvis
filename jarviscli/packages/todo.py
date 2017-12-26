@@ -2,9 +2,9 @@
 
 from datetime import datetime as dt
 from uuid import uuid4
-from reminder import addReminder, removeReminder
+from .reminder import addReminder, removeReminder
 
-from fileHandler import write_file, read_file, str2date
+from .fileHandler import write_file, read_file, str2date
 from utilities.lexicalSimilarity import score_sentence
 from utilities.textParser import parse_date, parse_number
 

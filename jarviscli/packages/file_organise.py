@@ -1,6 +1,7 @@
 from __future__ import print_function
 from colorama import Fore
 import os
+import six
 
 
 def source_path(dir_name):
@@ -17,7 +18,10 @@ def source_path(dir_name):
         print(Fore.LIGHTRED_EX + 'No directory found')
         exit()
 
-    choice = int(raw_input('\nEnter the option number: '))
+    if six.PY2:
+        choice = int(raw_input('\nEnter the option number: '))
+    else:
+        choice = int(input('\nEnter the option number: '))
 
     if choice < 1 or choice > len(all_paths):
         path = ''
@@ -95,7 +99,10 @@ def print_after(path):
 
 
 def file_manage(self):
-    dir_name = raw_input('Enter the name of directory you want to clear: ')
+    if six.PY2:
+        dir_name = raw_input('Enter the name of directory you want to clear: ')
+    else:
+        dir_name = input('Enter the name of directory you want to clear: ')
     dir_path = source_path(dir_name)
     print_before(dir_path)
     new_dir_path, new_dir, extension = destination_path(dir_path)

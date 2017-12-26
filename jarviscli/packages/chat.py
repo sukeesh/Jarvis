@@ -1,4 +1,5 @@
 from colorama import Fore
+import six
 from aiml.brain import Brain
 from utilities.GeneralUtilities import print_say
 
@@ -9,9 +10,9 @@ def main(self):
     stay = True
 
     while stay:
-        try:
+        if six.PY2:
             text = str.upper(raw_input(Fore.RED + ">> " + Fore.RESET))
-        except:
+        else:
             text = str.upper(input(Fore.RED + ">> " + Fore.RESET))
         if text == "LEAVE":
             print_say("thanks for talking to me", self)

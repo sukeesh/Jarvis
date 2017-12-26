@@ -3,7 +3,10 @@ from packages import timeIn
 import time
 import datetime
 import sys
-from StringIO import StringIO
+try:  # python2
+    from StringIO import StringIO
+except ImportError:  # python3
+    from io import StringIO
 
 
 class TimeInTest(unittest.TestCase):

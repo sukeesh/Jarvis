@@ -1,21 +1,66 @@
 #!/bin/bash
+read -n 1 -p "Specify python version(2/3)(Default-3)" answer
+echo ""
+case ${answer:0:1} in
+2 )
+    echo "Selected python version 2"
+;;
+* )
+    echo "Selected python version 3"
+;;
+esac
+
+UNAME=$(uname -s)
 
 jarvispath=$PWD
+
 touch jarvis
 chmod +rwx jarvis
+
 exec 3<> jarvis
 
     echo "#!/bin/bash" >&3
-    echo "source $jarvispath/env/bin/activate" >&3
-    echo "python $jarvispath/jarviscli/" >&3
+
+    if [[ "$UNAME" == "Darwin" ]]; then
+      echo ". $jarvispath/env/bin/activate" >&3
+      
+      case ${answer:0:1} in
+      2 )
+          echo "python $jarvispath/jarviscli/" >&3
+      ;;
+      * )
+          echo "python3 $jarvispath/jarviscli/" >&3
+      ;;
+      esac
+
+    else
+      echo "source $jarvispath/env/bin/activate" >&3
+      echo "python $jarvispath/jarviscli/" >&3
+    fi
 
 exec 3>&-
 
 sudo mv jarvis /usr/local/bin/jarvis
 
-UNAME=$(uname -s)
-
-CHECK_PHANTOMJS=$(phantomjs -v)
+#MacOS
+if [[ "$UNAME" == "Darwin" ]]; then
+  brew install ffmpeg
+  brew install openssl
+  brew install phantomjs
+  case ${answer:0:1} in
+    2 )
+        virtualenv env --python=python2.7
+        . env/bin/activate
+        pip install -r requirements.txt
+    ;;
+    * )
+        virtualenv env --python=python3.6
+        . env/bin/activate
+        pip3 install -r requirements.txt
+    ;;
+  esac
+  exit 0
+fi
 
 install_phantomjs()
 {
@@ -45,10 +90,10 @@ if [[ -f "/etc/dnf/dnf.conf" ]]; then
 
 # Debian based
 elif [[ -f "/etc/apt/sources.list" ]]; then
-  sudo apt-get install ffmpeg python-pip python-imdbpy python-notify2
+  sudo apt-get install ffmpeg python-imdbpy python-notify2 python3-dbus
   sudo apt-get install python-dbus python-dbus-dev libssl-dev libffi-dev libdbus-1-dev libdbus-glib-1-dev
+  sudo apt-get install chromium-chromedriver
   sudo apt-get install build-essential chrpath libssl-dev libxft-dev libfreetype6-dev libfreetype6 libfontconfig1-dev libfontconfig1
-  sudo apt-get install chromium-chromedriver python2.7
   if [ "$CHECK_PHANTOMJS" == "2.1.1" ]; then
     echo "PhantomJs is installed"
   else
@@ -64,28 +109,20 @@ elif [[ -f "/etc/pacman.conf" ]]; then
     install_phantomjs
   fi
 
-#Mac
-elif [[ "$UNAME" == "Darwin" ]]; then
-  brew install ffmpeg
-  brew install openssl
-  brew install phantomjs
-  virtualenv env
-  . env/bin/activate
-  pip install -r requirements.txt
-  exit 0
-
 else
   echo "Operating system not supported"
   exit 1
 fi
 
-# Check if sudo is required
-pip install virtualenv
-if [[ "$?" -eq 2 ]]; then
-  sudo pip install virtualenv
-fi
+case ${answer:0:1} in
+  2 )
+      virtualenv env --python=python2.7
+  ;;
+  * )
+      virtualenv env --python=python3.6
+  ;;
+esac
 
-virtualenv env --python=python2.7
 source env/bin/activate
 pip install -r requirements.txt
 pip install dbus-python
