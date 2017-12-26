@@ -10,14 +10,16 @@ matrix:
     - os: osx
       language: generic
       cache: pip
+      sudo: required
       env: TOXENV=py27
     - os: linux
       python: 3.6
       cache: pip
       env: TOXENV=py36
     - os: osx
-      cache: pip
       language: generic
+      cache: pip
+      sudo: required
       env: TOXENV=py36
 addons:
   apt:
@@ -25,14 +27,28 @@ addons:
       - python-imdbpy
       - python-notify2
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sudo easy_install pip; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sudo pip install virtualenv; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then virtualenv env; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then . env/bin/activate; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py27" ]; then
+      brew install python;
+    fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py36" ]; then
+      brew install python3;
+    fi
 install:
-  - pip install -r requirements.txt
+  - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py27" ]; then
+      sudo pip2 install -r requirements.txt;
+    elif [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py36" ]; then
+      sudo pip3 install -r requirements.txt;
+    else
+      pip install -r requirements.txt;
+    fi
 script:
   - cd $TRAVIS_BUILD_DIR/
   - flake8 --select E,W --max-line-length=140 --ignore E722 jarviscli/
   - cd jarviscli/
-  - python -m unittest discover
+  - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py27" ]; then
+      python2 -m unittest discover;
+    elif [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py36" ]; then
+      python3 -m unittest discover;
+    else
+      python -m unittest discover;
+    fi
