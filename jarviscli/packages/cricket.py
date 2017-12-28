@@ -25,7 +25,7 @@ def all_matches():
 def live_score(desc):
     mid = match_id(desc)
     res = c.matches()
-    for counter, value in enumerate(res):
+    for value in res:
         if value['id'] == mid:
             if value['mchstate'] == 'preview':
                 text = Fore.RED + "MATCH YET TO BEGIN"
