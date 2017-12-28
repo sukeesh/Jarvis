@@ -24,6 +24,11 @@ def all_matches():
 
 def live_score(desc):
     mid = match_id(desc)
+    for x in range(len(res)):
+        if res[x]['id'] == mid:
+            if res[x]['mchstate'] == 'preview':
+                text = Fore.RED + "MATCH YET TO BEGIN"
+                return text
     data = c.livescore(mid)
     score = {}
     score['matchinfo'] = "{}, {}".format(data['matchinfo']['mnum'], data['matchinfo']['mchdesc'])
@@ -110,8 +115,11 @@ def score(self):
 
     desc = matches[choice - 1].title()
     print('')
-    print(live_score(desc))
-
+    res = live_score(desc)
+    print(res)
+    print("\n")
+    if(res==Fore.RED + "MATCH YET TO BEGIN"):
+        return
     print(Fore.LIGHTBLUE_EX + '1. Full Score Card')
     print('2. Commentary')
     print('3. Refresh Score')
