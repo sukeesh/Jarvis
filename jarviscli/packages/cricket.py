@@ -119,7 +119,7 @@ def score(self):
     res = live_score(desc)
     print(res)
     print("\n")
-    if(res==Fore.RED + "MATCH YET TO BEGIN"):
+    if(res == Fore.RED + "MATCH YET TO BEGIN"):
         return
     print(live_score(desc))
     print(Fore.LIGHTBLUE_EX + '1. Full Score Card')
