@@ -18,7 +18,8 @@ def all_matches():
     match_data = c.matches()
     matches = []
     for match in match_data:
-        matches.append(match['mchdesc'])
+        if match['mchstate'] not in ['nextlive', 'Nextlive']:
+            matches.append(match['mchdesc'])
     return matches
 
 
