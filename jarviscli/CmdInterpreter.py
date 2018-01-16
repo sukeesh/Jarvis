@@ -79,6 +79,7 @@ class CmdInterpreter(Cmd):
                         "fb",
                         "goodbye",
                         "hackathon",
+                        "help",
                         {"hotspot": ("start", "stop")},
                         "how_are_you",
                         {"increase": ("volume",)},
