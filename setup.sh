@@ -102,7 +102,7 @@ elif [[ -f "/etc/apt/sources.list" ]]; then
 
 # Arch based
 elif [[ -f "/etc/pacman.conf" ]]; then
-  sudo pacman -S --noconfirm ffmpeg openssl libffi python2-pip python-pip
+  sudo pacman -S --noconfirm ffmpeg openssl libffi python2-pip python-pip espeak
   if [ "$CHECK_PHANTOMJS" == "2.1.1" ]; then
     echo "PhantomJs is installed"
   else
