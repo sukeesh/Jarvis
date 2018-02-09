@@ -452,6 +452,8 @@ class CmdInterpreter(Cmd):
         print_say("finds lyrics\n", self)
         print_say("the format is song,artist\n", self)
         print_say("song and artist are separated by a - \n", self)
+        print_say("-- Example:", self)
+        print_say("\tlyrics wonderful tonight-eric clapton", self)
 
     def do_match(self, s):
         """Matches patterns in a string by using regex."""
