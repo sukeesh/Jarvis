@@ -6,7 +6,15 @@ import six
 
 def source_path(dir_name):
     all_paths = []
-    for root in os.walk("/home"):
+    # Changing static path to get the home path from PATH variables.
+    # The '/home' was causing script to exit with "file not found" error
+    # on Darwin.
+    home_dir = os.environ.get("HOME")
+    user_name = os.environ.get("USER")
+    home_path = home_dir.split(user_name)[0].rstrip('/')
+    for root in os.walk(home_path):
+        print(Fore.LIGHTBLUE_EX + "Searching in {}...".format((root[0])[:70]), end="\r")
+        sys.stdout.flush()
         if dir_name == root[0].split('/')[-1]:
             all_paths.append(root[0])
 
