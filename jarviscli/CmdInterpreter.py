@@ -32,6 +32,7 @@ from packages.quote import show_quote
 from packages.hackathon import find_hackathon
 from packages import translate
 from packages.dictionary import dictionary
+from packages.tempconv import temp_main
 if six.PY2:
     from packages import chat
 MEMORY = Memory()
@@ -103,6 +104,7 @@ class CmdInterpreter(Cmd):
                         "say",
                         {"screen": ("off",)},
                         "shutdown",
+                        "tempconv",
                         "todo",
                         {"tell": ("joke",)},
                         "translate",
@@ -267,7 +269,7 @@ class CmdInterpreter(Cmd):
 
     def help_decrease(self):
         """Print help about decrease command."""
-        print_say("volume: Decreases you speaker's sound.", self)
+        print_say("volume: Decreases your speaker's sound.", self)
 
     def complete_decrease(self, text, line, begidx, endidx):
         """Completions for decrease command"""
@@ -714,6 +716,15 @@ class CmdInterpreter(Cmd):
     def help_tell(self):
         """Print info about tell command"""
         print_say("Tell a joke about Chuck Norris", self)
+
+    def do_tempconv(self, s):
+        """Convert temperature from Celsius to Fahrenheit or vice versa"""
+        temp_main(self, s)
+
+    def help_tempconv(self):
+        """Print help information for tempconv command."""
+        print_say("Convert temperature from Fahrenheit to Celsius and vice versa", self)
+        print_say("Examples: 32f, 18C, -20F, -8c, 105.4F, -10.21C", self)
 
     def do_todo(self, data):
         """Create your personal TODO list!"""
