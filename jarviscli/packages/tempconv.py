@@ -19,8 +19,7 @@ def temp_main(self, s):
 
 def temp_valid_regex(s):
     """Validate the input string using regex and return a boolean for validity"""
-    pattern = re.compile("^-?\d+(\.\d+)?[FfCc]$")
-    if pattern.match(s):
+    if re.search("^-?\d+(\.\d+)?[FfCc]$", s):
         return True
     else:
         return False
@@ -29,7 +28,7 @@ def temp_valid_regex(s):
 def temp_convert(self, s):
     """Assuming valid regex, handle the actual temperature conversion and output"""
 
-    # use regex to strip all non-numeric characters from the string
+    # convert the string into a float
     starting_temp = float(s[:-1])
 
     # run conversions and create output string.
