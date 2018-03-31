@@ -47,6 +47,7 @@ if [[ "$UNAME" == "Darwin" ]]; then
   brew install ffmpeg
   brew install openssl
   brew install phantomjs
+  brew install screenfetch
   case ${answer:0:1} in
     2 )
         virtualenv env --python=python2.7
@@ -76,6 +77,7 @@ install_phantomjs()
 # Fedora based (>=22)
 if [[ -f "/etc/dnf/dnf.conf" ]]; then
   sudo dnf install -y ffmpeg python-pip python-dbus notify-python
+  sudo dnf install screenfetch
   # chromedriver-install
   wget https://chromedriver.storage.googleapis.com/2.32/chromedriver_linux64.zip
   unzip chromedriver_linux64_2.3.zip
@@ -93,6 +95,7 @@ elif [[ -f "/etc/apt/sources.list" ]]; then
   sudo apt-get install ffmpeg python-imdbpy python-notify2 python3-dbus
   sudo apt-get install python-dbus python-dbus-dev libssl-dev libffi-dev libdbus-1-dev libdbus-glib-1-dev
   sudo apt-get install chromium-chromedriver
+  sudo apt-get install screenfetch
   sudo apt-get install build-essential chrpath libssl-dev libxft-dev libfreetype6-dev libfreetype6 libfontconfig1-dev libfontconfig1
   if [ "$CHECK_PHANTOMJS" == "2.1.1" ]; then
     echo "PhantomJs is installed"

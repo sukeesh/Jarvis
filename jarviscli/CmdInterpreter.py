@@ -104,6 +104,7 @@ class CmdInterpreter(Cmd):
                         "say",
                         {"screen": ("off",)},
                         "shutdown",
+                        "systeminfo",
                         "tempconv",
                         "todo",
                         {"tell": ("joke",)},
@@ -719,6 +720,12 @@ class CmdInterpreter(Cmd):
     def help_shutdown(self):
         """Print help about shutdown command."""
         print_say("Shutdown the system.", self)
+     
+    def do_systeminfo(self, s):
+        system("screenfetch")
+
+    def help_systeminfo(self):
+        print_say("Display system information with distribution logo", self)
 
     def do_tell(self, s):
         """Tell a joke about Chuck Norris"""
