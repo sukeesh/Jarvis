@@ -540,7 +540,7 @@ class CmdInterpreter(Cmd):
         print_say("Jarvis will find you the song you want", self)
         print_say("-- Example:", self)
         print_say("\tmusic wonderful tonight", self)
-    
+
     def do_mute(self, s):
         """Silences your speaker's sound."""
         if IS_MACOS:
@@ -720,7 +720,7 @@ class CmdInterpreter(Cmd):
     def help_shutdown(self):
         """Print help about shutdown command."""
         print_say("Shutdown the system.", self)
-     
+
     def do_systeminfo(self, s):
         system("screenfetch")
 
