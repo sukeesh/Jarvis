@@ -539,6 +539,17 @@ class CmdInterpreter(Cmd):
         print_say("Jarvis will find you the song you want", self)
         print_say("-- Example:", self)
         print_say("\tmusic wonderful tonight", self)
+    
+    def do_mute(self, s):
+        """Silences your speaker's sound."""
+        if IS_MACOS:
+            pass
+        else:
+            system("pactl -- set-sink-mute 0 toggle")
+
+    def help_mute(self):
+        """Print help about mute command."""
+        print_say("mute: Silences your speaker's sound.", self)
 
     def do_near(self, data):
         """Jarvis can find what is near you!"""
@@ -843,14 +854,3 @@ class CmdInterpreter(Cmd):
         print_say("enter wiki search for searching related topics", self)
         print_say("enter wiki summary for getting summary of the topic", self)
         print_say("wiki content for full page article of topic", self)
-
-    def do_mute(self, s):
-        """Silences your speaker's sound."""
-        if IS_MACOS:
-            pass
-        else:
-            system("pactl -- set-sink-mute 0 toggle")
-
-    def help_mute(self):
-        """Print help about mute command."""
-        print_say("mute: Silences your speaker's sound.", self)
