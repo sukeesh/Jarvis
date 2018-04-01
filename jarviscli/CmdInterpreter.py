@@ -722,9 +722,11 @@ class CmdInterpreter(Cmd):
         print_say("Shutdown the system.", self)
 
     def do_systeminfo(self, s):
+        """Display system information with distribution logo"""
         system("screenfetch")
 
     def help_systeminfo(self):
+        """"Print help about systeminfo command"""
         print_say("Display system information with distribution logo", self)
 
     def do_tell(self, s):
