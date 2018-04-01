@@ -17,7 +17,7 @@ from packages.lyrics import lyrics
 from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminder_handler, reminder_quit
-from packages import mapps, picshow, evaluator, forecast, wiki, movie
+from packages import mapps, picshow, evaluator, forecast, wiki, movie, ip
 from packages import directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
 from packages.memory.memory import Memory
 from packages.shutdown import shutdown_system, cancel_shutdown, reboot_system
@@ -84,6 +84,7 @@ class CmdInterpreter(Cmd):
                         {"hotspot": ("start", "stop")},
                         "how_are_you",
                         {"increase": ("volume",)},
+                        "ip",
                         "lyrics",
                         "match",
                         {"movie": ("cast", "director", "plot", "producer", "rating", "year",)},
@@ -443,6 +444,16 @@ class CmdInterpreter(Cmd):
     def complete_increase(self, text, line, begidx, endidx):
         """Completions for increase command"""
         return self.get_completions("increase", text)
+
+    def do_ip(self, s):
+        """Display local and public ip address"""
+        ip.get_local_ip(self)
+        print_say("",self)
+        ip.get_public_ip(self)
+
+    def help_ip(self):
+        """Print help about ip command"""
+        print_say("Display local and public ip address", self)
 
     def do_lyrics(self, s):
         # TODO: maybe add option to download lyrics not just print them there
