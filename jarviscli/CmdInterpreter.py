@@ -448,7 +448,7 @@ class CmdInterpreter(Cmd):
     def do_ip(self, s):
         """Display local and public ip address"""
         ip.get_local_ip(self)
-        print_say("",self)
+        print_say("", self)
         ip.get_public_ip(self)
 
     def help_ip(self):
