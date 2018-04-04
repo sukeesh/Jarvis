@@ -105,8 +105,10 @@ class CmdInterpreter(Cmd):
                         "say",
                         {"screen": ("off",)},
                         "shutdown",
+                        "stopwatch",
                         "systeminfo",
                         "tempconv",
+                        "timer",
                         "todo",
                         {"tell": ("joke",)},
                         "translate",
@@ -732,6 +734,22 @@ class CmdInterpreter(Cmd):
         """Print help about shutdown command."""
         print_say("Shutdown the system.", self)
 
+    def do_stopwatch(self, s):
+        """Start stopwatch"""
+        system("termdown")
+
+    def help_stopwatch(self):
+        """Print help about stopwatch command"""
+        stopwatch_hotkeys = """Hotkeys:
+        L       Lap
+        R       Reset
+        SPACE   Pause
+        Q       Quit
+        """
+        print_say("Start stopwatch", self)
+        print_say("", self)
+        print_say(stopwatch_hotkeys, self)
+
     def do_systeminfo(self, s):
         """Display system information with distribution logo"""
         system("screenfetch")
@@ -756,6 +774,31 @@ class CmdInterpreter(Cmd):
         """Print help information for tempconv command."""
         print_say("Convert temperature from Fahrenheit to Celsius and vice versa", self)
         print_say("Examples: 32f, 18C, -20F, -8c, 105.4F, -10.21C", self)
+
+    def do_timer(self, s):
+        """Set a timer"""
+        k = s.split(' ', 1)
+        if k[0] == '':
+            print_say("Please specify duration", self)
+            return
+        timer_cmd = "termdown " + k[0]
+        system(timer_cmd)
+
+    def help_timer(self):
+        """Print help about timer command"""
+        timer_hotkeys = """Hotkeys:
+        R       Reset
+        SPACE   Pause
+        Q       Quit
+        """
+        timer_usages = """Usages:
+        timer 10
+        timer 1h5m30s
+        """
+        print_say("Set a timer", self)
+        print_say("", self)
+        print_say(timer_hotkeys, self)
+        print_say(timer_usages, self)
 
     def do_todo(self, data):
         """Create your personal TODO list!"""
