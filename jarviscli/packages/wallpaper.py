@@ -1,4 +1,3 @@
-# from urllib2 import request
 import requests
 import shutil
 from bs4 import BeautifulSoup
@@ -17,9 +16,9 @@ def download():
 	link=get_image()
 	file_name = dt.now().strftime("%Y-%m-%d")
 	user = os.getenv('USER')
-	path='/home/'+user+'/Pictures/BingWallpapers'
+	path='/home/'+user+'/Pictures/Wallpapers'
 	full_path=os.path.join(path,file_name)
-	
+
 	if not os.path.exists(path):
 		os.mkdir(path)
 
@@ -32,5 +31,3 @@ def download():
 def change_wall():
 	full_path=download()
 	os.system("/usr/bin/gsettings set org.gnome.desktop.background picture-uri file:///"+full_path)
-
-
