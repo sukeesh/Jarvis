@@ -57,3 +57,9 @@ Jarvis will fetch quote of the day.
 **To run quote feature type**: quote 
 
 ### Python3 Support
+
+
+*10/04/2018*
+### Wallpaper
+Wallpaper module is been added .
+**To change the wallpaper just type**: wallpaper .
