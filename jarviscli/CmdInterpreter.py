@@ -33,6 +33,7 @@ from packages.hackathon import find_hackathon
 from packages import translate
 from packages.dictionary import dictionary
 from packages.tempconv import temp_main
+from packages.dice import dice
 if six.PY2:
     from packages import chat
 MEMORY = Memory()
@@ -69,6 +70,7 @@ class CmdInterpreter(Cmd):
                         "clock",
                         "cricket",
                         {"decrease": ("volume",)},
+                        "roll",
                         "dictionary",
                         "directions",
                         {"disable": ("sound",)},
@@ -258,6 +260,18 @@ class CmdInterpreter(Cmd):
     def help_cricket(self):
         """cricket package for Jarvis"""
         print_say("Enter cricket and follow the instructions", self)
+
+    def do_roll(self, s=None):
+        """Roll a dice"""
+        dice(self, s)
+
+    def help_roll(self):
+        """Prints help about dice command"""
+        print_say("Roll a dice. E.g.", self)
+        print_say("-- Examples:", self)
+        print_say("\tRoll a dice", self)
+        print_say("\tRoll four dices with 16 edges", self)
+        print_say("\tRoll 5 dices five times", self)
 
     def do_decrease(self, s):
         """Decreases you speakers' sound."""
