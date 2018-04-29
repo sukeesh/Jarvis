@@ -112,6 +112,12 @@ elif [[ -f "/etc/pacman.conf" ]]; then
     install_phantomjs
   fi
 
+# openSUSE based
+elif [[ -f "/etc/zypp/zypp.conf" ]]; then
+    sudo zypper in -y screenfetch python-devel python3-dbus-python-devel espeak
+    # 42.3
+    sudo zypper in -y phantomjs || echo "Please install PhantomJs manually"
+
 else
   echo "Operating system not supported"
   exit 1
