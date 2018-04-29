@@ -1,5 +1,6 @@
 from PyDictionary import PyDictionary
 from utilities.GeneralUtilities import print_say
+from six.moves import input
 import warnings
 import sys
 import os
@@ -18,7 +19,7 @@ def dictionary(self):
     # Returns meaning, synonym and antonym of any word
     Dict = PyDictionary()
     print_say('\nEnter word', self)
-    word = raw_input()
+    word = input()
     print('\nMeaning : ' + str(Dict.googlemeaning(word)))
     blockPrint()
     syn = Dict.synonym(word)

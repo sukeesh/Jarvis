@@ -8,7 +8,7 @@ except ImportError:  # python2
     import urllib
 import json
 import webbrowser
-import six
+from six.moves import input
 from .memory.memory import Memory
 
 '''
@@ -75,10 +75,7 @@ class News:
             print("your default news source is " +
                   self.m.get_data('news-source'))
             print("Would you like news from this source? (yes/no): ")
-            if six.PY2:
-                x = raw_input()
-            else:
-                x = input()
+            x = input()
             if x == 'y' or x == 'yes':
                 self.source = self.m.get_data('news-source')
             # if not set get users preference
@@ -96,10 +93,7 @@ class News:
         print("4: Reddit")
         print("5: TechCrunch")
 
-        if six.PY2:
-            i = int(raw_input())
-        else:
-            i = int(input())
+        i = int(input())
         if i == 1:
             self.source = "bbc-news"
         elif i == 2:
@@ -112,10 +106,7 @@ class News:
             self.source = "techcrunch"
 
         print("would you like to set this as your default? (yes/no): ")
-        if six.PY2:
-            x = raw_input()
-        else:
-            x = input()
+        x = input()
         if x == 'y' or x == 'yes':
             self.m.update_data('news-source', self.source)  # save to memory
             self.m.save()
@@ -160,10 +151,7 @@ class News:
         print("Type index to expand news\n")
 
         # Check to see if index or NewsAPI was enterd
-        if six.PY2:
-            idx = raw_input()
-        else:
-            idx = input()
+        idx = input()
         if idx.lower() == "newsapi":
             webbrowser.open('https://newsapi.org/')
             return
@@ -182,10 +170,7 @@ class News:
         print(article_list[int(idx)]['description'])
 
         print("Do you want to read more? (yes/no): ")
-        if six.PY2:
-            i = raw_input()
-        else:
-            i = input()
+        i = input()
         # if user wants to read more open browser to article url
         if i.lower() == "yes" or i.lower() == 'y':
             webbrowser.open(article_list[int(idx)]['url'])

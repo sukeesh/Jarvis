@@ -1,7 +1,7 @@
 from googletrans import Translator
 from utilities.GeneralUtilities import print_say
 from googletrans.constants import LANGCODES, LANGUAGES, SPECIAL_CASES
-import six
+from six.moves import input
 
 
 def main(self):
@@ -11,10 +11,7 @@ def main(self):
     '''
 
     print_say('\nEnter source language ', self)
-    if six.PY2:
-        srcs = raw_input()
-    else:
-        srcs = input()
+    srcs = input()
     while (srcs not in LANGUAGES) and (srcs not in SPECIAL_CASES) and (srcs not in LANGCODES):
         if srcs in SPECIAL_CASES:
             srcs = SPECIAL_CASES[srcs]
@@ -22,15 +19,9 @@ def main(self):
             srcs = LANGCODES[srcs]
         else:
             print_say("\nInvalid source language\nEnter again", self)
-            if six.PY2:
-                srcs = raw_input()
-            else:
-                srcs = input()
+            srcs = input()
     print_say('\nEnter destination language ', self)
-    if six.PY2:
-        des = raw_input()
-    else:
-        des = input()
+    des = input()
     while (des not in LANGUAGES) and (des not in SPECIAL_CASES) and (des not in LANGCODES):
         if des in SPECIAL_CASES:
             des = SPECIAL_CASES[des]
@@ -38,15 +29,9 @@ def main(self):
             des = LANGCODES[des]
         else:
             print_say("\nInvalid destination language\nEnter again", self)
-            if six.PY2:
-                des = raw_input()
-            else:
-                des = input()
+            des = input()
     print_say('\nEnter text ', self)
-    if six.PY2:
-        tex = raw_input()
-    else:
-        tex = input()
+    tex = input()
     translator = Translator()
     result = translator.translate(tex, dest=des, src=srcs)
     result = u"""

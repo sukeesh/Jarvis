@@ -2,7 +2,7 @@ import getpass
 import os
 from time import sleep
 from selenium import webdriver
-import six
+from six.moves import input
 
 
 def get_details():
@@ -19,15 +19,9 @@ def get_details():
     # passwords are not saved
 
     else:
-        if six.PY2:
-            usr = raw_input('Enter Email Id: ')
-        else:
-            usr = input('Enter Email Id: ')
+        usr = input('Enter Email Id: ')
         pwd = getpass.getpass('Enter Password: ')
-        if six.PY2:
-            choice = raw_input('Do you want to save the id and password (y/n): ')
-        else:
-            choice = input('Do you want to save the id and password (y/n): ')
+        choice = input('Do you want to save the id and password (y/n): ')
         if choice == 'y' or choice == 'Y':
             with open(file, 'w') as f:
                 f.write(usr)
@@ -54,8 +48,5 @@ def fb_login(self):
 
     submit = driver.find_element_by_id('loginbutton')
     submit.click()
-    if six.PY2:
-        raw_input('Enter anything to end the session: ')
-    else:
-        input('Enter anything to end the session: ')
+    input('Enter anything to end the session: ')
     driver.quit()
