@@ -2,6 +2,7 @@ from PyDictionary import PyDictionary
 from utilities.GeneralUtilities import print_say
 import warnings
 import sys
+import six
 import os
 warnings.filterwarnings("ignore")
 
@@ -18,7 +19,7 @@ def dictionary(self):
     # Returns meaning, synonym and antonym of any word
     Dict = PyDictionary()
     print_say('\nEnter word', self)
-    word = raw_input()
+    word = raw_input() if six.PY2 else input()
     print('\nMeaning : ' + str(Dict.googlemeaning(word)))
     blockPrint()
     syn = Dict.synonym(word)
