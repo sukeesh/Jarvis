@@ -30,6 +30,8 @@ from packages.fb import fb_login
 from packages.twitter import twitter_login, twitter_tweet, twitter_end
 from packages.cricket import score
 from packages.quote import show_quote
+from packages.currencyconv import currencyconv
+from packages.currencyconv import correct_currency
 from packages.hackathon import find_hackathon
 from packages import translate
 from packages.dictionary import dictionary
@@ -103,6 +105,7 @@ class CmdInterpreter(Cmd):
                         "q",
                         "quit",
                         "quote",
+                        "currencyconv",
                         "reboot",
                         "remind",
                         "say",
@@ -680,6 +683,27 @@ class CmdInterpreter(Cmd):
     def help_quote(self):
         """Help for quote"""
         print_say("quote prints quote for the day for you", self)
+
+    def do_currencyconv(self, s=None):
+        """Show the convert from a currency to another"""
+        ammount = raw_input('Enter an ammount: ').replace(',', '.')
+
+        fr = "1"
+        while (fr == "1"):
+            fr = raw_input('Enter from which currency: ')
+            fr = correct_currency(self, fr)
+
+        to = "1"
+        while (to == "1"):
+            to = raw_input('Enter to which currency: ')
+            to = correct_currency(self, to)
+
+        currencyconv(self, ammount, fr, to)
+
+    def help_currencyconv(self):
+        """Help for currencyConverter"""
+        print_say("Convert an amount of money from a currency to another.", self)
+        print_say("-- Type currencyconv, press enter and follow the instructions!", self)
 
     def do_reboot(self, s):
         """Reboot the system."""
