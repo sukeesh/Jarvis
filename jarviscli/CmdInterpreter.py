@@ -2,6 +2,7 @@ from os import system
 from cmd import Cmd
 import signal
 import six
+from six.moves import input
 from platform import system as sys
 from platform import architecture, release, dist
 from time import ctime
@@ -33,6 +34,7 @@ from packages.hackathon import find_hackathon
 from packages import translate
 from packages.dictionary import dictionary
 from packages.tempconv import temp_main
+from packages.dice import dice
 if six.PY2:
     from packages import chat
 MEMORY = Memory()
@@ -69,6 +71,7 @@ class CmdInterpreter(Cmd):
                         "clock",
                         "cricket",
                         {"decrease": ("volume",)},
+                        "roll",
                         "dictionary",
                         "directions",
                         {"disable": ("sound",)},
@@ -258,6 +261,18 @@ class CmdInterpreter(Cmd):
     def help_cricket(self):
         """cricket package for Jarvis"""
         print_say("Enter cricket and follow the instructions", self)
+
+    def do_roll(self, s=None):
+        """Roll a dice"""
+        dice(self, s)
+
+    def help_roll(self):
+        """Prints help about dice command"""
+        print_say("Roll a dice. E.g.", self)
+        print_say("-- Examples:", self)
+        print_say("\tRoll a dice", self)
+        print_say("\tRoll four dices with 16 edges", self)
+        print_say("\tRoll 5 dices five times", self)
 
     def do_decrease(self, s):
         """Decreases you speakers' sound."""
@@ -473,12 +488,8 @@ class CmdInterpreter(Cmd):
 
     def do_match(self, s):
         """Matches patterns in a string by using regex."""
-        if six.PY2:
-            file_name = raw_input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
-            pattern = raw_input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
-        else:
-            file_name = input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
-            pattern = input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
+        file_name = input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
+        pattern = input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
         file_name = file_name.strip()
         if file_name == "":
             print("Invalid Filename")
@@ -529,12 +540,8 @@ class CmdInterpreter(Cmd):
     @unsupported(platform=MACOS)
     def do_movies(self, s):
         """Jarvis will find a good movie for you."""
-        if six.PY2:
-            movie_name = raw_input(
-                Fore.RED + "What do you want to watch?\n" + Fore.RESET)
-        else:
-            movie_name = input(
-                Fore.RED + "What do you want to watch?\n" + Fore.RESET)
+        movie_name = input(
+            Fore.RED + "What do you want to watch?\n" + Fore.RESET)
         system("ims " + movie_name)
 
     @unsupported(platform=MACOS)
@@ -863,10 +870,7 @@ class CmdInterpreter(Cmd):
             loc_str = str(location)
             print_say("Your current location is set to " + loc_str, self)
             print_say("What is your new location?", self)
-            if six.PY2:
-                i = raw_input()
-            else:
-                i = input()
+            i = input()
             MEMORY.update_data('city', i)
             MEMORY.save()
         elif "system" in s:

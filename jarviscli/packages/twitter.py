@@ -3,7 +3,7 @@ from time import sleep
 import getpass
 import os
 import pyperclip
-import six
+from six.moves import input
 
 
 def get_driver():
@@ -30,15 +30,9 @@ def get_details():
     # passwords are not saved
 
     else:
-        if six.PY2:
-            usr = raw_input('Enter Email Id: ')
-        else:
-            usr = input('Enter Email Id: ')
+        usr = input('Enter Email Id: ')
         pwd = getpass.getpass('Enter Password: ')
-        if six.PY2:
-            choice = raw_input('Do you want to save the id and password (y/n): ')
-        else:
-            choice = input('Do you want to save the id and password (y/n): ')
+        choice = input('Do you want to save the id and password (y/n): ')
         if choice == 'y' or choice == 'Y':
             with open(file, 'w') as f:
                 f.write(usr)
@@ -69,16 +63,10 @@ def twitter_tweet(self):
     print("1. write tweet")
     print("2. copy from clipboard")
 
-    if six.PY2:
-        choice = raw_input('Enter choice:')
-    else:
-        choice = input('Enter choice:')
+    choice = input('Enter choice:')
 
     if int(choice) == 1:
-        if six.PY2:
-            tweet = raw_input('Enter tweet here:')
-        else:
-            tweet = input('Enter tweet here:')
+        tweet = input('Enter tweet here:')
     else:
         tweet = pyperclip.paste()
 
@@ -94,8 +82,5 @@ def twitter_tweet(self):
 
 
 def twitter_end(self, driver):
-    if six.PY2:
-        raw_input('Enter anything to end session: ')
-    else:
-        input('Enter anything to end session: ')
+    input('Enter anything to end session: ')
     driver.quit()
