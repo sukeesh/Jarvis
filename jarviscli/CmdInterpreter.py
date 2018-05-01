@@ -31,7 +31,8 @@ from packages.twitter import twitter_login, twitter_tweet, twitter_end
 from packages.cricket import score
 from packages.quote import show_quote
 from packages.currencyconv import currencyconv
-from packages.currencyconv import correct_currency
+from packages.currencyconv import get_currency
+from packages.currencyconv import find_currencies
 from packages.hackathon import find_hackathon
 from packages import translate
 from packages.dictionary import dictionary
@@ -684,21 +685,16 @@ class CmdInterpreter(Cmd):
         """Help for quote"""
         print_say("quote prints quote for the day for you", self)
 
+
     def do_currencyconv(self, s=None):
         """Show the convert from a currency to another"""
-        ammount = raw_input('Enter an ammount: ').replace(',', '.')
+        currencies = find_currencies()
 
-        fr = "1"
-        while (fr == "1"):
-            fr = raw_input('Enter from which currency: ')
-            fr = correct_currency(self, fr)
+        amount = input('Enter an amount: ').replace(',', '.')
+        from_currency = get_currency('Enter from which currency: ', currencies)
+        to_currency = get_currency('Enter to which currency: ', currencies)
 
-        to = "1"
-        while (to == "1"):
-            to = raw_input('Enter to which currency: ')
-            to = correct_currency(self, to)
-
-        currencyconv(self, ammount, fr, to)
+        currencyconv(self, amount, from_currency, to_currency)
 
     def help_currencyconv(self):
         """Help for currencyConverter"""
