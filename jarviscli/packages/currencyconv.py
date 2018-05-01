@@ -1,42 +1,48 @@
 from forex_python.converter import CurrencyRates
 from forex_python.bitcoin import BtcConverter
 from decimal import Decimal
+import csv
+import os
+
+FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 # currencyconv converts the given ammount to another currency using fore-python
-def currencyconv(self, ammount, fr, to):
+def currencyconv(self, amount, fr, to):
 
     b = BtcConverter(force_decimal=True)
     c = CurrencyRates(force_decimal=True)
 
     if (to == "BTC"):
-        result = b.convert_to_btc(Decimal(ammount), fr)
+        result = b.convert_to_btc(Decimal(amount), fr)
     elif (fr == "BTC"):
-        result = b.convert_btc_to_cur(Decimal(ammount), to)
+        result = b.convert_btc_to_cur(Decimal(amount), to)
     else:
-        result = c.convert(fr, to, Decimal(ammount))
+        result = c.convert(fr, to, Decimal(amount))
 
     print result
     return result
 
-# correct_currency checks if the input the user gave is appropriate
+# find_currency includes if the input the user gave is appropriate
 # forex-python can only receive inputs that are in this format
-def correct_currency(self, c):
-    c = c.upper()  # convert a string from lowercase to uppercase
-    currencies = {"EUR": ["EURO"], "AUD": ["AUSTRALIAN DOLLAR"], "BGN": ["BULGARIAN LEV"],
-    "BRL": ["BRAZILIAN REAL"], "CAD": ["CANADIAN DOLLAR"], "CHF": ["SWISS FRANC"],
-    "CNY": ["YUAN RENMINBI"], "CZK": ["CZECH KORUNA"], "DKK": ["DANISH KRONE"],
-    "GBP": ["POUND STERLING"], "HKD": ["HONG KONG DOLLAR"], "HRK": ["CROATIAN KUNA", "KUNA"],
-    "HUF": ["FORINT"], "IDR": ["RUPIAH"], "ILS": ["NEW ISRAELI SHEQEL"], "INR": ["INDIAN RUPEE"],
-    "ISK": ["ICELAND KRONA"], "JPY": ["YEN", "JAPANESE YEN"], "KRW": ["WON"],
-    "MXN": ["MEXICAN PESO"], "MYR": ["MALAYSIAN RINGGIT"], "NOK": ["NORWEGIAN KRONE"],
-    "NZD": ["NEW ZEALAND DOLLAR"], "PHP": ["PHILIPPINE PESO"], "PLN": ["ZLOTY"],
-    "RON": ["NEW ROMANIAN LEU"], "RUB": ["RUSSIAN RUBLE"], "SEK": ["SWEDISH KRONA"],
-    "SGD": ["SINGAPORE DOLLAR"], "THB": ["BAHT"], "TRY" : ["TURKISH LIRA"],
-    "USD": ["US DOLLAR"], "ZAR": ["RAND"], "BTC": ["XBT", "BITCOINS"]}
 
-    for key, value in currencies.items():
-        if (c != key) and (c not in value):
-            correct = "1"
-        else:
-            return key
-    return correct
+def find_currencies():
+    with open(os.path.join(FILE_PATH, "../../data/currencies.csv"), mode='r') as infile:
+        reader = csv.reader(infile)
+        mydict = {r: row[2] for row in reader for r in row}
+    return mydict
+
+def get_currency(prompt, currencies):
+
+    first_time = 1
+    while True:
+        c = raw_input(prompt).upper()
+        if c in currencies:
+            return currencies[c]
+        elif first_time == 1:
+            print("Please enter a valid country or currency!")
+            get_help = input("Type 1 to see valid inputs or 2 to continue: ")
+            if get_help == 1:
+                print(currencies.keys())
+            elif get_help == 2:
+                continue
+        first_time = 0
