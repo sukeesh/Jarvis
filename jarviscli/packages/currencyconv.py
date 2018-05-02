@@ -8,12 +8,9 @@ import os
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
-'''''
- currencyconv converts the given amount to another currency using fore-python
-'''''
-
-
 def currencyconv(self, amount, fr, to):
+    """ currencyconv converts the given amount to another currency """
+    """ using fore-python """
 
     b = BtcConverter(force_decimal=True)
     c = CurrencyRates(force_decimal=True)
@@ -28,13 +25,10 @@ def currencyconv(self, amount, fr, to):
     print result
 
 
-'''''
-find_currency creates a dict with the inputs that
-forex-python accepts
-'''''
-
-
 def find_currencies():
+    """ find_currency creates a dict with the inputs that """
+    """ forex-python accepts """
+
     with open(os.path.join(FILE_PATH, "../data/currencies.csv"), mode='r') \
     as infile:
         reader = csv.reader(infile)
@@ -42,13 +36,9 @@ def find_currencies():
     return mydict
 
 
-'''''
-get_currency checks if the input the user gave is valid based on the
-dictionary of find_currencies
-'''''
-
-
 def get_currency(prompt, currencies):
+    """ get_currency checks if the input the user gave is valid based on the """
+    """" dictionary of find_currencies """
 
     while True:
         c = input(prompt).upper()
