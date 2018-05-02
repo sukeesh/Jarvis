@@ -33,6 +33,7 @@ from packages.quote import show_quote
 from packages.currencyconv import currencyconv
 from packages.currencyconv import get_currency
 from packages.currencyconv import find_currencies
+from utilities.GeneralUtilities import get_float
 from packages.hackathon import find_hackathon
 from packages import translate
 from packages.dictionary import dictionary
@@ -685,12 +686,11 @@ class CmdInterpreter(Cmd):
         """Help for quote"""
         print_say("quote prints quote for the day for you", self)
 
-
     def do_currencyconv(self, s=None):
         """Show the convert from a currency to another"""
         currencies = find_currencies()
 
-        amount = input('Enter an amount: ').replace(',', '.')
+        amount = get_float('Enter an amount: ')
         from_currency = get_currency('Enter from which currency: ', currencies)
         to_currency = get_currency('Enter to which currency: ', currencies)
 
@@ -698,8 +698,10 @@ class CmdInterpreter(Cmd):
 
     def help_currencyconv(self):
         """Help for currencyConverter"""
-        print_say("Convert an amount of money from a currency to another.", self)
-        print_say("-- Type currencyconv, press enter and follow the instructions!", self)
+        print_say("Convert an amount of money from a currency to another.", \
+        self)
+        print_say("-- Type currencyconv, press enter and follow the" + \
+        "instructions!", self)
 
     def do_reboot(self, s):
         """Reboot the system."""
