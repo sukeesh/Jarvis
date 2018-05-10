@@ -698,10 +698,10 @@ class CmdInterpreter(Cmd):
 
     def help_currencyconv(self):
         """Help for currencyConverter"""
-        print_say("Convert an amount of money from a currency to another.", \
-        self)
-        print_say("-- Type currencyconv, press enter and follow the" + \
-        "instructions!", self)
+        print_say("Convert an amount of money from a currency to another.",
+                  self)
+        print_say("-- Type currencyconv, press enter and follow the" +
+                  "instructions!", self)
 
     def do_reboot(self, s):
         """Reboot the system."""

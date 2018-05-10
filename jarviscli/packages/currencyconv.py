@@ -9,8 +9,10 @@ FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
 def currencyconv(self, amount, fr, to):
-    """ currencyconv converts the given amount to another currency """
-    """ using fore-python """
+    """
+    currencyconv converts the given amount to another currency
+    using fore-python
+    """
 
     b = BtcConverter(force_decimal=True)
     c = CurrencyRates(force_decimal=True)
@@ -26,19 +28,22 @@ def currencyconv(self, amount, fr, to):
 
 
 def find_currencies():
-    """ find_currency creates a dict with the inputs that """
-    """ forex-python accepts """
+    """
+    find_currency creates a dict with the inputs that forex-python accepts
+    """
 
-    with open(os.path.join(FILE_PATH, "../data/currencies.csv"), mode='r') \
-    as infile:
+    with open(os.path.join(FILE_PATH, "../data/currencies.csv"),
+              mode='r') as infile:
         reader = csv.reader(infile)
         mydict = {r.upper(): row[2] for row in reader for r in row[0:3]}
     return mydict
 
 
 def get_currency(prompt, currencies):
-    """ get_currency checks if the input the user gave is valid based on the """
-    """" dictionary of find_currencies """
+    """
+    get_currency checks if the input the user gave is valid based
+    on the dictionary of find_currencies
+    """
 
     while True:
         c = input(prompt).upper()
@@ -52,5 +57,5 @@ def get_currency(prompt, currencies):
             prompt = 'Please enter a valid country or currency: '
             continue
         else:
-            prompt = 'Type -show help- to see valid currencies ' + \
-            'or -try again- to continue: '
+            prompt = 'Type -show help- to see valid currencies '\
+                     'or -try again- to continue: '
