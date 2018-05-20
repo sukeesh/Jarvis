@@ -6,7 +6,7 @@ import base64
 
 
 def imgur(self, s):
-    # Get the absolute path 
+    # Get the absolute path
     s = os.path.abspath(s)
     if os.path.isfile(s):
         try:
