@@ -709,10 +709,13 @@ class CmdInterpreter(Cmd):
 
     def do_say(self, s):
         """Reads what is typed."""
-        voice_state = self.enable_voice
-        self.enable_voice = True
-        self.speech.text_to_speech(s)
-        self.enable_voice = voice_state
+        if not s:
+            print_say("What should I say?", self)
+        else:
+            voice_state = self.enable_voice
+            self.enable_voice = True
+            self.speech.text_to_speech(s)
+            self.enable_voice = voice_state
 
     def help_say(self):
         """Prints help text from say command."""
