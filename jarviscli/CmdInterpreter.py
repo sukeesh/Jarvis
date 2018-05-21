@@ -30,6 +30,7 @@ from packages.fb import fb_login
 from packages.twitter import twitter_login, twitter_tweet, twitter_end
 from packages.cricket import score
 from packages.quote import show_quote
+from utilities.GeneralUtilities import get_float
 from packages.hackathon import find_hackathon
 from packages import translate
 from packages.dictionary import dictionary
@@ -674,12 +675,13 @@ class CmdInterpreter(Cmd):
         print_say("Close Jarvis", self)
 
     def do_quote(self, s=None):
-        """Show quote of the day"""
+        """Show quote of the day or quotes based on a gven word"""
         show_quote(self)
 
     def help_quote(self):
         """Help for quote"""
-        print_say("quote prints quote for the day for you", self)
+        print_say("quote prints quote for the day for you" +
+                  "or quotes based on a given keyword", self)
 
     def do_reboot(self, s):
         """Reboot the system."""
