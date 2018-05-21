@@ -30,7 +30,6 @@ from packages.fb import fb_login
 from packages.twitter import twitter_login, twitter_tweet, twitter_end
 from packages.cricket import score
 from packages.quote import show_quote
-from utilities.GeneralUtilities import get_float
 from packages.hackathon import find_hackathon
 from packages import translate
 from packages.dictionary import dictionary
