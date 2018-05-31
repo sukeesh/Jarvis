@@ -2,11 +2,11 @@ import requests
 from bs4 import BeautifulSoup
 
 from six.moves import input
+from requests.exceptions import ConnectionError
 import json
 
 
 def show_quote(self):
-
     user_input = get_input('Press 1 to get the quote of the day \n' +
                            'or 2 to get quotes based on a keyword: ')
 
@@ -31,24 +31,27 @@ def get_keyword_quotes(self, keyword):
     shows quotes based on a keyword given by the user
     """
 
-    res = requests.get('https://talaikis.com/api/quotes')
-    quotes = json.loads(res.text)
+    try:
+        res = requests.get('https://talaikis.com/api/quotes')
+        quotes = json.loads(res.text)
 
-    flag = False
-    line = 1
-    for quote in quotes:
-        contains_word(quote['quote'], keyword)
-        if contains_word(quote['quote'], keyword):
-            print str(line) + '. ' + quote['quote']
-            line = line + 1
-            flag = True  # there is at least one quote
+        flag = False
+        line = 1
+        for quote in quotes:
+            contains_word(quote['quote'], keyword)
+            if contains_word(quote['quote'], keyword):
+                print str(line) + '. ' + quote['quote']
+                line = line + 1
+                flag = True  # there is at least one quote
 
-    if not flag:
-        print('No quotes inlcude this word. PLease try one more time.\n')
-        try_again(self, keyword)
-    else:
-        print('')
-        try_again(self, keyword)
+        if not flag:
+            print('No quotes inlcude this word. PLease try one more time.\n')
+            try_again(self, keyword)
+        else:
+            print('')
+            try_again(self, keyword)
+    except ConnectionError:
+        get_keyword_quotes(self, keyword)
 
 
 def try_again(self, keyword):
@@ -57,13 +60,13 @@ def try_again(self, keyword):
         get_keyword_quotes(self, keyword)
 
 
-def contains_word(sentence, keyword):
-    return (' ' + keyword.lower() + ' ') in sentence
+def contains_word(s, keyword):
+    return (' ' + keyword.lower()) in s or (keyword.capitalize()) in s
 
 
 def get_input(prompt):
     """
-    checks if the input the user gave is valid(either 0 or 1)
+    checks if the input the user gave is valid(either 1 or 2)
     """
 
     while True:
