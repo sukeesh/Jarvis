@@ -1,38 +1,8 @@
 import unittest
+from mock import patch
 from Jarvis import Jarvis
-
-
-def get_float_input(prompt, input):
-    while True:
-        try:
-            value = float(input.replace(',', '.'))
-            return value
-        except ValueError:
-            print("Sorry, I didn't understand that.")
-            prompt = 'Try again: '
-            continue
-
-
-def get_currency_input(prompt, currencies, input):
-    """
-    get_currency checks if the input the user gave is valid based on the
-    dictionary of find_currencies
-    """
-
-    while True:
-        c = input.upper()
-        if c in currencies:
-            return currencies[c]
-        elif c == "show help".upper():
-            print(', '.join(set(currencies.values())))
-            prompt = 'Please enter a valid country or currency: '
-            continue
-        elif c == "try again".upper():
-            prompt = 'Please enter a valid country or currency: '
-            continue
-        else:
-            prompt = 'Type -show help- to see valid currencies '\
-                     'or -try again- to continue: '
+from packages.currencyconv import get_currency
+from utilities.GeneralUtilities import get_float
 
 
 class CurrencyConvTest(unittest.TestCase):
@@ -44,20 +14,23 @@ class CurrencyConvTest(unittest.TestCase):
         # the rates between the currencies are changing!
         pass
 
-    def test_get_currency(self):
+    @patch('packages.currencyconv.input', return_value='Greece')
+    def test_get_currency(self, get_mock):
         # normal case
-        self.assertEqual(get_currency_input('Enter a currency',
+        self.assertEqual(get_currency('Enter a currency',
                                       {'GREECE': 'EUR', 'EURO': 'EUR',
-                                       'BITCOINS': 'BTC'}, 'Greece'), 'EUR')
+                                       'BITCOINS': 'BTC'}), 'EUR')
 
-    def test_get_float_int(self):
+    @patch('utilities.GeneralUtilities.input', return_value='1')
+    def test_get_float_int(self, get_mock):
         # normal case
         print("Testing get_float_int checked")
-        self.assertEqual(get_float_input("", '1'), 1)
+        self.assertEqual(get_float(""), 1)
 
-    def test_get_float_comma(self):
+    @patch('utilities.GeneralUtilities.input', return_value='12,6')
+    def test_get_float_comma(self, geet_mock):
         # change comma with dot
-        self.assertEqual(get_float_input('Enter a number: ', '12,6'), 12.6)
+        self.assertEqual(get_float('Enter a number: '), 12.6)
 
 
 if __name__ == '__main__':
