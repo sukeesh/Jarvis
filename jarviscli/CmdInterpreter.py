@@ -35,6 +35,7 @@ from packages import translate
 from packages.dictionary import dictionary
 from packages.tempconv import temp_main
 from packages.dice import dice
+from packages.imgur import imgur
 if six.PY2:
     from packages import chat
 MEMORY = Memory()
@@ -87,6 +88,7 @@ class CmdInterpreter(Cmd):
                         {"hotspot": ("start", "stop")},
                         "how_are_you",
                         {"increase": ("volume",)},
+                        "imgur",
                         "ip",
                         "lyrics",
                         "match",
@@ -924,3 +926,12 @@ class CmdInterpreter(Cmd):
         print_say("enter wiki search for searching related topics", self)
         print_say("enter wiki summary for getting summary of the topic", self)
         print_say("wiki content for full page article of topic", self)
+
+    def do_imgur(self, s):
+        """Uploads image to imgur"""
+        imgur(self, s)
+
+    def help_imgur(self):
+        """Prints help about imgur command"""
+        print_say("Uploads an image to imgur", self)
+        print_say("use imgur <image>", self)
