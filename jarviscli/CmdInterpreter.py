@@ -33,11 +33,13 @@ from packages.quote import show_quote
 from packages.currencyconv import currencyconv
 from packages.currencyconv import get_currency
 from packages.currencyconv import find_currencies
+from utilities.GeneralUtilities import get_float
 from packages.hackathon import find_hackathon
 from packages import translate
 from packages.dictionary import dictionary
 from packages.tempconv import temp_main
 from packages.dice import dice
+from packages.imgur import imgur
 if six.PY2:
     from packages import chat
 MEMORY = Memory()
@@ -90,6 +92,7 @@ class CmdInterpreter(Cmd):
                         {"hotspot": ("start", "stop")},
                         "how_are_you",
                         {"increase": ("volume",)},
+                        "imgur",
                         "ip",
                         "lyrics",
                         "match",
@@ -163,7 +166,7 @@ class CmdInterpreter(Cmd):
         if six.PY2:
             chat.main(self)
         else:
-            print_say("Faeture currently not available in Python 3", self, Fore.RED)
+            print_say("Feature currently not available in Python 3", self, Fore.RED)
 
     def help_ask(self):
         """Prints help about ask command."""
@@ -731,10 +734,13 @@ class CmdInterpreter(Cmd):
 
     def do_say(self, s):
         """Reads what is typed."""
-        voice_state = self.enable_voice
-        self.enable_voice = True
-        self.speech.text_to_speech(s)
-        self.enable_voice = voice_state
+        if not s:
+            print_say("What should I say?", self)
+        else:
+            voice_state = self.enable_voice
+            self.enable_voice = True
+            self.speech.text_to_speech(s)
+            self.enable_voice = voice_state
 
     def help_say(self):
         """Prints help text from say command."""
@@ -943,3 +949,12 @@ class CmdInterpreter(Cmd):
         print_say("enter wiki search for searching related topics", self)
         print_say("enter wiki summary for getting summary of the topic", self)
         print_say("wiki content for full page article of topic", self)
+
+    def do_imgur(self, s):
+        """Uploads image to imgur"""
+        imgur(self, s)
+
+    def help_imgur(self):
+        """Prints help about imgur command"""
+        print_say("Uploads an image to imgur", self)
+        print_say("use imgur <image>", self)
