@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 from functools import wraps
-
+from six.moves import input
 from colorama import Fore
 
 MACOS = 'darwin'
@@ -62,3 +62,14 @@ def unsupported(platform, silent=False):
                 func(*args, **kwargs)
         return wrapped
     return noop_wrapper
+
+
+def get_float(prompt):
+    while True:
+        try:
+            value = float(input(prompt).replace(',', '.'))
+            return value
+        except ValueError:
+            print("Sorry, I didn't understand that.")
+            prompt = 'Try again: '
+            continue

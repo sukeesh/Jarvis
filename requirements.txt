@@ -31,3 +31,4 @@ autopep8
 googletrans
 PyDictionary==1.5.2
 termdown
+forex-python
