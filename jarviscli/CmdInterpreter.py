@@ -164,7 +164,7 @@ class CmdInterpreter(Cmd):
         if six.PY2:
             chat.main(self)
         else:
-            print_say("Faeture currently not available in Python 3", self, Fore.RED)
+            print_say("Feature currently not available in Python 3", self, Fore.RED)
 
     def help_ask(self):
         """Prints help about ask command."""

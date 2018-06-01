@@ -4,6 +4,8 @@ from decimal import Decimal
 from six.moves import input
 import csv
 import os
+from utilities.GeneralUtilities import print_say
+
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
@@ -24,7 +26,7 @@ def currencyconv(self, amount, fr, to):
     else:
         result = c.convert(fr, to, Decimal(amount))
 
-    print result
+    print_say(str(result), self)
 
 
 def find_currencies():
