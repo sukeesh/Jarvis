@@ -681,12 +681,13 @@ class CmdInterpreter(Cmd):
         print_say("Close Jarvis", self)
 
     def do_quote(self, s=None):
-        """Show quote of the day"""
+        """Show quote of the day or quotes based on a gven word"""
         show_quote(self)
 
     def help_quote(self):
         """Help for quote"""
-        print_say("quote prints quote for the day for you", self)
+        print_say("quote prints quote for the day for you" +
+                  "or quotes based on a given keyword", self)
 
     def do_currencyconv(self, s=None):
         """Show the convert from a currency to another"""
