@@ -89,7 +89,7 @@ class CmdInterpreter(Cmd):
 
     # This can be used to store user specific data
 
-    def __init__(self, first_reaction_text, prompt, first_reaction=True, enable_voice=False, directories=["jarviscli/plugins"]):
+    def __init__(self, first_reaction_text, prompt, directories=[], first_reaction=True, enable_voice=False):
         """
         This constructor contains a dictionary with Jarvis Actions (what Jarvis can do).
         In alphabetically order.

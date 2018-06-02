@@ -43,9 +43,10 @@ class Jarvis(CmdInterpreter, object):
     # This can be used to store user specific data
 
     def __init__(self, first_reaction_text=first_reaction_text,
-                 prompt=prompt, first_reaction=True, enable_voice=False):
+                 prompt=prompt, first_reaction=True, enable_voice=False,
+                 directories=["jarviscli/plugins", "custom"]):
         CmdInterpreter.__init__(self, first_reaction_text, prompt,
-                                first_reaction, enable_voice)
+                                directories, first_reaction, enable_voice)
 
     def default(self, data):
         """Jarvis let's you know if an error has occurred."""

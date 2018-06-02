@@ -1,5 +1,6 @@
 import unittest
 import CmdInterpreter
+from Jarvis import Jarvis
 from mock import patch
 from utilities.GeneralUtilities import IS_MACOS
 
@@ -23,13 +24,14 @@ class HelpTest(unittest.TestCase):
         helped_actions = [
             action for action in self.CI_instance.actions if action not in unhelped_actions]
         for action in helped_actions:
-            with patch('CmdInterpreter.print_say') as mock_print_say:
+            with patch('CmdInterpreter.print_say') as mock_print_say, patch('CmdInterpreter.JarvisAPI.say') as mock_say:
+                self.CI_instance = Jarvis("", "", directories=["plugins"])
                 if isinstance(action, dict):
                     action = list(action.keys())[0]
                 help_cmd_name = "help_{}".format(action)
-                help_cmd = getattr(self.CI, help_cmd_name)
-                help_cmd(self.CI_instance)
+                help_cmd = getattr(self.CI_instance, help_cmd_name)
+                help_cmd()
                 if action in MACOS_BLACKLIST and IS_MACOS:
                     pass
                 else:
-                    mock_print_say.assert_called()
+                    assert mock_print_say.called or mock_say.called
