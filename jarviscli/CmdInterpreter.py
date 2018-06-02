@@ -79,6 +79,9 @@ class JarvisAPI(object):
         """Print generic connection error"""
         self.say(JarvisAPI.CONNECTION_ERROR_MSG)
 
+    def exit(self):
+        self._jarvis.close()
+
 
 class CmdInterpreter(Cmd):
     # We use this variable at Breakpoint #1.
@@ -115,10 +118,8 @@ class CmdInterpreter(Cmd):
                         {"display": ("pics",)},
                         {"enable": ("sound",)},
                         "evaluate",
-                        "exit",
                         "file_organise",
                         "fb",
-                        "goodbye",
                         "hackathon",
                         "help",
                         {"hotspot": ("start", "stop")},
@@ -138,8 +139,6 @@ class CmdInterpreter(Cmd):
                         "os",
                         "pinpoint",
                         "play",
-                        "q",
-                        "quit",
                         "quote",
                         "currencyconv",
                         "reboot",
@@ -433,14 +432,6 @@ class CmdInterpreter(Cmd):
         print_say("-- Example:", self)
         print_say("\tevaluate 3 + 5", self)
 
-    def do_exit(self, s=None):
-        """Closing Jarvis."""
-        self.close()
-
-    def help_exit(self):
-        """Closing Jarvis."""
-        print_say("Close Jarvis", self)
-
     def do_file_organise(self, s=None):
         """Jarvis will organise the given folder and group the files"""
         file_manage(self)
@@ -460,14 +451,6 @@ class CmdInterpreter(Cmd):
     def help_fb(self):
         """Help for fb"""
         print_say("type fb and follow instructions", self)
-
-    def do_goodbye(self, s=None):
-        """Closing Jarvis."""
-        self.close()
-
-    def help_goodbye(self):
-        """Closing Jarvis."""
-        print_say("Close Jarvis", self)
 
     def do_hackathon(self, s=None):
         """Find upcoming hackathons from hackerearth"""
@@ -716,22 +699,6 @@ class CmdInterpreter(Cmd):
         print_say("Jarvis will find you the song you want", self)
         print_say("-- Example:", self)
         print_say("\tplay eye of the tiger", self)
-
-    def do_q(self, s=None):
-        """Closing Jarvis"""
-        self.close()
-
-    def help_q(self):
-        """Closing Jarvis"""
-        print_say("Closing Jarvis!!", self)
-
-    def do_quit(self, s=None):
-        """Closing Jarvis."""
-        self.close()
-
-    def help_quit(self):
-        """Closing Jarvis."""
-        print_say("Close Jarvis", self)
 
     def do_quote(self, s=None):
         """Show quote of the day or quotes based on a gven word"""
