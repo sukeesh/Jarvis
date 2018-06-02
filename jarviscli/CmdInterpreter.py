@@ -20,7 +20,7 @@ from packages.lyrics import lyrics
 from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminder_handler, reminder_quit
-from packages import mapps, picshow, forecast, movie, ip
+from packages import mapps, picshow, forecast, movie
 from packages import directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
 from packages.memory.memory import Memory
 from packages.systemOptions import turn_off_screen, update_system
@@ -106,7 +106,6 @@ class CmdInterpreter(Cmd):
                         {"check": ("ram", "weather", "time", "forecast")},
                         "chuck",
                         "clear",
-                        "clock",
                         "cricket",
                         {"decrease": ("volume",)},
                         "dictionary",
@@ -121,7 +120,6 @@ class CmdInterpreter(Cmd):
                         {"hotspot": ("start", "stop")},
                         "how_are_you",
                         "imgur",
-                        "ip",
                         "lyrics",
                         "match",
                         {"movie": ("cast", "director", "plot", "producer", "rating", "year",)},
@@ -130,18 +128,13 @@ class CmdInterpreter(Cmd):
                         "near",
                         "news",
                         {"open": ("camera",)},
-                        "os",
                         "pinpoint",
                         "play",
                         "quote",
                         "currencyconv",
                         "remind",
                         "say",
-                        {"screen": ("off",)},
-                        "stopwatch",
-                        "systeminfo",
                         "tempconv",
-                        "timer",
                         "todo",
                         {"tell": ("joke",)},
                         "translate",
@@ -294,14 +287,6 @@ class CmdInterpreter(Cmd):
         """Help:Clear terminal screen"""
         print_say("Clears terminal", self)
 
-    def do_clock(self, s):
-        """Gives information about time."""
-        print_say(ctime(), self, Fore.BLUE)
-
-    def help_clock(self):
-        """Prints help about clock command."""
-        print_say("Gives information about time.", self)
-
     def do_cricket(self, s=None):
         """Jarvis will show current matches and their score for you"""
         try:
@@ -435,16 +420,6 @@ class CmdInterpreter(Cmd):
     def help_how_are_you(self):
         """Print info about how_are_you command"""
         print_say("Jarvis will inform you about his status.", self)
-
-    def do_ip(self, s):
-        """Display local and public ip address"""
-        ip.get_local_ip(self)
-        print_say("", self)
-        ip.get_public_ip(self)
-
-    def help_ip(self):
-        """Print help about ip command"""
-        print_say("Display local and public ip address", self)
 
     def do_lyrics(self, s):
         # TODO: maybe add option to download lyrics not just print them there
@@ -584,19 +559,6 @@ class CmdInterpreter(Cmd):
         """Completions for open command"""
         return self.get_completions("open", text)
 
-    def do_os(self, s):
-        """Displays information about your operating system."""
-        print_say('[!] Operating System Information', self, Fore.BLUE)
-        print_say('[*] ' + sys(), self, Fore.GREEN)
-        print_say('[*] ' + release(), self, Fore.GREEN)
-        print_say('[*] ' + dist()[0], self, Fore.GREEN)
-        for _ in architecture():
-            print_say('[*] ' + _, self, Fore.GREEN)
-
-    def help_os(self):
-        """Displays information about your operating system."""
-        print_say("Displays information about your operating system.", self)
-
     def do_pinpoint(self, s):
         """Jarvis will pinpoint your location."""
         try:
@@ -678,45 +640,6 @@ class CmdInterpreter(Cmd):
         """Prints help text from say command."""
         print_say("Reads what is typed.")
 
-    def do_screen(self, s):
-        """Turns off the screen instantly"""
-        if "off" in s:
-            turn_off_screen()
-
-    def help_screen(self):
-        """Print help about screen command."""
-        print_say("Turns off the screen instantly", self)
-        print_say("-- Example:", self)
-        print_say("screen off", self)
-
-    def complete_screen(self, text, line, begidx, endidx):
-        """Completions for screen command"""
-        return self.get_completions("screen", text)
-
-    def do_stopwatch(self, s):
-        """Start stopwatch"""
-        system("termdown")
-
-    def help_stopwatch(self):
-        """Print help about stopwatch command"""
-        stopwatch_hotkeys = """Hotkeys:
-        L       Lap
-        R       Reset
-        SPACE   Pause
-        Q       Quit
-        """
-        print_say("Start stopwatch", self)
-        print_say("", self)
-        print_say(stopwatch_hotkeys, self)
-
-    def do_systeminfo(self, s):
-        """Display system information with distribution logo"""
-        system("screenfetch")
-
-    def help_systeminfo(self):
-        """"Print help about systeminfo command"""
-        print_say("Display system information with distribution logo", self)
-
     def do_tell(self, s):
         """Tell a joke about Chuck Norris"""
         chuck.main(self)
@@ -733,31 +656,6 @@ class CmdInterpreter(Cmd):
         """Print help information for tempconv command."""
         print_say("Convert temperature from Fahrenheit to Celsius and vice versa", self)
         print_say("Examples: 32f, 18C, -20F, -8c, 105.4F, -10.21C", self)
-
-    def do_timer(self, s):
-        """Set a timer"""
-        k = s.split(' ', 1)
-        if k[0] == '':
-            print_say("Please specify duration", self)
-            return
-        timer_cmd = "termdown " + k[0]
-        system(timer_cmd)
-
-    def help_timer(self):
-        """Print help about timer command"""
-        timer_hotkeys = """Hotkeys:
-        R       Reset
-        SPACE   Pause
-        Q       Quit
-        """
-        timer_usages = """Usages:
-        timer 10
-        timer 1h5m30s
-        """
-        print_say("Set a timer", self)
-        print_say("", self)
-        print_say(timer_hotkeys, self)
-        print_say(timer_usages, self)
 
     def do_todo(self, data):
         """Create your personal TODO list!"""
