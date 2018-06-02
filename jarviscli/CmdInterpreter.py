@@ -8,6 +8,8 @@ from platform import architecture, release, dist
 from time import ctime
 from colorama import Fore
 from requests import ConnectionError
+from PluginManager import PluginManager
+from functools import partial
 
 from utilities import voice
 from utilities.GeneralUtilities import (
@@ -38,13 +40,44 @@ from packages.hackathon import find_hackathon
 from packages import translate
 from packages.dictionary import dictionary
 from packages.tempconv import temp_main
-from packages.dice import dice
 from packages.imgur import imgur
 if six.PY2:
     from packages import chat
 MEMORY = Memory()
 
 CONNECTION_ERROR_MSG = "You are not connected to Internet"
+
+
+class JarvisAPI(object):
+    """
+    Jarvis interface for plugins.
+
+    Plugins will receive a instance of this as the second (non-self) parameter
+    of the exec()-method.
+
+    Everything Jarvis-related that can't be implemented as a stateless-function
+    in the utilities-package should be implemented here.
+    """
+
+    CONNECTION_ERROR_MSG = "You are not connected to Internet"
+
+    def __init__(self, jarvis):
+        self._jarvis = jarvis
+
+    def say(self, text, color=""):
+        """
+        This method give the jarvis the ability to print a text
+        and talk when sound is enable.
+        :param text: the text to print (or talk)
+               color: Fore.COLOR (ex Fore.BLUE), color for text
+        :return: Nothing to return.
+        """
+        self._jarvis.speak(text)
+        print(color + text + Fore.RESET)
+
+    def connection_error(self):
+        """Print generic connection error"""
+        self.say(JarvisAPI.CONNECTION_ERROR_MSG)
 
 
 class CmdInterpreter(Cmd):
@@ -54,7 +87,7 @@ class CmdInterpreter(Cmd):
 
     # This can be used to store user specific data
 
-    def __init__(self, first_reaction_text, prompt, first_reaction=True, enable_voice=False):
+    def __init__(self, first_reaction_text, prompt, first_reaction=True, enable_voice=False, directories=["jarviscli/plugins"]):
         """
         This constructor contains a dictionary with Jarvis Actions (what Jarvis can do).
         In alphabetically order.
@@ -67,7 +100,7 @@ class CmdInterpreter(Cmd):
         # Register do_quit() function to SIGINT signal (Ctrl-C)
         signal.signal(signal.SIGINT, self.interrupt_handler)
 
-        self.actions = ("ask",
+        self.actions = ["ask",
                         "calculate",
                         "cancel",
                         {"check": ("ram", "weather", "time", "forecast")},
@@ -76,7 +109,6 @@ class CmdInterpreter(Cmd):
                         "clock",
                         "cricket",
                         {"decrease": ("volume",)},
-                        "roll",
                         "dictionary",
                         "directions",
                         {"disable": ("sound",)},
@@ -127,7 +159,7 @@ class CmdInterpreter(Cmd):
                         {"update": ("location", "system")},
                         "weather",
                         {"wiki": ("search", "summary", "content")}
-                        )
+                        ]
 
         self.fixed_responses = {"what time is it": "clock",
                                 "where am i": "pinpoint",
@@ -135,6 +167,39 @@ class CmdInterpreter(Cmd):
                                 }
 
         self.speech = voice.Voice()
+
+        self._api = JarvisAPI(self)
+        self._plugin_manager = PluginManager()
+
+        for directory in directories:
+            self._plugin_manager.add_directory(directory)
+
+        self._activate_plugins()
+
+    def _activate_plugins(self):
+        """Generate do_XXX, help_XXX and (optionally) complete_XXX functions"""
+        for (plugin_name, plugin) in self._plugin_manager.get_all().items():
+            if self._plugin_update_action(plugin, plugin_name):
+                setattr(CmdInterpreter, "complete_" + plugin_name, partial(self.get_completions, plugin_name))
+
+            setattr(CmdInterpreter, "do_" + plugin_name, partial(plugin.run, self._api))
+            setattr(CmdInterpreter, "help_" + plugin_name, partial(self._api.say, plugin.get_doc()))
+
+    def _plugin_update_action(self, plugin, plugin_name):
+        """Return True if completion is available"""
+        complete = plugin.complete()
+        if complete is not None:
+            # add plugin with completion
+            # Dictionary:
+            # { plugin_name : list of completions }
+            complete = [x for x in complete]
+            self.actions.append({plugin_name: complete})
+            return True
+        else:
+            # add plugin without completion
+            # plugin name only
+            self.actions.append(plugin_name)
+            return False
 
     def close(self):
         """Closing Jarvis."""
@@ -268,18 +333,6 @@ class CmdInterpreter(Cmd):
     def help_cricket(self):
         """cricket package for Jarvis"""
         print_say("Enter cricket and follow the instructions", self)
-
-    def do_roll(self, s=None):
-        """Roll a dice"""
-        dice(self, s)
-
-    def help_roll(self):
-        """Prints help about dice command"""
-        print_say("Roll a dice. E.g.", self)
-        print_say("-- Examples:", self)
-        print_say("\tRoll a dice", self)
-        print_say("\tRoll four dices with 16 edges", self)
-        print_say("\tRoll 5 dices five times", self)
 
     def do_decrease(self, s):
         """Decreases you speakers' sound."""
