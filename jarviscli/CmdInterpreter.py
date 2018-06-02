@@ -23,7 +23,6 @@ from packages.reminder import reminder_handler, reminder_quit
 from packages import mapps, picshow, evaluator, forecast, movie, ip
 from packages import directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
 from packages.memory.memory import Memory
-from packages.shutdown import shutdown_system, cancel_shutdown, reboot_system
 from packages.systemOptions import turn_off_screen, update_system
 from packages.news import News
 from packages.clear import clear_scr
@@ -105,7 +104,6 @@ class CmdInterpreter(Cmd):
 
         self.actions = ["ask",
                         "calculate",
-                        "cancel",
                         {"check": ("ram", "weather", "time", "forecast")},
                         "chuck",
                         "clear",
@@ -124,7 +122,6 @@ class CmdInterpreter(Cmd):
                         "help",
                         {"hotspot": ("start", "stop")},
                         "how_are_you",
-                        {"increase": ("volume",)},
                         "imgur",
                         "ip",
                         "lyrics",
@@ -132,7 +129,6 @@ class CmdInterpreter(Cmd):
                         {"movie": ("cast", "director", "plot", "producer", "rating", "year",)},
                         "movies",
                         "music",
-                        "mute",
                         "near",
                         "news",
                         {"open": ("camera",)},
@@ -141,11 +137,9 @@ class CmdInterpreter(Cmd):
                         "play",
                         "quote",
                         "currencyconv",
-                        "reboot",
                         "remind",
                         "say",
                         {"screen": ("off",)},
-                        "shutdown",
                         "stopwatch",
                         "systeminfo",
                         "tempconv",
@@ -249,17 +243,6 @@ class CmdInterpreter(Cmd):
         print_say("-- Example:", self)
         print_say("\tcalculate 3 + 5", self)
 
-    def do_cancel(self, s):
-        """Cancel an active shutdown."""
-        # TODO en el precmd creo que puedo hacerlo y asi no me hace falta para todos
-        if "shutdown" in s:
-            cancel_shutdown()
-
-    def help_cancel(self):
-        """Prints help about cancel command."""
-        print_say("shutdown: Cancel an active shutdown.", self)
-        # add here more prints
-
     def do_check(self, s):
         """Checks your system's RAM stats."""
         # if s == "ram":
@@ -331,22 +314,6 @@ class CmdInterpreter(Cmd):
     def help_cricket(self):
         """cricket package for Jarvis"""
         print_say("Enter cricket and follow the instructions", self)
-
-    def do_decrease(self, s):
-        """Decreases you speakers' sound."""
-        # TODO si solo ponemos decrease que pase algo
-        if s == "volume":
-            if IS_MACOS:
-                system(
-                    'osascript -e "set volume output volume '
-                    '(output volume of (get volume settings) - 10) --100%"'
-                )
-            else:
-                system("pactl -- set-sink-volume 0 -10%")
-
-    def help_decrease(self):
-        """Print help about decrease command."""
-        print_say("volume: Decreases your speaker's sound.", self)
 
     def complete_decrease(self, text, line, begidx, endidx):
         """Completions for decrease command"""
@@ -485,25 +452,6 @@ class CmdInterpreter(Cmd):
         """Print info about how_are_you command"""
         print_say("Jarvis will inform you about his status.", self)
 
-    def do_increase(self, s):
-        """Increases you speakers' sound."""
-        if s == "volume":
-            if IS_MACOS:
-                system(
-                    'osascript -e "set volume output volume '
-                    '(output volume of (get volume settings) + 10) --100%"'
-                )
-            else:
-                system("pactl -- set-sink-volume 0 +3%")
-
-    def help_increase(self):
-        """Print help about increase command."""
-        print_say("volume: Increases your speaker's sound.", self)
-
-    def complete_increase(self, text, line, begidx, endidx):
-        """Completions for increase command"""
-        return self.get_completions("increase", text)
-
     def do_ip(self, s):
         """Display local and public ip address"""
         ip.get_local_ip(self)
@@ -602,17 +550,6 @@ class CmdInterpreter(Cmd):
         print_say("Jarvis will find you the song you want", self)
         print_say("-- Example:", self)
         print_say("\tmusic wonderful tonight", self)
-
-    def do_mute(self, s):
-        """Silences your speaker's sound."""
-        if IS_MACOS:
-            pass
-        else:
-            system("pactl -- set-sink-mute 0 toggle")
-
-    def help_mute(self):
-        """Print help about mute command."""
-        print_say("mute: Silences your speaker's sound.", self)
 
     def do_near(self, data):
         """Jarvis can find what is near you!"""
@@ -725,14 +662,6 @@ class CmdInterpreter(Cmd):
         print_say("-- Type currencyconv, press enter and follow the" +
                   "instructions!", self)
 
-    def do_reboot(self, s):
-        """Reboot the system."""
-        reboot_system()
-
-    def help_reboot(self):
-        """Print help about reboot command."""
-        print_say("Reboot the system.", self)
-
     def do_remind(self, data):
         """Handles reminders"""
         reminder_handler(data)
@@ -779,14 +708,6 @@ class CmdInterpreter(Cmd):
     def complete_screen(self, text, line, begidx, endidx):
         """Completions for screen command"""
         return self.get_completions("screen", text)
-
-    def do_shutdown(self, s):
-        """Shutdown the system."""
-        shutdown_system()
-
-    def help_shutdown(self):
-        """Print help about shutdown command."""
-        print_say("Shutdown the system.", self)
 
     def do_stopwatch(self, s):
         """Start stopwatch"""
