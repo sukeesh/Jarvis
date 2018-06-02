@@ -21,7 +21,7 @@ from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminder_handler, reminder_quit
 from packages import mapps, picshow, forecast, movie
-from packages import directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
+from packages import directions_to, near_me, weather_pinpoint, weatherIn, timeIn
 from packages.memory.memory import Memory
 from packages.systemOptions import turn_off_screen, update_system
 from packages.news import News
@@ -104,7 +104,6 @@ class CmdInterpreter(Cmd):
 
         self.actions = ["ask",
                         {"check": ("ram", "weather", "time", "forecast")},
-                        "chuck",
                         "clear",
                         "cricket",
                         {"decrease": ("volume",)},
@@ -136,7 +135,6 @@ class CmdInterpreter(Cmd):
                         "say",
                         "tempconv",
                         "todo",
-                        {"tell": ("joke",)},
                         "translate",
                         {"twitter": ("login", "tweet")},
                         "umbrella",
@@ -270,14 +268,6 @@ class CmdInterpreter(Cmd):
     def complete_check(self, text, line, begidx, endidx):
         """Completions for check command"""
         return self.get_completions("check", text)
-
-    def do_chuck(self, s):
-        """Tell a joke about Chuck Norris"""
-        chuck.main(self)
-
-    def help_chuck(self):
-        """Print info about Chuck command"""
-        print_say("Tell a joke about Chuck Norris", self)
 
     def do_clear(self, s=None):
         """Clear terminal screen. """
@@ -639,14 +629,6 @@ class CmdInterpreter(Cmd):
     def help_say(self):
         """Prints help text from say command."""
         print_say("Reads what is typed.")
-
-    def do_tell(self, s):
-        """Tell a joke about Chuck Norris"""
-        chuck.main(self)
-
-    def help_tell(self):
-        """Print info about tell command"""
-        print_say("Tell a joke about Chuck Norris", self)
 
     def do_tempconv(self, s):
         """Convert temperature from Celsius to Fahrenheit or vice versa"""
