@@ -20,7 +20,7 @@ from packages.lyrics import lyrics
 from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminder_handler, reminder_quit
-from packages import mapps, picshow, evaluator, forecast, movie, ip
+from packages import mapps, picshow, forecast, movie, ip
 from packages import directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
 from packages.memory.memory import Memory
 from packages.systemOptions import turn_off_screen, update_system
@@ -103,7 +103,6 @@ class CmdInterpreter(Cmd):
         signal.signal(signal.SIGINT, self.interrupt_handler)
 
         self.actions = ["ask",
-                        "calculate",
                         {"check": ("ram", "weather", "time", "forecast")},
                         "chuck",
                         "clear",
@@ -115,7 +114,6 @@ class CmdInterpreter(Cmd):
                         {"disable": ("sound",)},
                         {"display": ("pics",)},
                         {"enable": ("sound",)},
-                        "evaluate",
                         "file_organise",
                         "fb",
                         "hackathon",
@@ -383,20 +381,6 @@ class CmdInterpreter(Cmd):
     def complete_enable(self, text, line, begidx, endidx):
         """Completions for enable command"""
         return self.get_completions("enable", text)
-
-    def do_evaluate(self, s):
-        """Jarvis will get your calculations done!"""
-        tempt = s.replace(" ", "")
-        if len(tempt) > 1:
-            evaluator.calc(tempt, self)
-        else:
-            print_say("Error: Not in correct format", self, Fore.RED)
-
-    def help_evaluate(self):
-        """Print help about evaluate command."""
-        print_say("Jarvis will get your calculations done!", self)
-        print_say("-- Example:", self)
-        print_say("\tevaluate 3 + 5", self)
 
     def do_file_organise(self, s=None):
         """Jarvis will organise the given folder and group the files"""
