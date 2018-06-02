@@ -88,3 +88,88 @@ class Plugin(pluginmanager.IPlugin):
             run_func(jarvis, s)
         except ConnectionError:
             jarvis.connection_error()
+
+
+def plugin(network=None, plattform=None, python=None, native=None):
+    """
+    The plugin-decorator is an alternative Plugin declaration. This decorator basically
+    takes a method and creates a Plugin-class.
+
+    Pass requirements as plugin-parameters
+    Doc-String of method will be copied.
+    Run-method = function
+    To specify complete and alias-method use @require, @complete and @alias
+
+    Example:
+
+    @python(plattform=LINUX, native="ap-hotspot")
+    def hotspot_start(jarvis, s):
+        system("sudo ap-hotspot start")
+    """
+    def __plugin(run_method):
+        # create class
+        plugin_class = type(run_method.__name__, Plugin.__bases__, dict(Plugin.__dict__))
+
+        def __run_method(self, jarvis, s):
+            run_method(jarvis, s)
+
+        plugin_class.run = __run_method
+        plugin_class.__doc__ = run_method.__doc__
+
+        # parse require
+        require = []
+        if network is not None:
+            require.append(("network", network))
+        if plattform is not None:
+            require.append(("plattform", plattform))
+        if python is not None:
+            require.append(("python", python))
+        if native is not None:
+            require.append(("native", native))
+
+        plugin_class.require = partial(_yield_something, require)
+
+        # complete and alias
+        if "complete" in run_method.__dict__:
+            complete = run_method.complete
+            plugin_class.complete = partial(_yield_something, complete)
+        else:
+            plugin_class.complete = _return_none
+
+        if "alias" in run_method.__dict__:
+            alias = run_method.alias
+            plugin_class.alias = partial(_yield_something, alias)
+        else:
+            plugin_class.alias = _return_none
+
+        return plugin_class
+    return __plugin
+
+
+def complete(*alias):
+    def __complete(run_method):
+        if "complete" not in run_method.__dict__:
+            run_method.complete = []
+
+        run_method.complete.extend(alias)
+        return run_method
+    return __complete
+
+
+def alias(*alias):
+    def __alias(run_method):
+        if "alias" not in run_method.__dict__:
+            run_method.alias = []
+
+        run_method.alias.extend(alias)
+        return run_method
+    return __alias
+
+
+def _yield_something(values):
+    for value in values:
+        yield value
+
+
+def _return_none(*args):
+    return None
