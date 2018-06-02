@@ -1,41 +1,44 @@
 import unittest
-import packages.wiki as wiki
+import plugins.wiki as wiki
 
 
 class WikiTest(unittest.TestCase):
 
+    def setUp(self):
+        self.wiki = wiki.Wiki()
+
     def test_search(self):
-        d = wiki.search("Barack")
+        d = self.wiki.search("Barack")
         self.assertIsInstance(d, list)
         self.assertEqual(len(d), 10)
 
-        d = wiki.search("sldjflsfkdslfjsl")
+        d = self.wiki.search("sldjflsfkdslfjsl")
         self.assertEqual(d, "No articles with that name, try another item.")
 
     def test_summary(self):
-        d = wiki.summary("Obama")
+        d = self.wiki.summary("Obama")
         try:  # python2
             self.assertIsInstance(d, unicode)
         except NameError:  # python3 unicode not defined in python3
             self.assertIsInstance(d, str)
-        d = wiki.summary("adfsklfdlksf")
+        d = self.wiki.summary("adfsklfdlksf")
         self.assertEqual(d, "No page matches, try another item.")
 
-        d = wiki.summary("mercury")
+        d = self.wiki.summary("mercury")
         self.assertIsInstance(d, list)
         self.assertEqual(len(d), 5)
 
     def test_content(self):
-        d = wiki.content("Obama")
+        d = self.wiki.content("Obama")
         try:  # python2
             self.assertIsInstance(d, unicode)
         except NameError:  # python3
             self.assertIsInstance(d, str)
 
-        d = wiki.content("adfsklfdlksf")
+        d = self.wiki.content("adfsklfdlksf")
         self.assertEqual(d, "No page matches, try another item.")
 
-        d = wiki.content("mercury")
+        d = self.wiki.content("mercury")
         self.assertIsInstance(d, list)
         self.assertEqual(len(d), 5)
 
