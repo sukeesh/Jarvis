@@ -173,3 +173,105 @@ def _yield_something(values):
 
 def _return_none(*args):
     return None
+
+
+class PluginComposed(object):
+    """
+    Problem:
+    Take a plugin "check" which supports "check ram" and "check weather".
+    ram and weather do not have much in common and being forced to implement
+    every "check" command in on plugin is not good (bad modularisation, not
+    extensible, bad dependency management, ...).
+
+    Solution:
+    Let PluginManager take care of two-word commands!
+
+    To solve the check-problem create two plugins:
+    * Check_ram
+    * Check_weather
+    And that's it!
+
+    PluginManager will recognise _ as space - and create a new PluginComposed
+    "check" with "ram" and "weather" as sub-commands.
+
+    * Help command will be composed out of all help docs of sub commands
+    * complete() is not necessary nor recommendet for sub-commands since it will
+      be ignored! "check" of PluginComposed will yield name of all sub commands
+    * If "check" is executed and the command contains "ram", Check_ram.run()
+      will be executed. Otherwise - if "weather" in command, Check_weather.run()
+      will be executed.
+    * It is even possible to create a own Plugin "check". This plugin will be
+      added as "fallback" and executed if no sub command matches. If no "fallback"
+      exists an error message will be print.
+
+    """
+    def __init__(self, name):
+        self._name = name
+        self._command_fallback = None
+        self._command_sub = {}
+
+    def get_name(self):
+        return self._name
+
+    def is_composed(self):
+        return True
+
+    def try_add_command(self, sub_command, name):
+        """Regist new sub command. Return False, if sub command with same name
+        allready exists"""
+        if name in self._command_sub.keys():
+            return False
+        else:
+            self._command_sub.update({name: sub_command})
+            return True
+
+    def try_set_fallback(self, command):
+        """Set fallback, return False if fallback allready set"""
+        if self._command_fallback is None:
+            self._command_fallback = command
+            return True
+        else:
+            return False
+
+    def complete(self):
+        # return fallback complete() if possible
+        if self._command_fallback is not None:
+            complete = self._command_fallback.complete()
+            if complete is not None:
+                for complete in complete:
+                    yield complete
+
+        # yield each sub command
+        for complete in self._command_sub.keys():
+            yield complete
+
+    def get_doc(self):
+        doc = ""
+        # fallback complete
+        if self._command_fallback is not None:
+            doc += self._command_fallback.get_doc()
+
+        # sub command complete
+        for name, sub_command in self._command_sub.items():
+            doc += "\n-> {}:".format(name)
+            doc += sub_command.get_doc()
+
+        return doc
+
+    def run(self, jarvis, s):
+        # run sub command
+        for name, sub_command in self._command_sub.items():
+            if name in s:
+                if s.startswith(name):
+                    s = s[len(name):]
+                    s = s.lstrip()
+
+                sub_command.run(jarvis, s)
+                return
+
+        # run fallback
+        if self._command_fallback is not None:
+            self._command_fallback.run(jarvis, s)
+            return
+
+        jarvis.say("Sorry, i don't know what you mean...")

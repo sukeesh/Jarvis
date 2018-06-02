@@ -62,6 +62,33 @@ class PluginManager(object):
                 self._load_add_plugin(name.lower(), plugin)
 
     def _load_add_plugin(self, name, plugin):
+        if ' ' in name:
+            name_split = name.split(' ')
+            self._load_add_composed_plugin(name_split[0], name_split[1], plugin)
+        else:
+            self._load_add_regular_plugin(name, plugin)
+
+    def _load_add_composed_plugin(self, name_first, name_second, plugin_sub):
+        if name_first in self._cache_plugins:
+            plugin_composed = self._cache_plugins[name_first]
+            if not plugin_composed.is_composed():
+                plugin_composed = self._load_convert_into_composed(name_first, plugin_composed)
+        else:
+            # create new PluginComposed
+            plugin_composed = plugin.PluginComposed(name_first)
+            self._cache_plugins[name_first] = plugin_composed
+
+        allready_exists = not plugin_composed.try_add_command(plugin_sub, name_second)
+        if allready_exists:
+            error("Duplicated plugin {} {}".format(name_first, name_second))
+
+    def _load_convert_into_composed(self, name, plugin_fallback):
+        plugin_composed = plugin.PluginComposed(name)
+        plugin_composed.try_set_fallback(plugin_fallback)
+        self._cache_plugins[name] = plugin_composed
+        return plugin_composed
+
+    def _load_add_regular_plugin(self, name, plugin):
         if name not in self._cache_plugins:
             self._cache_plugins.update({name: plugin})
             return
