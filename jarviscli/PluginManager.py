@@ -18,6 +18,7 @@ class PluginManager(object):
     """
     def __init__(self):
         self._backend = pluginmanager.PluginInterface()
+        self._plugin_dependency = PluginDependency()
 
         self._cache_clean = False
         self._cache_plugins = {}
@@ -49,7 +50,7 @@ class PluginManager(object):
             # I really don't know why that check is necessary...
             if not isinstance(plugin, pluginmanager.IPlugin):
                 continue
-            if plugin.get_name() != "plugin":
+            if plugin.get_name() != "plugin" and self._plugin_dependency.check(plugin):
                 self._load_plugin_handle_alias(plugin)
 
     def _load_plugin_handle_alias(self, plugin):
@@ -89,3 +90,109 @@ class PluginManager(object):
             return self._cache_plugins[name]
 
         return None
+
+
+class PluginDependency(object):
+    """
+    Plugins may have requirement - specified by require().
+    Please refere plugin-doku.
+
+    This module checks if dependencies are fulfilled.
+    """
+
+    def __init__(self):
+        # plugin shoud match these requirements
+        self._requirement_has_network = True
+        if six.PY2:
+            self._requirement_python = plugin.PYTHON2
+        else:
+            self._requirement_python = plugin.PYTHON3
+        if sys.platform == "darwin":
+            self._requirement_platform = plugin.MACOS
+        else:
+            self._requirement_platform = plugin.LINUX
+
+    def _plugin_get_requirements(self, requirements_iter):
+        plugin_requirements = {
+            "plattform": [],
+            "python": [],
+            "network": [],
+            "native": []
+        }
+
+        # parse requirements
+        for requirement in requirements_iter:
+            key = requirement[0]
+            values = requirement[1]
+
+            if isinstance(values, str) or isinstance(values, bool):
+                values = [values]
+
+            if key in plugin_requirements:
+                plugin_requirements[key].extend(values)
+            else:
+                warning("{}={}: No supportet requirement".format(key, values))
+
+        return plugin_requirements
+
+    def check(self, plugin):
+        """
+        Parses plugin.require(). Plase refere plugin.Plugin-documentation
+        """
+        requirements_iter = plugin.require()
+        if requirements_iter is None:
+            return True
+
+        plugin_requirements = self._plugin_get_requirements(requirements_iter)
+
+        if not self._check_plattform(plugin_requirements["plattform"]):
+            return False
+
+        if not self._check_python(plugin_requirements["python"]):
+            return False
+
+        if not self._check_network(plugin_requirements["network"], plugin):
+            return False
+
+        if not self._check_native(plugin_requirements["native"], plugin):
+            return False
+
+        return True
+
+    def _check_plattform(self, values):
+        if len(values) == 0:
+            return True
+
+        return self._requirement_platform in values
+
+    def _check_python(self, values):
+        if len(values) == 0:
+            return True
+
+        return self._requirement_python in values
+
+    def _check_network(self, values, plugin):
+        if True in values:
+            if not self._requirement_has_network:
+                return False
+            else:
+                self._plugin_patch_network_error_message(plugin)
+                return True
+
+        return True
+
+    def _check_native(self, values, plugin):
+        missing = ""
+        for native in values:
+            if distutils.spawn.find_executable(native) is None:
+                missing += native
+                missing += " "
+
+        if len(missing) == 0:
+            return True
+        else:
+            warning("Disabeling {} - missing native executables {}".format(plugin.get_name(), missing))
+
+    def _plugin_patch_network_error_message(self, plugin):
+        if "plugin._network_error_patched" not in plugin.__dict__:
+            plugin.run = partial(plugin._plugin_run_with_network_error, plugin.run)
