@@ -8,6 +8,8 @@ from platform import architecture, release, dist
 from time import ctime
 from colorama import Fore
 from requests import ConnectionError
+from PluginManager import PluginManager
+from functools import partial
 
 from utilities import voice
 from utilities.GeneralUtilities import (
@@ -18,10 +20,9 @@ from packages.lyrics import lyrics
 from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminder_handler, reminder_quit
-from packages import mapps, picshow, evaluator, forecast, wiki, movie, ip
-from packages import directions_to, near_me, weather_pinpoint, chuck, weatherIn, timeIn
+from packages import mapps, picshow, forecast, movie
+from packages import directions_to, near_me, weather_pinpoint, weatherIn, timeIn
 from packages.memory.memory import Memory
-from packages.shutdown import shutdown_system, cancel_shutdown, reboot_system
 from packages.systemOptions import turn_off_screen, update_system
 from packages.news import News
 from packages.clear import clear_scr
@@ -38,13 +39,47 @@ from packages.hackathon import find_hackathon
 from packages import translate
 from packages.dictionary import dictionary
 from packages.tempconv import temp_main
-from packages.dice import dice
 from packages.imgur import imgur
 if six.PY2:
     from packages import chat
 MEMORY = Memory()
 
 CONNECTION_ERROR_MSG = "You are not connected to Internet"
+
+
+class JarvisAPI(object):
+    """
+    Jarvis interface for plugins.
+
+    Plugins will receive a instance of this as the second (non-self) parameter
+    of the exec()-method.
+
+    Everything Jarvis-related that can't be implemented as a stateless-function
+    in the utilities-package should be implemented here.
+    """
+
+    CONNECTION_ERROR_MSG = "You are not connected to Internet"
+
+    def __init__(self, jarvis):
+        self._jarvis = jarvis
+
+    def say(self, text, color=""):
+        """
+        This method give the jarvis the ability to print a text
+        and talk when sound is enable.
+        :param text: the text to print (or talk)
+               color: Fore.COLOR (ex Fore.BLUE), color for text
+        :return: Nothing to return.
+        """
+        self._jarvis.speak(text)
+        print(color + text + Fore.RESET)
+
+    def connection_error(self):
+        """Print generic connection error"""
+        self.say(JarvisAPI.CONNECTION_ERROR_MSG)
+
+    def exit(self):
+        self._jarvis.close()
 
 
 class CmdInterpreter(Cmd):
@@ -54,7 +89,7 @@ class CmdInterpreter(Cmd):
 
     # This can be used to store user specific data
 
-    def __init__(self, first_reaction_text, prompt, first_reaction=True, enable_voice=False):
+    def __init__(self, first_reaction_text, prompt, directories=[], first_reaction=True, enable_voice=False):
         """
         This constructor contains a dictionary with Jarvis Actions (what Jarvis can do).
         In alphabetically order.
@@ -67,67 +102,45 @@ class CmdInterpreter(Cmd):
         # Register do_quit() function to SIGINT signal (Ctrl-C)
         signal.signal(signal.SIGINT, self.interrupt_handler)
 
-        self.actions = ("ask",
-                        "calculate",
-                        "cancel",
+        self.actions = ["ask",
                         {"check": ("ram", "weather", "time", "forecast")},
-                        "chuck",
                         "clear",
-                        "clock",
                         "cricket",
                         {"decrease": ("volume",)},
-                        "roll",
                         "dictionary",
                         "directions",
                         {"disable": ("sound",)},
                         {"display": ("pics",)},
                         {"enable": ("sound",)},
-                        "evaluate",
-                        "exit",
                         "file_organise",
                         "fb",
-                        "goodbye",
                         "hackathon",
                         "help",
                         {"hotspot": ("start", "stop")},
                         "how_are_you",
-                        {"increase": ("volume",)},
                         "imgur",
-                        "ip",
                         "lyrics",
                         "match",
                         {"movie": ("cast", "director", "plot", "producer", "rating", "year",)},
                         "movies",
                         "music",
-                        "mute",
                         "near",
                         "news",
                         {"open": ("camera",)},
-                        "os",
                         "pinpoint",
                         "play",
-                        "q",
-                        "quit",
                         "quote",
                         "currencyconv",
-                        "reboot",
                         "remind",
                         "say",
-                        {"screen": ("off",)},
-                        "shutdown",
-                        "stopwatch",
-                        "systeminfo",
                         "tempconv",
-                        "timer",
                         "todo",
-                        {"tell": ("joke",)},
                         "translate",
                         {"twitter": ("login", "tweet")},
                         "umbrella",
                         {"update": ("location", "system")},
                         "weather",
-                        {"wiki": ("search", "summary", "content")}
-                        )
+                        ]
 
         self.fixed_responses = {"what time is it": "clock",
                                 "where am i": "pinpoint",
@@ -135,6 +148,39 @@ class CmdInterpreter(Cmd):
                                 }
 
         self.speech = voice.Voice()
+
+        self._api = JarvisAPI(self)
+        self._plugin_manager = PluginManager()
+
+        for directory in directories:
+            self._plugin_manager.add_directory(directory)
+
+        self._activate_plugins()
+
+    def _activate_plugins(self):
+        """Generate do_XXX, help_XXX and (optionally) complete_XXX functions"""
+        for (plugin_name, plugin) in self._plugin_manager.get_all().items():
+            if self._plugin_update_action(plugin, plugin_name):
+                setattr(CmdInterpreter, "complete_" + plugin_name, partial(self.get_completions, plugin_name))
+
+            setattr(CmdInterpreter, "do_" + plugin_name, partial(plugin.run, self._api))
+            setattr(CmdInterpreter, "help_" + plugin_name, partial(self._api.say, plugin.get_doc()))
+
+    def _plugin_update_action(self, plugin, plugin_name):
+        """Return True if completion is available"""
+        complete = plugin.complete()
+        if complete is not None:
+            # add plugin with completion
+            # Dictionary:
+            # { plugin_name : list of completions }
+            complete = [x for x in complete]
+            self.actions.append({plugin_name: complete})
+            return True
+        else:
+            # add plugin without completion
+            # plugin name only
+            self.actions.append(plugin_name)
+            return False
 
     def close(self):
         """Closing Jarvis."""
@@ -186,17 +232,6 @@ class CmdInterpreter(Cmd):
         print_say("-- Example:", self)
         print_say("\tcalculate 3 + 5", self)
 
-    def do_cancel(self, s):
-        """Cancel an active shutdown."""
-        # TODO en el precmd creo que puedo hacerlo y asi no me hace falta para todos
-        if "shutdown" in s:
-            cancel_shutdown()
-
-    def help_cancel(self):
-        """Prints help about cancel command."""
-        print_say("shutdown: Cancel an active shutdown.", self)
-        # add here more prints
-
     def do_check(self, s):
         """Checks your system's RAM stats."""
         # if s == "ram":
@@ -234,14 +269,6 @@ class CmdInterpreter(Cmd):
         """Completions for check command"""
         return self.get_completions("check", text)
 
-    def do_chuck(self, s):
-        """Tell a joke about Chuck Norris"""
-        chuck.main(self)
-
-    def help_chuck(self):
-        """Print info about Chuck command"""
-        print_say("Tell a joke about Chuck Norris", self)
-
     def do_clear(self, s=None):
         """Clear terminal screen. """
         clear_scr()
@@ -249,14 +276,6 @@ class CmdInterpreter(Cmd):
     def help_clear(self):
         """Help:Clear terminal screen"""
         print_say("Clears terminal", self)
-
-    def do_clock(self, s):
-        """Gives information about time."""
-        print_say(ctime(), self, Fore.BLUE)
-
-    def help_clock(self):
-        """Prints help about clock command."""
-        print_say("Gives information about time.", self)
 
     def do_cricket(self, s=None):
         """Jarvis will show current matches and their score for you"""
@@ -268,34 +287,6 @@ class CmdInterpreter(Cmd):
     def help_cricket(self):
         """cricket package for Jarvis"""
         print_say("Enter cricket and follow the instructions", self)
-
-    def do_roll(self, s=None):
-        """Roll a dice"""
-        dice(self, s)
-
-    def help_roll(self):
-        """Prints help about dice command"""
-        print_say("Roll a dice. E.g.", self)
-        print_say("-- Examples:", self)
-        print_say("\tRoll a dice", self)
-        print_say("\tRoll four dices with 16 edges", self)
-        print_say("\tRoll 5 dices five times", self)
-
-    def do_decrease(self, s):
-        """Decreases you speakers' sound."""
-        # TODO si solo ponemos decrease que pase algo
-        if s == "volume":
-            if IS_MACOS:
-                system(
-                    'osascript -e "set volume output volume '
-                    '(output volume of (get volume settings) - 10) --100%"'
-                )
-            else:
-                system("pactl -- set-sink-volume 0 -10%")
-
-    def help_decrease(self):
-        """Print help about decrease command."""
-        print_say("volume: Decreases your speaker's sound.", self)
 
     def complete_decrease(self, text, line, begidx, endidx):
         """Completions for decrease command"""
@@ -366,28 +357,6 @@ class CmdInterpreter(Cmd):
         """Completions for enable command"""
         return self.get_completions("enable", text)
 
-    def do_evaluate(self, s):
-        """Jarvis will get your calculations done!"""
-        tempt = s.replace(" ", "")
-        if len(tempt) > 1:
-            evaluator.calc(tempt, self)
-        else:
-            print_say("Error: Not in correct format", self, Fore.RED)
-
-    def help_evaluate(self):
-        """Print help about evaluate command."""
-        print_say("Jarvis will get your calculations done!", self)
-        print_say("-- Example:", self)
-        print_say("\tevaluate 3 + 5", self)
-
-    def do_exit(self, s=None):
-        """Closing Jarvis."""
-        self.close()
-
-    def help_exit(self):
-        """Closing Jarvis."""
-        print_say("Close Jarvis", self)
-
     def do_file_organise(self, s=None):
         """Jarvis will organise the given folder and group the files"""
         file_manage(self)
@@ -407,14 +376,6 @@ class CmdInterpreter(Cmd):
     def help_fb(self):
         """Help for fb"""
         print_say("type fb and follow instructions", self)
-
-    def do_goodbye(self, s=None):
-        """Closing Jarvis."""
-        self.close()
-
-    def help_goodbye(self):
-        """Closing Jarvis."""
-        print_say("Close Jarvis", self)
 
     def do_hackathon(self, s=None):
         """Find upcoming hackathons from hackerearth"""
@@ -449,35 +410,6 @@ class CmdInterpreter(Cmd):
     def help_how_are_you(self):
         """Print info about how_are_you command"""
         print_say("Jarvis will inform you about his status.", self)
-
-    def do_increase(self, s):
-        """Increases you speakers' sound."""
-        if s == "volume":
-            if IS_MACOS:
-                system(
-                    'osascript -e "set volume output volume '
-                    '(output volume of (get volume settings) + 10) --100%"'
-                )
-            else:
-                system("pactl -- set-sink-volume 0 +3%")
-
-    def help_increase(self):
-        """Print help about increase command."""
-        print_say("volume: Increases your speaker's sound.", self)
-
-    def complete_increase(self, text, line, begidx, endidx):
-        """Completions for increase command"""
-        return self.get_completions("increase", text)
-
-    def do_ip(self, s):
-        """Display local and public ip address"""
-        ip.get_local_ip(self)
-        print_say("", self)
-        ip.get_public_ip(self)
-
-    def help_ip(self):
-        """Print help about ip command"""
-        print_say("Display local and public ip address", self)
 
     def do_lyrics(self, s):
         # TODO: maybe add option to download lyrics not just print them there
@@ -568,17 +500,6 @@ class CmdInterpreter(Cmd):
         print_say("-- Example:", self)
         print_say("\tmusic wonderful tonight", self)
 
-    def do_mute(self, s):
-        """Silences your speaker's sound."""
-        if IS_MACOS:
-            pass
-        else:
-            system("pactl -- set-sink-mute 0 toggle")
-
-    def help_mute(self):
-        """Print help about mute command."""
-        print_say("mute: Silences your speaker's sound.", self)
-
     def do_near(self, data):
         """Jarvis can find what is near you!"""
         near_me.main(data)
@@ -628,19 +549,6 @@ class CmdInterpreter(Cmd):
         """Completions for open command"""
         return self.get_completions("open", text)
 
-    def do_os(self, s):
-        """Displays information about your operating system."""
-        print_say('[!] Operating System Information', self, Fore.BLUE)
-        print_say('[*] ' + sys(), self, Fore.GREEN)
-        print_say('[*] ' + release(), self, Fore.GREEN)
-        print_say('[*] ' + dist()[0], self, Fore.GREEN)
-        for _ in architecture():
-            print_say('[*] ' + _, self, Fore.GREEN)
-
-    def help_os(self):
-        """Displays information about your operating system."""
-        print_say("Displays information about your operating system.", self)
-
     def do_pinpoint(self, s):
         """Jarvis will pinpoint your location."""
         try:
@@ -663,22 +571,6 @@ class CmdInterpreter(Cmd):
         print_say("Jarvis will find you the song you want", self)
         print_say("-- Example:", self)
         print_say("\tplay eye of the tiger", self)
-
-    def do_q(self, s=None):
-        """Closing Jarvis"""
-        self.close()
-
-    def help_q(self):
-        """Closing Jarvis"""
-        print_say("Closing Jarvis!!", self)
-
-    def do_quit(self, s=None):
-        """Closing Jarvis."""
-        self.close()
-
-    def help_quit(self):
-        """Closing Jarvis."""
-        print_say("Close Jarvis", self)
 
     def do_quote(self, s=None):
         """Show quote of the day or quotes based on a gven word"""
@@ -705,14 +597,6 @@ class CmdInterpreter(Cmd):
                   self)
         print_say("-- Type currencyconv, press enter and follow the" +
                   "instructions!", self)
-
-    def do_reboot(self, s):
-        """Reboot the system."""
-        reboot_system()
-
-    def help_reboot(self):
-        """Print help about reboot command."""
-        print_say("Reboot the system.", self)
 
     def do_remind(self, data):
         """Handles reminders"""
@@ -746,61 +630,6 @@ class CmdInterpreter(Cmd):
         """Prints help text from say command."""
         print_say("Reads what is typed.")
 
-    def do_screen(self, s):
-        """Turns off the screen instantly"""
-        if "off" in s:
-            turn_off_screen()
-
-    def help_screen(self):
-        """Print help about screen command."""
-        print_say("Turns off the screen instantly", self)
-        print_say("-- Example:", self)
-        print_say("screen off", self)
-
-    def complete_screen(self, text, line, begidx, endidx):
-        """Completions for screen command"""
-        return self.get_completions("screen", text)
-
-    def do_shutdown(self, s):
-        """Shutdown the system."""
-        shutdown_system()
-
-    def help_shutdown(self):
-        """Print help about shutdown command."""
-        print_say("Shutdown the system.", self)
-
-    def do_stopwatch(self, s):
-        """Start stopwatch"""
-        system("termdown")
-
-    def help_stopwatch(self):
-        """Print help about stopwatch command"""
-        stopwatch_hotkeys = """Hotkeys:
-        L       Lap
-        R       Reset
-        SPACE   Pause
-        Q       Quit
-        """
-        print_say("Start stopwatch", self)
-        print_say("", self)
-        print_say(stopwatch_hotkeys, self)
-
-    def do_systeminfo(self, s):
-        """Display system information with distribution logo"""
-        system("screenfetch")
-
-    def help_systeminfo(self):
-        """"Print help about systeminfo command"""
-        print_say("Display system information with distribution logo", self)
-
-    def do_tell(self, s):
-        """Tell a joke about Chuck Norris"""
-        chuck.main(self)
-
-    def help_tell(self):
-        """Print info about tell command"""
-        print_say("Tell a joke about Chuck Norris", self)
-
     def do_tempconv(self, s):
         """Convert temperature from Celsius to Fahrenheit or vice versa"""
         temp_main(self, s)
@@ -809,31 +638,6 @@ class CmdInterpreter(Cmd):
         """Print help information for tempconv command."""
         print_say("Convert temperature from Fahrenheit to Celsius and vice versa", self)
         print_say("Examples: 32f, 18C, -20F, -8c, 105.4F, -10.21C", self)
-
-    def do_timer(self, s):
-        """Set a timer"""
-        k = s.split(' ', 1)
-        if k[0] == '':
-            print_say("Please specify duration", self)
-            return
-        timer_cmd = "termdown " + k[0]
-        system(timer_cmd)
-
-    def help_timer(self):
-        """Print help about timer command"""
-        timer_hotkeys = """Hotkeys:
-        R       Reset
-        SPACE   Pause
-        Q       Quit
-        """
-        timer_usages = """Usages:
-        timer 10
-        timer 1h5m30s
-        """
-        print_say("Set a timer", self)
-        print_say("", self)
-        print_say(timer_hotkeys, self)
-        print_say(timer_usages, self)
 
     def do_todo(self, data):
         """Create your personal TODO list!"""
@@ -924,31 +728,6 @@ class CmdInterpreter(Cmd):
         """Prints help about weather command."""
         print_say(
             "Get information about today's weather in your current location.", self)
-
-    def do_wiki(self, s):
-        """Jarvis will get wiki details for you"""
-        k = s.split(' ', 1)
-        data = None
-        if k[0] == "search":
-            data = wiki.search(" ".join(k[1:]))
-        elif k[0] == "summary":
-            data = wiki.summary(" ".join(k[1:]))
-        elif k[0] == "content":
-            data = wiki.content(" ".join(k[1:]))
-
-        if isinstance(data, list):
-            print("\nDid you mean one of these pages?\n")
-            for d in range(len(data)):
-                print(str(d + 1) + ": " + data[d])
-        else:
-            print("\n" + data)
-
-    def help_wiki(self):
-        """Help for wiki"""
-        print_say("Jarvis has now wiki feature", self)
-        print_say("enter wiki search for searching related topics", self)
-        print_say("enter wiki summary for getting summary of the topic", self)
-        print_say("wiki content for full page article of topic", self)
 
     def do_imgur(self, s):
         """Uploads image to imgur"""

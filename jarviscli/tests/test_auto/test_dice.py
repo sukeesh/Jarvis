@@ -1,34 +1,37 @@
 import unittest
-from packages import dice as dice
+from plugins import dice
 import random
 
 
 class RollTest(unittest.TestCase):
+    def setUp(self):
+        self.dice = dice.Roll()
+
     def test_help_examples(self):
-        d = dice._dice_parse("Roll a dice")
+        d = self.dice._dice_parse("Roll a dice")
         self.assertEqual(d["repeat"], 1)
         self.assertEqual(d["howmany"], 1)
         self.assertEqual(d["edges"], 6)
-        self.assertFalse(dice._dice_is_error_in_config(d))
+        self.assertFalse(self.dice._dice_is_error_in_config(d))
 
-        d = dice._dice_parse("Roll four dices with 16 edges")
+        d = self.dice._dice_parse("Roll four dices with 16 edges")
         self.assertEqual(d["repeat"], 1)
         self.assertEqual(d["howmany"], 4)
         self.assertEqual(d["edges"], 16)
-        self.assertFalse(dice._dice_is_error_in_config(d))
+        self.assertFalse(self.dice._dice_is_error_in_config(d))
 
-        d = dice._dice_parse("Roll 5 dices five times")
+        d = self.dice._dice_parse("Roll 5 dices five times")
         self.assertEqual(d["repeat"], 5)
         self.assertEqual(d["howmany"], 5)
         self.assertEqual(d["edges"], 6)
-        self.assertFalse(dice._dice_is_error_in_config(d))
+        self.assertFalse(self.dice._dice_is_error_in_config(d))
 
     def test_error_config(self):
-        d = dice._dice_parse("1 Roll 0 dices with 20 edges 4 2 times 4 3")
+        d = self.dice._dice_parse("1 Roll 0 dices with 20 edges 4 2 times 4 3")
         self.assertEqual(d["repeat"], 6)
         self.assertEqual(d["howmany"], 0)
         self.assertEqual(d["edges"], 20)
-        self.assertTrue(dice._dice_is_error_in_config(d))
+        self.assertTrue(self.dice._dice_is_error_in_config(d))
 
     def test_dice_roll(self):
         # test repeats
@@ -43,7 +46,7 @@ class RollTest(unittest.TestCase):
 
             # execute "roll" 500 times
             for _ in range(500):
-                d = [x for x in dice._dice_roll(config)]
+                d = [x for x in self.dice._dice_roll(config)]
 
                 # validate
                 self.assertEqual(len(d), repeat)
