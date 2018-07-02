@@ -32,3 +32,4 @@ googletrans
 PyDictionary==1.5.2
 termdown
 forex-python
+pluginmanager
