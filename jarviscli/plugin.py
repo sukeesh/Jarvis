@@ -274,4 +274,4 @@ class PluginComposed(object):
             self._command_fallback.run(jarvis, s)
             return
 
-        jarvis.say("Sorry, i don't know what you mean...")
+        jarvis.say("Sorry, I don't know what you mean...")
