@@ -76,7 +76,7 @@ install_phantomjs()
 
 # Fedora based (>=22)
 if [[ -f "/etc/dnf/dnf.conf" ]]; then
-  sudo dnf install -y ffmpeg python-pip python-dbus notify-python
+  sudo dnf install -y ffmpeg python-dbus notify-python
   sudo dnf install screenfetch
   # chromedriver-install
   wget https://chromedriver.storage.googleapis.com/2.32/chromedriver_linux64.zip
@@ -105,7 +105,7 @@ elif [[ -f "/etc/apt/sources.list" ]]; then
 
 # Arch based
 elif [[ -f "/etc/pacman.conf" ]]; then
-  sudo pacman -S --noconfirm ffmpeg openssl libffi python2-pip python-pip espeak
+  sudo pacman -S --noconfirm ffmpeg openssl libffi espeak
   if [ "$CHECK_PHANTOMJS" == "2.1.1" ]; then
     echo "PhantomJs is installed"
   else
