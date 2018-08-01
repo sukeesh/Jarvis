@@ -11,7 +11,7 @@ def get_location():
     global location
     if not location:
         print("Getting Location ... ")
-        send_url = 'http://freegeoip.net/json'
+        send_url = 'http://api.ipstack.com/check?access_key=8f7b2ef26a8f5e88eb25ae02606284c2&output=json&legacy=1'
         r = requests.get(send_url)
         location = json.loads(r.text)
     return location
