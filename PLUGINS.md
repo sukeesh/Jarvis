@@ -1,9 +1,23 @@
 # Plugins
 
-## Hello world
+## Basic style
 
-* Create new file custom/hello_word.py or jarviscli/packages/hello_world.py with:
+There are two equivalent ways to declare Plugins:
 
+### Decorator-style
+Should be used for **small** plugins.
+
+```
+from plugin import plugin
+
+@plugin()
+def hello_world(jarvis, s):
+    """Prints \"hello world!\""""
+    jarvis.say("Hello World!")
+```
+
+### Class-style
+Should be considered for more **complex** plugins.
 ```
 from plugin import Plugin
 
@@ -25,59 +39,54 @@ class HelloWorld(Plugin):
         jarvis.say("Hello world!")
 ```
 
-You just created a new command HelloWorld.
-
-Let's try out!
-
-* run Jarvis
-* Type help HelloWorld -> watch Class doc String print
-* Type HelloWorld -> watch run() being executed
-
-Few words about class-Name:
-
-* Class-Name equals command name
-* Case-insenstive
-* One word: Do not use _ (unless [Two word command](PLUGINS.md#two-word-commands))
-* Everything after two _ (__) is ignored
+Ignore everything except "run" for now.
 
 
-Run-Parameters:
+## Naming
 
-* jarvis -> instance of CmdInterpreter.JarvisAPI. You'll probably most need say(text, color=None) to print/say stuff.
-* s -> the complete command string the user entered.
+The Class/Method name equals the Jarvis-command name.
 
+So imagine you want to do something if user enters "laugh", do something like: ``def laugh(javis, s)`` or ``class laugh(plugin)``. And this method (or run()-method) will be called each time the user enters "laugh" in the javis prompt.
 
-## Short "Decorator" style
+Please note:
 
-For small commands, there is an alternative, compact declaration style:
+* Case-insenstive - Jarvis commands are always lower case
+* Do not use "_"
+* __ means "comment" - everything beyond is ignored
 
-```
-form plugin import plugin
+So these plugins are equivalent:
 
+* HelloWorld
+* helloworld
+* HelloWorld__LINUX_ONLY
 
-@plugin()
-def helloWorld(jarvis, s):
-    """Description of Hello world"""
-    jarvis.say("Hello world!")
-```
+But **NOT**:
 
-Note the difference between plugin (Decorator) and Plugin (Class).
+* hello_world
 
-Since @plugin converts the method to a Plugin-Subclass, there is no real difference between Decorator and Class-style.
-
-For bigger plugins (>10 lines) it is strongly recommendet to use Class-style. 
+That would mean something totally [different](PLUGINS.md#two-word-commands).
 
 
+## Run-Parameter
 
-## "Advanced" Plugin Features
+* 1: jarvis -> instance of CmdInterpreter.JarvisAPI. You'll probably most need ``jarvis.say(text, color=None)`` to print/say stuff. If you need color, take a loot at [colorama](https://pypi.org/project/colorama/).
+* 2: s -> string; what the user entered
+
+## Location
+
+Plugins are searched for in two locations:
+
+* custom - for your own plugins
+* jarviscli/plugins - for pre-installed plugins
+
+It is fine to develop and test plugins in the custom-folder, but before submitting always move them to jarviscli/plugins.
+
+
+## Features
 
 ### Alias
 
-"Goodbye", "Close", "Exit" - these commands should all do the same.
-
-So that you don't have to create 3 Plugins, there is the "alias"-feature.
-
-If you - for example - want "Hello" and "Hi" to be aliases for HelloWorld, write something like
+Example:
 
 Class-style:
 ```
@@ -96,11 +105,15 @@ def helloWorld(jarvis, s):
    (...)
 ```
 
+This would alias "HelloWorld" to "Hello" and "Hi".
+
+An Alias behaves just like copy-pasting the whole plugin with a new name.
+
 ### Require
 
-Not all plugins are compabible with every system. To specify compbability constraints, use the require-feature.
+Not all plugins are compatible with every system. To specify compatibility constraints, use the require-feature.
 
-Plugins, which are non compabible are ignored and will not be displayed.
+Plugins, which are non compatible are ignored and will not be displayed.
 
 Current available requirements:
 
@@ -109,7 +122,7 @@ Current available requirements:
 * Python: (plugin.PYTHON2, plugin.PYTHON3)
 * Native: (any string)
 
-Native means any native Binary in $PATH must exist. If multiple natives are specified (unlike other requirements) ALL must be fullfilled.
+Native means any native Binary in $PATH must exist. If multiple natives are specified (unlike other requirements) ALL must be fulfilled.
 
 Example: Only support Python 3 with Linux; Require firefox and curl with active network connection.
 
@@ -167,7 +180,7 @@ def helloWorld(jarvis, s):
 
 ### Two word commands
 
-Take "check ram" and "check weather". It is possible to implement these in two different plugins:
+Take "check ram" and "check weather". Of course you could create a plugin "check" and doing something like ``if 'ram' in s``. But it's better to create two separate plugins:
 
 ```
 @plugin()
@@ -205,6 +218,6 @@ class HelloWorld(Plugin):
         jarvis.say("Hello world!")
 ```
 
-Will make "Hello world" available.
+This will make "Hello world" available.
 
-Note that this only works for two-word commands - there is currenlty nothing like "three world commands".
+Note that this only works for two-word commands - there is currently nothing like "three world commands".
