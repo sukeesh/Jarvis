@@ -35,8 +35,6 @@ from utilities.notification import notify
 from utilities.GeneralUtilities import (get_float, IS_MACOS, MACOS, print_say,
                                         unsupported)
 
-if six.PY2:
-    from packages import chat
 
 CONNECTION_ERROR_MSG = "You are not connected to Internet"
 
@@ -165,8 +163,7 @@ class CmdInterpreter(Cmd):
         self.scheduler = schedule.Scheduler()
         self.speech = create_voice()
 
-        self.actions = ["ask",
-                        {"check": ("ram", "weather", "time", "forecast")},
+        self.actions = [{"check": ("ram", "weather", "time", "forecast")},
                         "clear",
                         "cricket",
                         {"decrease": ("volume",)},
@@ -267,17 +264,6 @@ class CmdInterpreter(Cmd):
     def interrupt_handler(self, signal, frame):
         """Closes Jarvis on SIGINT signal. (Ctrl-C)"""
         self.close()
-
-    def do_ask(self, s):
-        """Start chating with Jarvis"""
-        if six.PY2:
-            chat.main(self)
-        else:
-            print_say("Feature currently not available in Python 3", self, Fore.RED)
-
-    def help_ask(self):
-        """Prints help about ask command."""
-        print_say("Start chating with Jarvis", self)
 
     def do_calculate(self, s):
         """Jarvis will get your calculations done!"""
