@@ -17,7 +17,6 @@ from PluginManager import PluginManager
 from packages import (directions_to, forecast, mapps, movie, near_me, picshow,
                       timeIn, translate, weather_pinpoint, weatherIn)
 from packages.news import News
-from packages.clear import clear_scr
 from packages.imgur import imgur
 from packages.quote import show_quote
 from packages.lyrics import lyrics
@@ -164,7 +163,6 @@ class CmdInterpreter(Cmd):
         self.speech = create_voice()
 
         self.actions = [{"check": ("ram", "weather", "time", "forecast")},
-                        "clear",
                         "cricket",
                         {"decrease": ("volume",)},
                         "dictionary",
@@ -315,14 +313,6 @@ class CmdInterpreter(Cmd):
     def complete_check(self, text, line, begidx, endidx):
         """Completions for check command"""
         return self.get_completions("check", text)
-
-    def do_clear(self, s=None):
-        """Clear terminal screen. """
-        clear_scr()
-
-    def help_clear(self):
-        """Help:Clear terminal screen"""
-        print_say("Clears terminal", self)
 
     def do_cricket(self, s=None):
         """Jarvis will show current matches and their score for you"""
