@@ -164,7 +164,6 @@ class CmdInterpreter(Cmd):
 
         self.actions = [{"check": ("ram", "weather", "time", "forecast")},
                         "cricket",
-                        {"decrease": ("volume",)},
                         "dictionary",
                         "directions",
                         {"disable": ("sound",)},
@@ -324,10 +323,6 @@ class CmdInterpreter(Cmd):
     def help_cricket(self):
         """cricket package for Jarvis"""
         print_say("Enter cricket and follow the instructions", self)
-
-    def complete_decrease(self, text, line, begidx, endidx):
-        """Completions for decrease command"""
-        return self.get_completions("decrease", text)
 
     def do_dictionary(self, s):
         """Returns meaning, synonym and antonym of any english word"""
