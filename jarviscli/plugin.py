@@ -247,14 +247,47 @@ class PluginComposed(object):
 
     def get_doc(self):
         doc = ""
+        examples = ""
+        extended_doc = ""
+
         # default complete
         if self._command_default is not None:
-            doc += self._command_default.get_doc()
+            default_command_doc = self._command_default.get_doc()
+            default_command_doc = default_command_doc.split("-- Example:")
+            if len(default_command_doc) > 1:
+                examples += default_command_doc[1]
+            default_command_doc = default_command_doc[0]
+
+            doc += default_command_doc
+            if not doc.endswith("\n"):
+                doc += "\n"
+            doc += "\nSubcommands:"
 
         # sub command complete
         for name, sub_command in self._command_sub.items():
-            doc += "\n-> {}:".format(name)
-            doc += sub_command.get_doc()
+            doc += "\n-> {}: ".format(name)
+
+            sub_command_doc = sub_command.get_doc()
+            sub_command_doc = sub_command_doc.split("-- Example:")
+            if len(sub_command_doc) > 1:
+                examples += sub_command_doc[1]
+            sub_command_doc = sub_command_doc[0]
+
+            if '\n' not in sub_command_doc:
+                doc += sub_command_doc
+            else:
+                extended_doc += "\n  {}:\n".format(name)
+                extended_doc += sub_command_doc
+                if not sub_command_doc.endswith("\n"):
+                    extended_doc += "\n"
+
+        if extended_doc != "":
+            doc += "\n"
+            doc += extended_doc
+
+        if examples != "":
+            doc += "\n--Examples:"
+            doc += examples
 
         return doc
 
