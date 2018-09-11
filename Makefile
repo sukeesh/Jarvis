@@ -1,7 +1,7 @@
 VERSION:=1.0
 
 build_docker:
-	cd $(CURDIR) && docker build -t jarvis:$(VERSION) .
+	cd $(CURDIR)/docker && docker build -t jarvis:$(VERSION) .
 
 run_docker:
 	#Needs "xhost local:docker"
