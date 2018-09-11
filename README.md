@@ -39,7 +39,39 @@ You can start by typing `help` within the Jarvis command line to check what Jarv
 
 ## How to write new commands (plugins) to extend Jarvis functionality
 
-[Click here](PLUGINS.md)
+Create new file custom/hello_world.py
+
+```
+from plugin import plugin
+
+@plugin()
+def helloworld(jarvis, s):
+    """Prints \"hello world!\""""
+    jarvis.say("Hello World!")
+
+
+@plugin()
+def repeat(jarvis, s):
+    """Repeats what you type"""
+    jarvis.say(s)
+```
+
+Check it out!
+```
+./jarvis
+Jarvis' sound is by default disabled.
+In order to let Jarvis talk out loud type: enable sound
+Type 'help' for a list of available actions.
+
+~> Hi, what can I do for you?
+helloworld
+Hello World!
+~> What can i do for you?
+repeat Jarvis is cool!
+jarvis is cool
+```
+
+[Click here](PLUGINS.md) to learn more about plugins.
 
 
 ## Authors
