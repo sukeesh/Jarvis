@@ -82,9 +82,9 @@ class PluginManager(object):
         if allready_exists:
             error("Duplicated plugin {} {}".format(name_first, name_second))
 
-    def _load_convert_into_composed(self, name, plugin_fallback):
+    def _load_convert_into_composed(self, name, plugin_default):
         plugin_composed = plugin.PluginComposed(name)
-        plugin_composed.try_set_fallback(plugin_fallback)
+        plugin_composed.try_set_default(plugin_default)
         self._cache_plugins[name] = plugin_composed
         return plugin_composed
 
@@ -94,7 +94,7 @@ class PluginManager(object):
             return
 
         if self._cache_plugins[name].is_composed():
-            success = self._cache_plugins[name].try_set_fallback(plugin)
+            success = self._cache_plugins[name].try_set_default(plugin)
             if success:
                 return
 
