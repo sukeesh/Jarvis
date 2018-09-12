@@ -22,18 +22,18 @@ class QuoteTest(unittest.TestCase):
                u'cat': u'travel', u'author': 'Italo Calvino'}]
 
     def setUp(self):
-        self = Jarvis()
+        self.jarvis = Jarvis()
 
     @patch('packages.quote.requests.get')
     @patch('packages.quote.json.loads', return_value=quotes)
     @patch('packages.quote.try_again')
     def test_get_keyword_quotes(self, get_mock, get_json, get_try_again):
-        get_keyword_quotes(self, 'travel')
+        get_keyword_quotes(self.jarvis, 'travel')
 
     @patch('packages.quote.input')
     def test_try_again(self, get_mock):
         get_mock.return_value = 'exit'
-        try_again(self, 'travel')
+        try_again(self.jarvis, 'travel')
 
     def test_contains_word(self):
         self.assertEqual(contains_word('Friends show their love in' +
@@ -46,7 +46,7 @@ class QuoteTest(unittest.TestCase):
     @patch('packages.quote.input')
     def test_get_input(self, get_mock):
         get_mock.return_value = '2'
-        response = get_input('Enter yeahh: ')
+        response = get_input('Enter yeahh: ', self.jarvis)
         self.assertEqual(response, 2)
 
 
