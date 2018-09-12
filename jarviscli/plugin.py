@@ -72,6 +72,8 @@ class Plugin(pluginmanager.IPlugin):
         return self.__class__.__name__.lower().split("__", 1)[0].replace("_", " ")
 
     def get_doc(self):
+        if self.__doc__ is None:
+            return "Sorry - no description available."
         return cleandoc(self.__doc__)
 
     def is_composed(self):
