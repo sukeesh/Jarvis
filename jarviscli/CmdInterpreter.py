@@ -35,7 +35,6 @@ from packages.currencyconv import currencyconv
 from packages.currencyconv import get_currency
 from packages.currencyconv import find_currencies
 from utilities.GeneralUtilities import get_float
-from packages.hackathon import find_hackathon
 from packages import translate
 from packages.dictionary import dictionary
 from packages.tempconv import temp_main
@@ -114,7 +113,6 @@ class CmdInterpreter(Cmd):
                         {"enable": ("sound",)},
                         "file_organise",
                         "fb",
-                        "hackathon",
                         "help",
                         {"hotspot": ("start", "stop")},
                         "how_are_you",
@@ -380,14 +378,6 @@ class CmdInterpreter(Cmd):
     def help_fb(self):
         """Help for fb"""
         print_say("type fb and follow instructions", self)
-
-    def do_hackathon(self, s=None):
-        """Find upcoming hackathons from hackerearth"""
-        find_hackathon(self)
-
-    def help_hackathon(self):
-        """Prints help about hackathon command."""
-        print_say("Find upcoming hackathons from hackerearth", self)
 
     @unsupported(platform=MACOS)
     def do_hotspot(self, s):
