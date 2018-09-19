@@ -11,7 +11,7 @@ from requests import ConnectionError
 from PluginManager import PluginManager
 from functools import partial
 
-from utilities import voice
+from utilities.voice import create_voice
 from utilities.GeneralUtilities import (
     IS_MACOS, MACOS, print_say, unsupported
 )
@@ -145,7 +145,7 @@ class CmdInterpreter(Cmd):
                                 "how are you": "how_are_you"
                                 }
 
-        self.speech = voice.Voice()
+        self.speech = create_voice()
 
         self._api = JarvisAPI(self)
         self._plugin_manager = PluginManager()
