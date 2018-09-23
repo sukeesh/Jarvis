@@ -27,7 +27,6 @@ from packages.systemOptions import turn_off_screen, update_system
 from packages.news import News
 from packages.clear import clear_scr
 from packages.file_organise import file_manage
-from packages.fb import fb_login
 from packages.twitter import twitter_login, twitter_tweet, twitter_end
 from packages.cricket import score
 from packages.quote import show_quote
@@ -112,7 +111,6 @@ class CmdInterpreter(Cmd):
                         {"display": ("pics",)},
                         {"enable": ("sound",)},
                         "file_organise",
-                        "fb",
                         "help",
                         {"hotspot": ("start", "stop")},
                         "how_are_you",
@@ -367,17 +365,6 @@ class CmdInterpreter(Cmd):
         """Help for file organise"""
         print_say("Type file_organise and follow instructions", self)
         print_say("It organises selected folder based on extension", self)
-
-    def do_fb(self, s=None):
-        """Jarvis will login into your facebook account either by prompting id-password or by using previously saved"""
-        try:
-            fb_login(self)
-        except ConnectionError:
-            print(CONNECTION_ERROR_MSG)
-
-    def help_fb(self):
-        """Help for fb"""
-        print_say("type fb and follow instructions", self)
 
     @unsupported(platform=MACOS)
     def do_hotspot(self, s):
