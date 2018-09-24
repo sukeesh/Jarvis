@@ -3,7 +3,7 @@ beautifulsoup4==4.5.3
 bs4==0.0.1
 colorama==0.3.7
 eyeD3==0.7.11
-youtube-dl==2017.06.05
+youtube-dl
 instantmusic==2.2
 lxml==3.7.3
 packaging==16.8

@@ -17,7 +17,6 @@ from utilities.GeneralUtilities import (
 )
 
 from packages.lyrics import lyrics
-from packages.music import play
 from packages.todo import todoHandler
 from packages.reminder import reminder_handler, reminder_quit
 from packages import mapps, picshow, forecast, movie
@@ -119,12 +118,10 @@ class CmdInterpreter(Cmd):
                         "match",
                         {"movie": ("cast", "director", "plot", "producer", "rating", "year",)},
                         "movies",
-                        "music",
                         "near",
                         "news",
                         {"open": ("camera",)},
                         "pinpoint",
-                        "play",
                         "quote",
                         "currencyconv",
                         "remind",
@@ -469,18 +466,6 @@ class CmdInterpreter(Cmd):
         """Print help about movies command."""
         print_say("Jarvis will find a good movie for you", self)
 
-    @unsupported(platform=MACOS)
-    def do_music(self, s):
-        """Jarvis will find you a good song to relax!"""
-        play(s)
-
-    @unsupported(platform=MACOS)
-    def help_music(self):
-        """Print help about music command."""
-        print_say("Jarvis will find you the song you want", self)
-        print_say("-- Example:", self)
-        print_say("\tmusic wonderful tonight", self)
-
     def do_near(self, data):
         """Jarvis can find what is near you!"""
         near_me.main(data)
@@ -540,18 +525,6 @@ class CmdInterpreter(Cmd):
     def help_pinpoint(self):
         """Print help about pinpoint command."""
         print_say("Jarvis will pinpoint your location.", self)
-
-    @unsupported(platform=MACOS)
-    def do_play(self, s):
-        """Jarvis will find you a good song to relax!"""
-        play(s)
-
-    @unsupported(platform=MACOS)
-    def help_play(self):
-        """Print help about play command."""
-        print_say("Jarvis will find you the song you want", self)
-        print_say("-- Example:", self)
-        print_say("\tplay eye of the tiger", self)
 
     def do_quote(self, s=None):
         """Show quote of the day or quotes based on a gven word"""
