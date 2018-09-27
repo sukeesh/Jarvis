@@ -58,8 +58,7 @@ class Jarvis(CmdInterpreter, object):
 
         # append calculate keyword to front of leading char digit (or '-') in line
         if len(words) > 0 and (words[0].isdigit() or line[0] == "-"):
-            line = "calculate " + line
-            words = line.split()
+            words.insert(0,"calculate ")
 
         if len(words) == 0:
             line = "None"
