@@ -3,10 +3,9 @@ import subprocess
 from platform import architecture, dist, release
 from platform import system as sys
 
-from archey import archey
 from colorama import Fore
 
-from plugin import LINUX, MACOS, plugin
+from plugin import LINUX, MACOS, PYTHON2, PYTHON3, plugin
 
 
 @plugin(plattform=MACOS, native="pmset")
@@ -32,7 +31,13 @@ def Os(jarvis, s):
         jarvis.say('[*] ' + _, Fore.GREEN)
 
 
-@plugin()
-def systeminfo(jarvis, s):
+@plugin(python=PYTHON3)
+def systeminfo__PY3(jarvis, s):
     """Display system information with distribution logo"""
+    from archey import archey
     archey.main()
+
+@plugin(python=PYTHON2, native="screenfetch")
+def systeminfo__PY2(jarvis, s):
+    """Display system information with distribution logo"""
+    os.system("screenfetch")
