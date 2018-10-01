@@ -6,6 +6,7 @@ from six.moves import input
 from platform import system as sys
 from platform import architecture, release, dist
 from time import ctime
+from threading import Timer
 from colorama import Fore
 from requests import ConnectionError
 from PluginManager import PluginManager
@@ -13,8 +14,9 @@ from functools import partial
 
 from utilities.voice import create_voice
 from utilities.GeneralUtilities import (
-    IS_MACOS, MACOS, print_say, unsupported
+    IS_MACOS, MACOS, print_say, unsupported, get_float, schedule
 )
+from utilities.notification import notify
 
 from packages.lyrics import lyrics
 from packages.todo import todoHandler
@@ -32,7 +34,6 @@ from packages.quote import show_quote
 from packages.currencyconv import currencyconv
 from packages.currencyconv import get_currency
 from packages.currencyconv import find_currencies
-from utilities.GeneralUtilities import get_float
 from packages import translate
 from packages.dictionary import dictionary
 from packages.tempconv import temp_main
@@ -78,6 +79,46 @@ class JarvisAPI(object):
     def exit(self):
         self._jarvis.close()
 
+    def notification(self, msg, time_seconds=0):
+        """
+        Sends notification msg in time_in milliseconds
+        :param msg: Message. Either String (message body) or tuple (headline, message body)
+        :param time_seconds: Time in seconds to wait before showing notification
+        """
+        if isinstance(msg, tuple):
+            headline, message = msg
+        elif isinstance(msg, str):
+            headline = "Jarvis"
+            message = msg
+        else:
+            raise ValueError("msg not a string or tuple")
+
+        schedule(time_seconds, notify, headline, message)
+
+    # MEMORY WRAPPER
+    def get_data(self, key):
+        """
+        get a specific key from memory
+        """
+        MEMORY.get_data(key)
+
+    def add_data(self, key, value):
+        """
+        add a key and value to memory
+        """
+        MEMORY.add_data(key, value)
+
+    def update_data(self, key, value):
+        """
+        Updates a key with supplied value.
+        """
+        MEMORY.update_data(key, value)
+
+    def del_data(self, key):
+        """
+        delete a key from memory
+        """
+        MEMORY.del_data(key)
 
 class CmdInterpreter(Cmd):
     # We use this variable at Breakpoint #1.
