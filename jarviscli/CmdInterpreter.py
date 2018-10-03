@@ -28,7 +28,6 @@ from packages.systemOptions import turn_off_screen, update_system
 from packages.news import News
 from packages.clear import clear_scr
 from packages.file_organise import file_manage
-from packages.twitter import twitter_login, twitter_tweet, twitter_end
 from packages.cricket import score
 from packages.quote import show_quote
 from packages.currencyconv import currencyconv
@@ -170,7 +169,6 @@ class CmdInterpreter(Cmd):
                         "tempconv",
                         "todo",
                         "translate",
-                        {"twitter": ("login", "tweet")},
                         "umbrella",
                         {"update": ("location", "system")},
                         "weather",
@@ -656,25 +654,6 @@ class CmdInterpreter(Cmd):
     def help_translate(self):
         """Print help for translate function"""
         print_say("translates from one language to another.", self)
-
-    def do_twitter(self, s):
-        """Jarvis will login into your facebook account either by prompting id-password or by using previously saved"""
-        if "login" in s:
-            try:
-                driver = twitter_login(self)
-                twitter_end(self, driver)
-            except ConnectionError:
-                print(CONNECTION_ERROR_MSG)
-        elif "tweet" in s:
-            try:
-                driver = twitter_tweet(self)
-                twitter_end(self, driver)
-            except ConnectionError:
-                print(CONNECTION_ERROR_MSG)
-
-    def help_twitter(self):
-        """help for twitter"""
-        print_say("enter twitter and follow the instructions", self)
 
     def do_umbrella(self, s):
         """If you're leaving your place, Jarvis will inform you if you might need an umbrella or not"""
