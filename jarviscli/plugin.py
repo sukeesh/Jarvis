@@ -309,8 +309,8 @@ class PluginComposed(object):
                     s = s[len(name):]
                     s = s.lstrip()
 
-                sub_command.run(jarvis, s)
-                return
+                    sub_command.run(jarvis, s)
+                    return
 
         # run default
         if self._command_default is not None:
