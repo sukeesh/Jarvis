@@ -39,7 +39,6 @@ from packages.tempconv import temp_main
 from packages.imgur import imgur
 if six.PY2:
     from packages import chat
-MEMORY = Memory()
 
 CONNECTION_ERROR_MSG = "You are not connected to Internet"
 
@@ -99,25 +98,28 @@ class JarvisAPI(object):
         """
         get a specific key from memory
         """
-        MEMORY.get_data(key)
+        return self._jarvis.memory.get_data(key)
 
     def add_data(self, key, value):
         """
         add a key and value to memory
         """
-        MEMORY.add_data(key, value)
+        self._jarvis.memory.add_data(key, value)
+        self._jarvis.memory.save()
 
     def update_data(self, key, value):
         """
         Updates a key with supplied value.
         """
-        MEMORY.update_data(key, value)
+        self._jarvis.memory.update_data(key, value)
+        self._jarvis.memory.save()
 
     def del_data(self, key):
         """
         delete a key from memory
         """
-        MEMORY.del_data(key)
+        self._jarvis.memory.del_data(key)
+        self._jarvis.memory.save()
 
 class CmdInterpreter(Cmd):
     # We use this variable at Breakpoint #1.
@@ -138,6 +140,8 @@ class CmdInterpreter(Cmd):
         self.enable_voice = enable_voice
         # Register do_quit() function to SIGINT signal (Ctrl-C)
         signal.signal(signal.SIGINT, self.interrupt_handler)
+
+        self.memory = Memory()
 
         self.actions = ["ask",
                         {"check": ("ram", "weather", "time", "forecast")},
@@ -659,7 +663,7 @@ class CmdInterpreter(Cmd):
         """If you're leaving your place, Jarvis will inform you if you might need an umbrella or not"""
         s = 'umbrella'
         try:
-            weather_pinpoint.main(MEMORY, self, s)
+            weather_pinpoint.main(self.memory, self, s)
         except ConnectionError:
             print(CONNECTION_ERROR_MSG)
 
@@ -672,13 +676,13 @@ class CmdInterpreter(Cmd):
     def do_update(self, s):
         """Updates location or system."""
         if "location" in s:
-            location = MEMORY.get_data('city')
+            location = self.memory.get_data('city')
             loc_str = str(location)
             print_say("Your current location is set to " + loc_str, self)
             print_say("What is your new location?", self)
             i = input()
-            MEMORY.update_data('city', i)
-            MEMORY.save()
+            self.memory.update_data('city', i)
+            self.memory.save()
         elif "system" in s:
             update_system()
 
@@ -694,7 +698,7 @@ class CmdInterpreter(Cmd):
     def do_weather(self, s):
         """Get information about today's weather."""
         try:
-            weather_pinpoint.main(MEMORY, self, s)
+            weather_pinpoint.main(self.memory, self, s)
         except ConnectionError:
             print(CONNECTION_ERROR_MSG)
 
