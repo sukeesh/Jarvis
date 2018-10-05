@@ -221,3 +221,34 @@ class HelloWorld(Plugin):
 This will make "Hello world" available.
 
 Note that this only works for two-word commands - there is currently nothing like "three world commands".
+
+
+### Init
+
+If a Class-Plugins has a method ``init(self, jarvis)`` this method will be called during initialisation.
+
+This feature works for Composed-Plugins. This feature is not available for decorator-style.
+
+```
+from plugin import Plugin
+
+
+class HelloWorld(Plugin):
+    """
+    Description of Hello world
+    """
+    def init(self, jarvis):
+        jarvis.say("INIT HelloWorld!!!")
+
+    def require(self):
+        pass
+
+    def complete(self):
+        pass
+
+    def alias(self):
+        pass
+
+    def run(self, jarvis, s):
+        jarvis.say("Hello world!")
+```

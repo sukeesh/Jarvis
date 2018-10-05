@@ -206,6 +206,9 @@ class CmdInterpreter(Cmd):
             setattr(CmdInterpreter, "do_" + plugin_name, partial(plugin.run, self._api))
             setattr(CmdInterpreter, "help_" + plugin_name, partial(self._api.say, plugin.get_doc()))
 
+            if hasattr(plugin.__class__, "init") and callable(getattr(plugin.__class__, "init")):
+                plugin.init(self._api)
+
     def _plugin_update_action(self, plugin, plugin_name):
         """Return True if completion is available"""
         complete = plugin.complete()
