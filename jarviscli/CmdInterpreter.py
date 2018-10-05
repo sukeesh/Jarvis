@@ -14,9 +14,10 @@ from functools import partial
 
 from utilities.voice import create_voice
 from utilities.GeneralUtilities import (
-    IS_MACOS, MACOS, print_say, unsupported, get_float, schedule
+    IS_MACOS, MACOS, print_say, unsupported, get_float
 )
 from utilities.notification import notify
+from utilities import schedule
 
 from packages.lyrics import lyrics
 from packages.todo import todoHandler
@@ -91,7 +92,28 @@ class JarvisAPI(object):
         else:
             raise ValueError("msg not a string or tuple")
 
-        schedule(time_seconds, notify, headline, message)
+        if time_seconds == 0:
+            notify(headline, message)
+        else:
+            schedule(time_seconds, notify, headline, message)
+
+    def schedule(self, time_seconds, function, *args):
+        """
+        Schedules function
+        After time_seconds call function with these parameter:
+           - reference to this JarvisAPI instance
+           - schedule_id (return value of this fuction)
+           - *args
+        :return: integer, id - use with cancel
+        """
+        return self._jarvis.scheduler.create_event(time_seconds, function, self, *args)
+
+    def cancel(self, schedule_id):
+        """
+        Cancel event scheduled with schedule
+        :param schedule_id: id returned by schedule
+        """
+        self._jarvis.scheduler.cancel(schedule_id)
 
     # MEMORY WRAPPER
     def get_data(self, key):
@@ -142,6 +164,8 @@ class CmdInterpreter(Cmd):
         signal.signal(signal.SIGINT, self.interrupt_handler)
 
         self.memory = Memory()
+        self.scheduler = schedule.Scheduler()
+        self.speech = create_voice()
 
         self.actions = ["ask",
                         {"check": ("ram", "weather", "time", "forecast")},
@@ -182,8 +206,6 @@ class CmdInterpreter(Cmd):
                                 "where am i": "pinpoint",
                                 "how are you": "how_are_you"
                                 }
-
-        self.speech = create_voice()
 
         self._api = JarvisAPI(self)
         self._plugin_manager = PluginManager()
