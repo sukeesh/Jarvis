@@ -20,11 +20,9 @@ from utilities.notification import notify
 from utilities import schedule
 
 from packages.lyrics import lyrics
-from packages.todo import todoHandler
-from packages.reminder import reminder_handler, reminder_quit
-from packages import mapps, picshow, forecast, movie
 from packages import directions_to, near_me, weather_pinpoint, weatherIn, timeIn
 from packages.memory.memory import Memory
+from packages import mapps, picshow, forecast, movie
 from packages.systemOptions import turn_off_screen, update_system
 from packages.news import News
 from packages.clear import clear_scr
@@ -192,10 +190,8 @@ class CmdInterpreter(Cmd):
                         "pinpoint",
                         "quote",
                         "currencyconv",
-                        "remind",
                         "say",
                         "tempconv",
-                        "todo",
                         "translate",
                         "umbrella",
                         {"update": ("location", "system")},
@@ -249,7 +245,6 @@ class CmdInterpreter(Cmd):
 
     def close(self):
         """Closing Jarvis."""
-        reminder_quit()
         print_say("Goodbye, see you later!", self, Fore.RED)
         self.scheduler.stop_all()
         exit()
@@ -621,24 +616,6 @@ class CmdInterpreter(Cmd):
         print_say("-- Type currencyconv, press enter and follow the" +
                   "instructions!", self)
 
-    def do_remind(self, data):
-        """Handles reminders"""
-        reminder_handler(data)
-
-    def help_remind(self):
-        """Print help about remind command."""
-        print_say("Handles reminders", self)
-        print_say("add: adds a reminder", self)
-        print_say("remove: removes a reminder", self)
-        print_say("list: lists all reminders", self)
-        print_say("clear: clears all reminders", self)
-        print_say("-- Examples:", self)
-        print_say("\tremind add 14:25 buy tomatoes", self)
-        print_say("\tremind add 14:26 buy potatoes too", self)
-        print_say("\tremind remove buy potatoes too", self)
-        print_say("\tremind list", self)
-        print_say("\tremind clear", self)
-
     def do_say(self, s):
         """Reads what is typed."""
         if not s:
@@ -661,21 +638,6 @@ class CmdInterpreter(Cmd):
         """Print help information for tempconv command."""
         print_say("Convert temperature from Fahrenheit to Celsius and vice versa", self)
         print_say("Examples: 32f, 18C, -20F, -8c, 105.4F, -10.21C", self)
-
-    def do_todo(self, data):
-        """Create your personal TODO list!"""
-        todoHandler(data)
-
-    def help_todo(self):
-        """Print help about todo command."""
-        print_say("Create your personal TODO list!", self)
-        print("Supported Commands: todo <command>")
-        print(
-            "\tadd [<index>] <todo - comment>, add comment <index> <comment>, add due <index> <time>")
-        print("\tremove <index>")
-        print("\tcomplete <index> [<completion>]")
-        print("\tpriority <index> [<level>]")
-        print("\tlist")
 
     def do_translate(self, s):
         """Translates text from one language (source) to another(destination)"""

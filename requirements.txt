@@ -36,3 +36,5 @@ pluginmanager
 sympy
 funcsigs; python_version <= '2.7'
 archey4; python_version >= '3.5'
+pytimeparse
+pick
