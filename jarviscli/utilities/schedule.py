@@ -27,3 +27,7 @@ class Scheduler:
 
         self._events[schedule_id].cancel()
         del self._events[schedule_id]
+
+    def stop_all(self):
+        for timer in self._events.values():
+            timer.cancel()
