@@ -40,7 +40,7 @@ class Voice:
             self.text_to_speech('What can i do for you?')
 
 
-class VoceMac(Voice):
+class VoiceMac(Voice):
     def text_to_speech(self, speech):
         system('say {}'.format(speech))
 

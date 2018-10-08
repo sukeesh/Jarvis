@@ -64,4 +64,7 @@ case ${answer:0:1} in
 esac
 
 source env/bin/activate
+
 pip install --upgrade -r requirements.txt
+
+cp jarvis /usr/local/bin
