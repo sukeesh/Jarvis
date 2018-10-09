@@ -1,41 +1,40 @@
+import signal
+
 from os import system
 from cmd import Cmd
-import signal
-import six
-from six.moves import input
-from platform import system as sys
-from platform import architecture, release, dist
 from time import ctime
-from threading import Timer
-from colorama import Fore
-from requests import ConnectionError
-from PluginManager import PluginManager
+from platform import architecture, dist, release, system as sys
 from functools import partial
 
-from utilities.voice import create_voice
-from utilities.GeneralUtilities import (
-    IS_MACOS, MACOS, print_say, unsupported, get_float
-)
-from utilities.notification import notify
-from utilities import schedule
+import six
 
-from packages.lyrics import lyrics
-from packages import directions_to, near_me, weather_pinpoint, weatherIn, timeIn
-from packages.memory.memory import Memory
-from packages import mapps, picshow, forecast, movie
-from packages.systemOptions import turn_off_screen, update_system
+from requests import ConnectionError
+from six.moves import input
+
+from colorama import Fore
+from PluginManager import PluginManager
+
+from packages import (directions_to, forecast, mapps, movie, near_me, picshow,
+                      timeIn, translate, weather_pinpoint, weatherIn)
 from packages.news import News
 from packages.clear import clear_scr
-from packages.file_organise import file_manage
-from packages.cricket import score
-from packages.quote import show_quote
-from packages.currencyconv import currencyconv
-from packages.currencyconv import get_currency
-from packages.currencyconv import find_currencies
-from packages import translate
-from packages.dictionary import dictionary
-from packages.tempconv import temp_main
 from packages.imgur import imgur
+from packages.quote import show_quote
+from packages.lyrics import lyrics
+from packages.cricket import score
+from packages.tempconv import temp_main
+from packages.dictionary import dictionary
+from packages.currencyconv import currencyconv, find_currencies, get_currency
+from packages.file_organise import file_manage
+from packages.systemOptions import turn_off_screen, update_system
+from packages.memory.memory import Memory
+
+from utilities import schedule
+from utilities.voice import create_voice
+from utilities.notification import notify
+from utilities.GeneralUtilities import (get_float, IS_MACOS, MACOS, print_say,
+                                        unsupported)
+
 if six.PY2:
     from packages import chat
 

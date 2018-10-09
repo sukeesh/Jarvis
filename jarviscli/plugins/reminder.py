@@ -27,7 +27,6 @@ Module content:
 * Plugins (Todo, Todo_Add, Todo_Remove, Remind, Remind_At, Remind_In,
           Remind_Remove) - oneliner based on TodoBase and RemindBase to
           "export" functionality as Plugins
-
 """
 
 
@@ -86,7 +85,7 @@ class RemindTodoBase:
         selected = [entry[1] for entry in selected]
 
         new_data = []
-        for index in range(len(data)):
+        for index, entry in enumerate(data):
             entry = data[index]
             if index not in selected:
                 new_data.append(entry)
@@ -166,7 +165,7 @@ class TodoBase(RemindTodoBase):
             return None
 
         title = 'Please choose from todo list:'
-        item, index = pick(ask_str, title)
+        _, index = pick(ask_str, title)
 
         return data[index]
 

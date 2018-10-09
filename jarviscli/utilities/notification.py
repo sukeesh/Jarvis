@@ -28,7 +28,7 @@ GUI_FALLBACK_DISPLAY_TIME = 3000
 def notify__GUI_FALLBACK(name, body, urgency=NOTIFY_NORMAL):
     def notify_implementation():
         root = tk.Tk()
-        root.after(GUI_FALLBACK_DISPLAY_TIME, lambda: root.destroy())
+        root.after(GUI_FALLBACK_DISPLAY_TIME, root.destroy)
         root.withdraw()
         try:
             tkMessageBox.showinfo(str(name), str(body))
