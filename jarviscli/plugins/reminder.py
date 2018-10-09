@@ -102,7 +102,7 @@ class RemindTodoBase:
         data.append(modified_entry)
         self.save_data(jarvis, data)
 
-    def print(self, jarvis):
+    def do_print(self, jarvis):
         todo_list = self.get_data(jarvis)
 
         if len(todo_list) == 0:
@@ -349,7 +349,7 @@ class Todo(Plugin, TodoBase):
     """
 
     def run(self, jarvis, s):
-        self.print(jarvis)
+        self.do_print(jarvis)
 
 
 class Todo_Add(Plugin, TodoBase):
@@ -390,7 +390,7 @@ class Remind(Plugin, RemindBase):
 
     def run(self, jarvis, s):
         jarvis.say("## {} ##\n".format(self.timestamp_to_string(time.time())))
-        self.print(jarvis)
+        self.do_print(jarvis)
 
 
 class Remind_At(Plugin, RemindBase):
