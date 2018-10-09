@@ -37,6 +37,7 @@ def systeminfo__PY3(jarvis, s):
     from archey import archey
     archey.main()
 
+
 @plugin(python=PYTHON2, native="screenfetch")
 def systeminfo__PY2(jarvis, s):
     """Display system information with distribution logo"""

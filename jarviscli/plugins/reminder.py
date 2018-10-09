@@ -302,7 +302,6 @@ class RemindTodoInteract_Todo:
         if modify:
             self.remind.save_data(jarvis, remind_list_new)
 
-
     def format_interact(self, jarvis, entry):
         todo_id = entry['id']
         remind_list = self.remind.get_data(jarvis)
@@ -310,7 +309,7 @@ class RemindTodoInteract_Todo:
                        if remind['todo_refere_id'] == todo_id]
         if len(remind_list) != 0:
             remind_list = [self.remind.timestamp_to_string(remind['timestamp'])
-                        for remind in remind_list]
+                           for remind in remind_list]
             return " -- remind -- ({})".format(', '.join(remind_list))
         return ''
 
@@ -428,4 +427,3 @@ class Remind_Remove(Plugin, RemindBase):
 
     def run(self, jarvis, s):
         self.remove(jarvis, s)
-

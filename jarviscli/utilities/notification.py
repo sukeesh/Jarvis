@@ -15,12 +15,16 @@ def notify__MAC(name, body, urgency=NOTIFY_NORMAL):
 
 
 LINUX_URGENCY_CONVERTER = {0: 'low', 1: 'normal', 2: 'critical'}
+
+
 def notify__LINUX(name, body, urgency=NOTIFY_NORMAL):
     urgency = LINUX_URGENCY_CONVERTER[urgency]
     system("notify-send -u {} '{}' '{}'".format(urgency, str(name), str(body)))
 
 
 GUI_FALLBACK_DISPLAY_TIME = 3000
+
+
 def notify__GUI_FALLBACK(name, body, urgency=NOTIFY_NORMAL):
     def notify_implementation():
         root = tk.Tk()
@@ -38,6 +42,8 @@ def notify__GUI_FALLBACK(name, body, urgency=NOTIFY_NORMAL):
 
 
 CLI_FALLBACK_URGENCY_CONVERTER = {0: '', 1: '!', 2: '!!!'}
+
+
 def notify__CLI_FALLBACK(name, body, urgency=NOTIFY_NORMAL):
     urgency = CLI_FALLBACK_URGENCY_CONVERTER[urgency]
     print("NOTIFICATION {} ====> {} - {}".format(urgency, str(name), str(body)))

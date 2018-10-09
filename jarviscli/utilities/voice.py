@@ -6,6 +6,7 @@ if IS_MACOS:
 else:
     import pyttsx3
 
+
 def create_voice():
     if IS_MACOS:
         return VoiceMac()

@@ -141,6 +141,7 @@ class JarvisAPI(object):
         self._jarvis.memory.del_data(key)
         self._jarvis.memory.save()
 
+
 class CmdInterpreter(Cmd):
     # We use this variable at Breakpoint #1.
     # We use this in order to allow Jarvis say "Hi", only at the first

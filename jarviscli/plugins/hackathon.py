@@ -17,6 +17,7 @@ class Hackathon(Plugin):
 
     def alias(self):
         pass
+
     def run(self, jarvis, s):
         jarvis.say('--- Fetching hackathons--- \n')
         self.format(self.get_hackathon_data(self.get_csrf_token()), jarvis)
