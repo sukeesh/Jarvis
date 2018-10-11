@@ -1,4 +1,5 @@
 import distutils.spawn
+import inspect
 import sys
 from functools import partial
 
@@ -47,11 +48,52 @@ class PluginManager(object):
 
         self._backend.collect_plugins()
         for plugin in self._backend.get_plugins():
-            # I really don't know why that check is necessary...
-            if not isinstance(plugin, pluginmanager.IPlugin):
-                continue
-            if plugin.get_name() != "plugin" and self._plugin_dependency.check(plugin):
+            if self._plugin_validate(plugin):
                 self._load_plugin_handle_alias(plugin)
+
+    def _plugin_validate(self, plugin):
+        # I really don't know why that check is necessary...
+        if not isinstance(plugin, pluginmanager.IPlugin):
+            return False
+
+        if plugin.get_name() == "plugin":
+            return False
+
+        # has doc, run, alias, require and complete?
+        if not self._plugin_has_method(plugin, "run", 2):
+            print("Warning! Plugin \"{}\" has no method \"run\"! Will be disabled!".format(plugin.get_name()))
+            return False
+
+        if not self._plugin_has_method(plugin, "alias", 0):
+            print("Warning! Plugin \"{}\" has no method \"alias\"!".format(plugin.get_name()))
+            plugin.alias = lambda: None
+
+        if not self._plugin_has_method(plugin, "require", 0):
+            print("Warning! Plugin \"{}\" has no method \"require\"!".format(plugin.get_name()))
+            plugin.require = lambda: None
+
+        if not self._plugin_has_method(plugin, "complete", 0):
+            print("Warning! Plugin \"{}\" has no method \"complete\"!".format(plugin.get_name()))
+            plugin.complete = lambda: None
+
+        # dependency check
+        if not self._plugin_dependency.check(plugin):
+            return False
+
+        return True
+
+    def _plugin_has_method(self, plugin, method, param_len):
+        if not hasattr(plugin.__class__, method) or not callable(getattr(plugin.__class__, method)):
+            return False
+
+        params = inspect.signature(getattr(plugin, method)).parameters
+        params = [param for param in params if param != 'args']
+        if param_len != len(params):
+            print("Warning! Wrong parameter number: \"{}\" of \"{}\" ({}, epxected: {})".
+                  format(method, plugin.get_name(), len(params), param_len))
+            return False
+
+        return True
 
     def _load_plugin_handle_alias(self, plugin):
         self._load_add_plugin(plugin.get_name(), plugin)
@@ -82,9 +124,9 @@ class PluginManager(object):
         if allready_exists:
             error("Duplicated plugin {} {}".format(name_first, name_second))
 
-    def _load_convert_into_composed(self, name, plugin_fallback):
+    def _load_convert_into_composed(self, name, plugin_default):
         plugin_composed = plugin.PluginComposed(name)
-        plugin_composed.try_set_fallback(plugin_fallback)
+        plugin_composed.try_set_default(plugin_default)
         self._cache_plugins[name] = plugin_composed
         return plugin_composed
 
@@ -94,7 +136,7 @@ class PluginManager(object):
             return
 
         if self._cache_plugins[name].is_composed():
-            success = self._cache_plugins[name].try_set_fallback(plugin)
+            success = self._cache_plugins[name].try_set_default(plugin)
             if success:
                 return
 

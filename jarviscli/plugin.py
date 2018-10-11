@@ -72,6 +72,8 @@ class Plugin(pluginmanager.IPlugin):
         return self.__class__.__name__.lower().split("__", 1)[0].replace("_", " ")
 
     def get_doc(self):
+        if self.__doc__ is None:
+            return "Sorry - no description available."
         return cleandoc(self.__doc__)
 
     def is_composed(self):
@@ -201,13 +203,13 @@ class PluginComposed(object):
       will be executed. Otherwise - if "weather" in command, Check_weather.run()
       will be executed.
     * It is even possible to create a own Plugin "check". This plugin will be
-      added as "fallback" and executed if no sub command matches. If no "fallback"
+      added as "default" and executed if no sub command matches. If no "default"
       exists an error message will be print.
 
     """
     def __init__(self, name):
         self._name = name
-        self._command_fallback = None
+        self._command_default = None
         self._command_sub = {}
 
     def get_name(self):
@@ -225,18 +227,18 @@ class PluginComposed(object):
             self._command_sub.update({name: sub_command})
             return True
 
-    def try_set_fallback(self, command):
-        """Set fallback, return False if fallback allready set"""
-        if self._command_fallback is None:
-            self._command_fallback = command
+    def try_set_default(self, command):
+        """Set default, return False if default allready set"""
+        if self._command_default is None:
+            self._command_default = command
             return True
         else:
             return False
 
     def complete(self):
-        # return fallback complete() if possible
-        if self._command_fallback is not None:
-            complete = self._command_fallback.complete()
+        # return default complete() if possible
+        if self._command_default is not None:
+            complete = self._command_default.complete()
             if complete is not None:
                 for complete in complete:
                     yield complete
@@ -247,14 +249,47 @@ class PluginComposed(object):
 
     def get_doc(self):
         doc = ""
-        # fallback complete
-        if self._command_fallback is not None:
-            doc += self._command_fallback.get_doc()
+        examples = ""
+        extended_doc = ""
+
+        # default complete
+        if self._command_default is not None:
+            default_command_doc = self._command_default.get_doc()
+            default_command_doc = default_command_doc.split("-- Example:")
+            if len(default_command_doc) > 1:
+                examples += default_command_doc[1]
+            default_command_doc = default_command_doc[0]
+
+            doc += default_command_doc
+            if not doc.endswith("\n"):
+                doc += "\n"
+            doc += "\nSubcommands:"
 
         # sub command complete
         for name, sub_command in self._command_sub.items():
-            doc += "\n-> {}:".format(name)
-            doc += sub_command.get_doc()
+            doc += "\n-> {}: ".format(name)
+
+            sub_command_doc = sub_command.get_doc()
+            sub_command_doc = sub_command_doc.split("-- Example:")
+            if len(sub_command_doc) > 1:
+                examples += sub_command_doc[1]
+            sub_command_doc = sub_command_doc[0]
+
+            if '\n' not in sub_command_doc:
+                doc += sub_command_doc
+            else:
+                extended_doc += "\n  {}:\n".format(name)
+                extended_doc += sub_command_doc
+                if not sub_command_doc.endswith("\n"):
+                    extended_doc += "\n"
+
+        if extended_doc != "":
+            doc += "\n"
+            doc += extended_doc
+
+        if examples != "":
+            doc += "\n--Examples:"
+            doc += examples
 
         return doc
 
@@ -269,9 +304,9 @@ class PluginComposed(object):
                 sub_command.run(jarvis, s)
                 return
 
-        # run fallback
-        if self._command_fallback is not None:
-            self._command_fallback.run(jarvis, s)
+        # run default
+        if self._command_default is not None:
+            self._command_default.run(jarvis, s)
             return
 
         jarvis.say("Sorry, I don't know what you mean...")
