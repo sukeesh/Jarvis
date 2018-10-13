@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from colorama import Fore
+import os
 from utilities.GeneralUtilities import print_say
 from CmdInterpreter import CmdInterpreter
 
@@ -45,8 +46,22 @@ class Jarvis(CmdInterpreter, object):
     def __init__(self, first_reaction_text=first_reaction_text,
                  prompt=prompt, first_reaction=True, enable_voice=False,
                  directories=["jarviscli/plugins", "custom"]):
+        directories = self._rel_path_fix(directories)
         CmdInterpreter.__init__(self, first_reaction_text, prompt,
                                 directories, first_reaction, enable_voice)
+
+    def _rel_path_fix(self, dirs):
+        dirs_abs = []
+        work_dir = os.path.dirname(__file__)
+        # remove 'jarviscli/' from path
+        work_dir = os.path.dirname(work_dir)
+
+        # relative -> absolute paths
+        for directory in dirs:
+            if not directory.startswith(work_dir):
+                directory = os.path.join(work_dir, directory)
+            dirs_abs.append(directory)
+        return dirs_abs
 
     def default(self, data):
         """Jarvis let's you know if an error has occurred."""
