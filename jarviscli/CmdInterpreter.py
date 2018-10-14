@@ -22,7 +22,6 @@ from packages.quote import show_quote
 from packages.lyrics import lyrics
 from packages.tempconv import temp_main
 from packages.dictionary import dictionary
-from packages.currencyconv import currencyconv, find_currencies, get_currency
 from packages.file_organise import file_manage
 from packages.systemOptions import turn_off_screen, update_system
 from packages.memory.memory import Memory
@@ -181,7 +180,6 @@ class CmdInterpreter(Cmd):
                         {"open": ("camera",)},
                         "pinpoint",
                         "quote",
-                        "currencyconv",
                         "say",
                         "tempconv",
                         "translate",
@@ -556,23 +554,6 @@ class CmdInterpreter(Cmd):
         """Help for quote"""
         print_say("quote prints quote for the day for you" +
                   "or quotes based on a given keyword", self)
-
-    def do_currencyconv(self, s=None):
-        """Show the convert from a currency to another"""
-        currencies = find_currencies()
-
-        amount = get_float('Enter an amount: ')
-        from_currency = get_currency('Enter from which currency: ', currencies)
-        to_currency = get_currency('Enter to which currency: ', currencies)
-
-        currencyconv(self, amount, from_currency, to_currency)
-
-    def help_currencyconv(self):
-        """Help for currencyConverter"""
-        print_say("Convert an amount of money from a currency to another.",
-                  self)
-        print_say("-- Type currencyconv, press enter and follow the" +
-                  "instructions!", self)
 
     def do_say(self, s):
         """Reads what is typed."""
