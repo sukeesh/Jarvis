@@ -20,7 +20,6 @@ from packages.news import News
 from packages.imgur import imgur
 from packages.quote import show_quote
 from packages.lyrics import lyrics
-from packages.cricket import score
 from packages.tempconv import temp_main
 from packages.dictionary import dictionary
 from packages.currencyconv import currencyconv, find_currencies, get_currency
@@ -163,7 +162,6 @@ class CmdInterpreter(Cmd):
         self.speech = create_voice()
 
         self.actions = [{"check": ("ram", "weather", "time", "forecast")},
-                        "cricket",
                         "dictionary",
                         "directions",
                         {"disable": ("sound",)},
@@ -312,17 +310,6 @@ class CmdInterpreter(Cmd):
     def complete_check(self, text, line, begidx, endidx):
         """Completions for check command"""
         return self.get_completions("check", text)
-
-    def do_cricket(self, s=None):
-        """Jarvis will show current matches and their score for you"""
-        try:
-            score(self)
-        except ConnectionError:
-            print(CONNECTION_ERROR_MSG)
-
-    def help_cricket(self):
-        """cricket package for Jarvis"""
-        print_say("Enter cricket and follow the instructions", self)
 
     def do_dictionary(self, s):
         """Returns meaning, synonym and antonym of any english word"""
