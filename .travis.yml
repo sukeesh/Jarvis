@@ -24,9 +24,9 @@ matrix:
       env: TOXENV=py36
 install:
   - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py27" ]; then
-      sudo pip2 install -r requirements.txt;
+      sudo -H pip2 install -r requirements.txt;
     elif [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py36" ]; then
-      sudo pip3 install -r requirements.txt;
+      sudo -H pip3 install -r requirements.txt;
     else
       pip install -r requirements.txt;
     fi
