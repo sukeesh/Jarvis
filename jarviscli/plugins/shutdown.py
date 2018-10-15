@@ -8,6 +8,9 @@ def shutdown(jarvis, s):
     """Shutdown the system"""
     if s == '':
         s = input('In how many minutes?: ')
+    if s == '-c':
+        os.system('sudo shutdown -c')
+        return
     string = 'sudo shutdown -t ' + str(s)
     os.system(string)
 
