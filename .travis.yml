@@ -8,6 +8,7 @@ matrix:
       cache: pip
       env: TOXENV=py27
     - os: osx
+      osx_image: xcode9.3
       language: generic
       cache: pip
       sudo: required
@@ -21,18 +22,6 @@ matrix:
       cache: pip
       sudo: required
       env: TOXENV=py36
-addons:
-  apt:
-    packages:
-      - python-imdbpy
-      - python-notify2
-before_install:
-  - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py27" ]; then
-      brew install python;
-    fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py36" ]; then
-      brew install python3;
-    fi
 install:
   - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py27" ]; then
       sudo pip2 install -r requirements.txt;
