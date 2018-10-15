@@ -160,9 +160,13 @@ class CmdInterpreter(Cmd):
     def _activate_plugins(self):
         """Generate do_XXX, help_XXX and (optionally) complete_XXX functions"""
         for (plugin_name, plugin) in self._plugin_manager.get_all().items():
-            if self._plugin_update_action(plugin, plugin_name):
-                setattr(CmdInterpreter, "complete_" + plugin_name, partial(self.get_completions, plugin_name))
-
+            completions = self._plugin_update_action(plugin, plugin_name)
+            if completions is not None:
+                def complete(completions):
+                    def _complete_impl(self, text, line, begidx, endidx):
+                        return [i for i in completions if i.startswith(text)]
+                    return _complete_impl
+                setattr(CmdInterpreter, "complete_" + plugin_name, complete(completions))
             setattr(CmdInterpreter, "do_" + plugin_name, partial(plugin.run, self._api))
             setattr(CmdInterpreter, "help_" + plugin_name, partial(self._api.say, plugin.get_doc()))
 
@@ -175,12 +179,12 @@ class CmdInterpreter(Cmd):
             # { plugin_name : list of completions }
             complete = [x for x in complete]
             self.actions.append({plugin_name: complete})
-            return True
+            return complete
         else:
             # add plugin without completion
             # plugin name only
             self.actions.append(plugin_name)
-            return False
+            return None
 
     def close(self):
         """Closing Jarvis."""
@@ -198,10 +202,10 @@ class CmdInterpreter(Cmd):
 
     def get_completions(self, command, text):
         """Returns a list with the completions of a command."""
-        dict_target = (item for item in self.actions
-                       if type(item) == dict and command in item).next()  # next() will return the first match
+        dict_target = [item for item in self.actions
+                       if type(item) == dict and command in item][0]
         completions_list = dict_target[command]
-        return [i for i in completions_list if i.startswith(text)]
+        return [i for i in completions_list if i.startswith(text) and i != '']
 
     def interrupt_handler(self, signal, frame):
         """Closes Jarvis on SIGINT signal. (Ctrl-C)"""
