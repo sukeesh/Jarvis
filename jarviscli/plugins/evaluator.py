@@ -131,7 +131,6 @@ def limit(jarvis, s):
         except sympy.SympifyError:
             return 'Error'
 
-
     s_split = s.split()
     limit_to = []
     term = ""
@@ -149,7 +148,6 @@ def limit(jarvis, s):
     term = solve_y(term)
 
     x = sympy.Symbol('x')
-
 
     # infinity:
     jarvis.say("lim ->  ∞\t= {}".format(try_limit(term, x, +sympy.S.Infinity)), Fore.BLUE)
@@ -247,11 +245,9 @@ def curvesketch(jarvis, s):
     def section(jarvis, headline):
         jarvis.say("\n{:#^50}".format(" {} ".format(headline)), Fore.MAGENTA)
 
-
     term = remove_equals(jarvis, s)
     term = format_expression(term)
     term = solve_y(term)
-
 
     def get_y(x_val, func=term):
         x = sympy.Symbol('x')
