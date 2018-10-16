@@ -1,25 +1,25 @@
 import unittest
 from mock import patch
 from Jarvis import Jarvis
-from packages.currencyconv import get_currency
+from plugins.currencyconv import Currencyconv
 from utilities.GeneralUtilities import get_float
 
 
 class CurrencyConvTest(unittest.TestCase):
 
     def setUp(self):
-        self = Jarvis()
+        self = Jarvis()._api
 
     def test_currencyconv(self):
         # the rates between the currencies are changing!
         pass
 
-    @patch('packages.currencyconv.input', return_value='Greece')
+    @patch('plugins.currencyconv.input', return_value='Greece')
     def test_get_currency(self, get_mock):
         # normal case
-        self.assertEqual(get_currency('Enter a currency',
-                                      {'GREECE': 'EUR', 'EURO': 'EUR',
-                                       'BITCOINS': 'BTC'}), 'EUR')
+        self.assertEqual(Currencyconv().get_currency('Enter a currency',
+                                                     {'GREECE': 'EUR', 'EURO': 'EUR',
+                                                      'BITCOINS': 'BTC'}), 'EUR')
 
     @patch('utilities.GeneralUtilities.input', return_value='1')
     def test_get_float_int(self, get_mock):
