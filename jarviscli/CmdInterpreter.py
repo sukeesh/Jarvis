@@ -22,7 +22,6 @@ from packages.quote import show_quote
 from packages.lyrics import lyrics
 from packages.tempconv import temp_main
 from packages.dictionary import dictionary
-from packages.file_organise import file_manage
 from packages.systemOptions import turn_off_screen, update_system
 from packages.memory.memory import Memory
 
@@ -166,7 +165,6 @@ class CmdInterpreter(Cmd):
                         {"disable": ("sound",)},
                         {"display": ("pics",)},
                         {"enable": ("sound",)},
-                        "file_organise",
                         "help",
                         {"hotspot": ("start", "stop")},
                         "how_are_you",
@@ -373,15 +371,6 @@ class CmdInterpreter(Cmd):
     def complete_enable(self, text, line, begidx, endidx):
         """Completions for enable command"""
         return self.get_completions("enable", text)
-
-    def do_file_organise(self, s=None):
-        """Jarvis will organise the given folder and group the files"""
-        file_manage(self)
-
-    def help_file_organise(self):
-        """Help for file organise"""
-        print_say("Type file_organise and follow instructions", self)
-        print_say("It organises selected folder based on extension", self)
 
     @unsupported(platform=MACOS)
     def do_hotspot(self, s):
