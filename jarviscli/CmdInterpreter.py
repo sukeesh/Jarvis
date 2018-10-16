@@ -16,7 +16,6 @@ from PluginManager import PluginManager
 from packages import (directions_to, forecast, mapps, near_me,
                       timeIn, translate, weather_pinpoint, weatherIn)
 from packages.news import News
-from packages.tempconv import temp_main
 from packages.dictionary import dictionary
 from packages.systemOptions import turn_off_screen, update_system
 from packages.memory.memory import Memory
@@ -168,7 +167,6 @@ class CmdInterpreter(Cmd):
                         {"open": ("camera",)},
                         "pinpoint",
                         "say",
-                        "tempconv",
                         "translate",
                         "umbrella",
                         {"update": ("location", "system")},
@@ -438,15 +436,6 @@ class CmdInterpreter(Cmd):
     def help_say(self):
         """Prints help text from say command."""
         print_say("Reads what is typed.")
-
-    def do_tempconv(self, s):
-        """Convert temperature from Celsius to Fahrenheit or vice versa"""
-        temp_main(self, s)
-
-    def help_tempconv(self):
-        """Print help information for tempconv command."""
-        print_say("Convert temperature from Fahrenheit to Celsius and vice versa", self)
-        print_say("Examples: 32f, 18C, -20F, -8c, 105.4F, -10.21C", self)
 
     def do_translate(self, s):
         """Translates text from one language (source) to another(destination)"""
