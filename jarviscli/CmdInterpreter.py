@@ -14,7 +14,7 @@ from six.moves import input
 from colorama import Fore
 from PluginManager import PluginManager
 
-from packages import (directions_to, forecast, mapps, near_me, picshow,
+from packages import (directions_to, forecast, mapps, near_me,
                       timeIn, translate, weather_pinpoint, weatherIn)
 from packages.news import News
 from packages.quote import show_quote
@@ -161,12 +161,9 @@ class CmdInterpreter(Cmd):
                         "dictionary",
                         "directions",
                         {"disable": ("sound",)},
-                        {"display": ("pics",)},
                         {"enable": ("sound",)},
                         "help",
-                        {"hotspot": ("start", "stop")},
                         "how_are_you",
-                        "match",
                         "movies",
                         "near",
                         "news",
@@ -338,22 +335,6 @@ class CmdInterpreter(Cmd):
         """Completions for check command"""
         return self.get_completions("disable", text)
 
-    def do_display(self, s):
-        """Displays photos."""
-        if "pics" in s:
-            s = s.replace("pics", "").strip()
-            picshow.showpics(s)
-
-    def help_display(self):
-        """Prints help about display command"""
-        print_say("Displays photos of the topic you choose.", self)
-        print_say("-- Example:", self)
-        print_say("\tdisplay pics of castles", self)
-
-    def complete_display(self, text, line, begidx, endidx):
-        """Completions for display command"""
-        return self.get_completions("display", text)
-
     def do_enable(self, s):
         """Let Jarvis use his voice."""
         if "sound" in s:
@@ -367,24 +348,6 @@ class CmdInterpreter(Cmd):
         """Completions for enable command"""
         return self.get_completions("enable", text)
 
-    @unsupported(platform=MACOS)
-    def do_hotspot(self, s):
-        """Jarvis will set up your own hotspot."""
-        if "start" in s:
-            system("sudo ap-hotspot start")
-        elif "stop" in s:
-            system("sudo ap-hotspot stop")
-
-    @unsupported(platform=MACOS)
-    def help_hotspot(self):
-        """Print help about hotspot commando."""
-        print_say("start: Jarvis will set up your own hotspot.", self)
-        print_say("stop: Jarvis will stop your hotspot.", self)
-
-    def complete_hotspot(self, text, line, begidx, endidx):
-        """Completions for enable command"""
-        return self.get_completions("hotspot", text)
-
     def do_how_are_you(self, s):
         """Jarvis will inform you about his status."""
         print_say("I am fine, How about you?", self, Fore.BLUE)
@@ -392,21 +355,6 @@ class CmdInterpreter(Cmd):
     def help_how_are_you(self):
         """Print info about how_are_you command"""
         print_say("Jarvis will inform you about his status.", self)
-
-    def do_match(self, s):
-        """Matches patterns in a string by using regex."""
-        file_name = input(Fore.RED + "Enter file name?:\n" + Fore.RESET)
-        pattern = input(Fore.GREEN + "Enter string:\n" + Fore.RESET)
-        file_name = file_name.strip()
-        if file_name == "":
-            print("Invalid Filename")
-        else:
-            system("grep '" + pattern + "' " + file_name)
-
-    def help_match(self):
-        """Prints help about match command"""
-        print_say("Matches a string pattern in a file using regex.", self)
-        print_say("Type \"match\" and you'll be prompted.", self)
 
     @unsupported(platform=MACOS)
     def do_movies(self, s):
