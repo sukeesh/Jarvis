@@ -34,3 +34,4 @@ termdown
 forex-python
 pluginmanager
 sympy
+funcsigs; python_version <= '2.7'
