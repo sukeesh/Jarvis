@@ -15,7 +15,6 @@ from PluginManager import PluginManager
 
 from packages import (directions_to, forecast, mapps, near_me,
                       timeIn, weather_pinpoint, weatherIn)
-from packages.dictionary import dictionary
 from packages.systemOptions import update_system
 from packages.memory.memory import Memory
 
@@ -154,7 +153,6 @@ class CmdInterpreter(Cmd):
         self.speech = create_voice()
 
         self.actions = [{"check": ("ram", "weather", "time", "forecast")},
-                        "dictionary",
                         "directions",
                         {"disable": ("sound",)},
                         {"enable": ("sound",)},
@@ -290,14 +288,6 @@ class CmdInterpreter(Cmd):
     def complete_check(self, text, line, begidx, endidx):
         """Completions for check command"""
         return self.get_completions("check", text)
-
-    def do_dictionary(self, s):
-        """Returns meaning, synonym and antonym of any english word"""
-        dictionary(self)
-
-    def help_dictionary(self):
-        """Print help about dictionary feature"""
-        print_say("Get meaning, synonym and antonym of any word", self)
 
     def do_directions(self, data):
         """Get directions about a destination you are interested to."""

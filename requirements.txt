@@ -30,7 +30,6 @@ flake8
 autopep8
 googletrans
 langdetect
-PyDictionary==1.5.2
 termdown
 forex-python
 pluginmanager
@@ -39,3 +38,4 @@ funcsigs; python_version <= '2.7'
 archey4; python_version >= '3.5'
 pytimeparse
 pick
+nltk

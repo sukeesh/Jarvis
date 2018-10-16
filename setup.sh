@@ -68,3 +68,6 @@ source env/bin/activate
 pip install --upgrade -r requirements.txt
 
 cp jarvis /usr/local/bin
+
+
+python -m nltk.downloader -d jarviscli/data/nltk wordnet
