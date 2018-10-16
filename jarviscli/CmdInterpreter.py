@@ -16,7 +16,7 @@ from PluginManager import PluginManager
 from packages import (directions_to, forecast, mapps, near_me,
                       timeIn, weather_pinpoint, weatherIn)
 from packages.dictionary import dictionary
-from packages.systemOptions import turn_off_screen, update_system
+from packages.systemOptions import update_system
 from packages.memory.memory import Memory
 
 from utilities import schedule
