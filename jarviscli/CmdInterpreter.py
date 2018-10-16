@@ -1,5 +1,4 @@
 import signal
-
 from os import system
 from cmd import Cmd
 from time import ctime
@@ -17,7 +16,6 @@ from PluginManager import PluginManager
 from packages import (directions_to, forecast, mapps, near_me,
                       timeIn, translate, weather_pinpoint, weatherIn)
 from packages.news import News
-from packages.quote import show_quote
 from packages.tempconv import temp_main
 from packages.dictionary import dictionary
 from packages.systemOptions import turn_off_screen, update_system
@@ -169,7 +167,6 @@ class CmdInterpreter(Cmd):
                         "news",
                         {"open": ("camera",)},
                         "pinpoint",
-                        "quote",
                         "say",
                         "tempconv",
                         "translate",
@@ -427,15 +424,6 @@ class CmdInterpreter(Cmd):
     def help_pinpoint(self):
         """Print help about pinpoint command."""
         print_say("Jarvis will pinpoint your location.", self)
-
-    def do_quote(self, s=None):
-        """Show quote of the day or quotes based on a gven word"""
-        show_quote(self)
-
-    def help_quote(self):
-        """Help for quote"""
-        print_say("quote prints quote for the day for you" +
-                  "or quotes based on a given keyword", self)
 
     def do_say(self, s):
         """Reads what is typed."""

@@ -2,85 +2,89 @@ import requests
 from bs4 import BeautifulSoup
 
 from six.moves import input
-from requests.exceptions import ConnectionError
 import json
-from utilities.GeneralUtilities import print_say
+from plugin import Plugin
 
 
-def show_quote(self):
-    user_input = get_input('Press 1 to get the quote of the day \n' +
-                           'or 2 to get quotes based on a keyword: ', self)
-
-    if user_input == 1:
-        get_quote_of_the_day(self)
-    else:
-        keyword = input('Enter the keyword based on which ' +
-                        'you want to see quotes: ')
-        get_keyword_quotes(self, keyword)
-
-
-def get_quote_of_the_day(self):
-    res = requests.get('https://www.brainyquote.com/quotes_of_the_day.html')
-    soup = BeautifulSoup(res.text, 'lxml')
-
-    quote = soup.find('img', {'class': 'p-qotd'})
-    print_say(quote['alt'], self)
-
-
-def get_keyword_quotes(self, keyword):
+class Quote(Plugin):
     """
-    shows quotes based on a keyword given by the user
+    quote prints quote for the day for you or quotes based on a given keyword
     """
+    def require(self):
+        yield ("network", True)
 
-    try:
+    def complete(self):
+        pass
+
+    def alias(self):
+        pass
+
+    def run(self, jarvis, s):
+        user_input = self.get_input('Press 1 to get the quote of the day \n' +
+                               'or 2 to get quotes based on a keyword: ', jarvis)
+
+        if user_input == 1:
+            self.get_quote_of_the_day(jarvis)
+        else:
+            keyword = input('Enter the keyword based on which ' +
+                            'you want to see quotes: ')
+            self.get_keyword_quotes(jarvis, keyword)
+
+    def get_quote_of_the_day(self, jarvis):
+        res = requests.get('https://www.brainyquote.com/quotes_of_the_day.html')
+        soup = BeautifulSoup(res.text, 'lxml')
+
+        quote = soup.find('img', {'class': 'p-qotd'})
+        jarvis.say(quote['alt'])
+
+    def get_keyword_quotes(self, jarvis, keyword):
+        """
+        shows quotes based on a keyword given by the user
+        """
+
         res = requests.get('https://talaikis.com/api/quotes')
         quotes = json.loads(res.text)
 
         flag = False
         line = 1
         for quote in quotes:
-            contains_word(quote['quote'], keyword)
-            if contains_word(quote['quote'], keyword):
-                print_say(str(line) + '. ' + quote['quote'], self)
+            self.contains_word(quote['quote'], keyword)
+            if self.contains_word(quote['quote'], keyword):
+                jarvis.say(str(line) + '. ' + quote['quote'])
                 line = line + 1
                 flag = True  # there is at least one quote
 
         if not flag:
-            print_say('No quotes inlcude this word. PLease try one more time.\n', self)
-            try_again(self, keyword)
+            jarvis.say('No quotes inlcude this word. PLease try one more time.\n')
+            self.try_again(keyword, jarvis)
         else:
-            print_say('', self)
-            try_again(self, keyword)
-    except ConnectionError:
-        get_keyword_quotes(self, keyword)
+            jarvis.say('')
+            self.try_again(keyword, jarvis)
 
+    def try_again(self, keyword, jarvis):
+        again = input('Enter -again- to get more quotes or -exit- to leave: ')
+        if again.lower() == "again":
+            self.get_keyword_quotes(jarvis, keyword)
 
-def try_again(self, keyword):
-    again = input('Enter -again- to get more quotes or -exit- to leave: ')
-    if again.lower() == "again":
-        get_keyword_quotes(self, keyword)
+    def contains_word(self, s, keyword):
+        return (' ' + keyword.lower()) in s or (keyword.capitalize()) in s
 
+    def get_input(self, prompt, jarvis):
+        """
+        checks if the input the user gave is valid(either 1 or 2)
+        """
 
-def contains_word(s, keyword):
-    return (' ' + keyword.lower()) in s or (keyword.capitalize()) in s
+        while True:
+            try:
+                response = int(input(prompt))
+                jarvis.say('')
+            except ValueError:
+                jarvis.say("\nSorry, I didn't understand that.")
+                continue
 
-
-def get_input(prompt, self):
-    """
-    checks if the input the user gave is valid(either 1 or 2)
-    """
-
-    while True:
-        try:
-            response = int(input(prompt))
-            print_say('', self)
-        except ValueError:
-            print_say("\nSorry, I didn't understand that.", self)
-            continue
-
-        if (response != 1) and (response != 2):
-            print_say("\nSorry, your response is not valid.", self)
-            continue
-        else:
-            break
-    return response
+            if (response != 1) and (response != 2):
+                jarvis.say("\nSorry, your response is not valid.")
+                continue
+            else:
+                break
+        return response
