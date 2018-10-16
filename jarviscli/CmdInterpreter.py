@@ -18,7 +18,6 @@ from packages import (directions_to, forecast, mapps, movie, near_me, picshow,
                       timeIn, translate, weather_pinpoint, weatherIn)
 from packages.news import News
 from packages.quote import show_quote
-from packages.lyrics import lyrics
 from packages.tempconv import temp_main
 from packages.dictionary import dictionary
 from packages.systemOptions import turn_off_screen, update_system
@@ -167,7 +166,6 @@ class CmdInterpreter(Cmd):
                         "help",
                         {"hotspot": ("start", "stop")},
                         "how_are_you",
-                        "lyrics",
                         "match",
                         {"movie": ("cast", "director", "plot", "producer", "rating", "year",)},
                         "movies",
@@ -395,20 +393,6 @@ class CmdInterpreter(Cmd):
     def help_how_are_you(self):
         """Print info about how_are_you command"""
         print_say("Jarvis will inform you about his status.", self)
-
-    def do_lyrics(self, s):
-        # TODO: maybe add option to download lyrics not just print them there
-        lyr = lyrics()
-        response = lyr.find(s)
-        print_say(response, self)
-
-    def help_lyrics(self):
-        """explains how lyrics work"""
-        print_say("finds lyrics\n", self)
-        print_say("the format is song,artist\n", self)
-        print_say("song and artist are separated by a - \n", self)
-        print_say("-- Example:", self)
-        print_say("\tlyrics wonderful tonight-eric clapton", self)
 
     def do_match(self, s):
         """Matches patterns in a string by using regex."""
