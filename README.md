@@ -73,6 +73,11 @@ jarvis is cool
 
 [Click here](PLUGINS.md) to learn more about plugins.
 
+## Optional Dependencies
+
+- Any pyttsx3 text-to-speech engine (``sapi5, nsss or espeak``) for Jarvis to talk out loud (e.g. Ubuntu do ``sudo apt install espeak``)
+- ``notify-send`` on Linux if you want to recive *nice* and deskotp-notification instead of *ugly* popup windows (e.g. Ubuntu do ``sudo apt install libnotify-bin``)
+- ``ffmpeg`` if you want ``music`` to download songs as .mp3 instead .webm
 
 ## Authors
 
