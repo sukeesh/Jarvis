@@ -14,7 +14,7 @@ from colorama import Fore
 from PluginManager import PluginManager
 
 from packages import (directions_to, forecast, mapps, near_me,
-                      timeIn, translate, weather_pinpoint, weatherIn)
+                      timeIn, weather_pinpoint, weatherIn)
 from packages.news import News
 from packages.dictionary import dictionary
 from packages.systemOptions import turn_off_screen, update_system
@@ -167,7 +167,6 @@ class CmdInterpreter(Cmd):
                         {"open": ("camera",)},
                         "pinpoint",
                         "say",
-                        "translate",
                         "umbrella",
                         {"update": ("location", "system")},
                         "weather",
@@ -436,14 +435,6 @@ class CmdInterpreter(Cmd):
     def help_say(self):
         """Prints help text from say command."""
         print_say("Reads what is typed.")
-
-    def do_translate(self, s):
-        """Translates text from one language (source) to another(destination)"""
-        translate.main(self)
-
-    def help_translate(self):
-        """Print help for translate function"""
-        print_say("translates from one language to another.", self)
 
     def do_umbrella(self, s):
         """If you're leaving your place, Jarvis will inform you if you might need an umbrella or not"""
