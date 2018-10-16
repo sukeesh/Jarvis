@@ -15,7 +15,6 @@ from PluginManager import PluginManager
 
 from packages import (directions_to, forecast, mapps, near_me,
                       timeIn, weather_pinpoint, weatherIn)
-from packages.news import News
 from packages.dictionary import dictionary
 from packages.systemOptions import turn_off_screen, update_system
 from packages.memory.memory import Memory
@@ -163,7 +162,6 @@ class CmdInterpreter(Cmd):
                         "how_are_you",
                         "movies",
                         "near",
-                        "news",
                         {"open": ("camera",)},
                         "pinpoint",
                         "say",
@@ -372,27 +370,6 @@ class CmdInterpreter(Cmd):
         print_say("-- Examples:", self)
         print_say("\trestaurants near me", self)
         print_say("\tmuseums near the eiffel tower", self)
-
-    def do_news(self, s):
-        """Time to get an update about the local news."""
-        if s == "quick":
-            try:
-                n = News()
-                n.quick_news()
-            except:
-                print_say("I couldn't find news", self, Fore.RED)
-        else:
-            try:
-                n = News()
-                n.news()
-            except:
-                print_say("I couldn't find news", self, Fore.RED)
-
-    def help_news(self):
-        """Print help about news command."""
-        print_say("Time to get an update about the local news.", self)
-        print_say(
-            "Type \"news\" to choose your source or \"news quick\" for some headlines.", self)
 
     def do_open(self, s):
         """Jarvis will open the camera for you."""
