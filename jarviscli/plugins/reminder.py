@@ -64,6 +64,9 @@ class RemindTodoBase:
 
     def remove(self, jarvis, s):
         data = self.get_data(jarvis)
+        if len(data) == 0:
+            jarvis.say("Nothing to remove!")
+            return
 
         if s.startswith("everything") or s.startswith("all"):
             for entry in data:
