@@ -16,10 +16,9 @@ def calculate(jarvis, s):
     -- Example:
         calculate 3 + 5
     """
-
     tempt = s.replace(" ", "")
     if len(tempt) > 1:
-        calc(jarvis, tempt)
+        calc(jarvis, tempt, formatter=lambda x: x)
     else:
         jarvis.say("Error: Not in correct format", Fore.RED)
 
@@ -49,7 +48,7 @@ def solve(jarvis, s):
         return sympy.solve(expr, x, dict=True)
 
     s = remove_equals(jarvis, s)
-    calc(jarvis, s, calculator=_calc, formatter=_format)
+    calc(jarvis, s, calculator=_calc, formatter=_format, do_evalf=False)
 
 
 @plugin()
@@ -114,7 +113,12 @@ def plot(jarvis, s):
         return ""
 
     s = remove_equals(jarvis, s)
-    calc(jarvis, s, calculator=solve_y, formatter=_plot)
+    try:
+        calc(jarvis, s, calculator=solve_y, formatter=_plot, do_evalf=False)
+    except ValueError:
+        jarvis.say("Cannot plot...", Fore.RED)
+    except OverflowError:
+        jarvis.say("Cannot plot - values probably too big...")
 
 
 @plugin()
@@ -131,6 +135,8 @@ def limit(jarvis, s):
             return sympy.Limit(term, x, to, directory).doit()
         except sympy.SympifyError:
             return 'Error'
+        except NotImplementedError:
+            return "Sorry, cannot solve..."
 
     s_split = s.split()
     limit_to = []
@@ -155,8 +161,8 @@ def limit(jarvis, s):
     jarvis.say("lim -> -∞\t= {}".format(try_limit(term, x, -sympy.S.Infinity)), Fore.BLUE)
 
     for limit in limit_to:
-        limit_plus = try_limit(term, x, limit, dir="+")
-        limit_minus = try_limit(term, x, limit, dir="-")
+        limit_plus = try_limit(term, x, limit, directory="+")
+        limit_minus = try_limit(term, x, limit, directory="-")
 
         jarvis.say("lim -> {}(+)\t= {}".format(limit, limit_plus), Fore.BLUE)
         jarvis.say("lim -> {}(-)\t= {}".format(limit, limit_minus), Fore.BLUE)
@@ -183,7 +189,7 @@ def format_expression(s):
     s = s.replace("power", "**")
     s = s.replace("plus", "+")
     s = s.replace("minus", "-")
-    s = s.replace("divided by", "/")
+    s = s.replace("dividedby", "/")
     s = s.replace("by", "/")
     s = s.replace("^", "**")
 
@@ -206,7 +212,10 @@ def format_expression(s):
 def solve_y(s):
         if 'y' in s:
             y = sympy.Symbol('y')
-            results = sympy.solve(s, y)
+            try:
+                results = sympy.solve(s, y)
+            except NotImplementedError:
+                return 'unknown'
             if len(results) == 0:
                 return '0'
             else:
@@ -215,16 +224,22 @@ def solve_y(s):
             return solve_y("({}) -y".format(s))
 
 
-def calc(jarvis, s, calculator=sympy.sympify, formatter=None):
+def calc(jarvis, s, calculator=sympy.sympify, formatter=None, do_evalf=True):
     s = format_expression(s)
     try:
         result = calculator(s)
     except sympy.SympifyError:
         jarvis.say("Error: Something is wrong with your expression", Fore.RED)
         return
+    except NotImplementedError:
+        jarvis.say("Sorry, cannot solve", Fore.RED)
+        return
 
     if formatter is not None:
         result = formatter(result)
+
+    if do_evalf:
+        result = result.evalf()
 
     jarvis.say(str(result), Fore.BLUE)
 
@@ -284,7 +299,11 @@ def curvesketch(jarvis, s):
     jarvis.say("F(x) = {} + t".format(sympy.Integral(term, x).doit()), Fore.BLUE)
 
     section(jarvis, "Maxima / Minima")
-    critical_points = sympy.solve(derivative_1)
+    try:
+        critical_points = sympy.solve(derivative_1)
+    except NotImplementedError:
+        jarvis.say("Sorry, cannot solve...", Fore.RED)
+        critical_points = []
 
     for x in critical_points:
         y = str(get_y(x).round(9))
@@ -292,9 +311,14 @@ def curvesketch(jarvis, s):
         try:
             isminmax = float(get_y(x, func=derivative_2))
         except ValueError:
-            isminmax = 0
+            isminmax = None
+        except TypeError:
+            # probably complex number
+            isminmax = None
 
-        if isminmax > 0:
+        if isminmax is None:
+            minmax = "unknown"
+        elif isminmax > 0:
             minmax = "Minima"
         elif isminmax < 0:
             minmax = "Maxima"
@@ -304,7 +328,11 @@ def curvesketch(jarvis, s):
         jarvis.say("({}/{}) : {}".format(x, y, minmax), Fore.BLUE)
 
     section(jarvis, "Turning Point")
-    critical_points = sympy.solve(derivative_2)
+    try:
+        critical_points = sympy.solve(derivative_2)
+    except NotImplementedError:
+        jarvis.say("Sorry, cannot solve...", Fore.RED)
+        critical_points = []
 
     for x in critical_points:
         y = get_y(x)

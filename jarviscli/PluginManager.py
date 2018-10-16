@@ -1,5 +1,5 @@
 import distutils.spawn
-import inspect
+
 import sys
 from functools import partial
 
@@ -9,6 +9,11 @@ from requests import ConnectionError
 
 import plugin
 from utilities.GeneralUtilities import warning, error
+
+if six.PY2:
+    from funcsigs import signature as signature
+else:
+    from inspect import signature as signature
 
 
 class PluginManager(object):
@@ -86,7 +91,7 @@ class PluginManager(object):
         if not hasattr(plugin.__class__, method) or not callable(getattr(plugin.__class__, method)):
             return False
 
-        params = inspect.signature(getattr(plugin, method)).parameters
+        params = signature(getattr(plugin, method)).parameters
         params = [param for param in params if param != 'args']
         if param_len != len(params):
             print("Warning! Wrong parameter number: \"{}\" of \"{}\" ({}, epxected: {})".

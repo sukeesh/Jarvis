@@ -25,7 +25,7 @@ class HelpTest(unittest.TestCase):
             action for action in self.CI_instance.actions if action not in unhelped_actions]
         for action in helped_actions:
             with patch('CmdInterpreter.print_say') as mock_print_say, patch('CmdInterpreter.JarvisAPI.say') as mock_say:
-                self.CI_instance = Jarvis("", "", directories=["plugins"])
+                self.CI_instance = Jarvis("", "")
                 if isinstance(action, dict):
                     action = list(action.keys())[0]
                 help_cmd_name = "help_{}".format(action)
