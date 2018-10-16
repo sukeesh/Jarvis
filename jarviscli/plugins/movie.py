@@ -1,6 +1,7 @@
 import imdb
 from plugin import plugin
 from colorama import Fore
+import six
 
 
 app = imdb.IMDb()
@@ -30,7 +31,6 @@ def get_movie_by_id(movieID):
 
 
 # cache: Python3 only
-import six
 if six.PY3:
     from functools import lru_cache
     # equals @functools.lru_cache(maxsize=50, typed=False)

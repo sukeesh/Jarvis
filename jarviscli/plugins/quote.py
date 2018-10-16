@@ -21,7 +21,7 @@ class Quote(Plugin):
 
     def run(self, jarvis, s):
         user_input = self.get_input('Press 1 to get the quote of the day \n' +
-                               'or 2 to get quotes based on a keyword: ', jarvis)
+                                    'or 2 to get quotes based on a keyword: ', jarvis)
 
         if user_input == 1:
             self.get_quote_of_the_day(jarvis)

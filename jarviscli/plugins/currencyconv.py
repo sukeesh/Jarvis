@@ -61,8 +61,7 @@ class Currencyconv(Plugin):
         find_currency creates a dict with the inputs that forex-python accepts
         """
 
-        with open(os.path.join(FILE_PATH, "../data/currencies.csv"),
-                mode='r') as infile:
+        with open(os.path.join(FILE_PATH, "../data/currencies.csv"), mode='r') as infile:
             reader = csv.reader(infile)
             mydict = {r.upper(): row[2] for row in reader for r in row[0:3]}
         return mydict
@@ -86,4 +85,4 @@ class Currencyconv(Plugin):
                 continue
             else:
                 prompt = 'Type -show help- to see valid currencies '\
-                        'or -try again- to continue: '
+                         'or -try again- to continue: '

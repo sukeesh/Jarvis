@@ -1,6 +1,7 @@
 from __future__ import print_function
 from colorama import Fore
-import os, sys
+import os
+import sys
 from six.moves import input
 from plugin import Plugin
 
@@ -56,7 +57,6 @@ class File_Organise(Plugin):
 
         return path
 
-
     def print_before(self, path):
         print("Cleaning {} located at {}\n".format(path.split('/')[-1], path))
 
@@ -65,7 +65,6 @@ class File_Organise(Plugin):
         for files in os.listdir(path):
             print(files, end='\t')
         print()
-
 
     def destination_path(self, path):
         os.chdir(path)
@@ -82,7 +81,6 @@ class File_Organise(Plugin):
             os.mkdir(new_dir_path)
 
         return new_dir_path, new_dir, extension
-
 
     def organise(self, new_dir_path, new_dir, path, extension):
         for ext in extension:
@@ -110,7 +108,6 @@ class File_Organise(Plugin):
 
                         else:
                             os.rename(f, inner_folder)
-
 
     def print_after(self, path):
         print(Fore.LIGHTBLUE_EX + "\nFolders after cleaning\n" + Fore.RESET)

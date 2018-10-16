@@ -96,19 +96,19 @@ class Cricket(Plugin):
         text += Fore.BLACK + '*' * 35 + '\n\n'
 
         for scr in reversed(card['scorecard']):
-            text += Fore.LIGHTYELLOW_EX + "{} {}\n{}/{} in {} overs\n\n".format(scr['batteam'], scr['inngdesc'], scr['runs'], scr['wickets'],
-                                                                                scr['overs'])
+            text += Fore.LIGHTYELLOW_EX + "{} {}\n{}/{} in {} overs\n\n".format(scr['batteam'], scr['inngdesc'],
+                                                                                scr['runs'], scr['wickets'], scr['overs'])
             text += Fore.BLUE + "Batting\n"
             text += Fore.RED + "{:<17} {:<3} {:<3} {:<3} {}\n\n".format('Name', 'R', 'B', '4', '6')
             for b in scr['batcard']:
-                text += Fore.BLACK + "{:<17} {:<3} {:<3} {:<3} {}\n{}\n\n".format(b['name'], b['runs'], b['balls'], b['fours'], b['six'],
-                                                                                b['dismissal'])
+                text += Fore.BLACK + "{:<17} {:<3} {:<3} {:<3} {}\n{}\n\n".format(b['name'], b['runs'], b['balls'],
+                                                                                  b['fours'], b['six'], b['dismissal'])
             text += Fore.LIGHTYELLOW_EX + "-" * 35 + "\n\n"
             text += Fore.BLUE + "Bowling\n"
             text += Fore.RED + "{:<17} {:<5} {:<3} {:<3} {}\n\n".format('Name', 'O', 'M', 'R', 'W')
             for b in scr['bowlcard']:
-                text += Fore.BLACK + "{:<17} {:<5} {:<3} {:<3} {}\n\n".format(b['name'], b['overs'], b['maidens'], b['runs'],
-                                                                            b['wickets'])
+                text += Fore.BLACK + "{:<17} {:<5} {:<3} {:<3} {}\n\n".format(b['name'], b['overs'], b['maidens'],
+                                                                              b['runs'], b['wickets'])
             text += Fore.BLUE + '*' * 35 + '\n\n'
         return text
 
