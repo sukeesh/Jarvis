@@ -14,7 +14,7 @@ from six.moves import input
 from colorama import Fore
 from PluginManager import PluginManager
 
-from packages import (directions_to, forecast, mapps, movie, near_me, picshow,
+from packages import (directions_to, forecast, mapps, near_me, picshow,
                       timeIn, translate, weather_pinpoint, weatherIn)
 from packages.news import News
 from packages.quote import show_quote
@@ -167,7 +167,6 @@ class CmdInterpreter(Cmd):
                         {"hotspot": ("start", "stop")},
                         "how_are_you",
                         "match",
-                        {"movie": ("cast", "director", "plot", "producer", "rating", "year",)},
                         "movies",
                         "near",
                         "news",
@@ -408,42 +407,6 @@ class CmdInterpreter(Cmd):
         """Prints help about match command"""
         print_say("Matches a string pattern in a file using regex.", self)
         print_say("Type \"match\" and you'll be prompted.", self)
-
-    def do_movie(self, s):
-        """Jarvis will get movie details for you"""
-        k = s.split(' ', 1)
-        if k[0] == "cast":
-            data = movie.cast(k[1])
-            for d in data:
-                print_say(d['name'], self)
-        elif k[0] == "director":
-            data = movie.director(k[1])
-            for d in data:
-                print_say(d['name'], self)
-        elif k[0] == "plot":
-            data = movie.plot(k[1])
-            print_say(data, self)
-        elif k[0] == "producer":
-            data = movie.producer(k[1])
-            for d in data:
-                print_say(d['name'], self)
-        elif k[0] == "rating":
-            data = movie.rating(k[1])
-            print_say(str(data), self)
-        elif k[0] == "year":
-            data = movie.year(k[1])
-            print_say(str(data), self)
-
-    def help_movie(self):
-        """Print help about movie command."""
-        print_say("Jarvis - movie command", self)
-        print_say("List of commands:", self)
-        print_say("movie cast", self)
-        print_say("movie director", self)
-        print_say("movie plot", self)
-        print_say("movie producer", self)
-        print_say("movie rating", self)
-        print_say("movie year", self)
 
     @unsupported(platform=MACOS)
     def do_movies(self, s):
