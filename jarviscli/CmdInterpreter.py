@@ -17,7 +17,6 @@ from PluginManager import PluginManager
 from packages import (directions_to, forecast, mapps, movie, near_me, picshow,
                       timeIn, translate, weather_pinpoint, weatherIn)
 from packages.news import News
-from packages.imgur import imgur
 from packages.quote import show_quote
 from packages.lyrics import lyrics
 from packages.tempconv import temp_main
@@ -168,7 +167,6 @@ class CmdInterpreter(Cmd):
                         "help",
                         {"hotspot": ("start", "stop")},
                         "how_are_you",
-                        "imgur",
                         "lyrics",
                         "match",
                         {"movie": ("cast", "director", "plot", "producer", "rating", "year",)},
@@ -622,12 +620,3 @@ class CmdInterpreter(Cmd):
         """Prints help about weather command."""
         print_say(
             "Get information about today's weather in your current location.", self)
-
-    def do_imgur(self, s):
-        """Uploads image to imgur"""
-        imgur(self, s)
-
-    def help_imgur(self):
-        """Prints help about imgur command"""
-        print_say("Uploads an image to imgur", self)
-        print_say("use imgur <image>", self)
