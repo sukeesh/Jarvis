@@ -1,5 +1,5 @@
 import requests
-from bs4 import BeautifulSoup
+import bs4
 
 from six.moves import input
 import json
@@ -32,7 +32,7 @@ class Quote(Plugin):
 
     def get_quote_of_the_day(self, jarvis):
         res = requests.get('https://www.brainyquote.com/quotes_of_the_day.html')
-        soup = BeautifulSoup(res.text, 'lxml')
+        soup = bs4.BeautifulSoup(res.text, 'lxml')
 
         quote = soup.find('img', {'class': 'p-qotd'})
         jarvis.say(quote['alt'])
