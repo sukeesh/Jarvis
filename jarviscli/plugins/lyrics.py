@@ -1,15 +1,35 @@
 # -*- coding: utf-8 -*-
 from utilities.PyLyricsClone import py_lyrics
+from plugin import Plugin
 
 # TODO: handle errors and instructions better
 
 
-class lyrics(object):
+class lyrics(Plugin):
+    """
+    finds lyrics
+    the format is song,artist
+    song and artist are separated by a -
+    -- Example:
+        lyrics wonderful tonight-eric clapton
+    """
     def __init__(self):
         self.lyrics = py_lyrics()
         self.song = None
         self.artist = None
         self.album = None
+
+    def require(self):
+        pass
+
+    def complete(self):
+        pass
+
+    def alias(self):
+        pass
+
+    def run(self, jarvis, s):
+        jarvis.say(self.find(s))
 
     # info[0] = song
     # info[1] = artist

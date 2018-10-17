@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 import sys
+import os
 from functools import wraps
 from six.moves import input
 from colorama import Fore
+import distutils.spawn
+
 
 MACOS = 'darwin'
 IS_MACOS = sys.platform == MACOS
@@ -73,3 +76,8 @@ def get_float(prompt):
             print("Sorry, I didn't understand that.")
             prompt = 'Try again: '
             continue
+
+
+def executable_exists(name):
+    binary_path = distutils.spawn.find_executable(name)
+    return binary_path is not None and os.access(binary_path, os.X_OK)

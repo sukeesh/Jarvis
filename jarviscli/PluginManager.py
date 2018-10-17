@@ -8,7 +8,7 @@ import six
 from requests import ConnectionError
 
 import plugin
-from utilities.GeneralUtilities import warning, error
+from utilities.GeneralUtilities import warning, error, executable_exists
 
 if six.PY2:
     from funcsigs import signature as signature
@@ -258,7 +258,7 @@ class PluginDependency(object):
     def _check_native(self, values, plugin):
         missing = ""
         for native in values:
-            if distutils.spawn.find_executable(native) is None:
+            if not executable_exists(native):
                 missing += native
                 missing += " "
 

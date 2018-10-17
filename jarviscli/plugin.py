@@ -212,6 +212,14 @@ class PluginComposed(object):
         self._command_default = None
         self._command_sub = {}
 
+    def init(self, jarvis):
+        if self._command_default is not None:
+            if hasattr(self._command_default.__class__, "init") and callable(getattr(self._command_default.__class__, "init")):
+                self._command_default.init(jarvis)
+        for plugin in self._command_sub.values():
+            if hasattr(plugin.__class__, "init") and callable(getattr(plugin.__class__, "init")):
+                plugin.init(jarvis)
+
     def get_name(self):
         return self._name
 
@@ -301,8 +309,8 @@ class PluginComposed(object):
                     s = s[len(name):]
                     s = s.lstrip()
 
-                sub_command.run(jarvis, s)
-                return
+                    sub_command.run(jarvis, s)
+                    return
 
         # run default
         if self._command_default is not None:

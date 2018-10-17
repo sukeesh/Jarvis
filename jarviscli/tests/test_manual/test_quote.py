@@ -6,11 +6,10 @@ from bs4 import BeautifulSoup
 from six.moves import input
 from mock import Mock, patch
 
-from packages import quote
-from packages.quote import get_keyword_quotes
-from packages.quote import try_again
-from packages.quote import contains_word
-from packages.quote import get_input
+from plugins.quote import Quote
+
+
+test = Quote()
 
 
 class QuoteTest(unittest.TestCase):
@@ -22,31 +21,31 @@ class QuoteTest(unittest.TestCase):
                u'cat': u'travel', u'author': 'Italo Calvino'}]
 
     def setUp(self):
-        self.jarvis = Jarvis()
+        self.jarvis = Jarvis()._api
 
-    @patch('packages.quote.requests.get')
-    @patch('packages.quote.json.loads', return_value=quotes)
-    @patch('packages.quote.try_again')
+    @patch('plugins.quote.requests.get')
+    @patch('plugins.quote.json.loads', return_value=quotes)
+    @patch('plugins.quote.Quote.try_again')
     def test_get_keyword_quotes(self, get_mock, get_json, get_try_again):
-        get_keyword_quotes(self.jarvis, 'travel')
+        Quote().get_keyword_quotes(self.jarvis, 'travel')
 
-    @patch('packages.quote.input')
+    @patch('plugins.quote.input')
     def test_try_again(self, get_mock):
         get_mock.return_value = 'exit'
-        try_again(self.jarvis, 'travel')
+        Quote().try_again(self.jarvis, 'travel')
 
     def test_contains_word(self):
-        self.assertEqual(contains_word('Friends show their love in' +
-                                       'times of trouble, not in happiness. ',
-                                       'friends'), True)
-        self.assertEqual(contains_word('Friends show their love in' +
-                                       'times of trouble, not in happiness. ',
-                                       'travel'), False)
+        self.assertEqual(Quote().contains_word('Friends show their love in' +
+                                               'times of trouble, not in happiness. ',
+                                               'friends'), True)
+        self.assertEqual(Quote().contains_word('Friends show their love in' +
+                                               'times of trouble, not in happiness. ',
+                                               'travel'), False)
 
-    @patch('packages.quote.input')
+    @patch('plugins.quote.input')
     def test_get_input(self, get_mock):
         get_mock.return_value = '2'
-        response = get_input('Enter yeahh: ', self.jarvis)
+        response = Quote().get_input('Enter yeahh: ', self.jarvis)
         self.assertEqual(response, 2)
 
 

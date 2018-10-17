@@ -14,7 +14,7 @@ In order to start Jarvis just clone the repository and run `./setup.sh`
 
 Run **Jarvis** from anywhere by command `jarvis`
 
-On Mac OS X don't forget to activate virtual environment before running jarvis with the command `. env/bin/activate`
+On Mac OS X run `source setup.sh`
 
 You can start by typing `help` within the Jarvis command line to check what Jarvis can do for you.
 
@@ -31,7 +31,7 @@ You can start by typing `help` within the Jarvis command line to check what Jarv
 - Please don't forget to comment (document) your code
 
  ### How to run tests:
- 
+
  Run `test.sh`
  ```bash
  ./test.sh
@@ -73,6 +73,11 @@ jarvis is cool
 
 [Click here](PLUGINS.md) to learn more about plugins.
 
+## Optional Dependencies
+
+- Any pyttsx3 text-to-speech engine (``sapi5, nsss or espeak``) for Jarvis to talk out loud (e.g. Ubuntu do ``sudo apt install espeak``)
+- ``notify-send`` on Linux if you want to recive *nice* and deskotp-notification instead of *ugly* popup windows (e.g. Ubuntu do ``sudo apt install libnotify-bin``)
+- ``ffmpeg`` if you want ``music`` to download songs as .mp3 instead .webm
 
 ## Authors
 

@@ -1,11 +1,16 @@
-from utilities.GeneralUtilities import print_say
+from plugin import plugin
 import requests
 import os
 import json
 import base64
 
 
-def imgur(self, s):
+@plugin(network=True)
+def imgur(jarvis, s):
+    """
+    Uploads an image to imgur
+    use imgur <image>
+    """
     # Get the absolute path
     s = os.path.abspath(s)
     if os.path.isfile(s):
@@ -25,12 +30,11 @@ def imgur(self, s):
             objresp = json.loads(resp.text)
             # Treat response
             if objresp.get('success', False):
-                print_say('Here is your image: ' +
-                          objresp['data']['link'], self)
+                jarvis.say('Here is your image: ' + objresp['data']['link'])
             else:
-                print_say('Error: ' + objresp['data']['error'], self)
+                jarvis.say('Error: ' + objresp['data']['error'])
         except Exception as e:
             # Print exception as string
-            print_say("Error {0}".format(str(e.args[0])).encode("utf-8"), self)
+            jarvis.say("Error {0}".format(str(e.args[0])).encode("utf-8"))
     else:
-        print_say("No such file", self)
+        jarvis.say("No such file")
