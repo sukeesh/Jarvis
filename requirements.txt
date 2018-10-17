@@ -1,41 +1,41 @@
+aiml; python_version <= '2.7'
 appdirs==1.4.3
+archey4; python_version >= '3.5'
+autopep8
 beautifulsoup4==4.5.3
 bs4==0.0.1
 colorama==0.3.7
+cryptography>=1.8.1
 eyeD3==0.7.11
-youtube-dl
+flake8
+forex-python
+funcsigs; python_version <= '2.7'
+googletrans
+IMDbPY==6.6
 instantmusic==2.2
+langdetect
 lxml==3.7.3
+mock==2.0.0
+nltk
+notify2
 packaging==16.8
+pick
+pluginmanager
+pycodestyle==2.3.1
+pycricbuzz
+pync==1.6.1
 pyowm==2.6.1
 pyparsing==2.2.0
+pyperclip
 PySocks==1.6.6
-cryptography>=1.8.1
+python-dateutil
+pytimeparse
+py-translator
+pyttsx3
 requests[security]==2.13.0
-selenium>=2.33
 six==1.10.0
 SpeechRecognition==3.6.3
-pyttsx3
-aiml; python_version <= '2.7'
-python-dateutil
-mock==2.0.0
-notify2
-pync==1.6.1
-IMDbPY==5.1.1; python_version <= '2.7'
-IMDbPY==6.6; python_version >= '3.5'
-pyperclip
-pycricbuzz
-wikipedia
-flake8
-autopep8
-googletrans
-langdetect
-termdown
-forex-python
-pluginmanager
 sympy
-funcsigs; python_version <= '2.7'
-archey4; python_version >= '3.5'
-pytimeparse
-pick
-nltk
+termdown
+wikipedia
+youtube-dl
