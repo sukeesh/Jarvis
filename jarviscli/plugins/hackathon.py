@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup
+import bs4
 import requests
 import json
 
@@ -50,7 +50,7 @@ class Hackathon(Plugin):
         data = json.loads(data)['data']
 
         # parse html
-        soup = BeautifulSoup(data, 'lxml')
+        soup = bs4.BeautifulSoup(data, 'lxml')
         upcoming = soup.find('div', {'class': 'upcoming challenge-list'})
 
         if upcoming is not None:
