@@ -63,11 +63,10 @@ case ${answer:0:1} in
   ;;
 esac
 
-source env/bin/activate
+VIRTUAL_ENV_DISABLE_PROMPT=true source env/bin/activate
 
 pip install --upgrade -r requirements.txt
 
-cp jarvis /usr/local/bin
-
+sudo cp jarvis /usr/local/bin
 
 python -m nltk.downloader -d jarviscli/data/nltk wordnet

@@ -14,7 +14,6 @@ googletrans
 IMDbPY==6.6
 instantmusic==2.2
 langdetect
-lxml==3.7.3
 mock==2.0.0
 nltk
 notify2
