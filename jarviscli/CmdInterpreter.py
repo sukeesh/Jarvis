@@ -158,9 +158,7 @@ class CmdInterpreter(Cmd):
                         {"enable": ("sound",)},
                         "help",
                         "how_are_you",
-                        "movies",
                         "near",
-                        {"open": ("camera",)},
                         "pinpoint",
                         "say",
                         "umbrella",
@@ -338,18 +336,6 @@ class CmdInterpreter(Cmd):
         """Print info about how_are_you command"""
         print_say("Jarvis will inform you about his status.", self)
 
-    @unsupported(platform=MACOS)
-    def do_movies(self, s):
-        """Jarvis will find a good movie for you."""
-        movie_name = input(
-            Fore.RED + "What do you want to watch?\n" + Fore.RESET)
-        system("ims " + movie_name)
-
-    @unsupported(platform=MACOS)
-    def help_movies(self):
-        """Print help about movies command."""
-        print_say("Jarvis will find a good movie for you", self)
-
     def do_near(self, data):
         """Jarvis can find what is near you!"""
         near_me.main(data)
@@ -360,23 +346,6 @@ class CmdInterpreter(Cmd):
         print_say("-- Examples:", self)
         print_say("\trestaurants near me", self)
         print_say("\tmuseums near the eiffel tower", self)
-
-    def do_open(self, s):
-        """Jarvis will open the camera for you."""
-        if "camera" in s:
-            if IS_MACOS:
-                system('open /Applications/Photo\ Booth.app')
-            else:
-                print_say("Opening cheese.......", self, Fore.RED)
-                system("cheese")
-
-    def help_open(self):
-        """Print help about open command."""
-        print_say("camera: Jarvis will open the camera for you.", self)
-
-    def complete_open(self, text, line, begidx, endidx):
-        """Completions for open command"""
-        return self.get_completions("open", text)
 
     def do_pinpoint(self, s):
         """Jarvis will pinpoint your location."""
