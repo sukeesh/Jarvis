@@ -99,6 +99,16 @@ class JarvisAPI(object):
         """
         self._jarvis.scheduler.cancel(schedule_id)
 
+    # Voice wrapper
+    def enable_voice(self):
+        self._jarvis.enable_voice = True
+
+    def disable_voice(self):
+        self._jarvis.enable_voice = False
+
+    def is_voice_enabled(self):
+        return self._jarvis.enable_voice
+
     # MEMORY WRAPPER
     def get_data(self, key):
         """
@@ -154,13 +164,10 @@ class CmdInterpreter(Cmd):
 
         self.actions = [{"check": ("ram", "weather", "time", "forecast")},
                         "directions",
-                        {"disable": ("sound",)},
-                        {"enable": ("sound",)},
                         "help",
                         "how_are_you",
                         "near",
                         "pinpoint",
-                        "say",
                         "umbrella",
                         {"update": ("location", "system")},
                         "weather",
@@ -302,32 +309,6 @@ class CmdInterpreter(Cmd):
         print_say("-- Example:", self)
         print_say("\tdirections to the Eiffel Tower", self)
 
-    def do_disable(self, s):
-        """Deny Jarvis to use his voice."""
-        if "sound" in s:
-            self.enable_voice = False
-
-    def help_disable(self):
-        """Displays help about disable command"""
-        print_say("sound: Deny Jarvis his voice.", self)
-
-    def complete_disable(self, text, line, begidx, endidx):
-        """Completions for check command"""
-        return self.get_completions("disable", text)
-
-    def do_enable(self, s):
-        """Let Jarvis use his voice."""
-        if "sound" in s:
-            self.enable_voice = True
-
-    def help_enable(self):
-        """Displays help about enable command"""
-        print_say("sound: Let Jarvis use his voice.", self)
-
-    def complete_enable(self, text, line, begidx, endidx):
-        """Completions for enable command"""
-        return self.get_completions("enable", text)
-
     def do_how_are_you(self, s):
         """Jarvis will inform you about his status."""
         print_say("I am fine, How about you?", self, Fore.BLUE)
@@ -357,20 +338,6 @@ class CmdInterpreter(Cmd):
     def help_pinpoint(self):
         """Print help about pinpoint command."""
         print_say("Jarvis will pinpoint your location.", self)
-
-    def do_say(self, s):
-        """Reads what is typed."""
-        if not s:
-            print_say("What should I say?", self)
-        else:
-            voice_state = self.enable_voice
-            self.enable_voice = True
-            self.speech.text_to_speech(s)
-            self.enable_voice = voice_state
-
-    def help_say(self):
-        """Prints help text from say command."""
-        print_say("Reads what is typed.")
 
     def do_umbrella(self, s):
         """If you're leaving your place, Jarvis will inform you if you might need an umbrella or not"""
