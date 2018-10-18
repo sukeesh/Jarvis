@@ -40,7 +40,7 @@ def main(self, s):
 
 def getLocation(s):
     file_path = module_path + '/../data/keys.json'
-    with open(file_path) as json_file:  
+    with open(file_path) as json_file:
         data = json.load(json_file)
     key = data['timein']
     send_url = ("https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}".format(s, key))
