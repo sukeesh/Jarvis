@@ -7,6 +7,7 @@ import aiml
 # this sets the path to the modules directory not the directory it was call from
 module_path = os.path.dirname(__file__)
 
+
 class Brain:
 
     def __init__(self):
@@ -34,6 +35,7 @@ class Brain:
 
     def remove_brain(self):
         os.remove(os.path.join(module_path, "brain/bot_brain.brn"))
+
 
 @plugin()
 def ask(jarvis, s):
