@@ -2,6 +2,7 @@ todolist.txt
 reminderlist.txt
 *.bak
 jarviscli/packages/memory/memory.json
+jarviscli/data/keys.json
 *.egg-info
 *.brn
 dist/
