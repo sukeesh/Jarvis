@@ -42,6 +42,10 @@ def getLocation(s):
     file_path = module_path + '/../data/keys.json'
     with open(file_path) as json_file:
         data = json.load(json_file)
+    if 'timein' not in data or data['timein'] == 'insertyourkeyhere':
+        print(Fore.RED + "Generate api key here: https://developers.google.com/maps/documentation/geocoding/start?hl=en_US")
+        print(Fore.RED + "and add it to jarviscli/data/keys.json" + Fore.RESET)
+        return None
     key = data['timein']
     send_url = ("https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}".format(s, key))
     # https://developers.google.com/maps/documentation/geocoding/start?hl=en_US
