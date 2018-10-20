@@ -18,7 +18,7 @@ On Mac OS X run `source setup.sh`
 
 On Windows run `setup.bat`
 
-**NOTE: Jarvis is not fully ported to windows yet, and has only basic functionality. Jarvis's output is also a bit messy!
+**NOTE: Jarvis is not fully ported to windows yet, and has only basic functionality. Jarvis's output is also a bit messy!**
 
 You can start by typing `help` within the Jarvis command line to check what Jarvis can do for you.
 
