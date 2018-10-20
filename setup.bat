@@ -27,8 +27,9 @@ CALL %jarvispath%\env\Scripts\activate.bat
 pip install --upgrade -r requirements.txt
 
 echo Setting Path...
-::make jarvis.bat executable form everywhere ; add it to path
-SETX PATH "%PATH%;%jarvispath%"
+::make jarvis.bat executable form everywhere ; copy it to windows32
+COPY jarvis.bat C:\Windows\System32
+
 
 python -m nltk.downloader -d jarviscli/data/nltk wordnet
 
