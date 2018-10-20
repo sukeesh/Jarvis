@@ -11,6 +11,7 @@ FOR /F "tokens=*" %%g IN ('chdir') do (SET jarvispath=%%g)
 echo "Jarvispath set as %jarvispath%"
 
 ::create jarvis run script
+break>jarvis.bat
 @echo @echo off >> jarvis.bat
 @echo CALL %jarvispath%\env\Scripts\activate.bat >> jarvis.bat
 @echo python %jarvispath%\jarviscli\ >> jarvis.bat
