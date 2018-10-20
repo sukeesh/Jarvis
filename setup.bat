@@ -6,7 +6,7 @@ if %errorlevel% neq 0 exit /b %errorlevel%
 
 echo Admin permissions are required! Checking..
 NET SESSION >nul 2>&1
-if %errorLevel% == 1 (
+if %errorLevel% == 2 (
   goto NoAdminRights
 )
 
