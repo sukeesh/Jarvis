@@ -36,4 +36,5 @@ sympy
 termdown
 wikipedia
 youtube-dl
+pypiwin32
 https://github.com/appi147/pyaiml3/archive/master.zip ; python_version >= '3.5'
