@@ -61,7 +61,6 @@ def getLocation(s):
         # Returns both latitude and longitude as a tuple
         return lat, lng
     except IndexError:
-        print(Fore.RED + "Some error occurred, open an issue on github")
-        print(Fore.RED + "Here is error:")
-        print(Fore.RED + r.text + Fore.RESET)
-        return None
+        # Error handled after try except
+        pass
+    raise Exception(r.text)
