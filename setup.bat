@@ -4,6 +4,12 @@
 if %errorlevel% neq 0 exit /b %errorlevel%
 ::check if virtualenv is installed
 
+echo Admin permissions are required! Checking..
+NET SESSION >nul 2>&1
+if %errorLevel% == 1 (
+  goto NoAdminRights
+)
+
 virtualenv --version || :goto VirtualEnvNotInstalled
 echo "Virtualenv is installed!"
 
@@ -41,12 +47,20 @@ pip install --upgrade -r requirements.txt
 
 echo Setting Path...
 ::make jarvis.bat executable form everywhere ; add it to path
-SET PATH=%PATH%;%jarvispath%
+SETX /M  PATH "%PATH%;%jarvispath%"
 
 python -m nltk.downloader -d jarviscli/data/nltk wordnet
 
-PAUSE
+goto InstallationSucessful
 
 :VirtualEnvNotInstalled
-echo "VirtualEnv needs to be installed!"
+echo VirtualEnv needs to be installed!
 exit /b "VirtualEnv needs to be installed!"
+
+:NoAdminRights
+echo You need to run this script as an Admin!
+exit /b "No Admin Rights!"
+
+:InstallationSucessful
+echo WEE! Instalation Successful! Use 'jarvis' in cmd to start Jarvis!
+PAUSE
