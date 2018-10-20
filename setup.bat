@@ -28,9 +28,10 @@ CALL %jarvispath%\env\Scripts\activate.bat
 pip install --upgrade -r requirements.txt
 
 echo Setting Path...
-::make jarvis.bat executable form everywhere ; copy it to windows32
-COPY jarvis.bat C:\Windows\System32
-
+::save user path first
+FOR /F "tokens=3 skip=2" %%G IN ('reg query HKCU\Environment /v Path') DO (SET userpath=%%G)
+::add jarvispath to user path
+setx path %userpath%;%jarvispath%
 
 python -m nltk.downloader -d jarviscli/data/nltk wordnet
 
