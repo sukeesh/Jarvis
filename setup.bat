@@ -26,6 +26,7 @@ FOR /F "tokens=*" %%g IN ('chdir') do (SET jarvispath=%%g)
 echo "Jarvispath set as %jarvispath%"
 
 ::create jarvis run script
+@echo @echo off >> jarvis.bat
 @echo CALL %jarvispath%\env\Scripts\activate.bat >> jarvis.bat
 @echo python %jarvispath%\jarviscli\ >> jarvis.bat
 
@@ -44,6 +45,9 @@ echo calling activate.bat
 CALL %jarvispath%\env\Scripts\activate.bat
 ::install pip requirements
 pip install --upgrade -r requirements.txt
+
+::install ported windows packages
+pip install PyPackages/curses_amd64.whl
 
 echo Setting Path...
 ::make jarvis.bat executable form everywhere ; add it to path
