@@ -59,11 +59,11 @@ goto InstallationSucessful
 
 :VirtualEnvNotInstalled
 echo VirtualEnv needs to be installed!
-exit /b "VirtualEnv needs to be installed!"
+PAUSE
 
 :NoAdminRights
 echo You need to run this script as an Admin!
-exit /b "No Admin Rights!"
+PAUSE
 
 :InstallationSucessful
 echo WEE! Instalation Successful! Use 'jarvis' in cmd to start Jarvis!
