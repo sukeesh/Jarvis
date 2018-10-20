@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/sukeesh/Jarvis.svg?branch=master)](https://travis-ci.org/sukeesh/Jarvis) [![Join the chat at https://gitter.im/Sukeesh_Jarvis/Lobby](https://badges.gitter.im/Sukeesh_Jarvis/Lobby.svg)](https://gitter.im/Sukeesh_Jarvis/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-A Personal Assistant for Linux and MacOS, now ported to windows!!
+A Personal Assistant for Linux and MacOS
 
 ![Jarvis](http://i.imgur.com/xZ8x9ES.jpg)
 
@@ -10,10 +10,15 @@ Jarvis is a simple personal assistant for Linux and MacOS which works on the ter
 
 ## Getting Started
 
-In order to start Jarvis just clone the repository and run `./setup.bat`
+In order to start Jarvis just clone the repository and run `./setup.sh`
 
 Run **Jarvis** from anywhere by command `jarvis`
 
+On Mac OS X run `source setup.sh`
+
+On Windows run `setup.bat`
+
+**NOTE: Jarvis is not fully ported to windows yet, and has only basic functionality. Jarvis's output is also a bit messy!
 
 You can start by typing `help` within the Jarvis command line to check what Jarvis can do for you.
 
@@ -87,3 +92,4 @@ See also the list of [contributors](https://github.com/sukeesh/Jarvis/graphs/con
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
