@@ -27,6 +27,9 @@ CALL %jarvispath%\env\Scripts\activate.bat
 ::install pip requirements
 pip install --upgrade -r requirements.txt
 
+::install windows specifix requirements
+pip install --upgrade -r requirements_windows.txt
+
 echo Setting Path...
 ::save user path first
 FOR /F "tokens=3 skip=2" %%G IN ('reg query HKCU\Environment /v Path') DO (SET userpath=%%G)
