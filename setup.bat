@@ -26,9 +26,6 @@ CALL %jarvispath%\env\Scripts\activate.bat
 ::install pip requirements
 pip install --upgrade -r requirements.txt
 
-::install ported windows packages
-pip install PyPackages/curses-2.2+utf8-cp27-cp27m-win_amd64.whl
-
 echo Setting Path...
 ::make jarvis.bat executable form everywhere ; add it to path
 SETX PATH "%PATH%;%jarvispath%"
