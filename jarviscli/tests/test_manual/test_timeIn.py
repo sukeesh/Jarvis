@@ -22,8 +22,7 @@ class TimeInTest(unittest.TestCase):
         output = sys.stdout.read()
 
         # What is ctime in your current locale?
-        time_here = datetime.datetime.now()
-
+        time_here = datetime.datetime.strptime(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), '%Y-%m-%d %H:%M:%S')
         # Create a datetime object for the api call
         output_list = output.split(' ')
         result = datetime.datetime.strptime(' '.join([output_list[-2],
@@ -35,11 +34,9 @@ class TimeInTest(unittest.TestCase):
         delta_tz = datetime.timedelta(
             hours=((time.timezone) / 3600.0 + int(self.dst)))
         result -= (delta_tz)
-
         # Create another timedelta object to give the API call a margin
         # of error since the HTTP request may have latency
-        delta_delay = datetime.timedelta(seconds=5)
-
+        delta_delay = datetime.timedelta(seconds=10)
         self.assertAlmostEqual(result, time_here, delta=delta_delay)
 
     def tearDown(self):
