@@ -3,17 +3,28 @@ import requests
 import os
 import json
 import base64
+import readline
+import glob
+
+def complete(text, state):
+    return (glob.glob(text+'*')+[None])[state]
 
 
 @plugin(network=True)
 def imgur(jarvis, s):
     """
     Uploads an image to imgur
-    use imgur <image>
     """
+
+    #Autocomplete filename
+    jarvis.say("What's the image name?: ")
+    readline.set_completer_delims(' \t\n;')
+    readline.parse_and_bind("tab: complete")
+    readline.set_completer(complete)
+    file = input('')
     # Get the absolute path
-    s = os.path.abspath(s)
-    if os.path.isfile(s):
+    file = os.path.abspath(file)
+    if os.path.isfile(file):
         try:
             url = "https://api.imgur.com/3/image"
             headers = {"Authorization": "Client-ID 145b6ea95cf11b4"}
@@ -22,7 +33,7 @@ def imgur(jarvis, s):
                 url,
                 headers=headers,
                 data={
-                    'image': base64.b64encode(open(s, 'rb').read()),
+                    'image': base64.b64encode(open(file, 'rb').read()),
                     'type': 'base64'
                 }
             )
