@@ -21,6 +21,7 @@ def imgur(jarvis, s):
     jarvis.say("What's the image name?: ")
     readline.set_completer_delims(' \t\n;')
     readline.parse_and_bind("tab: complete")
+    r = readline.get_completer()
     readline.set_completer(complete)
     file = input('')
     # Get the absolute path
@@ -44,9 +45,11 @@ def imgur(jarvis, s):
             if objresp.get('success', False):
                 jarvis.say('Here is your image: ' + objresp['data']['link'])
             else:
-                jarvis.say('Error: ' + objresp['data']['error'])
+                jarvis.say('Error: ' + str(objresp['data']['error']))
         except Exception as e:
             # Print exception as string
             jarvis.say("Error {0}".format(str(e.args[0])).encode("utf-8"))
     else:
         jarvis.say("No such file")
+
+    readline.set_completer(r)
