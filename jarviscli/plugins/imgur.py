@@ -6,8 +6,9 @@ import base64
 import readline
 import glob
 
+
 def complete(text, state):
-    return (glob.glob(text+'*')+[None])[state]
+    return (glob.glob(text + '*') + [None])[state]
 
 
 @plugin(network=True)
@@ -16,7 +17,7 @@ def imgur(jarvis, s):
     Uploads an image to imgur
     """
 
-    #Autocomplete filename
+    # Autocomplete filename
     jarvis.say("What's the image name?: ")
     readline.set_completer_delims(' \t\n;')
     readline.parse_and_bind("tab: complete")
