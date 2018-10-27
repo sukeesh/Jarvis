@@ -16,3 +16,5 @@ setup.py
 jarviscli/packages/ghostdriver.log
 npm-debug.log
 ghostdriver.log
+jarvis
+jarviscli/data/key_timein.json

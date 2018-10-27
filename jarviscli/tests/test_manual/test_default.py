@@ -7,7 +7,7 @@ class DefaultTest(unittest.TestCase):
 
     def setUp(self):
         self.jarvis = Jarvis()
-        self.action = {"enable": ("sound",)}
+        self.action = {"enable": ["sound"]}
 
     # check that default is called if the second word of a two word command is not found in
     # the words_remaining ("enable cat and dog" instead of "enable your sound please")

@@ -1,5 +1,5 @@
 import unittest
-from packages.lyrics import lyrics
+from plugins.lyrics import lyrics
 
 # TODO: add tests for PyLyricsClone
 

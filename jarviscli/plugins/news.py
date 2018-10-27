@@ -9,7 +9,8 @@ except ImportError:  # python2
 import json
 import webbrowser
 from six.moves import input
-from .memory.memory import Memory
+from plugin import Plugin
+from colorama import Fore
 
 '''
     CLASS News
@@ -29,20 +30,40 @@ from .memory.memory import Memory
 '''
 
 
-class News:
+class News(Plugin):
+    """
+    Time to get an update about the local news.
+    Type \"news\" to choose your source or \"news quick\" for some headlines.
+    """
     def __init__(self, source="google-news", api_key="7488ba8ff8dc43459d36f06e7141c9e5"):
         self.apiKey = api_key
         self.source = source
         self.url = "https://newsapi.org/v1/articles?source=google-news&sortBy=top" \
                    "&apiKey=7488ba8ff8dc43459d36f06e7141c9e5"
-        self.m = Memory()
-    '''
-        This is the defualt news function. It checks to see if the
-        user has a preference and and goes through all choices.
-    '''
 
-    def news(self):
-        self.news_options()
+    def require(self):
+        yield ("network", True)
+
+    def complete(self):
+        pass
+
+    def alias(self):
+        pass
+
+    def run(self, jarvis, s):
+        if s == "quick":
+            try:
+                self.quick_news()
+            except:
+                jarvis.say("I couldn't find news", Fore.RED)
+        else:
+            try:
+                self.news(jarvis)
+            except:
+                jarvis.say("I couldn't find news", Fore.RED)
+
+    def news(self, jarvis):
+        self.news_options(jarvis)
         self.get_news()
 
     '''
@@ -69,22 +90,22 @@ class News:
         if they exist
     '''
 
-    def news_options(self):
+    def news_options(self, jarvis):
         # check to see if user already has default news source
-        if self.m.get_data('news-source'):
+        if jarvis.get_data('news-source'):
             print("your default news source is " +
-                  self.m.get_data('news-source'))
+                  jarvis.get_data('news-source'))
             print("Would you like news from this source? (yes/no): ")
             x = input()
             if x == 'y' or x == 'yes':
-                self.source = self.m.get_data('news-source')
+                self.source = jarvis.get_data('news-source')
             # if not set get users preference
             else:
-                self.get_opt()
+                self.get_opt(jarvis)
         else:
-            self.get_opt()
+            self.get_opt(jarvis)
 
-    def get_opt(self):
+    def get_opt(self, jarvis):
         # Other sources available here: https://newsapi.org/sources
         print("Select Source (1-5):")
         print("1: BBC")
@@ -108,8 +129,7 @@ class News:
         print("would you like to set this as your default? (yes/no): ")
         x = input()
         if x == 'y' or x == 'yes':
-            self.m.update_data('news-source', self.source)  # save to memory
-            self.m.save()
+            jarvis.update_data('news-source', self.source)  # save to memory
 
     '''
         This sets the url and sends it to request_news()

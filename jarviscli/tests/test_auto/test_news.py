@@ -1,5 +1,5 @@
 import unittest
-from packages.news import News
+from plugins.news import News
 
 
 class NewsTest(unittest.TestCase):

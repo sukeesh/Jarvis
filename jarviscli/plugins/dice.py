@@ -5,8 +5,6 @@ from plugin import Plugin
 import random
 import re
 
-import pluginmanager
-
 
 class Roll(Plugin):
     """

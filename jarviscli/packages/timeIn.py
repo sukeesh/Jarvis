@@ -1,16 +1,30 @@
 # -*- coding: utf-8 -*-
+import os
+import shutil
 import json
 import requests
 from colorama import Fore
+
+# this sets the path to the modules directory not the directory it was call from
+module_path = os.path.dirname(__file__)
+module_path = module_path + '/../data/'
 
 
 def main(self, s):
     # Trims input s to be just the city/region name
     s = s.replace('time ', '').replace('in ', '')
 
+    exists = os.path.isfile(module_path + 'key_timein.json')
+    if not exists:
+        shutil.copy2(module_path + 'samplekey_timein.json', module_path + 'key_timein.json')
+        print(Fore.RED + "Generate api key here: https://developers.google.com/maps/documentation/geocoding/start?hl=en_US")
+        print(Fore.RED + "and add it to jarviscli/data/key_timein.json" + Fore.RESET)
+        return
+
     # Transforms a city name into coordinates using Google Maps API
     loc = getLocation(s)
-
+    if loc is None:
+        return
     # Gets current date and time using TimeZoneDB API
     send_url = (
         "http://api.timezonedb.com/v2/get-time-zone?"
@@ -27,11 +41,27 @@ def main(self, s):
 
 
 def getLocation(s):
-    send_url = ("http://maps.googleapis.com/maps/api/geocode/json?address={0}&sensor=false".format(s)
-                )
+    file_path = module_path + 'key_timein.json'
+    with open(file_path) as json_file:
+        data = json.load(json_file)
+    if 'timein' not in data or data['timein'] == 'insertyourkeyhere':
+        print(Fore.RED + "API key not added")
+        print(Fore.RED + "Generate api key here: https://developers.google.com/maps/documentation/geocoding/start?hl=en_US")
+        print(Fore.RED + "and add it to jarviscli/data/key_timein.json" + Fore.RESET)
+        return None
+    key = data['timein']
+    send_url = ("https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}".format(s, key))
+    # https://developers.google.com/maps/documentation/geocoding/start?hl=en_US
+    # https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY
     r = requests.get(send_url)
     j = json.loads(r.text)
-    lat = j['results'][0]['geometry']['location']['lat']    # Latitude
-    lng = j['results'][0]['geometry']['location']['lng']    # Longitude
-    # Returns both latitude and longitude as a tupple
-    return lat, lng
+    try:
+        lat = j['results'][0]['geometry']['location']['lat']    # Latitude
+        lng = j['results'][0]['geometry']['location']['lng']    # Longitude
+        # Returns both latitude and longitude as a tuple
+        return lat, lng
+    except IndexError:
+        print(Fore.RED + "Some error occurred, open an issue on github")
+        print(Fore.RED + "Here is error:")
+        print(Fore.RED + r.text + Fore.RESET)
+        return None
