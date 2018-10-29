@@ -28,6 +28,7 @@ class PluginManager(object):
 
         self._cache_clean = False
         self._cache_plugins = {}
+        self._cache_plugins_disabled = {}
 
         # blacklist files
         def __ends_with_py(s):
@@ -50,11 +51,34 @@ class PluginManager(object):
         """lazy load"""
         self._cache_clean = True
         self._cache_plugins = {}
+        self._cache_plugins_disabled = {}
 
         self._backend.collect_plugins()
         for plugin in self._backend.get_plugins():
-            if self._plugin_validate(plugin):
+            is_valid = self._plugin_validate(plugin)
+            if is_valid is True:
                 self._load_plugin_handle_alias(plugin)
+            else:
+                if is_valid is not False:
+                    self._cache_plugins_disabled[plugin.get_name()] = is_valid
+
+        # ignore "disabled" plugin if plugin with same name is "enabled"
+        # e.g. screen off has different implementations for Linux and Mac
+        # => don't show "screen off" as "disabled" because it isn't
+        enabled_names = []
+        for plugin in self._cache_plugins.values():
+            plugin_name = plugin.get_name()
+            if plugin.complete() is None:
+                enabled_names.append(plugin_name)
+            else:
+                for complete in plugin.complete():
+                    enabled_names.append("{} {}".format(plugin_name, complete))
+
+        cache_disabled_copy = self._cache_plugins_disabled
+        self._cache_plugins_disabled = {}
+        for name, message in cache_disabled_copy.items():
+            if name not in enabled_names:
+                self._cache_plugins_disabled[name] = message
 
     def _plugin_validate(self, plugin):
         # I really don't know why that check is necessary...
@@ -82,8 +106,11 @@ class PluginManager(object):
             plugin.complete = lambda: None
 
         # dependency check
-        if not self._plugin_dependency.check(plugin):
-            return False
+        dependency_ok = self._plugin_dependency.check(plugin)
+        if dependency_ok is not True:
+            if dependency_ok is False:
+                return False
+            return dependency_ok
 
         return True
 
@@ -147,23 +174,18 @@ class PluginManager(object):
 
         error("Duplicated plugin {}!".format(name))
 
-    def get_all(self):
+    def get_enabled(self):
         """Returns all loaded plugins as dictionary (key: name, value: plugin instance)"""
         if not self._cache_clean:
             self._load()
 
         return self._cache_plugins
 
-    def get_by_name(self, name):
-        """Returns one plugin with given name or None if not found"""
+    def get_disabled(self):
         if not self._cache_clean:
             self._load()
 
-        name = name.lower()
-        if name in self._cache_plugins:
-            return self._cache_plugins[name]
-
-        return None
+        return self._cache_plugins_disabled
 
 
 class PluginDependency(object):
@@ -220,16 +242,19 @@ class PluginDependency(object):
         plugin_requirements = self._plugin_get_requirements(requirements_iter)
 
         if not self._check_plattform(plugin_requirements["plattform"]):
-            return False
+            required_plattform = ", ".join(plugin_requirements["plattform"])
+            return "Requires os {}".format(required_plattform)
 
         if not self._check_python(plugin_requirements["python"]):
-            return False
+            required_python = ", ".join(plugin_requirements["python"])
+            return "Requires Python {}".format(required_python)
 
         if not self._check_network(plugin_requirements["network"], plugin):
-            return False
+            return "Requires networking"
 
-        if not self._check_native(plugin_requirements["native"], plugin):
-            return False
+        natives_ok = self._check_native(plugin_requirements["native"], plugin)
+        if natives_ok is not True:
+            return natives_ok
 
         return True
 
@@ -265,7 +290,8 @@ class PluginDependency(object):
         if len(missing) == 0:
             return True
         else:
-            warning("Disabeling {} - missing native executables {}".format(plugin.get_name(), missing))
+            message = "Missing native executables {}"
+            return message.format(missing)
 
     def _plugin_patch_network_error_message(self, plugin):
         if "plugin._network_error_patched" not in plugin.__dict__:
