@@ -1,25 +1,18 @@
 from six.moves import input
 
-from plugin import Plugin
+from plugin import plugin, require
 from colorama import Fore
 from pycricbuzz import Cricbuzz
 
 
-class Cricket(Plugin):
+@require(network=True)
+@plugin
+class Cricket():
     """
     Enter cricket and follow the instructions
     """
     def __init__(self):
         self.c = Cricbuzz()
-
-    def require(self):
-        yield ('network', True)
-
-    def complete(self):
-        pass
-
-    def alias(self):
-        pass
 
     def run(self, jarvis, s):
         self.score(jarvis)

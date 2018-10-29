@@ -2,22 +2,26 @@ import os
 from platform import architecture, dist, release, mac_ver
 from platform import system as sys
 from colorama import Fore, Style
-from plugin import LINUX, MACOS, PYTHON2, PYTHON3, plugin
+
+from plugin import LINUX, MACOS, PYTHON2, PYTHON3, plugin, require
 
 
-@plugin(plattform=MACOS, native="pmset")
+@require(platform=MACOS, native="pmset")
+@plugin
 def screen_off__MAC(jarvis, s):
     """Turn of screen instantly"""
     os.system('pmset displaysleepnow')
 
 
-@plugin(plattform=LINUX, native="xset")
+@require(platform=LINUX, native="xset")
+@plugin
 def screen_off__LINUX(jarvis, s):
     """Turn of screen instantly"""
     os.system('xset dpms force off')
 
 
-@plugin(plattform=MACOS)
+@require(platform=MACOS)
+@plugin
 def Os__MAC(jarvis, s):
     """Displays information about your operating system"""
     jarvis.say(Style.BRIGHT + '[!] Operating System Information' + Style.RESET_ALL, Fore.BLUE)
@@ -29,7 +33,8 @@ def Os__MAC(jarvis, s):
             jarvis.say('[*] ' + _, Fore.GREEN)
 
 
-@plugin(plattform=LINUX)
+@require(platform=LINUX)
+@plugin
 def Os__LINUX(jarvis, s):
     """Displays information about your operating system"""
     jarvis.say('[!] Operating System Information', Fore.BLUE)
@@ -40,20 +45,23 @@ def Os__LINUX(jarvis, s):
         jarvis.say('[*] ' + _, Fore.GREEN)
 
 
-@plugin(python=PYTHON3, plattform=LINUX)
-def systeminfo__PY3_LINUX(jarvis, s):
+@require(python=PYTHON3, platform=LINUX)
+@plugin
+def systeminfo__PY3__LINUX(jarvis, s):
     """Display system information with distribution logo"""
     from archey import archey
     archey.main()
 
 
-@plugin(python=PYTHON3, plattform=MACOS, native="screenfetch")
+@require(python=PYTHON3, platform=MACOS, native="screenfetch")
+@plugin
 def systeminfo__PY3_MAC(jarvis, s):
     """Display system information with distribution logo"""
     os.system("screenfetch")
 
 
-@plugin(python=PYTHON2, native="screenfetch")
+@require(python=PYTHON2, native="screenfetch")
+@plugin
 def systeminfo__PY2(jarvis, s):
     """Display system information with distribution logo"""
     os.system("screenfetch")

@@ -5,7 +5,7 @@ from decimal import Decimal
 
 from six.moves import input
 
-from plugin import Plugin
+from plugin import plugin, require
 from utilities.GeneralUtilities import get_float
 
 from forex_python.bitcoin import BtcConverter
@@ -15,21 +15,14 @@ from forex_python.converter import CurrencyRates
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
-class Currencyconv(Plugin):
+@require(network=True)
+@plugin
+class Currencyconv():
     """
     Convert an amount of money from a currency to another.
     -- Type currencyconv, press enter and follow the instructions!
     """
-    def require(self):
-        yield("network", True)
-
-    def complete(self):
-        pass
-
-    def alias(self):
-        pass
-
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         currencies = self.find_currencies()
 
         amount = get_float('Enter an amount: ')

@@ -7,11 +7,6 @@ import six
 import plugin
 from utilities.GeneralUtilities import warning, error, executable_exists
 
-if six.PY2:
-    from funcsigs import signature as signature
-else:
-    from inspect import signature as signature
-
 
 class PluginManager(object):
     """
@@ -85,23 +80,6 @@ class PluginManager(object):
         if plugin.get_name() == "plugin":
             return False
 
-        # has doc, run, alias, require and complete?
-        if not self._plugin_has_method(plugin, "run", 2):
-            print("Warning! Plugin \"{}\" has no method \"run\"! Will be disabled!".format(plugin.get_name()))
-            return False
-
-        if not self._plugin_has_method(plugin, "alias", 0):
-            print("Warning! Plugin \"{}\" has no method \"alias\"!".format(plugin.get_name()))
-            plugin.alias = lambda: None
-
-        if not self._plugin_has_method(plugin, "require", 0):
-            print("Warning! Plugin \"{}\" has no method \"require\"!".format(plugin.get_name()))
-            plugin.require = lambda: None
-
-        if not self._plugin_has_method(plugin, "complete", 0):
-            print("Warning! Plugin \"{}\" has no method \"complete\"!".format(plugin.get_name()))
-            plugin.complete = lambda: None
-
         # dependency check
         dependency_ok = self._plugin_dependency.check(plugin)
         if dependency_ok is not True:
@@ -111,26 +89,10 @@ class PluginManager(object):
 
         return True
 
-    def _plugin_has_method(self, plugin, method, param_len):
-        if not hasattr(plugin.__class__, method) or not callable(getattr(plugin.__class__, method)):
-            return False
-
-        params = signature(getattr(plugin, method)).parameters
-        params = [param for param in params if param != 'args']
-        if param_len != len(params):
-            print("Warning! Wrong parameter number: \"{}\" of \"{}\" ({}, epxected: {})".
-                  format(method, plugin.get_name(), len(params), param_len))
-            return False
-
-        return True
-
     def _load_plugin_handle_alias(self, plugin):
         self._load_add_plugin(plugin.get_name(), plugin)
-
-        alias = plugin.alias()
-        if alias is not None:
-            for name in alias:
-                self._load_add_plugin(name.lower(), plugin)
+        for name in plugin.alias():
+            self._load_add_plugin(name.lower(), plugin)
 
     def _load_add_plugin(self, name, plugin):
         if ' ' in name:
@@ -207,7 +169,7 @@ class PluginDependency(object):
 
     def _plugin_get_requirements(self, requirements_iter):
         plugin_requirements = {
-            "plattform": [],
+            "platform": [],
             "python": [],
             "network": [],
             "native": []
@@ -232,15 +194,11 @@ class PluginDependency(object):
         """
         Parses plugin.require(). Plase refere plugin.Plugin-documentation
         """
-        requirements_iter = plugin.require()
-        if requirements_iter is None:
-            return True
+        plugin_requirements = self._plugin_get_requirements(plugin.require())
 
-        plugin_requirements = self._plugin_get_requirements(requirements_iter)
-
-        if not self._check_plattform(plugin_requirements["plattform"]):
-            required_plattform = ", ".join(plugin_requirements["plattform"])
-            return "Requires os {}".format(required_plattform)
+        if not self._check_platform(plugin_requirements["platform"]):
+            required_platform = ", ".join(plugin_requirements["platform"])
+            return "Requires os {}".format(required_platform)
 
         if not self._check_python(plugin_requirements["python"]):
             required_python = ", ".join(plugin_requirements["python"])
@@ -255,7 +213,7 @@ class PluginDependency(object):
 
         return True
 
-    def _check_plattform(self, values):
+    def _check_platform(self, values):
         if len(values) == 0:
             return True
 

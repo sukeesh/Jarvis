@@ -1,7 +1,7 @@
 import os
 from colorama import Fore
 
-from plugin import plugin, alias, LINUX
+from plugin import plugin, alias, require, LINUX
 
 
 def find_cached_music(music):
@@ -11,8 +11,9 @@ def find_cached_music(music):
     return music
 
 
-@plugin(plattform=LINUX)
 @alias("music")
+@require(platform=LINUX)
+@plugin
 def play(jarvis, data):
     """
     Jarvis will find, download and play any song you want

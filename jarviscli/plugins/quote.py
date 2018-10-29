@@ -3,23 +3,16 @@ import bs4
 
 from six.moves import input
 import json
-from plugin import Plugin
+from plugin import plugin, require
 
 
-class Quote(Plugin):
+@require(network=True)
+@plugin
+class Quote():
     """
     quote prints quote for the day for you or quotes based on a given keyword
     """
-    def require(self):
-        yield ("network", True)
-
-    def complete(self):
-        pass
-
-    def alias(self):
-        pass
-
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         prompt = 'Press 1 to get the quote of the day \n or 2 to get quotes based on a keyword: '
         user_input = self.get_input(prompt, jarvis)
 

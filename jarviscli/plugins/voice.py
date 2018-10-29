@@ -1,19 +1,19 @@
 from plugin import plugin
 
 
-@plugin()
+@plugin
 def enable_sound(jarvis, s):
     """Let Jarvis use his voice."""
     jarvis.enable_voice()
 
 
-@plugin()
+@plugin
 def disable_sound(jarvis, s):
     """Deny Jarvis his voice."""
     jarvis.disable_voice()
 
 
-@plugin()
+@plugin
 def say(jarvis, s):
     """Reads what is typed."""
     if not s:

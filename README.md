@@ -44,13 +44,13 @@ Create new file custom/hello_world.py
 ```
 from plugin import plugin
 
-@plugin()
+@plugin
 def helloworld(jarvis, s):
     """Prints \"hello world!\""""
     jarvis.say("Hello World!")
 
 
-@plugin()
+@plugin
 def repeat(jarvis, s):
     """Repeats what you type"""
     jarvis.say(s)

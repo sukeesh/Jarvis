@@ -207,35 +207,25 @@ class CmdInterpreter(Cmd):
     def _activate_plugins(self):
         """Generate do_XXX, help_XXX and (optionally) complete_XXX functions"""
         for (plugin_name, plugin) in self._plugin_manager.get_enabled().items():
-            completions = self._plugin_update_action(plugin, plugin_name)
-            if completions is not None:
-                def complete(completions):
-                    def _complete_impl(self, text, line, begidx, endidx):
-                        return [i for i in completions if i.startswith(text)]
-                    return _complete_impl
-                setattr(CmdInterpreter, "complete_" + plugin_name, complete(completions))
-            do_method = catch_all_exceptions(partial(plugin.run, self._api), pass_self=False)
-            setattr(CmdInterpreter, "do_" + plugin_name, do_method)
+            self._plugin_update_completion(plugin, plugin_name)
+
+            setattr(CmdInterpreter, "do_" + plugin_name, partial(plugin.run, self._api))
             setattr(CmdInterpreter, "help_" + plugin_name, partial(self._api.say, plugin.get_doc()))
 
-            if hasattr(plugin.__class__, "init") and callable(getattr(plugin.__class__, "init")):
-                plugin.init(self._api)
+            plugin.init(self._api)
 
-    def _plugin_update_action(self, plugin, plugin_name):
+    def _plugin_update_completion(self, plugin, plugin_name):
         """Return True if completion is available"""
-        complete = plugin.complete()
-        if complete is not None:
-            # add plugin with completion
-            # Dictionary:
-            # { plugin_name : list of completions }
-            complete = [x for x in complete]
-            self.actions.append({plugin_name: complete})
-            return complete
+        completions = [i for i in plugin.complete()]
+        if len(completions) > 0:
+            self.actions.append({plugin_name: completions})
+            def complete(completions):
+                def _complete_impl(self, text, line, begidx, endidx):
+                    return [i for i in completions if i.startswith(text)]
+                return _complete_impl
+            setattr(CmdInterpreter, "complete_" + plugin_name, complete(completions))
         else:
-            # add plugin without completion
-            # plugin name only
             self.actions.append(plugin_name)
-            return None
 
     def close(self):
         """Closing Jarvis."""

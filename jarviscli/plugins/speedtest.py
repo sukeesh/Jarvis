@@ -4,7 +4,7 @@ import threading
 import itertools
 import time
 from colorama import Fore
-from plugin import plugin
+from plugin import plugin, require
 
 
 class SpinnerThread(threading.Thread):
@@ -33,7 +33,8 @@ class SpinnerThread(threading.Thread):
         sys.stdout.flush()
 
 
-@plugin(network=True)
+@require(network=True)
+@plugin
 def speedtest(jarvis, s):
     """Runs a speedtest on your internet connection"""
     try:

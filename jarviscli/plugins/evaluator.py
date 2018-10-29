@@ -8,8 +8,8 @@ from six.moves import input
 from plugin import alias, plugin
 
 
-@plugin()
 @alias('calc', 'evaluate')
+@plugin
 def calculate(jarvis, s):
     """
     Jarvis will get your calculations done!
@@ -23,7 +23,7 @@ def calculate(jarvis, s):
         jarvis.say("Error: Not in correct format", Fore.RED)
 
 
-@plugin()
+@plugin
 def solve(jarvis, s):
     """
     Prints where expression equals zero
@@ -51,7 +51,7 @@ def solve(jarvis, s):
     calc(jarvis, s, calculator=_calc, formatter=_format, do_evalf=False)
 
 
-@plugin()
+@plugin
 def equations(jarvis, term):
     """
     Solves linear equations system
@@ -85,7 +85,7 @@ def equations(jarvis, term):
     calc(jarvis, term, calculator=lambda expr: sympy.solve(equations, dict=True))
 
 
-@plugin()
+@plugin
 def factor(jarvis, s):
     """
     Jarvis will factories
@@ -99,8 +99,8 @@ def factor(jarvis, s):
         jarvis.say("Error: Not in correct format", Fore.RED)
 
 
-@plugin()
 @alias("curve plot")
+@plugin
 def plot(jarvis, s):
     """
     Plot graph
@@ -121,7 +121,7 @@ def plot(jarvis, s):
         jarvis.say("Cannot plot - values probably too big...")
 
 
-@plugin()
+@plugin
 def limit(jarvis, s):
     """
     Prints limit to +/- infinity or to number +-. Use 'x' as variable.
@@ -244,8 +244,8 @@ def calc(jarvis, s, calculator=sympy.sympify, formatter=None, do_evalf=True):
     jarvis.say(str(result), Fore.BLUE)
 
 
-@plugin()
 @alias("curve sketch")
+@plugin
 def curvesketch(jarvis, s):
     """
     Prints useful information about a graph of a function.

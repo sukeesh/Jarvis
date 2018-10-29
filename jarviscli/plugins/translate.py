@@ -1,10 +1,11 @@
-from plugin import plugin
+from plugin import plugin, require
 from googletrans import Translator
 from googletrans.constants import LANGCODES, LANGUAGES, SPECIAL_CASES
 from six.moves import input
 
 
-@plugin(network=True)
+@require(network=True)
+@plugin
 def translate(jarvis, s):
     """
     translates from one language to another.

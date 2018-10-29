@@ -1,5 +1,5 @@
 import imdb
-from plugin import plugin
+from plugin import plugin, require
 from colorama import Fore, Style
 import six
 
@@ -42,7 +42,8 @@ if six.PY3:
     get_movie_by_id = lru_cache(maxsize=20, typed=False)(get_movie_by_id)
 
 
-@plugin(network=True)
+@require(network=True)
+@plugin
 def movie_cast(jarvis, movie):
     """"""
     data = main(jarvis, movie)
@@ -51,7 +52,8 @@ def movie_cast(jarvis, movie):
             jarvis.say(d['name'])
 
 
-@plugin(network=True)
+@require(network=True)
+@plugin
 def movie_director(jarvis, movie):
     """"""
     data = main(jarvis, movie)
@@ -60,7 +62,8 @@ def movie_director(jarvis, movie):
             jarvis.say(d['name'])
 
 
-@plugin(network=True)
+@require(network=True)
+@plugin
 def movie_plot(jarvis, movie):
     """"""
     data = main(jarvis, movie)
@@ -75,7 +78,8 @@ def movie_plot(jarvis, movie):
                 jarvis.say(d)
 
 
-@plugin(network=True)
+@require(network=True)
+@plugin
 def movie_producer(jarvis, movie):
     """"""
     data = main(jarvis, movie)
@@ -84,7 +88,8 @@ def movie_producer(jarvis, movie):
             jarvis.say(d['name'])
 
 
-@plugin(network=True)
+@require(network=True)
+@plugin
 def movie_rating(jarvis, movie):
     """"""
     data = main(jarvis, movie)
@@ -92,7 +97,8 @@ def movie_rating(jarvis, movie):
         jarvis.say(str(data['rating']))
 
 
-@plugin(network=True)
+@require(network=True)
+@plugin
 def movie_year(jarvis, movie):
     """"""
     data = main(jarvis, movie)
@@ -100,7 +106,8 @@ def movie_year(jarvis, movie):
         jarvis.say(str(data['year']))
 
 
-@plugin(network=True)
+@require(network=True)
+@plugin
 def movie_runtime(jarvis, movie):
     """"""
     data = main(jarvis, movie)
@@ -111,7 +118,8 @@ def movie_runtime(jarvis, movie):
             jarvis.say("No runtime data present")
 
 
-@plugin(network=True)
+@require(network=True)
+@plugin
 def movie_countries(jarvis, movie):
     """"""
     data = main(jarvis, movie)
@@ -120,7 +128,8 @@ def movie_countries(jarvis, movie):
             jarvis.say(str(d))
 
 
-@plugin(network=True)
+@require(network=True)
+@plugin
 def movie_genres(jarvis, movie):
     """"""
     data = main(jarvis, movie)
@@ -129,15 +138,8 @@ def movie_genres(jarvis, movie):
             jarvis.say(d)
 
 
-movie_attributes = [
-    'title', 'year', 'genres', 'director',
-    'writer', 'cast', 'color info', 'rating',
-    'aspect ratio', 'sound mix', 'runtimes',
-    'plot outline'
-]
-
-
-@plugin(network=True)
+@require(network=True)
+@plugin
 def movie_info(jarvis, movie):
     """
     Display table with various information
@@ -148,7 +150,8 @@ def movie_info(jarvis, movie):
         get_movie_info(jarvis, data)
 
 
-@plugin(network=True)
+@require(network=True)
+@plugin
 def movie_search(jarvis, movie):
     """ search for a movie on IMDB"""
     results = search_movie(jarvis, movie, all_results=True)

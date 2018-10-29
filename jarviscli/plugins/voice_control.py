@@ -1,4 +1,4 @@
-from plugin import plugin
+from plugin import plugin, require
 import os
 
 voice_control_installed = True
@@ -14,7 +14,8 @@ else:
     requirements = ['voice_control_requirements (install portaudio + re-run setup.sh)']
 
 
-@plugin(native=requirements)
+@require(native=requirements)
+@plugin
 def hear(jarvis, s):
     r = sr.Recognizer()  # intializing the speech_recognition
     listen = False

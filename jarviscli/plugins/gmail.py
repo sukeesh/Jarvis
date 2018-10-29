@@ -2,7 +2,7 @@ from plugin import plugin 					# import plugin
 import smtplib                                      		# import stmplib
 
 
-@plugin()						    	# decorator
+@plugin
 def gmail(jarvis, s):
     '''
     Sending email from a gmail account using SMTP services.

@@ -1,8 +1,9 @@
-from plugin import plugin, LINUX
+from plugin import plugin, require, LINUX
 from os import system
 
 
-@plugin(network=True, plattform=LINUX, native=["ap-hotspot", "sudo"])
+@require(network=True, platform=LINUX, native=["ap-hotspot", "sudo"])
+@plugin
 def hotspot_start(jarvis, string):
     """
     Jarvis will set up your own hotspot.
@@ -10,7 +11,8 @@ def hotspot_start(jarvis, string):
     system("sudo ap-hotspot start")
 
 
-@plugin(network=True, plattform=LINUX, native=["ap-hotspot", "sudo"])
+@require(network=True, platform=LINUX, native=["ap-hotspot", "sudo"])
+@plugin
 def hotspot_stop(jarvis, string):
     """
     Jarvis will stop your hotspot.

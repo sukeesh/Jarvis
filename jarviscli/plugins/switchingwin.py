@@ -1,11 +1,15 @@
 import os
-from plugin import plugin
-@plugin(native='wmctrl')
+from plugin import plugin, require
+
+
+@require(native='wmctrl')
+@plugin
 def go_to(jarvis, s):
     os.system("wmctrl -a " + s)  # switch to already opened app/software.
 
 
-@plugin(native='wmctrl')
+@require(native='wmctrl')
+@plugin
 def workspace(jarvis, s):
     if s == 'one':
         s = 1
@@ -13,6 +17,6 @@ def workspace(jarvis, s):
     os.system("wmctrl -s " + num)  # switch workspace.
 
 
-@plugin()
+@plugin
 def run(jarvis, s):
     os.system(s)  # run the command in terminal.
