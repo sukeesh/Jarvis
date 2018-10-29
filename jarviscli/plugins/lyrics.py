@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-import requests
-import bs4
-from plugin import Plugin
+from plugin import plugin, require
 
 # TODO: handle errors and instructions better
 
 
-class lyrics(Plugin):
+@require(network=True)
+@plugin
+class lyrics():
     """
     finds lyrics
     the format is song,artist
@@ -19,16 +19,7 @@ class lyrics(Plugin):
         self.artist = None
         self.album = None
 
-    def require(self):
-        yield ("network", True)
-
-    def complete(self):
-        pass
-
-    def alias(self):
-        pass
-
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         jarvis.say(self.find(s))
 
     # info[0] = song

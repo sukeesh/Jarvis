@@ -1,27 +1,18 @@
 import wikipedia
-from plugin import Plugin
+from plugin import plugin, complete, require
 
 
-class Wiki(Plugin):
+@require(network=True)
+@complete("search", "sumary", "content")
+@plugin
+class Wiki():
     """
     Jarvis has now wiki feature
     enter wiki search for searching related topics
     enter wiki summary for getting summary of the topic
     wiki content for full page article of topic
     """
-
-    def require(self):
-        yield ("network", True)
-
-    def complete(self):
-        yield "search"
-        yield "summary"
-        yield "content"
-
-    def alias(self):
-        pass
-
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         k = s.split(' ', 1)
         if len(k) == 1:
             jarvis.say("Do you mean:\n1. wiki search <subject>\n2. wiki summary <subject>\n3. wiki content <subject>")

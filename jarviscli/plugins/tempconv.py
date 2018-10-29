@@ -1,25 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from plugin import Plugin
+from plugin import plugin
 from colorama import Fore
 import re
 
 
-class Tempconv(Plugin):
+@plugin
+class Tempconv():
     """
     Convert temperature from Fahrenheit to Celsius and vice versa
     Examples: 32f, 18C, -20F, -8c, 105.4F, -10.21C
     """
-    def require(self):
-        pass
-
-    def complete(self):
-        pass
-
-    def alias(self):
-        pass
-
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         # Pass the input string to the regex validation function.
         if self.temp_valid_regex(s):
             self.temp_convert(jarvis, s)

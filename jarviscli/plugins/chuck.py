@@ -1,11 +1,12 @@
 import requests
 from colorama import Fore
 
-from plugin import alias, plugin
+from plugin import alias, plugin, require
 
 
-@plugin(network=True)
 @alias("tell joke")
+@require(network=True)
+@plugin
 def chuck(jarvis, s):
     """Tell a joke about Chuck Norris"""
     req = requests.get("https://api.chucknorris.io/jokes/random")

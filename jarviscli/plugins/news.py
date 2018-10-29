@@ -9,7 +9,7 @@ except ImportError:  # python2
 import json
 import webbrowser
 from six.moves import input
-from plugin import Plugin
+from plugin import plugin, require
 from colorama import Fore
 
 '''
@@ -30,7 +30,9 @@ from colorama import Fore
 '''
 
 
-class News(Plugin):
+@require(network=True)
+@plugin
+class News():
     """
     Time to get an update about the local news.
     Type \"news\" to choose your source or \"news quick\" for some headlines.
@@ -42,16 +44,7 @@ class News(Plugin):
                    "&apiKey=7488ba8ff8dc43459d36f06e7141c9e5"
         self.is_news_site_configured = False
 
-    def require(self):
-        yield ("network", True)
-
-    def complete(self):
-        pass
-
-    def alias(self):
-        pass
-
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         if s == "quick":
             try:
                 self.quick_news()

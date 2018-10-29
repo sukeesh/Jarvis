@@ -1,45 +1,26 @@
 # Plugins
 
-## Basic style
-
-There are two equivalent ways to declare Plugins:
-
-### Decorator-style
-Should be used for **small** plugins.
-
+## Basic
 ```
 from plugin import plugin
 
-@plugin()
+@plugin
 def hello_world(jarvis, s):
     """Prints \"hello world!\""""
     jarvis.say("Hello World!")
 ```
 
-### Class-style
-Should be considered for more **complex** plugins.
+Or use "callable" class:
+
 ```
-from plugin import Plugin
+from plugin import plugin
 
-
-class HelloWorld(Plugin):
-    """
-    Description of Hello world
-    """
-    def require(self):
-        pass
-
-    def complete(self):
-        pass
-
-    def alias(self):
-        pass
-
-    def run(self, jarvis, s):
-        jarvis.say("Hello world!")
+@plugin
+class hello_world:
+    """Prints \"hello world!\""""
+    def __call__(self, jarvis, s):
+        jarvis.say("Hello World!")
 ```
-
-Ignore everything except "run" for now.
 
 
 ## Naming
@@ -84,23 +65,23 @@ It is fine to develop and test plugins in the custom-folder, but before submitti
 
 ## Features
 
+Plugins may be modified using the decorators @alias, @require and @complete.
+
+These special decorators may be used in any order or several times.
+
+Note that @plugin always **must** be declared last.
+
+
 ### Alias
 
 Example:
 
-Class-style:
-```
-    def alias(self):
-       yield "Hello"
-       yield "Hi"
-```
-Decorator-style:
 ```
 from plugin import plugin, alias
 
 
-@plugin()
 @alias("Hello", "Hi")
+@plugin
 def helloWorld(jarvis, s):
    (...)
 ```
@@ -126,23 +107,13 @@ Native means any native Binary in $PATH must exist. If multiple natives are spec
 
 Example: Only support Python 3 with Linux; Require firefox and curl with active network connection.
 
-Class-style:
+
 ```
-from plugin import Plugin, PYTHON3, LINUX
-
-    def require(self):
-        yield("plattform", LINUX)
-        yield("python", PYTHON3)
-        yield("network", True)
-        yield("native", ["firefox", "curl"])
-```
-
-Decorator-style:
-```
-from plugin import plugin, PYTHON3, LINUX
+from plugin import plugin, require, PYTHON3, LINUX
 
 
-@plugin(plattform=LINUX, python=PYTHON3, network=True, native=["firefox", "curl"])
+@require(platform=LINUX, python=PYTHON3, network=True, native=["firefox", "curl"])
+@plugin
 def helloWorld(jarvis, s):
     (...)
 ```
@@ -157,22 +128,12 @@ Special behaviour:
 
 Use Completion feature (complete with TAB).
 
-Class-style:
-```
-from plugin import Plugin
-
-    def complete(self):
-        yield "complete0"
-        yield "complete1"
-```
-
-Decorator-style:
 ```
 from plugin import plugin, complete
 
 
-@plugin()
 @complete("complete0", "complete1")
+@plugin
 def helloWorld(jarvis, s):
     (...)
 ```
@@ -183,42 +144,19 @@ def helloWorld(jarvis, s):
 Take "check ram" and "check weather". Of course you could create a plugin "check" and doing something like ``if 'ram' in s``. But it's better to create two separate plugins:
 
 ```
-@plugin()
+@plugin
 check_ram(jarvis, s):
     (...)
 
 
-@plugin()
+@plugin
 check_weather(jarvis, s):
     (...)
 ```
 
 One '_' in class- or method-names split first word from second.
 
-Two word commands even work with alias() (but use Space instead of '_'):
-
-```
-from plugin import Plugin
-
-
-class HelloWorld(Plugin):
-    """
-    Description of Hello world
-    """
-    def require(self):
-        pass
-
-    def complete(self):
-        pass
-
-    def alias(self):
-        yield("Hello world")
-
-    def run(self, jarvis, s):
-        jarvis.say("Hello world!")
-```
-
-This will make "Hello world" available.
+Two word commands even work with alias() (but use Space instead of '_').
 
 Note that this only works for two-word commands - there is currently nothing like "three world commands".
 
@@ -227,13 +165,12 @@ Note that this only works for two-word commands - there is currently nothing lik
 
 If a Class-Plugins has a method ``init(self, jarvis)`` this method will be called during initialisation.
 
-This feature works for Composed-Plugins. This feature is not available for decorator-style.
-
 ```
-from plugin import Plugin
+from plugin import plugin
 
 
-class HelloWorld(Plugin):
+@plugin
+class HelloWorld:
     """
     Description of Hello world
     """

@@ -1,10 +1,11 @@
-from plugin import plugin, LINUX
+from plugin import plugin, require, LINUX
 
 from colorama import Fore
 import os
 
 
-@plugin(plattform=LINUX, native='ims')
+@require(platform=LINUX, native='ims')
+@plugin
 def movies():
     """Jarvis will find a good movie for you"""
     movie_name = input(Fore.RED + "What do you want to watch?\n" + Fore.RESET)

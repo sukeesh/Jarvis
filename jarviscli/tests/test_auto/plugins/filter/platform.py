@@ -4,7 +4,7 @@ from plugin import Plugin, LINUX, MACOS
 class Linux(Plugin):
     """Test"""
     def require(self):
-        yield ("plattform", LINUX)
+        yield ("platform", LINUX)
 
     def complete(self):
         pass
@@ -19,7 +19,7 @@ class Linux(Plugin):
 class Macos(Plugin):
     """Test"""
     def require(self):
-        yield ("plattform", MACOS)
+        yield ("platform", MACOS)
 
     def complete(self):
         pass
@@ -34,7 +34,7 @@ class Macos(Plugin):
 class Both(Plugin):
     """Test"""
     def require(self):
-        yield ("plattform", (LINUX, MACOS))
+        yield ("platform", (LINUX, MACOS))
 
     def complete(self):
         pass
@@ -49,8 +49,8 @@ class Both(Plugin):
 class Bothalt(Plugin):
     """Test"""
     def require(self):
-        yield ("plattform", LINUX)
-        yield ("plattform", MACOS)
+        yield ("platform", LINUX)
+        yield ("platform", MACOS)
 
     def complete(self):
         pass

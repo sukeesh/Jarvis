@@ -1,10 +1,11 @@
-from plugin import plugin
+from plugin import plugin, require
 from six.moves import input
 from os import system
 from colorama import Fore
 
 
-@plugin(native='grep')
+@require(native='grep')
+@plugin
 def match(jarvis, string):
     """
     Matches a string pattern in a file using regex.

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import webbrowser
-from plugin import plugin
+from plugin import plugin, require
 
 
-@plugin(network=True)
+@require(network=True)
+@plugin
 def display_pics(jarvis, string):
     """
     Displays photos of the topic you choose.

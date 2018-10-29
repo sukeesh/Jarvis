@@ -2,10 +2,11 @@ from os import system
 
 from colorama import Fore
 
-from plugin import Plugin
+from plugin import plugin
 
 
-class IP(Plugin):
+@plugin
+class IP():
     """
     Display local and public ip address
     """
@@ -15,18 +16,8 @@ class IP(Plugin):
 
         self._public_ip_v4 = "curl -4 ifconfig.co --connect-timeout 10"  # 10 second time out if not connected to internet
         self._public_ip_v6 = "curl -6 ifconfig.co --connect-timeout 10"  # 10 second time out if not connected to internet
-        super(Plugin, self).__init__()
 
-    def require(self):
-        pass
-
-    def complete(self):
-        pass
-
-    def alias(self):
-        pass
-
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         self._get_local_ip(jarvis)
         jarvis.say("")
         self._get_public_ip(jarvis)

@@ -1,10 +1,11 @@
 import subprocess
-from plugin import plugin, LINUX
+from plugin import plugin, require, LINUX
 
 VALID_OPTIONS = ['status', 'vendor', 'energy', 'technology', 'remaining']
 
 
-@plugin(plattform=LINUX, native='upower')
+@require(platform=LINUX, native='upower')
+@plugin
 def battery(jarvis, s):
     """
     Provides battery status like battery percentage

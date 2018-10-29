@@ -1,4 +1,4 @@
-from plugin import plugin
+from plugin import plugin, require
 import requests
 import os
 import json
@@ -11,7 +11,8 @@ def complete(text, state):
     return (glob.glob(text + '*') + [None])[state]
 
 
-@plugin(network=True)
+@require(network=True)
+@plugin
 def imgur(jarvis, s):
     """
     Uploads an image to imgur
