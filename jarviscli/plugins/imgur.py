@@ -26,6 +26,7 @@ def imgur(jarvis, s):
     file = input('')
     # Get the absolute path
     file = os.path.abspath(file)
+    file = os.path.expanduser(file)
     if os.path.isfile(file):
         try:
             url = "https://api.imgur.com/3/image"

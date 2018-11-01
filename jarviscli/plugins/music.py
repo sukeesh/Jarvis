@@ -19,7 +19,7 @@ def play(jarvis, data):
     If ffmpeg is installed, songs will be downloaded as .mp3 instead .webm
     -- Example:
         music wonderful tonight
-        pay eye of the tiger
+        play eye of the tiger
     """
 
     if len(data) == 0:
