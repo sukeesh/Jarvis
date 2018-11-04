@@ -10,8 +10,8 @@ class IP(Plugin):
     Display local and public ip address
     """
     def __init__(self):
-        self._local_ip = """ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' |
-                    grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'"""
+        self._local_ip = """ifconfig | grep -Eo 'inet (addr:)?([0-9]*\\.){3}[0-9]*' |
+                    grep -Eo '([0-9]*\\.){3}[0-9]*' | grep -v '127.0.0.1'"""
 
         self._public_ip = "timeout 10 curl ifconfig.co"  # 10 second time out if not connected to internet
         super(Plugin, self).__init__()

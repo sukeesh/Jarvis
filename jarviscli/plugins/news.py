@@ -93,8 +93,8 @@ class News(Plugin):
     def news_options(self, jarvis):
         # check to see if user already has default news source
         if jarvis.get_data('news-source'):
-            print("your default news source is " +
-                  jarvis.get_data('news-source'))
+            print("your default news source is {}"
+                  .format(jarvis.get_data('news-source')))
             print("Would you like news from this source? (yes/no): ")
             x = input()
             if x == 'y' or x == 'yes':

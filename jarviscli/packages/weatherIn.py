@@ -40,5 +40,7 @@ def main(self, s):
     temperature = j['main']['temp']
     description = j['weather'][0]['main']
     location = j['name']
-    print(Fore.BLUE + "It's " + str(temperature) + unit +
-          str(location.title()) + " (" + str(description) + ")" + Fore.RESET)
+    print("{COLOR}It's {TEMP}{UNIT}{LOCATION} ({DESCRIPTION}){COLOR_RESET}"
+          .format(COLOR=Fore.BLUE, COLOR_RESET=Fore.RESET,
+                  TEMP=temperature, UNIT=unit, LOCATION=location.title(),
+                  DESCRIPTION=description))

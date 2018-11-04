@@ -64,20 +64,22 @@ def weather(city=None):
     else:
         temperature = j['main']['temp']
         description = j['weather'][0]['main']
-        print(Fore.BLUE + "It's " + str(temperature) + unit +
-              str(city) + " (" + str(description) + ")" + Fore.RESET)
+        print("{COLOR}It's {TEMP}{UNIT}{CITY} ({DESCR}){COLOR_RESET}"
+              .format(COLOR=Fore.BLUE, COLOR_RESET=Fore.RESET,
+                      TEMP=temperature, UNIT=unit, CITY=city,
+                      DESCR=description))
 
     return True
 
 
 def search_near(things, city=0):
     if city:
-        print(Fore.GREEN + "Hold on!, I'll show " + things +
-              " near " + city + Fore.RESET)
-        url = "https://www.google.com/maps/search/{0}+{1}".format(things, city)
+        print("{COLOR}Hold on! I'll show {THINGS} near {CITY}{COLOR_RESET}"
+              .format(COLOR=Fore.GREEN, COLOR_RESET=Fore.RESET,
+                      THINGS=things, CITY=city))
     else:
-        print(Fore.GREEN + "Hold on!, I'll show " +
-              things + " near you" + Fore.RESET)
+        print("{COLOR}Hold on!, I'll show {THINGS} near you{COLOR_RESET}"
+              .format(COLOR=Fore.GREEN, COLOR_RESET=Fore.RESET, THINGS=things))
         url = "https://www.google.com/maps/search/{0}/@{1},{2}".format(
             things, get_location()['latitude'], get_location()['longitude'])
     webbrowser.open(url)

@@ -14,10 +14,10 @@ test = Quote()
 
 class QuoteTest(unittest.TestCase):
 
-    quotes = [{u'quote': u'Traveling, you realize that differences are lost:' +
-               ' each city takes to resembling all cities, places exchange' +
-               ' their form, order, distances, a shapeless dust cloud invades' +
-               ' the continents.',
+    quotes = [{u'quote': (u'Traveling, you realize that differences are lost:'
+                          ' each city takes to resembling all cities, places exchange'
+                          ' their form, order, distances, a shapeless dust cloud invades'
+                          ' the continents.'),
                u'cat': u'travel', u'author': 'Italo Calvino'}]
 
     def setUp(self):
@@ -35,12 +35,9 @@ class QuoteTest(unittest.TestCase):
         Quote().try_again(self.jarvis, 'travel')
 
     def test_contains_word(self):
-        self.assertEqual(Quote().contains_word('Friends show their love in' +
-                                               'times of trouble, not in happiness. ',
-                                               'friends'), True)
-        self.assertEqual(Quote().contains_word('Friends show their love in' +
-                                               'times of trouble, not in happiness. ',
-                                               'travel'), False)
+        text = 'Friends show their love in times of trouble, not in happiness.'
+        self.assertEqual(Quote().contains_word(text, 'friends'), True)
+        self.assertEqual(Quote().contains_word(text, 'travel'), False)
 
     @patch('plugins.quote.input')
     def test_get_input(self, get_mock):
