@@ -36,8 +36,9 @@ def main(self, s):
     time = j['formatted']
     self.dst = j['dst']
     # Prints current date and time as YYYY-MM-DD HH:MM:SS
-    print(Fore.MAGENTA + "The current date and time in " +
-          str(s).title() + " is: " + str(time) + Fore.RESET)
+    print("{COLOR}The current date and time in {LOC} is: {TIME}{COLOR_RESET}"
+          .format(COLOR=Fore.MAGENTA, COLOR_RESET=Fore.RESET,
+                  LOC=str(s).title(), TIME=str(time)))
 
 
 def getLocation(s):

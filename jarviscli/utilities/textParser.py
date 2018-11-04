@@ -135,9 +135,9 @@ def parse_date(string):
             ret_date = dt.strptime(d, "%y-%m-%d").date()
         elif re.match("^[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]$", d):
             ret_date = dt.strptime(d, "%Y-%m-%d").date()
-        elif re.match("^[0-3][0-9]\.[0-1][0-9]\.[0-9]{2}$", d):
+        elif re.match("^[0-3][0-9]\\.[0-1][0-9]\\.[0-9]{2}$", d):
             ret_date = dt.strptime(d, "%d.%m.%y").date()
-        elif re.match("^[0-3][0-9]\.[0-1][0-9]\.[1-9][0-9]{3}$", d):
+        elif re.match("^[0-3][0-9]\\.[0-1][0-9]\\.[1-9][0-9]{3}$", d):
             ret_date = dt.strptime(d, "%d.%m.%Y").date()
 
         elif re.match("^[0-1][0-9]:[0-5][0-9][AP]M$", d):
