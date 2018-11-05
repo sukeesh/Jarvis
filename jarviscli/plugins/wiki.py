@@ -24,11 +24,7 @@ class Wiki(Plugin):
     def run(self, jarvis, s):
         k = s.split(' ', 1)
         if len(k) == 1:
-            jarvis.say("Do you mean:")
-            jarvis.say("1) wiki search <subject>")
-            jarvis.say("2) wiki summary <subject>")
-            jarvis.say("3) wiki content <subject>")
-
+            jarvis.say("Do you mean:\n1. wiki search <subject>\n2. wiki summary <subject>\n3. wiki content <subject>")
         else:
             data = None
             if k[0] == "search":
