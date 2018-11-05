@@ -23,23 +23,30 @@ class Wiki(Plugin):
 
     def run(self, jarvis, s):
         k = s.split(' ', 1)
-        data = None
-        if k[0] == "search":
-            data = self.search(" ".join(k[1:]))
-        elif k[0] == "summary":
-            data = self.summary(" ".join(k[1:]))
-        elif k[0] == "content":
-            data = self.content(" ".join(k[1:]))
-        else:
-            jarvis.say("I don't know what you mean")
-            return
+        if len(k) == 1:
+            jarvis.say("Do you mean:")
+            jarvis.say("1) wiki search <subject>")
+            jarvis.say("2) wiki summary <subject>")
+            jarvis.say("3) wiki content <subject>")
 
-        if isinstance(data, list):
-            print("\nDid you mean one of these pages?\n")
-            for d in range(len(data)):
-                print(str(d + 1) + ": " + data[d])
         else:
-            print("\n" + data)
+            data = None
+            if k[0] == "search":
+                data = self.search(" ".join(k[1:]))
+            elif k[0] == "summary":
+                data = self.summary(" ".join(k[1:]))
+            elif k[0] == "content":
+                data = self.content(" ".join(k[1:]))
+            else:
+                jarvis.say("I don't know what you mean")
+                return
+
+            if isinstance(data, list):
+                print("\nDid you mean one of these pages?\n")
+                for d in range(len(data)):
+                    print(str(d + 1) + ": " + data[d])
+            else:
+                print("\n" + data)
 
     def search(self, query, count=10, suggestion=False):
         """Do a Wikipedia search for a query, returns a list of 10 related items."""
