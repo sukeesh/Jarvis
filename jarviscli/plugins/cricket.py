@@ -116,7 +116,7 @@ class Cricket(Plugin):
         matches = self.all_matches()
         jarvis.say(Fore.RED + "\nALL MATCHES\n" + Fore.LIGHTBLUE_EX)
         if matches == []:
-            jarvis.say(Fore.BLACK + "No Matches Being Played!\n" + Fore.RESET)
+            jarvis.say("No Matches Being Played!\n", Fore.RED)
             return
         for i, m in enumerate(matches, 1):
             jarvis.say("{}. {}".format(str(i), m))
