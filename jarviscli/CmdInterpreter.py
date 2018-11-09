@@ -378,7 +378,11 @@ class CmdInterpreter(Cmd):
     def do_weather(self, s):
         """Get information about today's weather."""
         try:
-            weather_pinpoint.main(self.memory, self, s)
+            word=s.strip()
+            if(len(word)>1):
+                weatherIn.main(self,s)
+            else:
+                weather_pinpoint.main(self.memory, self, s)
         except ConnectionError:
             print(CONNECTION_ERROR_MSG)
 
