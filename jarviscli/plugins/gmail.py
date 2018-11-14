@@ -27,7 +27,8 @@ def gmail(jarvis, s):
         print("User Logged in")
     except:
         print('''Allow Less secure apps in GOOGLE ACCOUNT SETTINGS to use SMTP services by following the given steps: 
-										\n\t\tStep 1. Log in to email using your browser. 											\n\t\tStep 2. Go to account settings.
+										\n\t\tStep 1. Log in to email using your browser. 
+										\n\t\tStep 2. Go to account settings.
 										\n\t\tStep 3. Find 'allow less secure apps' and mark it as ON.''')  											         
         server.quit()
         exit()
