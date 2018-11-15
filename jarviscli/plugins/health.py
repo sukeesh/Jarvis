@@ -1,7 +1,7 @@
 from plugin import plugin
 
 
-@plugin
+@plugin("health bmi")
 def health_bmi(jarvis, s):
     """
     Tells the Body Mass Index(BMI).
@@ -42,7 +42,7 @@ def bmi_categories(bmi):
     return category
 
 
-@plugin
+@plugin("health calories")
 def health_calories(jarvis, s):
     """
     Tells the recommended daily calorie intake, also recommends calories for weight add and loss.(Source 1)

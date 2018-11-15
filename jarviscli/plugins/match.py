@@ -5,7 +5,7 @@ from colorama import Fore
 
 
 @require(native='grep')
-@plugin
+@plugin('match')
 def match(jarvis, string):
     """
     Matches a string pattern in a file using regex.

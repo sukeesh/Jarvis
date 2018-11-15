@@ -6,14 +6,14 @@ from colorama import Fore
 from plugin import plugin, require
 
 
-@plugin
+@plugin('clock')
 def clock(jarvis, s):
     """Gives information about time"""
     jarvis.say(ctime(), Fore.BLUE)
 
 
 @require(native='termdown')
-@plugin
+@plugin('stopwatch')
 def stopwatch(jarvis, s):
     """
     Start stopwatch
@@ -27,7 +27,7 @@ def stopwatch(jarvis, s):
 
 
 @require(native="termdown")
-@plugin
+@plugin('timer')
 def timer(jarvis, s):
     """
     Set a timer

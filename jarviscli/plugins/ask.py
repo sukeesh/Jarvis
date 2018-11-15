@@ -43,7 +43,7 @@ class Brain:
         os.remove(os.path.join(module_path, "brain/bot_brain.brn"))
 
 
-@plugin
+@plugin('ask')
 def ask(jarvis, s):
     """Start chatting with Jarvis"""
     brain = Brain()

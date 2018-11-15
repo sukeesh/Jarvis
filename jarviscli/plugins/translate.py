@@ -5,7 +5,7 @@ from six.moves import input
 
 
 @require(network=True)
-@plugin
+@plugin('translate')
 def translate(jarvis, s):
     """
     translates from one language to another.

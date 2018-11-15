@@ -5,7 +5,7 @@ from colorama import Fore
 from plugin import plugin
 
 
-@plugin
+@plugin('ip')
 class IP():
     """
     Display local and public ip address

@@ -4,7 +4,7 @@ from plugin import plugin, complete, require
 
 @require(network=True)
 @complete("search", "sumary", "content")
-@plugin
+@plugin('wiki')
 class Wiki():
     """
     Jarvis has now wiki feature

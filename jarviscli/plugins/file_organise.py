@@ -6,7 +6,7 @@ from six.moves import input
 from plugin import plugin
 
 
-@plugin
+@plugin('file organise')
 class File_Organise():
     """
     Type file_organise and follow instructions

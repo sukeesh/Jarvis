@@ -4,7 +4,7 @@ from plugin import plugin, require
 
 
 @require(network=True)
-@plugin
+@plugin('display pics')
 def display_pics(jarvis, string):
     """
     Displays photos of the topic you choose.

@@ -7,7 +7,7 @@ import nltk
 nltk.data.path.append("jarviscli/data/ntlk")
 
 
-@plugin
+@plugin('dictionary')
 def dictionary(jarvis, s):
     """
     Get meaning, synonym and antonym of any word

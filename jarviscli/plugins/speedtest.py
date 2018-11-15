@@ -34,7 +34,7 @@ class SpinnerThread(threading.Thread):
 
 
 @require(network=True)
-@plugin
+@plugin('speedtest')
 def speedtest(jarvis, s):
     """Runs a speedtest on your internet connection"""
     try:

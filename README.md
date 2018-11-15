@@ -44,13 +44,13 @@ Create new file custom/hello_world.py
 ```
 from plugin import plugin
 
-@plugin
-def helloworld(jarvis, s):
+@plugin("hello world")
+def hello_world(jarvis, s):
     """Prints \"hello world!\""""
     jarvis.say("Hello World!")
 
 
-@plugin
+@plugin("repeat")
 def repeat(jarvis, s):
     """Repeats what you type"""
     jarvis.say(s)
@@ -64,7 +64,7 @@ In order to let Jarvis talk out loud type: enable sound
 Type 'help' for a list of available actions.
 
 ~> Hi, what can I do for you?
-helloworld
+hello world
 Hello World!
 ~> What can i do for you?
 repeat Jarvis is cool!

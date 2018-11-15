@@ -6,7 +6,7 @@ from pycricbuzz import Cricbuzz
 
 
 @require(network=True)
-@plugin
+@plugin('cricket')
 class Cricket():
     """
     Enter cricket and follow the instructions
