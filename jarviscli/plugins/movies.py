@@ -5,7 +5,7 @@ import os
 
 
 @require(platform=LINUX, native='ims')
-@plugin
+@plugin('movies')
 def movies():
     """Jarvis will find a good movie for you"""
     movie_name = input(Fore.RED + "What do you want to watch?\n" + Fore.RESET)

@@ -15,7 +15,7 @@ else:
 
 
 @require(native=requirements)
-@plugin
+@plugin("hear")
 def hear(jarvis, s):
     r = sr.Recognizer()  # intializing the speech_recognition
     listen = False

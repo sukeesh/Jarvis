@@ -5,7 +5,7 @@ VALID_OPTIONS = ['status', 'vendor', 'energy', 'technology', 'remaining']
 
 
 @require(platform=LINUX, native='upower')
-@plugin
+@plugin('battery')
 def battery(jarvis, s):
     """
     Provides battery status like battery percentage

@@ -332,7 +332,7 @@ class RemindTodoInteract_Remind:
 
 
 # ##################### PLUGIN DEFINITION ##########################
-@plugin
+@plugin('todo')
 class Todo(TodoBase):
     """
     List todo list
@@ -346,7 +346,7 @@ class Todo(TodoBase):
         self.do_print(jarvis)
 
 
-@plugin
+@plugin('todo add')
 class Todo_Add(TodoBase):
     """Add new todo entry"""
 
@@ -354,7 +354,7 @@ class Todo_Add(TodoBase):
         self.add(jarvis, s)
 
 
-@plugin
+@plugin('todo remove')
 class Todo_Remove(TodoBase):
     """
     Remove reminder
@@ -367,7 +367,7 @@ class Todo_Remove(TodoBase):
         self.remove(jarvis, s)
 
 
-@plugin
+@plugin('todo progress')
 class Todo_Progress(TodoBase):
     """
     Set progress info
@@ -379,7 +379,7 @@ class Todo_Progress(TodoBase):
         self.modify(jarvis, entry)
 
 
-@plugin
+@plugin('remind')
 class Remind(RemindBase):
     """List all scheduled reminders"""
 
@@ -391,7 +391,7 @@ class Remind(RemindBase):
         self.do_print(jarvis)
 
 
-@plugin
+@plugin('remind at')
 class Remind_At(RemindBase):
     """
     Add reminder
@@ -405,7 +405,7 @@ class Remind_At(RemindBase):
                         'remind at 12:30 to XXX')
 
 
-@plugin
+@plugin('remind in')
 class Remind_In(RemindBase):
     """
     Add reminder
@@ -418,7 +418,7 @@ class Remind_In(RemindBase):
         self.remind_add(jarvis, s, timeparse, 'remind in 30m 10s to XXX')
 
 
-@plugin
+@plugin('remind remove')
 class Remind_Remove(RemindBase):
     """
     -- Example:

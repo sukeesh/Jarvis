@@ -3,7 +3,7 @@ from os import system
 
 
 @require(network=True, platform=LINUX, native=["ap-hotspot", "sudo"])
-@plugin
+@plugin('hotspot start')
 def hotspot_start(jarvis, string):
     """
     Jarvis will set up your own hotspot.
@@ -12,7 +12,7 @@ def hotspot_start(jarvis, string):
 
 
 @require(network=True, platform=LINUX, native=["ap-hotspot", "sudo"])
-@plugin
+@plugin('hotspot stop')
 def hotspot_stop(jarvis, string):
     """
     Jarvis will stop your hotspot.

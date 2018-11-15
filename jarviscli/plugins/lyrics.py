@@ -5,7 +5,7 @@ from plugin import plugin, require
 
 
 @require(network=True)
-@plugin
+@plugin('lyrics')
 class lyrics():
     """
     finds lyrics

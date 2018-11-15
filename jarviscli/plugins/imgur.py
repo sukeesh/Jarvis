@@ -12,7 +12,7 @@ def complete(text, state):
 
 
 @require(network=True)
-@plugin
+@plugin('imgur')
 def imgur(jarvis, s):
     """
     Uploads an image to imgur

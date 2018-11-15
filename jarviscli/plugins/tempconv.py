@@ -5,7 +5,7 @@ from colorama import Fore
 import re
 
 
-@plugin
+@plugin('tempconv')
 class Tempconv():
     """
     Convert temperature from Fahrenheit to Celsius and vice versa

@@ -31,7 +31,7 @@ from colorama import Fore
 
 
 @require(network=True)
-@plugin
+@plugin('news')
 class News():
     """
     Time to get an update about the local news.

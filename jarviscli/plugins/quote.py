@@ -7,7 +7,7 @@ from plugin import plugin, require
 
 
 @require(network=True)
-@plugin
+@plugin('quote')
 class Quote():
     """
     quote prints quote for the day for you or quotes based on a given keyword

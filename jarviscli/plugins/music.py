@@ -13,7 +13,7 @@ def find_cached_music(music):
 
 @alias("music")
 @require(platform=LINUX)
-@plugin
+@plugin('play')
 def play(jarvis, data):
     """
     Jarvis will find, download and play any song you want

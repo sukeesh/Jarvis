@@ -4,14 +4,14 @@ from plugin import LINUX, MACOS, plugin, require
 
 
 @require(platform=LINUX, native="pactl")
-@plugin
+@plugin('increase volume')
 def increase_volume__LINUX(jarvis, s):
     """Increases your speaker's sound."""
     system("pactl -- set-sink-volume 0 +3%")
 
 
 @require(platform=MACOS, native="osascript")
-@plugin
+@plugin('increase volume')
 def increase_volume__MAC(jarvis, s):
     """Increases your speaker's sound."""
     system(
@@ -21,14 +21,14 @@ def increase_volume__MAC(jarvis, s):
 
 
 @require(platform=LINUX, native="pactl")
-@plugin
+@plugin('decrease volume')
 def decrease_volume__LINUX(jarvis, s):
     """Decreases your speaker's sound."""
     system("pactl -- set-sink-volume 0 -10%")
 
 
 @require(platform=MACOS, native="osascript")
-@plugin
+@plugin('decrease volume')
 def decrease_volume__MAC(jarvis, s):
     """Decreases your speaker's sound."""
     system(
@@ -38,7 +38,7 @@ def decrease_volume__MAC(jarvis, s):
 
 
 @require(platform=LINUX, native="pactl")
-@plugin
+@plugin('mute')
 def mute(jarvis, s):
     """Mute: Silence your speaker's sound."""
     system("pactl -- set-sink-mute 0 toggle")

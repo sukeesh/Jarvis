@@ -75,12 +75,7 @@ class Plugin(pluginmanager.IPlugin):
         return self._alias
 
     def get_name(self):
-        """
-        * Lower case
-        * Remove everything after __
-        * replace '_' with Space
-        """
-        return self.__class__.__name__.lower().split("__", 1)[0].replace("_", " ")
+        return self._name
 
     def get_doc(self):
         if self.__doc__ is None:
@@ -103,7 +98,7 @@ class Plugin(pluginmanager.IPlugin):
             jarvis.connection_error()
 
 
-def plugin(run):
+def plugin(name):
     """
     Convert function in Plugin Class
 
@@ -111,26 +106,31 @@ def plugin(run):
     def hotspot_start(jarvis, s):
         system("sudo ap-hotspot start")
     """
-    if isclass(run):
-        # class -> object
-        run_instance = run()
-        def __run_method(self, jarvis, s):
-            run_instance(jarvis, s)
-    else:
-        def __run_method(self, jarvis, s):
-            print("--> {}".format(s))
-            run(jarvis, s)
+    def create_plugin(run):
+        if isclass(run):
+            # class -> object
+            run_instance = run()
 
-    # create class
-    plugin_class = type(run.__name__, Plugin.__bases__, dict(Plugin.__dict__))
-    plugin_class.run = __run_method
-    plugin_class.__doc__ = run.__doc__
+            def __run_method(self, jarvis, s):
+                run_instance(jarvis, s)
+        else:
+            def __run_method(self, jarvis, s):
+                print("--> {}".format(s))
+                run(jarvis, s)
 
-    plugin_class._require = []
-    plugin_class._complete = []
-    plugin_class._alias = []
+        # create class
+        plugin_class = type(run.__name__, Plugin.__bases__, dict(Plugin.__dict__))
+        plugin_class.run = __run_method
+        plugin_class.__doc__ = run.__doc__
 
-    return plugin_class
+        plugin_class._require = []
+        plugin_class._complete = []
+        plugin_class._alias = []
+        plugin_class._name = name
+        plugin_class._backend = run
+
+        return plugin_class
+    return create_plugin
 
 
 def require(network=None, platform=None, python=None, native=None):

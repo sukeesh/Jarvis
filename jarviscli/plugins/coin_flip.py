@@ -2,7 +2,7 @@ from plugin import plugin
 import random
 
 
-@plugin
+@plugin('coin flip')
 def coin_flip(jarvis, s):
     """
     Randomizes between Heads and Tails

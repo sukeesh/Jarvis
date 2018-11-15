@@ -3,7 +3,7 @@ import os
 from plugin import plugin, require, LINUX
 
 
-@plugin
+@plugin('shutdown')
 def shutdown(jarvis, s):
     """Shutdown the system"""
     if s == '':
@@ -15,14 +15,14 @@ def shutdown(jarvis, s):
     os.system(string)
 
 
-@plugin
+@plugin('cancel shutdown')
 def cancel_shutdown(jarvis, s):
     """Cancel an active shutdown"""
     os.system('sudo shutdown -c')
     jarvis.say('Shutdown cancelled.')
 
 
-@plugin
+@plugin('reboot')
 def reboot(jarvis, s):
     """Reboot the system"""
     if s == '':
@@ -32,7 +32,7 @@ def reboot(jarvis, s):
 
 
 @require(native="systemctl", platform=LINUX)
-@plugin
+@plugin('suspend')
 def suspend(jarvis, s):
     """
     Suspend (to RAM) - also known as Stand By or Sleep mode.
@@ -43,7 +43,7 @@ def suspend(jarvis, s):
 
 
 @require(native="systemctl", platform=LINUX)
-@plugin
+@plugin('hibernate')
 def hibernate(jarvis, s):
     """
     Hibernate - also known as "Suspend to Disk"
@@ -56,7 +56,7 @@ def hibernate(jarvis, s):
 
 
 @require(native="systemctl", platform=LINUX)
-@plugin
+@plugin('hybridsleep')
 def hybridsleep(jarvis, s):
     """
     Hybrid sleep.

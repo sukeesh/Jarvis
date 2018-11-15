@@ -6,7 +6,7 @@ from plugin import plugin, require
 
 
 @require(network=True)
-@plugin
+@plugin('hackathon')
 class Hackathon():
     """
     Find upcoming hackathons from hackerearth

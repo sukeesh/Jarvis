@@ -43,7 +43,7 @@ if six.PY3:
 
 
 @require(network=True)
-@plugin
+@plugin('movie cast')
 def movie_cast(jarvis, movie):
     """"""
     data = main(jarvis, movie)
@@ -53,7 +53,7 @@ def movie_cast(jarvis, movie):
 
 
 @require(network=True)
-@plugin
+@plugin('movie director')
 def movie_director(jarvis, movie):
     """"""
     data = main(jarvis, movie)
@@ -63,7 +63,7 @@ def movie_director(jarvis, movie):
 
 
 @require(network=True)
-@plugin
+@plugin('movie plot')
 def movie_plot(jarvis, movie):
     """"""
     data = main(jarvis, movie)
@@ -79,7 +79,7 @@ def movie_plot(jarvis, movie):
 
 
 @require(network=True)
-@plugin
+@plugin('movie producer')
 def movie_producer(jarvis, movie):
     """"""
     data = main(jarvis, movie)
@@ -89,7 +89,7 @@ def movie_producer(jarvis, movie):
 
 
 @require(network=True)
-@plugin
+@plugin('movie rating')
 def movie_rating(jarvis, movie):
     """"""
     data = main(jarvis, movie)
@@ -98,7 +98,7 @@ def movie_rating(jarvis, movie):
 
 
 @require(network=True)
-@plugin
+@plugin('movie year')
 def movie_year(jarvis, movie):
     """"""
     data = main(jarvis, movie)
@@ -107,7 +107,7 @@ def movie_year(jarvis, movie):
 
 
 @require(network=True)
-@plugin
+@plugin('movie runtime')
 def movie_runtime(jarvis, movie):
     """"""
     data = main(jarvis, movie)
@@ -119,7 +119,7 @@ def movie_runtime(jarvis, movie):
 
 
 @require(network=True)
-@plugin
+@plugin('movie countries')
 def movie_countries(jarvis, movie):
     """"""
     data = main(jarvis, movie)
@@ -129,7 +129,7 @@ def movie_countries(jarvis, movie):
 
 
 @require(network=True)
-@plugin
+@plugin('movie genres')
 def movie_genres(jarvis, movie):
     """"""
     data = main(jarvis, movie)
@@ -139,7 +139,7 @@ def movie_genres(jarvis, movie):
 
 
 @require(network=True)
-@plugin
+@plugin('movie info')
 def movie_info(jarvis, movie):
     """
     Display table with various information
@@ -151,7 +151,7 @@ def movie_info(jarvis, movie):
 
 
 @require(network=True)
-@plugin
+@plugin('movie search')
 def movie_search(jarvis, movie):
     """ search for a movie on IMDB"""
     results = search_movie(jarvis, movie, all_results=True)

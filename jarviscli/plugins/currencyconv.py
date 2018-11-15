@@ -16,7 +16,7 @@ FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
 @require(network=True)
-@plugin
+@plugin('currencyconv')
 class Currencyconv():
     """
     Convert an amount of money from a currency to another.

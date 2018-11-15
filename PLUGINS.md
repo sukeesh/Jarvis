@@ -4,7 +4,7 @@
 ```
 from plugin import plugin
 
-@plugin
+@plugin("hello world")
 def hello_world(jarvis, s):
     """Prints \"hello world!\""""
     jarvis.say("Hello World!")
@@ -15,37 +15,14 @@ Or use "callable" class:
 ```
 from plugin import plugin
 
-@plugin
+@plugin("hello world")
 class hello_world:
     """Prints \"hello world!\""""
     def __call__(self, jarvis, s):
         jarvis.say("Hello World!")
 ```
 
-
-## Naming
-
-The Class/Method name equals the Jarvis-command name.
-
-So imagine you want to do something if user enters "laugh", do something like: ``def laugh(javis, s)`` or ``class laugh(plugin)``. And this method (or run()-method) will be called each time the user enters "laugh" in the javis prompt.
-
-Please note:
-
-* Case-insenstive - Jarvis commands are always lower case
-* Do not use "_"
-* __ means "comment" - everything beyond is ignored
-
-So these plugins are equivalent:
-
-* HelloWorld
-* helloworld
-* HelloWorld__LINUX_ONLY
-
-But **NOT**:
-
-* hello_world
-
-That would mean something totally [different](PLUGINS.md#two-word-commands).
+Note that currently only one space is allowed in @plugin parameter ([details](PLUGINS.md#two-word-commands)).
 
 
 ## Run-Parameter
@@ -81,7 +58,7 @@ from plugin import plugin, alias
 
 
 @alias("Hello", "Hi")
-@plugin
+@plugin("helloworld")
 def helloWorld(jarvis, s):
    (...)
 ```
@@ -113,7 +90,7 @@ from plugin import plugin, require, PYTHON3, LINUX
 
 
 @require(platform=LINUX, python=PYTHON3, network=True, native=["firefox", "curl"])
-@plugin
+@plugin("helloworld")
 def helloWorld(jarvis, s):
     (...)
 ```
@@ -144,12 +121,12 @@ def helloWorld(jarvis, s):
 Take "check ram" and "check weather". Of course you could create a plugin "check" and doing something like ``if 'ram' in s``. But it's better to create two separate plugins:
 
 ```
-@plugin
+@plugin("check ram")
 check_ram(jarvis, s):
     (...)
 
 
-@plugin
+@plugin("check weather")
 check_weather(jarvis, s):
     (...)
 ```

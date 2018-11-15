@@ -6,7 +6,7 @@ import random
 import re
 
 
-@plugin
+@plugin('roll')
 class Roll():
     """
     Roll a dice
