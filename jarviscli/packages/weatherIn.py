@@ -9,7 +9,7 @@ from colorama import Fore
 
 def main(self, s):
     # Trim input command to get only the location
-    loc = s.replace('weather', '').replace('in ', '').replace('at ','').strip()
+    loc = s.replace('weather', '').replace('in ', '').replace('at ', '').strip()
 
     # Checks country
     country = mapps.get_location()['country_name']
