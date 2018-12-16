@@ -1,8 +1,9 @@
 import os
-from plugin import plugin
-from colorama import Fore
-from six.moves import input
+
 import aiml
+from colorama import Fore
+from plugin import plugin
+from six.moves import input
 
 # this sets the path to the modules directory not the directory it was call from
 module_path = os.path.dirname(__file__)
@@ -39,7 +40,7 @@ class Brain:
 
 @plugin()
 def ask(jarvis, s):
-    """Start chating with Jarvis"""
+    """Start chatting with Jarvis"""
     brain = Brain()
     jarvis.say("Ask me anything\n type 'leave' to stop", Fore.BLUE)
     stay = True
@@ -47,7 +48,7 @@ def ask(jarvis, s):
     while stay:
         text = str.upper(input(Fore.RED + ">> " + Fore.RESET))
         if text == "LEAVE":
-            jarvis.say("thanks for talking to me")
+            jarvis.say("Thanks for talking to me")
             stay = False
         else:
             jarvis.say(brain.respond(text))
