@@ -85,7 +85,7 @@ class Roll(Plugin):
         if config["howmany"] == 0:
             return "No dice to roll?"
         if config["howmany"] < 0:
-            return "Rolling {} dices does not really make sence ;).".format(config["howmany"])
+            return "Rolling {} dices does not really make sense ;).".format(config["howmany"])
         if config["repeat"] == 0:
             return "Roll 0 howmany? Finish!"
         if config["repeat"] < 0:
