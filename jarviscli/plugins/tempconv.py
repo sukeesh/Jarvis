@@ -30,7 +30,7 @@ class Tempconv(Plugin):
 
     def temp_valid_regex(self, s):
         """Validate the input string using regex and return a boolean for validity"""
-        if re.search("^-?\d+(\.\d+)?[FfCc]$", s):
+        if re.search("^-?\\d+(\\.\\d+)?[FfCc]$", s):
             return True
         else:
             return False

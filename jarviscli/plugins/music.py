@@ -7,7 +7,7 @@ from plugin import plugin, alias, LINUX
 def find_cached_music(music):
         find = os.popen("ls music -tc")
         music = str(find.readline()).replace("\n", "")
-        music = music.replace(" ", "\ ").replace(" (", " \("). replace(")", "\)")
+        music = music.replace(" ", "\\ ").replace(" (", " \\("). replace(")", "\\)")
         return music
 
 
@@ -19,7 +19,7 @@ def play(jarvis, data):
     If ffmpeg is installed, songs will be downloaded as .mp3 instead .webm
     -- Example:
         music wonderful tonight
-        pay eye of the tiger
+        play eye of the tiger
     """
 
     if len(data) == 0:

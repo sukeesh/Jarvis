@@ -56,11 +56,8 @@ def unsupported(platform, silent=False):
         def wrapped(*args, **kwargs):
             if sys.platform == platform:
                 if not silent:
-                    print(
-                        Fore.RED +
-                        'Command is unsupported for platform `{}`'.format(
-                            sys.platform
-                        ) + Fore.RESET)
+                    print('{}Command is unsupported for platform `{}`{}'.
+                          format(Fore.RED, sys.platform, Fore.RESET))
             else:
                 func(*args, **kwargs)
         return wrapped

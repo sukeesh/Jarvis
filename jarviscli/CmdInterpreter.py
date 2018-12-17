@@ -4,6 +4,7 @@ from cmd import Cmd
 from time import ctime
 from platform import architecture, dist, release, system as sys
 from functools import partial
+import traceback
 
 import six
 
@@ -138,6 +139,22 @@ class JarvisAPI(object):
         self._jarvis.memory.save()
 
 
+def catch_all_exceptions(do, pass_self=True):
+    def try_do(self, s):
+        try:
+            if pass_self:
+                do(self, s)
+            else:
+                do(s)
+        except Exception as e:
+            print(Fore.RED + "Some error occurred, please open an issue on github!")
+            print("Here is error:")
+            print('')
+            traceback.print_exc()
+            print(Fore.RESET)
+    return try_do
+
+
 class CmdInterpreter(Cmd):
     # We use this variable at Breakpoint #1.
     # We use this in order to allow Jarvis say "Hi", only at the first
@@ -202,7 +219,8 @@ class CmdInterpreter(Cmd):
                         return [i for i in completions if i.startswith(text)]
                     return _complete_impl
                 setattr(CmdInterpreter, "complete_" + plugin_name, complete(completions))
-            setattr(CmdInterpreter, "do_" + plugin_name, partial(plugin.run, self._api))
+            do_method = catch_all_exceptions(partial(plugin.run, self._api), pass_self=False)
+            setattr(CmdInterpreter, "do_" + plugin_name, do_method)
             setattr(CmdInterpreter, "help_" + plugin_name, partial(self._api.say, plugin.get_doc()))
 
             if hasattr(plugin.__class__, "init") and callable(getattr(plugin.__class__, "init")):
@@ -249,6 +267,7 @@ class CmdInterpreter(Cmd):
         """Closes Jarvis on SIGINT signal. (Ctrl-C)"""
         self.close()
 
+    @catch_all_exceptions
     def do_calculate(self, s):
         """Jarvis will get your calculations done!"""
         tempt = s.replace(" ", "")
@@ -263,6 +282,7 @@ class CmdInterpreter(Cmd):
         print_say("-- Example:", self)
         print_say("\tcalculate 3 + 5", self)
 
+    @catch_all_exceptions
     def do_check(self, s):
         """Checks your system's RAM stats."""
         # if s == "ram":
@@ -300,6 +320,7 @@ class CmdInterpreter(Cmd):
         """Completions for check command"""
         return self.get_completions("check", text)
 
+    @catch_all_exceptions
     def do_directions(self, data):
         """Get directions about a destination you are interested to."""
         try:
@@ -315,6 +336,7 @@ class CmdInterpreter(Cmd):
         print_say("-- Example:", self)
         print_say("\tdirections to the Eiffel Tower", self)
 
+    @catch_all_exceptions
     def do_how_are_you(self, s):
         """Jarvis will inform you about his status."""
         print_say("I am fine, How about you?", self, Fore.BLUE)
@@ -323,6 +345,7 @@ class CmdInterpreter(Cmd):
         """Print info about how_are_you command"""
         print_say("Jarvis will inform you about his status.", self)
 
+    @catch_all_exceptions
     def do_near(self, data):
         """Jarvis can find what is near you!"""
         near_me.main(data)
@@ -334,6 +357,7 @@ class CmdInterpreter(Cmd):
         print_say("\trestaurants near me", self)
         print_say("\tmuseums near the eiffel tower", self)
 
+    @catch_all_exceptions
     def do_pinpoint(self, s):
         """Jarvis will pinpoint your location."""
         try:
@@ -345,6 +369,7 @@ class CmdInterpreter(Cmd):
         """Print help about pinpoint command."""
         print_say("Jarvis will pinpoint your location.", self)
 
+    @catch_all_exceptions
     def do_umbrella(self, s):
         """If you're leaving your place, Jarvis will inform you if you might need an umbrella or not"""
         s = 'umbrella'
@@ -359,6 +384,7 @@ class CmdInterpreter(Cmd):
             "If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self,
             Fore.BLUE)
 
+    @catch_all_exceptions
     def do_update(self, s):
         """Updates location or system."""
         if "location" in s:
@@ -397,10 +423,16 @@ class CmdInterpreter(Cmd):
         print_say("Prints info about enabled or disabled plugins". self)
         print_say("Use \"status short\" to omit detailed information.", self)
 
+
+    @catch_all_exceptions
     def do_weather(self, s):
         """Get information about today's weather."""
         try:
-            weather_pinpoint.main(self.memory, self, s)
+            word = s.strip()
+            if(len(word) > 1):
+                weatherIn.main(self, s)
+            else:
+                weather_pinpoint.main(self.memory, self, s)
         except ConnectionError:
             print(CONNECTION_ERROR_MSG)
 

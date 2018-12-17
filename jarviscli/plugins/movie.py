@@ -20,7 +20,7 @@ def search_movie(jarvis, movie):
         return None
     results = app.search_movie(movie)
     if not results:
-        jarvis.say("Error: Did not found movie!", Fore.RED)
+        jarvis.say("Error: Did not find movie!", Fore.RED)
         return None
     first = results[0]
     return first.movieID

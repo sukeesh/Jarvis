@@ -14,4 +14,4 @@ def open_camera__LINUX(jarvis, s):
 @plugin(plattform=MACOS)
 def open_camera__MAC(jarvis, s):
     """Jarvis will open the camera for you."""
-    os.system('open /Applications/Photo\ Booth.app')
+    os.system('open /Applications/Photo\\ Booth.app')

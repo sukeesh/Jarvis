@@ -115,6 +115,9 @@ class Cricket(Plugin):
     def score(self, jarvis):
         matches = self.all_matches()
         jarvis.say(Fore.RED + "\nALL MATCHES\n" + Fore.LIGHTBLUE_EX)
+        if matches == []:
+            jarvis.say("No Matches Being Played!\n", Fore.RED)
+            return
         for i, m in enumerate(matches, 1):
             jarvis.say("{}. {}".format(str(i), m))
         choice = int(input(Fore.RED + '\nEnter choice (number): ' + Fore.RESET))
