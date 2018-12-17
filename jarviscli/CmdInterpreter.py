@@ -203,9 +203,15 @@ class CmdInterpreter(Cmd):
 
         self._activate_plugins()
 
+        count_disabled_plugins = len(self._plugin_manager.get_disabled())
+        if count_disabled_plugins > 0:
+            self.first_reaction_text += Fore.RED + str(count_disabled_plugins) + Fore.BLUE
+            self.first_reaction_text += " plugins are disabled. For more information, type: "
+            self.first_reaction_text += Fore.RED + 'status\n' + Fore.RESET
+
     def _activate_plugins(self):
         """Generate do_XXX, help_XXX and (optionally) complete_XXX functions"""
-        for (plugin_name, plugin) in self._plugin_manager.get_all().items():
+        for (plugin_name, plugin) in self._plugin_manager.get_enabled().items():
             completions = self._plugin_update_action(plugin, plugin_name)
             if completions is not None:
                 def complete(completions):
@@ -400,6 +406,22 @@ class CmdInterpreter(Cmd):
     def complete_update(self, text, line, begidx, endidx):
         """Completions for update command"""
         return self.get_completions("update", text)
+
+    def do_status(self, s):
+        """Prints plugin status status"""
+        count_enabled = len(self._plugin_manager.get_enabled())
+        count_disabled = len(self._plugin_manager.get_disabled())
+        print_say("{} Plugins enabled, {} Plugins disabled.".format(count_enabled, count_disabled),
+                  self)
+
+        if "short" not in s and count_disabled > 0:
+            print_say("", self)
+            for disabled, reason in self._plugin_manager.get_disabled().items():
+                print_say("{:<20}: {}".format(disabled, reason), self)
+
+    def help_status(self):
+        print_say("Prints info about enabled or disabled plugins". self)
+        print_say("Use \"status short\" to omit detailed information.", self)
 
     @catch_all_exceptions
     def do_weather(self, s):
