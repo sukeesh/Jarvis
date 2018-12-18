@@ -400,7 +400,7 @@ class CmdInterpreter(Cmd):
                 print_say("{:<20}: {}".format(disabled, reason), self)
 
     def help_status(self):
-        print_say("Prints info about enabled or disabled plugins". self)
+        print_say("Prints info about enabled or disabled plugins", self)
         print_say("Use \"status short\" to omit detailed information.", self)
 
     @catch_all_exceptions
