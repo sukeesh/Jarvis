@@ -15,35 +15,6 @@ class py_lyrics(object):
         pass
 
     @classmethod
-    def get_track(self, album):
-        url = "http://lyrics.wikia.com/api.php?action=lyrics&artist={0}&fmt=xml".format(
-            album.artist())
-        soup = BeautifulSoup(requests.get(url).text, "lxml")
-        currentAlbum = None
-        for al in soup.find_all('album'):
-            if al.text.lower().strip() == album.name.strip().lower():
-                currentAlbum = al
-                break
-        songs = [Track(song.text, album, album.artist())
-                 for song in currentAlbum.findNext('songs').findAll('item')]
-        return songs
-
-    @classmethod
-    def get_albums(self, singer):
-        singer = singer.replace(' ', '_')
-        url = 'http://lyrics.wikia.com/{0}'.format(singer)
-        s = BeautifulSoup(requests.get(url), "lxml")
-        spans = s.findAll('span', {'class': 'mw-headline'})
-        albums = []
-        for tag in spans:
-            a = tag.findAll('a')[0]
-            albums.append(
-                Album(a.text, 'http://lyrics.wikia.com' + a['href'], singer))
-        if not albums:
-            return None
-        return albums
-
-    @classmethod
     def get_lyric(self, singer, song):
         # Replace spaces with _
         singer = singer.replace(' ', '_')
@@ -56,9 +27,11 @@ class py_lyrics(object):
         if lyrics is None:
             return None
         # Remove Scripts
-        [s.extract() for s in lyrics('script')]
+        [k.extract() for k in lyrics('script')]
         # Remove comments
         comments = lyrics.findAll(text=lambda text: isinstance(text, Comment))
+        # for c in comments:
+        #     c.extract()
         # Remove unecessary tags
         for tag in ['div', 'i', 'b', 'a']:
             for match in lyrics.findAll(tag):
