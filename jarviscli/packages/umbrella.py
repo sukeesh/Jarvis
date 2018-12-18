@@ -5,8 +5,6 @@ from colorama import Fore
 
 
 def main(city=0):
-    if not city:
-        city = getLocation()['city']
     send_url = (
         "http://api.openweathermap.org/data/2.5/forecast/daily?q={0}&cnt=1"
         "&APPID=ab6ec687d641ced80cc0c935f9dd8ac9&units=metric".format(city)

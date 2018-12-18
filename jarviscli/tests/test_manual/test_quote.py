@@ -1,13 +1,7 @@
 import unittest
 from Jarvis import Jarvis
-
-import requests
-from bs4 import BeautifulSoup
-from six.moves import input
-from mock import Mock, patch
-
+from mock import patch
 from plugins.quote import Quote
-
 
 test = Quote()
 

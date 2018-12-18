@@ -4,7 +4,6 @@ try:  # for python2
     from StringIO import StringIO
 except ImportError:  # for python3
     from io import StringIO
-from colorama import Fore
 
 from Jarvis import Jarvis
 from plugins.evaluator import calculate

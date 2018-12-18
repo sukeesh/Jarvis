@@ -1,5 +1,4 @@
 import os
-import subprocess
 from platform import architecture, dist, release
 from platform import system as sys
 
