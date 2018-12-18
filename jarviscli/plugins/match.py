@@ -1,4 +1,4 @@
-from plugin import plugin, LINUX
+from plugin import plugin
 from six.moves import input
 from os import system
 from colorama import Fore
