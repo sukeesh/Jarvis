@@ -72,7 +72,7 @@ I just copied and fix the methods used in PyLyrics
 """
 
 
-def get_lyric(self, singer, song):
+def get_lyric(singer, song):
     # Replace spaces with _
     singer = singer.replace(' ', '_')
     song = song.replace(' ', '_')
