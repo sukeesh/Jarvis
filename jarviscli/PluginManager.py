@@ -1,11 +1,8 @@
-import distutils.spawn
-
 import sys
 from functools import partial
 
 import pluginmanager
 import six
-from requests import ConnectionError
 
 import plugin
 from utilities.GeneralUtilities import warning, error, executable_exists

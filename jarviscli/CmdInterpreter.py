@@ -1,12 +1,8 @@
 import signal
 from os import system
 from cmd import Cmd
-from time import ctime
-from platform import architecture, dist, release, system as sys
 from functools import partial
 import traceback
-
-import six
 
 from requests import ConnectionError
 from six.moves import input
@@ -22,8 +18,7 @@ from packages.memory.memory import Memory
 from utilities import schedule
 from utilities.voice import create_voice
 from utilities.notification import notify
-from utilities.GeneralUtilities import (get_float, IS_MACOS, MACOS, print_say,
-                                        unsupported)
+from utilities.GeneralUtilities import print_say
 
 
 CONNECTION_ERROR_MSG = "You are not connected to Internet"
@@ -268,21 +263,6 @@ class CmdInterpreter(Cmd):
         self.close()
 
     @catch_all_exceptions
-    def do_calculate(self, s):
-        """Jarvis will get your calculations done!"""
-        tempt = s.replace(" ", "")
-        if len(tempt) > 1:
-            evaluator.calc(tempt, self)
-        else:
-            print_say("Error: Not in correct format", self, Fore.RED)
-
-    def help_calculate(self):
-        """Print help about calculate command."""
-        print_say("Jarvis will get your calculations done!", self)
-        print_say("-- Example:", self)
-        print_say("\tcalculate 3 + 5", self)
-
-    @catch_all_exceptions
     def do_check(self, s):
         """Checks your system's RAM stats."""
         # if s == "ram":
@@ -420,7 +400,7 @@ class CmdInterpreter(Cmd):
                 print_say("{:<20}: {}".format(disabled, reason), self)
 
     def help_status(self):
-        print_say("Prints info about enabled or disabled plugins". self)
+        print_say("Prints info about enabled or disabled plugins", self)
         print_say("Use \"status short\" to omit detailed information.", self)
 
     @catch_all_exceptions

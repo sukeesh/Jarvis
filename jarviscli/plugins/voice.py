@@ -1,7 +1,5 @@
 from plugin import plugin
 
-import os
-
 
 @plugin()
 def enable_sound(jarvis, s):
