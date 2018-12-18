@@ -19,7 +19,6 @@ pytimeparse
 pyttsx3
 requests[security]==2.13.0
 six==1.10.0
-SpeechRecognition==3.6.3
 sympy
 termdown
 wikipedia
