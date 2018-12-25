@@ -1,14 +1,14 @@
 aiml; python_version <= '2.7'
 archey4; python_version >= '3.5'
-beautifulsoup4==4.5.3
-colorama==0.3.7
+beautifulsoup4
+colorama
 flake8
 forex-python
 funcsigs; python_version <= '2.7'
 googletrans
-IMDbPY==6.6
-instantmusic==2.2
-mock==2.0.0
+IMDbPY
+instantmusic
+mock
 nltk
 pick
 pluginmanager
@@ -17,8 +17,8 @@ pync==1.6.1
 python-dateutil
 pytimeparse
 pyttsx3
-requests[security]==2.13.0
-six==1.10.0
+requests[security]
+six
 sympy
 termdown
 wikipedia
