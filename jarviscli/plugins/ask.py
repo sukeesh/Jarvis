@@ -4,6 +4,7 @@ import aiml
 from colorama import Fore
 from plugin import plugin
 from six.moves import input
+from six import PY2
 
 # this sets the path to the modules directory not the directory it was call from
 module_path = os.path.dirname(__file__)
@@ -16,9 +17,10 @@ class Brain:
         self.kernel.verbose(False)  # remove system output
 
         # brain file already exists load it
-        if os.path.isfile(os.path.join(module_path, "brain/bot_brain.brn")):
-            self.kernel.bootstrap(brainFile=os.path.join(
-                module_path, "brain/bot_brain.brn"))
+        if PY2 and os.path.isfile(os.path.join(module_path, "brain/bot_brain2.brn")):
+            self.kernel.bootstrap(brainFile=os.path.join(module_path, "brain/bot_brain2.brn"))
+        elif os.path.isfile(os.path.join(module_path, "brain/bot_brain.brn")):
+            self.kernel.bootstrap(brainFile=os.path.join(module_path, "brain/bot_brain.brn"))
         # if brain file doesnt exist load std-startup.xml and create and save brain file
         else:
             self.create_brain()
@@ -32,7 +34,10 @@ class Brain:
 
         # This file should go last. It contains wild cards
         self.kernel.learn(os.path.join(module_path, "brain/default.aiml"))
-        self.kernel.saveBrain(os.path.join(module_path, "brain/bot_brain.brn"))
+        if PY2:
+            self.kernel.saveBrain(os.path.join(module_path, "brain/bot_brain2.brn"))
+        else:
+            self.kernel.saveBrain(os.path.join(module_path, "brain/bot_brain.brn"))
 
     def remove_brain(self):
         os.remove(os.path.join(module_path, "brain/bot_brain.brn"))
