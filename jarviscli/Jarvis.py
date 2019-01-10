@@ -101,7 +101,7 @@ class Jarvis(CmdInterpreter, object):
             text = self.first_reaction_text
 
         if self.enable_voice:
-            self.speech.speak(text)
+            self.speech.text_to_speech(text)
 
     def parse_input(self, data):
         """This method gets the data and assigns it to an action"""
