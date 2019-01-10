@@ -30,11 +30,17 @@ def Os(jarvis, s):
         jarvis.say('[*] ' + _, Fore.GREEN)
 
 
-@plugin(python=PYTHON3)
-def systeminfo__PY3(jarvis, s):
+@plugin(python=PYTHON3, plattform=LINUX)
+def systeminfo__PY3_LINUX(jarvis, s):
     """Display system information with distribution logo"""
     from archey import archey
     archey.main()
+
+
+@plugin(python=PYTHON3, plattform=MACOS, native="screenfetch")
+def systeminfo__PY3_MAC(jarvis, s):
+    """Display system information with distribution logo"""
+    os.system("screenfetch")
 
 
 @plugin(python=PYTHON2, native="screenfetch")
