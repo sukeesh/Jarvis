@@ -13,8 +13,8 @@ class IP(Plugin):
         self._local_ip = """ifconfig | grep -Eo 'inet (addr:)?([0-9]*\\.){3}[0-9]*' |
                     grep -Eo '([0-9]*\\.){3}[0-9]*' | grep -v '127.0.0.1'"""
 
-        self._public_ip_v4 = "timeout 10 curl -4 ifconfig.co"  # 10 second time out if not connected to internet
-        self._public_ip_v6 = "timeout 10 curl -6 ifconfig.co"  # 10 second time out if not connected to internet
+        self._public_ip_v4 = "curl -4 ifconfig.co --connect-timeout 10"  # 10 second time out if not connected to internet
+        self._public_ip_v6 = "curl -6 ifconfig.co --connect-timeout 10"  # 10 second time out if not connected to internet
         super(Plugin, self).__init__()
 
     def require(self):
@@ -38,5 +38,5 @@ class IP(Plugin):
     def _get_public_ip(self, jarvis):
         jarvis.say("Public ip v4 address :", Fore.BLUE)
         system(self._public_ip_v4)
-        jarvis.say("Public ip v4 address :", Fore.BLUE)
+        jarvis.say("Public ip v6 address :", Fore.BLUE)
         system(self._public_ip_v6)
