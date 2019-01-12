@@ -1,5 +1,5 @@
 aiml; python_version <= '2.7'
-archey4; python_version >= '3.5'
+archey4; python_version >= '3.5' and sys_platform != 'darwin'
 beautifulsoup4
 colorama
 flake8
