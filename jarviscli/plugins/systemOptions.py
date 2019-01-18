@@ -1,9 +1,7 @@
 import os
-from platform import architecture, dist, release
+from platform import architecture, dist, release, mac_ver
 from platform import system as sys
-
-from colorama import Fore
-
+from colorama import Fore, Style
 from plugin import LINUX, MACOS, PYTHON2, PYTHON3, plugin
 
 
@@ -19,8 +17,20 @@ def screen_off__LINUX(jarvis, s):
     os.system('xset dpms force off')
 
 
-@plugin()
-def Os(jarvis, s):
+@plugin(plattform=MACOS)
+def Os__MAC(jarvis, s):
+    """Displays information about your operating system"""
+    jarvis.say(Style.BRIGHT + '[!] Operating System Information' + Style.RESET_ALL, Fore.BLUE)
+    jarvis.say('[*] Kernel: ' + sys(), Fore.GREEN)
+    jarvis.say('[*] Kernel Release Version: ' + release(), Fore.GREEN)
+    jarvis.say('[*] macOS System version: ' + mac_ver()[0], Fore.GREEN)
+    for _ in architecture():
+        if _ is not '':
+            jarvis.say('[*] ' + _, Fore.GREEN)
+
+
+@plugin(plattform=LINUX)
+def Os__LINUX(jarvis, s):
     """Displays information about your operating system"""
     jarvis.say('[!] Operating System Information', Fore.BLUE)
     jarvis.say('[*] ' + sys(), Fore.GREEN)
