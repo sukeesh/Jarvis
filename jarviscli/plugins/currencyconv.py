@@ -21,7 +21,7 @@ class Currencyconv(Plugin):
     -- Type currencyconv, press enter and follow the instructions!
     """
     def require(self):
-        pass
+        yield("network", True)
 
     def complete(self):
         pass

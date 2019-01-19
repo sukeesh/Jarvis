@@ -20,7 +20,7 @@ class lyrics(Plugin):
         self.album = None
 
     def require(self):
-        pass
+        yield ("network", True)
 
     def complete(self):
         pass
@@ -97,7 +97,8 @@ def get_lyric(singer, song):
     # TODO: check if you need the encode/decode thing, if you do then do a try catch for it
 
     # get output as string and remove non unicode characters and replace <br> with newlines
-    # output = str(lyrics).encode('utf-8', errors = 'replace')[22:-6:].decode('utf-8').replace('\n','').replace('<br/>','\n')
+    # output = str(lyrics).encode('utf-8', errors = 'replace')[22:-6:] \
+    #     .decode('utf-8').replace('\n','').replace('<br/>','\n')
     output = str(lyrics).replace('\n', '').replace('<br/>', '\n')[22:-6:]
     try:
         return output

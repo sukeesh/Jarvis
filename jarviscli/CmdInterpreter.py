@@ -272,7 +272,10 @@ class CmdInterpreter(Cmd):
         elif "time" in s:
             timeIn.main(self, s)
         elif "forecast" in s:
-            forecast.main(self, s)
+            try:
+                forecast.main(self, s)
+            except ConnectionError:
+                print(CONNECTION_ERROR_MSG)
         # if s == "weather"
         elif "weather" in s:
             try:

@@ -36,8 +36,10 @@ class SpinnerThread(threading.Thread):
 @plugin(network=True)
 def speedtest(jarvis, s):
     """Runs a speedtest on your internet connection"""
-
-    res = st.Speedtest()
+    try:
+        res = st.Speedtest()
+    except:
+        return jarvis.connection_error()
 
     # Create a spinner on command line to show that its running
     spinner = SpinnerThread('Running the test ', 0.15)
