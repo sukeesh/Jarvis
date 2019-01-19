@@ -17,7 +17,7 @@ def gmail(jarvis, s):
         print("SERVER CONNECTED")
     except:
         print("Could Not connect to Gmail")            		 # in case of failure
-        exit()
+        return
     user = input("Enter User id\n")                     	 # YOUR ID
     Pass_w = input("\nEnter your Password\n")           	 # YOUR Password
     reciever_id = input("\nEnter reciever id\n")        	 # Reciever ID
