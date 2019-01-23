@@ -167,7 +167,8 @@ def movie_info(jarvis, movie):
                     value = pretty_list(lst[0:3])
             else:
                 value = value[0]
-        jarvis.say(Fore.GREEN + "{:<14}".format(key.capitalize()) + Style.RESET_ALL + ": " + str(value))
+        jarvis.say(Fore.GREEN + "{:<14}".format(key.capitalize())
+                   + Style.RESET_ALL + ": " + str(value))
 
     if data is not None:
         for attribute in movie_attributes:
@@ -175,5 +176,6 @@ def movie_info(jarvis, movie):
                 get_movie_info(attribute)
 
     # print IMDB url of the movie
-    jarvis.say(Fore.GREEN + "{:<14}".format('IMDB url') +
-               Style.RESET_ALL + ": " + str(app.urls['movie_base'] + 'tt' + data.movieID))
+    jarvis.say(Fore.GREEN + "{:<14}".format('IMDB url')
+               + Style.RESET_ALL + ": " 
+               + str(app.urls['movie_base'] + 'tt' + data.movieID))
