@@ -38,7 +38,7 @@ def speedtest(jarvis, s):
     """Runs a speedtest on your internet connection"""
     try:
         res = st.Speedtest()
-    except:
+    except st.ConfigRetrievalError:
         return jarvis.connection_error()
 
     # Create a spinner on command line to show that its running
