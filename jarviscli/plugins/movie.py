@@ -1,6 +1,6 @@
 import imdb
 from plugin import plugin
-from colorama import Fore
+from colorama import Fore, Style
 import six
 
 
@@ -33,6 +33,7 @@ def get_movie_by_id(movie_id):
 # cache: Python3 only
 if six.PY3:
     from functools import lru_cache
+
     # equals @functools.lru_cache(maxsize=50, typed=False)
     search_movie = lru_cache(maxsize=50, typed=False)(search_movie)
     get_movie_by_id = lru_cache(maxsize=20, typed=False)(get_movie_by_id)
@@ -133,18 +134,46 @@ def movie_info(jarvis, movie):
     data = main(jarvis, movie)
 
     movie_attributes = [
-        'title', 'year', 'director', 'writer',
-        'color info', 'rating', 'aspect ratio',
-        'sound mix', 'runtimes', 'plot outline'
+        'title', 'year', 'genres', 'director',
+        'writer', 'cast', 'color info', 'rating',
+        'aspect ratio', 'sound mix', 'runtimes',
+        'plot outline'
     ]
 
+    def pretty_list(lst):
+        """
+        Takes a list as input and returns a string with coma separated values
+        :param lst:
+        :return string:
+        """
+        line = lst[0]
+        for i in lst[1:]:
+            line += ', ' + i
+        return line
+
     def get_movie_info(key):
+        """
+        Takes a movie attribute as input and prints them accordingly
+        :param key:
+        :return:
+        """
         value = data[key]
         if isinstance(value, list):
-            value = value[0]
-        jarvis.say("{:<14}: {}".format(key, str(value)))
+            if key in ['cast', 'genres']:
+                if key == 'genres':
+                    value = pretty_list(value)
+                if key == 'cast':
+                    lst = [d['name'] for d in value]
+                    value = pretty_list(lst[0:3])
+            else:
+                value = value[0]
+        jarvis.say(Fore.GREEN + "{:<14}".format(key.capitalize()) + Style.RESET_ALL + ": " + str(value))
 
     if data is not None:
         for attribute in movie_attributes:
             if attribute in data:
                 get_movie_info(attribute)
+
+    # print IMDB url of the movie
+    jarvis.say(Fore.GREEN + "{:<14}".format('IMDB url') +
+               Style.RESET_ALL + ": " + str(app.urls['movie_base'] + 'tt' + data.movieID))
