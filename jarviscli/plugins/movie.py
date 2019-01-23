@@ -8,10 +8,10 @@ app = imdb.IMDb()
 
 
 def main(jarvis, movie):
-    movieId = search_movie(jarvis, movie)
-    if movieId is None:
+    movie_id = search_movie(jarvis, movie)
+    if movie_id is None:
         return None
-    return get_movie_by_id(search_movie(jarvis, movie))
+    return get_movie_by_id(movie_id)
 
 
 def search_movie(jarvis, movie):
@@ -26,8 +26,8 @@ def search_movie(jarvis, movie):
     return first.movieID
 
 
-def get_movie_by_id(movieID):
-    return app.get_movie(movieID)
+def get_movie_by_id(movie_id):
+    return app.get_movie(movie_id)
 
 
 # cache: Python3 only
@@ -61,11 +61,14 @@ def movie_plot(jarvis, movie):
     """"""
     data = main(jarvis, movie)
     if data is not None:
-        jarvis.say(data['plot outline'])
-        jarvis.say('')
-        jarvis.say('')
-        for d in data['plot']:
-            jarvis.say(d)
+        if 'plot outline' in data:
+            jarvis.say('Plot outline:', Fore.GREEN)
+            jarvis.say(data['plot outline'])
+            jarvis.say('')
+        if 'plot' in data:
+            jarvis.say('Plot:', Fore.GREEN)
+            for d in data['plot']:
+                jarvis.say(d)
 
 
 @plugin(network=True)
@@ -98,7 +101,10 @@ def movie_runtime(jarvis, movie):
     """"""
     data = main(jarvis, movie)
     if data is not None:
-        jarvis.say(str(data['runtimes']))
+        if 'runtimes' in data:
+            jarvis.say(str(data['runtimes'][0]) + ' minutes')
+        else:
+            jarvis.say("No runtime data present")
 
 
 @plugin(network=True)
@@ -126,19 +132,19 @@ def movie_info(jarvis, movie):
     """
     data = main(jarvis, movie)
 
-    def p(key):
+    movie_attributes = [
+        'title', 'year', 'director', 'writer',
+        'color info', 'rating', 'aspect ratio',
+        'sound mix', 'runtimes', 'plot outline'
+    ]
+
+    def get_movie_info(key):
         value = data[key]
         if isinstance(value, list):
             value = value[0]
         jarvis.say("{:<14}: {}".format(key, str(value)))
 
     if data is not None:
-        p('title')
-        p('year')
-        p('director')
-        p('writer')
-        p('color info')
-        p('rating')
-        p('aspect ratio')
-        p('sound mix')
-        p('runtimes')
+        for attribute in movie_attributes:
+            if attribute in data:
+                get_movie_info(attribute)
