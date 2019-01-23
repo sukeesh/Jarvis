@@ -143,37 +143,45 @@ def movie_info(jarvis, movie):
     def pretty_list(lst):
         """
         Takes a list as input and returns a string with coma separated values
-        :param lst:
-        :return string:
         """
         line = lst[0]
         for i in lst[1:]:
             line += ', ' + i
         return line
 
+    def colorized_output(key, value):
+        """
+        pretty print key value pair
+        """
+        green_text = Fore.GREEN + "{:<14}".format(key)
+        normal_text = Style.RESET_ALL + ": " + str(value)
+        return green_text + normal_text
+
     def get_movie_info(key):
         """
         Takes a movie attribute as input and prints them accordingly
-        :param key:
-        :return:
         """
+
         value = data[key]
+
+        if key == 'genres':
+            value = pretty_list(value)
+
+        if key == 'cast':
+            lst = [d['name'] for d in value]
+            value = pretty_list(lst[0:3])
+
         if isinstance(value, list):
-            if key in ['cast', 'genres']:
-                if key == 'genres':
-                    value = pretty_list(value)
-                if key == 'cast':
-                    lst = [d['name'] for d in value]
-                    value = pretty_list(lst[0:3])
-            else:
-                value = value[0]
-        jarvis.say(Fore.GREEN + "{:<14}".format(key.capitalize()) + Style.RESET_ALL + ": " + str(value))
+            value = value[0]
+
+        jarvis.say(colorized_output(key.capitalize(), str(value)))
 
     if data is not None:
+
         for attribute in movie_attributes:
             if attribute in data:
                 get_movie_info(attribute)
 
-    # print IMDB url of the movie
-    jarvis.say(Fore.GREEN + "{:<14}".format('IMDB url') +
-               Style.RESET_ALL + ": " + str(app.urls['movie_base'] + 'tt' + data.movieID))
+        # print IMDB url of the movie
+        movie_url = app.urls['movie_base'] + 'tt' + data.movieID
+        jarvis.say(colorized_output('IMDB url', movie_url))
