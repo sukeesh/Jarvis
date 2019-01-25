@@ -1,6 +1,6 @@
 import imdb
 from plugin import plugin
-from colorama import Fore
+from colorama import Fore, Style
 import six
 
 
@@ -8,10 +8,10 @@ app = imdb.IMDb()
 
 
 def main(jarvis, movie):
-    movieId = search_movie(jarvis, movie)
-    if movieId is None:
+    movie_id = search_movie(jarvis, movie)
+    if movie_id is None:
         return None
-    return get_movie_by_id(search_movie(jarvis, movie))
+    return get_movie_by_id(movie_id)
 
 
 def search_movie(jarvis, movie):
@@ -26,13 +26,14 @@ def search_movie(jarvis, movie):
     return first.movieID
 
 
-def get_movie_by_id(movieID):
-    return app.get_movie(movieID)
+def get_movie_by_id(movie_id):
+    return app.get_movie(movie_id)
 
 
 # cache: Python3 only
 if six.PY3:
     from functools import lru_cache
+
     # equals @functools.lru_cache(maxsize=50, typed=False)
     search_movie = lru_cache(maxsize=50, typed=False)(search_movie)
     get_movie_by_id = lru_cache(maxsize=20, typed=False)(get_movie_by_id)
@@ -61,11 +62,14 @@ def movie_plot(jarvis, movie):
     """"""
     data = main(jarvis, movie)
     if data is not None:
-        jarvis.say(data['plot outline'])
-        jarvis.say('')
-        jarvis.say('')
-        for d in data['plot']:
-            jarvis.say(d)
+        if 'plot outline' in data:
+            jarvis.say('Plot outline:', Fore.GREEN)
+            jarvis.say(data['plot outline'])
+            jarvis.say('')
+        if 'plot' in data:
+            jarvis.say('Plot:', Fore.GREEN)
+            for d in data['plot']:
+                jarvis.say(d)
 
 
 @plugin(network=True)
@@ -98,7 +102,10 @@ def movie_runtime(jarvis, movie):
     """"""
     data = main(jarvis, movie)
     if data is not None:
-        jarvis.say(str(data['runtimes']))
+        if 'runtimes' in data:
+            jarvis.say(str(data['runtimes'][0]) + ' minutes')
+        else:
+            jarvis.say("No runtime data present")
 
 
 @plugin(network=True)
@@ -126,19 +133,55 @@ def movie_info(jarvis, movie):
     """
     data = main(jarvis, movie)
 
-    def p(key):
+    movie_attributes = [
+        'title', 'year', 'genres', 'director',
+        'writer', 'cast', 'color info', 'rating',
+        'aspect ratio', 'sound mix', 'runtimes',
+        'plot outline'
+    ]
+
+    def pretty_list(lst):
+        """
+        Takes a list as input and returns a string with coma separated values
+        """
+        line = lst[0]
+        for i in lst[1:]:
+            line += ', ' + i
+        return line
+
+    def colorized_output(key, value):
+        """
+        pretty print key value pair
+        """
+        green_text = Fore.GREEN + "{:<14}".format(key)
+        normal_text = Style.RESET_ALL + ": " + str(value)
+        return green_text + normal_text
+
+    def get_movie_info(key):
+        """
+        Takes a movie attribute as input and prints them accordingly
+        """
+
         value = data[key]
+
+        if key == 'genres':
+            value = pretty_list(value)
+
+        if key == 'cast':
+            lst = [d['name'] for d in value]
+            value = pretty_list(lst[0:3])
+
         if isinstance(value, list):
             value = value[0]
-        jarvis.say("{:<14}: {}".format(key, str(value)))
+
+        jarvis.say(colorized_output(key.capitalize(), str(value)))
 
     if data is not None:
-        p('title')
-        p('year')
-        p('director')
-        p('writer')
-        p('color info')
-        p('rating')
-        p('aspect ratio')
-        p('sound mix')
-        p('runtimes')
+
+        for attribute in movie_attributes:
+            if attribute in data:
+                get_movie_info(attribute)
+
+        # print IMDB url of the movie
+        movie_url = app.urls['movie_base'] + 'tt' + data.movieID
+        jarvis.say(colorized_output('IMDB url', movie_url))
