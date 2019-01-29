@@ -1,5 +1,6 @@
 # !!! This uses the https://newsapi.org/ api. TO comply with the TOU
 # !!! we must link back to this site whenever we display results.
+# This has been edited for understanding simple git operations.
 try:  # python3
     import urllib.request
     import urllib.parse
