@@ -3,7 +3,7 @@ archey4; python_version >= '3.5' and sys_platform != 'darwin'
 beautifulsoup4
 colorama
 flake8
-forex-python == 1.1
+forex-python
 funcsigs; python_version <= '2.7'
 googletrans
 IMDbPY
