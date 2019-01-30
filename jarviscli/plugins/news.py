@@ -63,15 +63,64 @@ class News(Plugin):
             except:
                 jarvis.say("I couldn't find news", Fore.RED)
 
+    def get_key(self):
+        return "news-settings"
+
     def news(self, jarvis):
-        self.news_options(jarvis)
-        self.get_news()
+        print('Would you like to configure your own news channel(y/n)')
+        i = str(input())
+        if i.lower() == "y":
+            self.configure_news_site(jarvis)
+        else:
+            self.news_options(jarvis)
+            self.get_news()
 
     '''
         This is the quickest way to get news it also has the
         least amount of options for the user.
     '''
 
+    def configure_news_site(self, jarvis):
+        news_site_list = jarvis.get_data(self.get_key())
+        print(news_site_list)
+        
+        #Check if no sites are configured
+        if news_site_list is None:
+            news_site_list = []
+
+        print("Search www.newsapi.org for the list of news channels. Enter site-key") 
+        site_key = str(input())
+        news_site_list.append(site_key)
+
+        print("List of configured news sites are as below")
+
+        for idx, site in enumerate(news_site_list):
+            print("{} : {}".format(idx+1,site))
+
+        print("Would you like to delete any in the list?(y/n)")
+        del_from_list = str(input())
+        if del_from_list.lower() == "y":
+            print("Enter the site index to be deleted. If multiple sites, then enter index with comma seperated values")
+            index_to_del = str(input())
+            print("Came here 1")
+            print(index_to_del)
+            items_to_del = index_to_del.split(',')
+            print("Came here 2")
+            print(items_to_del)
+            for item in items_to_del:
+                del news_site_list[int(item)]
+            
+            print("Came here 3")
+            print(news_site_list)
+            print("Came here 4")
+
+            
+        jarvis.update_data(self.get_key(), news_site_list)
+        print("Came here 5")
+        jarvis.save()
+        print("Came here 6")
+        print("Configuration complete.")
+        
     def quick_news(self):
         self.request_news()
 
