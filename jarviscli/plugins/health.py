@@ -9,35 +9,32 @@ def health_bmi(jarvis, s):
     Add metric height(cm) and weight(kg). No decimal weight for now.
     #Example: health bmi 182 86
     """
-    
+
     strings = s.split()
-    if( len(strings) == 2 ):
+    if(len(strings) == 2):
         height = float(strings[0]) * float(strings[0])
         weight = float(strings[1])
     else:
         jarvis.say("Please add height(m) and weight(kg)!")
         return None
-    
-    if(height>0.0 and weight>0.0):
-        bmi = float(weight/(height/float(10000)))
-        category =  bmi_categories(bmi)
-        bmi = str( float("{0:.2f}".format(bmi)) )
-        jarvis.say("Your BMI is : " + bmi)   
-        jarvis.say("Category : " + category) 
+
+    if(height > 0.0 and weight > 0.0):
+        bmi = float(weight / (height / float(10000)))
+        category = bmi_categories(bmi)
+        bmi = str(float("{0:.2f}".format(bmi)))
+        jarvis.say("Your BMI is : " + bmi)
+        jarvis.say("Category : " + category)
     else:
         jarvis.say("Please add positive height(m) and weight(kg)!")
-        return None       
-
-
-
+        return None
 
 
 def bmi_categories(bmi):
-    if( bmi < 18.5 ):
+    if(bmi < 18.5):
         category = "Underweight"
-    elif( bmi < 25 ):
+    elif(bmi < 25):
         category = "Normal weight"
-    elif( bmi < 30 ):
+    elif(bmi < 30):
         category = "Overweight"
     else:
         category = "Obesity"
@@ -59,9 +56,8 @@ def health_calories(jarvis, s):
     #Example: health calories woman 27 164 60 3
     """
 
-    error = 0
     strings = s.split()
-    if( len(strings) == 5 ):
+    if(len(strings) == 5):
         gender = strings[0]
         age = int(strings[1])
         height = int(strings[2])
@@ -69,24 +65,16 @@ def health_calories(jarvis, s):
         level = int(strings[4])
     else:
         jarvis.say("You wrote less or more arguments than it needed.")
-        return None 
+        return None
 
     gender_no = 0
-    if( gender == 'man' ):
+    if(gender == 'man'):
         gender_no = 5
-    elif( gender =='woman' ):
+    elif(gender == 'woman'):
         gender_no = -161
 
-    if( gender_no != 0 
-        and age > 14 
-        and height > 0.0 
-        and weight > 0.0 
-        and level > 0 
-        and level < 5):
-        brm = float(10*weight 
-                    + 6.25*height 
-                    - 5*age 
-                    + gender_no) * exersise_level(level)
+    if(gender_no != 0 and age > 14 and height > 0.0 and weight > 0.0 and level > 0 and level < 5):
+        brm = float(10 * weight + 6.25 * height - 5 * age + gender_no) * exersise_level(level)
         brm_loss = brm - 500.0
         brm_put_on = brm + 500.0
         jarvis.say("Daily caloric intake :    " + str(brm))
@@ -95,14 +83,13 @@ def health_calories(jarvis, s):
     else:
         jarvis.say("Please add corrent input!")
         return None
-            
 
 
 def exersise_level(level):
     multiplier = 1
-    if( level == 1 ):
+    if(level == 1):
         multiplier = 1.2
-    elif( level == 2 ):
+    elif(level == 2):
         multiplier = 1.4
     elif(level == 3):
         multiplier = 1.6
