@@ -8,6 +8,7 @@ def health_bmi(jarvis, s):
     It is a measure of body mass based on height and weight.
     Add metric height(cm) and weight(kg). No decimal weight for now.
     #Example: health bmi 182 86
+    ^Source: https://en.wikipedia.org/wiki/Body_mass_index
     """
 
     strings = s.split()
@@ -44,9 +45,9 @@ def bmi_categories(bmi):
 @plugin()
 def health_calories(jarvis, s):
     """
-    Tells the recommended daily calorie intake, also recommends calories for weight add and loss.
+    Tells the recommended daily calorie intake, also recommends calories for weight add and loss.(Source 1)
     It is based on gender, age, height and weight.
-    Uses the Miffin-St Jeor Equation as it is considered the most accurate when we don't know our body fat percentage.
+    Uses the Miffin-St Jeor Equation as it is considered the most accurate when we don't know our body fat percentage(Source 2).
     Add gender(man/woman), age(15 - 80 recommended), metric height(cm), weight(kg), workout level(1-4). No decimal weight for now.
     Workout Levels:
         [1] Little or no exersise
@@ -54,6 +55,9 @@ def health_calories(jarvis, s):
         [3] Moderate 4-5 per week
         [4] Active daily exersise or physical job
     #Example: health calories woman 27 164 60 3
+    ^Sources:
+            1) https://en.wikipedia.org/wiki/Basal_metabolic_rate
+            2) https://jandonline.org/article/S0002-8223(05)00149-5/fulltext
     """
 
     strings = s.split()
