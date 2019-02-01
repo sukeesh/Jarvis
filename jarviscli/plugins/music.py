@@ -5,10 +5,10 @@ from plugin import plugin, alias, LINUX
 
 
 def find_cached_music(music):
-        find = os.popen("ls music -tc")
-        music = str(find.readline()).replace("\n", "")
-        music = music.replace(" ", "\\ ").replace(" (", " \\("). replace(")", "\\)")
-        return music
+    find = os.popen("ls music -tc")
+    music = str(find.readline()).replace("\n", "")
+    music = music.replace(" ", "\\ ").replace(" (", " \\("). replace(")", "\\)")
+    return music
 
 
 @plugin(plattform=LINUX)
