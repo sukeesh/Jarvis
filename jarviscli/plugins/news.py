@@ -66,7 +66,8 @@ class News(Plugin):
             except:
                 jarvis.say("I couldn't find news", Fore.RED)
 
-    def get_key(self):
+    @staticmethod
+    def get_key():
         return "news-settings"
 
     def news(self, jarvis):
@@ -84,7 +85,7 @@ class News(Plugin):
     '''
 
     def configure_news_site(self, jarvis):
-        news_site_list = jarvis.get_data(self.get_key())
+        news_site_list = jarvis.get_data(News.get_key())
         # Check if no sites are configured
         if news_site_list is None:
             news_site_list = []
@@ -117,7 +118,7 @@ class News(Plugin):
             news_site_list = [item for item in news_site_list if item not in list_to_del]
             if len(news_site_list) == 0:
                 self.is_news_site_configured = False
-        jarvis.update_data(self.get_key(), news_site_list)
+        jarvis.update_data(News.get_key(), news_site_list)
         jarvis.save()
         self.news_options(jarvis)
         self.get_news()
