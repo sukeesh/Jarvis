@@ -210,18 +210,18 @@ def format_expression(s):
 
 
 def solve_y(s):
-        if 'y' in s:
-            y = sympy.Symbol('y')
-            try:
-                results = sympy.solve(s, y)
-            except NotImplementedError:
-                return 'unknown'
-            if len(results) == 0:
-                return '0'
-            else:
-                return results[0]
+    if 'y' in s:
+        y = sympy.Symbol('y')
+        try:
+            results = sympy.solve(s, y)
+        except NotImplementedError:
+            return 'unknown'
+        if len(results) == 0:
+            return '0'
         else:
-            return solve_y("({}) -y".format(s))
+            return results[0]
+    else:
+        return solve_y("({}) -y".format(s))
 
 
 def calc(jarvis, s, calculator=sympy.sympify, formatter=None, do_evalf=True):

@@ -3,27 +3,30 @@ from plugin import plugin
 from colorama import Fore, Style
 import six
 
-
 app = imdb.IMDb()
 
 
 def main(jarvis, movie):
     movie_id = search_movie(jarvis, movie)
+
     if movie_id is None:
         return None
     return get_movie_by_id(movie_id)
 
 
-def search_movie(jarvis, movie):
+def search_movie(jarvis, movie, all_results=False):
     if movie == '':
         jarvis.say("Please add movie name!", Fore.RED)
         return None
-    results = app.search_movie(movie)
+    results = app.search_movie(movie, results=10)
     if not results:
         jarvis.say("Error: Did not find movie!", Fore.RED)
         return None
-    first = results[0]
-    return first.movieID
+    if not all_results:
+        first = results[0]
+        return first.movieID
+    else:
+        return results
 
 
 def get_movie_by_id(movie_id):
@@ -126,6 +129,14 @@ def movie_genres(jarvis, movie):
             jarvis.say(d)
 
 
+movie_attributes = [
+    'title', 'year', 'genres', 'director',
+    'writer', 'cast', 'color info', 'rating',
+    'aspect ratio', 'sound mix', 'runtimes',
+    'plot outline'
+]
+
+
 @plugin(network=True)
 def movie_info(jarvis, movie):
     """
@@ -133,55 +144,102 @@ def movie_info(jarvis, movie):
     """
     data = main(jarvis, movie)
 
-    movie_attributes = [
-        'title', 'year', 'genres', 'director',
-        'writer', 'cast', 'color info', 'rating',
-        'aspect ratio', 'sound mix', 'runtimes',
-        'plot outline'
-    ]
-
-    def pretty_list(lst):
-        """
-        Takes a list as input and returns a string with coma separated values
-        """
-        line = lst[0]
-        for i in lst[1:]:
-            line += ', ' + i
-        return line
-
-    def colorized_output(key, value):
-        """
-        pretty print key value pair
-        """
-        green_text = Fore.GREEN + "{:<14}".format(key)
-        normal_text = Style.RESET_ALL + ": " + str(value)
-        return green_text + normal_text
-
-    def get_movie_info(key):
-        """
-        Takes a movie attribute as input and prints them accordingly
-        """
-
-        value = data[key]
-
-        if key == 'genres':
-            value = pretty_list(value)
-
-        if key == 'cast':
-            lst = [d['name'] for d in value]
-            value = pretty_list(lst[0:3])
-
-        if isinstance(value, list):
-            value = value[0]
-
-        jarvis.say(colorized_output(key.capitalize(), str(value)))
-
     if data is not None:
+        get_movie_info(jarvis, data)
 
-        for attribute in movie_attributes:
-            if attribute in data:
-                get_movie_info(attribute)
 
-        # print IMDB url of the movie
-        movie_url = app.urls['movie_base'] + 'tt' + data.movieID
-        jarvis.say(colorized_output('IMDB url', movie_url))
+@plugin(network=True)
+def movie_search(jarvis, movie):
+    """ search for a movie on IMDB"""
+    results = search_movie(jarvis, movie, all_results=True)
+
+    # if results is None or empty
+    if not results:
+        return None
+
+    # get only movies from the results, filtering out TV series, etc
+    movie_results = []
+    for item in results:
+        if item['kind'] == 'movie':
+            movie_results.append(item)
+
+    if len(movie_results) > 5:
+        count = 5
+    else:
+        count = len(movie_results)
+
+    jarvis.say('')
+    space = ' '
+    text = 'ID'
+    text += space * 3 + 'Movie title'
+    jarvis.say(text, Fore.GREEN)
+
+    for i in range(count):
+        item = movie_results[i]
+        text = Fore.GREEN + str(i + 1) + space * 4
+        text += Fore.RESET + item['smart long imdb canonical title']
+        jarvis.say(text)
+
+    jarvis.say('')
+    jarvis.say('Please enter ID to know more(q - quit):')
+
+    input_id = input()
+
+    # If nothing is entered, just return
+    if input_id is '':
+        return None
+
+    if len(input_id) != 1:
+        return jarvis.say(Fore.RED + 'Please enter valid value')
+    elif input_id in '123456789':
+        input_id = int(input_id)
+    elif input_id == 'q':
+        return None
+
+    # if entered input is out of the given list of ID's
+    if input_id > count:
+        return jarvis.say(Fore.RED + 'Please enter id from the given list')
+
+    movie_id = movie_results[input_id - 1].movieID
+    data = get_movie_by_id(movie_id)
+    get_movie_info(jarvis, data)
+
+
+def colorized_output(key, value):
+    """
+    pretty print key value pair
+    """
+    green_text = Fore.GREEN + "{:<14}".format(key)
+    normal_text = Style.RESET_ALL + ": " + str(value)
+    return green_text + normal_text
+
+
+def get_movie_info(jarvis, data):
+    """
+    Takes a movie attributes as input and prints them accordingly
+    """
+    global movie_attributes
+
+    jarvis.say('')
+
+    for attribute in movie_attributes:
+        if attribute in data:
+
+            value = data[attribute]
+
+            if attribute == 'genres':
+                value = ', '.join(value)
+
+            if attribute == 'cast':
+                lst = [person['name'] for person in value]
+                value = ', '.join(lst[0:3])
+
+            if isinstance(value, list):
+                value = value[0]
+
+            jarvis.say(colorized_output(attribute.capitalize(), str(value)))
+
+    # print IMDB url of the movie
+    movie_url = app.urls['movie_base'] + 'tt' + data.movieID
+    jarvis.say(colorized_output('IMDB url', movie_url))
+    jarvis.say('')
