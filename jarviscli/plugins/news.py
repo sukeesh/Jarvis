@@ -41,6 +41,7 @@ class News(Plugin):
         self.source = source
         self.url = "https://newsapi.org/v1/articles?source=google-news&sortBy=top" \
                    "&apiKey=7488ba8ff8dc43459d36f06e7141c9e5"
+        self.is_news_site_configured = False
 
     def require(self):
         yield ("network", True)
@@ -59,6 +60,8 @@ class News(Plugin):
                 jarvis.say("I couldn't find news", Fore.RED)
         else:
             try:
+                if len(jarvis.get_data('news-settings')) > 0:
+                    self.is_news_site_configured = True
                 self.news(jarvis)
             except:
                 jarvis.say("I couldn't find news", Fore.RED)
@@ -82,48 +85,45 @@ class News(Plugin):
 
     def configure_news_site(self, jarvis):
         news_site_list = jarvis.get_data(self.get_key())
-        print(news_site_list)
-        
-        #Check if no sites are configured
+        # Check if no sites are configured
         if news_site_list is None:
             news_site_list = []
+        print("List of configured news sites are as below")
+        for idx, site in enumerate(news_site_list):
+            print("{} : {}".format(idx + 1, site))
 
-        print("Search www.newsapi.org for the list of news channels. Enter site-key") 
+        print("Search www.newsapi.org for the list of news channels. Enter site-key")
         site_key = str(input())
-        news_site_list.append(site_key)
+        if site_key is '':
+            print("Wrong input.")
+        elif site_key in news_site_list:
+            print("Site already added. Hence not updating the list.")
+        else:
+            news_site_list.append(site_key)
+            self.is_news_site_configured = True
 
         print("List of configured news sites are as below")
 
         for idx, site in enumerate(news_site_list):
-            print("{} : {}".format(idx+1,site))
+            print("{} : {}".format(idx + 1, site))
 
         print("Would you like to delete any in the list?(y/n)")
         del_from_list = str(input())
         if del_from_list.lower() == "y":
             print("Enter the site index to be deleted. If multiple sites, then enter index with comma seperated values")
             index_to_del = str(input())
-            print("Came here 1")
-            print(index_to_del)
-            items_to_del = index_to_del.split(',')
-            print("Came here 2")
-            print(items_to_del)
-            for item in items_to_del:
-                del news_site_list[int(item)]
-            
-            print("Came here 3")
-            print(news_site_list)
-            print("Came here 4")
-
-            
+            items_idx_to_del = index_to_del.split(',')
+            list_to_del = [news_site_list[int(item) - 1] for item in items_idx_to_del]
+            news_site_list = [item for item in news_site_list if item not in list_to_del]
+            if len(news_site_list) == 0:
+                self.is_news_site_configured = False
         jarvis.update_data(self.get_key(), news_site_list)
-        print("Came here 5")
         jarvis.save()
-        print("Came here 6")
-        print("Configuration complete.")
-        
+        self.news_options(jarvis)
+        self.get_news()
+
     def quick_news(self):
         self.request_news()
-
     '''
         Gets and returns JSON data of news
     '''
@@ -149,13 +149,26 @@ class News(Plugin):
             x = input()
             if x == 'y' or x == 'yes':
                 self.source = jarvis.get_data('news-source')
+            # if news site configured already, display it
+            elif self.is_news_site_configured:
+                get_configured_opt(jarvis)
             # if not set get users preference
             else:
-                self.get_opt(jarvis)
+                self.get_default_opt(jarvis)
+        elif self.is_news_site_configured:
+            self.get_configured_opt(jarvis)
         else:
-            self.get_opt(jarvis)
+            self.get_default_opt(jarvis)
 
-    def get_opt(self, jarvis):
+    def get_configured_opt(self, jarvis):
+        news_site_list = jarvis.get_data('news-settings')
+        print('Selec Source : ')
+        for idx, site in enumerate(news_site_list):
+            print("{}:{}".format(idx + 1, site))
+        i = int(input())
+        self.source = news_site_list[i - 1]
+
+    def get_default_opt(self, jarvis):
         # Other sources available here: https://newsapi.org/sources
         print("Select Source (1-5):")
         print("1: BBC")
