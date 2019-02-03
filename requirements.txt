@@ -24,3 +24,7 @@ termdown
 wikipedia
 https://github.com/appi147/pyaiml3/archive/master.zip ; python_version >= '3.5'
 speedtest-cli
+SpeechRecognition
+PyAudio
+pyttsx3
+google-cloud-speech
