@@ -3,7 +3,6 @@ import speech_recognition as sr
 import pyttsx3
 import os
 from plugin import plugin
-import Jarvis
 @plugin()
 def hear(jarvis, s):
     r = sr.Recognizer()
@@ -36,9 +35,9 @@ def hear(jarvis, s):
             with sr.Microphone() as source:
                 r.adjust_for_ambient_noise(source)
                 audio = r.listen(source)
-                pinger = r.recognize_google(audio)
+                pinger = r.recognize_google(audio).lower()
 
-            if (pinger.lower() == "stop"):
+            if (pinger == "stop"):
                 listen = False
                 print("Listening stopped.")
                 break
@@ -51,9 +50,12 @@ def hear(jarvis, s):
                     if pinger == 'one':
                         pinger = 1
                     os.system("wmctrl -s " + str(int(pinger) - 1))
+                elif pinger[0:4] == "open":
+                    pinger = pinger[5:]
+                    os.system("nohup " + pinger)
                 else:
                     line = pinger
-                    jarvis = Jarvis.Jarvis()
+                    jarvis = jarvis._jarvis
                     line = jarvis.precmd(line)
                     stop = jarvis.onecmd(line)
                     stop = jarvis.postcmd(stop, line)
