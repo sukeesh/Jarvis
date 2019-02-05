@@ -1,6 +1,5 @@
 # !!! This uses the https://newsapi.org/ api. TO comply with the TOU
 # !!! we must link back to this site whenever we display results.
-# This has been edited for understanding simple git operations.
 try:  # python3
     import urllib.request
     import urllib.parse
@@ -60,7 +59,7 @@ class News(Plugin):
                 jarvis.say("I couldn't find news", Fore.RED)
         else:
             try:
-                if len(jarvis.get_data('news-settings')) > 0:
+                if jarvis.get_data('news-settings') is not None and len(jarvis.get_data('news-settings')) > 0:
                     self.is_news_site_configured = True
                 self.news(jarvis)
             except:
@@ -69,6 +68,18 @@ class News(Plugin):
     @staticmethod
     def get_key():
         return "news-settings"
+
+    def check_newsapi_url(self, site_key):
+        url = "https://newsapi.org/v1/articles?source=" + \
+            site_key + "&sortby=top&apiKey=" + self.apiKey
+        try:
+            response = urllib.request.urlopen(url)
+        except AttributeError:
+            response = urllib.urlopen(url)
+        if response.code >= 400:
+            return False
+        else:
+            return True
 
     def news(self, jarvis):
         print('Would you like to configure your own news channel(y/n)')
@@ -93,12 +104,14 @@ class News(Plugin):
         for idx, site in enumerate(news_site_list):
             print("{} : {}".format(idx + 1, site))
 
-        print("Search www.newsapi.org for the list of news channels. Enter site-key")
+        print("Search https://newsapi.org/sources for the list of news channels. Enter site-key")
         site_key = str(input())
         if site_key is '':
             print("Wrong input.")
         elif site_key in news_site_list:
             print("Site already added. Hence not updating the list.")
+        elif self.check_newsapi_url(site_key) is False:
+            print("News source {} doesn't exist".format(site_key))
         else:
             news_site_list.append(site_key)
             self.is_news_site_configured = True
@@ -119,7 +132,6 @@ class News(Plugin):
             if len(news_site_list) == 0:
                 self.is_news_site_configured = False
         jarvis.update_data(News.get_key(), news_site_list)
-        jarvis.save()
         self.news_options(jarvis)
         self.get_news()
 
