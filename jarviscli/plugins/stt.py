@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import speech_recognition as sr
 import pyttsx3
-import os
+import subprocess
 from plugin import plugin
 @plugin()
 def hear(jarvis, s):
@@ -12,7 +12,7 @@ def hear(jarvis, s):
     while listen is False:
         try:
             with sr.Microphone() as source:
-                os.system("reset")
+                subprocess.call('reset', shell=False)
                 print("Say listen to start listening")
                 r.adjust_for_ambient_noise(source)
                 audio = r.listen(source)
@@ -44,15 +44,16 @@ def hear(jarvis, s):
             else:
                 print(pinger)
                 if pinger[0:5] == "go to":
-                    os.system("wmctrl -a " + pinger[7:])
+                    subprocess.call(["wmctrl", "-a", pinger[7:]], shell=False)
                 elif pinger[0:9] == "workspace":
-                    pinger = pinger[11:len(pinger)]
+                    pinger = pinger[10:len(pinger)]
                     if pinger == 'one':
                         pinger = 1
-                    os.system("wmctrl -s " + str(int(pinger) - 1))
+                    num = str(int(pinger) - 1)
+                    subprocess.call(["wmctrl", "-s", num], shell=False)
                 elif pinger[0:4] == "open":
                     pinger = pinger[5:]
-                    os.system("nohup " + pinger)
+                    subprocess.call(["nohup", pinger], shell=False)
                 else:
                     line = pinger
                     jarvis = jarvis._jarvis
