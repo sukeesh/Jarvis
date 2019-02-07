@@ -73,7 +73,10 @@ class News(Plugin):
         url = "https://newsapi.org/v1/articles?source=" + \
             site_key + "&sortby=top&apiKey=" + self.apiKey
         try:
-            response = urllib.request.urlopen(url)
+            try:
+                response = urllib.request.urlopen(url)
+            except urllib.error.HTTPError:
+                return False
         except AttributeError:
             response = urllib.urlopen(url)
         if response.code >= 400:
