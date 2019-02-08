@@ -40,6 +40,7 @@ class News(Plugin):
         self.source = source
         self.url = "https://newsapi.org/v1/articles?source=google-news&sortBy=top" \
                    "&apiKey=7488ba8ff8dc43459d36f06e7141c9e5"
+        self.is_news_site_configured = False
 
     def require(self):
         yield ("network", True)
@@ -58,22 +59,87 @@ class News(Plugin):
                 jarvis.say("I couldn't find news", Fore.RED)
         else:
             try:
+                if jarvis.get_data('news-settings') is not None and len(jarvis.get_data('news-settings')) > 0:
+                    self.is_news_site_configured = True
                 self.news(jarvis)
             except:
                 jarvis.say("I couldn't find news", Fore.RED)
 
+    @staticmethod
+    def get_key():
+        return "news-settings"
+
+    def check_newsapi_url(self, site_key):
+        url = "https://newsapi.org/v1/articles?source=" + \
+            site_key + "&sortby=top&apiKey=" + self.apiKey
+        try:
+            try:
+                response = urllib.request.urlopen(url)
+            except urllib.error.HTTPError:
+                return False
+        except AttributeError:
+            response = urllib.urlopen(url)
+        if response.code >= 400:
+            return False
+        else:
+            return True
+
     def news(self, jarvis):
-        self.news_options(jarvis)
-        self.get_news()
+        print('Would you like to configure your own news channel(y/n)')
+        i = str(input())
+        if i.lower() == "y":
+            self.configure_news_site(jarvis)
+        else:
+            self.news_options(jarvis)
+            self.get_news()
 
     '''
         This is the quickest way to get news it also has the
         least amount of options for the user.
     '''
 
+    def configure_news_site(self, jarvis):
+        news_site_list = jarvis.get_data(News.get_key())
+        # Check if no sites are configured
+        if news_site_list is None:
+            news_site_list = []
+        print("List of configured news sites are as below")
+        for idx, site in enumerate(news_site_list):
+            print("{} : {}".format(idx + 1, site))
+
+        print("Search https://newsapi.org/sources for the list of news channels. Enter site-key")
+        site_key = str(input())
+        if site_key is '':
+            print("Wrong input.")
+        elif site_key in news_site_list:
+            print("Site already added. Hence not updating the list.")
+        elif self.check_newsapi_url(site_key) is False:
+            print("News source {} doesn't exist".format(site_key))
+        else:
+            news_site_list.append(site_key)
+            self.is_news_site_configured = True
+
+        print("List of configured news sites are as below")
+
+        for idx, site in enumerate(news_site_list):
+            print("{} : {}".format(idx + 1, site))
+
+        print("Would you like to delete any in the list?(y/n)")
+        del_from_list = str(input())
+        if del_from_list.lower() == "y":
+            print("Enter the site index to be deleted. If multiple sites, then enter index with comma seperated values")
+            index_to_del = str(input())
+            items_idx_to_del = index_to_del.split(',')
+            list_to_del = [news_site_list[int(item) - 1] for item in items_idx_to_del]
+            news_site_list = [item for item in news_site_list if item not in list_to_del]
+            if len(news_site_list) == 0:
+                self.is_news_site_configured = False
+        jarvis.update_data(News.get_key(), news_site_list)
+        self.news_options(jarvis)
+        self.get_news()
+
     def quick_news(self):
         self.request_news()
-
     '''
         Gets and returns JSON data of news
     '''
@@ -99,13 +165,26 @@ class News(Plugin):
             x = input()
             if x == 'y' or x == 'yes':
                 self.source = jarvis.get_data('news-source')
+            # if news site configured already, display it
+            elif self.is_news_site_configured:
+                get_configured_opt(jarvis)
             # if not set get users preference
             else:
-                self.get_opt(jarvis)
+                self.get_default_opt(jarvis)
+        elif self.is_news_site_configured:
+            self.get_configured_opt(jarvis)
         else:
-            self.get_opt(jarvis)
+            self.get_default_opt(jarvis)
 
-    def get_opt(self, jarvis):
+    def get_configured_opt(self, jarvis):
+        news_site_list = jarvis.get_data('news-settings')
+        print('Selec Source : ')
+        for idx, site in enumerate(news_site_list):
+            print("{}:{}".format(idx + 1, site))
+        i = int(input())
+        self.source = news_site_list[i - 1]
+
+    def get_default_opt(self, jarvis):
         # Other sources available here: https://newsapi.org/sources
         print("Select Source (1-5):")
         print("1: BBC")
