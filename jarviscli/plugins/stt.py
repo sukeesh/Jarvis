@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import speech_recognition as sr
 import pyttsx3
-import subprocess
+import os
 from plugin import plugin
 @plugin()
 def hear(jarvis, s):
@@ -12,7 +12,7 @@ def hear(jarvis, s):
     while listen is False:
         try:
             with sr.Microphone() as source:
-                subprocess.call('reset', shell=False)
+                os.system('reset')
                 print("Say listen to start listening")
                 r.adjust_for_ambient_noise(source)
                 audio = r.listen(source)
@@ -43,23 +43,12 @@ def hear(jarvis, s):
                 break
             else:
                 print(pinger)
-                if pinger[0:5] == "go to":
-                    subprocess.call(["wmctrl", "-a", pinger[7:]], shell=False)
-                elif pinger[0:9] == "workspace":
-                    pinger = pinger[10:len(pinger)]
-                    if pinger == 'one':
-                        pinger = 1
-                    num = str(int(pinger) - 1)
-                    subprocess.call(["wmctrl", "-s", num], shell=False)
-                elif pinger[0:4] == "open":
-                    pinger = pinger[5:]
-                    subprocess.call(["nohup", pinger], shell=False)
-                else:
+                if listen:
                     line = pinger
-                    jarvis = jarvis._jarvis
-                    line = jarvis.precmd(line)
-                    stop = jarvis.onecmd(line)
-                    stop = jarvis.postcmd(stop, line)
+                    _jarvis = jarvis._jarvis
+                    line = _jarvis.precmd(line)
+                    stop = _jarvis.onecmd(line)
+                    stop = _jarvis.postcmd(stop, line)
 
         except LookupError:
             engine.say('Audio cannot be read!')
