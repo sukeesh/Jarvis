@@ -25,5 +25,4 @@ wikipedia
 https://github.com/appi147/pyaiml3/archive/master.zip ; python_version >= '3.5'
 speedtest-cli
 SpeechRecognition
-pyttsx3
-google-cloud-speech
+pyaudio --global-option='build_ext' --global-option='-I/usr/local/include' --global-option='-L/usr/local/lib'
