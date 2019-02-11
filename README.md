@@ -19,7 +19,7 @@ On Mac OS X run `source setup.sh`
 You can start by typing `help` within the Jarvis command line to check what Jarvis can do for you.
 
 
-## Youtube Video
+## Youtube Video Showing Jarvis
 
 [Click here](https://www.youtube.com/watch?v=PR-nxqmG3V8)
 
