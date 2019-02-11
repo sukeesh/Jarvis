@@ -1,7 +1,22 @@
-import speech_recognition as sr
-import os
 from plugin import plugin
-@plugin()
+import os
+
+
+voice_control_installed = True
+try:
+    import speech_recognition as sr
+    import pyaudio
+except ModuleNotFoundError:
+    voice_control_installed = False
+
+
+if voice_control_installed:
+    requirements = []
+else:
+    requirements = ['voice_control_requirements (install portaudio + re-run setup.sh)']
+
+
+@plugin(native=requirements)
 def hear(jarvis, s):
     r = sr.Recognizer()  # intializing the speech_recognition
     listen = False
