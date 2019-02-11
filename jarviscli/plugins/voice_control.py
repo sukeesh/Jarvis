@@ -1,11 +1,9 @@
 import speech_recognition as sr
-import pyttsx3
 import os
 from plugin import plugin
 @plugin()
 def hear(jarvis, s):
     r = sr.Recognizer()  # intializing the speech_recognition
-    engine = pyttsx3.init()
     listen = False
     _jarvis = jarvis._jarvis  # calling jarvis object.
     _jarvis.speech.text_to_speech("Say listen to start voice mode")
@@ -51,8 +49,7 @@ def hear(jarvis, s):
                     stop = _jarvis.postcmd(stop, line)
 
         except LookupError:
-            engine.say('Audio cannot be read!')
-            engine.runAndWait()
+            _jarvis.speech.text_to_speech('Audio cannot be read!')
             print("Could not understand audio")
             _jarvis.speech.text_to_speech("unable to recognize voice")
         except sr.UnknownValueError:
