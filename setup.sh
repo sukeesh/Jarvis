@@ -57,9 +57,11 @@ exec 3>&-
 case ${answer:0:1} in
   2 )
       virtualenv env --python=python2
+      python_version=py2
   ;;
   * )
       virtualenv env --python=python3
+      python_version=py3
   ;;
 esac
 
@@ -72,24 +74,19 @@ pip install --upgrade -r requirements.txt
 python -m nltk.downloader -d jarviscli/data/nltk wordnet
 
 # voice control requirements
-python installpyaudio.py
 error=false
-pip install --upgrade -r requirements_voice_control.txt || error=true
+pip install --upgrade -r requirements_voice_control.txt 2> /dev/null || error=true
 if $error; then
-    echo
-    echo
-    echo
-    echo "============================================================="
-    echo "Installation of requirements for voice control failed!"
-    echo
-    echo "Don't worry, Jarvis will work anyway. However if you need voice control, you should fix above error."
-    echo "Install python-pyaudio python3-pyaudio using your package manager i.,e apt, yum, etc."
-    echo "On Mac do"
-    echo "> brew install portaudio"
-    echo "Afterward re-run this setup.sh"
-    echo "============================================================="
-    echo
-    echo
-    echo
+    error=false
+    python installpyaudio.py $python_version || error=true
+
+    if $error; then
+        echo
+        echo
+        echo "Installation of requirements for voice control failed!"
+        echo "Don't worry, Jarvis will work anyway. However if you need voice control, re-run this setup."
+    else
+        pip install --upgrade -r requirements_voice_control.txt
+    fi
 fi
 sudo cp jarvis /usr/local/bin
