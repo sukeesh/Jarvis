@@ -1,11 +1,28 @@
-import speech_recognition as sr
-import pyttsx3
-import os
 from plugin import plugin
+<<<<<<< HEAD:jarviscli/plugins/stt.py
 @plugin(native='python-pyaudio')
+=======
+import os
+
+
+voice_control_installed = True
+try:
+    import speech_recognition as sr
+    import pyaudio
+except ModuleNotFoundError:
+    voice_control_installed = False
+
+
+if voice_control_installed:
+    requirements = []
+else:
+    requirements = ['voice_control_requirements (install portaudio + re-run setup.sh)']
+
+
+@plugin(native=requirements)
+>>>>>>> b2ca8c7c0b045ca131a6a84bde32b37860106f3f:jarviscli/plugins/voice_control.py
 def hear(jarvis, s):
     r = sr.Recognizer()  # intializing the speech_recognition
-    engine = pyttsx3.init()
     listen = False
     _jarvis = jarvis._jarvis  # calling jarvis object.
     _jarvis.speech.text_to_speech("Say listen to start voice mode")
@@ -52,8 +69,7 @@ def hear(jarvis, s):
                     stop = _jarvis.postcmd(stop, line)
 
         except LookupError:
-            engine.say('Audio cannot be read!')
-            engine.runAndWait()
+            _jarvis.speech.text_to_speech('Audio cannot be read!')
             print("Could not understand audio")
             _jarvis.speech.text_to_speech("unable to recognize voice")
         except sr.UnknownValueError:
