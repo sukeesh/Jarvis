@@ -1,9 +1,5 @@
 from plugin import plugin
-<<<<<<< HEAD:jarviscli/plugins/stt.py
-@plugin(native='python-pyaudio')
-=======
 import os
-
 
 voice_control_installed = True
 try:
@@ -12,7 +8,6 @@ try:
 except ModuleNotFoundError:
     voice_control_installed = False
 
-
 if voice_control_installed:
     requirements = []
 else:
@@ -20,7 +15,6 @@ else:
 
 
 @plugin(native=requirements)
->>>>>>> b2ca8c7c0b045ca131a6a84bde32b37860106f3f:jarviscli/plugins/voice_control.py
 def hear(jarvis, s):
     r = sr.Recognizer()  # intializing the speech_recognition
     listen = False

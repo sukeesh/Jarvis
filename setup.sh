@@ -72,6 +72,7 @@ pip install --upgrade -r requirements.txt
 python -m nltk.downloader -d jarviscli/data/nltk wordnet
 
 # voice control requirements
+python installpyaudio.py
 error=false
 pip install --upgrade -r requirements_voice_control.txt || error=true
 if $error; then
@@ -82,8 +83,7 @@ if $error; then
     echo "Installation of requirements for voice control failed!"
     echo
     echo "Don't worry, Jarvis will work anyway. However if you need voice control, you should fix above error."
-    echo "Most likely you'll need to install portaudio. On Ubuntu you can do:"
-    echo "> [sudo] apt-get install python-pyaudio python3-pyaudio"
+    echo "Install python-pyaudio python3-pyaudio using your package manager i.,e apt, yum, etc."
     echo "On Mac do"
     echo "> brew install portaudio"
     echo "Afterward re-run this setup.sh"
@@ -92,7 +92,4 @@ if $error; then
     echo
     echo
 fi
-
-
-
 sudo cp jarvis /usr/local/bin
