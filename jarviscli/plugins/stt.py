@@ -2,7 +2,7 @@ import speech_recognition as sr
 import pyttsx3
 import os
 from plugin import plugin
-@plugin()
+@plugin(native='python-pyaudio')
 def hear(jarvis, s):
     r = sr.Recognizer()  # intializing the speech_recognition
     engine = pyttsx3.init()
@@ -20,6 +20,7 @@ def hear(jarvis, s):
             try:
                 if (pinger.lower() == "listen"):
                     listen = True
+                    _jarvis.speech.text_to_speech("Voice mode activated")
                     print("Voice mode activated. Say something!")
                     break
                 else:
