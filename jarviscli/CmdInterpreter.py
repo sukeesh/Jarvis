@@ -2,6 +2,7 @@ import signal
 from cmd import Cmd
 from functools import partial
 import traceback
+import sys
 
 from colorama import Fore
 from PluginManager import PluginManager
@@ -40,6 +41,18 @@ class JarvisAPI(object):
         """
         self._jarvis.speak(text)
         print(color + text + Fore.RESET)
+
+    def input(self, prompt="", color=""):
+        """
+        Get user input
+        """
+        # we can't use input because for some reason input() and color codes do not work on
+        # windows cmd
+        sys.stdout.write(color + prompt + Fore.RESET)
+        sys.stdout.flush()
+        text = sys.stdin.readline()
+        # return without newline
+        return text.rstrip()
 
     def connection_error(self):
         """Print generic connection error"""

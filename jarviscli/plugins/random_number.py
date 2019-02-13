@@ -33,7 +33,7 @@ def get_user_input():
     string_fail = True
     while string_fail:
         try:
-            smallest_number = int(input('Enter the smallest number: '))
+            smallest_number = int(jarvis.input('Enter the smallest number: '))
             string_fail = False
         except:
             print('Only integers will be accepted')
@@ -42,7 +42,7 @@ def get_user_input():
 
     while string_fail:
         try:
-            higher_number = int(input('Enter the higher number: '))
+            higher_number = int(jarvis.input('Enter the higher number: '))
             string_fail = False
         except:
             print('Only integers will be accepted')

@@ -1,7 +1,6 @@
 import os
 import csv
 from decimal import Decimal
-from six.moves import input
 from forex_python.bitcoin import BtcConverter
 from forex_python.converter import CurrencyRates
 from plugin import plugin, require
@@ -65,7 +64,7 @@ class Currencyconv():
         """
 
         while True:
-            c = input(prompt).upper()
+            c = jarvis.input(prompt).upper()
             if c in currencies:
                 return currencies[c]
             elif c == "show help".upper():

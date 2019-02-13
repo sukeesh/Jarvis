@@ -1,6 +1,5 @@
 from colorama import Fore
 from pycricbuzz import Cricbuzz
-from six.moves import input
 from plugin import plugin, require
 from plugins.animations import SpinnerThread
 
@@ -146,18 +145,10 @@ class Cricket():
             print("{}. {} {}".format(str(i), m['srs'], m['mnum']))
         while True:
             try:
-                choice = int(
-                    input(
-                        Fore.RED
-                        + '\nEnter choice (number): '
-                        + Fore.RESET))
+                choice = int(jarvis.input('\nEnter choice (number): ', Fore.RED))
                 while choice < 1 or choice > len(self.matches):
                     print(Fore.BLACK + '\nWrong choice')
-                    choice = int(
-                        input(
-                            Fore.RED
-                            + '\nEnter choice again: '
-                            + Fore.RESET))
+                    choice = int(jarvis.input('\nEnter choice again: ', Fore.RED))
                 break
             except ValueError:
                 print("Invalid type of choice. Please enter an integer number")
@@ -178,18 +169,10 @@ class Cricket():
 
             while True:
                 try:
-                    choice = int(
-                        input(
-                            Fore.RED
-                            + '\nEnter choice (number): '
-                            + Fore.RESET))
+                    choice = int(jarvis.input('\nEnter choice (number): ', Fore.RED))
                     while choice < 1 or choice > 4:
                         print(Fore.BLACK + '\nWrong choice')
-                        choice = int(
-                            input(
-                                Fore.RED
-                                + '\nEnter choice again: '
-                                + Fore.RESET))
+                        choice = int(jarvis.input('\nEnter choice again: ', Fore.RED))
                     break
                 except ValueError:
                     print("Invalid type of choice. Please enter an integer number")
@@ -197,38 +180,23 @@ class Cricket():
 
             if choice == 1:
                 print(self.scorecard(selected_match_id))
-                ref = input(
-                    Fore.RED
-                    + 'Do you want to refresh:(y/n) '
-                    + Fore.RESET)
+                ref = jarvis.input('Do you want to refresh:(y/n) ', Fore.RED)
                 while ref == 'y':
                     print(self.scorecard(selected_match_id))
-                    ref = input(
-                        Fore.RED
-                        + 'Do you want to refresh:(y/n) '
-                        + Fore.RESET)
+                    ref = jarvis.input('Do you want to refresh:(y/n) ', Fore.RED)
 
             elif choice == 2:
                 print(self.commentary(selected_match_id))
-                ref = input(
-                    Fore.RED
-                    + 'Do you want to refresh:(y/n) '
-                    + Fore.RESET)
+                ref = jarvis.input('Do you want to refresh:(y/n) ', Fore.RED)
                 while ref == 'y':
                     print(self.commentary(selected_match_id))
-                    ref = input(
-                        Fore.RED
-                        + 'Do you want to refresh:(y/n) '
-                        + Fore.RESET)
+                    ref = jarvis.input('Do you want to refresh:(y/n) ', Fore.RED)
 
             elif choice == 3:
                 ref = 'y'
                 while ref == 'y':
                     print(self.live_score(selected_match_id))
-                    ref = input(
-                        Fore.RED
-                        + 'Do you want to refresh:(y/n) '
-                        + Fore.RESET)
+                    ref = jarvis.input('Do you want to refresh:(y/n) ', Fore.RED)
 
             else:
                 return

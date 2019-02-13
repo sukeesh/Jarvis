@@ -2,7 +2,6 @@ from __future__ import print_function
 from colorama import Fore
 import os
 import sys
-from six.moves import input
 from plugin import plugin
 
 
@@ -43,7 +42,7 @@ class File_Organise():
             print(Fore.LIGHTRED_EX + 'No directory found')
             exit()
 
-        choice = int(input('\nEnter the option number: '))
+        choice = int(jarvis.input('\nEnter the option number: '))
 
         if choice < 1 or choice > len(all_paths):
             path = ''
@@ -117,7 +116,7 @@ class File_Organise():
         print(Fore.LIGHTMAGENTA_EX + "\nCLEANED\n" + Fore.RESET)
 
     def file_manage(self, jarvis):
-        dir_name = input('Enter the name of directory you want to clear: ')
+        dir_name = jarvis.input('Enter the name of directory you want to clear: ')
         dir_path = self.source_path(dir_name)
         self.print_before(dir_path)
         new_dir_path, new_dir, extension = self.destination_path(dir_path)

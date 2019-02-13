@@ -3,7 +3,6 @@ import re
 import sympy
 
 from colorama import Fore
-from six.moves import input
 
 from plugin import alias, plugin
 
@@ -76,13 +75,13 @@ def equations(jarvis, term):
 
     equations = []
     count = 1
-    user_input = input('{}. Equation: '.format(count))
+    user_input = jarvis.input('{}. Equation: '.format(count))
     while user_input != '':
         count += 1
         user_input = format_expression(user_input)
         user_input = remove_equals(jarvis, user_input)
         equations.append(user_input)
-        user_input = input('{}. Equation: '.format(count))
+        user_input = jarvis.input('{}. Equation: '.format(count))
 
     calc(
         jarvis,

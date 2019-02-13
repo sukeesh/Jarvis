@@ -48,7 +48,7 @@ def bulls_and_cows(jarvis, s):
     jarvis.say(Fore.CYAN + 'Lets start? Type "g" to start or "q" to quit:')
 
     while(True):
-        st = input()
+        st = jarvis.input()
         if st == 'q':
             jarvis.say(
                 Fore.CYAN
@@ -71,7 +71,7 @@ def bulls_and_cows(jarvis, s):
                 jarvis.say(
                     Fore.CYAN
                     + 'Enter your guess, please (type "q" to quit):')
-                guess_num = input()
+                guess_num = jarvis.input()
                 if guess_num == 'q':
                     jarvis.say(Fore.CYAN + 'Thank you for playing!')
                     return
