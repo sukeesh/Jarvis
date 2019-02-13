@@ -117,10 +117,10 @@ class Cricket(Plugin):
         jarvis.say(Fore.RED + "\nALL MATCHES\n" + Fore.LIGHTBLUE_EX)
         for i, m in enumerate(matches, 1):
             jarvis.say("{}. {}".format(str(i), m))
-        choice = int(input(Fore.RED + '\nEnter choice (number): ' + Fore.RESET))
+        choice = int(jarvis.input('\nEnter choice (number): ', Fore.RED))
         while choice < 1 or choice > len(matches):
             jarvis.say(Fore.BLACK + '\nWrong choice')
-            choice = int(input(Fore.RED + '\nEnter choice again: ' + Fore.RESET))
+            choice = int(jarvis.input('\nEnter choice again: ', Fore.RED))
 
         desc = matches[choice - 1].title()
         jarvis.say('')
@@ -135,29 +135,29 @@ class Cricket(Plugin):
         jarvis.say('3. Refresh Score')
         jarvis.say('4. Quit' + Fore.RESET)
 
-        choice = int(input(Fore.RED + '\nEnter choice (number): ' + Fore.RESET))
+        choice = int(jarvis.input('\nEnter choice (number): ', Fore.RED))
         while choice < 1 or choice > 4:
             jarvis.say(Fore.BLACK + '\nWrong choice')
-            choice = int(input(Fore.RED + '\nEnter choice again: ' + Fore.RESET))
+            choice = int(jarvis.input('\nEnter choice again: ', Fore.RED))
         jarvis.say('')
 
         if choice == 1:
             ref = 'y'
             while ref == 'y':
                 jarvis.say(self.scorecard(desc))
-                ref = input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
+                ref = jarvis.input('Do you want to refresh:(y/n) ', Fore.RED)
                 jarvis.say('\n')
 
         elif choice == 2:
             ref = 'y'
             while ref == 'y':
                 jarvis.say(self.commentary(desc))
-                ref = input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
+                ref = jarvis.input('Do you want to refresh:(y/n) ', Fore.RED)
                 jarvis.say('\n')
 
         elif choice == 3:
             ref = 'y'
             while ref == 'y':
                 jarvis.say(self.live_score(desc))
-                ref = input(Fore.RED + 'Do you want to refresh:(y/n) ' + Fore.RESET)
+                ref = jarvis.input('Do you want to refresh:(y/n) ', Fore.RED)
                 jarvis.say('\n')

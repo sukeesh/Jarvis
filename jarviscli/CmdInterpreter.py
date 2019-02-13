@@ -2,8 +2,9 @@ import signal
 from os import system
 from cmd import Cmd
 from time import ctime
-from platform import architecture, dist, release, system as sys
+from platform import architecture, dist, release, system
 from functools import partial
+import sys
 
 import six
 
@@ -54,6 +55,18 @@ class JarvisAPI(object):
         """
         self._jarvis.speak(text)
         print(color + text + Fore.RESET)
+
+    def input(self, prompt, color=""):
+        """
+        Get user input
+        """
+        # we can't use input because for some reason input() and color codes do not work on
+        # windows cmd
+        sys.stdout.write(color + prompt + Fore.RESET)
+        sys.stdout.flush()
+        text = sys.stdin.readline()
+        # return without newline
+        return text.rstrip()
 
     def connection_error(self):
         """Print generic connection error"""

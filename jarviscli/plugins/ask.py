@@ -45,7 +45,7 @@ def ask(jarvis, s):
     stay = True
 
     while stay:
-        text = str.upper(input(Fore.RED + ">> " + Fore.RESET))
+        text = str.upper(jarvis.input(">> ", Fore.RED))
         if text == "LEAVE":
             jarvis.say("thanks for talking to me")
             stay = False
