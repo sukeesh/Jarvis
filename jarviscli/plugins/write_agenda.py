@@ -9,9 +9,9 @@ def write_agenda(jarvis, s):
     mydict = {}
 
     while(exit):
-        event_title = input("Write down the event title: ")
-        event_description = input("Write down the event description: ")
-        event_option = input("Anything more?(y/n): ")
+        event_title = jarvis.input("Write down the event title: ")
+        event_description = jarvis.input("Write down the event description: ")
+        event_option = jarvis.input("Anything more?(y/n): ")
         mydict[event_title] = event_description
 
         if(event_option == 'n'):

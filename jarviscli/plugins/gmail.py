@@ -20,10 +20,10 @@ def gmail(jarvis, s):
         # in case of failure
         print("Could Not connect to Gmail")
         return
-    user = input("Enter User id\n")                          # YOUR ID
-    Pass_w = input("\nEnter your Password\n")                # YOUR Password
-    reciever_id = input("\nEnter reciever id\n")             # Reciever ID
-    msg = input("\nEnter message\n")                         # message
+    user = jarvis.input("Enter User id\n")                          # YOUR ID
+    Pass_w = jarvis.input("\nEnter your Password\n")                # YOUR Password
+    reciever_id = jarvis.input("\nEnter reciever id\n")             # Reciever ID
+    msg = jarvis.input("\nEnter message\n")                         # message
 
     try:
         server.login(user, Pass_w)                           # user log in

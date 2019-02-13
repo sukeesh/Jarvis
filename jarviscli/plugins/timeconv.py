@@ -127,7 +127,7 @@ class timeconv():
     def get_units(self, prompt):
 
         while True:
-            u = input(prompt).lower()
+            u = jarvis.input(prompt).lower()
             if u in self.time_units:
                 return u
             else:

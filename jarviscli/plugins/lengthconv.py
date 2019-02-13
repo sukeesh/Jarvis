@@ -128,7 +128,7 @@ class lengthconv():
     def get_units(self, prompt):
 
         while True:
-            u = input(prompt).lower()
+            u = jarvis.input(prompt).lower()
             if u in self.length_units:
                 return u
             else:

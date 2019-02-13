@@ -2,7 +2,6 @@
 # !!! we must link back to this site whenever we display results.
 import json
 import webbrowser
-from six.moves import input
 from six import PY3
 from colorama import Fore
 from plugin import plugin, require
@@ -39,7 +38,7 @@ class News:
 
     def __call__(self, jarvis, s):
         if s == "updatekey":
-            key = input(
+            key = jarvis.input(
                 "Please enter your NEWS API key (q or Enter go back): ")
             if key.lower() == "q" or key.lower() == "":
                 jarvis.say("Could not update the NEWS API key! ", Fore.RED)
@@ -147,7 +146,7 @@ class News:
 
         for index in sorted([int(x) for x in dic.keys()]):
             jarvis.say(str(index) + " : " + dic[str(index)])
-        index_list = input(
+        index_list = jarvis.input(
             "Type the indexes of the sources you would like to remove from your channel separated by "
             "space: ")
         index_list = index_list.split(" ")
@@ -174,7 +173,7 @@ class News:
         """
         for index in sorted([int(x) for x in self.source_dict.keys()]):
             jarvis.say(str(index) + ": " + self.source_dict.get(str(index)))
-        index_list = input(
+        index_list = jarvis.input(
             "Type the indexes of the sources you would like to add to your channel separated by "
             "space: ")
         index_list = index_list.split(" ")
@@ -266,7 +265,7 @@ class News:
         jarvis.say("\nType index to expand news, 0 to return to jarvis prompt\n")
 
         # Check to see if index or NewsAPI was enterd
-        idx = input()
+        idx = jarvis.input()
         if idx.lower() == "newsapi":
             webbrowser.open('https://newsapi.org/')
             return
@@ -287,7 +286,7 @@ class News:
         jarvis.say(article_list[int(idx)]['description'])
 
         jarvis.say("Do you want to read more? (yes/no): ")
-        i = input()
+        i = jarvis.input()
         # if user wants to read more open browser to article url
         if i.lower() == "yes" or i.lower() == 'y':
             webbrowser.open(article_list[int(idx)]['url'])

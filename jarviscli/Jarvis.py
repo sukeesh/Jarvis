@@ -48,6 +48,7 @@ class Jarvis(CmdInterpreter, object):
                  prompt=prompt, first_reaction=True, enable_voice=False,
                  directories=["jarviscli/plugins", "custom"]):
         directories = self._rel_path_fix(directories)
+        self.use_rawinput = False
         CmdInterpreter.__init__(self, first_reaction_text, prompt,
                                 directories, first_reaction, enable_voice)
 

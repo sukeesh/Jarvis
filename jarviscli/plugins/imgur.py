@@ -24,7 +24,7 @@ def imgur(jarvis, s):
     readline.parse_and_bind("tab: complete")
     r = readline.get_completer()
     readline.set_completer(complete)
-    file = input('')
+    file = jarvis.input('')
     # Get the absolute path
     file = os.path.abspath(file)
     file = os.path.expanduser(file)

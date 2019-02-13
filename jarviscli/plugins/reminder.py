@@ -4,7 +4,6 @@ import datetime
 
 from pick import pick
 from colorama import Fore
-from six.moves import input
 from pytimeparse.timeparse import timeparse
 
 from plugin import plugin
@@ -257,7 +256,7 @@ class RemindBase(RemindTodoBase):
         time_in = time_in_parser(s[0])
         while time_in is None:
             jarvis.say("Sorry, when should I remind you?", Fore.MAGENTA)
-            time_in = time_in_parser(input("Time: "))
+            time_in = time_in_parser(jarvis.input("Time: "))
         timestamp = time.time() + time_in
 
         message = s[1]
@@ -381,7 +380,7 @@ class Todo_Progress(TodoBase):
 
     def __call__(self, jarvis, s):
         entry = self.select_one_remind(jarvis)
-        entry['progress'] = input("Progress: ")
+        entry['progress'] = jarvis.input("Progress: ")
         self.modify(jarvis, entry)
 
 

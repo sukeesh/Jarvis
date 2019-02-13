@@ -186,7 +186,7 @@ def movie_search(jarvis, movie):
     jarvis.say('')
     jarvis.say('Please enter ID to know more(q - quit):')
 
-    input_id = input()
+    input_id = jarvis.input()
 
     # If nothing is entered, just return
     if input_id is '':
@@ -225,7 +225,7 @@ def get_movie_info(jarvis, data):
         'What type of information do you want: cast, producers, genres, etc.?')
     jarvis.say('Write one after another separated by space, please:')
 
-    movie_attributes = input()
+    movie_attributes = jarvis.input()
     movie_attributes = movie_attributes.split()
     jarvis.say('')
 

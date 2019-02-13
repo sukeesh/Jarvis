@@ -17,7 +17,7 @@ class Stock:
                 if ps:
                     name = ' '.join(ps)
                 else:
-                    name = input("Enter the name of the stock to search the ID: ")
+                    name = jarvis.input("Enter the name of the stock to search the ID: ")
                 self.get_stock_id(jarvis, name)
             elif ps[0] == 'help':
                 self.usage(jarvis)

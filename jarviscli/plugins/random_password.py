@@ -9,7 +9,7 @@ def random_password(jarvis, s):
 
     while(stringFail):
         try:
-            stringLength = int(input("Enter password length: "))
+            stringLength = int(jarvis.input("Enter password length: "))
             stringFail = False
         except BaseException:
             print('Only integers will be accepted')
@@ -19,7 +19,7 @@ def random_password(jarvis, s):
     """Checks if the input the user gave is valid(either y or n)"""
     while True:
         try:
-            user_input = input(prompt)
+            user_input = jarvis.input(prompt)
         except ValueError:
             jarvis.say("\nSorry, I didn't understand that.")
             continue

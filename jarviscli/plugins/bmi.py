@@ -2,7 +2,6 @@ from plugin import plugin
 import os
 import sys
 
-from six.moves import input
 from colorama import Fore, Back, Style
 
 
@@ -47,7 +46,7 @@ class Bmi():
                   '(2) For imperial system\n'
                   'Your choice: ')
         while True:
-            c = input(prompt)
+            c = jarvis.input(prompt)
             if c == '1':
                 return 'metric'
             elif c == '2':
@@ -107,7 +106,7 @@ class Bmi():
 
         if s == "m":
             jarvis.say("Please insert your height (cm): ")
-            height = input()
+            height = jarvis.input()
             while True:
                 try:
                     height = int(height)
@@ -116,10 +115,10 @@ class Bmi():
                     break
                 except ValueError:
                     print("Error on input type for height, please insert an integer: ")
-                    height = input()
+                    height = jarvis.input()
 
             jarvis.say("Please insert your weight (kg): ")
-            weight = input()
+            weight = jarvis.input()
             while True:
                 try:
                     weight = int(weight)
@@ -128,11 +127,11 @@ class Bmi():
                     break
                 except ValueError:
                     print("Error on input type for weight, please insert an integer: ")
-                    weight = input()
+                    weight = jarvis.input()
 
         else:
             jarvis.say("Please insert your height (feet): ")
-            feet = input()
+            feet = jarvis.input()
             while True:
                 try:
                     feet = int(feet)
@@ -141,10 +140,10 @@ class Bmi():
                     break
                 except ValueError:
                     print("Error on input type for feet, please insert an integer: ")
-                    feet = input()
+                    feet = jarvis.input()
 
             jarvis.say("Please insert your height (inches): ")
-            inches = input()
+            inches = jarvis.input()
             while True:
                 try:
                     inches = int(inches)
@@ -153,9 +152,9 @@ class Bmi():
                     break
                 except ValueError:
                     print("Error on input type for inches, please insert an integer: ")
-                    inches = input()
+                    inches = jarvis.input()
             jarvis.say("Please insert your weight (lbs): ")
-            weight = input()
+            weight = jarvis.input()
             while True:
                 try:
                     weight = int(weight)
@@ -164,7 +163,7 @@ class Bmi():
                     break
                 except ValueError:
                     print("Error on input type for weight, please insert an integer: ")
-                    weight = input()
+                    weight = jarvis.input()
 
             height = int(feet) * 12 + int(inches)
             weight = int(weight)
