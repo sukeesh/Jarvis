@@ -7,7 +7,7 @@ forex-python
 funcsigs; python_version <= '2.7'
 googletrans
 IMDbPY
-instantmusic
+instantmusic # https://files.pythonhosted.org/packages/a1/e5/1dd62358d748f355da8875c8b708f651258daac8624b9131a665c7675da3/instantmusic-2.2.tar.gz
 mock
 nltk
 pick
