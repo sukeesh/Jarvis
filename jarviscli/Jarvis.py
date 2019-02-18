@@ -36,8 +36,9 @@ class Jarvis(CmdInterpreter, object):
     first_reaction_text += Fore.BLUE + \
         "Type 'help' for a list of available actions." + Fore.RESET
     first_reaction_text += "\n"
-    prompt = ("{}{} Hi, what can I do for you?\n{}".
-              format(Fore.RED, PROMPT_CHAR, Fore.RESET))
+    prompt = (
+        Fore.RED + "{} Hi, what can I do for you?\n".format(PROMPT_CHAR) + Fore.RESET
+    )
 
     # This can be used to store user specific data
 
@@ -74,24 +75,23 @@ class Jarvis(CmdInterpreter, object):
             line = "calculate " + line
             words = line.split()
 
+        if line.startswith("help"):
+            return line
+        elif line.startswith("status"):
+            return line
+
         if len(words) == 0:
             line = "None"
-        elif len(words) == 1:
-            # if the action is a dict action, the command should contain more than one word
-            # such as 'disable sound' or 'please, could you check the weather in Madrid'
-            dict_actions = [list(action.keys())[0]
-                            for action in self.actions if isinstance(action, dict)]
-            if words[0] in dict_actions:
-                self.default(words)
-        elif (len(words) > 2) or (words[0] not in self.actions):
+        else:
             line = self.parse_input(line)
         return line
 
     def postcmd(self, stop, line):
         """Hook that executes after every command."""
         if self.first_reaction:
-            self.prompt = ("{}{} What can i do for you?\n{}".
-                           format(Fore.RED, PROMPT_CHAR, Fore.RESET))
+            self.prompt = (
+                Fore.RED + "{} What can i do for you?\n".format(PROMPT_CHAR) + Fore.RESET
+            )
             self.first_reaction = False
         if self.enable_voice:
             self.speech.text_to_speech("What can i do for you?\n")
@@ -101,7 +101,7 @@ class Jarvis(CmdInterpreter, object):
             text = self.first_reaction_text
 
         if self.enable_voice:
-            self.speech.text_to_speech(text)
+            self.speech.speak(text)
 
     def parse_input(self, data):
         """This method gets the data and assigns it to an action"""
@@ -118,10 +118,10 @@ class Jarvis(CmdInterpreter, object):
             output = self.fixed_responses[data]  # change return to output =
         else:
             # if it doesn't have a fixed response, look if the data corresponds to an action
-            output = self._find_action(data)
+            output = self.find_action(data, self._plugin_manager.get_plugins().keys())
         return output
 
-    def _find_action(self, data):
+    def find_action(self, data, actions):
         """Checks if input is a defined action.
         :return: returns the action"""
         output = "None"
@@ -132,16 +132,9 @@ class Jarvis(CmdInterpreter, object):
         # check word by word if exists an action with the same name
         for word in words:
             words_remaining.remove(word)
-            for action in self.actions:
-                # action can be a string or a dict
-                if type(action) is dict and word in list(action.keys()):
-                    # command name exists, assign it to the output
-                    action_found = True
-                    output = self._generate_output_if_dict(
-                        action, word, words_remaining)
-                    break
+            for action in actions:
                 # For the 'near' keyword, the words before 'near' are also needed
-                elif word == "near":
+                if word == "near":
                     initial_words = words[:words.index('near')]
                     output = word + " " +\
                         " ".join(initial_words + ["|"] + words_remaining)
@@ -151,24 +144,6 @@ class Jarvis(CmdInterpreter, object):
                     break
             if action_found:
                 break
-        return output
-
-    def _generate_output_if_dict(self, action, word, words_remaining):
-        """Generates the correct output if action is a dict"""
-        output = word
-        # command is a dictionary, let's check if remaining words are one of it's completions
-        if len(words_remaining) != 0:
-            command_arguments = list(words_remaining)  # make a copy
-            for argument in words_remaining:
-                command_arguments.remove(argument)
-                for value in action[word]:
-                    if argument == value:
-                        output += " " + argument
-                        output += " " + " ".join(command_arguments)
-            # make Jarvis complain if none of the words_remaining are part
-            # of the word values (as in 'enable cat' or 'check whatever you fancy')
-        if output == word:
-            self.default(output)
         return output
 
     def executor(self):

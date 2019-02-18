@@ -1,4 +1,4 @@
-# Plugins
+j# Plugins
 
 ## Basic
 ```
@@ -21,8 +21,6 @@ class hello_world:
     def __call__(self, jarvis, s):
         jarvis.say("Hello World!")
 ```
-
-Note that currently only one space is allowed in @plugin parameter ([details](PLUGINS.md#two-word-commands)).
 
 
 ## Run-Parameter
@@ -116,26 +114,22 @@ def helloWorld(jarvis, s):
 ```
 
 
-### Two word commands
+### Multi word commands
 
 Take "check ram" and "check weather". Of course you could create a plugin "check" and doing something like ``if 'ram' in s``. But it's better to create two separate plugins:
 
 ```
-@plugin("check ram")
-check_ram(jarvis, s):
-    (...)
-
-
 @plugin("check weather")
 check_weather(jarvis, s):
     (...)
+
+@alias("info ram")
+@plugin("check ram")
+check_ram(jarvis, s):
+    (...)
 ```
 
-One '_' in class- or method-names split first word from second.
-
-Two word commands even work with alias() (but use Space instead of '_').
-
-Note that this only works for two-word commands - there is currently nothing like "three world commands".
+Multi word commands even work with alias().
 
 
 ### Init
