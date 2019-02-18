@@ -18,9 +18,9 @@ class PluginManager(object):
         self._backend = pluginmanager.PluginInterface()
         self._plugin_dependency = PluginDependency()
 
-        self._cache_clean = False
-        self._cache_plugins = {}
-        self._cache_plugins_disabled = {}
+        self._cache = None
+        self._plugins_loaded = 0
+        self._cache_disabled = []
 
         # blacklist files
         def __ends_with_py(s):
@@ -32,8 +32,7 @@ class PluginManager(object):
     def add_directory(self, path):
         """Add directory to search path for plugins"""
         self._backend.add_plugin_directories(path)
-
-        self._cache_clean = False
+        self._cache = None
 
     def add_plugin(self, plugin):
         """Add singe plugin-instance"""
@@ -41,110 +40,126 @@ class PluginManager(object):
 
     def _load(self):
         """lazy load"""
-        self._cache_clean = True
-        self._cache_plugins = {}
-        self._cache_plugins_disabled = {}
-
-        self._backend.collect_plugins()
-        for plugin in self._backend.get_plugins():
-            is_valid = self._plugin_validate(plugin)
-            if is_valid is True:
-                self._load_plugin_handle_alias(plugin)
-            else:
-                if is_valid is not False:
-                    self._cache_plugins_disabled[plugin.get_name()] = is_valid
-
-        # ignore "disabled" plugin if plugin with same name is "enabled"
-        # e.g. screen off has different implementations for Linux and Mac
-        # => don't show "screen off" as "disabled" because it isn't
-        enabled_names = []
-        for plugin in self._cache_plugins.values():
-            plugin_name = plugin.get_name()
-            if plugin.complete() is None:
-                enabled_names.append(plugin_name)
-            else:
-                for complete in plugin.complete():
-                    enabled_names.append("{} {}".format(plugin_name, complete))
-
-        cache_disabled_copy = self._cache_plugins_disabled
-        self._cache_plugins_disabled = {}
-        for name, message in cache_disabled_copy.items():
-            if name not in enabled_names:
-                self._cache_plugins_disabled[name] = message
-
-    def _plugin_validate(self, plugin):
-        # I really don't know why that check is necessary...
-        if not isinstance(plugin, pluginmanager.IPlugin):
-            return False
-
-        if plugin.get_name() == "plugin":
-            return False
-
-        # dependency check
-        dependency_ok = self._plugin_dependency.check(plugin)
-        if dependency_ok is not True:
-            if dependency_ok is False:
-                return False
-            return dependency_ok
-
-        return True
-
-    def _load_plugin_handle_alias(self, plugin):
-        self._load_add_plugin(plugin.get_name(), plugin)
-        for name in plugin.alias():
-            self._load_add_plugin(name.lower(), plugin)
-
-    def _load_add_plugin(self, name, plugin):
-        if ' ' in name:
-            name_split = name.split(' ')
-            self._load_add_composed_plugin(name_split[0], name_split[1], plugin)
-        else:
-            self._load_add_regular_plugin(name, plugin)
-
-    def _load_add_composed_plugin(self, name_first, name_second, plugin_sub):
-        if name_first in self._cache_plugins:
-            plugin_composed = self._cache_plugins[name_first]
-            if not plugin_composed.is_composed():
-                plugin_composed = self._load_convert_into_composed(name_first, plugin_composed)
-        else:
-            # create new PluginComposed
-            plugin_composed = plugin.PluginComposed(name_first)
-            self._cache_plugins[name_first] = plugin_composed
-
-        allready_exists = not plugin_composed.try_add_command(plugin_sub, name_second)
-        if allready_exists:
-            error("Duplicated plugin {} {}".format(name_first, name_second))
-
-    def _load_convert_into_composed(self, name, plugin_default):
-        plugin_composed = plugin.PluginComposed(name)
-        plugin_composed.try_set_default(plugin_default)
-        self._cache_plugins[name] = plugin_composed
-        return plugin_composed
-
-    def _load_add_regular_plugin(self, name, plugin):
-        if name not in self._cache_plugins:
-            self._cache_plugins.update({name: plugin})
+        if self._cache is not None:
+            # cache clean!
             return
 
-        if self._cache_plugins[name].is_composed():
-            success = self._cache_plugins[name].try_set_default(plugin)
-            if success:
-                return
+        self._cache = plugin.PluginStorage()
 
-        error("Duplicated plugin {}!".format(name))
+        self._backend.collect_plugins()
+        (enabled, disabled) = self._validate_plugins(self._backend.get_plugins())
 
-    def get_enabled(self):
-        """Returns all loaded plugins as dictionary (key: name, value: plugin instance)"""
-        if not self._cache_clean:
-            self._load()
+        for plugin_to_add in enabled:
+            self._load_plugin(plugin_to_add, self._cache)
 
-        return self._cache_plugins
+        self._cache_disabled = self._filter_duplicated_disabled(enabled, disabled)
+        self._plugins_loaded = len(enabled)
+
+    def _validate_plugins(self, plugins):
+        def partition(plugins):
+            plugins_valid = []
+            plugins_incompatible = []
+
+            for plugin_to_validate in plugins:
+                if not is_plugin(plugin_to_validate):
+                    continue
+
+                compability_check_result = self._plugin_dependency.check(plugin_to_validate)
+                if compability_check_result is True:
+                    plugins_valid.append(plugin_to_validate)
+                else:
+                    item = (plugin_to_validate.get_name(), compability_check_result)
+                    plugins_incompatible.append(item)
+
+            return (plugins_valid, plugins_incompatible)
+
+        def is_plugin(plugin_to_validate):
+            if not isinstance(plugin_to_validate, pluginmanager.IPlugin):
+                return False
+
+            if plugin_to_validate.get_name() == "plugin":
+                return False
+
+            return True
+
+        return partition(plugins)
+
+    def _load_plugin(self, plugin_to_add, plugin_storage):
+        def handle_aliases(plugin_to_add):
+            add_plugin(plugin_to_add.get_name().split(' '), plugin_to_add, plugin_storage)
+
+            for name in plugin_to_add.alias():
+                add_plugin(name.lower().split(' '), plugin_to_add, plugin_storage)
+
+        def add_plugin(name, plugin_to_add, parent):
+            if len(name) == 1:
+                add_plugin_single(name[0], plugin_to_add, parent)
+            else:
+                add_plugin_compose(name[0], name[1:], plugin_to_add, parent)
+
+        def add_plugin_single(name, plugin_to_add, parent):
+            plugin_existing = parent.get_plugins(name)
+            if plugin_existing is None:
+                parent.add_plugin(name, plugin_to_add)
+            else:
+                if not plugin_existing.is_callable_plugin():
+                    parent.update_plugin(name, plugin_to_add)
+                else:
+                    print(plugin_existing)
+                    error("Duplicated plugin {}!".format(name))
+
+        def add_plugin_compose(name_first, name_remaining, plugin_to_add, parent):
+            plugin_existing = parent.get_plugins(name_first)
+
+            if plugin_existing is None:
+                plugin_existing = plugin.Plugin()
+                plugin_existing._name = name_first
+                plugin_existing.__doc__ = ''
+                parent.add_plugin(name_first, plugin_existing)
+
+            add_plugin(name_remaining, plugin_to_add, plugin_existing)
+
+        return handle_aliases(plugin_to_add)
+
+    def _filter_duplicated_disabled(self, enabled_list, disabled_list):
+        enabled_names = []
+        for plugin_enabled in enabled_list:
+            enabled_names.append(plugin_enabled.get_name())
+            enabled_names.extend(plugin_enabled.alias())
+
+        disabled_unique = {}
+        for plugin_name, disable_reason in disabled_list:
+            if plugin_name in enabled_names:
+                continue
+
+            if plugin_name in disabled_unique:
+                disabled_unique[plugin_name].append(disable_reason)
+            else:
+                disabled_unique[plugin_name] = [disable_reason]
+
+        return disabled_unique
+
+    def get_plugins(self):
+        """
+        Returns all loaded plugins as dictionary
+        Key: name
+        Value: plugin instance)
+        """
+        self._load()
+        return self._cache.get_plugins()
 
     def get_disabled(self):
-        if not self._cache_clean:
-            self._load()
+        """
+        Returns all disabled plugins names as dictionary
+        Key: name
+        Value: List of reasons why disabled
+        """
+        self._load()
+        return self._cache_disabled
 
-        return self._cache_plugins_disabled
+    def get_number_plugins_loaded(self):
+        self._load()
+        return self._plugins_loaded
 
 
 class PluginDependency(object):

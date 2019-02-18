@@ -197,19 +197,30 @@ class CmdInterpreter(Cmd):
             self._plugin_manager.add_directory(directory)
 
         self._activate_plugins()
+        self._init_plugin_info()
 
-        count_disabled_plugins = len(self._plugin_manager.get_disabled())
-        if count_disabled_plugins > 0:
-            self.first_reaction_text += Fore.RED + str(count_disabled_plugins) + Fore.BLUE
-            self.first_reaction_text += " plugins are disabled. For more information, type: "
-            self.first_reaction_text += Fore.RED + 'status\n' + Fore.RESET
+    def _init_plugin_info(self):
+        plugin_status_formatter = {
+            "disabled": len(self._plugin_manager.get_disabled()),
+            "enabled": self._plugin_manager.get_number_plugins_loaded(),
+            "red": Fore.RED,
+            "blue": Fore.BLUE,
+            "reset": Fore.RESET
+        }
+
+        plugin_status = "{red}{enabled} {blue}plugins loaded"
+        if plugin_status_formatter['disabled'] > 0:
+            plugin_status += " {red}{disabled} {blue}plugins disabled. More information: {red}status\n"
+        plugin_status += Fore.RESET
+
+        self.first_reaction_text += plugin_status.format(**plugin_status_formatter)
 
     def _activate_plugins(self):
         """Generate do_XXX, help_XXX and (optionally) complete_XXX functions"""
-        for (plugin_name, plugin) in self._plugin_manager.get_enabled().items():
+        for (plugin_name, plugin) in self._plugin_manager.get_plugins().items():
             self._plugin_update_completion(plugin, plugin_name)
 
-            setattr(CmdInterpreter, "do_" + plugin_name, partial(plugin.run, self._api))
+            setattr(CmdInterpreter, "do_" + plugin_name, partial(plugin.run, self))
             setattr(CmdInterpreter, "help_" + plugin_name, partial(self._api.say, plugin.get_doc()))
 
             plugin.init(self._api)
@@ -218,14 +229,14 @@ class CmdInterpreter(Cmd):
         """Return True if completion is available"""
         completions = [i for i in plugin.complete()]
         if len(completions) > 0:
-            self.actions.append({plugin_name: completions})
             def complete(completions):
                 def _complete_impl(self, text, line, begidx, endidx):
                     return [i for i in completions if i.startswith(text)]
                 return _complete_impl
             setattr(CmdInterpreter, "complete_" + plugin_name, complete(completions))
-        else:
-            self.actions.append(plugin_name)
+
+    def get_api(self):
+        return self._api
 
     def close(self):
         """Closing Jarvis."""
@@ -382,7 +393,7 @@ class CmdInterpreter(Cmd):
 
     def do_status(self, s):
         """Prints plugin status status"""
-        count_enabled = len(self._plugin_manager.get_enabled())
+        count_enabled = self._plugin_manager.get_number_plugins_loaded()
         count_disabled = len(self._plugin_manager.get_disabled())
         print_say("{} Plugins enabled, {} Plugins disabled.".format(count_enabled, count_disabled),
                   self)
@@ -390,7 +401,7 @@ class CmdInterpreter(Cmd):
         if "short" not in s and count_disabled > 0:
             print_say("", self)
             for disabled, reason in self._plugin_manager.get_disabled().items():
-                print_say("{:<20}: {}".format(disabled, reason), self)
+                print_say("{:<20}: {}".format(disabled, "OR ".join(reason)), self)
 
     def help_status(self):
         print_say("Prints info about enabled or disabled plugins", self)
