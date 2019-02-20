@@ -125,14 +125,23 @@ class Jarvis(CmdInterpreter, object):
         """Checks if input is a defined action.
         :return: returns the action"""
         output = "None"
+        if len(actions) == 0:
+            return output
+
         action_found = False
         words = data.split()
-        words_remaining = data.split()  # this will help us to stop the iteration
+        actions = list(actions)
+
+        # return longest matching word
+        # TODO: Implement real and good natural language processing
+        # But for now, this code returns acceptable results
+        actions.sort(key=lambda l: len(l), reverse=True)
 
         # check word by word if exists an action with the same name
-        for word in words:
-            words_remaining.remove(word)
-            for action in actions:
+        for action in actions:
+            words_remaining = data.split()  # this will help us to stop the iteration
+            for word in words:
+                words_remaining.remove(word)
                 # For the 'near' keyword, the words before 'near' are also needed
                 if word == "near":
                     initial_words = words[:words.index('near')]

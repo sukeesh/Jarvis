@@ -3,10 +3,10 @@ from Jarvis import Jarvis
 from mock import patch
 from plugins.quote import Quote
 
-test = Quote()
+from tests import PluginTest
 
 
-class QuoteTest(unittest.TestCase):
+class QuoteTest(PluginTest):
 
     quotes = [{u'quote': (u'Traveling, you realize that differences are lost:'
                           ' each city takes to resembling all cities, places exchange'
@@ -15,28 +15,22 @@ class QuoteTest(unittest.TestCase):
                u'cat': u'travel', u'author': 'Italo Calvino'}]
 
     def setUp(self):
-        self.jarvis = Jarvis()._api
-
-    @patch('plugins.quote.requests.get')
-    @patch('plugins.quote.json.loads', return_value=quotes)
-    @patch('plugins.quote.Quote.try_again')
-    def test_get_keyword_quotes(self, get_mock, get_json, get_try_again):
-        Quote().get_keyword_quotes(self.jarvis, 'travel')
+        self.test = self.load_plugin(Quote)
 
     @patch('plugins.quote.input')
     def test_try_again(self, get_mock):
         get_mock.return_value = 'exit'
-        Quote().try_again(self.jarvis, 'travel')
+        self.test.try_again('travel', self.jarvis_api)
 
     def test_contains_word(self):
         text = 'Friends show their love in times of trouble, not in happiness.'
-        self.assertEqual(Quote().contains_word(text, 'friends'), True)
-        self.assertEqual(Quote().contains_word(text, 'travel'), False)
+        self.assertEqual(self.test.contains_word(text, 'friends'), True)
+        self.assertEqual(self.test.contains_word(text, 'travel'), False)
 
     @patch('plugins.quote.input')
     def test_get_input(self, get_mock):
         get_mock.return_value = '2'
-        response = Quote().get_input('Enter yeahh: ', self.jarvis)
+        response = self.test.get_input('Enter yeahh: ', self.jarvis_api)
         self.assertEqual(response, 2)
 
 

@@ -1,11 +1,12 @@
 import unittest
 from plugins import dice
+from tests import PluginTest
 import random
 
 
-class RollTest(unittest.TestCase):
+class RollTest(PluginTest):
     def setUp(self):
-        self.dice = dice.Roll()
+        self.dice = self.load_plugin(dice.Roll)
 
     def test_help_examples(self):
         d = self.dice._dice_parse("Roll a dice")

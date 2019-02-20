@@ -65,3 +65,14 @@ def systeminfo__PY3_MAC(jarvis, s):
 def systeminfo__PY2(jarvis, s):
     """Display system information with distribution logo"""
     os.system("screenfetch")
+
+
+@require(native="free")
+@plugin("check ram")
+def check_ram(jarvis, s):
+    """
+    checks your system's RAM stats.
+    -- Examples:
+        check ram
+    """
+    os.system("free -lm")

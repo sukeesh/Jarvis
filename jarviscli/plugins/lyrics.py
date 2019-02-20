@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from plugin import plugin, require
+import requests
+import bs4
 
 # TODO: handle errors and instructions better
 
@@ -14,11 +16,6 @@ class lyrics():
     -- Example:
         lyrics wonderful tonight-eric clapton
     """
-    def __init__(self):
-        self.song = None
-        self.artist = None
-        self.album = None
-
     def __call__(self, jarvis, s):
         jarvis.say(self.find(s))
 
@@ -29,19 +26,24 @@ class lyrics():
         info = self.parse(s)
         # TODO: implement find album/song functions
         # TODO: implement actual searches in case of not knowing the correct full name of song or artist
+
+        artist = None
+        song = None
+        album = None
+
         if info:
-            self.song = info[0]
+            song = info[0]
             info.pop(0)
         if info:
-            self.artist = info[0]
+            artist = info[0]
             info.pop(0)
         if info:
-            self.album = info[0]
+            album = info[0]
             info.pop(0)
-        if not self.song or not self.artist:
+        if not song or not artist:
             # error if artist or song don't exist
             return "you forgot to add either song name or artist name"
-        response = get_lyric(self.artist, self.song)
+        response = get_lyric(artist, song)
         if response:
             return response
         else:

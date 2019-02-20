@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 import unittest
 from mock import patch, call
-from packages import forecast
-from CmdInterpreter import CmdInterpreter
-from colorama import Fore
+from plugins.converted import check_forecast
 from packages import mapps
+from colorama import Fore
 import requests
 import json
+
+
+from tests import PluginTest
 
 
 class MyResponse(requests.models.Response):
@@ -44,10 +46,8 @@ class MyResponse(requests.models.Response):
     status_code = 200
 
 
-class ForecastTest(unittest.TestCase):
-
+class ForecastTest(PluginTest):
     def setUp(self):
-        self.CI_instance = CmdInterpreter('', '')
         self.current_location = mapps.get_location()
         self.units = {
             'url_units': 'metric',
@@ -58,20 +58,15 @@ class ForecastTest(unittest.TestCase):
                 'url_units': 'imperial',
                 'str_units': 'ºF'
             }
+        self.test = self.load_plugin(check_forecast)
 
-    @patch.object(forecast, 'main')
-    def test_forecast_called_from_do_check(self, forecast_mock):
-        self.CI_instance.do_check('check forecast')
-        forecast_mock.assert_called()
-
-    @patch.object(forecast, 'print_say')
-    def test_header_as_expected_when_no_location(self, print_say_mock):
+    def test_header_as_expected_when_no_location(self):
         my_city_and_country = "{},{}".format(
             self.current_location['city'],
             self.current_location['country_code']
         )
         with patch.object(requests, 'get', return_value=MyResponse) as get_mock:
-            forecast.main(self.CI_instance, 'check forecast')
+            self.test.run('')
             get_mock.assert_called_with(
                 "http://api.openweathermap.org/data/2.5/forecast/daily?q={0}&cnt={1}"
                 "&APPID=ab6ec687d641ced80cc0c935f9dd8ac9&units={2}".format(
@@ -81,10 +76,9 @@ class ForecastTest(unittest.TestCase):
                 )
             )
 
-    @patch.object(forecast, 'print_say')
-    def test_header_as_expected_with_location(self, print_say_mock):
+    def test_header_as_expected_with_location(self):
         with patch.object(requests, 'get', return_value=MyResponse) as get_mock:
-            forecast.main(self.CI_instance, 'check forecast in New York')
+            self.test.run('in New York')
             get_mock.assert_called_with(
                 "http://api.openweathermap.org/data/2.5/forecast/daily?q={0}&cnt={1}"
                 "&APPID=ab6ec687d641ced80cc0c935f9dd8ac9&units={2}".format(
@@ -94,20 +88,15 @@ class ForecastTest(unittest.TestCase):
                 )
             )
 
-    @patch.object(forecast, 'print_say')
-    def test_forecast_formatted_as_expected(self, print_say_mock):
-        with patch.object(requests, 'get', return_value=MyResponse) as get_mock:
-            forecast.main(self.CI_instance, 'Some location')
-            last_call = call(
-                "\tMin temperature: {} {}\n".format(
-                    '17.0', self.units['str_units']),
-                self.CI_instance,
-                Fore.BLUE
-            )
-            third_call = call(
-                "\tWeather: {}".format('Clear'),
-                self.CI_instance,
-                Fore.BLUE
-            )
-            self.assertEqual(last_call, print_say_mock.mock_calls[-1])
-            self.assertEqual(third_call, print_say_mock.mock_calls[2])
+    def test_forecast_formatted_as_expected(self):
+        with patch.object(requests, 'get', return_value=MyResponse) as _:
+            self.test.run('Some location')
+            last_call = "\tMin temperature: {} {}".format('17.0', self.units['str_units'])
+            third_call = "\tWeather: {}".format('Clear')
+
+            self.assertEqual(last_call, self.history_say().last_text())
+            self.assertEqual(third_call, self.history_say().view_text(3))
+
+
+if __name__ == '__main__':
+    unittest.main()
