@@ -35,6 +35,7 @@ def plugin(name):
         plugin_class._alias = []
         plugin_class._name = name
         plugin_class._backend = (run,)
+        plugin_class._backend_instance = run
 
         return plugin_class
     return create_plugin

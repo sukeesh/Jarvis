@@ -14,3 +14,7 @@ class NearMeTest(unittest.TestCase):
         data = "{} | {}".format(self.things, self.city)
         near_me.main(data)
         mock_search_near.assert_called_once_with(self.things, self.city)
+
+
+if __name__ == '__main__':
+    unittest.main()

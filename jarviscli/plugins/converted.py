@@ -6,46 +6,39 @@ from packages import (directions_to, forecast, mapps, near_me,
 from packages.systemOptions import update_system
 
 
-from plugin import plugin, complete
+from plugin import plugin, complete, require
 
 
-CONNECTION_ERROR_MSG = "You are not connected to Internet"
-
-
-@complete("ram", "time", "forecast", "weather")
-@plugin("check")
-def check(self, s):
+@require(network=True)
+@plugin("check time")
+def check_time(self, s):
     """
-    ram: checks your system's RAM stats.
-    time: checks the current time in any part of the globe.
-    weather in *: checks the current weather in any part of the globe.
-    forecast: checks the weather forecast for the next 7 days.
+    checks the current time in any part of the globe.
     -- Examples:
-        check ram
         check time in Manchester (UK)
-        check weather in Canada
+    """
+    timeIn.main(self._jarvis, s)
+
+
+@plugin("check forecast")
+def check_forecast(self, s):
+    """
+    checks the weather forecast for the next 7 days.
+    -- Examples:
         check forecast
         check forecast in Madrid
     """
-    self = self._jarvis
+    forecast.main(self, s)
 
-    # if s == "ram":
-    if "ram" in s:
-        system("free -lm")
-    # if s == "time"
-    elif "time" in s:
-        timeIn.main(self, s)
-    elif "forecast" in s:
-        try:
-            forecast.main(self, s)
-        except ConnectionError:
-            print(CONNECTION_ERROR_MSG)
-    # if s == "weather"
-    elif "weather" in s:
-        try:
-            weatherIn.main(self, s)
-        except ConnectionError:
-            print(CONNECTION_ERROR_MSG)
+
+@plugin("check weather")
+def check_weather(self, s):
+    """
+    weather in *: checks the current weather in any part of the globe.
+    -- Examples:
+        check weather in Canada
+    """
+    weatherIn.main(self._jarvis, s)
 
 
 @plugin("directory")

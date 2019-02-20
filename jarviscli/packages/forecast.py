@@ -7,7 +7,7 @@ import requests
 from utilities.dateTime import WeekDay
 
 
-def main(self, s):
+def main(jarvis, s):
     cmd_key_words = ['check', 'weather', 'forecast', 'in', 'for']
     cmd_words = s.strip().split()
     # location will be defined by the words given that are not the key words
@@ -46,29 +46,28 @@ def main(self, s):
     week_from_today = WeekDay().get_week_from_today()
 
     try:
-        print_say(
+        jarvis.say(
             "Weather forecast in {} for the next 7 days.".format(
                 j['city']['name'].title()
             ),
-            self,
             Fore.BLUE
         )
+        print(jarvis)
+        jarvis.say("TEST")
         for cnt, day_dict in enumerate(j['list']):
-            print_say("{}:".format(week_from_today[cnt]), self, Fore.BLUE)
-            print_say("\tWeather: {}".format(
-                day_dict['weather'][0]['main']), self, Fore.BLUE)
-            print_say(
+            jarvis.say("{}:".format(week_from_today[cnt]), Fore.BLUE)
+            jarvis.say("\tWeather: {}".format(
+                day_dict['weather'][0]['main']), Fore.BLUE)
+            jarvis.say(
                 "\tMax temperature: {} {}".format(
                     round(day_dict['temp']['max'], 1), units['str_units']),
-                self,
                 Fore.BLUE
             )
-            print_say(
+            jarvis.say(
                 "\tMin temperature: {} {}\n".format(
 
                     round(day_dict['temp']['min'], 1), units['str_units']),
-                self,
                 Fore.BLUE
             )
     except KeyError:
-        print_say("The forecast information could not be found.", self, Fore.RED)
+        jarvis.say("The forecast information could not be found.", Fore.RED)
