@@ -57,3 +57,9 @@ def ask(jarvis, s):
             stay = False
         else:
             jarvis.say(brain.respond(text))
+
+
+@plugin("how are you")
+def do_how_are_you(jarvis, s):
+    """Jarvis will inform you about his status."""
+    jarvis.say("I am fine, How about you?", Fore.BLUE)
