@@ -200,7 +200,9 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
             if self.is_callable_plugin():
                 self._backend[0](jarvis.get_api(), s)
             else:
-                jarvis.get_api().say("Sorry, I don't know what you mean...")
+                jarvis.get_api().say("Sorry, I could not recognise your command. Did you mean:")
+                for sub_command in self._sub_plugins.keys():
+                    jarvis.get_api().say("    * {} {}".format(self.get_name(), sub_command))
         else:
             sub_command = s.split()[0]
             s = " ".join(s.split()[1:])
