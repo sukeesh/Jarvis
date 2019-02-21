@@ -105,7 +105,6 @@ class PluginManager(object):
                 if not plugin_existing.is_callable_plugin():
                     parent.update_plugin(name, plugin_to_add)
                 else:
-                    print(plugin_existing)
                     error("Duplicated plugin {}!".format(name))
 
         def add_plugin_compose(name_first, name_remaining, plugin_to_add, parent):

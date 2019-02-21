@@ -10,18 +10,12 @@ from six.moves import input
 from colorama import Fore
 from PluginManager import PluginManager
 
-from packages import (directions_to, forecast, mapps, near_me,
-                      timeIn, weather_pinpoint, weatherIn)
-from packages.systemOptions import update_system
-from packages.memory.memory import Memory
-
 from utilities import schedule
 from utilities.voice import create_voice
 from utilities.notification import notify
 from utilities.GeneralUtilities import print_say
 
-
-CONNECTION_ERROR_MSG = "You are not connected to Internet"
+from packages.memory.memory import Memory
 
 
 class JarvisAPI(object):
@@ -174,17 +168,6 @@ class CmdInterpreter(Cmd):
         self.scheduler = schedule.Scheduler()
         self.speech = create_voice()
 
-        self.actions = [{"check": ("ram", "weather", "time", "forecast")},
-                        "directions",
-                        "help",
-                        "how_are_you",
-                        "near",
-                        "pinpoint",
-                        "umbrella",
-                        {"update": ("location", "system")},
-                        "weather",
-                        ]
-
         self.fixed_responses = {"what time is it": "clock",
                                 "where am i": "pinpoint",
                                 "how are you": "how_are_you"
@@ -263,134 +246,6 @@ class CmdInterpreter(Cmd):
         """Closes Jarvis on SIGINT signal. (Ctrl-C)"""
         self.close()
 
-    @catch_all_exceptions
-    def do_check(self, s):
-        """Checks your system's RAM stats."""
-        # if s == "ram":
-        if "ram" in s:
-            system("free -lm")
-        # if s == "time"
-        elif "time" in s:
-            timeIn.main(self, s)
-        elif "forecast" in s:
-            try:
-                forecast.main(self, s)
-            except ConnectionError:
-                print(CONNECTION_ERROR_MSG)
-        # if s == "weather"
-        elif "weather" in s:
-            try:
-                weatherIn.main(self, s)
-            except ConnectionError:
-                print(CONNECTION_ERROR_MSG)
-
-    def help_check(self):
-        """Prints check command help."""
-        print_say("ram: checks your system's RAM stats.", self)
-        print_say("time: checks the current time in any part of the globe.", self)
-        print_say(
-            "weather in *: checks the current weather in any part of the globe.", self)
-        print_say(
-            "forecast: checks the weather forecast for the next 7 days.", self)
-        print_say("-- Examples:", self)
-        print_say("\tcheck ram", self)
-        print_say("\tcheck time in Manchester (UK)", self)
-        print_say("\tcheck weather in Canada", self)
-        print_say("\tcheck forecast", self)
-        print_say("\tcheck forecast in Madrid", self)
-        # add here more prints
-
-    def complete_check(self, text, line, begidx, endidx):
-        """Completions for check command"""
-        return self.get_completions("check", text)
-
-    @catch_all_exceptions
-    def do_directions(self, data):
-        """Get directions about a destination you are interested to."""
-        try:
-            directions_to.main(data)
-        except ValueError:
-            print("Please enter destination")
-        except ConnectionError:
-            print(CONNECTION_ERROR_MSG)
-
-    def help_directions(self):
-        """Prints help about directions command"""
-        print_say("Get directions about a destination you are interested to.", self)
-        print_say("-- Example:", self)
-        print_say("\tdirections to the Eiffel Tower", self)
-
-    @catch_all_exceptions
-    def do_how_are_you(self, s):
-        """Jarvis will inform you about his status."""
-        print_say("I am fine, How about you?", self, Fore.BLUE)
-
-    def help_how_are_you(self):
-        """Print info about how_are_you command"""
-        print_say("Jarvis will inform you about his status.", self)
-
-    @catch_all_exceptions
-    def do_near(self, data):
-        """Jarvis can find what is near you!"""
-        near_me.main(data)
-
-    def help_near(self):
-        """Print help about near command."""
-        print_say("Jarvis can find what is near you!", self)
-        print_say("-- Examples:", self)
-        print_say("\trestaurants near me", self)
-        print_say("\tmuseums near the eiffel tower", self)
-
-    @catch_all_exceptions
-    def do_pinpoint(self, s):
-        """Jarvis will pinpoint your location."""
-        try:
-            mapps.locate_me()
-        except ConnectionError:
-            print(CONNECTION_ERROR_MSG)
-
-    def help_pinpoint(self):
-        """Print help about pinpoint command."""
-        print_say("Jarvis will pinpoint your location.", self)
-
-    @catch_all_exceptions
-    def do_umbrella(self, s):
-        """If you're leaving your place, Jarvis will inform you if you might need an umbrella or not"""
-        s = 'umbrella'
-        try:
-            weather_pinpoint.main(self.memory, self, s)
-        except ConnectionError:
-            print(CONNECTION_ERROR_MSG)
-
-    def help_umbrella(self):
-        """Print info about umbrella command."""
-        print_say(
-            "If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self,
-            Fore.BLUE)
-
-    @catch_all_exceptions
-    def do_update(self, s):
-        """Updates location or system."""
-        if "location" in s:
-            location = self.memory.get_data('city')
-            loc_str = str(location)
-            print_say("Your current location is set to " + loc_str, self)
-            print_say("What is your new location?", self)
-            i = input()
-            self.memory.update_data('city', i)
-            self.memory.save()
-        elif "system" in s:
-            update_system()
-
-    def help_update(self):
-        """Prints help about update command"""
-        print_say("location: Updates location.", self)
-        print_say("system: Updates system.", self)
-
-    def complete_update(self, text, line, begidx, endidx):
-        """Completions for update command"""
-        return self.get_completions("update", text)
-
     def do_status(self, s):
         """Prints plugin status status"""
         count_enabled = self._plugin_manager.get_number_plugins_loaded()
@@ -406,20 +261,3 @@ class CmdInterpreter(Cmd):
     def help_status(self):
         print_say("Prints info about enabled or disabled plugins", self)
         print_say("Use \"status short\" to omit detailed information.", self)
-
-    @catch_all_exceptions
-    def do_weather(self, s):
-        """Get information about today's weather."""
-        try:
-            word = s.strip()
-            if(len(word) > 1):
-                weatherIn.main(self, s)
-            else:
-                weather_pinpoint.main(self.memory, self, s)
-        except ConnectionError:
-            print(CONNECTION_ERROR_MSG)
-
-    def help_weather(self):
-        """Prints help about weather command."""
-        print_say(
-            "Get information about today's weather in your current location.", self)

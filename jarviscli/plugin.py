@@ -22,26 +22,19 @@ def plugin(name):
         system("sudo ap-hotspot start")
     """
     def create_plugin(run):
-        if isclass(run):
-            # class -> object
-            run_instance = run()
-
-            def __run_method(self, jarvis, s):
-                run_instance(jarvis, s)
-        else:
-            def __run_method(self, jarvis, s):
-                print("--> {}".format(s))
-                run(jarvis, s)
-
-        # create class
         plugin_class = type(run.__name__, Plugin.__bases__, dict(Plugin.__dict__))
         plugin_class.__doc__ = run.__doc__
 
+        if isclass(run):
+            # class -> object
+            run = run()
+
+        # create class
         plugin_class._require = []
         plugin_class._complete = []
         plugin_class._alias = []
         plugin_class._name = name
-        plugin_class._backend = __run_method
+        plugin_class._backend = (run,)
 
         return plugin_class
     return create_plugin
@@ -101,6 +94,8 @@ class PluginStorage(object):
 class Plugin(pluginmanager.IPlugin, PluginStorage):
     """
     """
+    _backend = None
+
     def __init__(self):
         super(pluginmanager.IPlugin, self).__init__()
         self._sub_plugins = {}
@@ -112,8 +107,8 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
         (would not be possible with __init__)
         """
         if self.is_callable_plugin():
-            if hasattr(self._backend.__class__, "init") and callable(getattr(self._backend.__class__, "init")):
-                self._command_default.init(jarvis_api)
+            if hasattr(self._backend[0].__class__, "init") and callable(getattr(self._backend[0].__class__, "init")):
+                self._backend[0].init(jarvis_api)
         for plugin in self.get_plugins().values():
             plugin.init(jarvis_api)
 
@@ -123,7 +118,7 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
         Return False, if this instance is only used for calling other plugins
         (e.g. movie in 'movie search' and 'movie plot')
         """
-        return hasattr(self, '_backend')
+        return self._backend is not None
 
     def get_name(self):
         """Set with @plugin(name)"""
@@ -202,7 +197,7 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
         if sub_command is "None":
             # run default
             if self.is_callable_plugin():
-                self._backend(jarvis.get_api(), s)
+                self._backend[0](jarvis.get_api(), s)
             else:
                 jarvis.get_api().say("Sorry, I don't know what you mean...")
         else:
