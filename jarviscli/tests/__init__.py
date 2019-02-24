@@ -49,7 +49,7 @@ class MockJarvisAPI():
 
     def schedule(self, time_seconds, function, *args):
         self.notification_history.record(time_seconds, function, *args)
-        self.call_history.record('schedule', (time_seconds, function, *args), None)
+        self.call_history.record('schedule', (time_seconds, function, args), None)
 
     def cancel(self, schedule_id):
         self.call_history.record('cancel', (), None)
