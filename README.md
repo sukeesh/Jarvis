@@ -30,28 +30,18 @@ You can start by typing `help` within the Jarvis command line to check what Jarv
 - If you have some ideas for new features and you don't have time to implement them please open an issue with the tag new_feature
 - Please don't forget to comment (document) your code
 
- ### How to run tests:
 
- Run `test.sh`
- ```bash
- ./test.sh
- ```
 
-## How to write new commands (plugins) to extend Jarvis functionality
+### Quickstart: Create a new feature (plugin)
 
 Create new file custom/hello_world.py
 
 ```
 from plugin import plugin
 
-@plugin("hello world")
-def hello_world(jarvis, s):
-    """Prints \"hello world!\""""
-    jarvis.say("Hello World!")
 
-
-@plugin("repeat")
-def repeat(jarvis, s):
+@plugin("hellworld")
+def helloworld(jarvis, s):
     """Repeats what you type"""
     jarvis.say(s)
 ```
@@ -64,14 +54,26 @@ In order to let Jarvis talk out loud type: enable sound
 Type 'help' for a list of available actions.
 
 ~> Hi, what can I do for you?
-hello world
-Hello World!
-~> What can i do for you?
-repeat Jarvis is cool!
+helloworld Jarvis is cool!
 jarvis is cool
 ```
 
-[Click here](PLUGINS.md) to learn more about plugins.
+### Plugins
+
+[Click here](doc/PLUGINS.md) to learn more about plugins.
+
+### Creating a test
+
+Creating a test is optionally but never a bad idea ;).
+
+[Click here](doc/TESTING.md) to learn more about testing.
+
+### How to run tests:
+
+ Run `test.sh`
+ ```bash
+ ./test.sh
+ ```
 
 ## Optional Dependencies
 

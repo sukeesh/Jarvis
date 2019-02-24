@@ -1,4 +1,4 @@
-j# Plugins
+# Plugins
 
 ## Basic
 ```
@@ -25,7 +25,7 @@ class hello_world:
 
 ## Run-Parameter
 
-* 1: jarvis -> instance of CmdInterpreter.JarvisAPI. You'll probably most need ``jarvis.say(text, color=None)`` to print/say stuff. If you need color, take a loot at [colorama](https://pypi.org/project/colorama/).
+* 1: jarvis -> instance of CmdInterpreter.JarvisAPI. Click [here](API.md).
 * 2: s -> string; what the user entered
 
 ## Location
@@ -160,3 +160,5 @@ class HelloWorld:
     def run(self, jarvis, s):
         jarvis.say("Hello world!")
 ```
+
+##
