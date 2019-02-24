@@ -29,7 +29,7 @@ class JarvisAPI(object):
     in the utilities-package should be implemented here.
     """
 
-    CONNECTION_ERROR_MSG = "You are not connected to Internet"
+    _CONNECTION_ERROR_MSG = "You are not connected to Internet"
 
     def __init__(self, jarvis):
         self._jarvis = jarvis
@@ -39,17 +39,18 @@ class JarvisAPI(object):
         This method give the jarvis the ability to print a text
         and talk when sound is enable.
         :param text: the text to print (or talk)
-               color: Fore.COLOR (ex Fore.BLUE), color for text
-        :return: Nothing to return.
+        :param color: for text - use colorama (https://pypi.org/project/colorama/)
+                      e.g. Fore.BLUE
         """
         self._jarvis.speak(text)
         print(color + text + Fore.RESET)
 
     def connection_error(self):
         """Print generic connection error"""
-        self.say(JarvisAPI.CONNECTION_ERROR_MSG)
+        self.say(JarvisAPI._CONNECTION_ERROR_MSG)
 
     def exit(self):
+        """Immediately exit Jarvis"""
         self._jarvis.close()
 
     def notification(self, msg, time_seconds=0):
@@ -91,24 +92,35 @@ class JarvisAPI(object):
 
     # Voice wrapper
     def enable_voice(self):
+        """
+        Use text to speech for every text passed to jarvis.say()
+        """
         self._jarvis.enable_voice = True
 
     def disable_voice(self):
+        """
+        Stop text to speech output for every text passed to jarvis.say()
+        """
         self._jarvis.enable_voice = False
 
     def is_voice_enabled(self):
+        """
+        Returns True/False if voice is enabled/disabled with
+        enable_voice or disable_voice
+        Default: False (disabled)
+        """
         return self._jarvis.enable_voice
 
     # MEMORY WRAPPER
     def get_data(self, key):
         """
-        get a specific key from memory
+        Get a specific key from memory
         """
         return self._jarvis.memory.get_data(key)
 
     def add_data(self, key, value):
         """
-        add a key and value to memory
+        Add a key and value to memory
         """
         self._jarvis.memory.add_data(key, value)
         self._jarvis.memory.save()
@@ -122,7 +134,7 @@ class JarvisAPI(object):
 
     def del_data(self, key):
         """
-        delete a key from memory
+        Delete a key from memory
         """
         self._jarvis.memory.del_data(key)
         self._jarvis.memory.save()
