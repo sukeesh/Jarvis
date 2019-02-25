@@ -5,7 +5,7 @@ voice_control_installed = True
 try:
     import speech_recognition as sr
     import pyaudio
-except ModuleNotFoundError:
+except ImportError:
     voice_control_installed = False
 
 if voice_control_installed:
