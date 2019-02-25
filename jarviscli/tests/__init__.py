@@ -82,6 +82,9 @@ class MockJarvisAPI():
         del self.data[key]
         self.call_history.record('del_data', (key), None)
 
+    def eval(self, s):
+        self.call_history.record('eval', s)
+
 
 class MockHistoryBuilder():
     def __init__(self):
