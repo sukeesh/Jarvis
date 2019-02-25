@@ -114,3 +114,10 @@ JarvisAPI.del_data(self, key)
 
 Delete a key from memory
 
+## eval
+```python
+JarvisAPI.eval(self, s)
+```
+
+Simulates typing 's' in Jarvis prompt
+

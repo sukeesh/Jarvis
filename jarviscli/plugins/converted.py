@@ -41,7 +41,7 @@ def check_weather(self, s):
     weatherIn.main(self._jarvis, s)
 
 
-@plugin("directory")
+@plugin("directions")
 def directions(self, data):
     """
     Get directions about a destination you are interested to.

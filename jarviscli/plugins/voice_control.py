@@ -59,9 +59,7 @@ def hear(jarvis, s):
                 print(pinger)
                 if listen:
                     line = pinger
-                    line = _jarvis.precmd(line)
-                    stop = _jarvis.onecmd(line)
-                    stop = _jarvis.postcmd(stop, line)
+                    jarvis.eval(line)
 
         except LookupError:
             _jarvis.speech.text_to_speech('Audio cannot be read!')

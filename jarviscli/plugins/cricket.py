@@ -14,7 +14,7 @@ class Cricket():
     def __init__(self):
         self.c = Cricbuzz()
 
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         self.score(jarvis)
 
     def match_id(self, desc):

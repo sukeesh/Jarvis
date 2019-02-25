@@ -20,7 +20,7 @@ Adds method run(string) - which execute plugin using mocked api.
 PluginTest.histroy_call(self)
 ```
 
-Returns Mock History instance. Fields:
+Returns MockHistory instance. Fields:
 
 1. operation (string)
 2. args (tuple)
@@ -31,7 +31,7 @@ Returns Mock History instance. Fields:
 PluginTest.history_say(self)
 ```
 
-Returns Mock History instance. Fields:
+Returns MockHistory instance. Fields:
 
 1. text (string)
 2. color (colorama.Fore.*)
@@ -41,7 +41,7 @@ Returns Mock History instance. Fields:
 PluginTest.history_notification(self)
 ```
 
-Returns Mock History instance. Fields:
+Returns MockHistory instance. Fields:
 
 1. msg (string)
 2. time_seconds (int)
@@ -51,7 +51,7 @@ Returns Mock History instance. Fields:
 PluginTest.history_schedule(self)
 ```
 
-Returns Mock History instance. Fields:
+Returns MockHistory instance. Fields:
 
 1. time_seconds (int)
 2. function

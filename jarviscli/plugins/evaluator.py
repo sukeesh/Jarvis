@@ -272,19 +272,19 @@ def curvesketch(jarvis, s):
     section(jarvis, s)
 
     section(jarvis, "Graph")
-    plot().run(jarvis, s)
+    jarvis.eval('plot {}'.format(s))
 
     section(jarvis, "Limit")
-    limit().run(jarvis, str(term))
+    jarvis.eval('limit {}'.format(term))
 
     section(jarvis, "Intersection x-axis")
-    solve().run(jarvis, str(term))
+    jarvis.eval('solve {}'.format(term))
 
     section(jarvis, "Intersection y-axis")
     jarvis.say(str(get_y(0).round(9)), Fore.BLUE)
 
     section(jarvis, "Factor")
-    factor().run(jarvis, str(term))
+    jarvis.eval('factor {}'.format(term))
 
     section(jarvis, "Derivative")
     x = sympy.Symbol('x')

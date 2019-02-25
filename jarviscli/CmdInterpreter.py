@@ -139,6 +139,14 @@ class JarvisAPI(object):
         self._jarvis.memory.del_data(key)
         self._jarvis.memory.save()
 
+    def eval(self, s):
+        """
+        Simulates typing 's' in Jarvis prompt
+        """
+        line = self._jarvis.precmd(s)
+        stop = self._jarvis.onecmd(line)
+        stop = self._jarvis.postcmd(stop, line)
+
 
 def catch_all_exceptions(do, pass_self=True):
     def try_do(self, s):
@@ -182,7 +190,6 @@ class CmdInterpreter(Cmd):
 
         self.fixed_responses = {"what time is it": "clock",
                                 "where am i": "pinpoint",
-                                "how are you": "how_are_you"
                                 }
 
         self._api = JarvisAPI(self)
@@ -215,7 +222,8 @@ class CmdInterpreter(Cmd):
         for (plugin_name, plugin) in self._plugin_manager.get_plugins().items():
             self._plugin_update_completion(plugin, plugin_name)
 
-            setattr(CmdInterpreter, "do_" + plugin_name, partial(plugin.run, self))
+            run_catch = catch_all_exceptions(plugin.run)
+            setattr(CmdInterpreter, "do_" + plugin_name, partial(run_catch, self))
             setattr(CmdInterpreter, "help_" + plugin_name, partial(self._api.say, plugin.get_doc()))
 
             plugin.init(self._api)
