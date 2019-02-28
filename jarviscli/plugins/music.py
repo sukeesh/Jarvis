@@ -24,7 +24,7 @@ def play(jarvis, data):
     """
 
     if len(data) == 0:
-        jarvis.say("Song name doesn't exist. (play '"'song name'"') ", Fore.BLUE)
+        jarvis.say("Missing parameter: Song name", Fore.BLUE)
 
     else:
         music = find_cached_music(data)
