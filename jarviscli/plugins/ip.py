@@ -1,7 +1,7 @@
 from os import system
-
 from colorama import Fore
 
+from utilities.GeneralUtilities import executable_exists
 from plugin import plugin
 
 
@@ -14,12 +14,15 @@ class IP():
         self._local_ip = """ifconfig | grep -Eo 'inet (addr:)?([0-9]*\\.){3}[0-9]*' |
                     grep -Eo '([0-9]*\\.){3}[0-9]*' | grep -v '127.0.0.1'"""
 
-        self._public_ip_v4 = "curl -4 ifconfig.co --connect-timeout 10"  # 10 second time out if not connected to internet
-        self._public_ip_v6 = "curl -6 ifconfig.co --connect-timeout 10"  # 10 second time out if not connected to internet
+        # 10 seconds time out if not connected to internet
+        self._public_ip_v4 = "curl -4 ifconfig.co --connect-timeout 10 2> /dev/null || echo 'not available'"
+        self._public_ip_v6 = "curl -6 ifconfig.co --connect-timeout 10 2> /dev/null || echo 'not available'"
 
     def __call__(self, jarvis, s):
-        self._get_local_ip(jarvis)
-        jarvis.say("")
+        if executable_exists('ifconfig'):
+            self._get_local_ip(jarvis)
+            jarvis.say("")
+
         self._get_public_ip(jarvis)
 
     def _get_local_ip(self, jarvis):

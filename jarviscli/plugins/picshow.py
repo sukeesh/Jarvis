@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import webbrowser
-from plugin import plugin, require
+from plugin import plugin, require, alias
 
 
+@alias('show pics')
 @require(network=True)
 @plugin('display pics')
 def display_pics(jarvis, string):
