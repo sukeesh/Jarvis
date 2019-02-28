@@ -9,7 +9,7 @@ from colorama import Fore
 
 def main(self, s):
     # Trim input command to get only the location
-    loc = s.replace('weather', '').replace('in ', '').strip()
+    loc = s.replace('weather', '').replace('in ', '').replace('at ', '').strip()
 
     # Checks country
     country = mapps.get_location()['country_name']
@@ -34,10 +34,13 @@ def main(self, s):
     j = json.loads(r.text)
 
     if 'message' in list(j.keys()) and ('city not found' in j['message'] or 'Nothing to geocode' in j['message']):
+        print("Location invalid. Please be more specific")
         return pinpoint.main(Memory(), self, s)
 
     temperature = j['main']['temp']
     description = j['weather'][0]['main']
     location = j['name']
-    print(Fore.BLUE + "It's " + str(temperature) + unit +
-          str(location.title()) + " (" + str(description) + ")" + Fore.RESET)
+    print("{COLOR}It's {TEMP}{UNIT}{LOCATION} ({DESCRIPTION}){COLOR_RESET}"
+          .format(COLOR=Fore.BLUE, COLOR_RESET=Fore.RESET,
+                  TEMP=temperature, UNIT=unit, LOCATION=location.title(),
+                  DESCRIPTION=description))

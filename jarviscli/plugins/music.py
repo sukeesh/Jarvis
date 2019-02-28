@@ -1,25 +1,26 @@
 import os
 from colorama import Fore
 
-from plugin import plugin, alias, LINUX
+from plugin import plugin, alias, require, LINUX
 
 
 def find_cached_music(music):
-        find = os.popen("ls music -tc")
-        music = str(find.readline()).replace("\n", "")
-        music = music.replace(" ", "\ ").replace(" (", " \("). replace(")", "\)")
-        return music
+    find = os.popen("ls music -tc")
+    music = str(find.readline()).replace("\n", "")
+    music = music.replace(" ", "\\ ").replace(" (", " \\("). replace(")", "\\)")
+    return music
 
 
-@plugin(plattform=LINUX)
 @alias("music")
+@require(platform=LINUX)
+@plugin('play')
 def play(jarvis, data):
     """
     Jarvis will find, download and play any song you want
     If ffmpeg is installed, songs will be downloaded as .mp3 instead .webm
     -- Example:
         music wonderful tonight
-        pay eye of the tiger
+        play eye of the tiger
     """
 
     if len(data) == 0:

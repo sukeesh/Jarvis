@@ -9,8 +9,8 @@ def main(memory, self, s):
     location = memory.get_data('city')  # Will return None if no value
     if location is None:
         city = mapps.get_location()['city']
-        print_say("It appears you are in " +
-                  city + " Is this correct? (y/n)", self, Fore.RED)
+        print_say("It appears you are in {CITY} Is this correct? (y/n)"
+                  .format(CITY=city), self, Fore.RED)
         i = input()
         if i == 'n' or i == 'no':
             print_say("Enter Name of city: ", self)
@@ -28,15 +28,15 @@ def main(memory, self, s):
         loc = str(location)
         city = mapps.get_location()['city']
         if city != loc:
-            print_say("It appears you are in " + city +
-                      ". But you set your location to " + loc, self, Fore.RED)
-            print_say("Do you want weather for " +
-                      city + " instead? (y/n)", self, Fore.RED)
+            print_say("It appears you are in {CITY}. But you set your location to {LOC}"
+                      .format(CITY=city, LOC=loc), self, Fore.RED)
+            print_say("Do you want weather for {CITY} instead? (y/n)"
+                      .format(CITY=city), self, Fore.RED)
             i = input()
             if i == 'y' or i == 'yes':
                 try:
-                    print_say("Would you like to set " + city +
-                              " as your new location? (y/n)", self, Fore.RED)
+                    print_say("Would you like to set {CITY} as your new location? (y/n)"
+                              .format(CITY=city), self, Fore.RED)
                     i = input()
                     if i == 'y' or i == 'yes':
                         memory.update_data('city', city)

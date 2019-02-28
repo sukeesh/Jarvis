@@ -1,8 +1,8 @@
-from plugin import plugin, alias
+from plugin import alias, plugin
 
 
-@plugin()
-@alias("goodbye", "q", "quit")
+@alias("bye", "goodbye", "q", "quit")
+@plugin('exit')
 def exit(jarvis, s):
     """Closing jarvis"""
     jarvis.exit()

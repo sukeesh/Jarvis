@@ -3,24 +3,16 @@ from colorama import Fore
 import os
 import sys
 from six.moves import input
-from plugin import Plugin
+from plugin import plugin
 
 
-class File_Organise(Plugin):
+@plugin('file organise')
+class File_Organise():
     """
     Type file_organise and follow instructions
     It organises selected folder based on extension
     """
-    def require(self):
-        pass
-
-    def complete(self):
-        pass
-
-    def alias(self):
-        pass
-
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         self.file_manage(jarvis)
 
     def source_path(self, dir_name):

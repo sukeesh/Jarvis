@@ -1,19 +1,11 @@
-import distutils.spawn
-
 import sys
 from functools import partial
 
 import pluginmanager
 import six
-from requests import ConnectionError
 
 import plugin
 from utilities.GeneralUtilities import warning, error, executable_exists
-
-if six.PY2:
-    from funcsigs import signature as signature
-else:
-    from inspect import signature as signature
 
 
 class PluginManager(object):
@@ -26,8 +18,9 @@ class PluginManager(object):
         self._backend = pluginmanager.PluginInterface()
         self._plugin_dependency = PluginDependency()
 
-        self._cache_clean = False
-        self._cache_plugins = {}
+        self._cache = None
+        self._plugins_loaded = 0
+        self._cache_disabled = []
 
         # blacklist files
         def __ends_with_py(s):
@@ -39,8 +32,7 @@ class PluginManager(object):
     def add_directory(self, path):
         """Add directory to search path for plugins"""
         self._backend.add_plugin_directories(path)
-
-        self._cache_clean = False
+        self._cache = None
 
     def add_plugin(self, plugin):
         """Add singe plugin-instance"""
@@ -48,122 +40,125 @@ class PluginManager(object):
 
     def _load(self):
         """lazy load"""
-        self._cache_clean = True
-        self._cache_plugins = {}
-
-        self._backend.collect_plugins()
-        for plugin in self._backend.get_plugins():
-            if self._plugin_validate(plugin):
-                self._load_plugin_handle_alias(plugin)
-
-    def _plugin_validate(self, plugin):
-        # I really don't know why that check is necessary...
-        if not isinstance(plugin, pluginmanager.IPlugin):
-            return False
-
-        if plugin.get_name() == "plugin":
-            return False
-
-        # has doc, run, alias, require and complete?
-        if not self._plugin_has_method(plugin, "run", 2):
-            print("Warning! Plugin \"{}\" has no method \"run\"! Will be disabled!".format(plugin.get_name()))
-            return False
-
-        if not self._plugin_has_method(plugin, "alias", 0):
-            print("Warning! Plugin \"{}\" has no method \"alias\"!".format(plugin.get_name()))
-            plugin.alias = lambda: None
-
-        if not self._plugin_has_method(plugin, "require", 0):
-            print("Warning! Plugin \"{}\" has no method \"require\"!".format(plugin.get_name()))
-            plugin.require = lambda: None
-
-        if not self._plugin_has_method(plugin, "complete", 0):
-            print("Warning! Plugin \"{}\" has no method \"complete\"!".format(plugin.get_name()))
-            plugin.complete = lambda: None
-
-        # dependency check
-        if not self._plugin_dependency.check(plugin):
-            return False
-
-        return True
-
-    def _plugin_has_method(self, plugin, method, param_len):
-        if not hasattr(plugin.__class__, method) or not callable(getattr(plugin.__class__, method)):
-            return False
-
-        params = signature(getattr(plugin, method)).parameters
-        params = [param for param in params if param != 'args']
-        if param_len != len(params):
-            print("Warning! Wrong parameter number: \"{}\" of \"{}\" ({}, epxected: {})".
-                  format(method, plugin.get_name(), len(params), param_len))
-            return False
-
-        return True
-
-    def _load_plugin_handle_alias(self, plugin):
-        self._load_add_plugin(plugin.get_name(), plugin)
-
-        alias = plugin.alias()
-        if alias is not None:
-            for name in alias:
-                self._load_add_plugin(name.lower(), plugin)
-
-    def _load_add_plugin(self, name, plugin):
-        if ' ' in name:
-            name_split = name.split(' ')
-            self._load_add_composed_plugin(name_split[0], name_split[1], plugin)
-        else:
-            self._load_add_regular_plugin(name, plugin)
-
-    def _load_add_composed_plugin(self, name_first, name_second, plugin_sub):
-        if name_first in self._cache_plugins:
-            plugin_composed = self._cache_plugins[name_first]
-            if not plugin_composed.is_composed():
-                plugin_composed = self._load_convert_into_composed(name_first, plugin_composed)
-        else:
-            # create new PluginComposed
-            plugin_composed = plugin.PluginComposed(name_first)
-            self._cache_plugins[name_first] = plugin_composed
-
-        allready_exists = not plugin_composed.try_add_command(plugin_sub, name_second)
-        if allready_exists:
-            error("Duplicated plugin {} {}".format(name_first, name_second))
-
-    def _load_convert_into_composed(self, name, plugin_default):
-        plugin_composed = plugin.PluginComposed(name)
-        plugin_composed.try_set_default(plugin_default)
-        self._cache_plugins[name] = plugin_composed
-        return plugin_composed
-
-    def _load_add_regular_plugin(self, name, plugin):
-        if name not in self._cache_plugins:
-            self._cache_plugins.update({name: plugin})
+        if self._cache is not None:
+            # cache clean!
             return
 
-        if self._cache_plugins[name].is_composed():
-            success = self._cache_plugins[name].try_set_default(plugin)
-            if success:
-                return
+        self._cache = plugin.PluginStorage()
 
-        error("Duplicated plugin {}!".format(name))
+        self._backend.collect_plugins()
+        (enabled, disabled) = self._validate_plugins(self._backend.get_plugins())
 
-    def get_all(self):
-        """Returns all loaded plugins as dictionary (key: name, value: plugin instance)"""
-        if not self._cache_clean:
-            self._load()
+        for plugin_to_add in enabled:
+            self._load_plugin(plugin_to_add, self._cache)
 
-        return self._cache_plugins
+        self._cache_disabled = self._filter_duplicated_disabled(enabled, disabled)
+        self._plugins_loaded = len(enabled)
 
-    def get_by_name(self, name):
-        """Returns one plugin with given name or None if not found"""
-        if not self._cache_clean:
-            self._load()
+    def _validate_plugins(self, plugins):
+        def partition(plugins):
+            plugins_valid = []
+            plugins_incompatible = []
 
-        name = name.lower()
-        if name in self._cache_plugins:
-            return self._cache_plugins[name]
+            for plugin_to_validate in plugins:
+                if not is_plugin(plugin_to_validate):
+                    continue
 
-        return None
+                compability_check_result = self._plugin_dependency.check(plugin_to_validate)
+                if compability_check_result is True:
+                    plugins_valid.append(plugin_to_validate)
+                else:
+                    item = (plugin_to_validate.get_name(), compability_check_result)
+                    plugins_incompatible.append(item)
+
+            return (plugins_valid, plugins_incompatible)
+
+        def is_plugin(plugin_to_validate):
+            if not isinstance(plugin_to_validate, pluginmanager.IPlugin):
+                return False
+
+            if plugin_to_validate.get_name() == "plugin":
+                return False
+
+            return True
+
+        return partition(plugins)
+
+    def _load_plugin(self, plugin_to_add, plugin_storage):
+        def handle_aliases(plugin_to_add):
+            add_plugin(plugin_to_add.get_name().split(' '), plugin_to_add, plugin_storage)
+
+            for name in plugin_to_add.alias():
+                add_plugin(name.lower().split(' '), plugin_to_add, plugin_storage)
+
+        def add_plugin(name, plugin_to_add, parent):
+            if len(name) == 1:
+                add_plugin_single(name[0], plugin_to_add, parent)
+            else:
+                add_plugin_compose(name[0], name[1:], plugin_to_add, parent)
+
+        def add_plugin_single(name, plugin_to_add, parent):
+            plugin_existing = parent.get_plugins(name)
+            if plugin_existing is None:
+                parent.add_plugin(name, plugin_to_add)
+            else:
+                if not plugin_existing.is_callable_plugin():
+                    parent.update_plugin(name, plugin_to_add)
+                else:
+                    error("Duplicated plugin {}!".format(name))
+
+        def add_plugin_compose(name_first, name_remaining, plugin_to_add, parent):
+            plugin_existing = parent.get_plugins(name_first)
+
+            if plugin_existing is None:
+                plugin_existing = plugin.Plugin()
+                plugin_existing._name = name_first
+                plugin_existing.__doc__ = ''
+                parent.add_plugin(name_first, plugin_existing)
+
+            add_plugin(name_remaining, plugin_to_add, plugin_existing)
+
+        return handle_aliases(plugin_to_add)
+
+    def _filter_duplicated_disabled(self, enabled_list, disabled_list):
+        enabled_names = []
+        for plugin_enabled in enabled_list:
+            enabled_names.append(plugin_enabled.get_name())
+            enabled_names.extend(plugin_enabled.alias())
+
+        disabled_unique = {}
+        for plugin_name, disable_reason in disabled_list:
+            if plugin_name in enabled_names:
+                continue
+
+            if plugin_name in disabled_unique:
+                disabled_unique[plugin_name].append(disable_reason)
+            else:
+                disabled_unique[plugin_name] = [disable_reason]
+
+        return disabled_unique
+
+    def get_plugins(self):
+        """
+        Returns all loaded plugins as dictionary
+        Key: name
+        Value: plugin instance)
+        """
+        self._load()
+        return self._cache.get_plugins()
+
+    def get_disabled(self):
+        """
+        Returns all disabled plugins names as dictionary
+        Key: name
+        Value: List of reasons why disabled
+        """
+        self._load()
+        return self._cache_disabled
+
+    def get_number_plugins_loaded(self):
+        self._load()
+        return self._plugins_loaded
 
 
 class PluginDependency(object):
@@ -188,7 +183,7 @@ class PluginDependency(object):
 
     def _plugin_get_requirements(self, requirements_iter):
         plugin_requirements = {
-            "plattform": [],
+            "platform": [],
             "python": [],
             "network": [],
             "native": []
@@ -213,27 +208,26 @@ class PluginDependency(object):
         """
         Parses plugin.require(). Plase refere plugin.Plugin-documentation
         """
-        requirements_iter = plugin.require()
-        if requirements_iter is None:
-            return True
+        plugin_requirements = self._plugin_get_requirements(plugin.require())
 
-        plugin_requirements = self._plugin_get_requirements(requirements_iter)
-
-        if not self._check_plattform(plugin_requirements["plattform"]):
-            return False
+        if not self._check_platform(plugin_requirements["platform"]):
+            required_platform = ", ".join(plugin_requirements["platform"])
+            return "Requires os {}".format(required_platform)
 
         if not self._check_python(plugin_requirements["python"]):
-            return False
+            required_python = ", ".join(plugin_requirements["python"])
+            return "Requires Python {}".format(required_python)
 
         if not self._check_network(plugin_requirements["network"], plugin):
-            return False
+            return "Requires networking"
 
-        if not self._check_native(plugin_requirements["native"], plugin):
-            return False
+        natives_ok = self._check_native(plugin_requirements["native"], plugin)
+        if natives_ok is not True:
+            return natives_ok
 
         return True
 
-    def _check_plattform(self, values):
+    def _check_platform(self, values):
         if len(values) == 0:
             return True
 
@@ -265,7 +259,8 @@ class PluginDependency(object):
         if len(missing) == 0:
             return True
         else:
-            warning("Disabeling {} - missing native executables {}".format(plugin.get_name(), missing))
+            message = "Missing native executables {}"
+            return message.format(missing)
 
     def _plugin_patch_network_error_message(self, plugin):
         if "plugin._network_error_patched" not in plugin.__dict__:

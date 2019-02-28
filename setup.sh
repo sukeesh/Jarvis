@@ -57,16 +57,36 @@ exec 3>&-
 case ${answer:0:1} in
   2 )
       virtualenv env --python=python2
+      python_version=py2
   ;;
   * )
       virtualenv env --python=python3
+      python_version=py3
   ;;
 esac
 
 VIRTUAL_ENV_DISABLE_PROMPT=true source env/bin/activate
 
+# base requirements
 pip install --upgrade -r requirements.txt
 
-sudo cp jarvis /usr/local/bin
-
+# wordnet
 python -m nltk.downloader -d jarviscli/data/nltk wordnet
+
+# voice control requirements
+error=false
+pip install --upgrade -r requirements_voice_control.txt 2> /dev/null || error=true
+if $error; then
+    error=false
+    python installpyaudio.py $python_version || error=true
+
+    if $error; then
+        echo
+        echo
+        echo "Installation of requirements for voice control failed!"
+        echo "Don't worry, Jarvis will work anyway. However if you need voice control, re-run this setup."
+    else
+        pip install --upgrade -r requirements_voice_control.txt
+    fi
+fi
+sudo cp jarvis /usr/local/bin

@@ -1,11 +1,13 @@
 import unittest
 import plugins.wiki as wiki
 
+from tests import PluginTest
 
-class WikiTest(unittest.TestCase):
+
+class WikiTest(PluginTest):
 
     def setUp(self):
-        self.wiki = wiki.Wiki()
+        self.wiki = self.load_plugin(wiki.Wiki)
 
     def test_search(self):
         d = self.wiki.search("Barack")
