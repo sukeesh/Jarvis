@@ -204,9 +204,9 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
                 for sub_command in self._sub_plugins.keys():
                     jarvis.get_api().say("    * {} {}".format(self.get_name(), sub_command))
         else:
-            sub_command = s.split()[0]
-            s = " ".join(s.split()[1:])
-            self.get_plugins(sub_command).run(jarvis, s)
+            command = sub_command.split()[0]
+            new_s = " ".join(sub_command.split()[1:])
+            self.get_plugins(command).run(jarvis, new_s)
 
     def _plugin_run_with_network_error(self, run_func, jarvis, s):
         """
