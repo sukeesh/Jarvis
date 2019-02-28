@@ -97,7 +97,7 @@ def do_update(self, s):
     location: Updates location.
     system: Updates system.
     """
-    self = self_jarvis
+    self = self._jarvis
 
     if "location" in s:
         location = self.memory.get_data('city')
