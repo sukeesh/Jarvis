@@ -1,10 +1,12 @@
 import unittest
 from plugins.news import News
 
+from tests import PluginTest
 
-class NewsTest(unittest.TestCase):
+
+class NewsTest(PluginTest):
     def test_news(self):
-        n = News()
+        n = self.load_plugin(News)
         self.assertIsNotNone(n.get_news_json())
 
 

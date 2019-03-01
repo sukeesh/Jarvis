@@ -2,23 +2,16 @@ import bs4
 import requests
 import json
 
-from plugin import Plugin
+from plugin import plugin, require
 
 
-class Hackathon(Plugin):
+@require(network=True)
+@plugin('hackathon')
+class Hackathon():
     """
     Find upcoming hackathons from hackerearth
     """
-    def require(self):
-        yield("network", True)
-
-    def complete(self):
-        pass
-
-    def alias(self):
-        pass
-
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         jarvis.say('--- Fetching hackathons--- \n')
         self.format(self.get_hackathon_data(self.get_csrf_token()), jarvis)
 

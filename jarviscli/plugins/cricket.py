@@ -1,27 +1,20 @@
 from six.moves import input
 
-from plugin import Plugin
+from plugin import plugin, require
 from colorama import Fore
 from pycricbuzz import Cricbuzz
 
 
-class Cricket(Plugin):
+@require(network=True)
+@plugin('cricket')
+class Cricket():
     """
     Enter cricket and follow the instructions
     """
     def __init__(self):
         self.c = Cricbuzz()
 
-    def require(self):
-        yield ('network', True)
-
-    def complete(self):
-        pass
-
-    def alias(self):
-        pass
-
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         self.score(jarvis)
 
     def match_id(self, desc):
@@ -115,6 +108,9 @@ class Cricket(Plugin):
     def score(self, jarvis):
         matches = self.all_matches()
         jarvis.say(Fore.RED + "\nALL MATCHES\n" + Fore.LIGHTBLUE_EX)
+        if matches == []:
+            jarvis.say("No Matches Being Played!\n", Fore.RED)
+            return
         for i, m in enumerate(matches, 1):
             jarvis.say("{}. {}".format(str(i), m))
         choice = int(jarvis.input('\nEnter choice (number): ', Fore.RED))

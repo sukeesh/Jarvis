@@ -1,32 +1,17 @@
 import signal
-from os import system
 from cmd import Cmd
-from time import ctime
-from platform import architecture, dist, release, system
 from functools import partial
 import sys
-
-import six
-
-from requests import ConnectionError
-from six.moves import input
 
 from colorama import Fore
 from PluginManager import PluginManager
 
-from packages import (directions_to, forecast, mapps, near_me,
-                      timeIn, weather_pinpoint, weatherIn)
-from packages.systemOptions import update_system
-from packages.memory.memory import Memory
-
 from utilities import schedule
 from utilities.voice import create_voice
 from utilities.notification import notify
-from utilities.GeneralUtilities import (get_float, IS_MACOS, MACOS, print_say,
-                                        unsupported)
+from utilities.GeneralUtilities import print_say
 
-
-CONNECTION_ERROR_MSG = "You are not connected to Internet"
+from packages.memory.memory import Memory
 
 
 class JarvisAPI(object):
@@ -40,7 +25,7 @@ class JarvisAPI(object):
     in the utilities-package should be implemented here.
     """
 
-    CONNECTION_ERROR_MSG = "You are not connected to Internet"
+    _CONNECTION_ERROR_MSG = "You are not connected to Internet"
 
     def __init__(self, jarvis):
         self._jarvis = jarvis
@@ -50,8 +35,8 @@ class JarvisAPI(object):
         This method give the jarvis the ability to print a text
         and talk when sound is enable.
         :param text: the text to print (or talk)
-               color: Fore.COLOR (ex Fore.BLUE), color for text
-        :return: Nothing to return.
+        :param color: for text - use colorama (https://pypi.org/project/colorama/)
+                      e.g. Fore.BLUE
         """
         self._jarvis.speak(text)
         print(color + text + Fore.RESET)
@@ -70,9 +55,10 @@ class JarvisAPI(object):
 
     def connection_error(self):
         """Print generic connection error"""
-        self.say(JarvisAPI.CONNECTION_ERROR_MSG)
+        self.say(JarvisAPI._CONNECTION_ERROR_MSG)
 
     def exit(self):
+        """Immediately exit Jarvis"""
         self._jarvis.close()
 
     def notification(self, msg, time_seconds=0):
@@ -114,24 +100,35 @@ class JarvisAPI(object):
 
     # Voice wrapper
     def enable_voice(self):
+        """
+        Use text to speech for every text passed to jarvis.say()
+        """
         self._jarvis.enable_voice = True
 
     def disable_voice(self):
+        """
+        Stop text to speech output for every text passed to jarvis.say()
+        """
         self._jarvis.enable_voice = False
 
     def is_voice_enabled(self):
+        """
+        Returns True/False if voice is enabled/disabled with
+        enable_voice or disable_voice
+        Default: False (disabled)
+        """
         return self._jarvis.enable_voice
 
     # MEMORY WRAPPER
     def get_data(self, key):
         """
-        get a specific key from memory
+        Get a specific key from memory
         """
         return self._jarvis.memory.get_data(key)
 
     def add_data(self, key, value):
         """
-        add a key and value to memory
+        Add a key and value to memory
         """
         self._jarvis.memory.add_data(key, value)
         self._jarvis.memory.save()
@@ -145,10 +142,34 @@ class JarvisAPI(object):
 
     def del_data(self, key):
         """
-        delete a key from memory
+        Delete a key from memory
         """
         self._jarvis.memory.del_data(key)
         self._jarvis.memory.save()
+
+    def eval(self, s):
+        """
+        Simulates typing 's' in Jarvis prompt
+        """
+        line = self._jarvis.precmd(s)
+        stop = self._jarvis.onecmd(line)
+        stop = self._jarvis.postcmd(stop, line)
+
+
+def catch_all_exceptions(do, pass_self=True):
+    def try_do(self, s):
+        try:
+            if pass_self:
+                do(self, s)
+            else:
+                do(s)
+        except Exception as e:
+            print(Fore.RED + "Some error occurred, please open an issue on github!")
+            print("Here is error:")
+            print('')
+            traceback.print_exc()
+            print(Fore.RESET)
+    return try_do
 
 
 class CmdInterpreter(Cmd):
@@ -175,20 +196,8 @@ class CmdInterpreter(Cmd):
         self.scheduler = schedule.Scheduler()
         self.speech = create_voice()
 
-        self.actions = [{"check": ("ram", "weather", "time", "forecast")},
-                        "directions",
-                        "help",
-                        "how_are_you",
-                        "near",
-                        "pinpoint",
-                        "umbrella",
-                        {"update": ("location", "system")},
-                        "weather",
-                        ]
-
         self.fixed_responses = {"what time is it": "clock",
                                 "where am i": "pinpoint",
-                                "how are you": "how_are_you"
                                 }
 
         self._api = JarvisAPI(self)
@@ -198,38 +207,47 @@ class CmdInterpreter(Cmd):
             self._plugin_manager.add_directory(directory)
 
         self._activate_plugins()
+        self._init_plugin_info()
+
+    def _init_plugin_info(self):
+        plugin_status_formatter = {
+            "disabled": len(self._plugin_manager.get_disabled()),
+            "enabled": self._plugin_manager.get_number_plugins_loaded(),
+            "red": Fore.RED,
+            "blue": Fore.BLUE,
+            "reset": Fore.RESET
+        }
+
+        plugin_status = "{red}{enabled} {blue}plugins loaded"
+        if plugin_status_formatter['disabled'] > 0:
+            plugin_status += " {red}{disabled} {blue}plugins disabled. More information: {red}status\n"
+        plugin_status += Fore.RESET
+
+        self.first_reaction_text += plugin_status.format(**plugin_status_formatter)
 
     def _activate_plugins(self):
         """Generate do_XXX, help_XXX and (optionally) complete_XXX functions"""
-        for (plugin_name, plugin) in self._plugin_manager.get_all().items():
-            completions = self._plugin_update_action(plugin, plugin_name)
-            if completions is not None:
-                def complete(completions):
-                    def _complete_impl(self, text, line, begidx, endidx):
-                        return [i for i in completions if i.startswith(text)]
-                    return _complete_impl
-                setattr(CmdInterpreter, "complete_" + plugin_name, complete(completions))
-            setattr(CmdInterpreter, "do_" + plugin_name, partial(plugin.run, self._api))
+        for (plugin_name, plugin) in self._plugin_manager.get_plugins().items():
+            self._plugin_update_completion(plugin, plugin_name)
+
+            run_catch = catch_all_exceptions(plugin.run)
+            setattr(CmdInterpreter, "do_" + plugin_name, partial(run_catch, self))
             setattr(CmdInterpreter, "help_" + plugin_name, partial(self._api.say, plugin.get_doc()))
 
-            if hasattr(plugin.__class__, "init") and callable(getattr(plugin.__class__, "init")):
-                plugin.init(self._api)
+            plugin.init(self._api)
 
-    def _plugin_update_action(self, plugin, plugin_name):
+    def _plugin_update_completion(self, plugin, plugin_name):
         """Return True if completion is available"""
-        complete = plugin.complete()
-        if complete is not None:
-            # add plugin with completion
-            # Dictionary:
-            # { plugin_name : list of completions }
-            complete = [x for x in complete]
-            self.actions.append({plugin_name: complete})
-            return complete
-        else:
-            # add plugin without completion
-            # plugin name only
-            self.actions.append(plugin_name)
-            return None
+        completions = [i for i in plugin.complete()]
+        if len(completions) > 0:
+            def complete(completions):
+                def _complete_impl(self, text, line, begidx, endidx):
+                    return [i for i in completions if i.startswith(text)]
+                return _complete_impl
+            setattr(CmdInterpreter, "complete_" + plugin_name, complete(completions))
+
+    def get_api(self):
+        return self._api
 
     def close(self):
         """Closing Jarvis."""
@@ -256,146 +274,18 @@ class CmdInterpreter(Cmd):
         """Closes Jarvis on SIGINT signal. (Ctrl-C)"""
         self.close()
 
-    def do_calculate(self, s):
-        """Jarvis will get your calculations done!"""
-        tempt = s.replace(" ", "")
-        if len(tempt) > 1:
-            evaluator.calc(tempt, self)
-        else:
-            print_say("Error: Not in correct format", self, Fore.RED)
+    def do_status(self, s):
+        """Prints plugin status status"""
+        count_enabled = self._plugin_manager.get_number_plugins_loaded()
+        count_disabled = len(self._plugin_manager.get_disabled())
+        print_say("{} Plugins enabled, {} Plugins disabled.".format(count_enabled, count_disabled),
+                  self)
 
-    def help_calculate(self):
-        """Print help about calculate command."""
-        print_say("Jarvis will get your calculations done!", self)
-        print_say("-- Example:", self)
-        print_say("\tcalculate 3 + 5", self)
+        if "short" not in s and count_disabled > 0:
+            print_say("", self)
+            for disabled, reason in self._plugin_manager.get_disabled().items():
+                print_say("{:<20}: {}".format(disabled, "OR ".join(reason)), self)
 
-    def do_check(self, s):
-        """Checks your system's RAM stats."""
-        # if s == "ram":
-        if "ram" in s:
-            system("free -lm")
-        # if s == "time"
-        elif "time" in s:
-            timeIn.main(self, s)
-        elif "forecast" in s:
-            forecast.main(self, s)
-        # if s == "weather"
-        elif "weather" in s:
-            try:
-                weatherIn.main(self, s)
-            except ConnectionError:
-                print(CONNECTION_ERROR_MSG)
-
-    def help_check(self):
-        """Prints check command help."""
-        print_say("ram: checks your system's RAM stats.", self)
-        print_say("time: checks the current time in any part of the globe.", self)
-        print_say(
-            "weather in *: checks the current weather in any part of the globe.", self)
-        print_say(
-            "forecast: checks the weather forecast for the next 7 days.", self)
-        print_say("-- Examples:", self)
-        print_say("\tcheck ram", self)
-        print_say("\tcheck time in Manchester (UK)", self)
-        print_say("\tcheck weather in Canada", self)
-        print_say("\tcheck forecast", self)
-        print_say("\tcheck forecast in Madrid", self)
-        # add here more prints
-
-    def complete_check(self, text, line, begidx, endidx):
-        """Completions for check command"""
-        return self.get_completions("check", text)
-
-    def do_directions(self, data):
-        """Get directions about a destination you are interested to."""
-        try:
-            directions_to.main(data)
-        except ValueError:
-            print("Please enter destination")
-        except ConnectionError:
-            print(CONNECTION_ERROR_MSG)
-
-    def help_directions(self):
-        """Prints help about directions command"""
-        print_say("Get directions about a destination you are interested to.", self)
-        print_say("-- Example:", self)
-        print_say("\tdirections to the Eiffel Tower", self)
-
-    def do_how_are_you(self, s):
-        """Jarvis will inform you about his status."""
-        print_say("I am fine, How about you?", self, Fore.BLUE)
-
-    def help_how_are_you(self):
-        """Print info about how_are_you command"""
-        print_say("Jarvis will inform you about his status.", self)
-
-    def do_near(self, data):
-        """Jarvis can find what is near you!"""
-        near_me.main(data)
-
-    def help_near(self):
-        """Print help about near command."""
-        print_say("Jarvis can find what is near you!", self)
-        print_say("-- Examples:", self)
-        print_say("\trestaurants near me", self)
-        print_say("\tmuseums near the eiffel tower", self)
-
-    def do_pinpoint(self, s):
-        """Jarvis will pinpoint your location."""
-        try:
-            mapps.locate_me()
-        except ConnectionError:
-            print(CONNECTION_ERROR_MSG)
-
-    def help_pinpoint(self):
-        """Print help about pinpoint command."""
-        print_say("Jarvis will pinpoint your location.", self)
-
-    def do_umbrella(self, s):
-        """If you're leaving your place, Jarvis will inform you if you might need an umbrella or not"""
-        s = 'umbrella'
-        try:
-            weather_pinpoint.main(self.memory, self, s)
-        except ConnectionError:
-            print(CONNECTION_ERROR_MSG)
-
-    def help_umbrella(self):
-        """Print info about umbrella command."""
-        print_say(
-            "If you're leaving your place, Jarvis will inform you if you might need an umbrella or not.", self,
-            Fore.BLUE)
-
-    def do_update(self, s):
-        """Updates location or system."""
-        if "location" in s:
-            location = self.memory.get_data('city')
-            loc_str = str(location)
-            print_say("Your current location is set to " + loc_str, self)
-            print_say("What is your new location?", self)
-            i = input()
-            self.memory.update_data('city', i)
-            self.memory.save()
-        elif "system" in s:
-            update_system()
-
-    def help_update(self):
-        """Prints help about update command"""
-        print_say("location: Updates location.", self)
-        print_say("system: Updates system.", self)
-
-    def complete_update(self, text, line, begidx, endidx):
-        """Completions for update command"""
-        return self.get_completions("update", text)
-
-    def do_weather(self, s):
-        """Get information about today's weather."""
-        try:
-            weather_pinpoint.main(self.memory, self, s)
-        except ConnectionError:
-            print(CONNECTION_ERROR_MSG)
-
-    def help_weather(self):
-        """Prints help about weather command."""
-        print_say(
-            "Get information about today's weather in your current location.", self)
+    def help_status(self):
+        print_say("Prints info about enabled or disabled plugins", self)
+        print_say("Use \"status short\" to omit detailed information.", self)

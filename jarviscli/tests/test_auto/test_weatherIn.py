@@ -12,3 +12,7 @@ class WeatherInTest(unittest.TestCase):
         with patch.object(weather_pinpoint, 'main') as pinpoint_mock:
             weatherIn.main(self, 'weather')
             self.assertTrue(pinpoint_mock.called)
+
+
+if __name__ == '__main__':
+    unittest.main()

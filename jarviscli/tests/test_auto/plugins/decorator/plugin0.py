@@ -9,7 +9,7 @@ def plugin0(jarvis, s):
     jarvis.say("exec")
 
 
-@plugin(network=True, native="native", python="python", plattform="plattform")
+@plugin(network=True, native="native", python="python", platform="platform")
 @complete("complete")
 @alias("alias")
 def plugin1(jarvis, s):

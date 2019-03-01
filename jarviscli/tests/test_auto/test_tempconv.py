@@ -3,12 +3,15 @@
 import unittest
 from plugins.tempconv import Tempconv
 
+from tests import PluginTest
 
-class TestTempValidRegex(unittest.TestCase):
-    def test_regex(self):
+
+class TestTempconv(PluginTest):
+    def setUp(self):
+        self.test = self.load_plugin(Tempconv)
+
+    def test_tmp_valid_regex(self):
         """Test temperature converter's input-checking regex"""
-        self.test = Tempconv()
-
         # test some true cases
         self.assertTrue(self.test.temp_valid_regex("32f"))
         self.assertTrue(self.test.temp_valid_regex("32F"))
@@ -31,17 +34,18 @@ class TestTempValidRegex(unittest.TestCase):
         self.assertFalse(self.test.temp_valid_regex("F32"))
         self.assertFalse(self.test.temp_valid_regex("-F"))
 
-
-class TestTempConversions(unittest.TestCase):
-
-    def test_c_to_f(self):
+    def test_temp_conversion_c_to_f(self):
         """Test conversions from Celsius to Fahrenheit"""
 
-        self.assertEqual(Tempconv().convert_c_to_f(0), 32.0)
-        self.assertEqual(Tempconv().convert_c_to_f(100), 212.0)
+        self.assertEqual(self.test.convert_c_to_f(0), 32.0)
+        self.assertEqual(self.test.convert_c_to_f(100), 212.0)
 
-    def test_f_to_c(self):
+    def test_temp_conversion_f_to_c(self):
         """Test conversions from Fahrenheit to Celsius"""
 
-        self.assertEqual(Tempconv().convert_f_to_c(32), 0.0)
-        self.assertEqual(Tempconv().convert_f_to_c(212), 100.0)
+        self.assertEqual(self.test.convert_f_to_c(32), 0.0)
+        self.assertEqual(self.test.convert_f_to_c(212), 100.0)
+
+
+if __name__ == '__main__':
+    unittest.main()

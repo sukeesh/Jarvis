@@ -1,45 +1,39 @@
 import wikipedia
-from plugin import Plugin
+from plugin import plugin, complete, require
 
 
-class Wiki(Plugin):
+@require(network=True)
+@complete("search", "sumary", "content")
+@plugin('wiki')
+class Wiki():
     """
     Jarvis has now wiki feature
     enter wiki search for searching related topics
     enter wiki summary for getting summary of the topic
     wiki content for full page article of topic
     """
-
-    def require(self):
-        yield ("network", True)
-
-    def complete(self):
-        yield "search"
-        yield "summary"
-        yield "content"
-
-    def alias(self):
-        pass
-
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         k = s.split(' ', 1)
-        data = None
-        if k[0] == "search":
-            data = self.search(" ".join(k[1:]))
-        elif k[0] == "summary":
-            data = self.summary(" ".join(k[1:]))
-        elif k[0] == "content":
-            data = self.content(" ".join(k[1:]))
+        if len(k) == 1:
+            jarvis.say("Do you mean:\n1. wiki search <subject>\n2. wiki summary <subject>\n3. wiki content <subject>")
         else:
-            jarvis.say("I don't know what you mean")
-            return
+            data = None
+            if k[0] == "search":
+                data = self.search(" ".join(k[1:]))
+            elif k[0] == "summary":
+                data = self.summary(" ".join(k[1:]))
+            elif k[0] == "content":
+                data = self.content(" ".join(k[1:]))
+            else:
+                jarvis.say("I don't know what you mean")
+                return
 
-        if isinstance(data, list):
-            print("\nDid you mean one of these pages?\n")
-            for d in range(len(data)):
-                print(str(d + 1) + ": " + data[d])
-        else:
-            print("\n" + data)
+            if isinstance(data, list):
+                print("\nDid you mean one of these pages?\n")
+                for d in range(len(data)):
+                    print(str(d + 1) + ": " + data[d])
+            else:
+                print("\n" + data)
 
     def search(self, query, count=10, suggestion=False):
         """Do a Wikipedia search for a query, returns a list of 10 related items."""

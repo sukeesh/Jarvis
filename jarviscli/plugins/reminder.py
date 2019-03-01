@@ -7,7 +7,7 @@ from colorama import Fore
 from six.moves import input
 from pytimeparse.timeparse import timeparse
 
-from plugin import Plugin
+from plugin import plugin
 from utilities.textParser import parse_date
 
 
@@ -122,15 +122,6 @@ class TodoBase(RemindTodoBase):
 
     def get_key_next_id(self):
         return "todo_next_id"
-
-    def require(self):
-        pass
-
-    def alias(self):
-        pass
-
-    def complete(self):
-        pass
 
     def add(self, jarvis, message, progress="", priority=-1):
         data = self.get_data(jarvis)
@@ -341,7 +332,8 @@ class RemindTodoInteract_Remind:
 
 
 # ##################### PLUGIN DEFINITION ##########################
-class Todo(Plugin, TodoBase):
+@plugin('todo')
+class Todo(TodoBase):
     """
     List todo list
     Note: Use
@@ -350,18 +342,20 @@ class Todo(Plugin, TodoBase):
     To select todo-entry and receive notification.
     """
 
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         self.do_print(jarvis)
 
 
-class Todo_Add(Plugin, TodoBase):
+@plugin('todo add')
+class Todo_Add(TodoBase):
     """Add new todo entry"""
 
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         self.add(jarvis, s)
 
 
-class Todo_Remove(Plugin, TodoBase):
+@plugin('todo remove')
+class Todo_Remove(TodoBase):
     """
     Remove reminder
     -- Example:
@@ -369,33 +363,36 @@ class Todo_Remove(Plugin, TodoBase):
         remind remove everything
     """
 
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         self.remove(jarvis, s)
 
 
-class Todo_Progress(Plugin, TodoBase):
+@plugin('todo progress')
+class Todo_Progress(TodoBase):
     """
     Set progress info
     """
 
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         entry = self.select_one_remind(jarvis)
         entry['progress'] = input("Progress: ")
         self.modify(jarvis, entry)
 
 
-class Remind(Plugin, RemindBase):
+@plugin('remind')
+class Remind(RemindBase):
     """List all scheduled reminders"""
 
     def init(self, jarvis):
         self.first_time_init(jarvis)
 
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         jarvis.say("## {} ##\n".format(self.timestamp_to_string(time.time())))
         self.do_print(jarvis)
 
 
-class Remind_At(Plugin, RemindBase):
+@plugin('remind at')
+class Remind_At(RemindBase):
     """
     Add reminder
     -- Example:
@@ -403,12 +400,13 @@ class Remind_At(Plugin, RemindBase):
         Remind at 12:30 to todo
     """
 
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         self.remind_add(jarvis, s, self.parse_date_timestamp,
                         'remind at 12:30 to XXX')
 
 
-class Remind_In(Plugin, RemindBase):
+@plugin('remind in')
+class Remind_In(RemindBase):
     """
     Add reminder
     -- Example:
@@ -416,16 +414,17 @@ class Remind_In(Plugin, RemindBase):
         remind in 30 minutes 10 seconds to todo
     """
 
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         self.remind_add(jarvis, s, timeparse, 'remind in 30m 10s to XXX')
 
 
-class Remind_Remove(Plugin, RemindBase):
+@plugin('remind remove')
+class Remind_Remove(RemindBase):
     """
     -- Example:
         remove
         remove everything
     """
 
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         self.remove(jarvis, s)

@@ -8,8 +8,8 @@ from six.moves import input
 from plugin import alias, plugin
 
 
-@plugin()
 @alias('calc', 'evaluate')
+@plugin('calculate')
 def calculate(jarvis, s):
     """
     Jarvis will get your calculations done!
@@ -23,7 +23,7 @@ def calculate(jarvis, s):
         jarvis.say("Error: Not in correct format", Fore.RED)
 
 
-@plugin()
+@plugin('solve')
 def solve(jarvis, s):
     """
     Prints where expression equals zero
@@ -51,7 +51,7 @@ def solve(jarvis, s):
     calc(jarvis, s, calculator=_calc, formatter=_format, do_evalf=False)
 
 
-@plugin()
+@plugin('equations')
 def equations(jarvis, term):
     """
     Solves linear equations system
@@ -85,7 +85,7 @@ def equations(jarvis, term):
     calc(jarvis, term, calculator=lambda expr: sympy.solve(equations, dict=True))
 
 
-@plugin()
+@plugin('factor')
 def factor(jarvis, s):
     """
     Jarvis will factories
@@ -99,8 +99,8 @@ def factor(jarvis, s):
         jarvis.say("Error: Not in correct format", Fore.RED)
 
 
-@plugin()
 @alias("curve plot")
+@plugin('plot')
 def plot(jarvis, s):
     """
     Plot graph
@@ -121,7 +121,7 @@ def plot(jarvis, s):
         jarvis.say("Cannot plot - values probably too big...")
 
 
-@plugin()
+@plugin('limit')
 def limit(jarvis, s):
     """
     Prints limit to +/- infinity or to number +-. Use 'x' as variable.
@@ -195,12 +195,12 @@ def format_expression(s):
 
     # Insert missing * commonly omitted
     # 2x -> 2*x
-    p = re.compile('(\d+)([abcxyz])')
-    s = p.sub(r'\1*\2', s)
+    p = re.compile('(\\d+)([abcxyz])')
+    s = p.sub(r'\\1*\\2', s)
 
     # x(... -> x*(...
-    p = re.compile('([abcxyz])\(')
-    s = p.sub(r'\1*(', s)
+    p = re.compile('([abcxyz])\\(')
+    s = p.sub(r'\\1*(', s)
 
     # (x-1)(x+1) -> (x-1)*(x+1)
     # x(... -> x*(...
@@ -210,18 +210,18 @@ def format_expression(s):
 
 
 def solve_y(s):
-        if 'y' in s:
-            y = sympy.Symbol('y')
-            try:
-                results = sympy.solve(s, y)
-            except NotImplementedError:
-                return 'unknown'
-            if len(results) == 0:
-                return '0'
-            else:
-                return results[0]
+    if 'y' in s:
+        y = sympy.Symbol('y')
+        try:
+            results = sympy.solve(s, y)
+        except NotImplementedError:
+            return 'unknown'
+        if len(results) == 0:
+            return '0'
         else:
-            return solve_y("({}) -y".format(s))
+            return results[0]
+    else:
+        return solve_y("({}) -y".format(s))
 
 
 def calc(jarvis, s, calculator=sympy.sympify, formatter=None, do_evalf=True):
@@ -244,8 +244,8 @@ def calc(jarvis, s, calculator=sympy.sympify, formatter=None, do_evalf=True):
     jarvis.say(str(result), Fore.BLUE)
 
 
-@plugin()
 @alias("curve sketch")
+@plugin('curvesketch')
 def curvesketch(jarvis, s):
     """
     Prints useful information about a graph of a function.
@@ -272,19 +272,19 @@ def curvesketch(jarvis, s):
     section(jarvis, s)
 
     section(jarvis, "Graph")
-    plot().run(jarvis, s)
+    jarvis.eval('plot {}'.format(s))
 
     section(jarvis, "Limit")
-    limit().run(jarvis, str(term))
+    jarvis.eval('limit {}'.format(term))
 
     section(jarvis, "Intersection x-axis")
-    solve().run(jarvis, str(term))
+    jarvis.eval('solve {}'.format(term))
 
     section(jarvis, "Intersection y-axis")
     jarvis.say(str(get_y(0).round(9)), Fore.BLUE)
 
     section(jarvis, "Factor")
-    factor().run(jarvis, str(term))
+    jarvis.eval('factor {}'.format(term))
 
     section(jarvis, "Derivative")
     x = sympy.Symbol('x')

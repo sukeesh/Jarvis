@@ -1,12 +1,13 @@
 from utilities.textParser import parse_number
 from colorama import Fore
-from plugin import Plugin
+from plugin import plugin
 
 import random
 import re
 
 
-class Roll(Plugin):
+@plugin('roll')
+class Roll():
     """
     Roll a dice
     -- Example:
@@ -14,17 +15,7 @@ class Roll(Plugin):
         Roll four dices with 16 edges
         Roll 5 dices five times
     """
-
-    def require(self):
-        pass
-
-    def complete(self):
-        pass
-
-    def alias(self):
-        pass
-
-    def run(self, jarvis, s):
+    def __call__(self, jarvis, s):
         config = self._dice_parse(s)
 
         error = self._dice_is_error_in_config(config)
@@ -85,7 +76,7 @@ class Roll(Plugin):
         if config["howmany"] == 0:
             return "No dice to roll?"
         if config["howmany"] < 0:
-            return "Rolling {} dices does not really make sence ;).".format(config["howmany"])
+            return "Rolling {} dices does not really make sense ;).".format(config["howmany"])
         if config["repeat"] == 0:
             return "Roll 0 howmany? Finish!"
         if config["repeat"] < 0:
