@@ -1,7 +1,7 @@
 from plugin import plugin
 from six.moves import input
 
-@plugin()
+@plugin('bmi')
 def bmi(jarvis, s):
     """
     Calculates Body Mass Index.
