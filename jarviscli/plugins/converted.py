@@ -3,10 +3,8 @@ Plugins not fully converted but simply "wrapped" as plugins.
 """
 from packages import (directions_to, forecast, mapps, near_me,
                       timeIn, weather_pinpoint, weatherIn)
-from packages.systemOptions import update_system
 
-
-from plugin import plugin, complete, require
+from plugin import plugin, require
 
 
 @require(network=True)
@@ -20,6 +18,7 @@ def check_time(self, s):
     timeIn.main(self._jarvis, s)
 
 
+@require(network=True)
 @plugin("check forecast")
 def check_forecast(self, s):
     """
@@ -31,6 +30,7 @@ def check_forecast(self, s):
     forecast.main(self, s)
 
 
+@require(network=True)
 @plugin("check weather")
 def check_weather(self, s):
     """
@@ -41,6 +41,7 @@ def check_weather(self, s):
     weatherIn.main(self._jarvis, s)
 
 
+@require(network=True)
 @plugin("directions")
 def directions(self, data):
     """
@@ -54,10 +55,9 @@ def directions(self, data):
         directions_to.main(data)
     except ValueError:
         print("Please enter destination")
-    except ConnectionError:
-        print(CONNECTION_ERROR_MSG)
 
 
+@require(network=True)
 @plugin("near")
 def do_near(self, data):
     """
@@ -69,58 +69,45 @@ def do_near(self, data):
     near_me.main(data)
 
 
+@require(network=True)
 @plugin("pinpoint")
 def do_pinpoint(self, s):
     """Jarvis will pinpoint your location."""
-    try:
-        mapps.locate_me()
-    except ConnectionError:
-        print(CONNECTION_ERROR_MSG)
+    mapps.locate_me()
 
 
+@require(network=True)
 @plugin("umbrella")
 def do_umbrella(self, s):
     """If you're leaving your place, Jarvis will inform you if you might need an umbrella or not."""
     self = self._jarvis
 
     s = 'umbrella'
-    try:
-        weather_pinpoint.main(self.memory, self, s)
-    except ConnectionError:
-        print(CONNECTION_ERROR_MSG)
+    weather_pinpoint.main(self.memory, self, s)
 
 
-@complete("location", "system")
-@plugin("update")
-def do_update(self, s):
+@plugin("update location")
+def do_update(jarvis, s):
     """
     location: Updates location.
     system: Updates system.
     """
-    self = self._jarvis
-
-    if "location" in s:
-        location = self.memory.get_data('city')
-        loc_str = str(location)
-        print_say("Your current location is set to " + loc_str, self)
-        print_say("What is your new location?", self)
-        i = input()
-        self.memory.update_data('city', i)
-        self.memory.save()
-    elif "system" in s:
-        update_system()
+    location = jarvis.get_data('city')
+    loc_str = str(location)
+    jarvis.say("Your current location is set to " + loc_str)
+    jarvis.say("What is your new location?")
+    i = input()
+    jarvis.update_data('city', i)
 
 
+@require(network=True)
 @plugin("weather")
 def do_weather(self, s):
     """Get information about today's weather in your current location."""
     self = self._jarvis
 
-    try:
-        word = s.strip()
-        if(len(word) > 1):
-            weatherIn.main(self, s)
-        else:
-            weather_pinpoint.main(self.memory, self, s)
-    except ConnectionError:
-        print(CONNECTION_ERROR_MSG)
+    word = s.strip()
+    if(len(word) > 1):
+        weatherIn.main(self, s)
+    else:
+        weather_pinpoint.main(self.memory, self, s)
