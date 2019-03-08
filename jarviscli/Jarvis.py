@@ -5,6 +5,7 @@ import os
 import nltk
 from utilities.GeneralUtilities import print_say
 from CmdInterpreter import CmdInterpreter
+import datetime
 
 PROMPT_CHAR = '~>'
 
@@ -24,6 +25,7 @@ PROMPT_CHAR = '~>'
 
 
 class Jarvis(CmdInterpreter, object):
+    now = str(datetime.datetime.now())
     # We use this variable at Breakpoint #1.
     # We use this in order to allow Jarvis say "Hi", only at the first
     # interaction.
@@ -38,7 +40,7 @@ class Jarvis(CmdInterpreter, object):
         "Type 'help' for a list of available actions." + Fore.RESET
     first_reaction_text += "\n"
     prompt = (
-        Fore.RED + "{} Hi, what can I do for you?\n".format(PROMPT_CHAR) + Fore.RESET
+        Fore.RED + "{} Hi! The time is %s:\n"% (now).format(PROMPT_CHAR) + Fore.RESET
     )
 
     # This can be used to store user specific data
