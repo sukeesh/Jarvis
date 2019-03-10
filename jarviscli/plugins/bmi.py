@@ -13,13 +13,15 @@ class Bmi():
         system = self.get_system('Type your system', syst)
 
         if system == 'metric':
-            calc = self.calc_bmi_m(jarvis)
+            height, weight = self.ask_measurements(jarvis, "m")
+            calc = self.calc_bmi_m(jarvis, height, weight)
         else:
-            calc = self.calc_bmi_i(jarvis)
+            height, weight = self.ask_measurements(jarvis, "i")
+            calc = self.calc_bmi_i(jarvis, height, weight)
 
         state = self.find_body_state(jarvis, calc)
 
-
+        calc = round(calc, 1)
         print(str(calc), " ", state)
 
     def get_system(self, jarvis, syst):
@@ -42,37 +44,20 @@ class Bmi():
                 prompt = 'Type <help me> to see valid inputs '\
                         'or <try again> to continue: '
 
-    def calc_bmi_m(self, jarvis):
+    def calc_bmi_m(self, jarvis, height, weight):
 
-        jarvis.say("Please insert your height")
-        height = input()
-        jarvis.say("Please insert your weight")
-        weight = input()
-
-        height = int(height)
-        weight = int(weight)
-
-        """Calculate bmi"""
+        #Calculate bmi
         height = height/100
         bmi = weight/height**2
         return bmi
 
-    def calc_bmi_i(self, jarvis):
-
-        jarvis.say("Please insert your height")
-        height = input()
-        jarvis.say("Please insert your weight")
-        weight = input()
-
-        height = int(height)
-        weight = int(weight)
+    def calc_bmi_i(self, jarvis, height, weight):
 
         bmi = weight/height**2 * 703
         return bmi
 
     def find_body_state(self, jarvis, calc):
 
-        
         if calc < 18.5:
             state = "Underweight"
         elif calc < 24.9:
@@ -84,41 +69,23 @@ class Bmi():
 
         return state
 
+    def ask_measurements(self, jarvis, s):
 
-'''
-def bmi(jarvis, s):
-    """
-    Calculates Body Mass Index.
-    It is available for metric and imperial system
-    -- Type bmi, press enter and then follow the instructions
-    """
+        if s == "m":   
+            jarvis.say("Please insert your height (cm): ")
+            height = input()
+            jarvis.say("Please insert your weight (kg): ")
+            weight = input()
+            height = int(height)
+            weight = int(weight)
+        else: 
+            jarvis.say("Please insert your height (feet): ")
+            feet = input()
+            jarvis.say("Please insert your height (inches): ")
+            inches = input()
+            jarvis.say("Please insert your weight (lbs): ")
+            weight = input()
 
-    jarvis.say("Type m for metric and i for imperial system")
-    syst = input()
-    jarvis.say("Please insert your height")
-    height = input()
-    jarvis.say("Please insert your weight")
-    weight = input()
-
-    height = int(height)
-    weight = int(weight)
-
-    """Calculate bmi"""
-    if syst == "m":
-        height = height/100
-        bmi = weight/height**2
-    else:
-        bmi = weight/height**2 * 703
-
-    """ Find body state """
-    if bmi < 18.5:
-        state = "Underweight"
-    elif bmi < 24.9:
-        state = "Healthy"
-    elif bmi < 30:
-        state = "Overweight"
-    else:
-        state = "Obese"
-    print(str(bmi), " ", state)
-'''
-
+            height = int(feet)*12 + int(inches)
+            weight = int(weight)
+        return height, weight
