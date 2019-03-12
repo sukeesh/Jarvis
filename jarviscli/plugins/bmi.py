@@ -4,6 +4,8 @@ import sys
 from plugin import plugin
 from six.moves import input
 
+from colorama import Fore, Back, Style
+
 @plugin('bmi')
 
 class Bmi():
@@ -20,11 +22,11 @@ class Bmi():
             height, weight = self.ask_measurements(jarvis, "i")
             calc = self.calc_bmi_i(jarvis, height, weight)
 
-        state = self.find_body_state(jarvis, calc)
 
         calc = round(calc, 1)
-        print(str(calc), " ", state)
-
+        print("BMI: ", str(calc))
+        self.find_body_state(jarvis, calc)
+        
     def get_system(self, jarvis, syst):
 
         prompt = ('Please choose the system you would like to use\n'
@@ -62,16 +64,17 @@ class Bmi():
 
     def find_body_state(self, jarvis, calc):
 
-        if calc < 18.5:
-            state = "Underweight"
-        elif calc < 24.9:
-            state = "Healthy"
+        if calc < 16:
+            print('STATE: ' + Back.RED + 'Severe thinness')
+        elif calc < 18.5:
+            print('STATE: ' + Back.YELLOW + 'Mild thinness')
+        elif calc < 25:
+            print('STATE: ' + Back.GREEN + 'Healthy')
         elif calc < 30:
-            state = "Overweight"
+            print('STATE: ' + Back.YELLOW + 'Pre-obese')
         else:
-            state = "Obese"
-
-        return state
+            print('STATE: ' + Back.RED + 'Obese')
+        print(Style.RESET_ALL)
 
     def ask_measurements(self, jarvis, s):
 
@@ -82,7 +85,7 @@ class Bmi():
             weight = input()
             height = int(height)
             weight = int(weight)
-        else: 
+        else:
             jarvis.say("Please insert your height (feet): ")
             feet = input()
             jarvis.say("Please insert your height (inches): ")
