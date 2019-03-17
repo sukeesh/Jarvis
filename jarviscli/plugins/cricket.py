@@ -117,10 +117,15 @@ class Cricket():
             return
         for i, m in enumerate(self.matches, 1):
             print("{}. {} {}".format(str(i), m['srs'], m['mnum']))
-        choice = int(input(Fore.RED + '\nEnter choice (number): ' + Fore.RESET))
-        while choice < 1 or choice > len(self.matches):
-            print(Fore.BLACK + '\nWrong choice')
-            choice = int(input(Fore.RED + '\nEnter choice again: ' + Fore.RESET))
+        while 1:
+            try:
+                choice = int(input(Fore.RED + '\nEnter choice (number): ' + Fore.RESET))
+                while choice < 1 or choice > len(self.matches):
+                    print(Fore.BLACK + '\nWrong choice')
+                    choice = int(input(Fore.RED + '\nEnter choice again: ' + Fore.RESET))
+                break
+            except ValueError:
+                print("Invalid type of choice. Please enter an integer number")
 
         selected_match_id = choice - 1
         print('')
@@ -136,10 +141,15 @@ class Cricket():
             print('3. Refresh Score')
             print('4. Quit' + Fore.RESET)
 
-            choice = int(input(Fore.RED + '\nEnter choice (number): ' + Fore.RESET))
-            while choice < 1 or choice > 4:
-                print(Fore.BLACK + '\nWrong choice')
-                choice = int(input(Fore.RED + '\nEnter choice again: ' + Fore.RESET))
+            while 1:
+                try:
+                    choice = int(input(Fore.RED + '\nEnter choice (number): ' + Fore.RESET))
+                    while choice < 1 or choice > 4:
+                        print(Fore.BLACK + '\nWrong choice')
+                        choice = int(input(Fore.RED + '\nEnter choice again: ' + Fore.RESET))
+                    break
+                except ValueError:
+                    print("Invalid type of choice. Please enter an integer number")
             print('')
 
             if choice == 1:
