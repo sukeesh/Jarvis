@@ -5,10 +5,9 @@ import webbrowser
 from six.moves import input
 from plugin import plugin, require
 from colorama import Fore
+
 try:  # python3
     import urllib.request
-    import urllib.parse
-    import urllib.error
 except ImportError:  # python2
     import urllib
 
@@ -17,12 +16,7 @@ except ImportError:  # python2
 @plugin('news')
 class News:
 
-    def __init__(self, api_key="7488ba8ff8dc43459d36f06e7141c9e5"):
-        self.apiKey = api_key
-        self.url = "https://newsapi.org/v1/articles?source=google-news&sortBy=top" \
-                   "&apiKey="+self.apiKey
-        self.possibleFlags = ['configure', 'updateKey', 'help']
-        self.is_news_site_configured = False
+    def __init__(self):
         self.sources = ['bloomberg', 'financial-times', 'cnbc', 'reuters', 'al-jazeera-english',
                         'the-wall-street-journal', 'the-huffington-post', 'business-insider', 'the-new-york-times',
                         'abc-news', 'fox-news', 'cnn', 'google-news', 'wired']
@@ -42,47 +36,51 @@ class News:
         elif s == "configure":
             self.configure(jarvis)
         elif s == "remove":
-            source_to_remove = input("Please enter the news source you want to remove: ")
-            self.remove_source(jarvis, source_to_remove)
+            self.remove_source(jarvis)
         elif s == "help":
             print("news : Finds top headlines")
             print("news updatekey : Updates the news API key of the user")
             print("news configure : Configures the news channel of the user")
-            print("news removesource : Removes a source from the news channel of the user")
+            print("news remove : Removes a source from the news channel of the user")
             print("news [word]: Finds articles related to that word")
         elif s == "" or s == " ":
             self.get_headlines(jarvis)
         else:
-            self.get_news(jarvis, s)
+            searchlist = s.split(" ")
+            if "" in searchlist:
+                searchlist.remove("")
+            if " " in searchlist:
+                searchlist.remove(" ")
+            self.get_news(jarvis, searchlist)
 
-    """
-        will return either the news_api key of the user, already stored in the memory.json
-        file or None in case the user does not have his own api
-    """
     @staticmethod
     def get_api_key(jarvis):
+        """
+            will return either the news_api key of the user, already stored in the memory.json
+            file or None in case the user does not have his own api
+        """
         return jarvis.get_data("news-settings")
 
-    """
-        the user might have a news api key and they might want to add to memory.json or update an old one
-    """
     def update_api_key(self, jarvis, api_key):
+        """
+            the user might have a news api key and they might want to add to memory.json or update an old one
+        """
         jarvis.update_data("news-settings", api_key)
         return self.get_api_key(jarvis)
 
-    """
-        returns a list of all the new sources added to the news channel of the user
-    """
     def get_news_sources(self, jarvis):
+        """
+            returns a list of all the new sources added to the news channel of the user
+        """
         sources = jarvis.get_data("news-sources")
         if sources is None:
             sources = []
         return sources
 
-    """
-        adds a new source (if it does not exist) to the news channel of the user
-    """
     def add_source(self, jarvis, news_source):
+        """
+            adds a new source (if it does not exist) to the news channel of the user
+        """
         sources = self.get_news_sources(jarvis)
         if news_source not in sources:
             sources.append(news_source)
@@ -92,40 +90,52 @@ class News:
             jarvis.say(news_source + " was already included in your sources!", Fore.GREEN)
         return self.get_news_sources(jarvis)
 
-    """
-        removes a new source from the news channel of the user
-    """
-    def remove_source(self, jarvis, news_source):
+    def remove_source(self, jarvis):
+        """
+            removes a new source from the news channel of the user
+        """
         sources = self.get_news_sources(jarvis)
-        if news_source in sources:
-            sources.remove(news_source)
+
+        dic = {}
+        for source in sources:
+            dic[str(sources.index(source) + 1)] = source
+
+        for index in dic.keys():
+            print(index + " : " + dic[index])
+        index_list = input("Type the indexes of the sources you would like to remove from your channel separated by "
+                           "space: ")
+        index_list = index_list.split(" ")
+        if " " in index_list:
+            index_list.remove(" ")
+        if "" in index_list:
+            index_list.remove("")
+        for index in index_list:
+            source = dic[str(index)]
+            sources.remove(source)
             jarvis.update_data("news-sources", sources)
-            jarvis.say(news_source + " has been successfully been removed from your sources!", Fore.GREEN)
+            jarvis.say(source + " has been successfully removed from your news channel!", Fore.GREEN)
         return self.get_news_sources(jarvis)
 
-    """
-        configures the news channel of the user
-    """
     def configure(self, jarvis):
-        choice = input('Would you like to configure your own news channel(y/n) ')
-        if choice == 'y' or choice == 'yes':
-            for index in self.source_dict.keys():
-                print(str(index) + ": " + self.source_dict.get(index))
-            index_list = input("Type the indexes of the sources you would like to add to your channel separated by "
-                               "space: ")
-            index_list = index_list.split(" ")
-            for index in index_list:
-                self.add_source(jarvis, self.source_dict.get(index, index))
-            print("Visit https://newsapi.org/sources to add any sources not in the previous list")
-        elif choice.lower() == 'n' or choice.lower() == 'no':
-            return
-        else:
-            print("Command not recognized!", Fore.RED)
+        """
+            configures the news channel of the user
+        """
+        for index in self.source_dict.keys():
+            print(str(index) + ": " + self.source_dict.get(index))
+        index_list = input("Type the indexes of the sources you would like to add to your channel separated by "
+                           "space: ")
+        index_list = index_list.split(" ")
+        if " " in index_list:
+            index_list.remove(" ")
+        if "" in index_list:
+            index_list.remove("")
+        for index in index_list:
+            self.add_source(jarvis, self.source_dict.get(index, index))
 
-    """
-        gets top headlines for a quick lookup of the world news, based on the news channel of the user (if it exists)
-    """
     def get_headlines(self, jarvis):
+        """
+            gets top headlines for a quick lookup of the world news, based on the news channel of the user (if it exists)
+        """
         sources = self.get_news_sources(jarvis)
         if len(sources) == 0:
             url = "https://newsapi.org/v2/top-headlines?country=us&apiKey=" + self.get_api_key(jarvis)
@@ -136,13 +146,16 @@ class News:
             url += "&apiKey=" + self.get_api_key(jarvis)
         return self.parse_articles(url)
 
-    """
-        gets top news based on a particular search word , based on the news channel of the user (if it exists)
-    """
-    def get_news(self, jarvis, search):
+    def get_news(self, jarvis, searchlist):
+        """
+            gets top news based on a particular search list , based on the news channel of the user (if it exists)
+        """
         sources = self.get_news_sources(jarvis)
 
-        url = "https://newsapi.org/v2/everything?q=" + search
+        url = "https://newsapi.org/v2/everything?q="
+
+        for i in searchlist:
+            url += i + ","
 
         if len(sources) != 0:
             url += "&sources="
@@ -152,9 +165,6 @@ class News:
         return self.parse_articles(url)
 
     def parse_articles(self, url):
-        # check to see if a url was passed
-        if url is None:
-            url = self.url
         try:
             response = urllib.request.urlopen(url)
         except AttributeError:
@@ -201,4 +211,3 @@ class News:
             return
         else:
             return
-
