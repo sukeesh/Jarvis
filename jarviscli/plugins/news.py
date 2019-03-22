@@ -84,10 +84,12 @@ class News:
     """
     def add_source(self, jarvis, news_source):
         sources = self.get_news_sources(jarvis)
-        print(sources)
         if news_source not in sources:
             sources.append(news_source)
             jarvis.update_data("news-sources", sources)
+            jarvis.say(news_source + " has been successfully been added to your sources!", Fore.GREEN)
+        else:
+            jarvis.say(news_source + " was already included in your sources!", Fore.GREEN)
         return self.get_news_sources(jarvis)
 
     """
@@ -98,7 +100,7 @@ class News:
         if news_source in sources:
             sources.remove(news_source)
             jarvis.update_data("news-sources", sources)
-        print(self.get_news_sources(jarvis))
+            jarvis.say(news_source + " has been successfully been removed from your sources!", Fore.GREEN)
         return self.get_news_sources(jarvis)
 
     """
@@ -113,7 +115,6 @@ class News:
                                "space: ")
             index_list = index_list.split(" ")
             for index in index_list:
-                print(self.source_dict[index])
                 self.add_source(jarvis, self.source_dict.get(index, index))
             print("Visit https://newsapi.org/sources to add any sources not in the previous list")
         elif choice.lower() == 'n' or choice.lower() == 'no':
