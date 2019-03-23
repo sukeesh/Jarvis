@@ -2,10 +2,8 @@
 # !!! we must link back to this site whenever we display results.
 import json
 import webbrowser
-from six.moves import input
 from plugin import plugin, require
 from colorama import Fore
-
 try:  # python3
     import urllib.request
 except ImportError:  # python2
@@ -110,10 +108,13 @@ class News:
         if "" in index_list:
             index_list.remove("")
         for index in index_list:
-            source = dic[str(index)]
-            sources.remove(source)
-            jarvis.update_data("news-sources", sources)
-            jarvis.say(source + " has been successfully removed from your news channel!", Fore.GREEN)
+            if str(index) in dic:
+                source = dic[str(index)]
+                sources.remove(source)
+                jarvis.update_data("news-sources", sources)
+                jarvis.say(source + " has been successfully removed from your news channel!", Fore.GREEN)
+            else:
+                jarvis.say("Index not found!", Fore.RED)
         return self.get_news_sources(jarvis)
 
     def configure(self, jarvis):
