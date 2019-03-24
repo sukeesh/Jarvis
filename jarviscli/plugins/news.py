@@ -252,7 +252,7 @@ class News():
         # check if we have a valid index
         try:
             int(idx)
-            if int(idx) > index-1:
+            if int(idx) > index - 1:
                 print("Not a valid index")
                 return
             elif int(idx) == 0:
