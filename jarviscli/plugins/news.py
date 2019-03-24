@@ -156,7 +156,7 @@ class News:
         url = "https://newsapi.org/v2/everything?q="
 
         for i in searchlist:
-            url += i + ","
+            url += i + "%20"
 
         if len(sources) != 0:
             url += "&sources="
@@ -209,6 +209,4 @@ class News:
         # if user wants to read more open browser to article url
         if i.lower() == "yes" or i.lower() == 'y':
             webbrowser.open(article_list[int(idx)]['url'])
-            return
-        else:
-            return
+        return
