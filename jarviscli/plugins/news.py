@@ -4,10 +4,11 @@ import json
 import webbrowser
 from plugin import plugin, require
 from six.moves import input
+from six import PY3
 from colorama import Fore
-try:  # python3
+if PY3:
     import urllib.request
-except ImportError:  # python2
+else:
     import urllib
 
 
@@ -37,20 +38,20 @@ class News:
         elif s == "remove":
             self.remove_source(jarvis)
         elif s == "help":
-            print("news : Finds top headlines")
-            print("news updatekey : Updates the news API key of the user")
-            print("news configure : Configures the news channel of the user")
-            print("news remove : Removes a source from the news channel of the user")
-            print("news [word]: Finds articles related to that word")
+            jarvis.say("news : Finds top headlines")
+            jarvis.say("news updatekey : Updates the news API key of the user")
+            jarvis.say("news configure : Configures the news channel of the user")
+            jarvis.say("news remove : Removes a source from the news channel of the user")
+            jarvis.say("news [word]: Finds articles related to that word")
         elif s == "" or s == " ":
-            self.get_headlines(jarvis)
+            self.parse_articles(self.get_headlines(jarvis), jarvis)
         else:
             searchlist = s.split(" ")
             if "" in searchlist:
                 searchlist.remove("")
             if " " in searchlist:
                 searchlist.remove(" ")
-            self.get_news(jarvis, searchlist)
+            self.parse_articles(self.get_news(jarvis, searchlist), jarvis)
 
     @staticmethod
     def get_api_key(jarvis):
@@ -100,7 +101,7 @@ class News:
             dic[str(sources.index(source) + 1)] = source
 
         for index in dic.keys():
-            print(index + " : " + dic[index])
+            jarvis.say(index + " : " + dic[index])
         index_list = input("Type the indexes of the sources you would like to remove from your channel separated by "
                            "space: ")
         index_list = index_list.split(" ")
@@ -123,7 +124,7 @@ class News:
             configures the news channel of the user
         """
         for index in self.source_dict.keys():
-            print(str(index) + ": " + self.source_dict.get(index))
+            jarvis.say(str(index) + ": " + self.source_dict.get(index))
         index_list = input("Type the indexes of the sources you would like to add to your channel separated by "
                            "space: ")
         index_list = index_list.split(" ")
@@ -146,7 +147,7 @@ class News:
             for source in sources:
                 url += source + ","
             url += "&apiKey=" + self.get_api_key(jarvis)
-        return self.parse_articles(url)
+        return self._get(url)
 
     def get_news(self, jarvis, searchlist):
         """
@@ -164,27 +165,31 @@ class News:
             for source in sources:
                 url += source + ","
         url += "&apiKey=" + self.get_api_key(jarvis)
-        return self.parse_articles(url)
+        return self._get(url)
 
-    def parse_articles(self, url):
-        try:
+    def _get(self, url):
+        "fetch a webpage"
+        if PY3:
             response = urllib.request.urlopen(url)
-        except AttributeError:
+        else:
             response = urllib.urlopen(url)
         # Load json
         data = json.loads(response.read())
+        return data
+
+    def parse_articles(self, data, jarvis):
         article_list = {}
         index = 1
-        # print articles with their index
+        # jarvis.say articles with their index
         for article in data['articles']:
-            # print (Fore.GREEN + str(index) + ": " + article['title'] + Fore.RESET)
-            print(str(index) + ": " + article['title'])
+            # jarvis.say (Fore.GREEN + str(index) + ": " + article['title'] + Fore.RESET)
+            jarvis.say(str(index) + ": " + article['title'])
             article_list[index] = article
             index += 1
 
         # Attribution link for News API to comply with TOU
-        print("Powered by News API. Type NewsAPI to learn more")
-        print("Type index to expand news\n")
+        jarvis.say("Powered by News API. Type NewsAPI to learn more")
+        jarvis.say("Type index to expand news\n")
 
         # Check to see if index or NewsAPI was enterd
         idx = input()
@@ -196,16 +201,16 @@ class News:
         try:
             int(idx)
             if int(idx) > index:
-                print("Not a valid index")
+                jarvis.say("Not a valid index")
                 return
         except:
-            print("Not a valid index")
+            jarvis.say("Not a valid index")
             return
 
-        # if index valid print article description
-        print(article_list[int(idx)]['description'])
+        # if index valid jarvis.say article description
+        jarvis.say(article_list[int(idx)]['description'])
 
-        print("Do you want to read more? (yes/no): ")
+        jarvis.say("Do you want to read more? (yes/no): ")
         i = input()
         # if user wants to read more open browser to article url
         if i.lower() == "yes" or i.lower() == 'y':
