@@ -3,6 +3,7 @@
 import json
 import webbrowser
 from plugin import plugin, require
+from six.moves import input
 from colorama import Fore
 try:  # python3
     import urllib.request
