@@ -227,11 +227,12 @@ class News():
         except AttributeError:
             response = urllib.urlopen(url)
         # Load json
-        data = json.loads(response.read())
+        data = json.loads(response.read().decode('utf-8'))
         article_list = {}
         index = 1
         # print articles with their index
         print("Top News Articles from " + self.source)
+        print("0: Exit/Quit")
         for article in data['articles']:
             # print (Fore.GREEN + str(index) + ": " + article['title'] + Fore.RESET)
             print(str(index) + ": " + article['title'])
@@ -251,8 +252,10 @@ class News():
         # check if we have a valid index
         try:
             int(idx)
-            if int(idx) > index:
+            if int(idx) > index-1:
                 print("Not a valid index")
+                return
+            elif int(idx) == 0:
                 return
         except:
             print("Not a valid index")
