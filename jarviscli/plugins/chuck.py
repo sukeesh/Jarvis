@@ -1,6 +1,5 @@
 import requests
 from colorama import Fore
-
 from plugin import alias, plugin, require
 
 

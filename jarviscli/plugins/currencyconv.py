@@ -1,16 +1,11 @@
 import os
 import csv
-
 from decimal import Decimal
-
 from six.moves import input
-
-from plugin import plugin, require
-from utilities.GeneralUtilities import get_float
-
 from forex_python.bitcoin import BtcConverter
 from forex_python.converter import CurrencyRates
-
+from plugin import plugin, require
+from utilities.GeneralUtilities import get_float
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 

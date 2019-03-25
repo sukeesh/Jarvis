@@ -1,7 +1,6 @@
-from plugin import plugin, require, LINUX
-
-from colorama import Fore
 import os
+from colorama import Fore
+from plugin import plugin, require, LINUX
 
 
 @require(platform=LINUX, native='ims')

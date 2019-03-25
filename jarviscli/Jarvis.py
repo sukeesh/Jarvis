@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from colorama import Fore
 import os
+from colorama import Fore
 import nltk
 from utilities.GeneralUtilities import print_say
 from CmdInterpreter import CmdInterpreter
@@ -75,16 +75,16 @@ class Jarvis(CmdInterpreter, object):
         words = line.split()
 
         # append calculate keyword to front of leading char digit (or '-') in line
-        if len(words) > 0 and (words[0].isdigit() or line[0] == "-"):
+        if words and (words[0].isdigit() or line[0] == "-"):
             line = "calculate " + line
             words = line.split()
 
         if line.startswith("help"):
             return line
-        elif line.startswith("status"):
+        if line.startswith("status"):
             return line
 
-        if len(words) == 0:
+        if not words:
             line = "None"
         else:
             line = self.parse_input(line)
@@ -129,7 +129,7 @@ class Jarvis(CmdInterpreter, object):
         """Checks if input is a defined action.
         :return: returns the action"""
         output = "None"
-        if len(actions) == 0:
+        if not actions:
             return output
 
         action_found = False

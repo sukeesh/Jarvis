@@ -23,7 +23,7 @@ def play(jarvis, data):
         play eye of the tiger
     """
 
-    if len(data) == 0:
+    if not data:
         jarvis.say("Missing parameter: Song name", Fore.BLUE)
 
     else:

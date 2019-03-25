@@ -1,8 +1,7 @@
-from plugin import plugin
+import nltk
 from six.moves import input
 from nltk.corpus import wordnet
-import nltk
-
+from plugin import plugin
 
 nltk.data.path.append("jarviscli/data/ntlk")
 

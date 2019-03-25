@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from plugin import plugin, require
 import requests
 import bs4
+from plugin import plugin, require
 
 # TODO: handle errors and instructions better
 

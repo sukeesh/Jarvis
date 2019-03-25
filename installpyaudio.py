@@ -12,7 +12,7 @@ if platform.system().lower() == "linux":
           'gentoo': ('sudo emerge --ask --verbose', ('pyaudio', 'pyaudio')),
           'suse': ('sudo zypper install', ('python-PyAudio', 'python3-PyAudio')),
           'debian': ('sudo apt-get install', ('python-pyaudio', 'python3-pyaudio'))
-         }
+          }
 
     distroid = distro.os_release_attr('id_like')
 

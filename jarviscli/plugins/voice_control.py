@@ -1,5 +1,5 @@
-from plugin import plugin, require
 import os
+from plugin import plugin, require
 
 voice_control_installed = True
 try:
