@@ -46,7 +46,6 @@ class Currencyconv():
             result = b.convert_btc_to_cur(Decimal(amount), to)
         else:
             result = c.convert(fr, to, Decimal(amount))
-        
         outputText = str(amount) + " " + fr + " are equal to " + str(result) + " " + to
         jarvis.say(outputText)
 
