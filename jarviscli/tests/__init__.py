@@ -67,8 +67,12 @@ class MockJarvisAPI():
         return self.is_voice_enabled
 
     def get_data(self, key):
-        self.call_history.record('get_data', (key), self.data[key])
-        return self.data[key]
+        if key not in self.data:
+            value = None
+        else:
+            value = self.data[key]
+        self.call_history.record('get_data', (key), value)
+        return value
 
     def add_data(self, key, value):
         self.data[key] = value
