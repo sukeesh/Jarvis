@@ -1,5 +1,5 @@
-from plugin import plugin
 import random
+from plugin import plugin
 
 
 @plugin('coin flip')

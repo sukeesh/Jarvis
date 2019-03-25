@@ -2,10 +2,10 @@
 # !!! we must link back to this site whenever we display results.
 import json
 import webbrowser
-from plugin import plugin, require
 from six.moves import input
 from six import PY3
 from colorama import Fore
+from plugin import plugin, require
 if PY3:
     import urllib.request
 else:

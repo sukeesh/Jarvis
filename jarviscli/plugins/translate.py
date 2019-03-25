@@ -1,7 +1,7 @@
-from plugin import plugin, require
 from googletrans import Translator
 from googletrans.constants import LANGCODES, LANGUAGES, SPECIAL_CASES
 from six.moves import input
+from plugin import plugin, require
 
 
 @require(network=True)

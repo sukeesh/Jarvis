@@ -1,8 +1,6 @@
 from os import system
 from time import ctime
-
 from colorama import Fore
-
 from plugin import plugin, require
 
 

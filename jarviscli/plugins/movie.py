@@ -1,7 +1,7 @@
 import imdb
-from plugin import plugin, require
-from colorama import Fore, Style
 import six
+from colorama import Fore, Style
+from plugin import plugin, require
 
 app = imdb.IMDb()
 
@@ -25,8 +25,8 @@ def search_movie(jarvis, movie, all_results=False):
     if not all_results:
         first = results[0]
         return first.movieID
-    else:
-        return results
+
+    return results
 
 
 def get_movie_by_id(movie_id):

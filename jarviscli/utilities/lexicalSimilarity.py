@@ -17,7 +17,7 @@ def compare_word(targets, word, distance_penalty=0.0):
         scores.append({"i": index, "s": score_word(
             e, word) + index * distance_penalty})
     scores = sorted(scores, key=lambda k: (k["s"]))
-    if len(scores) == 0:
+    if not scores:
         return -1, -1
     else:
         return scores[0]["i"], scores[0]["s"]

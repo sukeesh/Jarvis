@@ -1,8 +1,7 @@
-from six.moves import input
-
-from plugin import plugin, require
 from colorama import Fore
 from pycricbuzz import Cricbuzz
+from six.moves import input
+from plugin import plugin, require
 
 
 @require(network=True)

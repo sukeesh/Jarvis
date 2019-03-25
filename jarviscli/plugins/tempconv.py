@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-
-from plugin import plugin
-from colorama import Fore
 import re
+from colorama import Fore
+from plugin import plugin
 
 
 @plugin('tempconv')

@@ -228,13 +228,13 @@ class PluginDependency(object):
         return True
 
     def _check_platform(self, values):
-        if len(values) == 0:
+        if not values:
             return True
 
         return self._requirement_platform in values
 
     def _check_python(self, values):
-        if len(values) == 0:
+        if not values:
             return True
 
         return self._requirement_python in values
@@ -243,9 +243,8 @@ class PluginDependency(object):
         if True in values:
             if not self._requirement_has_network:
                 return False
-            else:
-                self._plugin_patch_network_error_message(plugin)
-                return True
+            self._plugin_patch_network_error_message(plugin)
+            return True
 
         return True
 
@@ -256,11 +255,11 @@ class PluginDependency(object):
                 missing += native
                 missing += " "
 
-        if len(missing) == 0:
+        if not missing:
             return True
-        else:
-            message = "Missing native executables {}"
-            return message.format(missing)
+
+        message = "Missing native executables {}"
+        return message.format(missing)
 
     def _plugin_patch_network_error_message(self, plugin):
         if "plugin._network_error_patched" not in plugin.__dict__:

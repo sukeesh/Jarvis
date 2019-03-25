@@ -1,10 +1,10 @@
-from plugin import plugin, require
 import requests
 import os
 import json
 import base64
 import readline
 import glob
+from plugin import plugin, require
 
 
 def complete(text, state):

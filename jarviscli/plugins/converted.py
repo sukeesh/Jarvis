@@ -1,6 +1,7 @@
 """
 Plugins not fully converted but simply "wrapped" as plugins.
 """
+from six.moves import input
 from packages import (directions_to, forecast, mapps, near_me,
                       timeIn, weather_pinpoint, weatherIn)
 

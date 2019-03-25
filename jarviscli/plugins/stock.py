@@ -1,5 +1,5 @@
-from plugin import plugin, require
 import requests
+from plugin import plugin
 
 
 @plugin('stock')
