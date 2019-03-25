@@ -47,7 +47,7 @@ class Currencyconv():
         else:
             result = c.convert(fr, to, Decimal(amount))
 
-        jarvis.say(str(result))
+        jarvis.say(str(amount)+" "+fr+" are equal to "+str(result)+" "+to)
 
     def find_currencies(self):
         """
