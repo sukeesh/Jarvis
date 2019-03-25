@@ -41,8 +41,8 @@ class Currencyconv():
             result = b.convert_btc_to_cur(Decimal(amount), to)
         else:
             result = c.convert(fr, to, Decimal(amount))
-
-        jarvis.say(str(result))
+        outputText = str(amount) + " " + fr + " are equal to " + str(result) + " " + to
+        jarvis.say(outputText)
 
     def find_currencies(self):
         """
