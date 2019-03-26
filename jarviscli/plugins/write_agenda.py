@@ -1,10 +1,11 @@
 from plugin import plugin
 import csv
 
+
 @plugin("write_agenda")
 def agenda(jarvis, s):
     exit = False
-    csv_columns = ['Title','Description']
+    csv_columns = ['Title', 'Description']
     mydict = {}
 
     while(exit == False):
@@ -19,7 +20,7 @@ def agenda(jarvis, s):
     if bool(mydict):
         print('New inputs are: ' + str(mydict))
         try:
-            with open('agenda.csv','w') as csv_file:
+            with open('agenda.csv', 'w') as csv_file:
                 writer = csv.writer(csv_file)
                 for key, value in mydict.items():
                     writer.writerow([key, value])
