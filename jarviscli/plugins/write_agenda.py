@@ -13,8 +13,8 @@ def agenda(jarvis, s):
         event_option = input("Anything more?(y/n): ")
         mydict[event_title] = event_description
 
-        if(event_option =='n'):
-            exit=True
+        if(event_option == 'n'):
+            exit = True
 
     if bool(mydict):
         print('New inputs are: ' + str(mydict))
