@@ -7,7 +7,7 @@ def agenda(jarvis, s):
     csv_columns = ['Title','Description']
     mydict = {}
 
-    while(exit==False):
+    while(exit == False):
         event_title = input("Write down the event title: ")
         event_description = input("Write down the event description: ")
         event_option = input("Anything more?(y/n): ")
