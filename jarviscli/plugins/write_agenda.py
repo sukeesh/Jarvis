@@ -25,6 +25,6 @@ def agenda(jarvis, s):
                 for key, value in mydict.items():
                     writer.writerow([key, value])
         except IOError:
-            print("I/O error") 
+            print("I/O error")
     else:
         print('Nothing for the agenda')
