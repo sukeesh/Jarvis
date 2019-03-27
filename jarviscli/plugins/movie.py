@@ -221,8 +221,6 @@ def get_movie_info(jarvis, data):
     """
     Takes a movie attributes as input and prints them accordingly
     """
-    global movie_attributes
-
     jarvis.say('')
     jarvis.say('What type of information do you want: cast, producers, genres, etc.?')
     jarvis.say('Write one after another separated by space, please:')
