@@ -4,18 +4,18 @@ import csv
 
 @plugin("write agenda")
 def agenda(jarvis, s):
-    exit = False
+    exit = True
     csv_columns = ['Title', 'Description']
     mydict = {}
 
-    while(exit == False):
+    while(exit):
         event_title = input("Write down the event title: ")
         event_description = input("Write down the event description: ")
         event_option = input("Anything more?(y/n): ")
         mydict[event_title] = event_description
 
         if(event_option == 'n'):
-            exit = True
+            exit = False
 
     if bool(mydict):
         print('New inputs are: ' + str(mydict))
