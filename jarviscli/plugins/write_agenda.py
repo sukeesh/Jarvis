@@ -2,7 +2,7 @@ from plugin import plugin
 import csv
 
 
-@plugin("write agenda")
+@plugin("write_agenda")
 def agenda(jarvis, s):
     exit = True
     csv_columns = ['Title', 'Description']
