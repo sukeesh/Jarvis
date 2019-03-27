@@ -1,7 +1,7 @@
 import unittest
 from functools import partial
-from inspect import isclass
-from plugin import Plugin
+# from inspect import isclass
+# from plugin import Plugin
 
 
 class MockJarvisAPI():
@@ -142,7 +142,7 @@ class MockHistory():
         if field is None:
             return value in self._storage_by_index
         else:
-            return value in self._storage[field]
+            return value in self._storage_by_field[field]
 
     def view(self, field=None, index=None):
         """
