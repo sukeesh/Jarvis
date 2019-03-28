@@ -254,12 +254,12 @@ def curvesketch(jarvis, s):
     * Derivative and Integral
     * Minima / Maxima / Turning point
     -- Example:
-        curve sketch x**2+10x-5
+        curve sketch y=x**2+10x-5
         curve sketch y=sqrt((x+1)(x-1))
         curve sketch y=1/3x**3-2x**2+3x
     """
     if len(s) == 0:
-        jarvis.say("Missing parameter: function (e.g. call 'curve sketch x**2+10x-5')")
+        jarvis.say("Missing parameter: function (e.g. call 'curve sketch y=x**2+10x-5')")
         return
 
     def section(jarvis, headline):
