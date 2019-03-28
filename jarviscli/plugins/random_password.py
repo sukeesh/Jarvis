@@ -5,8 +5,15 @@ import string
 
 @plugin("random password")
 def random_password(jarvis, s):
+    stringFail=True
 
-    stringLength = 10
+    while(stringFail):
+        try:
+            stringLength = int(input("Enter password length: "))
+            stringFail = False
+        except:
+            print('Only integers will be accepted')
+
     """Generate a random string of fixed length """
     lettersAndDigits = string.ascii_letters + string.digits
     preText = 'Your random password is: '
