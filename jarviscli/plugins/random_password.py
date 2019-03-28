@@ -5,7 +5,7 @@ import string
 
 @plugin("random password")
 def random_password(jarvis, s):
-    stringFail=True
+    stringFail = True
 
     while(stringFail):
         try:
