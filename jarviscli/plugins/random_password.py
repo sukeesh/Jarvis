@@ -3,7 +3,7 @@ import random
 import string
 
 
-@plugin("random_password")
+@plugin("random password")
 def random_password(jarvis, s):
 
     stringLength = 10
