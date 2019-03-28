@@ -29,7 +29,7 @@ def write_agenda(jarvis, s):
     else:
         print('Nothing for the agenda')
 
-        
+
 @plugin("read agenda")
 def read_agenda(jarvis, s):
     try:
