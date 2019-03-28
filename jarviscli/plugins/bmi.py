@@ -22,7 +22,6 @@ class Bmi():
             height, weight = self.ask_measurements(jarvis, "i")
             calc = self.calc_bmi_i(jarvis, height, weight)
 
-
         calc = round(calc, 1)
         print("BMI: ", str(calc))
         self.find_body_state(jarvis, calc)
@@ -52,13 +51,14 @@ class Bmi():
 
     def calc_bmi_m(self, jarvis, height, weight):
 
-        #Calculate bmi
+        #Calculate bmi for metric system
         height = height/100
         bmi = weight/height**2
         return bmi
 
     def calc_bmi_i(self, jarvis, height, weight):
 
+        #Calculate bmi for imperial system
         bmi = weight/height**2 * 703
         return bmi
 
@@ -81,10 +81,24 @@ class Bmi():
         if s == "m":   
             jarvis.say("Please insert your height (cm): ")
             height = input()
+            while True:
+                try:
+                    height = int(height)
+                    break
+                except ValueError:
+                    print("Error on input type for height, please insert an integer: ")
+                    height = input()
+
             jarvis.say("Please insert your weight (kg): ")
-            weight = input()
-            height = int(height)
-            weight = int(weight)
+            weight = input()            
+            while True:
+                try:
+                    weight = int(weight)
+                    break
+                except ValueError:
+                    print("Error on input type for weight, please insert an integer: ")
+                    weight = input()
+
         else:
             jarvis.say("Please insert your height (feet): ")
             feet = input()
