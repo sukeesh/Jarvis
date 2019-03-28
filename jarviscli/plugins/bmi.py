@@ -84,6 +84,8 @@ class Bmi():
             while True:
                 try:
                     height = int(height)
+                    if height <0:
+                        raise ValueError('Please only positive numbers!')
                     break
                 except ValueError:
                     print("Error on input type for height, please insert an integer: ")
@@ -94,6 +96,8 @@ class Bmi():
             while True:
                 try:
                     weight = int(weight)
+                    if weight <=0:
+                        raise ValueError('Please only positive numbers!')
                     break
                 except ValueError:
                     print("Error on input type for weight, please insert an integer: ")
