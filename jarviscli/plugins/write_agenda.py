@@ -2,8 +2,8 @@ from plugin import plugin
 import csv
 
 
-@plugin("write_agenda")
-def agenda(jarvis, s):
+@plugin("write agenda")
+def write_agenda(jarvis, s):
     exit = True
     csv_columns = ['Title', 'Description']
     mydict = {}
@@ -28,3 +28,14 @@ def agenda(jarvis, s):
             print("I/O error")
     else:
         print('Nothing for the agenda')
+
+@plugin("read agenda")
+def read_agenda(jarvis, s):
+    try:
+        f = open('agenda.csv', 'r')
+        reader = csv.reader(f)
+        for row in reader:
+            print (row)
+        f.close()
+    except:
+        print('There is not an agenda')
