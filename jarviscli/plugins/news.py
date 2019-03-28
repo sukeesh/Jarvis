@@ -127,7 +127,7 @@ class News:
         """
             configures the news channel of the user
         """
-        for index in sorted([ int(x) for x in self.source_dict.keys()]):
+        for index in sorted([int(x) for x in self.source_dict.keys()]):
             jarvis.say(str(index) + ": " + self.source_dict.get(str(index)))
         index_list = input("Type the indexes of the sources you would like to add to your channel separated by "
                            "space: ")
@@ -190,7 +190,7 @@ class News:
                 return None
             # Catch some other errors
             else:
-                jarvis.say("An error occured: Error code: "+ str(err.code), Fore.RED)
+                jarvis.say("An error occured: Error code: " + str(err.code), Fore.RED)
                 return None
 
         # Load json
@@ -200,7 +200,7 @@ class News:
     def parse_articles(self, data, jarvis):
         article_list = {}
         index = 1
-        if(data == None):
+        if data is None:
             return
         # jarvis.say articles with their index
         for article in data['articles']:
@@ -222,12 +222,12 @@ class News:
         try:
             int(idx)
             if int(idx) > (index - 1):
-                jarvis.say(str(idx) + "is not a valid index",Fore.RED)
+                jarvis.say(str(idx) + "is not a valid index", Fore.RED)
                 return
             elif int(idx) == 0:
                 return
         except:
-            jarvis.say("Not a valid index",Fore.RED)
+            jarvis.say("Not a valid index", Fore.RED)
             return
 
         # if index valid jarvis.say article description
