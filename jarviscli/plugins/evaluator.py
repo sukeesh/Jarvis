@@ -112,6 +112,10 @@ def plot(jarvis, s):
         sympy.plotting.plot(expr)
         return ""
 
+    if len(s) == 0:
+        jarvis.say("Missing parameter: function (e.g. call 'plot x**2')")
+        return
+
     s = remove_equals(jarvis, s)
     try:
         calc(jarvis, s, calculator=solve_y, formatter=_plot, do_evalf=False)
