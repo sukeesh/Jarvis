@@ -27,7 +27,7 @@ if platform.system().lower() == "linux":
                 print("Usage: python installpyaudio.py (py2/py3)")
                 sys.exit(1)
             install_command = "{} {}".format(base_command, packages_names[python_version])
-elif platform.system().lower() == "Darwin":
+elif platform.system().lower() == "darwin":
     install_command = 'brew install portaudio'
 
 
