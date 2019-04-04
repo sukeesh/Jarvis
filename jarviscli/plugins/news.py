@@ -48,7 +48,7 @@ class News:
             jarvis.say("news remove\t : Removes a source from the news channel of the user")
             jarvis.say("news [word]\t : Finds articles related to that word")
         elif s == "sources":
-            sources=self.get_news_sources(jarvis)
+            sources = self.get_news_sources(jarvis)
             if not sources:
                 jarvis.say("No sources configured. Use 'news configure' to add sources.", Fore.RED)
             else:
