@@ -320,8 +320,9 @@ class MipsConverter:
             elif(self.__inType[i] == "I" and self.__rs[i] == "l"):
                 regR = ""
                 # these instructions have rs register in the middle of the first and last register
-                if ((self.__com[i] == "SLTI") or (self.__com[i] == "SLTIU") or (self.__com[i] == "ORI") or (self.__com[i] == "ANDI") or
-                        (self.__com[i] == "ADDI")):
+                if ((self.__com[i] == "SLTI") or (self.__com[i] == "SLTIU") or (self.__com[i] == "ORI")):
+                    regR = self.__getRegSecond(assembly)
+                elif((self.__com[i] == "ANDI") or (self.__com[i] == "ADDI")):
                     regR = self.__getRegSecond(assembly)
                 # these instructions have a form imm(rs) which makes locating rs easy
                 elif (self.__form[i].find("(") != -1):
@@ -339,8 +340,9 @@ class MipsConverter:
             if (self.__inType[i] == "R" and self.__rt[i] == "l"):
                 regR = ""
                 # these instructions have rt in the middle of first and last register
-                if ((self.__com[i] == "SRA") or (self.__com[i] == "SRL") or (self.__com[i] == "SRLV") or (self.__com[i] == "SRAV") or
-                        (self.__com[i] == "SLL") or (self.__com[i] == "SLLV")):
+                if ((self.__com[i] == "SRA") or (self.__com[i] == "SRL") or (self.__com[i] == "SRLV")):
+                    regR = self.__getRegSecond(assembly)
+                elif ((self.__com[i] == "SRAV") or (self.__com[i] == "SLL") or (self.__com[i] == "SLLV")):
                     regR = self.__getRegSecond(assembly)
                 # the rest have rt at the end
                 else:
