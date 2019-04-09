@@ -56,7 +56,7 @@ class MipsConverter:
         self.__regCode = []
 
         # populating the lists with info from the files
-        commands = open(os.path.join(FILE_PATH, "../data/coms.txt"), 'r')
+        commands = open(os.path.join(FILE_PATH, "../data/mips_coms.txt"), 'r')
 
         for line in commands:
             line = ''.join(line.split())
@@ -92,7 +92,7 @@ class MipsConverter:
 
         commands.close()
 
-        regs = open(os.path.join(FILE_PATH, "../data/regs.txt"), 'r')
+        regs = open(os.path.join(FILE_PATH, "../data/mips_regs.txt"), 'r')
 
         for line in regs:
             line = ''.join(line.split())
