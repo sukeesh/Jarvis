@@ -38,11 +38,26 @@ class News:
         elif s == "remove":
             self.remove_source(jarvis)
         elif s == "help":
-            jarvis.say("news : Finds top headlines")
-            jarvis.say("news updatekey : Updates the news API key of the user")
-            jarvis.say("news configure : Configures the news channel of the user")
-            jarvis.say("news remove : Removes a source from the news channel of the user")
-            jarvis.say("news [word]: Finds articles related to that word")
+            jarvis.say("-------------------------------------")
+            jarvis.say("Command\t\t | Description")
+            jarvis.say("-------------------------------------")
+            jarvis.say("news\t\t : Finds top headlines")
+            jarvis.say("news updatekey\t : Updates the news API key of the user")
+            jarvis.say("news configure\t : Configures the news channel of the user")
+            jarvis.say("news sources\t : List the configured news sources")
+            jarvis.say("news remove\t : Removes a source from the news channel of the user")
+            jarvis.say("news [word]\t : Finds articles related to that word")
+        elif s == "sources":
+            sources = self.get_news_sources(jarvis)
+            if not sources:
+                jarvis.say("No sources configured. Use 'news configure' to add sources.", Fore.RED)
+            else:
+                dic = {}
+                for source in sources:
+                    dic[str(sources.index(source) + 1)] = source
+
+                for index in sorted([int(x) for x in dic.keys()]):
+                    jarvis.say(str(index) + " : " + dic[str(index)])
         elif self.get_api_key(jarvis) is None:
             jarvis.say("Missing API key", Fore.RED)
             jarvis.say("Visit https://newsapi.org/ to get the key", Fore.RED)
@@ -168,7 +183,6 @@ class News:
 
         for i in searchlist:
             url += i + "%20"
-
         if len(sources) != 0:
             url += "&sources="
             for source in sources:
@@ -201,8 +215,12 @@ class News:
         article_list = {}
         index = 1
         if data is None:
+            jarvis.say("No Articles", Fore.RED)
             return
         # jarvis.say articles with their index
+        if not data['articles']:
+            jarvis.say("No Articles matching the word(s)", Fore.RED)
+            return
         for article in data['articles']:
             jarvis.say(str(index) + ": " + article['title'])
             article_list[index] = article
@@ -222,7 +240,7 @@ class News:
         try:
             int(idx)
             if int(idx) > (index - 1):
-                jarvis.say(str(idx) + "is not a valid index", Fore.RED)
+                jarvis.say(str(idx) + " is not a valid index", Fore.RED)
                 return
             elif int(idx) == 0:
                 return
