@@ -1,5 +1,4 @@
 import unittest
-import unittest.mock
 from tests import PluginTest  
 from plugins.bmi import Bmi
 from Jarvis import Jarvis

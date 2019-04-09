@@ -1,49 +1,7 @@
 from plugin import plugin
 
-
-@plugin("health bmi")
-def health_bmi(jarvis, s):
-    """
-    Tells the Body Mass Index(BMI).
-    It is a measure of body mass based on height and weight.
-    Add metric height(cm) and weight(kg). No decimal weight for now.
-    #Example: health bmi 182 86
-    ^Source: https://en.wikipedia.org/wiki/Body_mass_index
-    """
-
-    strings = s.split()
-    if(len(strings) == 2):
-        height = float(strings[0]) * float(strings[0])
-        weight = float(strings[1])
-    else:
-        jarvis.say("Please add height(m) and weight(kg)!")
-        return None
-
-    if(height > 0.0 and weight > 0.0):
-        bmi = float(weight / (height / float(10000)))
-        category = bmi_categories(bmi)
-        bmi = str(float("{0:.2f}".format(bmi)))
-        jarvis.say("Your BMI is : " + bmi)
-        jarvis.say("Category : " + category)
-    else:
-        jarvis.say("Please add positive height(m) and weight(kg)!")
-        return None
-
-
-def bmi_categories(bmi):
-    if(bmi < 18.5):
-        category = "Underweight"
-    elif(bmi < 25):
-        category = "Normal weight"
-    elif(bmi < 30):
-        category = "Overweight"
-    else:
-        category = "Obesity"
-    return category
-
-
-@plugin("health calories")
-def health_calories(jarvis, s):
+@plugin("calories")
+def calories(jarvis, s):
     """
     Tells the recommended daily calorie intake, also recommends calories for weight add and loss.(Source 1)
     It is based on gender, age, height and weight.

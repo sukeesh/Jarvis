@@ -1,9 +1,8 @@
+from plugin import plugin
 import os
 import sys
 
-from plugin import plugin
 from six.moves import input
-
 from colorama import Fore, Back, Style
 
 @plugin('bmi')
