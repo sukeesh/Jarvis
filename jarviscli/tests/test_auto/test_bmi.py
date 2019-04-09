@@ -1,13 +1,17 @@
 import unittest
-from tests import PluginTest  
+from tests import PluginTest
 from plugins.bmi import Bmi
 from Jarvis import Jarvis
 
+
 class BmiTest(PluginTest):
+    """
+        this class is testing the bmi plugin
+    """
 
     def setUp(self):
         self.test = self.load_plugin(Bmi)
-        
+
     def test_0_calc_bmi_m(self):
         height = 100
         weight = 100
@@ -33,6 +37,7 @@ class BmiTest(PluginTest):
         d = self.test.calc_bmi_i(Jarvis, height, weight)
         d = round(d, 0)
         self.assertEqual(d, 29)
+
 
 if __name__ == '__main__':
     unittest.main()
