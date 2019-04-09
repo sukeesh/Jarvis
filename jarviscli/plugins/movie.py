@@ -191,7 +191,6 @@ def movie_search(jarvis, movie):
     # If nothing is entered, just return
     if input_id is '':
         return None
-
     if len(input_id) != 1:
         return jarvis.say(Fore.RED + 'Please enter valid value')
     elif input_id in '123456789':
@@ -200,7 +199,7 @@ def movie_search(jarvis, movie):
         return None
 
     # if entered input is out of the given list of ID's
-    if input_id > count:
+    if (int(input_id) > count) or (int(input_id) < 1):
         return jarvis.say(Fore.RED + 'Please enter id from the given list')
 
     movie_id = movie_results[input_id - 1].movieID
