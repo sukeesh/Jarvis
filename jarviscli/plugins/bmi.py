@@ -8,6 +8,17 @@ from colorama import Fore, Back, Style
 
 @plugin('bmi')
 class Bmi():
+    """
+    Welcome to the Body Mass Index plugin documentation! Here you can find all the functionalitites
+    of this plugin.
+    Usage: Type bmi, press enter and follow the instructions
+    Functionalities: You can calculate your BMI both on metric and imperial system.
+    For metric system: Type your height in centimetres and the your weight in kilos,
+        they should be both Integers!
+    For imperial system: Type your height in feets and inches and then your weight in lbs
+        all measurements should be Integers!
+    Find out your BMI number and your body state.
+    """
 
     def __call__(self, jarvis, s):
 
@@ -26,6 +37,10 @@ class Bmi():
         self.find_body_state(jarvis, calc)
 
     def get_system(self, jarvis, syst):
+        """
+        get_system asks for the user to choose which system he wants to use
+        1 for metric and 2 for imperial
+        """
 
         prompt = ('Please choose the system you would like to use\n'
                   '(1) For metric system\n'
@@ -49,19 +64,27 @@ class Bmi():
                           'or <try again> to continue: ')
 
     def calc_bmi_m(self, jarvis, height, weight):
+        """
+        calc_bmi_m calculates the bmi for metric system using the common bmi function
+        """
 
-        # Calculate bmi for metric system
         height = height / 100
         bmi = weight / height ** 2
         return bmi
 
     def calc_bmi_i(self, jarvis, height, weight):
+        """
+        calc_bmi_i calculates the bmi for imperial system using the common bmi function
+        """
 
-        # Calculate bmi for imperial system
         bmi = weight / height ** 2 * 703
         return bmi
 
     def find_body_state(self, jarvis, calc):
+        """
+        According the bmi number, find_body_state finds out the state of the body
+        and prints it to the user using colorama library for some coloring
+        """
 
         if calc < 16:
             print('STATE: ' + Back.RED + 'Severe thinness')
@@ -76,6 +99,10 @@ class Bmi():
         print(Style.RESET_ALL)
 
     def ask_measurements(self, jarvis, s):
+        """
+        ask_meeasurememts asks user to imput his measurements according the system he is using.
+        If the user doesn't input an Integer, jarvis will ask him to insert value again.
+        """
 
         if s == "m":
             jarvis.say("Please insert your height (cm): ")
@@ -105,10 +132,38 @@ class Bmi():
         else:
             jarvis.say("Please insert your height (feet): ")
             feet = input()
+            while True:
+                try:
+                    feet = int(feet)
+                    if feet < 0:
+                        raise ValueError('Please only positive numbers!')
+                    break
+                except ValueError:
+                    print("Error on input type for feet, please insert an integer: ")
+                    feet = input()
+
             jarvis.say("Please insert your height (inches): ")
             inches = input()
+            while True:
+                try:
+                    inches = int(inches)
+                    if inches < 0:
+                        raise ValueError('Please only positive numbers!')
+                    break
+                except ValueError:
+                    print("Error on input type for inches, please insert an integer: ")
+                    inches = input()
             jarvis.say("Please insert your weight (lbs): ")
             weight = input()
+            while True:
+                try:
+                    weight = int(weight)
+                    if weight < 0:
+                        raise ValueError('Please only positive numbers!')
+                    break
+                except ValueError:
+                    print("Error on input type for weight, please insert an integer: ")
+                    weight = input()
 
             height = int(feet) * 12 + int(inches)
             weight = int(weight)
