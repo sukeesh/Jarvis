@@ -30,7 +30,6 @@ class MipsConverter:
     and immediate, or register and immediate.
     """
     def __call__(self, jarvis, s):
-        self.__init__()
         if (s != ""):
             if (len(s) == 8 and s.find(" ") == -1):
                 self.hexToAssembly(s, jarvis)
@@ -452,7 +451,7 @@ class MipsConverter:
             if ((self.__op[i] == command[0:6]) and (self.__op[i] != "000000")):
                 flag = True
                 break
-            elif ((self.__func[i] == command[26:32]) and (self.__op[i] == "000000")):
+            elif ((self.__func[i] == command[26:32]) and (self.__op[i] == "000000") and (command[0:6] == "000000")):
                 flag = True
                 break
             i = i + 1
