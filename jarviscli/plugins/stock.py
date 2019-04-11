@@ -3,6 +3,7 @@ from plugin import plugin
 from colorama import Fore
 import re
 
+
 @plugin('stock')
 class Stock:
 
@@ -17,7 +18,7 @@ class Stock:
         # anything else is treated as a stock symbol
         else:
             self.get_stock_data(s)
-        
+
     @staticmethod
     def get_stock_data(quote):
 
