@@ -2,6 +2,7 @@ import signal
 from cmd import Cmd
 from functools import partial
 import sys
+import traceback
 
 from colorama import Fore
 from PluginManager import PluginManager
@@ -163,7 +164,7 @@ def catch_all_exceptions(do, pass_self=True):
                 do(self, s)
             else:
                 do(s)
-        except Exception as e:
+        except Exception:
             print(Fore.RED + "Some error occurred, please open an issue on github!")
             print("Here is error:")
             print('')

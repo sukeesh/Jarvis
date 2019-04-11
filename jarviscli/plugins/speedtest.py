@@ -1,8 +1,8 @@
-import speedtest as st
 import sys
 import threading
 import itertools
 import time
+import speedtest as st
 from colorama import Fore
 from plugin import plugin, require
 

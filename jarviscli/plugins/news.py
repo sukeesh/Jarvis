@@ -1,246 +1,234 @@
 # !!! This uses the https://newsapi.org/ api. TO comply with the TOU
 # !!! we must link back to this site whenever we display results.
-try:  # python3
-    import urllib.request
-    import urllib.parse
-    import urllib.error
-except ImportError:  # python2
-    import urllib
 import json
 import webbrowser
 from six.moves import input
-from plugin import plugin, require
+from six import PY3
 from colorama import Fore
-
-'''
-    CLASS News
-    To run the full news class run:
-        news_options
-        THEN
-        get_news
-    For quick news run:
-        request_news
-
-    example:
-    n = News()
-    n.news()
-    OR
-    n = News()
-    n.quick_news()
-'''
+from plugin import plugin, require
+if PY3:
+    import urllib.request
+else:
+    import urllib
 
 
 @require(network=True)
 @plugin('news')
-class News():
-    """
-    Time to get an update about the local news.
-    Type \"news\" to choose your source or \"news quick\" for some headlines.
-    """
-    def __init__(self, source="google-news", api_key="7488ba8ff8dc43459d36f06e7141c9e5"):
-        self.apiKey = api_key
-        self.source = source
-        self.url = "https://newsapi.org/v1/articles?source=google-news&sortBy=top" \
-                   "&apiKey=7488ba8ff8dc43459d36f06e7141c9e5"
-        self.is_news_site_configured = False
+class News:
+
+    def __init__(self):
+        self.sources = ['bloomberg', 'financial-times', 'cnbc', 'reuters', 'al-jazeera-english',
+                        'the-wall-street-journal', 'the-huffington-post', 'business-insider', 'the-new-york-times',
+                        'abc-news', 'fox-news', 'cnn', 'google-news', 'wired']
+        self.source_dict = {}
+
+        for source in self.sources:
+            self.source_dict[str(self.sources.index(source) + 1)] = source
 
     def __call__(self, jarvis, s):
-        if s == "quick":
-            try:
-                self.quick_news()
-            except:
-                jarvis.say("I couldn't find news", Fore.RED)
+        if s == "updatekey":
+            key = input("Please enter your NEWS API key (q or Enter go back): ")
+            if key.lower() == "q" or key.lower() == "":
+                jarvis.say("Could not update the NEWS API key! ", Fore.RED)
+            else:
+                self.update_api_key(jarvis, key)
+                jarvis.say("NEWS API key successfully updated! ", Fore.GREEN)
+        elif s == "configure":
+            self.configure(jarvis)
+        elif s == "remove":
+            self.remove_source(jarvis)
+        elif s == "help":
+            jarvis.say("-------------------------------------")
+            jarvis.say("Command\t\t | Description")
+            jarvis.say("-------------------------------------")
+            jarvis.say("news\t\t : Finds top headlines")
+            jarvis.say("news updatekey\t : Updates the news API key of the user")
+            jarvis.say("news configure\t : Configures the news channel of the user")
+            jarvis.say("news sources\t : List the configured news sources")
+            jarvis.say("news remove\t : Removes a source from the news channel of the user")
+            jarvis.say("news [word]\t : Finds articles related to that word")
+        elif s == "sources":
+            sources = self.get_news_sources(jarvis)
+            if not sources:
+                jarvis.say("No sources configured. Use 'news configure' to add sources.", Fore.RED)
+            else:
+                dic = {}
+                for source in sources:
+                    dic[str(sources.index(source) + 1)] = source
+
+                for index in sorted([int(x) for x in dic.keys()]):
+                    jarvis.say(str(index) + " : " + dic[str(index)])
+        elif self.get_api_key(jarvis) is None:
+            jarvis.say("Missing API key", Fore.RED)
+            jarvis.say("Visit https://newsapi.org/ to get the key", Fore.RED)
+            jarvis.say("Use \'news updatekey\' command to add a key\n", Fore.RED)
+        elif s == "" or s == " ":
+            self.parse_articles(self.get_headlines(jarvis), jarvis)
         else:
-            try:
-                if jarvis.get_data('news-settings') is not None and len(jarvis.get_data('news-settings')) > 0:
-                    self.is_news_site_configured = True
-                self.news(jarvis)
-            except:
-                jarvis.say("I couldn't find news", Fore.RED)
+            searchlist = s.split(" ")
+            if "" in searchlist:
+                searchlist.remove("")
+            if " " in searchlist:
+                searchlist.remove(" ")
+            self.parse_articles(self.get_news(jarvis, searchlist), jarvis)
 
     @staticmethod
-    def get_key():
-        return "news-settings"
+    def get_api_key(jarvis):
+        """
+            will return either the news_api key of the user, already stored in the memory.json
+            file or None in case the user does not have his own api
+        """
+        return jarvis.get_data("news-settings")
 
-    def check_newsapi_url(self, site_key):
-        url = "https://newsapi.org/v1/articles?source=" + \
-            site_key + "&sortby=top&apiKey=" + self.apiKey
-        try:
-            try:
-                response = urllib.request.urlopen(url)
-            except urllib.error.HTTPError:
-                return False
-        except AttributeError:
-            response = urllib.urlopen(url)
-        if response.code >= 400:
-            return False
+    def update_api_key(self, jarvis, api_key):
+        """
+            the user might have a news api key and they might want to add to memory.json or update an old one
+        """
+        jarvis.update_data("news-settings", api_key)
+        return self.get_api_key(jarvis)
+
+    def get_news_sources(self, jarvis):
+        """
+            returns a list of all the new sources added to the news channel of the user
+        """
+        sources = jarvis.get_data("news-sources")
+        if sources is None:
+            sources = []
+        return sources
+
+    def add_source(self, jarvis, news_source):
+        """
+            adds a new source (if it does not exist) to the news channel of the user
+        """
+        sources = self.get_news_sources(jarvis)
+        if news_source not in sources:
+            sources.append(news_source)
+            jarvis.update_data("news-sources", sources)
+            jarvis.say(news_source + " has been successfully been added to your sources!", Fore.GREEN)
         else:
-            return True
+            jarvis.say(news_source + " was already included in your sources!", Fore.GREEN)
+        return self.get_news_sources(jarvis)
 
-    def news(self, jarvis):
-        print('Would you like to configure your own news channel(y/n)')
-        i = str(input())
-        if i.lower() == "y":
-            self.configure_news_site(jarvis)
-        else:
-            self.news_options(jarvis)
-            self.get_news()
+    def remove_source(self, jarvis):
+        """
+            removes a new source from the news channel of the user
+        """
+        sources = self.get_news_sources(jarvis)
 
-    '''
-        This is the quickest way to get news it also has the
-        least amount of options for the user.
-    '''
+        dic = {}
+        for source in sources:
+            dic[str(sources.index(source) + 1)] = source
 
-    def configure_news_site(self, jarvis):
-        news_site_list = jarvis.get_data(News.get_key())
-        # Check if no sites are configured
-        if news_site_list is None:
-            news_site_list = []
-        print("List of configured news sites are as below")
-        for idx, site in enumerate(news_site_list):
-            print("{} : {}".format(idx + 1, site))
-
-        print("Search https://newsapi.org/sources for the list of news channels. Enter site-key")
-        site_key = str(input())
-        if site_key is '':
-            print("Wrong input.")
-        elif site_key in news_site_list:
-            print("Site already added. Hence not updating the list.")
-        elif self.check_newsapi_url(site_key) is False:
-            print("News source {} doesn't exist".format(site_key))
-        else:
-            news_site_list.append(site_key)
-            self.is_news_site_configured = True
-
-        print("List of configured news sites are as below")
-
-        for idx, site in enumerate(news_site_list):
-            print("{} : {}".format(idx + 1, site))
-
-        print("Would you like to delete any in the list?(y/n)")
-        del_from_list = str(input())
-        if del_from_list.lower() == "y":
-            print("Enter the site index to be deleted. If multiple sites, then enter index with comma seperated values")
-            index_to_del = str(input())
-            items_idx_to_del = index_to_del.split(',')
-            list_to_del = [news_site_list[int(item) - 1] for item in items_idx_to_del]
-            news_site_list = [item for item in news_site_list if item not in list_to_del]
-            if len(news_site_list) == 0:
-                self.is_news_site_configured = False
-        jarvis.update_data(News.get_key(), news_site_list)
-        self.news_options(jarvis)
-        self.get_news()
-
-    def quick_news(self):
-        self.request_news()
-    '''
-        Gets and returns JSON data of news
-    '''
-
-    def get_news_json(self):
-        try:
-            response = urllib.request.urlopen(self.url)
-        except AttributeError:
-            response = urllib.urlopen(self.url)
-        return json.loads(response.read().decode('utf-8'))
-
-    '''
-        This sets the users options and loads them from Memory
-        if they exist
-    '''
-
-    def news_options(self, jarvis):
-        # check to see if user already has default news source
-        if jarvis.get_data('news-source'):
-            print("your default news source is {}"
-                  .format(jarvis.get_data('news-source')))
-            print("Would you like news from this source? (yes/no): ")
-            x = input()
-            if x == 'y' or x == 'yes':
-                self.source = jarvis.get_data('news-source')
-            # if news site configured already, display it
-            elif self.is_news_site_configured:
-                get_configured_opt(jarvis)
-            # if not set get users preference
+        for index in sorted([int(x) for x in dic.keys()]):
+            jarvis.say(str(index) + " : " + dic[str(index)])
+        index_list = input("Type the indexes of the sources you would like to remove from your channel separated by "
+                           "space: ")
+        index_list = index_list.split(" ")
+        if " " in index_list:
+            index_list.remove(" ")
+        if "" in index_list:
+            index_list.remove("")
+        for index in index_list:
+            if str(index) in dic:
+                source = dic[str(index)]
+                sources.remove(source)
+                jarvis.update_data("news-sources", sources)
+                jarvis.say(source + " has been successfully removed from your news channel!", Fore.GREEN)
             else:
-                self.get_default_opt(jarvis)
-        elif self.is_news_site_configured:
-            self.get_configured_opt(jarvis)
+                jarvis.say("Index not found!", Fore.RED)
+        return self.get_news_sources(jarvis)
+
+    def configure(self, jarvis):
+        """
+            configures the news channel of the user
+        """
+        for index in sorted([int(x) for x in self.source_dict.keys()]):
+            jarvis.say(str(index) + ": " + self.source_dict.get(str(index)))
+        index_list = input("Type the indexes of the sources you would like to add to your channel separated by "
+                           "space: ")
+        index_list = index_list.split(" ")
+        if " " in index_list:
+            index_list.remove(" ")
+        if "" in index_list:
+            index_list.remove("")
+        for index in index_list:
+            if index in self.source_dict.keys():
+                self.add_source(jarvis, self.source_dict.get(index, index))
+            else:
+                jarvis.say(index + " is not a valid index", Fore.RED)
+
+    def get_headlines(self, jarvis):
+        """
+            gets top headlines for a quick lookup of the world news, based on the news channel of the user (if it exists)
+        """
+        sources = self.get_news_sources(jarvis)
+
+        if len(sources) == 0:
+            jarvis.say("You have not configured any source. Getting top headlines\n", Fore.GREEN)
+            url = "https://newsapi.org/v2/top-headlines?country=us&apiKey=" + self.get_api_key(jarvis)
         else:
-            self.get_default_opt(jarvis)
+            url = "https://newsapi.org/v2/top-headlines?sources="
+            for source in sources:
+                url += source + ","
+            url += "&apiKey=" + self.get_api_key(jarvis)
+        return self._get(jarvis, url)
 
-    def get_configured_opt(self, jarvis):
-        news_site_list = jarvis.get_data('news-settings')
-        print('Selec Source : ')
-        for idx, site in enumerate(news_site_list):
-            print("{}:{}".format(idx + 1, site))
-        i = int(input())
-        self.source = news_site_list[i - 1]
+    def get_news(self, jarvis, searchlist):
+        """
+            gets top news based on a particular search list , based on the news channel of the user (if it exists)
+        """
+        sources = self.get_news_sources(jarvis)
 
-    def get_default_opt(self, jarvis):
-        # Other sources available here: https://newsapi.org/sources
-        print("Select Source (1-5):")
-        print("1: BBC")
-        print("2: BUZZFEED")
-        print("3: Google")
-        print("4: Reddit")
-        print("5: TechCrunch")
+        url = "https://newsapi.org/v2/everything?q="
 
-        i = int(input())
-        if i == 1:
-            self.source = "bbc-news"
-        elif i == 2:
-            self.source = "buzzfeed"
-        elif i == 3:
-            self.source = "google-news"
-        elif i == 4:
-            self.source = "reddit-r-all"
-        elif i == 5:
-            self.source = "techcrunch"
+        for i in searchlist:
+            url += i + "%20"
+        if len(sources) != 0:
+            url += "&sources="
+            for source in sources:
+                url += source + ","
+        url += "&apiKey=" + self.get_api_key(jarvis)
+        return self._get(jarvis, url)
 
-        print("would you like to set this as your default? (yes/no): ")
-        x = input()
-        if x == 'y' or x == 'yes':
-            jarvis.update_data('news-source', self.source)  # save to memory
-
-    '''
-        This sets the url and sends it to request_news()
-    '''
-
-    def get_news(self):
-        u = "https://newsapi.org/v1/articles?source=" + \
-            self.source + "&sortby=top&apiKey=" + self.apiKey
-        self.request_news(u)
-
-    '''
-        This has all the logic to request and parse the json.
-        This function DOES NOT check user preferences.
-        It also includes user interactions for getting more info on an articles
-    '''
-
-    def request_news(self, url=None):
-        # check to see if a url was passed
-        if url is None:
-            url = self.url
+    def _get(self, jarvis, url):
+        """fetch a webpage"""
         try:
-            response = urllib.request.urlopen(url)
-        except AttributeError:
-            response = urllib.urlopen(url)
+            if PY3:
+                response = urllib.request.urlopen(url)
+            else:
+                response = urllib.urlopen(url)
+        except urllib.error.HTTPError as err:
+            # Catch invalid key(Unauthorized) error
+            if err.code == 401:
+                jarvis.say("API key not valid", Fore.RED)
+                return None
+            # Catch some other errors
+            else:
+                jarvis.say("An error occured: Error code: " + str(err.code), Fore.RED)
+                return None
+
         # Load json
-        data = json.loads(response.read())
+        data = json.loads(response.read().decode('utf-8'))
+        return data
+
+    def parse_articles(self, data, jarvis):
         article_list = {}
         index = 1
-        # print articles with their index
-        print("Top News Articles from " + self.source)
+        if data is None:
+            jarvis.say("No Articles", Fore.RED)
+            return
+        # jarvis.say articles with their index
+        if not data['articles']:
+            jarvis.say("No Articles matching the word(s)", Fore.RED)
+            return
         for article in data['articles']:
-            # print (Fore.GREEN + str(index) + ": " + article['title'] + Fore.RESET)
-            print(str(index) + ": " + article['title'])
+            jarvis.say(str(index) + ": " + article['title'])
             article_list[index] = article
             index += 1
 
         # Attribution link for News API to comply with TOU
-        print("Powered by News API. Type NewsAPI to learn more")
-        print("Type index to expand news\n")
+        jarvis.say("\nPowered by News API. Type NewsAPI to learn more")
+        jarvis.say("\nType index to expand news, 0 to return to jarvis prompt\n")
 
         # Check to see if index or NewsAPI was enterd
         idx = input()
@@ -251,21 +239,21 @@ class News():
         # check if we have a valid index
         try:
             int(idx)
-            if int(idx) > index:
-                print("Not a valid index")
+            if int(idx) > (index - 1):
+                jarvis.say(str(idx) + " is not a valid index", Fore.RED)
+                return
+            elif int(idx) == 0:
                 return
         except:
-            print("Not a valid index")
+            jarvis.say("Not a valid index", Fore.RED)
             return
 
-        # if index valid print article description
-        print(article_list[int(idx)]['description'])
+        # if index valid jarvis.say article description
+        jarvis.say(article_list[int(idx)]['description'])
 
-        print("Do you want to read more? (yes/no): ")
+        jarvis.say("Do you want to read more? (yes/no): ")
         i = input()
         # if user wants to read more open browser to article url
         if i.lower() == "yes" or i.lower() == 'y':
             webbrowser.open(article_list[int(idx)]['url'])
-            return
-        else:
-            return
+        return

@@ -26,7 +26,7 @@ if __name__ == '__main__':
     unittest.main()
 ```
 
-Create a new file in jarviscli/tests/test_auto.
+Create a new file in jarviscli/tests/.
 
 ## PluginTest help functionality
 

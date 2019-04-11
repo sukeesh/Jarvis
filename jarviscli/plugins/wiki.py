@@ -38,7 +38,7 @@ class Wiki():
     def search(self, query, count=10, suggestion=False):
         """Do a Wikipedia search for a query, returns a list of 10 related items."""
         items = wikipedia.search(query, count, suggestion)
-        if isinstance(items, list) and len(items) > 0:
+        if isinstance(items, list) and items:
             return items
         return "No articles with that name, try another item."
 

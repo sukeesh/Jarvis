@@ -1,7 +1,6 @@
-from plugin import plugin, require, LINUX, MACOS
-
-from colorama import Fore
 import os
+from colorama import Fore
+from plugin import plugin, require, LINUX, MACOS
 
 
 @require(native="cheese", platform=LINUX)

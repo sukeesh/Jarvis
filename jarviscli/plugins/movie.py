@@ -1,7 +1,7 @@
 import imdb
-from plugin import plugin, require
-from colorama import Fore, Style
 import six
+from colorama import Fore, Style
+from plugin import plugin, require
 
 app = imdb.IMDb()
 
@@ -25,8 +25,8 @@ def search_movie(jarvis, movie, all_results=False):
     if not all_results:
         first = results[0]
         return first.movieID
-    else:
-        return results
+
+    return results
 
 
 def get_movie_by_id(movie_id):
@@ -191,7 +191,6 @@ def movie_search(jarvis, movie):
     # If nothing is entered, just return
     if input_id is '':
         return None
-
     if len(input_id) != 1:
         return jarvis.say(Fore.RED + 'Please enter valid value')
     elif input_id in '123456789':
@@ -200,7 +199,7 @@ def movie_search(jarvis, movie):
         return None
 
     # if entered input is out of the given list of ID's
-    if input_id > count:
+    if (int(input_id) > count) or (int(input_id) < 1):
         return jarvis.say(Fore.RED + 'Please enter id from the given list')
 
     movie_id = movie_results[input_id - 1].movieID
@@ -221,13 +220,16 @@ def get_movie_info(jarvis, data):
     """
     Takes a movie attributes as input and prints them accordingly
     """
-    global movie_attributes
+    jarvis.say('')
+    jarvis.say('What type of information do you want: cast, producers, genres, etc.?')
+    jarvis.say('Write one after another separated by space, please:')
 
+    movie_attributes = input()
+    movie_attributes = movie_attributes.split()
     jarvis.say('')
 
     for attribute in movie_attributes:
         if attribute in data:
-
             value = data[attribute]
 
             if attribute == 'genres':
@@ -241,8 +243,11 @@ def get_movie_info(jarvis, data):
                 value = value[0]
 
             jarvis.say(colorized_output(attribute.capitalize(), str(value)))
+        else:
+            jarvis.say(colorized_output(attribute.capitalize(), 'no information retrieved'))
 
     # print IMDB url of the movie
+
     movie_url = app.urls['movie_base'] + 'tt' + data.movieID
     jarvis.say(colorized_output('IMDB url', movie_url))
     jarvis.say('')

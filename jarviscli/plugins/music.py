@@ -23,8 +23,8 @@ def play(jarvis, data):
         play eye of the tiger
     """
 
-    if len(data) == 0:
-        jarvis.say("Song name doesn't exist. (play '"'song name'"') ", Fore.BLUE)
+    if not data:
+        jarvis.say("Missing parameter: Song name", Fore.BLUE)
 
     else:
         music = find_cached_music(data)

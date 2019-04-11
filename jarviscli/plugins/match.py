@@ -1,7 +1,7 @@
-from plugin import plugin, require
-from six.moves import input
 from os import system
+from six.moves import input
 from colorama import Fore
+from plugin import plugin, require
 
 
 @require(native='grep')

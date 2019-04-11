@@ -1,6 +1,5 @@
-from plugin import plugin
-
 import os
+from plugin import plugin
 
 
 @plugin('clear')

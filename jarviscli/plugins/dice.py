@@ -1,9 +1,8 @@
-from utilities.textParser import parse_number
 from colorama import Fore
-from plugin import plugin
-
-import random
 import re
+import random
+from utilities.textParser import parse_number
+from plugin import plugin
 
 
 @plugin('roll')

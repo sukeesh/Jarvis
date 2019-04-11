@@ -1,5 +1,5 @@
-from plugin import plugin, require, LINUX
 from os import system
+from plugin import plugin, require, LINUX
 
 
 @require(network=True, platform=LINUX, native=["ap-hotspot", "sudo"])

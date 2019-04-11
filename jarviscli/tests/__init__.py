@@ -1,7 +1,7 @@
 import unittest
 from functools import partial
-from inspect import isclass
-from plugin import Plugin
+# from inspect import isclass
+# from plugin import Plugin
 
 
 class MockJarvisAPI():
@@ -67,8 +67,12 @@ class MockJarvisAPI():
         return self.is_voice_enabled
 
     def get_data(self, key):
-        self.call_history.record('get_data', (key), self.data[key])
-        return self.data[key]
+        if key not in self.data:
+            value = None
+        else:
+            value = self.data[key]
+        self.call_history.record('get_data', (key), value)
+        return value
 
     def add_data(self, key, value):
         self.data[key] = value
@@ -138,7 +142,7 @@ class MockHistory():
         if field is None:
             return value in self._storage_by_index
         else:
-            return value in self._storage[field]
+            return value in self._storage_by_field[field]
 
     def view(self, field=None, index=None):
         """

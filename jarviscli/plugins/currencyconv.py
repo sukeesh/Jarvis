@@ -1,16 +1,11 @@
 import os
 import csv
-
 from decimal import Decimal
-
 from six.moves import input
-
-from plugin import plugin, require
-from utilities.GeneralUtilities import get_float
-
 from forex_python.bitcoin import BtcConverter
 from forex_python.converter import CurrencyRates
-
+from plugin import plugin, require
+from utilities.GeneralUtilities import get_float
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
@@ -46,8 +41,8 @@ class Currencyconv():
             result = b.convert_btc_to_cur(Decimal(amount), to)
         else:
             result = c.convert(fr, to, Decimal(amount))
-
-        jarvis.say(str(result))
+        outputText = str(amount) + " " + fr + " are equal to " + str(result) + " " + to
+        jarvis.say(outputText)
 
     def find_currencies(self):
         """
