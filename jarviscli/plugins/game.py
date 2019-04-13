@@ -22,7 +22,7 @@ def gen_num():
 def check(checker, guess_num, div, md, true_rank, cows, bulls):
     r = int(guess_num % md / div)
     if checker[r] > 0:
-        if checker[r]  == true_rank:
+        if checker[r] == true_rank:
             bulls += 1
         else:
             cows += 1
@@ -58,7 +58,7 @@ def bulls_and_cows(jarvis, s):
             checker[b] = int(2)
             checker[c] = int(3)
             checker[d] = int(4)
-            jarvis.say (Fore.CYAN + 'Secret number was generated!')
+            jarvis.say(Fore.CYAN + 'Secret number was generated!')
 
             # loop while the secret number is found or user quits
             while(True):
@@ -75,7 +75,7 @@ def bulls_and_cows(jarvis, s):
                 cows, bulls = check(checker, guess_num, 100, 1000, checker[b], cows, bulls)
                 cows, bulls = check(checker, guess_num, 10, 100, checker[c], cows, bulls)
                 cows, bulls = check(checker, guess_num, 1, 10, checker[d], cows, bulls)
-                jarvis.say(Fore.CYAN + 'Cows: '+str(cows) + '\tBulls: ' + str(bulls)+'\n')
+                jarvis.say(Fore.CYAN + 'Cows: '+ str(cows) + '\tBulls: ' + str(bulls) + '\n')
                 if bulls == 4:
                     jarvis.say(Fore.CYAN + 'Congratulations! Your guess is right: ' + Fore.GREEN + str(a) + str(b) + str(c) + str(d))
                     jarvis.say(Fore.CYAN + 'You made ' + Fore.GREEN + str(tries) + Fore.CYAN + ' tries.')
