@@ -68,8 +68,8 @@ class Bmi():
         calc_bmi_m calculates the bmi for metric system using the common bmi function
         """
 
-        height = height / 100
-        bmi = weight / height ** 2
+        height = height / 100.0
+        bmi = 1.0 * weight / height ** 2
         return bmi
 
     def calc_bmi_i(self, jarvis, height, weight):
@@ -77,7 +77,7 @@ class Bmi():
         calc_bmi_i calculates the bmi for imperial system using the common bmi function
         """
 
-        bmi = weight / height ** 2 * 703
+        bmi = 1.0 * weight / height ** 2 * 703
         return bmi
 
     def find_body_state(self, jarvis, calc):
