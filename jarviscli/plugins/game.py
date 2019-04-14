@@ -48,7 +48,7 @@ def bulls_and_cows(jarvis, s):
     while(True):
         st = input()
         if st == 'q':
-            jarvis.say(Fore.CYAN + 'Thank you for playing!')
+            jarvis.say(Fore.CYAN + 'Thank you for playing! New games are coming soon!')
             break
         else:
             tries = int(0)
