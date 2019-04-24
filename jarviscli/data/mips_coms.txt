@@ -1,0 +1,70 @@
+ADD|	rd, rs, rt|		R|	000000|	l|	l|	l|	00000|	100000|	n
+ADDI|	rt, rs, immediate|	I|	001000|	l|	l|	n|	n|	n|	l
+ADDU|	rd, rs, rt|		R|	000000|	l|	l|	l|	00000|	100001|	n
+AND|	rd, rs, rt|		R|	000000|	l|	l|	l|	00000|	100100|	n
+ANDI|	rt, rs, immediate|	I|	001100|	l|	l|	n|	n|	n|	l
+BEQ|	rs, rt, immediate|	I|	000100|	l|	l|	n|	n|	n|	l
+BGEZ|	rs, immediate	|	I|	000001|	l|	00001|	n|	n|	n|	l
+BGEZAL|	rs, immediate	|	I|	000001|	l|	10001|	n|	n|	n|	l
+BGTZ|	rs, immediate	|	I|	000111|	l|	00000|	n|	n|	n|	l
+BLEZ|	rs, immediate	|	I|	000110|	l|	00000|	n|	n|	n|	l
+BLTZ|	rs, immediate	|	I|	000001|	l|	00000|	n|	n|	n|	l
+BLTZAL|	rs, immediate	|	I|	000001|	l|	10000|	n|	n|	n|	l
+BNE|	rs, rt, immediate|	I|	000101|	l|	l|	n|	n|	n|	l
+BREAK|	-		|	R|	000000|	00000|	00000|	00000|	00000|	001101|	n
+DIV|	rs, rt|			R|	000000|	l|	l|	00000|	00000|	011010|	n
+DIVU|	rs, rt	|		R|	000000|	l|	l|	00000|	00000|	011011|	n
+J|	immediate|		J|	000010|	n|	n|	n|	n|	n|	l
+JAL|	immediate|		J|	000011|	n|	n|	n|	n|	n|	l
+JALR|	rd, rs	|		R|	000000|	l|	00000|	l|	00000|	001001|	n
+JR|	rs	|		R|	000000|	l|	00000|	00000|	00000|	001000|	n
+LB|	rt, immediate(rs)|	I|	100000|	l|	l|	n|	n|	n|	l
+LBU|	rt, immediate(rs)|	I|	100100|	l|	l|	n|	n|	n|	l
+LH|	rt, immediate(rs)|	I|	100001|	l|	l|	n|	n|	n|	l 
+LHU|	rt, immediate(rs)|	I|	100101|	l|	l|	n|	n|	n|	l
+LL|	rt, immediate(rs)|	I|	110000|	l|	l|	n|	n|	n|	l
+LUI|	rt, immediate	|	I|	001111|	00000|	l|	n|	n|	n|	l
+LW|	rt, immediate(rs)|	I|	100011|	l|	l|	n|	n|	n|	l
+LWL|	rt, immediate(rs)|	I|	100010|	l|	l|	n|	n|	n|	l
+LWR|	rt, immediate(rs)|	I|	100110|	l|	l|	n|	n|	n|	l
+MFHI|	rd		|	R|	000000|	00000|	00000|	l|	00000|	010000|	n
+MFLO|	rd			R|	000000|	00000|	00000|	l|	00000|	010010|	n
+MOVN|	rd, rs, rt|		R|	000000|	l|	l|	l|	00000|	001011|	n
+MOVZ|	rd, rs, rt|		R|	000000|	l|	l|	l|	00000|	001010|	n
+MTHI|	rs	|		R|	000000|	l|	00000|	00000|	00000|	010001|	n
+MTLO|	rs	|		R|	000000|	l|	00000|	00000|	00000|	010011|	n
+NOR|	rd, rs, rt|		R|	000000|	l|	l|	l|	00000|	100111|	n
+OR|	rd, rs, rt|		R|	000000|	l|	l|	l|	00000|	100101|	n
+ORI|	rt, rs, immediate|	I|	001101|	l|	l|	n|	n|	n|	l
+SB|	rt, immediate(rs)|	I|	101000|	l|	l|	n|	n|	n|	l
+SC|	rt, immediate(rs)|	I|	111000|	l|	l|	n|	n|	n|	l
+SH|	rt, immediate(rs)|	I|	101001|	l|	l|	n|	n|	n|	l
+SLL|	rd, rt, shamt	|	R|	000000|	00000|	l|	l|	l|	000000|	n
+SLLV|	rd, rt, rs	|	R|	000000|	l|	l|	l|	00000|	000100|	n
+SLT|	rd, rs, rt	|	R|	000000|	l|	l|	l|	00000|	101010|	n
+SLTI|	rt, rs, immediate|	I|	001010|	l|	l|	n|	n|	n|	l
+SLTIU|	rt, rs, immediate|	I|	001011|	l|	l|	n|	n|	n|	l
+SLTU|	rd, rs, rt	|	R|	000000|	l|	l|	l|	00000|	101011|	n
+SRA|	rd, rt, shamt	|	R|	000000|	00000|	l|	l|	l|	000011|	n
+SRAV|	rd, rt, rs 	|	R|	000000|	l|	l|	l|	00000|	000111|	n
+SRL|	rd, rt, shamt	|	R|	000000|	00000|	l|	l|	l|	000010|	n
+SRLV|	rd, rt, rs	|	R|	000000|	l|	l|	l|	00000|	000110|	n
+SUB|	rd, rs, rt	|	R|	000000|	l|	l|	l|	00000|	100010|	n
+SUBU|	rd, rs, rt	|	R|	000000|	l|	l|	l|	00000|	100011|	n
+SW|	rt, immediate(rs)|	I|	101011|	l|	l|	n|	n|	n|	l
+SWL|	rt, immediate(rs)|	I|	101010|	l|	l|	n|	n|	n|	l
+SWR|	rt, immediate(rs)|	I|	101110|	l|	l|	n|	n|	n|	l
+TEQ|	rs, rt		|	R|	000000|	l|	l|	00000|	00000|	110100|	n
+TEQI|	rs, immediate	|	I|	000001|	l|	01100|	n|	n|	n|	l
+TGE|	rs, rt		|	R|	000000|	l|	l|	00000|	00000|	110000|	n
+TGEI|	rs, immediate	|	I|	000001|	l|	01000|	n|	n|	n|	l
+TGEIU|	rs, immediate	|	I|	000001|	l|	01001|	n|	n|	n|	l
+TGEU|	rs, rt		|	R|	000000|	l|	l|	00000|	00000|	110001|	n
+TLT|	rs, rt		|	R|	000000|	l|	l|	00000|	00000|	110010|	n
+TLTI|	rs, immediate	|	I|	000001|	l|	01010|	n|	n|	n|	l
+TLTIU|	rs, immediate	|	I|	000001|	l|	01011|	n|	n|	n|	l
+TLTU|	rs, rt		|	R|	000000|	l|	l|	00000|	00000|	110011|	n
+TNE|	rs, rt		|	R|	000000|	l|	l|	00000|	00000|	110110|	n
+TNEI|	rs, immediate	|	I|	000001|	l|	01110|	n|	n|	n|	l
+XOR|	rd, rs, rt	|	R|	000000|	l|	l|	l|	00000|	100110|	n
+XORI|	rt, rs, immediate|	I|	001110|	l|	l|	n|	n|	n|	l
