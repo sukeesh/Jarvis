@@ -1,6 +1,7 @@
 from plugin import plugin
 import random
 
+
 @plugin("random number")
 def generate_random_number(jarvis, numbers):
 
@@ -45,4 +46,4 @@ def get_user_input():
         except:
             print('Only integers will be accepted')
 
-    return smallest_number,higher_number;
+    return smallest_number, higher_number
