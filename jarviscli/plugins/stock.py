@@ -12,7 +12,6 @@ class Stock:
             self.usage(jarvis)
         else:
             ps = s.split()
-            
             if ps[0] == 'getid':
                 ps.pop(0)
                 if ps:
