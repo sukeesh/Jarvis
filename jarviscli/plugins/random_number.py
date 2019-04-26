@@ -2,10 +2,10 @@ from plugin import plugin
 import random
 
 @plugin("random number")
-def generate_random_number(jarvis, s):
+def generate_random_number(jarvis, numbers):
 
-    if s != "":
-        input_numbers = s.split(' ', 1)
+    if numbers != "":
+        input_numbers = numbers.split(' ', 1)
 
         try:
             smallest_number = int(input_numbers[0])
