@@ -10,14 +10,21 @@ class Stock:
     def __call__(self, jarvis, s):
         if not s:
             self.usage(jarvis)
-        elif s == 'getid':
-            name = input("Enter the name of the stock to search the ID: ")
-            self.get_stock_id(jarvis, name)
-        elif s == 'help':
-            self.usage(jarvis)
-        # anything else is treated as a stock symbol
         else:
-            self.get_stock_data(s)
+            ps = s.split()
+            
+            if ps[0] == 'getid':
+                ps.pop(0)
+                if ps:
+                    name = ' '.join(ps)
+                else:
+                    name = input("Enter the name of the stock to search the ID: ")
+                self.get_stock_id(jarvis, name)
+            elif ps[0] == 'help':
+                self.usage(jarvis)
+            # anything else is treated as a stock symbol
+            else:
+                self.get_stock_data(s)
 
     @staticmethod
     def get_stock_data(quote):
