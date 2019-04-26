@@ -22,7 +22,7 @@ def generate_random_number(jarvis, numbers):
         higher_number = smallest_number
         smallest_number = aux
 
-    pre_text = 'Your random number in range [%d, %d] is' % (smallest_number, higher_number);
+    pre_text = 'Your random number in range [%d, %d] is' % (smallest_number, higher_number)
     rand_number = random.randint(smallest_number, higher_number)
     print(pre_text, rand_number)
 
