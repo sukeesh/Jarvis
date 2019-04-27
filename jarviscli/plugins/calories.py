@@ -9,10 +9,10 @@ def calories(jarvis, s):
     Uses the Miffin-St Jeor Equation as it is considered the most accurate when we don't know our body fat percentage(Source 2).
     Add gender(man/woman), age(15 - 80 recommended), metric height(cm), weight(kg), workout level(1-4). No decimal weight for now.
     Workout Levels:
-        [1] Little or no exersise
+        [1] Little or no exercise
         [2] Light 1-3 per week
         [3] Moderate 4-5 per week
-        [4] Active daily exersise or physical job
+        [4] Active daily exercise or physical job
     #Example: health calories woman 27 164 60 3
     ^Sources:
             1) https://en.wikipedia.org/wiki/Basal_metabolic_rate
@@ -37,7 +37,7 @@ def calories(jarvis, s):
         gender_no = -161
 
     if(gender_no != 0 and age > 14 and height > 0.0 and weight > 0.0 and level > 0 and level < 5):
-        brm = float(10 * weight + 6.25 * height - 5 * age + gender_no) * exersise_level(level)
+        brm = float(10 * weight + 6.25 * height - 5 * age + gender_no) * exercise_level(level)
         brm_loss = brm - 500.0
         brm_put_on = brm + 500.0
         jarvis.say("Daily caloric intake :    " + str(brm))
@@ -48,7 +48,7 @@ def calories(jarvis, s):
         return None
 
 
-def exersise_level(level):
+def exercise_level(level):
     multiplier = 1
     if(level == 1):
         multiplier = 1.2

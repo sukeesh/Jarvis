@@ -2,7 +2,7 @@ from colorama import Fore
 from pycricbuzz import Cricbuzz
 from six.moves import input
 from plugin import plugin, require
-
+from plugins.animations import SpinnerThread
 
 @require(network=True)
 @plugin('cricket')
@@ -14,10 +14,12 @@ class Cricket():
         self.c = Cricbuzz()
 
     def __call__(self, jarvis, s):
-        self._refresh()
+        self._refresh(jarvis)
         self.score(jarvis)
 
-    def _refresh(self):
+    def _refresh(self, jarvis):
+        spinner = SpinnerThread('Fetching ', 0.15)
+        spinner.start()
         self.all_match_data = self.c.matches()
         self.matches = []
         d = {}
@@ -26,6 +28,8 @@ class Cricket():
             d['srs'] = match['srs']
             d['mnum'] = match['mnum']
             self.matches.append(d.copy())
+        spinner.stop()
+        jarvis.say('DONE fetching match details', Fore.GREEN)
 
     def live_score(self, index):
         if self.all_match_data[index]['mchstate'] == 'preview':
