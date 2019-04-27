@@ -73,7 +73,7 @@ class JarvisAPI(object):
         Schedules function
         After time_seconds call function with these parameter:
            - reference to this JarvisAPI instance
-           - schedule_id (return value of this fuction)
+           - schedule_id (return value of this function)
            - *args
         :return: integer, id - use with cancel
         """
