@@ -51,8 +51,8 @@ def bulls_and_cows(jarvis, s):
         st = input()
         if st == 'q':
             jarvis.say(
-                Fore.CYAN +
-                'Thank you for playing! New games are coming soon!')
+                Fore.CYAN
+                + 'Thank you for playing! New games are coming soon!')
             break
         else:
             tries = int(0)
@@ -69,8 +69,8 @@ def bulls_and_cows(jarvis, s):
             # loop while the secret number is found or user quits
             while(True):
                 jarvis.say(
-                    Fore.CYAN +
-                    'Enter your guess, please (type "q" to quit):')
+                    Fore.CYAN
+                    + 'Enter your guess, please (type "q" to quit):')
                 guess_num = input()
                 if guess_num == 'q':
                     jarvis.say(Fore.CYAN + 'Thank you for playing!')
@@ -88,29 +88,29 @@ def bulls_and_cows(jarvis, s):
                 cows, bulls = check(
                     checker, guess_num, 1, 10, checker[d], cows, bulls)
                 jarvis.say(
-                    Fore.CYAN +
-                    'Cows: ' +
-                    str(cows) +
-                    '\tBulls: ' +
-                    str(bulls) +
-                    '\n')
+                    Fore.CYAN
+                    + 'Cows: '
+                    + str(cows)
+                    + '\tBulls: '
+                    + str(bulls)
+                    + '\n')
                 if bulls == 4:
-                    jarvis.say(Fore.CYAN +
-                               'Congratulations! Your guess is right:')
+                    jarvis.say(Fore.CYAN
+                               + 'Congratulations! Your guess is right:')
                     jarvis.say(
-                        '\t' +
-                        Fore.GREEN +
-                        str(a) +
-                        str(b) +
-                        str(c) +
-                        str(d))
+                        '\t'
+                        + Fore.GREEN
+                        + str(a)
+                        + str(b)
+                        + str(c)
+                        + str(d))
                     jarvis.say(
-                        Fore.CYAN +
-                        'You made ' +
-                        Fore.GREEN +
-                        str(tries) +
-                        Fore.CYAN +
-                        ' tries.')
-                    jarvis.say(Fore.CYAN +
-                               'Start a new game or quit? (Type "s" or "q"):')
+                        Fore.CYAN
+                        + 'You made '
+                        + Fore.GREEN
+                        + str(tries)
+                        + Fore.CYAN
+                        + ' tries.')
+                    jarvis.say(Fore.CYAN
+                               + 'Start a new game or quit? (Type "s" or "q"):')
                     break

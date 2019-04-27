@@ -299,8 +299,8 @@ class MipsConverter:
             jarvis.say("NO SUCH COMMAND IN ASSEMBLY")
             return
         else:
-            jarvis.say("The format for this command is: " +
-                       self.__com[i] + " " + self.__form[i])
+            jarvis.say("The format for this command is: "
+                       + self.__com[i] + " " + self.__form[i])
             # append the opcode to the binary output
             assBin = assBin + self.__op[i]
 
@@ -421,8 +421,8 @@ class MipsConverter:
                 else:
                     immB = assembly[assembly.rfind(" "): assembly.find("(")]
 
-                if (immB.find("x") == -1 and immB !=
-                        "" and immB.find("$") == -1):
+                if (immB.find("x") == -1 and immB
+                        != "" and immB.find("$") == -1):
                     immB = self.__decToBin(int(immB))
 
                 else:

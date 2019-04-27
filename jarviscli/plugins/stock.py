@@ -13,9 +13,9 @@ class Stock:
     def get_stock_data(quote):
 
         resp = requests.get(
-            'https://api.iextrading.com/1.0/stock/' +
-            quote +
-            '/quote')
+            'https://api.iextrading.com/1.0/stock/'
+            + quote
+            + '/quote')
 
         if resp.status_code == 200:
             resp = resp.json()

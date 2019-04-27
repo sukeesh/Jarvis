@@ -154,8 +154,8 @@ def catch_all_exceptions(do, pass_self=True):
                 do(s)
         except Exception:
             print(
-                Fore.RED +
-                "Some error occurred, please open an issue on github!")
+                Fore.RED
+                + "Some error occurred, please open an issue on github!")
             print("Here is error:")
             print('')
             traceback.print_exc()
@@ -231,8 +231,8 @@ class CmdInterpreter(Cmd):
             run_catch = catch_all_exceptions(plugin.run)
             setattr(
                 CmdInterpreter,
-                "do_" +
-                plugin_name,
+                "do_"
+                + plugin_name,
                 partial(
                     run_catch,
                     self))
@@ -255,8 +255,8 @@ class CmdInterpreter(Cmd):
                 return _complete_impl
             setattr(
                 CmdInterpreter,
-                "complete_" +
-                plugin_name,
+                "complete_"
+                + plugin_name,
                 complete(completions))
 
     def get_api(self):

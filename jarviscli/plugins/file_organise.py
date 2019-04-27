@@ -26,8 +26,8 @@ class File_Organise():
         home_path = home_dir.split(user_name)[0].rstrip('/')
         for root in os.walk(home_path):
             print(
-                Fore.LIGHTBLUE_EX +
-                "Searching in {}...".format(
+                Fore.LIGHTBLUE_EX
+                + "Searching in {}...".format(
                     (root[0])[
                         :70]),
                 end="\r")

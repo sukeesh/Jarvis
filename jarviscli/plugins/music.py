@@ -33,9 +33,9 @@ def play(jarvis, data):
         # Try download if not exists
         if not music:
             os.system(
-                "cd music && instantmusic -s '" +
-                data +
-                "' 2> /dev/null")
+                "cd music && instantmusic -s '"
+                + data
+                + "' 2> /dev/null")
             music = find_cached_music(data)
 
         # Try play if exists
@@ -43,6 +43,6 @@ def play(jarvis, data):
             jarvis.say("Something seems to went wrong...", Fore.BLUE)
         else:
             os.system(
-                "XDG_CURRENT_DESKTOP= DESKTOP_SESSION= xdg-open music/" +
-                music +
-                " 2> /dev/null")
+                "XDG_CURRENT_DESKTOP= DESKTOP_SESSION= xdg-open music/"
+                + music
+                + " 2> /dev/null")

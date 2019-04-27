@@ -18,17 +18,17 @@ def main(self, s):
     exists = os.path.isfile(module_path + 'key_timein.json')
     if not exists:
         shutil.copy2(
-            module_path +
-            'samplekey_timein.json',
-            module_path +
-            'key_timein.json')
+            module_path
+            + 'samplekey_timein.json',
+            module_path
+            + 'key_timein.json')
         print(
-            Fore.RED +
-            "Generate api key here: https://developers.google.com/maps/documentation/geocoding/start?hl=en_US")
+            Fore.RED
+            + "Generate api key here: https://developers.google.com/maps/documentation/geocoding/start?hl=en_US")
         print(
-            Fore.RED +
-            "and add it to jarviscli/data/key_timein.json" +
-            Fore.RESET)
+            Fore.RED
+            + "and add it to jarviscli/data/key_timein.json"
+            + Fore.RESET)
         return
 
     # Transforms a city name into coordinates using Google Maps API
@@ -58,12 +58,12 @@ def getLocation(s):
     if 'timein' not in data or data['timein'] == 'insertyourkeyhere':
         print(Fore.RED + "API key not added")
         print(
-            Fore.RED +
-            "Generate api key here: https://developers.google.com/maps/documentation/geocoding/start?hl=en_US")
+            Fore.RED
+            + "Generate api key here: https://developers.google.com/maps/documentation/geocoding/start?hl=en_US")
         print(
-            Fore.RED +
-            "and add it to jarviscli/data/key_timein.json" +
-            Fore.RESET)
+            Fore.RED
+            + "and add it to jarviscli/data/key_timein.json"
+            + Fore.RESET)
         return None
     key = data['timein']
     send_url = (

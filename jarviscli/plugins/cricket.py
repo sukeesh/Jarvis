@@ -148,16 +148,16 @@ class Cricket():
             try:
                 choice = int(
                     input(
-                        Fore.RED +
-                        '\nEnter choice (number): ' +
-                        Fore.RESET))
+                        Fore.RED
+                        + '\nEnter choice (number): '
+                        + Fore.RESET))
                 while choice < 1 or choice > len(self.matches):
                     print(Fore.BLACK + '\nWrong choice')
                     choice = int(
                         input(
-                            Fore.RED +
-                            '\nEnter choice again: ' +
-                            Fore.RESET))
+                            Fore.RED
+                            + '\nEnter choice again: '
+                            + Fore.RESET))
                 break
             except ValueError:
                 print("Invalid type of choice. Please enter an integer number")
@@ -180,16 +180,16 @@ class Cricket():
                 try:
                     choice = int(
                         input(
-                            Fore.RED +
-                            '\nEnter choice (number): ' +
-                            Fore.RESET))
+                            Fore.RED
+                            + '\nEnter choice (number): '
+                            + Fore.RESET))
                     while choice < 1 or choice > 4:
                         print(Fore.BLACK + '\nWrong choice')
                         choice = int(
                             input(
-                                Fore.RED +
-                                '\nEnter choice again: ' +
-                                Fore.RESET))
+                                Fore.RED
+                                + '\nEnter choice again: '
+                                + Fore.RESET))
                     break
                 except ValueError:
                     print("Invalid type of choice. Please enter an integer number")
@@ -198,37 +198,37 @@ class Cricket():
             if choice == 1:
                 print(self.scorecard(selected_match_id))
                 ref = input(
-                    Fore.RED +
-                    'Do you want to refresh:(y/n) ' +
-                    Fore.RESET)
+                    Fore.RED
+                    + 'Do you want to refresh:(y/n) '
+                    + Fore.RESET)
                 while ref == 'y':
                     print(self.scorecard(selected_match_id))
                     ref = input(
-                        Fore.RED +
-                        'Do you want to refresh:(y/n) ' +
-                        Fore.RESET)
+                        Fore.RED
+                        + 'Do you want to refresh:(y/n) '
+                        + Fore.RESET)
 
             elif choice == 2:
                 print(self.commentary(selected_match_id))
                 ref = input(
-                    Fore.RED +
-                    'Do you want to refresh:(y/n) ' +
-                    Fore.RESET)
+                    Fore.RED
+                    + 'Do you want to refresh:(y/n) '
+                    + Fore.RESET)
                 while ref == 'y':
                     print(self.commentary(selected_match_id))
                     ref = input(
-                        Fore.RED +
-                        'Do you want to refresh:(y/n) ' +
-                        Fore.RESET)
+                        Fore.RED
+                        + 'Do you want to refresh:(y/n) '
+                        + Fore.RESET)
 
             elif choice == 3:
                 ref = 'y'
                 while ref == 'y':
                     print(self.live_score(selected_match_id))
                     ref = input(
-                        Fore.RED +
-                        'Do you want to refresh:(y/n) ' +
-                        Fore.RESET)
+                        Fore.RED
+                        + 'Do you want to refresh:(y/n) '
+                        + Fore.RESET)
 
             else:
                 return

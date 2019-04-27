@@ -125,13 +125,13 @@ class News:
             sources.append(news_source)
             jarvis.update_data("news-sources", sources)
             jarvis.say(
-                news_source +
-                " has been successfully been added to your sources!",
+                news_source
+                + " has been successfully been added to your sources!",
                 Fore.GREEN)
         else:
             jarvis.say(
-                news_source +
-                " was already included in your sources!",
+                news_source
+                + " was already included in your sources!",
                 Fore.GREEN)
         return self.get_news_sources(jarvis)
 
@@ -161,8 +161,8 @@ class News:
                 sources.remove(source)
                 jarvis.update_data("news-sources", sources)
                 jarvis.say(
-                    source +
-                    " has been successfully removed from your news channel!",
+                    source
+                    + " has been successfully removed from your news channel!",
                     Fore.GREEN)
             else:
                 jarvis.say("Index not found!", Fore.RED)
@@ -238,8 +238,8 @@ class News:
                 return None
             # Catch some other errors
             else:
-                jarvis.say("An error occured: Error code: " +
-                           str(err.code), Fore.RED)
+                jarvis.say("An error occured: Error code: "
+                           + str(err.code), Fore.RED)
                 return None
 
         # Load json
