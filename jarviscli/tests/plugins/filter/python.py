@@ -3,6 +3,7 @@ from plugin import Plugin, PYTHON2, PYTHON3
 
 class PY2(Plugin):
     """Test"""
+
     def require(self):
         yield ("python", PYTHON2)
 
@@ -18,6 +19,7 @@ class PY2(Plugin):
 
 class PY3(Plugin):
     """Test"""
+
     def require(self):
         yield ("python", PYTHON3)
 
@@ -33,6 +35,7 @@ class PY3(Plugin):
 
 class Both(Plugin):
     """Test"""
+
     def require(self):
         yield ("python", (PYTHON2, PYTHON3))
 
@@ -48,6 +51,7 @@ class Both(Plugin):
 
 class Bothalt(Plugin):
     """Test"""
+
     def require(self):
         yield ("python", PYTHON2)
         yield ("python", PYTHON3)

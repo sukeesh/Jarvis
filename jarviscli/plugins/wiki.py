@@ -12,10 +12,12 @@ class Wiki():
     enter wiki summary for getting summary of the topic
     wiki content for full page article of topic
     """
+
     def __call__(self, jarvis, s):
         k = s.split(' ', 1)
         if len(k) == 1:
-            jarvis.say("Do you mean:\n1. wiki search <subject>\n2. wiki summary <subject>\n3. wiki content <subject>")
+            jarvis.say(
+                "Do you mean:\n1. wiki search <subject>\n2. wiki summary <subject>\n3. wiki content <subject>")
         else:
             data = None
             if k[0] == "search":
@@ -51,7 +53,13 @@ class Wiki():
         except wikipedia.exceptions.DisambiguationError as error:
             return error.options[:5]
 
-    def content(self, title=None, pageid=None, auto_suggest=True, redirect=True, preload=False):
+    def content(
+            self,
+            title=None,
+            pageid=None,
+            auto_suggest=True,
+            redirect=True,
+            preload=False):
         """Returns plain text content of query's page, excluding images, tables and other data."""
         try:
             page = wikipedia.page(title)

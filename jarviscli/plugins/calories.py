@@ -40,7 +40,8 @@ def calories(jarvis, s):
         gender_no = -161
 
     if gender_no != 0 and age > 14 and height > 0.0 and weight > 0.0 and level > 0 and level < 5:
-        brm = float(10 * weight + 6.25 * height - 5 * age + gender_no) * exercise_level(level)
+        brm = float(10 * weight + 6.25 * height - 5 *
+                    age + gender_no) * exercise_level(level)
         brm_loss = brm - 500.0
         brm_put_on = brm + 500.0
         jarvis.say("Daily caloric intake :    " + str(brm))

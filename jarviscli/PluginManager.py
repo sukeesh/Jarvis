@@ -14,6 +14,7 @@ class PluginManager(object):
     https://github.com/benhoff/pluginmanager
     Also handles plugin.PluginComposed
     """
+
     def __init__(self):
         self._backend = pluginmanager.PluginInterface()
         self._plugin_dependency = PluginDependency()
@@ -52,7 +53,8 @@ class PluginManager(object):
         for plugin_to_add in enabled:
             self._load_plugin(plugin_to_add, self._cache)
 
-        self._cache_disabled = self._filter_duplicated_disabled(enabled, disabled)
+        self._cache_disabled = self._filter_duplicated_disabled(
+            enabled, disabled)
         self._plugins_loaded = len(enabled)
 
     def _validate_plugins(self, plugins):
@@ -64,11 +66,14 @@ class PluginManager(object):
                 if not is_plugin(plugin_to_validate):
                     continue
 
-                compability_check_result = self._plugin_dependency.check(plugin_to_validate)
+                compability_check_result = self._plugin_dependency.check(
+                    plugin_to_validate)
                 if compability_check_result is True:
                     plugins_valid.append(plugin_to_validate)
                 else:
-                    item = (plugin_to_validate.get_name(), compability_check_result)
+                    item = (
+                        plugin_to_validate.get_name(),
+                        compability_check_result)
                     plugins_incompatible.append(item)
 
             return (plugins_valid, plugins_incompatible)
@@ -86,10 +91,16 @@ class PluginManager(object):
 
     def _load_plugin(self, plugin_to_add, plugin_storage):
         def handle_aliases(plugin_to_add):
-            add_plugin(plugin_to_add.get_name().split(' '), plugin_to_add, plugin_storage)
+            add_plugin(
+                plugin_to_add.get_name().split(' '),
+                plugin_to_add,
+                plugin_storage)
 
             for name in plugin_to_add.alias():
-                add_plugin(name.lower().split(' '), plugin_to_add, plugin_storage)
+                add_plugin(
+                    name.lower().split(' '),
+                    plugin_to_add,
+                    plugin_storage)
 
         def add_plugin(name, plugin_to_add, parent):
             if len(name) == 1:
@@ -107,7 +118,11 @@ class PluginManager(object):
                 else:
                     error("Duplicated plugin {}!".format(name))
 
-        def add_plugin_compose(name_first, name_remaining, plugin_to_add, parent):
+        def add_plugin_compose(
+                name_first,
+                name_remaining,
+                plugin_to_add,
+                parent):
             plugin_existing = parent.get_plugins(name_first)
 
             if plugin_existing is None:
@@ -263,4 +278,5 @@ class PluginDependency(object):
 
     def _plugin_patch_network_error_message(self, plugin):
         if "plugin._network_error_patched" not in plugin.__dict__:
-            plugin.run = partial(plugin._plugin_run_with_network_error, plugin.run)
+            plugin.run = partial(
+                plugin._plugin_run_with_network_error, plugin.run)

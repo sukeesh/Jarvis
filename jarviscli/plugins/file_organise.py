@@ -12,6 +12,7 @@ class File_Organise():
     Type file_organise and follow instructions
     It organises selected folder based on extension
     """
+
     def __call__(self, jarvis, s):
         self.file_manage(jarvis)
 
@@ -24,7 +25,12 @@ class File_Organise():
         user_name = os.environ.get("USER")
         home_path = home_dir.split(user_name)[0].rstrip('/')
         for root in os.walk(home_path):
-            print(Fore.LIGHTBLUE_EX + "Searching in {}...".format((root[0])[:70]), end="\r")
+            print(
+                Fore.LIGHTBLUE_EX +
+                "Searching in {}...".format(
+                    (root[0])[
+                        :70]),
+                end="\r")
             sys.stdout.flush()
             if dir_name == root[0].split('/')[-1]:
                 all_paths.append(root[0])
@@ -88,7 +94,8 @@ class File_Organise():
 
             else:
                 for f in os.listdir(path):
-                    if f != new_dir and os.path.splitext(f)[1].strip('.') == ext:
+                    if f != new_dir and os.path.splitext(
+                            f)[1].strip('.') == ext:
                         inner_folder = os.path.join(new_dir_path, f)
 
                         if os.path.exists(inner_folder):

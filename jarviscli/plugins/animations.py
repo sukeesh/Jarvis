@@ -7,6 +7,7 @@ import threading
 class SpinnerThread(threading.Thread):
     """SpinnerThread class to show a spinner on
      command line while the program is running"""
+
     def __init__(self, label="Hmmm... ", delay=0.2):
         super(SpinnerThread, self).__init__()
         self.label = label

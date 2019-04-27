@@ -20,7 +20,8 @@ example:
     m.add_data('lastName', 'albert')
     m.save()
 '''
-# this sets the path to the modules directory not the directory it was call from
+# this sets the path to the modules directory not the directory it was
+# call from
 module_path = os.path.dirname(__file__)
 
 
@@ -58,7 +59,7 @@ class Memory:
     def get_data(self, key):
         try:
             return self.data[key]
-        except:
+        except BaseException:
             return None
 
     '''

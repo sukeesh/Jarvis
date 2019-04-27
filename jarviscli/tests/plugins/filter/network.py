@@ -4,6 +4,7 @@ from requests import ConnectionError
 
 class Network(Plugin):
     """Test"""
+
     def require(self):
         yield ("network", True)
 
@@ -19,6 +20,7 @@ class Network(Plugin):
 
 class NoNetwork(Plugin):
     """Test"""
+
     def require(self):
         pass
 
@@ -34,6 +36,7 @@ class NoNetwork(Plugin):
 
 class NoNetworkAlt(Plugin):
     """Test"""
+
     def require(self):
         yield ("network", False)
 

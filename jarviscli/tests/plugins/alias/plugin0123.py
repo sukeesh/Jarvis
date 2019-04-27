@@ -3,6 +3,7 @@ from plugin import Plugin
 
 class Plugin0(Plugin):
     """Test"""
+
     def require(self):
         pass
 
@@ -19,6 +20,7 @@ class Plugin0(Plugin):
 
 class Plugin3(Plugin):
     """Test"""
+
     def require(self):
         pass
 

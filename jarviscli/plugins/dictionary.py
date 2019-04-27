@@ -62,7 +62,8 @@ def dictionary(jarvis, s):
     while detail_id is not None:
         meaning = syns[detail_id - 1]
 
-        synonyms = [synonym for synonym in meaning.lemma_names() if synonym != word]
+        synonyms = [synonym for synonym in meaning.lemma_names()
+                    if synonym != word]
         examples = meaning.examples()
 
         antonyms = set()

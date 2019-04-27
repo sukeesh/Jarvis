@@ -17,12 +17,15 @@ class Currencyconv():
     Convert an amount of money from a currency to another.
     -- Type currencyconv, press enter and follow the instructions!
     """
+
     def __call__(self, jarvis, s):
         currencies = self.find_currencies()
 
         amount = get_float('Enter an amount: ')
-        from_currency = self.get_currency('Enter from which currency: ', currencies)
-        to_currency = self.get_currency('Enter to which currency: ', currencies)
+        from_currency = self.get_currency(
+            'Enter from which currency: ', currencies)
+        to_currency = self.get_currency(
+            'Enter to which currency: ', currencies)
 
         self.currencyconv(jarvis, amount, from_currency, to_currency)
 
@@ -41,7 +44,8 @@ class Currencyconv():
             result = b.convert_btc_to_cur(Decimal(amount), to)
         else:
             result = c.convert(fr, to, Decimal(amount))
-        outputText = str(amount) + " " + fr + " are equal to " + str(result) + " " + to
+        outputText = str(amount) + " " + fr + \
+            " are equal to " + str(result) + " " + to
         jarvis.say(outputText)
 
     def find_currencies(self):

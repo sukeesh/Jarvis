@@ -26,6 +26,7 @@ class Voice:
     DOCUMENTATION on pyttsx3:
         https://pyttsx3.readthedocs.io/en/latest/
     """
+
     def speak(self, first_run):
         """
         This method must be invoked whenever Jarvis is ready to
@@ -88,5 +89,6 @@ class VoiceNotSupported(Voice):
 
     def text_to_speech(self, speech):
         if not self.warning_print:
-            print("Speech not supported! Please install pyttsx3 text-to-speech engine (sapi5, nsss or espeak)")
+            print(
+                "Speech not supported! Please install pyttsx3 text-to-speech engine (sapi5, nsss or espeak)")
             self.warning_print = True
