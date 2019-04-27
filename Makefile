@@ -9,4 +9,3 @@ run_docker:
 
 autopep8:
     @find . -iname "*.py" -not -path "./env/**" | xargs autopep8 --in-place --aggressive --aggressive
-    
