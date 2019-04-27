@@ -37,4 +37,4 @@ def random_password(jarvis, s):
 
     """Generate a random string of fixed length """
     preText = 'Your random password is: '
-    print(preText + ''.join(random.choice(password) for i in range(stringLength)))
+    print(preText + ''.join(random.choice(password) for _ in range(stringLength)))

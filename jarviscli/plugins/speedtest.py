@@ -3,6 +3,7 @@ from colorama import Fore
 from plugin import plugin, require
 from plugins.animations import SpinnerThread
 
+
 @require(network=True)
 @plugin('speedtest')
 def speedtest(jarvis, s):

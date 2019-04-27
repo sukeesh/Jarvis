@@ -4,6 +4,7 @@ from six.moves import input
 from plugin import plugin, require
 from plugins.animations import SpinnerThread
 
+
 @require(network=True)
 @plugin('cricket')
 class Cricket():
