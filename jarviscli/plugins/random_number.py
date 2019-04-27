@@ -23,7 +23,8 @@ def generate_random_number(jarvis, numbers):
         higher_number = smallest_number
         smallest_number = aux
 
-    pre_text = 'Your random number in range [%d, %d] is' % (smallest_number, higher_number)
+    pre_text = 'Your random number in range [%d, %d] is' \
+               % (smallest_number, higher_number)
     rand_number = random.randint(smallest_number, higher_number)
     print(pre_text, rand_number)
 
@@ -32,7 +33,7 @@ def get_user_input():
     string_fail = True
     while string_fail:
         try:
-            smallest_number = int(input('Enter the smallest number possible: '))
+            smallest_number = int(input('Enter the smallest number: '))
             string_fail = False
         except:
             print('Only integers will be accepted')
@@ -41,7 +42,7 @@ def get_user_input():
 
     while string_fail:
         try:
-            higher_number = int(input('Enter the higher number possible: '))
+            higher_number = int(input('Enter the higher number: '))
             string_fail = False
         except:
             print('Only integers will be accepted')
