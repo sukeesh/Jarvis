@@ -200,7 +200,13 @@ class RemindBase(RemindTodoBase):
             remind_still_active += [item]
         self.save_data(jarvis, remind_still_active)
 
-    def add(self, jarvis, message, timestamp=None, schedule_id=None, todo_refere_id=None):
+    def add(
+            self,
+            jarvis,
+            message,
+            timestamp=None,
+            schedule_id=None,
+            todo_refere_id=None):
         data = self.get_data(jarvis)
         next_id = self.get_next_id(jarvis)
         new_entry = {

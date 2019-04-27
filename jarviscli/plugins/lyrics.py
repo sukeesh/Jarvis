@@ -16,16 +16,19 @@ class lyrics():
     -- Example:
         lyrics wonderful tonight-eric clapton
     """
+
     def __call__(self, jarvis, s):
         jarvis.say(self.find(s))
 
     # info[0] = song
     # info[1] = artist
-    # info[2] = either options or album, depending on how i extend the functionality
+    # info[2] = either options or album, depending on how i extend the
+    # functionality
     def find(self, s):
         info = self.parse(s)
         # TODO: implement find album/song functions
-        # TODO: implement actual searches in case of not knowing the correct full name of song or artist
+        # TODO: implement actual searches in case of not knowing the correct
+        # full name of song or artist
 
         artist = None
         song = None
@@ -87,7 +90,8 @@ def get_lyric(singer, song):
         for match in lyrics.findAll(tag):
             match.replaceWithChildren()
 
-    # TODO: check if you need the encode/decode thing, if you do then do a try catch for it
+    # TODO: check if you need the encode/decode thing, if you do then do a try
+    # catch for it
 
     # get output as string and remove non unicode characters and replace <br> with newlines
     # output = str(lyrics).encode('utf-8', errors = 'replace')[22:-6:] \
@@ -95,5 +99,5 @@ def get_lyric(singer, song):
     output = str(lyrics).replace('\n', '').replace('<br/>', '\n')[22:-6:]
     try:
         return output
-    except:
+    except BaseException:
         return output.encode('utf-8')

@@ -38,5 +38,5 @@ def read_agenda(jarvis, s):
         for row in reader:
             print(row)
         f.close()
-    except:
+    except BaseException:
         print('There is not an agenda')

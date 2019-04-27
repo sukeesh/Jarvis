@@ -38,8 +38,9 @@ class Jarvis(CmdInterpreter, object):
         "Type 'help' for a list of available actions." + Fore.RESET
     first_reaction_text += "\n"
     prompt = (
-        Fore.RED + "{} Hi, what can I do for you?\n".format(PROMPT_CHAR) + Fore.RESET
-    )
+        Fore.RED
+        + "{} Hi, what can I do for you?\n".format(PROMPT_CHAR)
+        + Fore.RESET)
 
     # This can be used to store user specific data
 
@@ -74,7 +75,8 @@ class Jarvis(CmdInterpreter, object):
         """Hook that executes before every command."""
         words = line.split()
 
-        # append calculate keyword to front of leading char digit (or '-') in line
+        # append calculate keyword to front of leading char digit (or '-') in
+        # line
         if words and (words[0].isdigit() or line[0] == "-"):
             line = "calculate " + line
             words = line.split()
@@ -94,8 +96,9 @@ class Jarvis(CmdInterpreter, object):
         """Hook that executes after every command."""
         if self.first_reaction:
             self.prompt = (
-                Fore.RED + "{} What can i do for you?\n".format(PROMPT_CHAR) + Fore.RESET
-            )
+                Fore.RED
+                + "{} What can i do for you?\n".format(PROMPT_CHAR)
+                + Fore.RESET)
             self.first_reaction = False
         if self.enable_voice:
             self.speech.text_to_speech("What can i do for you?\n")
@@ -121,8 +124,10 @@ class Jarvis(CmdInterpreter, object):
         if data in self.fixed_responses:
             output = self.fixed_responses[data]  # change return to output =
         else:
-            # if it doesn't have a fixed response, look if the data corresponds to an action
-            output = self.find_action(data, self._plugin_manager.get_plugins().keys())
+            # if it doesn't have a fixed response, look if the data corresponds
+            # to an action
+            output = self.find_action(
+                data, self._plugin_manager.get_plugins().keys())
         return output
 
     def find_action(self, data, actions):
@@ -146,7 +151,8 @@ class Jarvis(CmdInterpreter, object):
             words_remaining = data.split()  # this will help us to stop the iteration
             for word in words:
                 words_remaining.remove(word)
-                # For the 'near' keyword, the words before 'near' are also needed
+                # For the 'near' keyword, the words before 'near' are also
+                # needed
                 if word == "near":
                     initial_words = words[:words.index('near')]
                     output = word + " " +\

@@ -11,7 +11,8 @@ except ImportError:
 if voice_control_installed:
     requirements = []
 else:
-    requirements = ['voice_control_requirements (install portaudio + re-run setup.sh)']
+    requirements = [
+        'voice_control_requirements (install portaudio + re-run setup.sh)']
 
 
 @require(native=requirements)

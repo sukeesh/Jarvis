@@ -49,7 +49,8 @@ class MockJarvisAPI():
 
     def schedule(self, time_seconds, function, *args):
         self.notification_history.record(time_seconds, function, *args)
-        self.call_history.record('schedule', (time_seconds, function, args), None)
+        self.call_history.record(
+            'schedule', (time_seconds, function, args), None)
 
     def cancel(self, schedule_id):
         self.call_history.record('cancel', (), None)
@@ -96,9 +97,15 @@ class MockHistoryBuilder():
 
     def add_field(self, field):
         self._history._storage_by_field[field] = []
-        self._history.__dict__['contains_{}'.format(field)] = partial(self._history.contains, field)
-        self._history.__dict__['view_{}'.format(field)] = partial(self._history.view, field)
-        self._history.__dict__['last_{}'.format(field)] = partial(self._history.last, field)
+        self._history.__dict__[
+            'contains_{}'.format(field)] = partial(
+            self._history.contains, field)
+        self._history.__dict__[
+            'view_{}'.format(field)] = partial(
+            self._history.view, field)
+        self._history.__dict__[
+            'last_{}'.format(field)] = partial(
+            self._history.last, field)
         self._history._field_list.append(field)
         return self
 
@@ -115,6 +122,7 @@ class MockHistory():
     Note: For Methods with first parameter "field" method "name_field" exist.
     So "view('text')" can be rewritten as "view_text".
     """
+
     def __init__(self):
         self._storage_by_field = {}
         self._storage_by_index = []
@@ -127,7 +135,8 @@ class MockHistory():
         Do not call manually!
         """
         if len(self._field_list) != len(args):
-            raise ValueError("Argument count miss-match: {} --- {}".format(self._field_list, args))
+            raise ValueError(
+                "Argument count miss-match: {} --- {}".format(self._field_list, args))
         for i, field in enumerate(self._field_list):
             self._storage_by_field[field].append(args[i])
         self._storage_by_index.append(args)

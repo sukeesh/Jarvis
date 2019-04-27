@@ -8,11 +8,15 @@ from tests import PluginTest
 
 class QuoteTest(PluginTest):
 
-    quotes = [{u'quote': (u'Traveling, you realize that differences are lost:'
-                          ' each city takes to resembling all cities, places exchange'
-                          ' their form, order, distances, a shapeless dust cloud invades'
-                          ' the continents.'),
-               u'cat': u'travel', u'author': 'Italo Calvino'}]
+    quotes = [
+        {
+            u'quote': (
+                u'Traveling, you realize that differences are lost:'
+                ' each city takes to resembling all cities, places exchange'
+                ' their form, order, distances, a shapeless dust cloud invades'
+                ' the continents.'),
+            u'cat': u'travel',
+            u'author': 'Italo Calvino'}]
 
     def setUp(self):
         self.test = self.load_plugin(Quote)

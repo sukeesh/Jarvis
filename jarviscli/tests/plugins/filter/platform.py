@@ -3,6 +3,7 @@ from plugin import Plugin, LINUX, MACOS
 
 class Linux(Plugin):
     """Test"""
+
     def require(self):
         yield ("platform", LINUX)
 
@@ -18,6 +19,7 @@ class Linux(Plugin):
 
 class Macos(Plugin):
     """Test"""
+
     def require(self):
         yield ("platform", MACOS)
 
@@ -33,6 +35,7 @@ class Macos(Plugin):
 
 class Both(Plugin):
     """Test"""
+
     def require(self):
         yield ("platform", (LINUX, MACOS))
 
@@ -48,6 +51,7 @@ class Both(Plugin):
 
 class Bothalt(Plugin):
     """Test"""
+
     def require(self):
         yield ("platform", LINUX)
         yield ("platform", MACOS)
