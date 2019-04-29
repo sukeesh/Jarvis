@@ -225,4 +225,4 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
         try:
             run_func(jarvis, s)
         except ConnectionError:
-            jarvis.connection_error()
+            jarvis.get_api().connection_error()
