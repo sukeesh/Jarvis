@@ -20,35 +20,39 @@ class OpenWebsite:
     """
     def __call__(self, jarvis, link):
         inputs = link.split(' ', 1)
-        main_link = inputs[0]
+        self.main_link = inputs[0]
         complement = ""
         if len(inputs) > 1:
             complement = inputs[1]
 
-        self.links_dictionary = {}
-
-        # TODO create a cache for this
-        self.start_links_dictionary()
-
-        if self.has_on_links_dictionary(main_link):
-            webbrowser.open(self.links_dictionary.get(main_link) + complement)
-        elif self.verify_link(main_link):
-            validated_link = self.fix_link(main_link)
-            webbrowser.open(validated_link)
-            pass
+        if self.has_on_links_dictionary():
+            webbrowser.open(self.main_link + complement)
+        elif self.verify_link():
+            webbrowser.open(self.main_link)
         else:
             print("Sorry, I can't open this link please try again.")
 
-    def verify_link(self, link):
-        if ((link[:8] != "https://" and
-             link[:7] != "http://" and
-             link[:3] != "www") or
-                ("com" not in link)):
-            return False
+    def has_on_links_dictionary(self):
+        websites_csv = \
+            open(os.path.join(FILE_PATH, "../data/websites.csv"), 'r')
+        for website in websites_csv:
+            information = website.split(',', 1)
+            if self.main_link == information[0]:
+                self.main_link = information[1]
+                return True
 
+        return False
+
+    def verify_link(self):
+        if ((self.main_link[:8] != "https://" and
+             self.main_link[:7] != "http://" and
+             self.main_link[:3] != "www") or
+                ("com" not in self.main_link)):
+            return False
+        self.fix_link()
         return True
 
-    def fix_link(self, link):
+    def fix_link(self):
         """
         When the links come as input they come without '.'
         > open website www.google.com
@@ -57,29 +61,17 @@ class OpenWebsite:
 
         So this function get the link without '.' and add the '.'
         """
-        if "www" in link:
-            links = link.split('www', 1)
-            link = links[0] + 'www.' + links[1]
+        if "www" in self.main_link:
+            splited_link = self.main_link.split('www', 1)
+            self.main_link = splited_link[0] + 'www.' + splited_link[1]
 
-        if link[:3] == "www":
-            link = "http://" + link
+        if self.main_link[:3] == "www":
+            self.main_link = "http://" + self.main_link
 
-        if "com" in link:
-            splited_link = link.split('com', 1)
-            link = ""
+        if "com" in self.main_link:
+            splited_link = self.main_link.split('com', 1)
+            self.main_link = ""
             for index in range(len(splited_link) - 1):
-                link += splited_link[index]
+                self.main_link += splited_link[index]
 
-            link += ".com" + splited_link[len(splited_link) - 1]
-
-        return link
-
-    def start_links_dictionary(self):
-        websites_csv = \
-            open(os.path.join(FILE_PATH, "../data/websites.csv"), 'r')
-        for website in websites_csv:
-            information = website.split(',', 1)
-            self.links_dictionary[information[0]] = information[1]
-
-    def has_on_links_dictionary(self, link):
-        return link in self.links_dictionary
+            self.main_link += ".com" + splited_link[len(splited_link) - 1]
