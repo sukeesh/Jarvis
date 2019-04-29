@@ -1,5 +1,8 @@
-from plugin import plugin, require
 import webbrowser
+import os
+from plugin import plugin, require
+
+FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
 @require(network=True)
@@ -27,12 +30,10 @@ class OpenWebsite:
         # TODO create a cache for this
         self.start_links_dictionary()
 
-        validated_link = self.verify_link(main_link)
-
         if self.has_on_links_dictionary(main_link):
             webbrowser.open(self.links_dictionary.get(main_link) + complement)
-        elif validated_link:
-            validated_link = self.fix_link(validated_link)
+        elif self.verify_link(main_link):
+            validated_link = self.fix_link(main_link)
             webbrowser.open(validated_link)
             pass
         else:
@@ -45,20 +46,7 @@ class OpenWebsite:
                 ("com" not in link)):
             return False
 
-        if link[:3] == "www":
-            link = "http://" + link
-        return link
-
-    def has_on_links_dictionary(self, link):
-        return link in self.links_dictionary
-
-    def start_links_dictionary(self):
-        self.links_dictionary['github'] = "https://github.com/"
-        self.links_dictionary['facebook'] = "https://www.facebook.com/"
-        self.links_dictionary['linkedin'] = "https://www.linkedin.com/in/"
-        self.links_dictionary['medium'] = "https://medium.com/@"
-        self.links_dictionary['twitter'] = "https://twitter.com/"
-        self.links_dictionary['instagram'] = "https://www.instagram.com/"
+        return True
 
     def fix_link(self, link):
         """
@@ -73,10 +61,25 @@ class OpenWebsite:
             links = link.split('www', 1)
             link = links[0] + 'www.' + links[1]
 
-        # TODO create a list with all possibles terminations of link
-        #  ['com','net',...]
+        if link[:3] == "www":
+            link = "http://" + link
+
         if "com" in link:
-            links = link.split('com', 1)
-            link = links[0] + '.com' + links[1]
+            splited_link = link.split('com', 1)
+            link = ""
+            for index in range(len(splited_link) - 1):
+                link += splited_link[index]
+
+            link += ".com" + splited_link[len(splited_link) - 1]
 
         return link
+
+    def start_links_dictionary(self):
+        websites_csv = \
+            open(os.path.join(FILE_PATH, "../data/websites.csv"), 'r')
+        for website in websites_csv:
+            information = website.split(',', 1)
+            self.links_dictionary[information[0]] = information[1]
+
+    def has_on_links_dictionary(self, link):
+        return link in self.links_dictionary
