@@ -33,7 +33,7 @@ class OpenWebsite:
         elif self.verify_link():
             webbrowser.open(self.main_link)
         else:
-            print("Sorry, I can't open this link, fix it and try again")
+            print("Sorry, I can't open this link.")
 
     def has_on_saved_links(self):
         websites_csv = \
