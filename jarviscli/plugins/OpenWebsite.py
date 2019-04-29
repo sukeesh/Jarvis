@@ -17,6 +17,9 @@ class OpenWebsite:
     > open website www.google.com
     > open website github
     > open website github username
+
+    You can found a csv with the saved websites on:
+    Jarvis/jarviscli/data/website.csv
     """
     def __call__(self, jarvis, link):
         inputs = link.split(' ', 1)
@@ -25,14 +28,14 @@ class OpenWebsite:
         if len(inputs) > 1:
             complement = inputs[1]
 
-        if self.has_on_links_dictionary():
+        if self.has_on_saved_links():
             webbrowser.open(self.main_link + complement)
         elif self.verify_link():
             webbrowser.open(self.main_link)
         else:
-            print("Sorry, I can't open this link please try again.")
+            print("Sorry, I can't open this link, fix it and try again")
 
-    def has_on_links_dictionary(self):
+    def has_on_saved_links(self):
         websites_csv = \
             open(os.path.join(FILE_PATH, "../data/websites.csv"), 'r')
         for website in websites_csv:
