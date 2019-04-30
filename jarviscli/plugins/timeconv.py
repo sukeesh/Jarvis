@@ -45,7 +45,7 @@ class timeconv():
 
     units_data = {
         "ps2ns": 0.001,
-        "ns2μs": 0.001,
+        "ns2mus": 0.001,
         "mus2ms": 0.001,
         "ms2s": 0.001,
         "s2min": 0.0166666667,

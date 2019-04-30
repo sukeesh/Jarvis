@@ -46,7 +46,7 @@ class lengthconv():
     }
 
     units_data = {
-        "nm2μm": 0.001,
+        "nm2mum": 0.001,
         "mum2mm": 0.001,
         "mm2cm": 0.1,
         "cm2dm": 0.1,
