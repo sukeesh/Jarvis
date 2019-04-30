@@ -45,7 +45,8 @@ def imgur(jarvis, s):
             objresp = json.loads(resp.text)
             # Treat response
             if objresp.get('success', False):
-                jarvis.say('Here is your image: ' + str(objresp['data']['link']))
+                jarvis.say('Here is your image: '
+                           + str(objresp['data']['link']))
             else:
                 jarvis.say('Error: ' + str(objresp['data']['error']))
         except Exception as e:

@@ -73,11 +73,12 @@ class JarvisAPI(object):
         Schedules function
         After time_seconds call function with these parameter:
            - reference to this JarvisAPI instance
-           - schedule_id (return value of this fuction)
+           - schedule_id (return value of this function)
            - *args
         :return: integer, id - use with cancel
         """
-        return self._jarvis.scheduler.create_event(time_seconds, function, self, *args)
+        return self._jarvis.scheduler.create_event(
+            time_seconds, function, self, *args)
 
     def cancel(self, schedule_id):
         """
@@ -152,7 +153,9 @@ def catch_all_exceptions(do, pass_self=True):
             else:
                 do(s)
         except Exception:
-            print(Fore.RED + "Some error occurred, please open an issue on github!")
+            print(
+                Fore.RED
+                + "Some error occurred, please open an issue on github!")
             print("Here is error:")
             print('')
             traceback.print_exc()
@@ -167,7 +170,13 @@ class CmdInterpreter(Cmd):
 
     # This can be used to store user specific data
 
-    def __init__(self, first_reaction_text, prompt, directories=[], first_reaction=True, enable_voice=False):
+    def __init__(
+            self,
+            first_reaction_text,
+            prompt,
+            directories=[],
+            first_reaction=True,
+            enable_voice=False):
         """
         This constructor contains a dictionary with Jarvis Actions (what Jarvis can do).
         In alphabetically order.
@@ -211,7 +220,8 @@ class CmdInterpreter(Cmd):
             plugin_status += " {red}{disabled} {blue}plugins disabled. More information: {red}status\n"
         plugin_status += Fore.RESET
 
-        self.first_reaction_text += plugin_status.format(**plugin_status_formatter)
+        self.first_reaction_text += plugin_status.format(
+            **plugin_status_formatter)
 
     def _activate_plugins(self):
         """Generate do_XXX, help_XXX and (optionally) complete_XXX functions"""
@@ -219,8 +229,19 @@ class CmdInterpreter(Cmd):
             self._plugin_update_completion(plugin, plugin_name)
 
             run_catch = catch_all_exceptions(plugin.run)
-            setattr(CmdInterpreter, "do_" + plugin_name, partial(run_catch, self))
-            setattr(CmdInterpreter, "help_" + plugin_name, partial(self._api.say, plugin.get_doc()))
+            setattr(
+                CmdInterpreter,
+                "do_"
+                + plugin_name,
+                partial(
+                    run_catch,
+                    self))
+            setattr(
+                CmdInterpreter,
+                "help_" + plugin_name,
+                partial(
+                    self._api.say,
+                    plugin.get_doc()))
 
             plugin.init(self._api)
 
@@ -232,7 +253,11 @@ class CmdInterpreter(Cmd):
                 def _complete_impl(self, text, line, begidx, endidx):
                     return [i for i in completions if i.startswith(text)]
                 return _complete_impl
-            setattr(CmdInterpreter, "complete_" + plugin_name, complete(completions))
+            setattr(
+                CmdInterpreter,
+                "complete_"
+                + plugin_name,
+                complete(completions))
 
     def get_api(self):
         return self._api
@@ -254,7 +279,7 @@ class CmdInterpreter(Cmd):
     def get_completions(self, command, text):
         """Returns a list with the completions of a command."""
         dict_target = [item for item in self.actions
-                       if type(item) == dict and command in item][0]
+                       if isinstance(item, dict) and command in item][0]
         completions_list = dict_target[command]
         return [i for i in completions_list if i.startswith(text) and i != '']
 
@@ -266,13 +291,20 @@ class CmdInterpreter(Cmd):
         """Prints plugin status status"""
         count_enabled = self._plugin_manager.get_number_plugins_loaded()
         count_disabled = len(self._plugin_manager.get_disabled())
-        print_say("{} Plugins enabled, {} Plugins disabled.".format(count_enabled, count_disabled),
-                  self)
+        print_say(
+            "{} Plugins enabled, {} Plugins disabled.".format(
+                count_enabled,
+                count_disabled),
+            self)
 
         if "short" not in s and count_disabled > 0:
             print_say("", self)
             for disabled, reason in self._plugin_manager.get_disabled().items():
-                print_say("{:<20}: {}".format(disabled, "OR ".join(reason)), self)
+                print_say(
+                    "{:<20}: {}".format(
+                        disabled,
+                        "OR ".join(reason)),
+                    self)
 
     def help_status(self):
         print_say("Prints info about enabled or disabled plugins", self)

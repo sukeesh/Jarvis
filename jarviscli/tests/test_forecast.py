@@ -70,11 +70,7 @@ class ForecastTest(PluginTest):
             get_mock.assert_called_with(
                 "http://api.openweathermap.org/data/2.5/forecast/daily?q={0}&cnt={1}"
                 "&APPID=ab6ec687d641ced80cc0c935f9dd8ac9&units={2}".format(
-                    my_city_and_country,
-                    '7',
-                    self.units['url_units']
-                )
-            )
+                    my_city_and_country, '7', self.units['url_units']))
 
     def test_header_as_expected_with_location(self):
         with patch.object(requests, 'get', return_value=MyResponse) as get_mock:
@@ -82,16 +78,13 @@ class ForecastTest(PluginTest):
             get_mock.assert_called_with(
                 "http://api.openweathermap.org/data/2.5/forecast/daily?q={0}&cnt={1}"
                 "&APPID=ab6ec687d641ced80cc0c935f9dd8ac9&units={2}".format(
-                    'New York',
-                    '7',
-                    self.units['url_units']
-                )
-            )
+                    'New York', '7', self.units['url_units']))
 
     def test_forecast_formatted_as_expected(self):
         with patch.object(requests, 'get', return_value=MyResponse) as _:
             self.test.run('Some location')
-            last_call = "\tMin temperature: {} {}".format('17.0', self.units['str_units'])
+            last_call = "\tMin temperature: {} {}".format(
+                '17.0', self.units['str_units'])
             third_call = "\tWeather: {}".format('Clear')
 
             self.assertEqual(last_call, self.history_say().last_text())

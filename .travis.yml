@@ -34,7 +34,7 @@ install:
     fi
 script:
   - cd $TRAVIS_BUILD_DIR/
-  - flake8 --select E,W --max-line-length=140 --ignore E722 jarviscli/
+  - flake8 --select E,W --max-line-length=140 --ignore E722,W503,W504,E128 jarviscli/
   - cd jarviscli/
   - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py27" ]; then
       python2 -m unittest discover;

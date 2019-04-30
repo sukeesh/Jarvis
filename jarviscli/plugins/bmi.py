@@ -53,8 +53,9 @@ class Bmi():
             elif c == '2':
                 return 'imperial'
             elif c == 'help me':
-                prompt = ('If you want to calculate on metric system type 1\n'
-                          'If you want to calculate on imperial system type 2: ')
+                prompt = (
+                    'If you want to calculate on metric system type 1\n'
+                    'If you want to calculate on imperial system type 2: ')
                 continue
             elif c == 'try again':
                 prompt = 'Please type 1 for metric and 2 for imperial system: '

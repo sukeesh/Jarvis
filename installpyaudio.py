@@ -7,12 +7,27 @@ from six.moves import input
 
 install_command = None
 if platform.system().lower() == "linux":
-    pm = {'redhat': ('sudo yum install', ('python2-pyaudio', 'python3-pyaudio')),
-          'arch': ('sudo packman -S', ('python2-pyaudio', 'python-pyaudio')),
-          'gentoo': ('sudo emerge --ask --verbose', ('pyaudio', 'pyaudio')),
-          'suse': ('sudo zypper install', ('python-PyAudio', 'python3-PyAudio')),
-          'debian': ('sudo apt-get install', ('python-pyaudio', 'python3-pyaudio'))
-          }
+    pm = {
+        'redhat': (
+            'sudo yum install',
+            ('python2-pyaudio',
+             'python3-pyaudio')),
+        'arch': (
+            'sudo packman -S',
+            ('python2-pyaudio',
+             'python-pyaudio')),
+        'gentoo': (
+            'sudo emerge --ask --verbose',
+            ('pyaudio',
+             'pyaudio')),
+        'suse': (
+            'sudo zypper install',
+            ('python-PyAudio',
+             'python3-PyAudio')),
+        'debian': (
+            'sudo apt-get install',
+            ('python-pyaudio',
+             'python3-pyaudio'))}
 
     distroid = distro.os_release_attr('id_like')
 
@@ -26,7 +41,8 @@ if platform.system().lower() == "linux":
             else:
                 print("Usage: python installpyaudio.py (py2/py3)")
                 sys.exit(1)
-            install_command = "{} {}".format(base_command, packages_names[python_version])
+            install_command = "{} {}".format(
+                base_command, packages_names[python_version])
 elif platform.system().lower() == "darwin":
     install_command = 'brew install portaudio'
 

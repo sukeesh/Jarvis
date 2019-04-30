@@ -19,9 +19,10 @@ class CurrencyConvTest(PluginTest):
     @patch('plugins.currencyconv.input', return_value='Greece')
     def test_get_currency(self, get_mock):
         # normal case
-        self.assertEqual(self.test.get_currency('Enter a currency',
-                                                {'GREECE': 'EUR', 'EURO': 'EUR', 'BITCOINS': 'BTC'}
-                                                ), 'EUR')
+        self.assertEqual(
+            self.test.get_currency(
+                'Enter a currency', {
+                    'GREECE': 'EUR', 'EURO': 'EUR', 'BITCOINS': 'BTC'}), 'EUR')
 
     @patch('utilities.GeneralUtilities.input', return_value='1')
     def test_get_float_int(self, get_mock):

@@ -14,6 +14,7 @@ class Roll():
         Roll four dices with 16 edges
         Roll 5 dices five times
     """
+
     def __call__(self, jarvis, s):
         config = self._dice_parse(s)
 
@@ -75,13 +76,16 @@ class Roll():
         if config["howmany"] == 0:
             return "No dice to roll?"
         if config["howmany"] < 0:
-            return "Rolling {} dices does not really make sense ;).".format(config["howmany"])
+            return "Rolling {} dices does not really make sense ;).".format(
+                config["howmany"])
         if config["repeat"] == 0:
             return "Roll 0 howmany? Finish!"
         if config["repeat"] < 0:
-            return "Doing something {} does not really make sense ;).".format(config["repeat"])
+            return "Doing something {} does not really make sense ;).".format(
+                config["repeat"])
         if config["edges"] <= 1:
-            return "A dice with {} edges does not really make sense ;).".format(config["edges"])
+            return "A dice with {} edges does not really make sense ;).".format(
+                config["edges"])
 
         return False
 

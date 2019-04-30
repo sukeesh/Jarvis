@@ -13,7 +13,10 @@ def translate(jarvis, s):
 
     jarvis.say('\nEnter source language ')
     srcs = input().lower()
-    while (srcs not in LANGUAGES) and (srcs not in SPECIAL_CASES) and (srcs not in LANGCODES):
+    while (
+        srcs not in LANGUAGES) and (
+        srcs not in SPECIAL_CASES) and (
+            srcs not in LANGCODES):
         if srcs in SPECIAL_CASES:
             srcs = SPECIAL_CASES[srcs]
         elif srcs in LANGCODES:
@@ -23,7 +26,10 @@ def translate(jarvis, s):
             srcs = input().lower()
     jarvis.say('\nEnter destination language ')
     des = input().lower()
-    while (des not in LANGUAGES) and (des not in SPECIAL_CASES) and (des not in LANGCODES):
+    while (
+        des not in LANGUAGES) and (
+        des not in SPECIAL_CASES) and (
+            des not in LANGCODES):
         if des in SPECIAL_CASES:
             des = SPECIAL_CASES[des]
         elif des in LANGCODES:

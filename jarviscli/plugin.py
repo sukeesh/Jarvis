@@ -22,7 +22,9 @@ def plugin(name):
         system("sudo ap-hotspot start")
     """
     def create_plugin(run):
-        plugin_class = type(run.__name__, Plugin.__bases__, dict(Plugin.__dict__))
+        plugin_class = type(
+            run.__name__, Plugin.__bases__, dict(
+                Plugin.__dict__))
         plugin_class.__doc__ = run.__doc__
 
         if isclass(run):
@@ -108,7 +110,12 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
         (would not be possible with __init__)
         """
         if self.is_callable_plugin():
-            if hasattr(self._backend[0].__class__, "init") and callable(getattr(self._backend[0].__class__, "init")):
+            if hasattr(
+                self._backend[0].__class__,
+                "init") and callable(
+                getattr(
+                    self._backend[0].__class__,
+                    "init")):
                 self._backend[0].init(jarvis_api)
         for plugin in self.get_plugins().values():
             plugin.init(jarvis_api)
@@ -218,4 +225,4 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
         try:
             run_func(jarvis, s)
         except ConnectionError:
-            jarvis.connection_error()
+            jarvis.get_api().connection_error()

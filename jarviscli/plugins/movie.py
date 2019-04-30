@@ -221,7 +221,8 @@ def get_movie_info(jarvis, data):
     Takes a movie attributes as input and prints them accordingly
     """
     jarvis.say('')
-    jarvis.say('What type of information do you want: cast, producers, genres, etc.?')
+    jarvis.say(
+        'What type of information do you want: cast, producers, genres, etc.?')
     jarvis.say('Write one after another separated by space, please:')
 
     movie_attributes = input()
@@ -244,7 +245,10 @@ def get_movie_info(jarvis, data):
 
             jarvis.say(colorized_output(attribute.capitalize(), str(value)))
         else:
-            jarvis.say(colorized_output(attribute.capitalize(), 'no information retrieved'))
+            jarvis.say(
+                colorized_output(
+                    attribute.capitalize(),
+                    'no information retrieved'))
 
     # print IMDB url of the movie
 
