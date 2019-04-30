@@ -1,6 +1,7 @@
 from plugin import plugin
 from utilities.GeneralUtilities import get_float
 
+
 @plugin('timeconv')
 class timeconv():
     """
@@ -99,7 +100,6 @@ class timeconv():
             convamount = (1 / multiplier) * amount
         else:
             convamount = multiplier * amount
-
 
         outputText = self.txt_build(amount, convamount, fr, to)
 

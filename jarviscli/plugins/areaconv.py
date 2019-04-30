@@ -1,6 +1,7 @@
 from plugin import plugin
 from utilities.GeneralUtilities import get_float
 
+
 @plugin('areaconv')
 class areaconv():
     """
@@ -98,10 +99,9 @@ class areaconv():
             multiplier = multiplier * self.units_data.get(kbuild)
 
         if reverse:
-            convamount = (1/multiplier) * amount
+            convamount = (1 / multiplier) * amount
         else:
             convamount = multiplier * amount
-
 
         outputText = self.txt_build(amount, convamount, fr, to)
 

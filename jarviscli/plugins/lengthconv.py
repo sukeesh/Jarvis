@@ -98,10 +98,9 @@ class lengthconv():
             multiplier = multiplier * self.units_data.get(kbuild)
 
         if reverse:
-            convamount = (1/multiplier) * amount
+            convamount = (1 / multiplier) * amount
         else:
             convamount = multiplier * amount
-
 
         outputText = self.txt_build(amount, convamount, fr, to)
 
