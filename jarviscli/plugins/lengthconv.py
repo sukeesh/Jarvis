@@ -11,7 +11,7 @@ class lengthconv():
         mile, yard, foot, inch
     Usage: The input length measurement units are:
         nm : nanometer,
-        μm : micrometer,
+        mum : micrometer,
         mm : millimeter,
         cm : centimeter,
         dm : decimeter,
@@ -28,12 +28,12 @@ class lengthconv():
     """
 
     length_units = [
-        "nm", "μm", "mm", "cm", "dm", "m", "km", "mi", "yd", "ft", "in"
+        "nm", "mum", "mm", "cm", "dm", "m", "km", "mi", "yd", "ft", "in"
     ]
 
     units = {
         "nm": "nanometer",
-        "μm": "micrometer",
+        "mum": "micrometer",
         "mm": "millimeter",
         "cm": "centimeter",
         "dm": "decimeter",
@@ -47,7 +47,7 @@ class lengthconv():
 
     units_data = {
         "nm2μm": 0.001,
-        "μm2mm": 0.001,
+        "mum2mm": 0.001,
         "mm2cm": 0.1,
         "cm2dm": 0.1,
         "dm2m": 0.1,

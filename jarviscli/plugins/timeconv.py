@@ -10,7 +10,7 @@ class timeconv():
     Usage: The input time measurement units are:
         ps : picosecond,
         ns : nanosecond,
-        μm : microsecond,
+        mum : microsecond,
         mm : millisecond,
         s : second,
         min : minute,
@@ -26,14 +26,14 @@ class timeconv():
     """
 
     time_units = [
-        "ps", "ns", "μs", "ms", "s", "min", "h", "d", "wk", "mon", "yr"
+        "ps", "ns", "mus", "ms", "s", "min", "h", "d", "wk", "mon", "yr"
     ]
 
     units = {
         "ps": "picosecond",
         "ns": "nanosecond",
-        "μm": "microsecond",
-        "mm": "millisecond",
+        "mus": "microsecond",
+        "ms": "millisecond",
         "s": "second",
         "min": "minute",
         "h": "hour",
@@ -46,7 +46,7 @@ class timeconv():
     units_data = {
         "ps2ns": 0.001,
         "ns2μs": 0.001,
-        "μs2ms": 0.001,
+        "mus2ms": 0.001,
         "ms2s": 0.001,
         "s2min": 0.0166666667,
         "min2h": 0.0166666667,

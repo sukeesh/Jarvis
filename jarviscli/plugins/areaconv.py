@@ -9,7 +9,7 @@ class areaconv():
     Supports: square kilometers/meters/centimeters/millimeter/micrometer,
         square mile/yard/foot/inch, acre, hectare
     Usage: The input area measurement units are:
-        μm2 : square micrometer,
+        mum2 : square micrometer,
         mm2 : square millimeter,
         cm2 : square centimeter,
         m2 : square meter,
@@ -27,11 +27,11 @@ class areaconv():
     """
 
     area_units = [
-        "μm2", "mm2", "cm2", "m2", "km2", "ha", "ac", "mi2", "yd2", "ft2", "in2"
+        "mum2", "mm2", "cm2", "m2", "km2", "ha", "ac", "mi2", "yd2", "ft2", "in2"
     ]
 
     units = {
-        "μm2": "square micrometer",
+        "mum2": "square micrometer",
         "mm2": "square millimeter",
         "cm2": "square centimeter",
         "m2": "square meter",
@@ -45,7 +45,7 @@ class areaconv():
     }
 
     units_data = {
-        "μm2tomm2": 0.000001,
+        "mum2tomm2": 0.000001,
         "mm2tocm2": 0.01,
         "cm2tom2": 0.00001,
         "m2tokm2": 0.000001,
