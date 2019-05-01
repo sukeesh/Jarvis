@@ -24,12 +24,12 @@ class OpenWebsite:
     def __call__(self, jarvis, link):
         inputs = link.split(' ', 1)
         self.main_link = inputs[0]
-        complement = ""
+        self.complement = False
         if len(inputs) > 1:
-            complement = inputs[1]
+            self.complement = inputs[1]
 
         if self.has_on_saved_links():
-            webbrowser.open(self.main_link + complement)
+            webbrowser.open(self.main_link)
         elif self.verify_link():
             webbrowser.open(self.main_link)
         else:
@@ -39,9 +39,15 @@ class OpenWebsite:
         websites_csv = \
             open(os.path.join(FILE_PATH, "../data/websites.csv"), 'r')
         for website in websites_csv:
-            information = website.split(',', 1)
+            information = website.split(',')
             if self.main_link == information[0]:
-                self.main_link = information[1]
+                if self.complement:
+                    if len(information) > 2:
+                        self.main_link = information[1] + information[2] + self.complement
+                    else:
+                        self.main_link = information[1] + self.complement
+                else :
+                    self.main_link = information[1]
                 return True
 
         return False
