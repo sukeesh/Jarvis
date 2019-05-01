@@ -43,10 +43,12 @@ class OpenWebsite:
             if self.main_link == information[0]:
                 if self.complement:
                     if len(information) > 2:
-                        self.main_link = information[1] + information[2] + self.complement
+                        self.main_link = information[1] +\
+                                         information[2] + \
+                                         self.complement
                     else:
                         self.main_link = information[1] + self.complement
-                else :
+                else:
                     self.main_link = information[1]
                 return True
 
