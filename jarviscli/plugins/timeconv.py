@@ -27,7 +27,7 @@ class timeconv():
     """
 
     time_units = [
-        "ps", "ns", "mus", "ms", "s", "min", "h", "d", "wk", "mon", "yr"
+        "yr", "mon", "wk", "d", "h", "min", "s", "ms", "mus", "ns", "ps"
     ]
 
     units = {
@@ -45,16 +45,16 @@ class timeconv():
     }
 
     units_data = {
-        "ps2ns": 0.001,
-        "ns2mus": 0.001,
-        "mus2ms": 0.001,
-        "ms2s": 0.001,
-        "s2min": 0.0166666667,
-        "min2h": 0.0166666667,
-        "h2d": 0.0416666667,
-        "d2wk": 0.1428571429,
-        "wk2mon": 0.2299794661,
-        "mon2yr": 0.0833333333
+        "yr2mon": 12,
+        "mon2wk": 4.34812141,
+        "wk2d": 7,
+        "d2h": 24,
+        "h2min": 60,
+        "min2s": 60,
+        "s2ms": 1000,
+        "ms2mus": 1000,
+        "mus2ns": 1000,
+        "ns2ps": 1000
     }
 
     def __call__(self, jarvis, s):
@@ -68,7 +68,23 @@ class timeconv():
             else:
                 jarvis.say('Please enter different units')
 
-        self.time_convert(jarvis, amount, from_unit, to_unit)
+        convamount = self.time_convert(jarvis, amount, from_unit, to_unit)
+
+        if (convamount.is_integer() == False):
+            precision = 0
+            precision = get_float("Please enter precision (max:12): ")
+            presicion = float(precision)
+            while True:
+                if (precision.is_integer() and precision <= 12):
+                    break
+                else:
+                    precision = get_float("Please enter an integer (max:12): ")
+
+        convamount = round(convamount, int(precision))
+
+        outputText = self.txt_build(amount, convamount, from_unit, to_unit)
+
+        jarvis.say(outputText)
 
     def time_convert(self, jarvis, amount, fr, to):
 
@@ -96,14 +112,16 @@ class timeconv():
             kbuild = self.time_units[i] + "2" + self.time_units[i + 1]
             multiplier = multiplier * self.units_data.get(kbuild)
 
+        mulitplier = round(multiplier, 17)
+
         if reverse:
             convamount = (1 / multiplier) * amount
         else:
             convamount = multiplier * amount
 
-        outputText = self.txt_build(amount, convamount, fr, to)
+        convamount = round(convamount, 12)
 
-        jarvis.say(outputText)
+        return convamount
 
     def get_units(self, prompt):
 
