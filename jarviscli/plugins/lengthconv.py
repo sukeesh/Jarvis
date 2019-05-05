@@ -71,7 +71,7 @@ class lengthconv():
 
         convamount = self.length_convert(jarvis, amount, from_unit, to_unit)
 
-        if (convamount.is_integer() == False):
+        if (convamount.is_integer() is False):
             precision = 0
             precision = get_float("Please enter precision (max:12): ")
             presicion = float(precision)
