@@ -69,7 +69,23 @@ class lengthconv():
             else:
                 jarvis.say('Please enter different units')
 
-        self.length_convert(jarvis, amount, from_unit, to_unit)
+        convamount = self.length_convert(jarvis, amount, from_unit, to_unit)
+
+        if (convamount.is_integer() == False):
+            precision = 0
+            precision = get_float("Please enter precision (max:12): ")
+            presicion = float(precision)
+            while True:
+                if (precision.is_integer() and precision <= 12):
+                    break
+                else:
+                    precision = get_float("Please enter an integer (max:12): ")
+
+        convamount = round(convamount, int(precision))
+
+        outputText = self.txt_build(amount, convamount, from_unit, to_unit)
+
+        jarvis.say(outputText)
 
     def length_convert(self, jarvis, amount, fr, to):
 
@@ -97,14 +113,16 @@ class lengthconv():
             kbuild = self.length_units[i] + "2" + self.length_units[i + 1]
             multiplier = multiplier * self.units_data.get(kbuild)
 
+        multiplier = round(multiplier, 17)
+
         if reverse:
             convamount = (1 / multiplier) * amount
         else:
             convamount = multiplier * amount
 
-        outputText = self.txt_build(amount, convamount, fr, to)
+        convamount = round(convamount, 12)
 
-        jarvis.say(outputText)
+        return convamount
 
     def get_units(self, prompt):
 
