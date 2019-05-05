@@ -3,6 +3,7 @@ from tests import PluginTest
 from plugins.lengthconv import lengthconv
 from Jarvis import Jarvis
 
+
 class LengthconvTest(PluginTest):
     """
         This class is testing the lengthconv plugin

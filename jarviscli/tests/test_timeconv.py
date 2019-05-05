@@ -3,6 +3,7 @@ from tests import PluginTest
 from plugins.timeconv import timeconv
 from Jarvis import Jarvis
 
+
 class TimeconvTest(PluginTest):
     """
         This class is testing the timeconv plugin
