@@ -1,3 +1,4 @@
+from __future__ import division
 from plugin import plugin
 from utilities.GeneralUtilities import get_float
 
