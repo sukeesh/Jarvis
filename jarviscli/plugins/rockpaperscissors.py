@@ -1,8 +1,28 @@
 from plugin import plugin
+from colorama import Back, Fore, Style
 import random
+
 
 @plugin('rockpaperscissors')
 class rockpaperscissors():
+    """
+    rockpaperscissors Dcoumentation.
+    rockpaperscssors is the game Rock - Paper - Scissors that we all know with Jarvis as opponent.
+
+    First of all you enter how many rounds you will play (max. 100).
+    And then the game starts.
+    In every round you will request to enter your move.
+
+    'r' for rock.
+    'p' for paper.
+    's' for scissors.
+
+    Also you can exit the game whenever you like by entering as move 'exit' and also you can display the score whenever
+    you want by entering 'score'.
+
+    You can display the current round by entering 'rounds'.
+
+    """
 
     def __call__(self, jarvis, s):
         jarvis.say("!! Welcome to Rock Paper Scissors !!")
@@ -25,23 +45,24 @@ class rockpaperscissors():
             user_move = self.get_users("Enter your move: ")
 
             if (user_move == 'exit'):
-                i = i + 1
                 exit = True
                 break
 
             if (user_move == "score"):
                 txt = "You:" + str(user_score) + "  Jarvis:" + str(jarvis_score) + "  "
                 if (user_score > jarvis_score):
-                    txt = txt + "You Winning"
+                    txt = txt + Back.GREEN + "You Winning" + Back.RESET
                 elif(user_score < jarvis_score):
-                    txt = txt + "You Losing"
+                    txt = txt + Back.RED + "You Losing" + Back.RESET
                 else:
-                    txt = txt + "Tie"
+                    txt = txt + Back.WHITE + "Tie" + Back.RESET
 
                 jarvis.say(txt)
+                continue
 
             if (user_move == "rounds"):
-                jarvis.say("The current rounds is " + i + "/" + rounds)
+                jarvis.say("The current rounds is " + str(i) + "/" + str(rounds))
+                continue
 
             jarvis_move = self.get_jarvis()
             jarvis.say("Jarvis move: " + jarvis_move)
@@ -50,33 +71,32 @@ class rockpaperscissors():
 
             if (g == "W"):
                 user_score = user_score + 1
-                jarvis.say("\t" + "You WIN")
+                jarvis.say("\t" + Back.GREEN + "You WIN" + Back.RESET)
+                i = i + 1
             elif (g == "L"):
                 jarvis_score = jarvis_score + 1
-                jarvis.say("\t" + "Jarvis WIN")
+                jarvis.say("\t" + Back.RED + "Jarvis WIN" + Back.RESET)
+                i = i + 1
             else:
-                jarvis.say("\t" + "TIE")
-
-            i = i + 1
+                jarvis.say("\t" + Back.WHITE + "TIE" + Back.RESET)
+                i = i + 1
 
         jarvis.say("")
-        jarvis.say("\t" + "THE GAME END")
-        jarvis.say("\t" + "--SCORE--")
+        jarvis.say("\t\t" + "GAME OVER")
+        jarvis.say("\t\t" + "--SCORE--")
         jarvis.say("\t" + "YOU: " + str(user_score) + "\t" + "JARVIS: " + str(jarvis_score))
 
         if (user_score > jarvis_score):
-            txt = "\tYOU WIN!!"
+            txt = Back.GREEN + "\t\tYOU WIN!!" + Back.RESET
         elif (user_score < jarvis_score):
-            txt = "\tYOU LOSE!"
+            txt = Back.RED + "\t\tYOU LOSE!" + Back.RESET
         else:
-            txt = "\tTIE"
+            txt = Back.WHITE + "\t\tTIE" + Back.RESET
 
         if (exit == True):
-            jarvis.say("You terminate the game at i round")
+            jarvis.say("You terminate the game at " + str(i - 1) + " round")
 
         jarvis.say(txt)
-        jarvis.say("GAME OVER")
-
 
     def get_rounds(self, prompt):
 
