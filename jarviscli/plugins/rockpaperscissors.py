@@ -94,7 +94,17 @@ class rockpaperscissors():
             txt = Back.WHITE + "\t\tTIE" + Back.RESET
 
         if (exit == True):
-            jarvis.say("You terminate the game at " + str(i - 1) + " round")
+            r = str(i -1)
+
+            if (r == "1"):
+                r = r + "st"
+            elif (r == "2"):
+                r = r + "nd"
+            elif (r == "3"):
+                r = r + "rd"
+            else:
+                r = r + "th"
+            jarvis.say("You terminate the game at " + r + " round")
 
         jarvis.say(txt)
 
