@@ -40,7 +40,7 @@ class rockpaperscissors():
 
         i = 1
 
-        while( i <= int(rounds)):
+        while(i <= int(rounds)):
 
             user_move = self.get_users("Enter your move: ")
 
@@ -93,8 +93,8 @@ class rockpaperscissors():
         else:
             txt = Back.WHITE + "\t\tTIE" + Back.RESET
 
-        if (exit == True):
-            r = str(i -1)
+        if (exit is True):
+            r = str(i - 1)
 
             if (r == "1"):
                 r = r + "st"
@@ -138,12 +138,11 @@ class rockpaperscissors():
                 prompt = 'Please enter a valid move: '
                 continue
 
-
     def get_jarvis(self):
 
         moves = ["r", "p", "s"]
 
-        return moves[random.randint(0,2)]
+        return moves[random.randint(0, 2)]
 
     def game(self, umove, jmove):
 
