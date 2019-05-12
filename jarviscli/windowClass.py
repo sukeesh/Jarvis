@@ -75,6 +75,7 @@ cricket\tevaluate            imgur            open         run          tell    
 
         self.opening_image = pygame.image.load("images/opening.png").convert()
         self.Jarvis_logo = pygame.image.load("images/JarvisLogo.png").convert()
+        self.Jarvis_logo2 = pygame.image.load("images/JarvisLogo2.png").convert()
         self.info_logo = pygame.image.load("images/infoIcon.png").convert()
         self.delete_logo = pygame.image.load("images/delete.png").convert()
         self.speaker_logo_activated = pygame.image.load("images/speakerOn.png").convert()
@@ -370,6 +371,7 @@ cricket\tevaluate            imgur            open         run          tell    
                 else: # if action == nothing
                     self.screen.fill(self.screen_background_color) 
                     self.screen.blit(self.Jarvis_logo, [0, 0])
+                    self.screen.blit(self.Jarvis_logo2, [self.width / 2, self.height / 2 - 70])
                     self.screen.blit(self.Jarvis_title_main_window, [self.width / 2 - 160, self.height / 10])
                     self.screen.blit(self.short_info_description, [self.width / 2 - 160 ,self.height / 10 + 50])
                     self.screen.blit(self.info_logo, [self.info_logo_coords[0], self.info_logo_coords[1]])
