@@ -4,7 +4,7 @@ from windowClass import JarvisWindow
 from colorama import Fore
 import os
 import nltk
-from utilities.GeneralUtilities import * # print_say
+from utilities.GeneralUtilities import *  # print_say
 from CmdInterpreter import CmdInterpreter
 import sys
 import time
