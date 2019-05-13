@@ -18,6 +18,7 @@ pync==1.6.1; sys_platform == 'darwin'
 python-dateutil
 pytimeparse
 pyttsx3
+pygame
 requests[security]
 six
 speedtest-cli
