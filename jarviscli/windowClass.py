@@ -5,8 +5,6 @@ import math
 import ptext
 import sys
 import io
-
-#from colorama import Fore
 import re
 
 from inputBoxClass import inputBox
@@ -354,7 +352,7 @@ cricket\tevaluate            imgur            open         run          tell    
                         self.user_input_box.render_cursor(self.screen)
                     # If we are in the window without the Jarvis logo,
                     # we scroll up else we display the old
-                    # commands entered from the history
+                    # commands entered from the history
                     elif event.key == pygame.K_UP:
                         if self.in_new_win:
                             self.scroll_up(True)
@@ -376,7 +374,6 @@ cricket\tevaluate            imgur            open         run          tell    
                         self.user_input_box.move_cursor(self.screen, False)
                     # We display the text entered by the user
                     elif self.user_input_box.check_text_within_box() and event.key not in self.events_list:
-                        #self.user_input_box.user_entry += event.unicode
                         ind = self.user_input_box.index_c
                         self.user_input_box.index_c += 1
                         text = self.user_input_box.user_entry
@@ -403,7 +400,7 @@ cricket\tevaluate            imgur            open         run          tell    
         end = self.index_answer + self.max_nb_lines
         return self.answer_input_box.answers[begin: end]
 
-    # Method that is used to update 'self.index_answer'
+    # Method that is used to update 'self.index_answer'
     # which represents the index of the first element to
     # show from the list 'self.answer_input_box.answers'
     def scroll_up(self, up):
