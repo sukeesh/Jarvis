@@ -407,7 +407,9 @@ def getfont(**kwargs):
 def wrap(text, **kwargs):
     options = _WrapOptions(**kwargs)
     font = getfont(**options.togetfontoptions())
-    def getwidth(line): return font.size(line)[0]
+
+    def getwidth(line):
+        return font.size(line)[0]
     # Apparently Font.render accepts None for the text argument, in which case it's treated as the
     # empty string. We match that behavior here.
     if text is None:

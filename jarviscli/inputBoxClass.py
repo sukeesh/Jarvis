@@ -47,7 +47,7 @@ class inputBox(object):
             self.input_box.w +
             self.input_box.x)
 
-    # Get the old commands typed before
+    # Get the old commands typed before
     def back_to_commands(self, up):
         if up and (self.index_h + 1) < len(self.history):
             self.index_h += 1
@@ -106,22 +106,21 @@ class inputBox(object):
     # so the special characters '\n' and '\t'
     # won't be visible (ex: '\n' will be replaced with
     # an equivalent of spaces ' ')
-
     def ameliorate_text(self, text, icon_width):
         max_length = self.coords_input[2] // 7 - icon_width // 8
         new_text = ''
         old_l = ''
-        for l in text:
-            if l == '\n' and old_l == '\n':
+        for c in text:
+            if c == '\n' and old_l == '\n':
                 continue
-            if l == '\n':
+            if c == '\n':
                 n = max_length - (len(new_text) % max_length)
                 new_text += n * ' '
-            elif l == '\t':
+            elif c == '\t':
                 new_text += 4 * ' '
             else:
-                new_text += l
-            old_l = l
+                new_text += c
+            old_l = c
         return new_text
 
     # Method that returns the number of lines of a given 'text'
