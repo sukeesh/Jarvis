@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 
-import os
+from windowClass import JarvisWindow
 from colorama import Fore
+import os
 import nltk
-from utilities.GeneralUtilities import print_say
+from utilities.GeneralUtilities import * # print_say
 from CmdInterpreter import CmdInterpreter
+import sys
+import time
+import cmd
+import io
 
 PROMPT_CHAR = '~>'
 
@@ -174,5 +179,5 @@ class Jarvis(CmdInterpreter, object):
         or "goodbye command")
         :return: Nothing to return.
         """
-        self.speak()
-        self.cmdloop(self.first_reaction_text)
+        Jarvis_window = JarvisWindow(self)
+        Jarvis_window.execute()
