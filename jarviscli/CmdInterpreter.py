@@ -54,6 +54,29 @@ class JarvisAPI(object):
         # return without newline
         return text.rstrip()
 
+    def input_number(self, prompt="", color="", rtype=float, rmin=None, rmax=None):
+        """
+        Get user input: As number.
+
+        Guaranteed only returns number - ask user till correct number entered.
+
+        :param prompt: Printed to console
+        :param color: Color of prompot
+        :param rtype: type of return value; e.g. float (default) or int
+        :param rmin: Minum of values returned
+        :param rmax: Maximum of values returned
+        """
+        while True:
+            try:
+                value = rtype(self.input(prompt, color).replace(',', '.'))
+                if (rmin is not None and value < rmin) or (rmax is not None and value > rmax):
+                    prompt = "Sorry, needs to be between {} and {}. Try again: ".format(rmin, ramx)
+                else:
+                    return value
+            except ValueError:
+                prompt = 'Sorry, needs to be a number. Try again: '
+                continue
+
     def connection_error(self):
         """Print generic connection error"""
         self.say(JarvisAPI._CONNECTION_ERROR_MSG)

@@ -1,6 +1,5 @@
 import unittest
 from Jarvis import Jarvis
-from mock import patch
 from plugins.quote import Quote
 
 from tests import PluginTest
@@ -21,9 +20,8 @@ class QuoteTest(PluginTest):
     def setUp(self):
         self.test = self.load_plugin(Quote)
 
-    @patch('plugins.quote.input')
-    def test_try_again(self, get_mock):
-        get_mock.return_value = 'exit'
+    def test_try_again(self):
+        self.queue_input('exit')
         self.test.try_again('travel', self.jarvis_api)
 
     def test_contains_word(self):
@@ -31,9 +29,8 @@ class QuoteTest(PluginTest):
         self.assertEqual(self.test.contains_word(text, 'friends'), True)
         self.assertEqual(self.test.contains_word(text, 'travel'), False)
 
-    @patch('plugins.quote.input')
-    def test_get_input(self, get_mock):
-        get_mock.return_value = '2'
+    def test_get_input(self):
+        self.queue_input('2')
         response = self.test.get_input('Enter yeahh: ', self.jarvis_api)
         self.assertEqual(response, 2)
 

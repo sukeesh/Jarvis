@@ -1,7 +1,6 @@
 import unittest
 from functools import partial
-# from inspect import isclass
-# from plugin import Plugin
+from CmdInterpreter import JarvisAPI
 
 
 class MockJarvisAPI():
@@ -29,6 +28,7 @@ class MockJarvisAPI():
             build()
 
         self.data = {}
+        self._input_queue = []
         self.is_voice_enabled = False
 
     def say(self, text, color=""):
@@ -36,6 +36,17 @@ class MockJarvisAPI():
         text = text.rstrip('\n')
         self.say_history.record(text, color)
         self.call_history.record('say', (text, color), None)
+
+    def queue_input(self, text):
+        self._input_queue.append(text)
+
+    def input(self, prompt='', color=''):
+        if len(self._input_queue) == 0:
+            raise BaseException("MockJarvisAPI: No predefined answer in queue - add answer with 'self.queue_input(\"TEXT\")'")
+        return self._input_queue.pop()
+
+    def input_number(self, prompt='', color='', rtype=float, rmin=None, rmax=None):
+        return JarvisAPI.input_number(self, prompt, color, rtype, rmin, rmax)
 
     def connection_error(self):
         self.call_history.record('connection_error', (), None)
@@ -181,6 +192,13 @@ class MockHistory():
 
 
 class PluginTest(unittest.TestCase):
+    def setUp(self):
+        self._setUp()
+
+    def _setUp(self):
+        if 'jarvis_api' not in self.__dict__ or self.jarvis_api is None:
+            self.jarvis_api = MockJarvisAPI()
+
     def load_plugin(self, plugin_class):
         """
         Returns Plugin Instance (object).
@@ -188,8 +206,7 @@ class PluginTest(unittest.TestCase):
 
         Adds method run(string) - which execute plugin using mocked api.
         """
-        if 'jarvis_api' not in self.__dict__ or self.jarvis_api is None:
-            self.jarvis_api = MockJarvisAPI()
+        self._setUp()
 
         plugin_backend = plugin_class()._backend[0]
         plugin_backend.run = partial(plugin_backend, self.jarvis_api)
@@ -197,6 +214,12 @@ class PluginTest(unittest.TestCase):
 
     def tearDown(self):
         self.jarvis_api = None
+
+    def queue_input(self, msg):
+        """
+        Queue msg to be returned by 'jarvis.input()'
+        """
+        self.jarvis_api.queue_input(msg)
 
     def histroy_call(self):
         """

@@ -4,7 +4,6 @@ from decimal import Decimal
 from forex_python.bitcoin import BtcConverter
 from forex_python.converter import CurrencyRates
 from plugin import plugin, require
-from utilities.GeneralUtilities import get_float
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
@@ -20,11 +19,9 @@ class Currencyconv():
     def __call__(self, jarvis, s):
         currencies = self.find_currencies()
 
-        amount = get_float('Enter an amount: ')
-        from_currency = self.get_currency(
-            'Enter from which currency: ', currencies)
-        to_currency = self.get_currency(
-            'Enter to which currency: ', currencies)
+        amount = jarvis.input_number('Enter an amount: ')
+        from_currency = self.get_currency(jarvis, 'Enter from which currency: ', currencies)
+        to_currency = self.get_currency(jarvis, 'Enter to which currency: ', currencies)
 
         self.currencyconv(jarvis, amount, from_currency, to_currency)
 
@@ -57,7 +54,7 @@ class Currencyconv():
             mydict = {r.upper(): row[2] for row in reader for r in row[0:3]}
         return mydict
 
-    def get_currency(self, prompt, currencies):
+    def get_currency(self, jarvis, prompt, currencies):
         """
         get_currency checks if the input the user gave is valid based
         on the dictionary of find_currencies

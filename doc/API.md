@@ -24,6 +24,28 @@ and talk when sound is enable.
 :param color: for text - use colorama (https://pypi.org/project/colorama/)
               e.g. Fore.BLUE
 
+## input
+```python
+JarvisAPI.input(self, prompt='', color='')
+```
+
+Get user input
+
+## input_number
+```python
+JarvisAPI.input_number(self, prompt='', color='', rtype=<class 'float'>, rmin=None, rmax=None)
+```
+
+Get user input: As number.
+
+Guaranteed only returns number - ask user till correct number entered.
+
+:param prompt: Printed to console
+:param color: Color of prompot
+:param rtype: type of return value; e.g. float (default) or int
+:param rmin: Minum of values returned
+:param rmax: Maximum of values returned
+
 ## connection_error
 ```python
 JarvisAPI.connection_error(self)
@@ -51,7 +73,7 @@ JarvisAPI.schedule(self, time_seconds, function, *args)
 Schedules function
 After time_seconds call function with these parameter:
    - reference to this JarvisAPI instance
-   - schedule_id (return value of this fuction)
+   - schedule_id (return value of this function)
    - *args
 :return: integer, id - use with cancel
 
