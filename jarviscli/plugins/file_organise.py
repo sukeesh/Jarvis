@@ -15,7 +15,7 @@ class File_Organise():
     def __call__(self, jarvis, s):
         self.file_manage(jarvis)
 
-    def source_path(self, dir_name):
+    def source_path(self, jarvis, dir_name):
         all_paths = []
         # Changing static path to get the home path from PATH variables.
         # The '/home' was causing script to exit with "file not found" error
@@ -117,7 +117,7 @@ class File_Organise():
 
     def file_manage(self, jarvis):
         dir_name = jarvis.input('Enter the name of directory you want to clear: ')
-        dir_path = self.source_path(dir_name)
+        dir_path = self.source_path(jarvis, dir_name)
         self.print_before(dir_path)
         new_dir_path, new_dir, extension = self.destination_path(dir_path)
         self.organise(new_dir_path, new_dir, dir_path, extension)
