@@ -1,6 +1,5 @@
 from __future__ import division
 from plugin import plugin
-from utilities.GeneralUtilities import get_float
 
 
 @plugin('timeconv')
@@ -60,7 +59,7 @@ class timeconv():
 
     def __call__(self, jarvis, s):
         while True:
-            amount = get_float('Enter an amount: ')
+            amount = jarvis.input_number('Enter an amount: ')
             from_unit = self.get_units('Enter from which unit: ')
             to_unit = self.get_units('Enter to which unit: ')
 
@@ -73,13 +72,13 @@ class timeconv():
 
         if (convamount.is_integer() is False):
             precision = 0
-            precision = get_float("Please enter precision (max:12): ")
+            precision = jarvis.input_number("Please enter precision (max:12): ")
             presicion = float(precision)
             while True:
                 if (precision.is_integer() and precision <= 12):
                     break
                 else:
-                    precision = get_float("Please enter an integer (max:12): ")
+                    precision = jarvis.input_number("Please enter an integer (max:12): ")
 
         convamount = round(convamount, int(precision))
 
