@@ -3,7 +3,7 @@ from functools import partial
 from CmdInterpreter import JarvisAPI
 
 
-class MockJarvisAPI():
+class MockJarvisAPI(JarvisAPI):
     def __init__(self):
         self.call_history = MockHistoryBuilder().\
             add_field('operation').\
