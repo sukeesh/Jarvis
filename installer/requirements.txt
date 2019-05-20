@@ -1,0 +1,26 @@
+archey4; python_version >= '3.5' and sys_platform != 'darwin'
+beautifulsoup4
+colorama
+distro
+flake8
+forex-python
+funcsigs; python_version <= '2.7'
+googletrans
+IMDbPY
+instantmusic
+mock
+nltk
+pick
+pluginmanager
+pycricbuzz
+pydoc-markdown
+pync==1.6.1; sys_platform == 'darwin'
+python-dateutil
+pytimeparse
+pyttsx3
+requests
+six
+speedtest-cli
+sympy
+termdown
+wikipedia
