@@ -249,7 +249,7 @@ section("Write Jarvis starter")
 JARVIS_MACRO = """\
 #!/bin/bash
 source {PATH}/env/bin/activate
-python {PATH}/env/bin/activate
+python {PATH}/jarviscli
 """
 
 fw = open('jarvis', 'w')
