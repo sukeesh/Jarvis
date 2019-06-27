@@ -38,7 +38,6 @@ def buy(jarvis, s):
             return None
 
     webbrowser.open(endURL)
-    #openBrowser(jarvis, endURL)
 
 
 # Check is shop is supported and creates the url for searching on that shop
@@ -76,5 +75,3 @@ def oneLineCommand(shop_input, search_term):
     if len(startingURL) > 0:
         endURL = generateURL(startingURL, search_term, True)
     return endURL
-
-
