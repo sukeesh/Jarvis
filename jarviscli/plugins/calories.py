@@ -1,8 +1,9 @@
 from plugin import plugin
+from colorama import Back, Fore, Style
 
 
 @plugin("calories")
-def calories(jarvis, s):
+class calories:
     """
     Tells the recommended daily calorie intake, also recommends
     calories for weight add and loss.(Source 1)
@@ -22,44 +23,42 @@ def calories(jarvis, s):
             2) https://jandonline.org/article/S0002-8223(05)00149-5/fulltext
     """
 
-    strings = s.split()
-    if len(strings) == 5:
-        gender = strings[0]
-        age = int(strings[1])
-        height = int(strings[2])
-        weight = float(strings[3])
-        level = int(strings[4])
-    else:
-        jarvis.say("You wrote less or more arguments than it needed.")
-        return None
+    def __call__(self, jarvis, s):
+        jarvis.say("Welcome!")
+        info = input("Please enter the information about you following this order(gender age height weight level): ")
+        self.calories(jarvis, info)
 
-    gender_no = 0
-    if(gender == 'man'):
-        gender_no = 5
-    elif(gender == 'woman'):
-        gender_no = -161
+    def calories(self, jarvis, info):
+        strings = info.split()
+        if len(strings) == 5:
+            gender = strings[0]
+            age = int(strings[1])
+            height = int(strings[2])
+            weight = float(strings[3])
+            level = int(strings[4])
+        else:
+            jarvis.say("You wrote less or more arguments than it needed.")
+            return None
 
-    if gender_no != 0 and age > 14 and height > 0.0 and weight > 0.0 and level > 0 and level < 5:
-        brm = float(10 * weight + 6.25 * height - 5
-                    * age + gender_no) * exercise_level(level)
-        brm_loss = brm - 500.0
-        brm_put_on = brm + 500.0
-        jarvis.say("Daily caloric intake :    " + str(brm))
-        jarvis.say("Loss weight calories :    " + str(brm_loss))
-        jarvis.say("Put on  weight calories : " + str(brm_put_on))
-    else:
-        jarvis.say("Please add correct input!")
-        return None
+        gender_no = 0
+        if(gender == 'man'):
+            gender_no = 5
+        elif(gender == 'woman'):
+            gender_no = -161
 
+        if gender_no != 0 and age > 14 and height > 0.0 and weight > 0.0 and level > 0 and level < 5:
+            brm = float(10 * weight + 6.25 * height - 5
+                        * age + gender_no) * self.exercise_level(level)
+            brm_loss = brm - 500.0
+            brm_put_on = brm + 500.0
+            jarvis.say("Daily caloric intake :    " + str(brm))
+            jarvis.say("Loss weight calories :    " + str(brm_loss))
+            jarvis.say("Put on  weight calories : " + str(brm_put_on))
+        else:
+            jarvis.say("Please add correct input!")
+            return None
 
-def exercise_level(level):
-    multiplier = 1
-    if(level == 1):
-        multiplier = 1.2
-    elif(level == 2):
-        multiplier = 1.4
-    elif(level == 3):
-        multiplier = 1.6
-    else:
-        multiplier = 1.95
-    return multiplier
+    def exercise_level(self, level):
+        multipliers = {1: 1.2, 2: 1.4, 3: 1.6, 4: 1.95}
+        multiplier = multipliers.get(level, 1)
+        return multiplier
