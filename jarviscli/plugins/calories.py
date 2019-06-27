@@ -22,11 +22,12 @@ class calories:
             1) https://en.wikipedia.org/wiki/Basal_metabolic_rate
             2) https://jandonline.org/article/S0002-8223(05)00149-5/fulltext
     """
+
     def __call__(self, jarvis, s):
         jarvis.say("Welcome!")
         info = input("Please enter the information about you following this order(gender age height weight level): ")
         self.calories(jarvis, info)
-        
+
     def calories(self, jarvis, info):
         strings = info.split()
         if len(strings) == 5:
@@ -38,13 +39,13 @@ class calories:
         else:
             jarvis.say("You wrote less or more arguments than it needed.")
             return None
-        
+
         gender_no = 0
         if(gender == 'man'):
             gender_no = 5
         elif(gender == 'woman'):
             gender_no = -161
-            
+           
         if gender_no != 0 and age > 14 and height > 0.0 and weight > 0.0 and level > 0 and level < 5:
             brm = float(10 * weight + 6.25 * height - 5
                         * age + gender_no) * self.exercise_level(level)
@@ -56,9 +57,8 @@ class calories:
         else:
             jarvis.say("Please add correct input!")
             return None
-        
+
     def exercise_level(self, level):
         multipliers = {1: 1.2, 2: 1.4, 3: 1.6, 4: 1.95}
         multiplier = multipliers.get(level, 1)
         return multiplier
-    
