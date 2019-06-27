@@ -2,6 +2,7 @@ from plugin import plugin
 import os
 import subprocess
 import sys
+import webbrowser
 
 
 @plugin("buy")
@@ -36,7 +37,8 @@ def buy(jarvis, s):
             jarvis.say("Empty search term. Please try again.")
             return None
 
-    openBrowser(jarvis, endURL)
+    webbrowser.open(endURL)
+    #openBrowser(jarvis, endURL)
 
 
 # Check is shop is supported and creates the url for searching on that shop
@@ -76,16 +78,3 @@ def oneLineCommand(shop_input, search_term):
     return endURL
 
 
-# Opens Browser, new tab with the search url
-def openBrowser(jarvis, endURL):
-    if sys.platform == 'win32':
-        os.startfile(endURL)
-    elif sys.platform == 'darwin':
-        subprocess.Popen(['open', endURL])
-    else:
-        try:
-            subprocess.Popen(['xdg-open', endURL], stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-        except OSError:
-            jarvis.say('Please open a browser on: ' + endURL)
-
-    jarvis.say("Site loaded.")
