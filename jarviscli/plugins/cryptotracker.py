@@ -48,7 +48,7 @@ def query(base, target):
     except KeyError:
         print "Wrong pair {}/{}! \nFull list of symbols is here: https://coinmarketcap.com/all/views/all/\n".format(base, target)
 
-   # Results
+    # Results
     else:
         print "\t{}/{}\nPrice: {}\nChange: {} {}\n".format(base, target, price, print_in_color(change), target)
 
