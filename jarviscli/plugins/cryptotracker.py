@@ -50,7 +50,7 @@ def query(base, target):
 
     # Results
     else:
-        print "\t{}/{}\nPrice: {}\nChange: {} {}\n".format(base, target, price, print_in_color(change), target)
+        print("\t{}/{}\nPrice: {}\nChange: {} {}\n".format(base, target, price, print_in_color(change), target))
 
 
 # Iterate over your favorite crypto pairs
