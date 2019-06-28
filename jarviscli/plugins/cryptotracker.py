@@ -46,7 +46,7 @@ def query(base, target):
 
     # This error occurs if the pair is non-existent
     except KeyError:
-        print "Wrong pair {}/{}! \nFull list of symbols is here: https://coinmarketcap.com/all/views/all/\n".format(base, target)
+        print("Wrong pair {}/{}! \nFull list of symbols is here: https://coinmarketcap.com/all/views/all/\n".format(base, target))
 
     # Results
     else:
