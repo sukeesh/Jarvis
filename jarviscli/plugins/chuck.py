@@ -3,7 +3,7 @@ from colorama import Fore
 from plugin import alias, plugin, require
 
 
-@alias("tell joke")
+@alias("tell Chuck Norris joke")
 @require(network=True)
 @plugin('chuck')
 def chuck(jarvis, s):
