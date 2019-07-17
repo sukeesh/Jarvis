@@ -15,6 +15,7 @@ class Bmi:
         all measurements should be Integers!
     Find out your BMI number and your body state.
     """
+
     def __call__(self, jarvis, s):
         jarvis.say("Welcome. Lets check your BMI")
         system = self.get_system(jarvis)
@@ -28,7 +29,7 @@ class Bmi:
         Asks for the user to choose which system he wants to use
         1 for metric and 2 for imperial
         """
-        syst = {1:'metric', 2:'imperial'}
+        syst = {1: 'metric', 2: 'imperial'}
         jarvis.say("Metric system: Type your height in centimeter, weight in kg")
         jarvis.say("Imperial system: Type your height in ft and inches, weight in lbs")
         jarvis.say("All measurements should be Integers. Default is Metric system")
@@ -56,7 +57,7 @@ class Bmi:
         elif system == 'i':
             bmi = 1.0 * weight / height ** 2 * 703
         bmi = round(bmi, 1)
-        self.print_body_state(jarvis, bmi)        
+        self.print_body_state(jarvis, bmi)
 
     def print_body_state(self, jarvis, bmi):
         """
@@ -75,7 +76,7 @@ class Bmi:
             jarvis.say('Healthy')
         elif bmi < 30:
             print(Back.YELLOW, " " * 2, Style.RESET_ALL, end=" ")
-            jarvis.say('Pre-obese')       
+            jarvis.say('Pre-obese')
         else:
             print(Back.RED, " " * 2, Style.RESET_ALL, end=" ")
             jarvis.say('Obese')
