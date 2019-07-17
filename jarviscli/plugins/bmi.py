@@ -66,19 +66,19 @@ class Bmi:
         """
         print("BMI:", str(bmi))
         if bmi < 16:
-            print(Back.RED, " " * 2, Style.RESET_ALL, end=" ")
+            print(Back.RED, " " * 2, Style.RESET_ALL)
             jarvis.say('Severe thinness')
         elif bmi < 18.5:
-            print(Back.YELLOW, " " * 2, Style.RESET_ALL, end=" ")
+            print(Back.YELLOW, " " * 2, Style.RESET_ALL)
             jarvis.say('Mild thinness')
         elif bmi < 25:
-            print(Back.GREEN, " " * 2, Style.RESET_ALL, end=" ")
+            print(Back.GREEN, " " * 2, Style.RESET_ALL)
             jarvis.say('Healthy')
         elif bmi < 30:
-            print(Back.YELLOW, " " * 2, Style.RESET_ALL, end=" ")
+            print(Back.YELLOW, " " * 2, Style.RESET_ALL)
             jarvis.say('Pre-obese')
         else:
-            print(Back.RED, " " * 2, Style.RESET_ALL, end=" ")
+            print(Back.RED, " " * 2, Style.RESET_ALL)
             jarvis.say('Obese')
 
     def ask_measurements(self, jarvis, s):
