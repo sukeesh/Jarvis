@@ -11,7 +11,7 @@ def translate(jarvis, s):
     """
 
     jarvis.say('\nEnter source language ')
-    srcs = jarvis.input().lower()
+    srcs = jarvis.input().lower().strip()
     while (
         srcs not in LANGUAGES) and (
         srcs not in SPECIAL_CASES) and (
@@ -24,7 +24,7 @@ def translate(jarvis, s):
             jarvis.say("\nInvalid source language\nEnter again")
             srcs = jarvis.input().lower()
     jarvis.say('\nEnter destination language ')
-    des = jarvis.input().lower()
+    des = jarvis.input().lower().strip()
     while (
         des not in LANGUAGES) and (
         des not in SPECIAL_CASES) and (
