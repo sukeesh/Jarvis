@@ -20,9 +20,10 @@ class Bmi:
         jarvis.say("Welcome. Lets check your BMI")
         system = self.get_system(jarvis)
         if system == 'metric':
-            self.calc_bmi(jarvis, 'm', *self.ask_measurements(jarvis, "m"))
+            bmi = self.calc_bmi('m', *self.ask_measurements(jarvis, "m"))
         elif system == 'imperial':
-            self.calc_bmi(jarvis, 'i', *self.ask_measurements(jarvis, "i"))
+            bmi = self.calc_bmi('i', *self.ask_measurements(jarvis, "i"))
+        self.print_body_state(bmi)
 
     def get_system(self, jarvis):
         """
@@ -47,7 +48,7 @@ class Bmi:
             except ValueError:
                 print("Invalid Input. Please Enter the number")
 
-    def calc_bmi(self, jarvis, system, height, weight):
+    def calc_bmi(self, system, height, weight):
         """
         Calculates the bmi for metric system using the common bmi function
         """
@@ -57,7 +58,7 @@ class Bmi:
         elif system == 'i':
             bmi = 1.0 * weight / height ** 2 * 703
         bmi = round(bmi, 1)
-        self.print_body_state(jarvis, bmi)
+        return bmi
 
     def print_body_state(self, jarvis, bmi):
         """

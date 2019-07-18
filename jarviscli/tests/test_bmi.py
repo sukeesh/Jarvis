@@ -1,7 +1,6 @@
 import unittest
 from tests import PluginTest
 from plugins.bmi import Bmi
-from Jarvis import Jarvis
 
 
 class BmiTest(PluginTest):
@@ -15,28 +14,28 @@ class BmiTest(PluginTest):
     def test_0_calc_bmi_m(self):
         height = 100
         weight = 100
-        d = self.test.calc_bmi_m(Jarvis, height, weight)
+        d = self.test.calc_bmi("m", height, weight)
         self.assertEqual(d, 100)
 
     def test_1_calc_bmi_m(self):
         height = 200
         weight = 100
-        d = self.test.calc_bmi_m(Jarvis, height, weight)
+        d = self.test.calc_bmi("m", height, weight)
         self.assertEqual(d, 25)
 
     def test_0_clac_bmi_i(self):
         height = 66
         weight = 154
-        d = self.test.calc_bmi_i(Jarvis, height, weight)
+        d = self.test.calc_bmi("i", height, weight)
         d = round(d, 0)
         self.assertEqual(d, 25)
 
     def test_1_clac_bmi_i(self):
         height = 75
         weight = 236
-        d = self.test.calc_bmi_i(Jarvis, height, weight)
-        d = round(d, 0)
-        self.assertEqual(d, 29)
+        d = self.test.calc_bmi("i", height, weight)
+        d = round(d, 1)
+        self.assertEqual(d, 29.5)
 
 
 if __name__ == '__main__':
