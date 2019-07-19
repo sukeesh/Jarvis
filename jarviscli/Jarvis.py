@@ -39,7 +39,7 @@ class Jarvis(CmdInterpreter, object):
     first_reaction_text += "\n"
     prompt = (
         Fore.RED
-        + "{} Hi, what can I do for you?\n".format(PROMPT_CHAR)
+        + "{} [CS308] Hi, what can I do for you?\n".format(PROMPT_CHAR)
         + Fore.RESET)
 
     # This can be used to store user specific data
