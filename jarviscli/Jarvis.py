@@ -98,11 +98,11 @@ class Jarvis(CmdInterpreter, object):
         if self.first_reaction:
             self.prompt = (
                 Fore.RED
-                + "{} What can i do for you?\n".format(PROMPT_CHAR)
+                + "{} What can I do for you?\n".format(PROMPT_CHAR)
                 + Fore.RESET)
             self.first_reaction = False
         if self.enable_voice:
-            self.speech.text_to_speech("What can i do for you?\n")
+            self.speech.text_to_speech("What can I do for you?\n")
 
     def speak(self, text=None):
         if text is None:
