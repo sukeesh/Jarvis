@@ -3,6 +3,7 @@ from plugin import Plugin
 
 class NativeTrue(Plugin):
     """Test"""
+
     def require(self):
         # ls should really be available on every system
         yield ("native", "ls")
@@ -19,6 +20,7 @@ class NativeTrue(Plugin):
 
 class NativeFalse(Plugin):
     """Test"""
+
     def require(self):
         yield ("native", "sdfsdefaerfsdfg")
 
@@ -34,6 +36,7 @@ class NativeFalse(Plugin):
 
 class NativeFalseAlt(Plugin):
     """Test"""
+
     def require(self):
         yield ("native", ("sdfsdefaerfsdfg", "ls"))
 

@@ -3,6 +3,7 @@ from plugin import Plugin
 
 class Plugin0(Plugin):
     """Doc"""
+
     def require(self):
         pass
 

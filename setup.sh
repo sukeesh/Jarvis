@@ -40,16 +40,16 @@ exec 3<> jarvis
 
       case ${answer:0:1} in
       2 )
-          echo "python $jarvispath/jarviscli/" >&3
+          echo "python $jarvispath/jarviscli/ \$*" >&3
       ;;
       * )
-          echo "python3 $jarvispath/jarviscli/" >&3
+          echo "python3 $jarvispath/jarviscli/ \$*" >&3
       ;;
       esac
 
     else
       echo "source $jarvispath/env/bin/activate" >&3
-      echo "python $jarvispath/jarviscli/" >&3
+      echo "python $jarvispath/jarviscli/ \$*" >&3
     fi
 
 exec 3>&-

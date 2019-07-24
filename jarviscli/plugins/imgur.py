@@ -24,7 +24,7 @@ def imgur(jarvis, s):
     readline.parse_and_bind("tab: complete")
     r = readline.get_completer()
     readline.set_completer(complete)
-    file = input('')
+    file = jarvis.input('')
     # Get the absolute path
     file = os.path.abspath(file)
     file = os.path.expanduser(file)
@@ -45,7 +45,8 @@ def imgur(jarvis, s):
             objresp = json.loads(resp.text)
             # Treat response
             if objresp.get('success', False):
-                jarvis.say('Here is your image: ' + str(objresp['data']['link']))
+                jarvis.say('Here is your image: '
+                           + str(objresp['data']['link']))
             else:
                 jarvis.say('Error: ' + str(objresp['data']['error']))
         except Exception as e:

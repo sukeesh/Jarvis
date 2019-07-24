@@ -186,12 +186,11 @@ def movie_search(jarvis, movie):
     jarvis.say('')
     jarvis.say('Please enter ID to know more(q - quit):')
 
-    input_id = input()
+    input_id = jarvis.input()
 
     # If nothing is entered, just return
     if input_id is '':
         return None
-
     if len(input_id) != 1:
         return jarvis.say(Fore.RED + 'Please enter valid value')
     elif input_id in '123456789':
@@ -200,7 +199,7 @@ def movie_search(jarvis, movie):
         return None
 
     # if entered input is out of the given list of ID's
-    if input_id > count:
+    if (int(input_id) > count) or (int(input_id) < 1):
         return jarvis.say(Fore.RED + 'Please enter id from the given list')
 
     movie_id = movie_results[input_id - 1].movieID
@@ -222,10 +221,11 @@ def get_movie_info(jarvis, data):
     Takes a movie attributes as input and prints them accordingly
     """
     jarvis.say('')
-    jarvis.say('What type of information do you want: cast, producers, genres, etc.?')
+    jarvis.say(
+        'What type of information do you want: cast, producers, genres, etc.?')
     jarvis.say('Write one after another separated by space, please:')
 
-    movie_attributes = input()
+    movie_attributes = jarvis.input()
     movie_attributes = movie_attributes.split()
     jarvis.say('')
 
@@ -245,7 +245,10 @@ def get_movie_info(jarvis, data):
 
             jarvis.say(colorized_output(attribute.capitalize(), str(value)))
         else:
-            jarvis.say(colorized_output(attribute.capitalize(), 'no information retrieved'))
+            jarvis.say(
+                colorized_output(
+                    attribute.capitalize(),
+                    'no information retrieved'))
 
     # print IMDB url of the movie
 

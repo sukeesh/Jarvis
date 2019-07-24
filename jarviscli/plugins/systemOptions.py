@@ -24,7 +24,11 @@ def screen_off__LINUX(jarvis, s):
 @plugin('os')
 def Os__MAC(jarvis, s):
     """Displays information about your operating system"""
-    jarvis.say(Style.BRIGHT + '[!] Operating System Information' + Style.RESET_ALL, Fore.BLUE)
+    jarvis.say(
+        Style.BRIGHT
+        + '[!] Operating System Information'
+        + Style.RESET_ALL,
+        Fore.BLUE)
     jarvis.say('[*] Kernel: ' + sys(), Fore.GREEN)
     jarvis.say('[*] Kernel Release Version: ' + release(), Fore.GREEN)
     jarvis.say('[*] macOS System version: ' + mac_ver()[0], Fore.GREEN)

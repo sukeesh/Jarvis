@@ -1,10 +1,9 @@
 import unittest
 from functools import partial
-# from inspect import isclass
-# from plugin import Plugin
+from CmdInterpreter import JarvisAPI
 
 
-class MockJarvisAPI():
+class MockJarvisAPI(JarvisAPI):
     def __init__(self):
         self.call_history = MockHistoryBuilder().\
             add_field('operation').\
@@ -29,6 +28,7 @@ class MockJarvisAPI():
             build()
 
         self.data = {}
+        self._input_queue = []
         self.is_voice_enabled = False
 
     def say(self, text, color=""):
@@ -36,6 +36,17 @@ class MockJarvisAPI():
         text = text.rstrip('\n')
         self.say_history.record(text, color)
         self.call_history.record('say', (text, color), None)
+
+    def queue_input(self, text):
+        self._input_queue.append(text)
+
+    def input(self, prompt='', color=''):
+        if len(self._input_queue) == 0:
+            raise BaseException("MockJarvisAPI: No predefined answer in queue - add answer with 'self.queue_input(\"TEXT\")'")
+        return self._input_queue.pop()
+
+    def input_number(self, prompt='', color='', rtype=float, rmin=None, rmax=None):
+        return JarvisAPI.input_number(self, prompt, color, rtype, rmin, rmax)
 
     def connection_error(self):
         self.call_history.record('connection_error', (), None)
@@ -49,7 +60,8 @@ class MockJarvisAPI():
 
     def schedule(self, time_seconds, function, *args):
         self.notification_history.record(time_seconds, function, *args)
-        self.call_history.record('schedule', (time_seconds, function, args), None)
+        self.call_history.record(
+            'schedule', (time_seconds, function, args), None)
 
     def cancel(self, schedule_id):
         self.call_history.record('cancel', (), None)
@@ -96,9 +108,15 @@ class MockHistoryBuilder():
 
     def add_field(self, field):
         self._history._storage_by_field[field] = []
-        self._history.__dict__['contains_{}'.format(field)] = partial(self._history.contains, field)
-        self._history.__dict__['view_{}'.format(field)] = partial(self._history.view, field)
-        self._history.__dict__['last_{}'.format(field)] = partial(self._history.last, field)
+        self._history.__dict__[
+            'contains_{}'.format(field)] = partial(
+            self._history.contains, field)
+        self._history.__dict__[
+            'view_{}'.format(field)] = partial(
+            self._history.view, field)
+        self._history.__dict__[
+            'last_{}'.format(field)] = partial(
+            self._history.last, field)
         self._history._field_list.append(field)
         return self
 
@@ -115,6 +133,7 @@ class MockHistory():
     Note: For Methods with first parameter "field" method "name_field" exist.
     So "view('text')" can be rewritten as "view_text".
     """
+
     def __init__(self):
         self._storage_by_field = {}
         self._storage_by_index = []
@@ -127,7 +146,8 @@ class MockHistory():
         Do not call manually!
         """
         if len(self._field_list) != len(args):
-            raise ValueError("Argument count miss-match: {} --- {}".format(self._field_list, args))
+            raise ValueError(
+                "Argument count miss-match: {} --- {}".format(self._field_list, args))
         for i, field in enumerate(self._field_list):
             self._storage_by_field[field].append(args[i])
         self._storage_by_index.append(args)
@@ -172,6 +192,13 @@ class MockHistory():
 
 
 class PluginTest(unittest.TestCase):
+    def setUp(self):
+        self._setUp()
+
+    def _setUp(self):
+        if 'jarvis_api' not in self.__dict__ or self.jarvis_api is None:
+            self.jarvis_api = MockJarvisAPI()
+
     def load_plugin(self, plugin_class):
         """
         Returns Plugin Instance (object).
@@ -179,8 +206,7 @@ class PluginTest(unittest.TestCase):
 
         Adds method run(string) - which execute plugin using mocked api.
         """
-        if 'jarvis_api' not in self.__dict__ or self.jarvis_api is None:
-            self.jarvis_api = MockJarvisAPI()
+        self._setUp()
 
         plugin_backend = plugin_class()._backend[0]
         plugin_backend.run = partial(plugin_backend, self.jarvis_api)
@@ -188,6 +214,12 @@ class PluginTest(unittest.TestCase):
 
     def tearDown(self):
         self.jarvis_api = None
+
+    def queue_input(self, msg):
+        """
+        Queue msg to be returned by 'jarvis.input()'
+        """
+        self.jarvis_api.queue_input(msg)
 
     def histroy_call(self):
         """

@@ -23,8 +23,10 @@ class Lyrics_Test(PluginTest):
                          "you forgot to add either song name or artist name")
 
     def test_lyrics_not_found_given_wrong_parameter(self):
-        self.assertEqual(self.module.find(self.wrong_info),
-                         "Song or Singer does not exist or the API does not have lyrics")
+        self.assertEqual(
+            self.module.find(
+                self.wrong_info),
+            "Song or Singer does not exist or the API does not have lyrics")
 
     def test_split_works(self):
         self.assertEqual(self.module.parse(self.complete_info), [

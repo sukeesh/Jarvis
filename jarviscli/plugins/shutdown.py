@@ -7,7 +7,7 @@ from plugin import plugin, require, LINUX
 def shutdown(jarvis, s):
     """Shutdown the system"""
     if s == '':
-        s = input('In how many minutes?: ')
+        s = jarvis.input('In how many minutes?: ')
     if s == '-c':
         os.system('sudo shutdown -c')
         return
@@ -26,7 +26,7 @@ def cancel_shutdown(jarvis, s):
 def reboot(jarvis, s):
     """Reboot the system"""
     if s == '':
-        s = input('In how many minutes?: ')
+        s = jarvis.input('In how many minutes?: ')
     string = 'sudo shutdown -r -t ' + str(s)
     os.system(string)
 

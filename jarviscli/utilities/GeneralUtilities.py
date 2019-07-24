@@ -63,17 +63,6 @@ def unsupported(platform, silent=False):
     return noop_wrapper
 
 
-def get_float(prompt):
-    while True:
-        try:
-            value = float(input(prompt).replace(',', '.'))
-            return value
-        except ValueError:
-            print("Sorry, I didn't understand that.")
-            prompt = 'Try again: '
-            continue
-
-
 def executable_exists(name):
     binary_path = distutils.spawn.find_executable(name)
     return binary_path is not None and os.access(binary_path, os.X_OK)

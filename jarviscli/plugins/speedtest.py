@@ -1,36 +1,7 @@
-import sys
-import threading
-import itertools
-import time
 import speedtest as st
 from colorama import Fore
 from plugin import plugin, require
-
-
-class SpinnerThread(threading.Thread):
-    """SpinnerThread class to show a spinner on command line while the progream is running"""
-    def __init__(self, label="Hmmm... ", delay=0.2):
-        super(SpinnerThread, self).__init__()
-        self.label = label
-        self.delay = delay
-        self.running = False
-
-    def start(self):
-        self.running = True
-        super(SpinnerThread, self).start()
-
-    def run(self):
-        chars = itertools.cycle(r'-\|/')
-        while self.running:
-            sys.stdout.write('\r' + self.label + next(chars))
-            sys.stdout.flush()
-            time.sleep(self.delay)
-
-    def stop(self):
-        self.running = False
-        self.join()
-        sys.stdout.write('\r')
-        sys.stdout.flush()
+from plugins.animations import SpinnerThread
 
 
 @require(network=True)
@@ -49,7 +20,6 @@ def speedtest(jarvis, s):
     res.get_best_server()
     download_speed = res.download()
     upload_speed = res.upload()
-    # results_dict = res.results.dict()
 
     spinner.stop()
 

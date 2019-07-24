@@ -2,7 +2,6 @@ from __future__ import print_function
 from colorama import Fore
 import os
 import sys
-from six.moves import input
 from plugin import plugin
 
 
@@ -12,10 +11,11 @@ class File_Organise():
     Type file_organise and follow instructions
     It organises selected folder based on extension
     """
+
     def __call__(self, jarvis, s):
         self.file_manage(jarvis)
 
-    def source_path(self, dir_name):
+    def source_path(self, jarvis, dir_name):
         all_paths = []
         # Changing static path to get the home path from PATH variables.
         # The '/home' was causing script to exit with "file not found" error
@@ -24,7 +24,12 @@ class File_Organise():
         user_name = os.environ.get("USER")
         home_path = home_dir.split(user_name)[0].rstrip('/')
         for root in os.walk(home_path):
-            print(Fore.LIGHTBLUE_EX + "Searching in {}...".format((root[0])[:70]), end="\r")
+            print(
+                Fore.LIGHTBLUE_EX
+                + "Searching in {}...".format(
+                    (root[0])[
+                        :70]),
+                end="\r")
             sys.stdout.flush()
             if dir_name == root[0].split('/')[-1]:
                 all_paths.append(root[0])
@@ -37,7 +42,7 @@ class File_Organise():
             print(Fore.LIGHTRED_EX + 'No directory found')
             exit()
 
-        choice = int(input('\nEnter the option number: '))
+        choice = int(jarvis.input('\nEnter the option number: '))
 
         if choice < 1 or choice > len(all_paths):
             path = ''
@@ -88,7 +93,8 @@ class File_Organise():
 
             else:
                 for f in os.listdir(path):
-                    if f != new_dir and os.path.splitext(f)[1].strip('.') == ext:
+                    if f != new_dir and os.path.splitext(
+                            f)[1].strip('.') == ext:
                         inner_folder = os.path.join(new_dir_path, f)
 
                         if os.path.exists(inner_folder):
@@ -110,8 +116,8 @@ class File_Organise():
         print(Fore.LIGHTMAGENTA_EX + "\nCLEANED\n" + Fore.RESET)
 
     def file_manage(self, jarvis):
-        dir_name = input('Enter the name of directory you want to clear: ')
-        dir_path = self.source_path(dir_name)
+        dir_name = jarvis.input('Enter the name of directory you want to clear: ')
+        dir_path = self.source_path(jarvis, dir_name)
         self.print_before(dir_path)
         new_dir_path, new_dir, extension = self.destination_path(dir_path)
         self.organise(new_dir_path, new_dir, dir_path, extension)
