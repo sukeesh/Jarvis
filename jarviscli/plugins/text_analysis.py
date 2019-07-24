@@ -1,13 +1,11 @@
-from plugin import plugin
 import numpy
 import nltk
+from plugin import plugin
+from nltk import word_tokenize, sent_tokenize
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
 nltk.download('maxent_ne_chunker')
 nltk.download('words')
-
-from nltk import word_tokenize, sent_tokenize
-
 
 @plugin("text analysis")
 def text_analysis(jarvis, s):
