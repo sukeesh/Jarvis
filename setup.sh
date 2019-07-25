@@ -72,7 +72,6 @@ pip install --upgrade -r requirements.txt
 
 # wordnet
 python -m nltk.downloader -d jarviscli/data/nltk wordnet
-pip install numpy
 
 # voice control requirements
 error=false
