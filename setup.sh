@@ -72,6 +72,10 @@ pip install --upgrade -r requirements.txt
 
 # wordnet
 python -m nltk.downloader -d jarviscli/data/nltk wordnet
+python -m nltk.downloader -d jarviscli/data/nltk punkt
+python -m nltk.downloader -d jarviscli/data/nltk averaged_perceptron_tagger
+python -m nltk.downloader -d jarviscli/data/nltk maxent_ne_chunker
+python -m nltk.downloader -d jarviscli/data/nltk words
 
 # voice control requirements
 error=false
