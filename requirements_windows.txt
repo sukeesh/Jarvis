@@ -1,2 +1,0 @@
-pypiwin32
-windows-curses
