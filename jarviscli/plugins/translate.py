@@ -1,6 +1,7 @@
 from plugin import plugin, require, alias
 from googletrans import Translator
 from googletrans.constants import LANGCODES, LANGUAGES, SPECIAL_CASES
+import nltk
 
 
 @require(network=True)
@@ -8,35 +9,46 @@ from googletrans.constants import LANGCODES, LANGUAGES, SPECIAL_CASES
 @plugin('translate')
 def translate(jarvis, s):
     """
-    translates from one language to another.
+    Translates from one language to another and allows input to be somewhat natural.
+    
+    Usage: 
+    
+    'Jarvis, please translate, from English to French, Hello, how are you?'
+    
+    OR
+    
+    'Jarvis, could you translate Hello, how are you? from English to French for me please?'
     """
+    
 #   Check whether user has entered translate by itself or with extra parameters
     if s != "":
-        words = s.lower().split()
+        words = nltk.word_tokenize(s.lower())
+        
         currentPos = 0
         finalPos = 0
+        srcs = None
+        des = None
 
 #       Search input string for source language
         for i in range(len(words)):
-            word = words[i]
+            word = words[i].strip()
             currentPos = i
-#           Do not include LANGCODES in the tests when using full sentence command since words can conflict with them (Eg. hi -> Hindi)
-            if (word in LANGUAGES):
+            
+#           Do not include language codes in the tests when using full sentence command since words can conflict with them (Eg. hi -> Hindi).
+#           This code looks like it includes them, but since the googletrans API is implemented such that the languages are stored in dictionaries,
+#           when the "in" operator is used, it only checks the keys of the dictionary, not the values. Therefore, the LANG_CODES dictionary must be
+#           used to check full language names instead of the LANGUAGES dictionary. For more clarification, have a look at the code on the googletrans github.
+            if (word in LANGCODES):
                 srcs = word
                 break
-            elif srcs in SPECIAL_CASES:
-                srcs = SPECIAL_CASES[word]
-                break
+        
 #       Search input string for destination language starting from the word after the source language
         for i in range(currentPos + 1, len(words)):
             word = words[i]
             finalPos = i
 #           Do not include LANGCODES in the tests when using full sentence command since words can conflict with them (Eg. hi -> Hindi)
-            if (word in LANGUAGES):
+            if (word in LANGCODES):
                 des = word
-                break
-            elif srcs in SPECIAL_CASES:
-                des = SPECIAL_CASES[word]
                 break
 
 #       If both languages found, work out where the text to be translated is in the sentence and perform the translation
