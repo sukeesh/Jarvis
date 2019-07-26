@@ -31,7 +31,7 @@ def translate(jarvis, s):
 
 #       Search input string for source language
         for i in range(len(words)):
-            word = words[i].strip()
+            word = words[i]
             currentPos = i
             
 #           Do not include language codes in the tests when using full sentence command since words can conflict with them (Eg. hi -> Hindi).
