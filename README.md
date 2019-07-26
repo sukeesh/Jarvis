@@ -12,6 +12,8 @@ Jarvis is a simple personal assistant for Linux and MacOS which works on the ter
 
 In order to start Jarvis just clone the repository and run `./setup.sh`
 
+Use `npm install` for Node dependencies
+
 Run **Jarvis** from anywhere by command `jarvis`
 
 On Mac OS X run `source setup.sh`
