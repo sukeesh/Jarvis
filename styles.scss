@@ -1,0 +1,399 @@
+@import "compass/css3";
+
+/* Font / Universal Properties */
+@import url(http://weloveiconfonts.com/api/?family=entypo);
+
+[class*="entypo-"]:before {
+  font-family: 'entypo', sans-serif;
+  transition: 0.3s;
+}
+
+* {
+  user-select: none;
+  font: 20px 'Agency FB', sans-serif;
+}
+
+html, body { height: 100%; overflow: hidden;  }
+
+
+
+/* Left Menu */
+#leftmenu {
+  position: fixed;
+  float: left;
+  margin-left: 50px;
+  width: 210px;
+}
+
+#date_time {
+  margin-left: 30px;
+  width: 200px;
+  height: 200px;
+}
+
+#time {
+  margin-left: 110px;
+  position: fixed;
+  background: rgba(0,0,0,0.8);
+  line-height: 0;
+}
+
+#date {
+  position: fixed;
+  margin-top: 20px;
+  background: rgba(0,0,0,0.8);
+}
+
+.title {
+  font-size: 30px;
+  text-align: center;
+  margin: 0;
+  margin-top: 10px;
+  margin-left: -15px;
+}
+
+.title_underline {
+  border-color: $colour5;
+}
+
+.menu {
+  width: 200px;
+  height: 200px;
+  margin: 0;
+  padding: 5px;
+}
+
+.menuitem {
+  width: 100%;
+  height: 40px;
+  padding: 5px;
+  margin-left: 5px;
+  color: $cprimary;
+  background: transparent;
+  border: transparent;
+  font-size: 15px;
+  text-align: left;
+  display: block;
+  float: left;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.caption {
+  color: $colour6;
+  display: inline;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.caption:hover { color: $cprimary; }
+
+.app_icon {
+  width: 48px;
+  color: $colour6;
+  font-size: 40px;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+}
+.app_icon:hover { color: $cprimary; }
+
+
+
+/* Right Menu */
+#rightmenu {
+  float: right;
+  margin-right: 20px;
+  width: 300px;
+}
+
+#note_input {
+  color: $colour6;
+  padding: 5px;
+  border-style: none;
+  background: transparent;
+  resize: none;
+  transition: 0.3s;
+  width: calc(100% - 15px);
+}
+#note_input:hover {
+  color: $cprimary;
+  transition: 0.3s;
+}
+
+
+
+/* Taskbar */
+#taskbar_wrapper
+
+#taskbar {
+  position: fixed;
+  width: 200px;
+  height: 200px;
+  background: gray;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+/* Arc Reactor */
+ul {
+  list-style:none;
+  margin:0;
+  padding:0
+}
+
+#arc_container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.arc_reactor {
+  position: relative;
+  top: 50%;
+  margin-top: -125px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  box-shadow: 0px 0px 50px 15px $colour3, inset 0px 0px 50px 15px $colour3;
+}
+
+.case_container {
+  width: 210px;
+  height: 210px;
+  border-radius: 50%;
+  position: absolute;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.core2 {
+  background: #cedce0;
+  width: 110px;
+  height: 110px;
+  @include border-radius(50%);
+  border: 5px solid $colour1;
+  animation: flicker2 0.2s infinite;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px;
+}
+
+.e7 {
+  width: 95.25%;
+  height: 95.25%;
+  left: 2.5475%;
+  right: 2.5475%;
+  border: $size3 solid transparent;
+  background: transparent;
+  @include border-radius(50%);
+  transform: rotateZ(0deg);
+  transition: box-shadow 3s ease;
+  text-align: center;
+  line-height: 100px;
+}
+
+.marks li {
+  display:block;
+  width: 3px;
+  height: 11px;
+  background: $cshadow;
+  position: absolute;
+  margin-left: 105px;
+  margin-top: -110px;
+  animation: colour_ease2 3s infinite ease-in-out;
+}
+
+@keyframes colour_ease2 {
+  0% { background: rgba(2,254,255,1); }
+  50% { background: rgba(2,254,255,0.3); }
+  100% { background: rgba(2,254,255,1); }
+}
+
+$arc_radius: 125px;
+.marks li:first-child {transform:rotate(6deg) translateY($arc_radius)}
+.marks li:nth-child(2) {transform:rotate(12deg) translateY($arc_radius)}
+.marks li:nth-child(3) {transform:rotate(18deg) translateY($arc_radius)}
+.marks li:nth-child(4) {transform:rotate(24deg) translateY($arc_radius)}
+.marks li:nth-child(5) {transform:rotate(30deg) translateY($arc_radius)}
+.marks li:nth-child(6) {transform:rotate(36deg) translateY($arc_radius)}
+.marks li:nth-child(7) {transform:rotate(42deg) translateY($arc_radius)}
+.marks li:nth-child(8) {transform:rotate(48deg) translateY($arc_radius)}
+.marks li:nth-child(9) {transform:rotate(54deg) translateY($arc_radius)}
+.marks li:nth-child(10) {transform:rotate(60deg) translateY($arc_radius)}
+.marks li:nth-child(11) {transform:rotate(66deg) translateY($arc_radius)}
+.marks li:nth-child(12) {transform:rotate(72deg) translateY($arc_radius)}
+.marks li:nth-child(13) {transform:rotate(78deg) translateY($arc_radius)}
+.marks li:nth-child(14) {transform:rotate(84deg) translateY($arc_radius)}
+.marks li:nth-child(15) {transform:rotate(90deg) translateY($arc_radius)}
+.marks li:nth-child(16) {transform:rotate(96deg) translateY($arc_radius)}
+.marks li:nth-child(17) {transform:rotate(102deg) translateY($arc_radius)}
+.marks li:nth-child(18) {transform:rotate(108deg) translateY($arc_radius)}
+.marks li:nth-child(19) {transform:rotate(114deg) translateY($arc_radius)}
+.marks li:nth-child(20) {transform:rotate(120deg) translateY($arc_radius)}
+.marks li:nth-child(21) {transform:rotate(126deg) translateY($arc_radius)}
+.marks li:nth-child(22) {transform:rotate(132deg) translateY($arc_radius)}
+.marks li:nth-child(23) {transform:rotate(138deg) translateY($arc_radius)}
+.marks li:nth-child(24) {transform:rotate(144deg) translateY($arc_radius)}
+.marks li:nth-child(25) {transform:rotate(150deg) translateY($arc_radius)}
+.marks li:nth-child(26) {transform:rotate(156deg) translateY($arc_radius)}
+.marks li:nth-child(27) {transform:rotate(162deg) translateY($arc_radius)}
+.marks li:nth-child(28) {transform:rotate(168deg) translateY($arc_radius)}
+.marks li:nth-child(29) {transform:rotate(174deg) translateY($arc_radius)}
+.marks li:nth-child(30) {transform:rotate(180deg) translateY($arc_radius)}
+.marks li:nth-child(31) {transform:rotate(186deg) translateY($arc_radius)}
+.marks li:nth-child(32) {transform:rotate(192deg) translateY($arc_radius)}
+.marks li:nth-child(33) {transform:rotate(198deg) translateY($arc_radius)}
+.marks li:nth-child(34) {transform:rotate(204deg) translateY($arc_radius)}
+.marks li:nth-child(35) {transform:rotate(210deg) translateY($arc_radius)}
+.marks li:nth-child(36) {transform:rotate(216deg) translateY($arc_radius)}
+.marks li:nth-child(37) {transform:rotate(222deg) translateY($arc_radius)}
+.marks li:nth-child(38) {transform:rotate(228deg) translateY($arc_radius)}
+.marks li:nth-child(39) {transform:rotate(234deg) translateY($arc_radius)}
+.marks li:nth-child(40) {transform:rotate(240deg) translateY($arc_radius)}
+.marks li:nth-child(41) {transform:rotate(246deg) translateY($arc_radius)}
+.marks li:nth-child(42) {transform:rotate(252deg) translateY($arc_radius)}
+.marks li:nth-child(43) {transform:rotate(258deg) translateY($arc_radius)}
+.marks li:nth-child(44) {transform:rotate(264deg) translateY($arc_radius)}
+.marks li:nth-child(45) {transform:rotate(270deg) translateY($arc_radius)}
+.marks li:nth-child(46) {transform:rotate(276deg) translateY($arc_radius)}
+.marks li:nth-child(47) {transform:rotate(282deg) translateY($arc_radius)}
+.marks li:nth-child(48) {transform:rotate(288deg) translateY($arc_radius)}
+.marks li:nth-child(49) {transform:rotate(294deg) translateY($arc_radius)}
+.marks li:nth-child(50) {transform:rotate(300deg) translateY($arc_radius)}
+.marks li:nth-child(51) {transform:rotate(306deg) translateY($arc_radius)}
+.marks li:nth-child(52) {transform:rotate(312deg) translateY($arc_radius)}
+.marks li:nth-child(53) {transform:rotate(318deg) translateY($arc_radius)}
+.marks li:nth-child(54) {transform:rotate(324deg) translateY($arc_radius)}
+.marks li:nth-child(55) {transform:rotate(330deg) translateY($arc_radius)}
+.marks li:nth-child(56) {transform:rotate(336deg) translateY($arc_radius)}
+.marks li:nth-child(57) {transform:rotate(342deg) translateY($arc_radius)}
+.marks li:nth-child(58) {transform:rotate(348deg) translateY($arc_radius)}
+.marks li:nth-child(59) {transform:rotate(354deg) translateY($arc_radius)}
+.marks li:nth-child(60) {transform:rotate(360deg) translateY($arc_radius)}
+
+/* Particles / Unique Elements */
+.vline {
+  width: 0;
+  height: 200px;
+  float: left;
+  border-left: 1px solid $colour3;
+}
+
+.hline {
+  width: 200px;
+  height: 0;
+  border-bottom: 1px solid $colour3;
+}
+
+#particle1 {
+  position: fixed;
+  margin-left: 260px;
+  margin-top: 410px;
+}
+
+#particle1_1 {
+  position: fixed;
+  margin-left: 255px;
+  margin-top: 480px;
+}
+
+#particle1_2 {
+  position: fixed;
+  margin-left: 275px;
+  margin-top: 580px;
+}
+
+#particle1_3 {
+  position: fixed;
+  color: $colour3;
+  font-size: 90px;
+  margin-left: 190px;
+  margin-top: 730px;
+  transform: rotate(90deg);
+  z-index: -1;
+}
+
+#particle2 {
+  position: fixed;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+#particle3 {
+  position: fixed;
+  height: 240px;
+  margin-left: 40px;
+}
+
+#particle4 {
+  position: fixed;
+  height: 240px;
+  margin-top: 200px;
+  margin-left: -10px;
+}
+
+#particle5 {
+  position: fixed;
+  height: 290px;
+  margin-top: -90px;
+  margin-left: 230px;
+  border-color: $colour1;
+}
+
+#particle6 {
+  position: fixed;
+  height: 290px;
+  margin-top: 5px;
+  margin-left: 3px;
+  border-color: $colour2;
+}
+
+#particle7 {
+  position: fixed;
+  height: 290px;
+  margin-top: 5px;
+  margin-left: 3px;
+  border-color: $colour1;
+}
+
+#particle8 {
+  position: fixed;
+  height: 500px;
+  margin-left: -232px;
+  margin-top: 280px;
+  border-color: $colour1;
+}
+
+#particle9 {
+  position: fixed;
+  height: 320px;
+  margin-left: 3px;
+  border-color: $colour2;
+}
+
+/* Right Menu Particles */
+#particle10 {
+  width: 330px;
+  float: right;
+  border-color: $colour5;
+}
+
+#particle11 {
+  margin-right: 30px;
+  margin-top: 3px;
+  width: 330px;
+  float: right;
+  border-color: $colour5;
+}
+
+#particle12 {
+  float: left;
+  height: 352px;
+  margin-top: -40px;
+  border-color: $colour5;
+}
