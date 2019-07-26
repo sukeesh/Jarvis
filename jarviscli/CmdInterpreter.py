@@ -308,6 +308,10 @@ class CmdInterpreter(Cmd):
         """Default completion"""
         return [i for i in self.actions if i.startswith(text)]
 
+    def execute_once(self, command):
+        self.get_api().eval(command)
+        self.close()
+
     def error(self):
         """Jarvis let you know if an error has occurred."""
         print_say("I could not identify your command...", self, Fore.RED)

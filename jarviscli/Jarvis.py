@@ -166,14 +166,18 @@ class Jarvis(CmdInterpreter, object):
                 break
         return output
 
-    def executor(self):
+    def executor(self, command):
         """
-        This method is opening a terminal session with the user.
+        If command is not empty, we execute it and terminate.
+        Else, this method opens a terminal session with the user.
         We can say that it is the core function of this whole class
         and it joins all the function above to work together like a
         clockwork. (Terminates when the user send the "exit", "quit"
         or "goodbye command")
         :return: Nothing to return.
         """
-        self.speak()
-        self.cmdloop(self.first_reaction_text)
+        if command:
+            self.execute_once(command)
+        else:
+            self.speak()
+            self.cmdloop(self.first_reaction_text)
