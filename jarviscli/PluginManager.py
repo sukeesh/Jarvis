@@ -193,8 +193,12 @@ class PluginDependency(object):
             self._requirement_python = plugin.PYTHON3
         if sys.platform == "darwin":
             self._requirement_platform = plugin.MACOS
-        else:
+        elif sys.platform == "win32":
+            self._requirement_platform = plugin.WINDOWS
+        elif sys.platform.startswith("linux"):
             self._requirement_platform = plugin.LINUX
+        else:
+            self._requirement_platform = plugin.UNSUPPORTED
 
     def _plugin_get_requirements(self, requirements_iter):
         plugin_requirements = {

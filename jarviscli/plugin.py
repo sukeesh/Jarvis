@@ -11,6 +11,8 @@ PYTHON3 = "PY3"
 # platform
 MACOS = "MACOS"
 LINUX = "LINUX"
+WINDOWS = "WINDOWS"
+UNSUPPORTED = "UNSUPPORTED"
 
 
 def plugin(name):
