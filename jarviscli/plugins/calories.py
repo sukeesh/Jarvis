@@ -1,5 +1,4 @@
 from plugin import plugin
-from colorama import Back, Fore, Style
 
 
 @plugin("calories")
@@ -25,13 +24,13 @@ class calories:
 
     def __call__(self, jarvis, s):
         jarvis.say("Welcome!")
-        info = input("Please enter the information about you following this order(gender age height weight level): ")
+        info = input("Please enter the information about you following this order(gender age height(cms) weight(kg) workout level(1-4)): ")
         self.calories(jarvis, info)
 
     def calories(self, jarvis, info):
         strings = info.split()
         if len(strings) == 5:
-            gender = strings[0]
+            gender = strings[0].lower()
             age = int(strings[1])
             height = int(strings[2])
             weight = float(strings[3])
@@ -41,9 +40,9 @@ class calories:
             return None
 
         gender_no = 0
-        if(gender == 'man'):
+        if(gender is "male" or gender is "man" or gender is "m"):
             gender_no = 5
-        elif(gender == 'woman'):
+        elif(gender is "female" or gender is 'woman' or gender is "f"):
             gender_no = -161
 
         if gender_no != 0 and age > 14 and height > 0.0 and weight > 0.0 and level > 0 and level < 5:

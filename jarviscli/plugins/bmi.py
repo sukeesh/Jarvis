@@ -23,6 +23,8 @@ class Bmi:
             bmi = self.calc_bmi('m', *self.ask_measurements(jarvis, "m"))
         elif system == 'imperial':
             bmi = self.calc_bmi('i', *self.ask_measurements(jarvis, "i"))
+        else:
+            return
         self.print_body_state(jarvis, bmi)
 
     def get_system(self, jarvis):
