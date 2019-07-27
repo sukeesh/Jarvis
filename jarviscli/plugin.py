@@ -11,6 +11,9 @@ PYTHON3 = "PY3"
 # platform
 MACOS = "MACOS"
 LINUX = "LINUX"
+WINDOWS = "WINDOWS"
+# Shortcut for MACOS + LINUX
+UNIX = "UNIX"
 
 
 def plugin(name):
