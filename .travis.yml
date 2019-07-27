@@ -24,6 +24,12 @@ matrix:
       cache: pip
       sudo: required
       env: TOXENV=py37
+    - os: windows
+      language: shell
+      before_install:
+        - choco install python
+        - python -m pip install --upgrade pip
+      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
 install:
   - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py27" ]; then
       sudo -H pip2 install -r requirements.txt;
