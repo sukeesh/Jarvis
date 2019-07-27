@@ -19,4 +19,8 @@ def workspace(jarvis, s):
 
 @plugin("run")
 def run(jarvis, s):
-    os.system(s)  # run the command in terminal.
+    """
+    Run commands in terminal(use shell)
+    e.g. run echo hello
+    """
+    os.system(s)
