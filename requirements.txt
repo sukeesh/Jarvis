@@ -19,6 +19,7 @@ python-dateutil
 pytimeparse
 pyttsx3
 npm
+numpy
 requests[security]
 six
 speedtest-cli
