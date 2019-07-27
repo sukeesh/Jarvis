@@ -1,10 +1,15 @@
-import requests
+from plugin import plugin, require
 import os
+import sys
+import requests
 import json
 import base64
-import readline
 import glob
-from plugin import plugin, require
+if sys.platform == 'win32':
+    from pyreadline import Readline
+    readline = Readline()
+else:
+    import readline
 
 
 def complete(text, state):

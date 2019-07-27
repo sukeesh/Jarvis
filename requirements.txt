@@ -15,12 +15,15 @@ pluginmanager
 pycricbuzz
 pydoc-markdown
 pync==1.6.1; sys_platform == 'darwin'
+pyreadline; sys_platform == 'win32'
 python-dateutil
 pytimeparse
 pyttsx3
+pywin32; sys_platform == 'win32'
 requests[security]
 six
 speedtest-cli
 sympy
 termdown
 wikipedia
+windows-curses; sys_platform == 'win32'
