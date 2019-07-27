@@ -12,7 +12,8 @@ PYTHON3 = "PY3"
 MACOS = "MACOS"
 LINUX = "LINUX"
 WINDOWS = "WINDOWS"
-UNSUPPORTED = "UNSUPPORTED"
+# Shortcut for MACOS + LINUX
+UNIX = "UNIX"
 
 
 def plugin(name):

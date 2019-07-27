@@ -74,20 +74,20 @@ Plugins, which are non compatible are ignored and will not be displayed.
 Current available requirements:
 
 * Network: (True, False)
-* Plattform: (plugin.LINUX, plugin.MACOS)
+* Platform: (plugin.LINUX, plugin.MACOS, plugin.WINDOWS, plugin.UNIX - equals plugin.LINUX + plugin.MACOS)
 * Python: (plugin.PYTHON2, plugin.PYTHON3)
 * Native: (any string)
 
 Native means any native Binary in $PATH must exist. If multiple natives are specified (unlike other requirements) ALL must be fulfilled.
 
-Example: Only support Python 3 with Linux; Require firefox and curl with active network connection.
+Example: Only support Python 3 with Linux or Windows; Require firefox and curl with active network connection.
 
 
 ```
-from plugin import plugin, require, PYTHON3, LINUX
+from plugin import plugin, require, PYTHON3, LINUX, WINDOWS
 
 
-@require(platform=LINUX, python=PYTHON3, network=True, native=["firefox", "curl"])
+@require(platform=[LINUX, WINDOWS], python=PYTHON3, network=True, native=["firefox", "curl"])
 @plugin("helloworld")
 def helloWorld(jarvis, s):
     (...)
@@ -95,7 +95,7 @@ def helloWorld(jarvis, s):
 
 Special behaviour:
 
-* If a plugin is incompabible because of missing native binary (and because of natives only), an notification shall be printed.
+* If a plugin is incompatible because of missing native binary (and because of natives only), an notification shall be printed.
 * If network=True is required, you won't need to try-catch requests.ConnectionError - this error is auto-cached with connection-error
 
 
