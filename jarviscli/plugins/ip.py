@@ -2,9 +2,10 @@ from os import system
 from colorama import Fore
 
 from utilities.GeneralUtilities import executable_exists
-from plugin import plugin
+from plugin import plugin, require, UNIX
 
 
+@require(platform=UNIX)
 @plugin('ip')
 class IP():
     """

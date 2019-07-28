@@ -1,33 +1,113 @@
 import os
+from plugin import plugin, require, LINUX, MACOS, WINDOWS
 
-from plugin import plugin, require, LINUX
 
-
+@require(platform=LINUX)
 @plugin('shutdown')
 def shutdown(jarvis, s):
-    """Shutdown the system"""
+    """
+    Shutdown the system
+    Uses:
+    shutdown : asks for time
+    shutdown -c : cancels shutdown
+    """
     if s == '':
         s = jarvis.input('In how many minutes?: ')
     if s == '-c':
         os.system('sudo shutdown -c')
+        jarvis.say('Shutdown operation cancelled')
         return
     string = 'sudo shutdown -t ' + str(s)
     os.system(string)
 
 
-@plugin('cancel shutdown')
-def cancel_shutdown(jarvis, s):
-    """Cancel an active shutdown"""
-    os.system('sudo shutdown -c')
-    jarvis.say('Shutdown cancelled.')
+@require(platform=MACOS)
+@plugin('shutdown')
+def shutdown(jarvis, s):
+    """
+    Shutdown the system
+    Uses:
+    shutdown : asks for time
+    shutdown -c : cancels shutdown
+    """
+    if s == '':
+        s = jarvis.input('In how many minutes?: ')
+    if s == '-c':
+        os.system('sudo killall shutdown')
+        jarvis.say('Shutdown operation cancelled')
+        return
+    string = 'sudo shutdown -h +' + str(s)
+    os.system(string)
 
 
+@require(platform=WINDOWS)
+@plugin('shutdown')
+def shutdown(jarvis, s):
+    """
+    Shutdown the system
+    Uses:
+    shutdown : asks for time
+    shutdown -c : cancels shutdown
+    """
+    if s == '':
+        s = jarvis.input('In how many seconds?: ')
+    if s == '-c':
+        os.system('shutdown /a')
+        jarvis.say('Shutdown operation cancelled')
+        return
+    string = 'sudo shutdown /s /t ' + str(s)
+    os.system(string)
+
+
+@require(platform=LINUX)
 @plugin('reboot')
 def reboot(jarvis, s):
     """Reboot the system"""
     if s == '':
         s = jarvis.input('In how many minutes?: ')
     string = 'sudo shutdown -r -t ' + str(s)
+    os.system(string)
+
+
+@require(platform=MACOS)
+@plugin('reboot')
+def reboot(jarvis, s):
+    """Reboot the system"""
+    string = 'sudo shutdown -r now'
+    os.system(string)
+
+
+@require(platform=WINDOWS)
+@plugin('reboot')
+def reboot(jarvis, s):
+    """Reboot the system"""
+    if s == '':
+        s = jarvis.input('In how many seconds?: ')
+    string = 'shutdown /r /t ' + str(s)
+    os.system(string)
+
+
+@require(platform=WINDOWS)
+@plugin('hibernate')
+def reboot(jarvis, s):
+    """Hibernates the system"""
+    string = 'shutdown /h'
+    os.system(string)
+
+
+@require(platform=WINDOWS)
+@plugin('log off')
+def reboot(jarvis, s):
+    """Log off the system"""
+    string = 'shutdown /l'
+    os.system(string)
+
+
+@require(platform=WINDOWS)
+@plugin('hybridsleep')
+def reboot(jarvis, s):
+    """Performs shutdown and prepares forfast startup"""
+    string = 'shutdown /hybrid'
     os.system(string)
 
 
