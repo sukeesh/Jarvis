@@ -1,6 +1,8 @@
 import platform
 import sys
 
+from helper import executable_exists
+
 
 PackageManager = {
     "macos": "brew install",
@@ -14,17 +16,26 @@ PackageManager = {
 }
 
 
+LinuxDistroRecognition = {
+    "yum": "redhat",
+    "packman": "arch",
+    "emerge": "gentoo",
+    "zypper": "suse",
+    "apt-get": "debian"
+}
+
+
 PortAudio = {
     "name": "Voice Recorder",
     "pip": ['SpeechRecognition', "pyaudio --global-option='build_ext' --global-option='-I/usr/local/include' --global-option='-L/usr/local/lib'"],
     "package_guess": {
         "macos": ['portaudio' 'portaudio'],
         "linux": {
-            'redhat': ['python2-pyaudio', 'python3-pyaudio'],
+            'redhat': ['python2-pyaudio python2-devel', 'python3-pyaudio python3-devel'],
             'arch': ['python2-pyaudio', 'python-pyaudio'],
-            'gentoo': ['pyaudio','pyaudio'],
-            'suse': ['python-PyAudio', 'python3-PyAudio'],
-            'debian': ['python-pyaudio', 'python3-pyaudio']
+            'gentoo': ['pyaudio', 'pyaudio'],
+            'suse': ['python-PyAudio python-devel', 'python3-PyAudio python3-devel'],
+            'debian': ['python-pyaudio python-dev', 'python3-pyaudio python3-dev']
         }
     },
     "description": "Required for voice control",
@@ -78,11 +89,10 @@ def get_guess(data):
     if sys.platform == "darwin":
         return data['macos']
     elif platform.system().lower() == "linux":
-        distroid = distro.os_release_attr('id_like')
         data = data['linux']
 
-        for distribution, data in data.items():
-            if distribution in distroid:
-                return data
+        for executable, distro in LinuxDistroRecognition.items():
+            if executable_exists(executable):
+                return data[distro]
 
     return False
