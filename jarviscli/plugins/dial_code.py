@@ -1,17 +1,16 @@
-from plugin import plugin
+from plugin import plugin, alias
 import os
 import json
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
-
-@plugin('dial code')
+@alias('phone code of')
+@plugin('dial code of')
 class PhoneCode:
     """
     Prints the dial code of the country
-    Usage: dial code <COUNTRY NAME>
-        OR
-           phone code <CONTRY NAME>
+    Usage: dial code of <COUNTRY NAME>
+    Alias(es): phone code of
     """
     def __call__(self, jarvis, s):
         code = self.handle_input(s)
