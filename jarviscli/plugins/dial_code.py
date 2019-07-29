@@ -32,7 +32,7 @@ class DialCode:
                 data = json.loads(codes_file.read())
 
                 for i in data:
-                    print(i['name'] + ' * ', end='')
+                    print(i["country_name"] + ' * ', end='')
 
                 print()
 
@@ -45,9 +45,9 @@ class DialCode:
         # Load json with codes from file
         data = json.loads(codes_file.read())
         codes_file.close()
-
+        
         for i in data:
-            if country == i["name"].lower():
+            if country == i["country_name"].lower():
                 code = i["dial_code"]
                 return(code)
 
