@@ -14,20 +14,34 @@ class DialCode:
     Alias(es): phone code of
     """
     def __call__(self, jarvis, s):
-        # Call handle_input() function wich returns the code 
+        # Call handle_input() function wich returns the code
         # (or False if there is no such country)
         code = self.handle_input(s)
+        
         if code:
             jarvis.say(Fore.GREEN + 'Dial code is ' + Fore.WHITE + code)
         else:
             jarvis.say(Fore.RED + "Can't find code for country " + Fore.WHITE + "'" + s + "'")
+            choice = input(Fore.GREEN + 'Print avaliable countries?' + Fore.WHITE + ' (y/N): ')
+
+            if choice in ['y', 'Y']:
+                # Open the file with dial codes
+                codes_file = open(os.path.join(FILE_PATH,
+                                              "../data/dial_codes.json"), 'r')
+
+                data = json.loads(codes_file.read())
+
+                for i in data:
+                    print(i['name'] + ' * ', end='')
+
+                print()
 
     def handle_input(self, country):
-        
+
         # Open the file with dial codes
         codes_file = open(os.path.join(FILE_PATH,
                                        "../data/dial_codes.json"), 'r')
-                                       
+
         # Load json with codes from file
         data = json.loads(codes_file.read())
         codes_file.close()
