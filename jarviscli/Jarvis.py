@@ -38,8 +38,9 @@ class Jarvis(CmdInterpreter, object):
         "Type 'help' for a list of available actions." + Fore.RESET
     first_reaction_text += "\n"
     prompt = (
-        Fore.RED + "{} Hi, what can I do for you?\n".format(PROMPT_CHAR) + Fore.RESET
-    )
+        Fore.RED
+        + "{} Hi, what can I do for you?\n".format(PROMPT_CHAR)
+        + Fore.RESET)
 
     # This can be used to store user specific data
 
@@ -75,7 +76,8 @@ class Jarvis(CmdInterpreter, object):
         """Hook that executes before every command."""
         words = line.split()
 
-        # append calculate keyword to front of leading char digit (or '-') in line
+        # append calculate keyword to front of leading char digit (or '-') in
+        # line
         if words and (words[0].isdigit() or line[0] == "-"):
             line = "calculate " + line
             words = line.split()
@@ -95,8 +97,9 @@ class Jarvis(CmdInterpreter, object):
         """Hook that executes after every command."""
         if self.first_reaction:
             self.prompt = (
-                Fore.RED + "{} What can i do for you?\n".format(PROMPT_CHAR) + Fore.RESET
-            )
+                Fore.RED
+                + "{} What can i do for you?\n".format(PROMPT_CHAR)
+                + Fore.RESET)
             self.first_reaction = False
         if self.enable_voice:
             self.speech.text_to_speech("What can i do for you?\n")
@@ -106,7 +109,7 @@ class Jarvis(CmdInterpreter, object):
             text = self.first_reaction_text
 
         if self.enable_voice:
-            self.speech.speak(text)
+            self.speech.text_to_speech(text)
 
     def parse_input(self, data):
         """This method gets the data and assigns it to an action"""
@@ -122,8 +125,10 @@ class Jarvis(CmdInterpreter, object):
         if data in self.fixed_responses:
             output = self.fixed_responses[data]  # change return to output =
         else:
-            # if it doesn't have a fixed response, look if the data corresponds to an action
-            output = self.find_action(data, self._plugin_manager.get_plugins().keys())
+            # if it doesn't have a fixed response, look if the data corresponds
+            # to an action
+            output = self.find_action(
+                data, self._plugin_manager.get_plugins().keys())
         return output
 
     def find_action(self, data, actions):
@@ -147,7 +152,8 @@ class Jarvis(CmdInterpreter, object):
             words_remaining = data.split()  # this will help us to stop the iteration
             for word in words:
                 words_remaining.remove(word)
-                # For the 'near' keyword, the words before 'near' are also needed
+                # For the 'near' keyword, the words before 'near' are also
+                # needed
                 if word == "near":
                     initial_words = words[:words.index('near')]
                     output = word + " " +\
@@ -160,14 +166,18 @@ class Jarvis(CmdInterpreter, object):
                 break
         return output
 
-    def executor(self):
+    def executor(self, command):
         """
-        This method is opening a terminal session with the user.
+        If command is not empty, we execute it and terminate.
+        Else, this method opens a terminal session with the user.
         We can say that it is the core function of this whole class
         and it joins all the function above to work together like a
         clockwork. (Terminates when the user send the "exit", "quit"
         or "goodbye command")
         :return: Nothing to return.
         """
-        self.speak()
-        self.cmdloop(self.first_reaction_text)
+        if command:
+            self.execute_once(command)
+        else:
+            self.speak()
+            self.cmdloop(self.first_reaction_text)

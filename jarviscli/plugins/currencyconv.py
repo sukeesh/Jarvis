@@ -1,11 +1,9 @@
 import os
 import csv
 from decimal import Decimal
-from six.moves import input
 from forex_python.bitcoin import BtcConverter
 from forex_python.converter import CurrencyRates
 from plugin import plugin, require
-from utilities.GeneralUtilities import get_float
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
@@ -17,12 +15,13 @@ class Currencyconv():
     Convert an amount of money from a currency to another.
     -- Type currencyconv, press enter and follow the instructions!
     """
+
     def __call__(self, jarvis, s):
         currencies = self.find_currencies()
 
-        amount = get_float('Enter an amount: ')
-        from_currency = self.get_currency('Enter from which currency: ', currencies)
-        to_currency = self.get_currency('Enter to which currency: ', currencies)
+        amount = jarvis.input_number('Enter an amount: ')
+        from_currency = self.get_currency(jarvis, 'Enter from which currency: ', currencies)
+        to_currency = self.get_currency(jarvis, 'Enter to which currency: ', currencies)
 
         self.currencyconv(jarvis, amount, from_currency, to_currency)
 
@@ -41,7 +40,8 @@ class Currencyconv():
             result = b.convert_btc_to_cur(Decimal(amount), to)
         else:
             result = c.convert(fr, to, Decimal(amount))
-        outputText = str(amount) + " " + fr + " are equal to " + str(result) + " " + to
+        outputText = str(amount) + " " + fr + \
+            " are equal to " + str(result) + " " + to
         jarvis.say(outputText)
 
     def find_currencies(self):
@@ -54,14 +54,14 @@ class Currencyconv():
             mydict = {r.upper(): row[2] for row in reader for r in row[0:3]}
         return mydict
 
-    def get_currency(self, prompt, currencies):
+    def get_currency(self, jarvis, prompt, currencies):
         """
         get_currency checks if the input the user gave is valid based
         on the dictionary of find_currencies
         """
 
         while True:
-            c = input(prompt).upper()
+            c = jarvis.input(prompt).upper()
             if c in currencies:
                 return currencies[c]
             elif c == "show help".upper():

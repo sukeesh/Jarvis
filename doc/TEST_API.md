@@ -15,6 +15,13 @@ Works for both callable classes or methods.
 
 Adds method run(string) - which execute plugin using mocked api.
 
+## queue_input
+```python
+PluginTest.queue_input(self, msg)
+```
+
+Queue msg to be returned by 'jarvis.input()'
+
 ## histroy_call
 ```python
 PluginTest.histroy_call(self)

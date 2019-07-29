@@ -3,7 +3,6 @@ import re
 import sympy
 
 from colorama import Fore
-from six.moves import input
 
 from plugin import alias, plugin
 
@@ -69,20 +68,27 @@ def equations(jarvis, term):
     [{x: -9, y: 1, z: 77}, {x: 1, y: 11, z: 17}]
 
     """
-    a, b, c, d, e, f, g, h, i, j, k, l, m = sympy.symbols('a,b,c,d,e,f,g,h,i,j,k,l,m')
-    n, o, p, q, r, s, t, u, v, w, x, y, z = sympy.symbols('n,o,p,q,r,s,t,u,v,w,x,y,z')
+    a, b, c, d, e, f, g, h, i, j, k, l, m = sympy.symbols(
+        'a,b,c,d,e,f,g,h,i,j,k,l,m')
+    n, o, p, q, r, s, t, u, v, w, x, y, z = sympy.symbols(
+        'n,o,p,q,r,s,t,u,v,w,x,y,z')
 
     equations = []
     count = 1
-    user_input = input('{}. Equation: '.format(count))
+    user_input = jarvis.input('{}. Equation: '.format(count))
     while user_input != '':
         count += 1
         user_input = format_expression(user_input)
         user_input = remove_equals(jarvis, user_input)
         equations.append(user_input)
-        user_input = input('{}. Equation: '.format(count))
+        user_input = jarvis.input('{}. Equation: '.format(count))
 
-    calc(jarvis, term, calculator=lambda expr: sympy.solve(equations, dict=True))
+    calc(
+        jarvis,
+        term,
+        calculator=lambda expr: sympy.solve(
+            equations,
+            dict=True))
 
 
 @plugin('factor')
@@ -150,7 +156,8 @@ def limit(jarvis, s):
             if token[1:].isnumeric():
                 limit_to.append(int(token[1:]))
             else:
-                jarvis.say("Error: {} Not a number".format(token[1:]), Fore.RED)
+                jarvis.say("Error: {} Not a number".format(
+                    token[1:]), Fore.RED)
         else:
             term += token
 
@@ -161,8 +168,10 @@ def limit(jarvis, s):
     x = sympy.Symbol('x')
 
     # infinity:
-    jarvis.say("lim ->  ∞\t= {}".format(try_limit(term, x, +sympy.S.Infinity)), Fore.BLUE)
-    jarvis.say("lim -> -∞\t= {}".format(try_limit(term, x, -sympy.S.Infinity)), Fore.BLUE)
+    jarvis.say("lim ->  ∞\t= {}".format(try_limit(term,
+                                                  x, +sympy.S.Infinity)), Fore.BLUE)
+    jarvis.say("lim -> -∞\t= {}".format(try_limit(term,
+                                                  x, -sympy.S.Infinity)), Fore.BLUE)
 
     for limit in limit_to:
         limit_plus = try_limit(term, x, limit, directory="+")
@@ -263,7 +272,8 @@ def curvesketch(jarvis, s):
         curve sketch y=1/3x**3-2x**2+3x
     """
     if len(s) == 0:
-        jarvis.say("Missing parameter: function (e.g. call 'curve sketch y=x**2+10x-5')")
+        jarvis.say(
+            "Missing parameter: function (e.g. call 'curve sketch y=x**2+10x-5')")
         return
 
     def section(jarvis, headline):

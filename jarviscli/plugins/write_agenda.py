@@ -9,9 +9,9 @@ def write_agenda(jarvis, s):
     mydict = {}
 
     while(exit):
-        event_title = input("Write down the event title: ")
-        event_description = input("Write down the event description: ")
-        event_option = input("Anything more?(y/n): ")
+        event_title = jarvis.input("Write down the event title: ")
+        event_description = jarvis.input("Write down the event description: ")
+        event_option = jarvis.input("Anything more?(y/n): ")
         mydict[event_title] = event_description
 
         if(event_option == 'n'):
@@ -38,5 +38,5 @@ def read_agenda(jarvis, s):
         for row in reader:
             print(row)
         f.close()
-    except:
+    except BaseException:
         print('There is not an agenda')

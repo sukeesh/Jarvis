@@ -1,7 +1,6 @@
 from plugin import plugin, require
 from googletrans import Translator
 from googletrans.constants import LANGCODES, LANGUAGES, SPECIAL_CASES
-from six.moves import input
 
 
 @require(network=True)
@@ -12,27 +11,33 @@ def translate(jarvis, s):
     """
 
     jarvis.say('\nEnter source language ')
-    srcs = input().lower()
-    while (srcs not in LANGUAGES) and (srcs not in SPECIAL_CASES) and (srcs not in LANGCODES):
+    srcs = jarvis.input().lower().strip()
+    while (
+        srcs not in LANGUAGES) and (
+        srcs not in SPECIAL_CASES) and (
+            srcs not in LANGCODES):
         if srcs in SPECIAL_CASES:
             srcs = SPECIAL_CASES[srcs]
         elif srcs in LANGCODES:
             srcs = LANGCODES[srcs]
         else:
             jarvis.say("\nInvalid source language\nEnter again")
-            srcs = input().lower()
+            srcs = jarvis.input().lower()
     jarvis.say('\nEnter destination language ')
-    des = input().lower()
-    while (des not in LANGUAGES) and (des not in SPECIAL_CASES) and (des not in LANGCODES):
+    des = jarvis.input().lower().strip()
+    while (
+        des not in LANGUAGES) and (
+        des not in SPECIAL_CASES) and (
+            des not in LANGCODES):
         if des in SPECIAL_CASES:
             des = SPECIAL_CASES[des]
         elif des in LANGCODES:
             des = LANGCODES[des]
         else:
             jarvis.say("\nInvalid destination language\nEnter again")
-            des = input().lower()
+            des = jarvis.input().lower()
     jarvis.say('\nEnter text ')
-    tex = input()
+    tex = jarvis.input()
     translator = Translator()
     result = translator.translate(tex, dest=des, src=srcs)
     result = u"""

@@ -1,5 +1,4 @@
 import nltk
-from six.moves import input
 from nltk.corpus import wordnet
 from plugin import plugin
 
@@ -13,7 +12,7 @@ def dictionary(jarvis, s):
     """
     if len(s) == 0:
         jarvis.say('\nEnter word')
-        word = input()
+        word = jarvis.input()
     else:
         word = s
 
@@ -43,7 +42,7 @@ def dictionary(jarvis, s):
     def input_detail_id():
         jarvis.say("")
         synlen = len(syns)
-        detail_id = input("Details of meaning (1-{}): ? ".format(synlen))
+        detail_id = jarvis.input("Details of meaning (1-{}): ? ".format(synlen))
         if detail_id == '':
             return None
 
@@ -62,7 +61,8 @@ def dictionary(jarvis, s):
     while detail_id is not None:
         meaning = syns[detail_id - 1]
 
-        synonyms = [synonym for synonym in meaning.lemma_names() if synonym != word]
+        synonyms = [synonym for synonym in meaning.lemma_names()
+                    if synonym != word]
         examples = meaning.examples()
 
         antonyms = set()

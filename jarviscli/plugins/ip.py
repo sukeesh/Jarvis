@@ -2,14 +2,16 @@ from os import system
 from colorama import Fore
 
 from utilities.GeneralUtilities import executable_exists
-from plugin import plugin
+from plugin import plugin, require, UNIX
 
 
+@require(platform=UNIX)
 @plugin('ip')
 class IP():
     """
     Display local and public ip address
     """
+
     def __init__(self):
         self._local_ip = """ifconfig | grep -Eo 'inet (addr:)?([0-9]*\\.){3}[0-9]*' |
                     grep -Eo '([0-9]*\\.){3}[0-9]*' | grep -v '127.0.0.1'"""

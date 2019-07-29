@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import Jarvis
 import colorama
+from sys import argv
 
 
 def main():
@@ -8,7 +9,8 @@ def main():
     colorama.init()
     # start Jarvis
     jarvis = Jarvis.Jarvis()
-    jarvis.executor()
+    command = " ".join(argv[1:]).strip()
+    jarvis.executor(command)
 
 
 if __name__ == '__main__':

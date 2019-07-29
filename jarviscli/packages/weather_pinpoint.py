@@ -28,15 +28,17 @@ def main(memory, self, s):
         loc = str(location)
         city = mapps.get_location()['city']
         if city != loc:
-            print_say("It appears you are in {CITY}. But you set your location to {LOC}"
-                      .format(CITY=city, LOC=loc), self, Fore.RED)
+            print_say(
+                "It appears you are in {CITY}. But you set your location to {LOC}" .format(
+                    CITY=city, LOC=loc), self, Fore.RED)
             print_say("Do you want weather for {CITY} instead? (y/n)"
                       .format(CITY=city), self, Fore.RED)
             i = input()
             if i == 'y' or i == 'yes':
                 try:
-                    print_say("Would you like to set {CITY} as your new location? (y/n)"
-                              .format(CITY=city), self, Fore.RED)
+                    print_say(
+                        "Would you like to set {CITY} as your new location? (y/n)" .format(
+                            CITY=city), self, Fore.RED)
                     i = input()
                     if i == 'y' or i == 'yes':
                         memory.update_data('city', city)
@@ -45,7 +47,7 @@ def main(memory, self, s):
                         umbrella.main(city)
                     else:
                         mapps.weather(city)
-                except:
+                except BaseException:
                     print_say("I couldn't locate you", self, Fore.RED)
             else:
                 try:
@@ -53,7 +55,7 @@ def main(memory, self, s):
                         umbrella.main(loc)
                     else:
                         mapps.weather(loc)
-                except:
+                except BaseException:
                     print_say("I couldn't locate you", self, Fore.RED)
         else:
             try:
@@ -61,5 +63,5 @@ def main(memory, self, s):
                     umbrella.main(loc)
                 else:
                     mapps.weather(loc)
-            except:
+            except BaseException:
                 print_say("I couldn't locate you", self, Fore.RED)

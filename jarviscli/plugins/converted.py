@@ -1,7 +1,6 @@
 """
 Plugins not fully converted but simply "wrapped" as plugins.
 """
-from six.moves import input
 from packages import (directions_to, forecast, mapps, near_me,
                       timeIn, weather_pinpoint, weatherIn)
 
@@ -97,7 +96,7 @@ def do_update(jarvis, s):
     loc_str = str(location)
     jarvis.say("Your current location is set to " + loc_str)
     jarvis.say("What is your new location?")
-    i = input()
+    i = jarvis.input()
     jarvis.update_data('city', i)
 
 

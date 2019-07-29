@@ -10,6 +10,7 @@ class Tempconv():
     Convert temperature from Fahrenheit to Celsius and vice versa
     Examples: 32f, 18C, -20F, -8c, 105.4F, -10.21C
     """
+
     def __call__(self, jarvis, s):
         # Pass the input string to the regex validation function.
         if self.temp_valid_regex(s):
@@ -17,7 +18,9 @@ class Tempconv():
 
         # Print an error if the input string fails the regex test.
         else:
-            jarvis.say("I'm sorry, invalid input. Please see \"help tempconv\" for syntax.", Fore.RED)
+            jarvis.say(
+                "I'm sorry, invalid input. Please see \"help tempconv\" for syntax.",
+                Fore.RED)
 
     def temp_valid_regex(self, s):
         """Validate the input string using regex and return a boolean for validity"""

@@ -3,7 +3,7 @@ from platform import architecture, dist, release, mac_ver
 from platform import system as sys
 from colorama import Fore, Style
 
-from plugin import LINUX, MACOS, PYTHON2, PYTHON3, plugin, require
+from plugin import LINUX, MACOS, WINDOWS, PYTHON2, PYTHON3, plugin, require
 
 
 @require(platform=MACOS, native="pmset")
@@ -24,7 +24,11 @@ def screen_off__LINUX(jarvis, s):
 @plugin('os')
 def Os__MAC(jarvis, s):
     """Displays information about your operating system"""
-    jarvis.say(Style.BRIGHT + '[!] Operating System Information' + Style.RESET_ALL, Fore.BLUE)
+    jarvis.say(
+        Style.BRIGHT
+        + '[!] Operating System Information'
+        + Style.RESET_ALL,
+        Fore.BLUE)
     jarvis.say('[*] Kernel: ' + sys(), Fore.GREEN)
     jarvis.say('[*] Kernel Release Version: ' + release(), Fore.GREEN)
     jarvis.say('[*] macOS System version: ' + mac_ver()[0], Fore.GREEN)
@@ -33,7 +37,7 @@ def Os__MAC(jarvis, s):
             jarvis.say('[*] ' + _, Fore.GREEN)
 
 
-@require(platform=LINUX)
+@require(platform=[LINUX, WINDOWS])
 @plugin('os')
 def Os__LINUX(jarvis, s):
     """Displays information about your operating system"""
@@ -65,6 +69,13 @@ def systeminfo__PY3_MAC(jarvis, s):
 def systeminfo__PY2(jarvis, s):
     """Display system information with distribution logo"""
     os.system("screenfetch")
+
+
+@require(platform=WINDOWS)
+@plugin('systeminfo')
+def systeminfo_win(jarvis, s):
+    """Display system infomation"""
+    os.system("systeminfo")
 
 
 @require(native="free")
