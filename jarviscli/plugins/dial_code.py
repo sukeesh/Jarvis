@@ -6,7 +6,7 @@ FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 @alias('phone code of')
 @plugin('dial code of')
-class PhoneCode:
+class DialCode:
     """
     Prints the dial code of the country
     Usage: dial code of <COUNTRY NAME>
