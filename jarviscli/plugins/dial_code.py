@@ -1,6 +1,7 @@
 from plugin import plugin, alias
 import os
 import json
+from colorama import Fore
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
@@ -13,11 +14,13 @@ class DialCode:
     Alias(es): phone code of
     """
     def __call__(self, jarvis, s):
+        # Call handle_input() function wich returns the code 
+        # (or False if there is no such country)
         code = self.handle_input(s)
         if code:
-            jarvis.say('Dial code is: ' + code)
+            jarvis.say(Fore.GREEN + 'Dial code is ' + Fore.WHITE + code)
         else:
-            jarvis.say("Can't find code for contry: '" + s + "'")
+            jarvis.say(Fore.RED + "Can't find code for country " + Fore.WHITE + "'" + s + "'")
 
     def handle_input(self, country):
         
