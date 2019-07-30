@@ -1,11 +1,12 @@
 from plugin import plugin, require
+from utilities.GeneralUtilities import IS_WIN
 import os
 import sys
 import requests
 import json
 import base64
 import glob
-if sys.platform == 'win32':
+if IS_WIN:
     from pyreadline import Readline
     readline = Readline()
 else:
