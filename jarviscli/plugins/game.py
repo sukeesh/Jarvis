@@ -75,8 +75,15 @@ def bulls_and_cows(jarvis, s):
                 if guess_num == 'q':
                     jarvis.say(Fore.CYAN + 'Thank you for playing!')
                     return
+
+                try:
+                    guess_num = int(guess_num)
+                except ValueError:
+                    jarvis.say(Fore.RED + 'Invalid guess! ' + Fore.RESET + '(should be a number)')
+                    continue
+
                 tries += 1
-                guess_num = int(guess_num)
+
                 cows = int(0)
                 bulls = int(0)
                 cows, bulls = check(
