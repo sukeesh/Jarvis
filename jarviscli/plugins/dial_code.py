@@ -26,7 +26,7 @@ class DialCode:
             jarvis.say(Fore.RED + "Can't find code for country "
                                 + Fore.WHITE + "'" + s + "'")
             choice = jarvis.input(Fore.GREEN + 'Print avaliable countries?'
-                                      + Fore.WHITE + ' (y/N): ')
+                                  + Fore.WHITE + ' (y/N): ')
 
             if choice in ['y', 'Y']:
                 # Open the file with dial codes
