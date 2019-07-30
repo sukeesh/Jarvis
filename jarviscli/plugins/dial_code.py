@@ -25,7 +25,7 @@ class DialCode:
             # Ask whether to print all available countries if False
             jarvis.say(Fore.RED + "Can't find code for country "
                                 + Fore.WHITE + "'" + s + "'")
-            choice = input(Fore.GREEN + 'Print avaliable countries?'
+            choice = jarvis.input(Fore.GREEN + 'Print avaliable countries?'
                                       + Fore.WHITE + ' (y/N): ')
 
             if choice in ['y', 'Y']:
@@ -35,10 +35,12 @@ class DialCode:
 
                 data = json.loads(codes_file.read())
 
+                all_countries = ''
                 for i in data:
-                    print(i["country_name"] + ' * ', end='')
+                    all_countries += i["country_name"]
+                    all_countries += ' * '
 
-                print()
+                jarvis.say(all_countries)
 
     def handle_input(self, country):
 
