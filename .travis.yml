@@ -1,14 +1,13 @@
 language: python
+cache: pip
 matrix:
   include:
     - os: linux
       python: 2.7
-      cache: pip
       env: TOXENV=py27
     - os: osx
       osx_image: xcode9.3
       language: generic
-      cache: pip
       sudo: required
       env: TOXENV=py27
     - os: windows
@@ -21,11 +20,9 @@ matrix:
       dist: xenial
       sudo: true
       python: 3.7
-      cache: pip
       env: TOXENV=py37
     - os: osx
       language: generic
-      cache: pip
       sudo: required
       env: TOXENV=py37
     - os: windows
