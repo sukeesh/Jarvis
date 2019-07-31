@@ -7,7 +7,9 @@ import distutils.spawn
 
 
 MACOS = 'darwin'
+WIN = 'win32'
 IS_MACOS = sys.platform == MACOS
+IS_WIN = sys.platform == WIN
 
 
 def wordIndex(data, word):

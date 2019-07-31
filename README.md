@@ -16,6 +16,10 @@ Run **Jarvis** from anywhere by command `jarvis`
 
 On Mac OS X run `source setup.sh`
 
+On Windows run `setup.bat`
+
+**NOTE: Jarvis is not fully ported to windows yet, and has only basic functionality. Jarvis's output is also a bit messy!**
+
 You can start by typing `help` within the Jarvis command line to check what Jarvis can do for you.
 
 
@@ -99,3 +103,4 @@ See also the list of [contributors](https://github.com/sukeesh/Jarvis/graphs/con
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
