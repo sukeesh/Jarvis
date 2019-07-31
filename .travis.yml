@@ -1,8 +1,5 @@
 language: python
 matrix:
-  allow_failures:
-    - os: osx
-    - os: windows
   include:
     - os: linux
       python: 2.7
