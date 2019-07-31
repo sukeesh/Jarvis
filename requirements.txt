@@ -19,7 +19,7 @@ pypiwin32; sys_platform == 'win32'
 pyreadline; sys_platform == 'win32'
 python-dateutil
 pytimeparse
-pyttsx3
+pyttsx3; sys_platform != 'darwin'
 pywin32; sys_platform == 'win32'
 requests[security]
 six
