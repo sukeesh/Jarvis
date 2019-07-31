@@ -1,14 +1,10 @@
 # !!! This uses the https://newsapi.org/ api. TO comply with the TOU
 # !!! we must link back to this site whenever we display results.
 import json
+import requests
 import webbrowser
-from six import PY3
 from colorama import Fore
 from plugin import plugin, require
-if PY3:
-    import urllib.request
-else:
-    import urllib
 
 
 @require(network=True)
@@ -225,25 +221,17 @@ class News:
 
     def _get(self, jarvis, url):
         """fetch a webpage"""
-        try:
-            if PY3:
-                response = urllib.request.urlopen(url)
-            else:
-                response = urllib.urlopen(url)
-        except urllib.error.HTTPError as err:
-            # Catch invalid key(Unauthorized) error
-            if err.code == 401:
+        response = requests.get(url)
+        if response.status_code == requests.codes.ok:
+            data = json.loads(response.text)
+            return data
+        else:
+            if response.status_code == 401:
                 jarvis.say("API key not valid", Fore.RED)
-                return None
-            # Catch some other errors
             else:
                 jarvis.say("An error occured: Error code: "
-                           + str(err.code), Fore.RED)
-                return None
-
-        # Load json
-        data = json.loads(response.read().decode('utf-8'))
-        return data
+                           + response.raise_for_status(), Fore.RED)
+            return None
 
     def parse_articles(self, data, jarvis):
         article_list = {}
