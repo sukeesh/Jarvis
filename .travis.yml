@@ -2,34 +2,38 @@ language: python
 cache: pip
 matrix:
   include:
-    - os: linux
+    - name: "Python 2.7 on Linux"
+      os: linux
       python: 2.7
       env: TOXENV=py27
-    - os: osx
+    - name: "Python 2.7 on MacOS"
+      os: osx
       osx_image: xcode9.3
       language: generic
       sudo: required
       env: TOXENV=py27
-    - os: windows
+    - name: "Python 2.7 on Windows"
+      os: windows
       language: shell
       before_install:
         - choco install python2
-        - python -m pip install --upgrade pip
       env: PATH=/c/Python27:/c/Python27/Scripts:$PATH
-    - os: linux
+    - name: "Python 3.7 on Linux"
+      os: linux
       dist: xenial
       sudo: true
       python: 3.7
       env: TOXENV=py37
-    - os: osx
+    - name: "Python 3.7 on MacOS"
+      os: osx
       language: generic
       sudo: required
       env: TOXENV=py37
-    - os: windows
+    - name: "Python 3.7 on Windows"
+      os: windows
       language: shell
       before_install:
         - choco install python
-        - python -m pip install --upgrade pip
       env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
 install:
   - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py27" ]; then
