@@ -32,7 +32,8 @@ def create_voice():
 
 class VoiceMac():
     def text_to_speech(self, speech):
-        system('say {}'.format(speech))
+        speech = speech.replace("'", "\\'")
+        system('say $\'{}\''.format(speech))
 
 
 class VoiceLinux():
