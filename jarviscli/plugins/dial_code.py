@@ -75,13 +75,11 @@ class CountryByhDC:
         countries = self.handle_input(s)
 
         if countries:
-
+            # String from countries list
             countries_str = '; '.join(countries)
-
             jarvis.say(Fore.GREEN + countries_str)
         else:
-            # Ask whether to print all available countries if False
-            jarvis.say(Fore.RED + "Can't find country with code '" + Fore.WHITE + "'" + s + "'")
+            jarvis.say(Fore.RED + "Can't find country with code " + Fore.WHITE + "'" + s + "'")
 
     def handle_input(self, code):
         # Open the file with dial codes
@@ -93,9 +91,9 @@ class CountryByhDC:
         codes_file.close()
 
         # Compare user's input to each "country_name" in json
-        # and find necessary country
-        # Use list because there can be countries with similar dial codes
-        # (Canada & United States)
+        # and find necessary countries
+        # Use LIST because there can be countries with similar dial codes
+        # (Canada & United States, etc.)
         countries = []
         for i in data:
             if code in [i["dial_code"].lower(), i["dial_code"].lower().replace('+', '')]:
