@@ -12,7 +12,7 @@ FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 class DialCode:
     """
     Get dial code of a country
-    Usage: dial code of <COUNTRY NAME>
+    Usage: dial code of <COUNTRY NAME/ COUNTRY CODE>
     Alias(es): phone code of
                dialing code of
     """
@@ -57,7 +57,7 @@ class DialCode:
         # Compare user's input to each "country_name" in json
         # and find necessary code
         for i in data:
-            if country == i["country_name"].lower():
+            if country in [i["country_name"].lower(), i["country_code"].lower()]:
                 code = i["dial_code"]
                 return(code)
 
