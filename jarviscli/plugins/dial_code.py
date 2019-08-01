@@ -6,13 +6,15 @@ from colorama import Fore
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
-@alias('phone code of')
+@alias('phone code of',
+       'dialing code of')
 @plugin('dial code of')
 class DialCode:
     """
     Get dial code of a country
     Usage: dial code of <COUNTRY NAME>
     Alias(es): phone code of
+               dialing code of
     """
     def __call__(self, jarvis, s):
         # Call handle_input() function wich returns the code
@@ -63,13 +65,20 @@ class DialCode:
 
 
 @alias('country with phone code',
-       'countries with dial code', 'countries with phone code')
+       'countries with dial code',
+       'countries with phone code',
+       'country with dialing code',
+       'countries with dialing code')
 @plugin('country with dial code')
 class CountryByhDC:
     """
     Get country by dial code
     Usage: country with dial code <CODE>
     Alias(es): country with phone code
+               countries with dial code
+               countries with phone code
+               country with dialing code
+               countries with dialing code
     """
     def __call__(self, jarvis, s):
         countries = self.handle_input(s)
