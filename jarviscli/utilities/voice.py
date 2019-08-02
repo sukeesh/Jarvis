@@ -65,11 +65,15 @@ class VoiceLinux():
         This method converts a text to speech.
         :param speech: The text we want Jarvis to generate as audio
         :return: Nothing to return.
+
+        A bug in pyttsx3 causes segfault if speech is '', so used 'if' to avoid that.
         """
-        self.create()
-        self.engine.say(speech)
-        self.engine.runAndWait()
-        self.destroy()
+
+        if speech != '':
+            self.create()
+            self.engine.say(speech)
+            self.engine.runAndWait()
+            self.destroy()
 
 
 class VoiceWin():
