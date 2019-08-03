@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ChatJS</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+    <textarea id="history" cols="150"></textarea>
+    <form id="chat">
+        <input type="text" id="msg_text" name="msg_text" />
+        <input type="button" value="Send!" onclick="sendMessage()" />
+    </form>
+
+    <script type="text/javascript">
+        function sendMessage() {
+            var textoUsuario = $('#msg_text')[0].value;
+            var data = JSON.stringify({
+                "text": textoUsuario
+            });
+
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = false;
+
+            xhr.addEventListener("readystatechange", function() {
+                if (this.readyState === 4) {
+                    $('#history')[0].innerHTML = $('#history')[0].innerHTML + "\n " + this.responseText;
+                    $('#msg_text')[0].value = "";
+                }
+            });
+
+            xhr.open("POST", "http://localhost:3000/conversation");
+            xhr.setRequestHeader("content-type", "application/json");
+
+            xhr.send(data);
+        }
+    </script>
+</body>
+
+</html>

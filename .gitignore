@@ -19,3 +19,7 @@ node_modules/
 ghostdriver.log
 jarvis
 jarviscli/data/key_timein.json
+myinfo\.csv
+
+
+\.vscode/
