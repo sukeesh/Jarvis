@@ -1,6 +1,7 @@
 import signal
 from cmd import Cmd
 from functools import partial
+import sys
 import traceback
 import sys
 
@@ -227,7 +228,12 @@ class CmdInterpreter(Cmd):
 
         self.memory = Memory()
         self.scheduler = schedule.Scheduler()
-        self.speech = create_voice()
+        # what if the platform does not have any engines, travis doesn't have sapi5 acc to me
+        try:
+            self.speech = create_voice()
+        except Exception as e:
+            print_say("Voice not supported", self, Fore.RED)
+            print_say(str(e), self, Fore.RED)
 
         self.fixed_responses = {"what time is it": "clock",
                                 "where am i": "pinpoint",

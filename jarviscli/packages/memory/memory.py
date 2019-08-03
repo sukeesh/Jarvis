@@ -85,7 +85,7 @@ class Memory:
 
     def del_data(self, key):
         try:
-            del self.data['key']
+            del self.data[key]
         except KeyError:
             pass
 

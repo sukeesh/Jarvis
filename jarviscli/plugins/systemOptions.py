@@ -3,7 +3,7 @@ from platform import architecture, dist, release, mac_ver
 from platform import system as sys
 from colorama import Fore, Style
 
-from plugin import LINUX, MACOS, PYTHON2, PYTHON3, plugin, require
+from plugin import LINUX, MACOS, WINDOWS, PYTHON2, PYTHON3, plugin, require
 
 
 @require(platform=MACOS, native="pmset")
@@ -37,7 +37,7 @@ def Os__MAC(jarvis, s):
             jarvis.say('[*] ' + _, Fore.GREEN)
 
 
-@require(platform=LINUX)
+@require(platform=[LINUX, WINDOWS])
 @plugin('os')
 def Os__LINUX(jarvis, s):
     """Displays information about your operating system"""
@@ -69,6 +69,13 @@ def systeminfo__PY3_MAC(jarvis, s):
 def systeminfo__PY2(jarvis, s):
     """Display system information with distribution logo"""
     os.system("screenfetch")
+
+
+@require(platform=WINDOWS)
+@plugin('systeminfo')
+def systeminfo_win(jarvis, s):
+    """Display system infomation"""
+    os.system("systeminfo")
 
 
 @require(native="free")

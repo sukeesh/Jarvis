@@ -1,36 +1,47 @@
 language: python
+cache: pip
 matrix:
-  allow_failures:
-    - os: osx
   include:
-    - os: linux
+    - name: "Python 2.7 on Linux"
+      os: linux
       python: 2.7
-      cache: pip
       env: TOXENV=py27
-    - os: osx
+    - name: "Python 2.7 on MacOS"
+      os: osx
       osx_image: xcode9.3
       language: generic
-      cache: pip
       sudo: required
       env: TOXENV=py27
-    - os: linux
+    - name: "Python 2.7 on Windows"
+      os: windows
+      language: shell
+      before_install:
+        - choco install python2
+      env: PATH=/c/Python27:/c/Python27/Scripts:$PATH
+    - name: "Python 3.7 on Linux"
+      os: linux
       dist: xenial
       sudo: true
       python: 3.7
-      cache: pip
       env: TOXENV=py37
-    - os: osx
+    - name: "Python 3.7 on MacOS"
+      os: osx
       language: generic
-      cache: pip
       sudo: required
       env: TOXENV=py37
+    - name: "Python 3.7 on Windows"
+      os: windows
+      language: shell
+      before_install:
+        - choco install python
+      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
 install:
   - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py27" ]; then
-      sudo -H pip2 install -r requirements.txt;
+      sudo -H pip2 install --upgrade -r requirements.txt;
     elif [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py37" ]; then
-      sudo -H pip3 install -r requirements.txt;
+      sudo -H pip3 install --upgrade -r requirements.txt;
     else
-      pip install -r requirements.txt;
+      pip install --upgrade -r requirements.txt;
     fi
 script:
   - cd $TRAVIS_BUILD_DIR/

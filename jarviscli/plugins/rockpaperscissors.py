@@ -78,7 +78,7 @@ class rockpaperscissors():
                 jarvis.say("\t" + Back.RED + "Jarvis WIN" + Back.RESET)
                 i = i + 1
             else:
-                jarvis.say("\t" + Back.WHITE + "TIE" + Back.RESET)
+                jarvis.say("\t" + Back.MAGENTA + "TIE" + Back.RESET)
                 i = i + 1
 
         jarvis.say("")
