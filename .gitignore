@@ -9,6 +9,7 @@ build/
 env/
 *.DS_Store
 *.pyc
+*.log
 .idea/
 MANIFEST.in
 setup.cfg
@@ -17,5 +18,7 @@ jarviscli/packages/ghostdriver.log
 npm-debug.log
 node_modules/
 ghostdriver.log
+jarvis.bat
 jarvis
 jarviscli/data/key_timein.json
+myinfo\.csv

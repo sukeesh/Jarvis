@@ -2,9 +2,10 @@ from __future__ import print_function
 from colorama import Fore
 import os
 import sys
-from plugin import plugin
+from plugin import plugin, require, UNIX
 
 
+@require(platform=UNIX)
 @plugin('file organise')
 class File_Organise():
     """
