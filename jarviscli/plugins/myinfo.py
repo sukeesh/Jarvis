@@ -26,4 +26,3 @@ def myinfo(jarvis, s):
             print("I/O error")
     else:
         print('Nothing in myinfo')
-        
