@@ -3,10 +3,17 @@ const { NlpManager } = require('../../lib');
 const { NerManager } = require('node-nlp');
 const trainnlp = require('./train-nlp');
 const entitiesnlp = require('./entities-nlp');
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
 
 const EntityManager = new NerManager({ threshold: 0.95 });
 const threshold = 0.5;
 const nlpManager = new NlpManager({ languages: ['en'] });
+
+const args = process.argv.slice(2);
+const { documentJSDOM } = (new JSDOM(`index.html`)).window;
+//console.log(document)
+
 
 function say(message) {
     // eslint-disable-next-line no-console
@@ -16,12 +23,13 @@ function say(message) {
 (async() => {
     await trainnlp(nlpManager, say);
     await entitiesnlp(EntityManager, say);
-    say('Say something!');
+    say('Say something! use \'quit\' for exit');
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
         terminal: false,
     });
+
     rl.on('line', async line => {
         try {
             if (line.toLowerCase() === 'quit') {
