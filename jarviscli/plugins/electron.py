@@ -9,14 +9,14 @@ from subprocess import call
 @plugin("electron")
 def electron(jarvis, s):
     try:
-        ElectronThread = threading.Thread(target = launchElectron)
-        NodeThread = threading.Thread(target = callToNode)
+        ElectronThread = threading.Thread(target=launchElectron)
+        NodeThread = threading.Thread(target=callToNode)
         ElectronThread.start()
         NodeThread.start()
         NodeThread.join()
-        #ElectronThread.join()
-        #NodeThread.stop()
-        #ElectronThread.stop()
+        # ElectronThread.join()
+        # NodeThread.stop()
+        # ElectronThread.stop()
     except:
         print('GUI has been closed')
         try:
@@ -24,15 +24,17 @@ def electron(jarvis, s):
         except:
             print('Destroying threads')
 
+
 def launchElectron():
     # Open a browser for creating a Jarvis GUI with HTML,CSS and Javascript
     print("Loading...")
     pkg = npm_run('start')
 
+
 def callToNode():
     # Call to the Node chatbot
     cwd = os.getcwd() 
-    call(["node", cwd + "/examples/console-bot/"])   
+    call(["node", cwd + "/examples/console-bot/"])  
 
 class StoppableThread(threading.Thread):
     """Thread class with a stop() method. The thread itself has to check
