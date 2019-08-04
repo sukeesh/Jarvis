@@ -1,4 +1,5 @@
-import sys, os 
+import sys
+import os
 import threading
 import subprocess
 from plugin import plugin
@@ -33,8 +34,9 @@ def launchElectron():
 
 def callToNode():
     # Call to the Node chatbot
-    cwd = os.getcwd() 
-    call(["node", cwd + "/examples/console-bot/"])  
+    cwd = os.getcwd()
+    call(["node", cwd + "/examples/console-bot/"])
+
 
 class StoppableThread(threading.Thread):
     """Thread class with a stop() method. The thread itself has to check
