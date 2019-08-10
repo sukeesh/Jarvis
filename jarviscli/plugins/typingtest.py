@@ -18,6 +18,7 @@ class GameState (object):
     RUNNING = 1
     ENDED = 2
 
+
 default_text_color = '\033[97m'
 incorrect_color = '\033[91m'
 correct_color = '\033[92m'
@@ -34,7 +35,8 @@ screen."""
     def __init__(self):
         self.impl = _GetchUnix()
 
-    def __call__(self): return self.impl()
+    def __call__(self):
+        return self.impl()
 
 
 class _GetchUnix:
@@ -101,14 +103,14 @@ def get_text():
 
 
 def format_time(seconds):
-    new_minutes = int(seconds/60)
+    new_minutes = int(seconds / 60)
     new_seconds = int(seconds - new_minutes * 60)
 
     new_minutes = str(new_minutes)
     new_seconds = str(new_seconds)
 
-    new_minutes = '0'*(2-len(new_minutes)) + new_minutes
-    new_seconds = '0'*(2-len(new_seconds)) + new_seconds
+    new_minutes = '0' * (2 - len(new_minutes)) + new_minutes
+    new_seconds = '0' * (2 - len(new_seconds)) + new_seconds
 
     return new_minutes + ':' + new_seconds
 
@@ -169,7 +171,7 @@ def game_running():
 def game_end():
     info['state'] = GameState.ENDED
     wpm = info['words'] / ((total_time - info['time_left']) / 60)
-    print(default_text_color+'\n\nWords per minute - {}'.format(wpm))
+    print(default_text_color + '\n\nWords per minute - {}'.format(wpm))
     if(wpm >= 20):
         with open(os.path.join(FILE_PATH, "../data/typing_test_data.csv"),
                   mode='r') as file:
@@ -177,7 +179,7 @@ def game_end():
             for i in range(len(data)):
                 if int(data[i][0]) > int(wpm) and i != 0:
                     print('You are better than {}% of people!'
-                          .format(float(data[i-1][1]) * 100))
+                          .format(float(data[i - 1][1]) * 100))
                     break
 
 
