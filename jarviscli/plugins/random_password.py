@@ -11,7 +11,7 @@ def random_password(jarvis, s):
             string_length = int(jarvis.input("Enter password length: "))
             break
         except ValueError:
-            jarvis.say(Fore.RED + 'Only integers will be accepted')
+            jarvis.say('Only integers will be accepted', Fore.RED)
 
     prompt = 'Do you want special characters?(y/n): '
     password = string.ascii_letters + string.digits
@@ -21,13 +21,13 @@ def random_password(jarvis, s):
         try:
             user_input = jarvis.input(prompt)
         except ValueError:
-            jarvis.say(Fore.RED + "Sorry, I didn't understand that.")
+            jarvis.say("Sorry, I didn't understand that.", Fore.RED)
             continue
 
         if user_input == 'y':
             password += string.punctuation
         elif user_input != 'n':
-            jarvis.say(Fore.RED + "Sorry, your response is not valid.")
+            jarvis.say("Sorry, your response is not valid.", Fore.RED)
             continue
         break
 
