@@ -47,7 +47,7 @@ def bulls_and_cows(jarvis, s):
     jarvis.say('\tThe bull is "2", the cows are "4" and "1".')
     jarvis.say(Fore.CYAN + 'Lets start? Type "g" to start or "q" to quit:')
 
-    while(True):
+    while True:
         st = jarvis.input()
         if st == 'q':
             jarvis.say(
@@ -67,7 +67,7 @@ def bulls_and_cows(jarvis, s):
             jarvis.say(Fore.CYAN + 'Secret number was generated!')
 
             # loop while the secret number is found or user quits
-            while(True):
+            while True:
                 jarvis.say(
                     Fore.CYAN
                     + 'Enter your guess, please (type "q" to quit):')
