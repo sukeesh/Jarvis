@@ -34,25 +34,23 @@ def check(checker, guess_num, div, md, true_rank, cows, bulls):
 def bulls_and_cows(jarvis, s):
     """"""
     jarvis.say('')
-    jarvis.say(Fore.GREEN + 'Welcome to text game Bulls and Cows!\n')
-    jarvis.say(Fore.CYAN + 'Rules of the game:\n')
+    jarvis.say('Welcome to text game Bulls and Cows!\n', Fore.GREEN)
+    jarvis.say('Rules of the game:\n', Fore.CYAN)
     jarvis.say('* You should guess 4-digit number where all digits are different.')
     jarvis.say('* After each try you will receive the number of matches.')
     jarvis.say(
         '* If the matching digits are in their right positions, they are "bulls"')
     jarvis.say('* Otherwise, if in different positions, they are "cows".')
-    jarvis.say(Fore.CYAN + 'Example:')
+    jarvis.say('Example:', Fore.CYAN)
     jarvis.say(
         '\tSecret number: 4271\n\tYour try: 1234\n\tAnswer: 1 bull and 2 cows.')
     jarvis.say('\tThe bull is "2", the cows are "4" and "1".')
-    jarvis.say(Fore.CYAN + 'Lets start? Type "g" to start or "q" to quit:')
+    jarvis.say('Lets start? Type "g" to start or "q" to quit:', Fore.CYAN)
 
-    while(True):
+    while True:
         st = jarvis.input()
         if st == 'q':
-            jarvis.say(
-                Fore.CYAN
-                + 'Thank you for playing! New games are coming soon!')
+            jarvis.say('Thank you for playing! New games are coming soon!', Fore.CYAN)
             break
         else:
             tries = int(0)
@@ -64,16 +62,14 @@ def bulls_and_cows(jarvis, s):
             checker[b] = int(2)
             checker[c] = int(3)
             checker[d] = int(4)
-            jarvis.say(Fore.CYAN + 'Secret number was generated!')
+            jarvis.say('Secret number was generated!', Fore.CYAN)
 
             # loop while the secret number is found or user quits
-            while(True):
-                jarvis.say(
-                    Fore.CYAN
-                    + 'Enter your guess, please (type "q" to quit):')
+            while True:
+                jarvis.say('Enter your guess, please (type "q" to quit):', Fore.CYAN)
                 guess_num = jarvis.input()
                 if guess_num == 'q':
-                    jarvis.say(Fore.CYAN + 'Thank you for playing!')
+                    jarvis.say('Thank you for playing!', Fore.CYAN)
                     return
 
                 try:
@@ -102,8 +98,7 @@ def bulls_and_cows(jarvis, s):
                     + str(bulls)
                     + '\n')
                 if bulls == 4:
-                    jarvis.say(Fore.CYAN
-                               + 'Congratulations! Your guess is right:')
+                    jarvis.say('Congratulations! Your guess is right:', Fore.CYAN)
                     jarvis.say(
                         '\t'
                         + Fore.GREEN
@@ -118,6 +113,5 @@ def bulls_and_cows(jarvis, s):
                         + str(tries)
                         + Fore.CYAN
                         + ' tries.')
-                    jarvis.say(Fore.CYAN
-                               + 'Start a new game or quit? (Type "s" or "q"):')
+                    jarvis.say('Start a new game or quit? (Type "s" or "q"):', Fore.CYAN)
                     break

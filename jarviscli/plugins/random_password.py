@@ -1,41 +1,37 @@
 from plugin import plugin
 import random
 import string
+from colorama import Fore
 
 
 @plugin("random password")
 def random_password(jarvis, s):
-    stringFail = True
-
-    while(stringFail):
+    while True:
         try:
-            stringLength = int(jarvis.input("Enter password length: "))
-            stringFail = False
-        except BaseException:
-            print('Only integers will be accepted')
+            string_length = int(jarvis.input("Enter password length: "))
+            break
+        except ValueError:
+            jarvis.say('Only integers will be accepted', Fore.RED)
 
     prompt = 'Do you want special characters?(y/n): '
+    password = string.ascii_letters + string.digits
 
     """Checks if the input the user gave is valid(either y or n)"""
     while True:
         try:
             user_input = jarvis.input(prompt)
         except ValueError:
-            jarvis.say("\nSorry, I didn't understand that.")
+            jarvis.say("Sorry, I didn't understand that.", Fore.RED)
             continue
 
-        if (user_input != 'y') and (user_input != 'n'):
-            jarvis.say("\nSorry, your response is not valid.")
+        if user_input == 'y':
+            password += string.punctuation
+        elif user_input != 'n':
+            jarvis.say("Sorry, your response is not valid.", Fore.RED)
             continue
-        else:
-            break
-
-    if user_input == 'n':
-        password = string.ascii_letters + string.digits
-    else:
-        password = string.ascii_letters + string.digits + string.punctuation
+        break
 
     """Generate a random string of fixed length """
-    preText = 'Your random password is: '
-    print(preText + ''.join(random.choice(password)
-                            for _ in range(stringLength)))
+    pre_text = 'Your random password is: '
+    jarvis.say(pre_text + ''.join(random.choice(password)
+                                  for _ in range(string_length)))
