@@ -139,7 +139,9 @@ class Stock:
                 jarvis.say("Cannot find details at this moment.", Fore.RED)
             else:
                 for gainer in data['mostGainerStock']:
-                    jarvis.say("Ticker: " + gainer['ticker'] + " | Company: " + gainer['companyName'] + " | Price: " + str(gainer['price']) + " | Change: " + str(gainer['changes']) + " | Change %: " + str(gainer['changesPercentage']), Fore.GREEN)
+                    jarvis.say(gainer['ticker'] + " | " + gainer['companyName'], Fore.GREEN)
+                    jarvis.say("Price: " + str(gainer['price']) + " | Change: " + str(gainer['changes']), Fore.GREEN)
+                    jarvis.say("Percent gained: " + str(gainer['changesPercentage'])[1:-1] + "\n\n", Fore.GREEN)
         else:
             jarvis.say("Cannot get gainers list at the moment")
 
@@ -154,6 +156,8 @@ class Stock:
                 jarvis.say("Cannot find details at the moment.", Fore.RED)
             else:
                 for loser in data['mostLoserStock']:
-                    jarvis.say("Ticker: " + loser['ticker'] + " | Company: " + loser['companyName'] + " | Price: " + str(loser['price']) + " | Change: " + str(loser['changes']) + " | Change %: " + str(loser['changesPercentage']), Fore.GREEN)
+                    jarvis.say(loser['ticker'] + " | " + loser['companyName'], Fore.GREEN)
+                    jarvis.say("Price: " + str(loser['price']) + " | Change: " + str(loser['changes']), Fore.GREEN)
+                    jarvis.say("Percent lost: " + str(loser['changesPercentage'])[1:-1] + "\n\n", Fore.GREEN)
         else:
             jarvis.say("Cannot get losers list at the moment")
