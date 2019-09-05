@@ -104,6 +104,8 @@ python_is_python_2 = shell("python --version 2>&1 | grep -q 'Python 2.'", True).
 
 while True:
     requirement = user_input(requirements_failed)
+    print('')
+    print('')
     if requirement == 'exit':
         break
 
@@ -124,13 +126,18 @@ while True:
             cmd = "{} {}".format(package_manager, package)
 
             print("\nOur Guess how to install:\n>{}".format(cmd))
-    input('continue')
+    print('')
+    input('continue  ')
+    print('')
+    print('')
+    print('')
 
     if check_optional_requirement(requirement):
-        printlog('Success')
+        printlog('Success!')
         requirements_failed -= requirement
     else:
-        printlog('Sorry; looks like did not work')
+        printlog('Sorry; but looks like this did not work...')
+    print('')
 
 
 # write jarvis starter
@@ -154,7 +161,7 @@ selection = user_input(install_options)
 if selection == 0:
     os.system('sudo cp jarvis /usr/local/bin')
 elif selection == 1:
-    os.system('export PATH=\$PATH:{}" >> ~/.bashrc'.format(os.getcwd()))
+    os.system('export PATH=\\$PATH:{}" >> ~/.bashrc'.format(os.getcwd()))
 
 printlog('\n\nInstallation complete. Try unsing Jarvis!')
 if selection != 2:
