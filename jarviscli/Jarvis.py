@@ -111,7 +111,8 @@ class Jarvis(CmdInterpreter, object):
         """This method gets the data and assigns it to an action"""
         data = data.lower()
         # say command is better if data has punctuation marks
-        if "say" not in data:
+        # Hack!
+        if "say" not in data and "website" not in data:
             data = data.replace("?", "")
             data = data.replace("!", "")
             data = data.replace(".", "")

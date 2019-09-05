@@ -1,5 +1,7 @@
 import webbrowser
 import os
+import socket
+from urllib.parse import urlparse
 from plugin import plugin, require
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -39,6 +41,7 @@ class OpenWebsite:
         websites_csv = \
             open(os.path.join(FILE_PATH, "../data/websites.csv"), 'r')
         for website in websites_csv:
+            website = website.rstrip()  # remove newline
             information = website.split(',')
             if self.main_link == information[0]:
                 if self.complement:
@@ -54,34 +57,16 @@ class OpenWebsite:
         return False
 
     def verify_link(self):
-        if ((self.main_link[:8] != "https://" and
-             self.main_link[:7] != "http://" and
-             self.main_link[:3] != "www") or
-                ("com" not in self.main_link)):
-            return False
         self.fix_link()
+
+        domain = urlparse(self.main_link).netloc
+        try:
+            socket.getaddrinfo(domain, 80)
+        except socket.gaierror:
+            return False
+
         return True
 
     def fix_link(self):
-        """
-        When the links come as input they come without '.'
-        > open website www.google.com
-        What I get here:
-        wwwgooglecom
-
-        So this function get the link without '.' and add the '.'
-        """
-        if "www" in self.main_link:
-            splited_link = self.main_link.split('www', 1)
-            self.main_link = splited_link[0] + 'www.' + splited_link[1]
-
-        if self.main_link[:3] == "www":
-            self.main_link = "http://" + self.main_link
-
-        if "com" in self.main_link:
-            splited_link = self.main_link.split('com', 1)
-            self.main_link = ""
-            for index in range(len(splited_link) - 1):
-                self.main_link += splited_link[index]
-
-            self.main_link += ".com" + splited_link[len(splited_link) - 1]
+        if not self.main_link.startswith('http'):
+            self.main_link = "https://" + self.main_link
