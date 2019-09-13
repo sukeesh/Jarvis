@@ -61,7 +61,7 @@ RequestsSecurity = {
     "name": "Requests security",
     "pip": ['requests[security]'],
     "description": "Better/saver https",
-    "instruction": "More details: https://stackoverflow.com/questions/31811949/pip-install-requestssecurity-vs-pip-install-requests-difference"
+    "instruction": "https://stackoverflow.com/questions/31811949/pip-install-requestssecurity-vs-pip-install-requests-difference"
 }
 
 

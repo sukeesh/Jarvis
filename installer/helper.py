@@ -140,8 +140,6 @@ def shell(cmd, run_in_virtualenv=False):
         else:
             PRE_CMD = 'source env/bin/activate && '
 
-        #ret = os.system('{} &>> {}'.format(cmd, debug_log.name))
-
     try:
         subprocess.check_output("{}{}".format(PRE_CMD, cmd),
                                 shell=True, stderr=subprocess.STDOUT)
