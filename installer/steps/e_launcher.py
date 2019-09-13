@@ -10,6 +10,8 @@ if unix_windows.IS_WIN:
 CALL {JARVISPATH}\\env\\Scripts\\activate.bat
 python {JARVISPATH}\\jarviscli\\
     """.format(JARVISPATH=os.getcwd()))
+    section("FINISH")
+
     printlog("Installation Successful! Use 'jarvis' in cmd to start Jarvis!")
 else:
 

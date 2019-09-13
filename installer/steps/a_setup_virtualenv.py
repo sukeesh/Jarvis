@@ -14,7 +14,7 @@ Please install virtualenv!
 
 https://github.com/pypa/virtualenv
 
-{}""".format(VIRTUALENV_INSTALL_MSG))
+{}""".format(unix_windows.VIRTUALENV_INSTALL_MSG))
 
 # Make sure that not running in virtualenv
 if hasattr(sys, 'real_prefix'):
