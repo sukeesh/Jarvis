@@ -27,23 +27,34 @@ LinuxDistroRecognition = {
 
 PortAudio = {
     "name": "Voice Recorder",
-    "pip": ['SpeechRecognition', "pyaudio --global-option='build_ext' --global-option='-I/usr/local/include' --global-option='-L/usr/local/lib'"],
+    "pip": [
+        'SpeechRecognition',
+        "pyaudio --global-option='build_ext' --global-option='-I/usr/local/include' --global-option='-L/usr/local/lib'"],
     "package_guess": {
-        "macos": ['portaudio' 'portaudio'],
+        "macos": [
+            'portaudio'
+            'portaudio'],
         "linux": {
-            'redhat': ['python2-pyaudio python2-devel', 'python3-pyaudio python3-devel'],
-            'arch': ['python2-pyaudio', 'python-pyaudio'],
-            'gentoo': ['pyaudio', 'pyaudio'],
-            'suse': ['python-PyAudio python-devel', 'python3-PyAudio python3-devel'],
-            'debian': ['python-pyaudio python-dev', 'python3-pyaudio python3-dev']
-        }
-    },
+            'redhat': [
+                'python2-pyaudio python2-devel',
+                'python3-pyaudio python3-devel'],
+            'arch': [
+                'python2-pyaudio',
+                'python-pyaudio'],
+            'gentoo': [
+                'pyaudio',
+                'pyaudio'],
+            'suse': [
+                'python-PyAudio python-devel',
+                'python3-PyAudio python3-devel'],
+            'debian': [
+                'python-pyaudio python-dev',
+                'python3-pyaudio python3-dev']}},
     "description": "Required for voice control",
     "instruction": """\
 Please install python-binding 'pyaudio' manually."
 For more details go to the below link:
-https://people.csail.mit.edu/hubert/pyaudio/"""
-}
+https://people.csail.mit.edu/hubert/pyaudio/"""}
 
 
 RequestsSecurity = {

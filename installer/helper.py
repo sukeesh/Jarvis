@@ -2,8 +2,10 @@ import os
 import sys
 import distutils.spawn
 import time
+import subprocess
 from threading import Thread
 from tempfile import NamedTemporaryFile
+from unix_windows import IS_WIN
 
 
 # python 2 / 3 compability
@@ -106,24 +108,15 @@ def user_input(items):
 
 
 def shell(cmd, run_in_virtualenv=False):
-    log("Shell: {}; run_in_virtualenv: {}".format(cmd, run_in_virtualenv))
-    spinning_cursor_start()
-    if run_in_virtualenv:
-        ret = os.system('source env/bin/activate && {} &>> {}'.format(cmd, debug_log.name))
-    else:
-        ret = os.system('{} &>> {}'.format(cmd, debug_log.name))
-    spinning_cursor_stop()
-
-    time.sleep(0.5)
-    sys.stdout.write(' \b')
-    log("Shell: Exit with status {}\n#################################\n\n".format(ret))
-
     class Fail:
         def should_not_fail(self, msg=''):
             fail(msg, fatal=True)
 
         def success(self):
             return False
+
+        def __str__(self):
+            return "fail"
 
     class Success:
         def should_not_fail(self, msg=''):
@@ -132,7 +125,33 @@ def shell(cmd, run_in_virtualenv=False):
         def success(self):
             return True
 
-    if ret == 0:
-        return Success()
-    else:
-        return Fail()
+        def __str__(self):
+            return "ok"
+
+    exit_code = Success()
+
+    log("Shell: {}; run_in_virtualenv: {}".format(cmd, run_in_virtualenv))
+    spinning_cursor_start()
+
+    PRE_CMD = ''
+    if run_in_virtualenv:
+        if IS_WIN:
+            PRE_CMD = 'env\\Scripts\\activate.bat && '
+        else:
+            PRE_CMD = 'source env/bin/activate && '
+
+        #ret = os.system('{} &>> {}'.format(cmd, debug_log.name))
+
+    try:
+        subprocess.check_output("{}{}".format(PRE_CMD, cmd),
+                                shell=True, stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError:
+        exit_code = Fail()
+
+    spinning_cursor_stop()
+
+    time.sleep(0.5)
+    sys.stdout.write(' \b')
+    log("Shell: Exit {}\n#################################\n\n".format(str(exit_code)))
+
+    return exit_code

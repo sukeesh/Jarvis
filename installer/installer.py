@@ -4,10 +4,10 @@ import sys
 
 import optional
 from helper import *
+import unix_windows
 
 
 # ==== PREPARE ===
-
 log_init()
 # Go to top level Jarvis folder
 os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -23,11 +23,7 @@ Please install virtualenv!
 
 https://github.com/pypa/virtualenv
 
-For Example on Ubuntu you could do
-    > [sudo] apt install virtualenv
-Or use Pip:
-    > [sudo] pip install virtualenv"
-""")
+{}""".format(VIRTUALENV_INSTALL_MSG))
 
 # Make sure that not running in virtualenv
 if hasattr(sys, 'real_prefix'):
@@ -36,21 +32,25 @@ if hasattr(sys, 'real_prefix'):
 # Check if 'env' already exists + is virtualenv
 virtualenv_exists = False
 if os.path.isdir("env"):
-    if shell("source env/bin/activate").success():
+    if shell(unix_windows.VIRTUALENV_CMD).success():
         virtualenv_exists = True
 
 # Create virtualenv if necessary
 if not virtualenv_exists:
-    regex = re.compile("^python\\d?(\\.\\d*)?$")
-    python_versions = os.listdir('/usr/bin/')
-    python_versions = [(x, x) for x in python_versions if regex.match(x)]
-    python_versions.append(("other", False))
-    version = user_input(python_versions)
-    if version is False:
-        version = input("Python Executable: ")
+    if unix_windows.IS_WIN:
+        # TODO Windows select python version
+        shell("virtualenv env").should_not_fail()
+    else:
+        regex = re.compile("^python\\d?(\\.\\d*)?$")
+        python_versions = os.listdir('/usr/bin/')
+        python_versions = [(x, x) for x in python_versions if regex.match(x)]
+        python_versions.append(("other", False))
+        version = user_input(python_versions)
+        if version is False:
+            version = input("Python Executable: ")
 
-    print("Selected python version {}".format(version))
-    shell("virtualenv env --python={}".format(version)).should_not_fail()
+        print("Selected python version {}".format(version))
+        shell("virtualenv env --python={}".format(version)).should_not_fail()
 
 
 # === PIP INSTALL PYTHON REQUIREMENTS ===
@@ -98,76 +98,91 @@ for requirement in optional.OPTIONAL_REQUIREMENTS:
         requirements_failed.append((text, requirement))
 
 
-section("Install *optional* non-python requirements")
-requirements_failed.append(("Install nothing", 'exit'))
-python_is_python_2 = shell("python --version 2>&1 | grep -q 'Python 2.'", True).success()
+if unix_windows.IS_WIN:
+    # TODO Windows optional requirements?
+    pass
+else:
+    section("Install *optional* non-python requirements")
+    requirements_failed.append(("Install nothing", 'exit'))
+    python_is_python_2 = shell("python --version 2>&1 | grep -q 'Python 2.'", True).success()
 
-while True:
-    requirement = user_input(requirements_failed)
-    print('')
-    print('')
-    if requirement == 'exit':
-        break
+    while True:
+        requirement = user_input(requirements_failed)
+        print('')
+        print('')
+        if requirement == 'exit':
+            break
 
-    guess = None
+        guess = None
 
-    printlog(requirement['name'])
-    printlog(requirement['instruction'])
+        printlog(requirement['name'])
+        printlog(requirement['instruction'])
 
-    if 'package_guess' in requirement.keys():
-        package = optional.get_guess(requirement['package_guess'])
+        if 'package_guess' in requirement.keys():
+            package = optional.get_guess(requirement['package_guess'])
 
-        if package is not False:
-            package_manager = optional.get_guess(optional.PackageManager)
-            if python_is_python_2:
-                package = package[0]
-            else:
-                package = package[1]
-            cmd = "{} {}".format(package_manager, package)
+            if package is not False:
+                package_manager = optional.get_guess(optional.PackageManager)
+                if python_is_python_2:
+                    package = package[0]
+                else:
+                    package = package[1]
+                cmd = "{} {}".format(package_manager, package)
 
-            print("\nOur Guess how to install:\n>{}".format(cmd))
-    print('')
-    input('continue  ')
-    print('')
-    print('')
-    print('')
+                print("\nOur Guess how to install:\n>{}".format(cmd))
+        print('')
+        input('continue  ')
+        print('')
+        print('')
+        print('')
 
-    if check_optional_requirement(requirement):
-        printlog('Success!')
-        requirements_failed -= requirement
-    else:
-        printlog('Sorry; but looks like this did not work...')
-    print('')
+        if check_optional_requirement(requirement):
+            printlog('Success!')
+            requirements_failed -= requirement
+        else:
+            printlog('Sorry; but looks like this did not work...')
+        print('')
 
 
 # write jarvis starter
-section("Write Jarvis starter")
-
-JARVIS_MACRO = """\
-#!/bin/bash
-source {PATH}/env/bin/activate
-python {PATH}/jarviscli
-"""
-
-fw = open('jarvis', 'w')
-fw.write(JARVIS_MACRO.format(PATH=os.getcwd()))
-fw.close()
-
-install_options = [("Install jarvis /usr/local/bin starter (requires root)", 0),
-                   ("Add {} to $PATH (.bashrc)".format(os.getcwd()), 1),
-                   ("Do nothing (Call Jarvis by full path)", 2)]
-selection = user_input(install_options)
-
-if selection == 0:
-    os.system('sudo cp jarvis /usr/local/bin')
-elif selection == 1:
-    os.system('export PATH=\\$PATH:{}" >> ~/.bashrc'.format(os.getcwd()))
-
-printlog('\n\nInstallation complete. Try unsing Jarvis!')
-if selection != 2:
-    printlog('$ jarvis')
+# TODO Windows Install options?
+if unix_windows.IS_WIN:
+    fw = open('jarvis', 'w')
+    fw.write("""\
+@ECHO off
+CALL {JARVISPATH}\env\Scripts\activate.bat
+python {JARVISPATH}\jarviscli\
+    """.format(JARVISPATH=os.getcwd()))
+    printlog("Installation Successful! Use 'jarvis' in cmd to start Jarvis!")
 else:
-    printlog('$ {}/jarvis'.format(os.getcwd()))
+
+    section("Write Jarvis starter")
+
+    JARVIS_MACRO = """\
+    #!/bin/bash
+    source {PATH}/env/bin/activate
+    python {PATH}/jarviscli
+    """
+
+    fw = open('jarvis', 'w')
+    fw.write(JARVIS_MACRO.format(PATH=os.getcwd()))
+    fw.close()
+
+    install_options = [("Install jarvis /usr/local/bin starter (requires root)", 0),
+                       ("Add {} to $PATH (.bashrc)".format(os.getcwd()), 1),
+                       ("Do nothing (Call Jarvis by full path)", 2)]
+    selection = user_input(install_options)
+
+    if selection == 0:
+        os.system('sudo cp jarvis /usr/local/bin')
+    elif selection == 1:
+        os.system('export PATH=\\$PATH:{}" >> ~/.bashrc'.format(os.getcwd()))
+
+    printlog('\n\nInstallation complete. Try unsing Jarvis!')
+    if selection != 2:
+        printlog('$ jarvis')
+    else:
+        printlog('$ {}/jarvis'.format(os.getcwd()))
 
 
 log_close()
