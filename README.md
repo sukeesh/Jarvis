@@ -6,7 +6,7 @@ A Personal Assistant for Linux and MacOS
 
 ![Jarvis](http://i.imgur.com/xZ8x9ES.jpg)
 
-Jarvis is a simple personal assistant for Linux and MacOS which works on the terminal. He can talk to you if you enable his voice. He can tell you the weather, he can find restaurants and other places near you. He can do some great stuff for you. Stay updated about [new functionalities](NEW_FUNCTIONALITIES.md).
+Jarvis is a simple personal assistant for Linux and MacOS which works on the terminal. He can talk to you if you enable his voice. He can tell you the weather, he can find restaurants and other places near you. He can do some great stuff for you.
 
 ## Getting Started
 
@@ -82,7 +82,7 @@ Creating a test is optionally but never a bad idea ;).
 
 - Any pyttsx3 text-to-speech engine (``sapi5, nsss or espeak``) for Jarvis to talk out loud (e.g. Ubuntu do ``sudo apt install espeak``)
 - Portaudio + python devel packages for voice control
-- ``notify-send`` on Linux if you want to recive *nice* and deskotp-notification instead of *ugly* popup windows (e.g. Ubuntu do ``sudo apt install libnotify-bin``)
+- ``notify-send`` on Linux if you want to recive *nice* and desktop-notification instead of *ugly* popup windows (e.g. Ubuntu do ``sudo apt install libnotify-bin``)
 - ``ffmpeg`` if you want ``music`` to download songs as .mp3 instead .webm
 
 ## Docker
@@ -103,4 +103,3 @@ See also the list of [contributors](https://github.com/sukeesh/Jarvis/graphs/con
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
