@@ -10,7 +10,6 @@ def clock(jarvis, s):
     jarvis.say(ctime(), Fore.BLUE)
 
 
-@require(native='termdown')
 @plugin('stopwatch')
 def stopwatch(jarvis, s):
     """
@@ -21,10 +20,9 @@ def stopwatch(jarvis, s):
     SPACE   Pause
     Q       Quit
     """
-    system("termdown")
+    system("python -m termdown")
 
 
-@require(native="termdown")
 @plugin('timer')
 def timer(jarvis, s):
     """
@@ -43,5 +41,5 @@ def timer(jarvis, s):
     if k[0] == '':
         jarvis.say("Please specify duration")
         return
-    timer_cmd = "termdown " + k[0]
+    timer_cmd = "python -m termdown " + k[0]
     system(timer_cmd)
