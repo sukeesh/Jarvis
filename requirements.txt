@@ -26,5 +26,6 @@ six
 speedtest-cli
 sympy
 termdown
+urllib
 wikipedia
 windows-curses; sys_platform == 'win32'
