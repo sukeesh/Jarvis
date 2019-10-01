@@ -25,6 +25,7 @@ requests[security]
 six
 speedtest-cli
 sympy
+tabulate
 termdown
 wikipedia
 windows-curses; sys_platform == 'win32'
