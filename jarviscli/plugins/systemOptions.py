@@ -86,8 +86,9 @@ def check_ram(jarvis, s):
         check ram
     """
     mem = psutil.virtual_memory()
+
     def format(size):
-        mb, _ = divmod(size, 1024*1024)
+        mb, _ = divmod(size, 1024 * 1024)
         gb, mb = divmod(mb, 1024)
         return "%s GB %s MB" % (gb, mb)
     jarvis.say("Total RAM: %s" % (format(mem.total)), Fore.BLUE)

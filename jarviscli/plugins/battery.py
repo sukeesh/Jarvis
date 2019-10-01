@@ -12,6 +12,7 @@ def battery_WIN32(jarvis, s):
     """
     # https://stackoverflow.com/a/41988506/6771356
     import psutil
+
     def secs2hours(secs):
         mm, ss = divmod(secs, 60)
         hh, mm = divmod(mm, 60)
