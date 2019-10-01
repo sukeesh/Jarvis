@@ -93,6 +93,18 @@ Run with docker (docker needs to be installed and running):
 [sudo] make build_docker
 [sudo] make run_docker
 ```
+## Troubleshooting
+
+For linux (Ubuntu):
+
+Make sure you have installed virtual env -> sudo apt install virtualenv
+
+If you get “bash: ./setup.sh: Permission denied” then try  sudo chmod +x setup.sh
+
+If you are still getting errors while running ./setup.sh try installing the following:
+sudo apt-get install libasound-dev
+sudo apt-get install python-pyaudio
+sudo apt-get install portaudio19-dev
 
 ## Authors
 
