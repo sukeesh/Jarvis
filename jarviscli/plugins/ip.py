@@ -2,7 +2,7 @@ from os import system
 from colorama import Fore
 
 from utilities.GeneralUtilities import executable_exists
-from plugin import plugin, require, UNIX
+from plugin import plugin, require, UNIX, WINDOWS
 
 
 @require(platform=UNIX)
@@ -36,3 +36,16 @@ class IP():
         system(self._public_ip_v4)
         jarvis.say("Public ip v6 address :", Fore.BLUE)
         system(self._public_ip_v6)
+
+
+@require(platform=WINDOWS)
+@plugin('ip')
+def ip_WIN32(jarvis, s):
+    """
+    Returns information about IP for windows
+    """
+    import socket
+
+    hostname = socket.gethostname()
+    IP = socket.gethostbyname(hostname)
+    jarvis.say("IP address: " + str(IP))
