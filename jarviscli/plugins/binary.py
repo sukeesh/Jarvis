@@ -17,4 +17,7 @@ def binary(jarvis, s):
         jarvis.say("This is no number, right?", Fore.RED)
         return
     else:
-        jarvis.say(bin(n)[2:], Fore.YELLOW)
+        if n < 0:
+            jarvis.say("-" + bin(n)[3:], Fore.YELLOW)
+        else:
+            jarvis.say(bin(n)[2:], Fore.YELLOW)
