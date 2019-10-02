@@ -1,10 +1,9 @@
-archey4; python_version >= '3.5' and sys_platform != 'darwin'
+archey4; sys_platform != 'darwin'
 beautifulsoup4
 colorama
 distro
 flake8
 forex-python
-funcsigs; python_version <= '2.7'
 googletrans
 IMDbPY
 instantmusic

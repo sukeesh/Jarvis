@@ -5,9 +5,6 @@ from requests import ConnectionError
 
 
 # Constants
-# python
-PYTHON2 = "PY2"
-PYTHON3 = "PY3"
 # platform
 MACOS = "MACOS"
 LINUX = "LINUX"
@@ -46,14 +43,12 @@ def plugin(name):
     return create_plugin
 
 
-def require(network=None, platform=None, python=None, native=None):
+def require(network=None, platform=None, native=None):
     require = []
     if network is not None:
         require.append(('network', network))
     if platform is not None:
         require.append(('platform', platform))
-    if python is not None:
-        require.append(('python', python))
     if native is not None:
         require.append(('native', native))
 
