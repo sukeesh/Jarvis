@@ -55,4 +55,3 @@ def whoami(jarvis, s):
         return
 
     os.system("id " + str(s))
-
