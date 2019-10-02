@@ -27,6 +27,8 @@ class Football():
     """
 
     def __call__(self, jarvis, s):
+        # Attribution to the football-data.org API
+        print("Football data provided by the Football-Data.org API\n")
         # Ask for user option (competition or match info)
         option = self.get_option(jarvis)
         if option is None:
@@ -163,7 +165,7 @@ class Football():
                 stList.append([team[k] for k in team])
             # Print the standings table
             print(tabulate(stList, headers=[
-                  "#", "Team", "P", "W", "D", "L", "Points", "GF", "GA", "GD"]))
+                "#", "Team", "P", "W", "D", "L", "Points", "GF", "GA", "GD"]))
             print()
 
     def matches(self, jarvis, compId):
