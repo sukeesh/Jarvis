@@ -5,6 +5,7 @@ import webbrowser
 
 @plugin('open link')
 def openUrl(jarvis,s):
+	""" Jarvis will open a browser link for you."""
 	jarvis.say("Please enter a url: ", Fore.WHITE)
 	url = input()
 	jarvis.say("Opening the url....",Fore.GREEN)
