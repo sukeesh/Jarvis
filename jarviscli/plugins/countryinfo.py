@@ -1,17 +1,17 @@
-from plugin import plugin
+from plugin import plugin, require
 import requests
 
 
+@require(network=True)
 @plugin('countryinfo')
 class country_info:
     """
-    Welcome to the Capitals plugin documentation! Here you will be able
+    Welcome to the Countryinfo plugin documentation! Here you will be able
     to find all the functionalities of the plugin.
-    Usage: Type capitals and follow the instructions.
-    This plugin gives you capital corresponding to country as well as country corresponding
-    to capital.
+    Usage: Type countryinfo and follow the instructions.
+    This plugin gives you several important details corresponding to country which is asked as an input
     Please enter country name in smallcase
-    Go on explore your information!!
+    Go on and explore your information!!
     """
 
     def __call__(self, jarvis, s):
@@ -25,26 +25,20 @@ class country_info:
         """
         function creates request to api and fetches the corresponding data
         """
-        country = input('Enter the name of country: ')
-        url = "https://restcountries.eu/rest/v2/name/%s?fullText=true" % country
-        r = requests.get(url)
-        valid_input = False
-        while not valid_input:
-            if type(r.json()) == dict:
-                jarvis.say(
-                    "Please Enter A Valid Input or else type exit to leave")
-                country = input(
-                    'Enter the name of country or type exit to leave: ')
-                print()
-                if country == 'exit':
-                    break
-                else:
-                    url = "https://restcountries.eu/rest/v2/name/%s?fullText=true" % country
-                    r = requests.get(url)
-                    continue
+        while True:
+            country = jarvis.input(
+                "Enter the name of the country or type exit to leave: ")
+            if country == '':
+                jarvis.say("Please enter valid input.")
+            elif country == 'exit':
+                return
             else:
-                valid_input = True
-                return r.json()
+                url = "https://restcountries.eu/rest/v2/name/%s?fullText=true" % country
+                r = requests.get(url)
+                if type(r.json()) == dict:
+                    jarvis.say("Country not found.")
+                else:
+                    return r.json()
 
     def country_info(self, jarvis, country_fetch):
         capital = country_fetch[0]["capital"]
@@ -56,12 +50,12 @@ class country_info:
         time_zone = country_fetch[0]["timezones"][0]
 
         print()
-        print("Capital: " + capital)
-        print("Calling Code: " + calling_code)
-        print("Currency: " + currency)
-        print("Currency Symbol: " + currency_symbol)
-        print("Population: " + str(population))
-        print("Region: " + region)
-        print("Time Zone: " + time_zone)
+        jarvis.say("Capital: " + capital)
+        jarvis.say("Calling Code: " + calling_code)
+        jarvis.say("Currency: " + currency)
+        jarvis.say("Currency Symbol: " + currency_symbol)
+        jarvis.say("Population: " + str(population))
+        jarvis.say("Region: " + region)
+        jarvis.say("Time Zone: " + time_zone)
 
         return
