@@ -4,7 +4,7 @@ from plugin import plugin, require, LINUX, MACOS, WINDOWS
 
 @require(platform=LINUX)
 @plugin('shutdown')
-def shutdown(jarvis, s):
+def shutdown_LINUX(jarvis, s):
     """
     Shutdown the system
     Uses:
@@ -23,7 +23,7 @@ def shutdown(jarvis, s):
 
 @require(platform=MACOS)
 @plugin('shutdown')
-def shutdown(jarvis, s):
+def shutdown_MACOS(jarvis, s):
     """
     Shutdown the system
     Uses:
@@ -42,7 +42,7 @@ def shutdown(jarvis, s):
 
 @require(platform=WINDOWS)
 @plugin('shutdown')
-def shutdown(jarvis, s):
+def shutdown_WIN32(jarvis, s):
     """
     Shutdown the system
     Uses:
@@ -61,7 +61,7 @@ def shutdown(jarvis, s):
 
 @require(platform=LINUX)
 @plugin('reboot')
-def reboot(jarvis, s):
+def reboot_LINUX(jarvis, s):
     """Reboot the system"""
     if s == '':
         s = jarvis.input('In how many minutes?: ')
@@ -71,7 +71,7 @@ def reboot(jarvis, s):
 
 @require(platform=MACOS)
 @plugin('reboot')
-def reboot(jarvis, s):
+def reboot_MACOS(jarvis, s):
     """Reboot the system"""
     string = 'sudo shutdown -r now'
     os.system(string)
@@ -79,7 +79,7 @@ def reboot(jarvis, s):
 
 @require(platform=WINDOWS)
 @plugin('reboot')
-def reboot(jarvis, s):
+def reboot_WIN32(jarvis, s):
     """Reboot the system"""
     if s == '':
         s = jarvis.input('In how many seconds?: ')
@@ -87,44 +87,9 @@ def reboot(jarvis, s):
     os.system(string)
 
 
-@require(platform=WINDOWS)
-@plugin('hibernate')
-def reboot(jarvis, s):
-    """Hibernates the system"""
-    string = 'shutdown /h'
-    os.system(string)
-
-
-@require(platform=WINDOWS)
-@plugin('log off')
-def reboot(jarvis, s):
-    """Log off the system"""
-    string = 'shutdown /l'
-    os.system(string)
-
-
-@require(platform=WINDOWS)
-@plugin('hybridsleep')
-def reboot(jarvis, s):
-    """Performs shutdown and prepares forfast startup"""
-    string = 'shutdown /hybrid'
-    os.system(string)
-
-
-@require(native="systemctl", platform=LINUX)
-@plugin('suspend')
-def suspend(jarvis, s):
-    """
-    Suspend (to RAM) - also known as Stand By or Sleep mode.
-
-    Operate PC on a minimum to save power but quickly wake up.
-    """
-    os.system('sudo systemctl suspend')
-
-
 @require(native="systemctl", platform=LINUX)
 @plugin('hibernate')
-def hibernate(jarvis, s):
+def hibernate_LINUX(jarvis, s):
     """
     Hibernate - also known as "Suspend to Disk"
 
@@ -135,9 +100,17 @@ def hibernate(jarvis, s):
     os.system('sudo systemctl hibernate')
 
 
+@require(platform=WINDOWS)
+@plugin('hibernate')
+def hibernate_WIN32(jarvis, s):
+    """Hibernates the system"""
+    string = 'shutdown /h'
+    os.system(string)
+
+
 @require(native="systemctl", platform=LINUX)
 @plugin('hybridsleep')
-def hybridsleep(jarvis, s):
+def hybridsleep_LINUX(jarvis, s):
     """
     Hybrid sleep.
     Will quickly wake up but also survive power cut.
@@ -145,3 +118,30 @@ def hybridsleep(jarvis, s):
     Will quickly wake up but also survive power cut.
     """
     os.system("sudo systemctl hybrid-sleep")
+
+
+@require(platform=WINDOWS)
+@plugin('hybridsleep')
+def hybridsleep_WIN32(jarvis, s):
+    """Performs shutdown and prepares forfast startup"""
+    string = 'shutdown /hybrid'
+    os.system(string)
+
+
+@require(platform=WINDOWS)
+@plugin('log off')
+def log_off_WIN32(jarvis, s):
+    """Log off the system"""
+    string = 'shutdown /l'
+    os.system(string)
+
+
+@require(native="systemctl", platform=LINUX)
+@plugin('suspend')
+def suspend_LINUX(jarvis, s):
+    """
+    Suspend (to RAM) - also known as Stand By or Sleep mode.
+
+    Operate PC on a minimum to save power but quickly wake up.
+    """
+    os.system('sudo systemctl suspend')

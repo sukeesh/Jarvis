@@ -220,7 +220,7 @@ class PluginDependency(object):
             if key in plugin_requirements:
                 plugin_requirements[key].extend(values)
             else:
-                warning("{}={}: No supportet requirement".format(key, values))
+                warning("{}={}: No supported requirement".format(key, values))
 
         return plugin_requirements
 

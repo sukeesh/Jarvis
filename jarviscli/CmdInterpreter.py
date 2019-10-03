@@ -349,7 +349,7 @@ class CmdInterpreter(Cmd):
                 print_say(
                     "{:<20}: {}".format(
                         disabled,
-                        "OR ".join(reason)),
+                        " OR ".join(reason)),
                     self)
 
     def help_status(self):

@@ -12,6 +12,7 @@ mock
 nltk
 pick
 pluginmanager
+psutil
 pycricbuzz
 pydoc-markdown
 pync==1.6.1; sys_platform == 'darwin'

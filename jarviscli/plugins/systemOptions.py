@@ -2,7 +2,7 @@ import os
 from platform import architecture, dist, release, mac_ver
 from platform import system as sys
 from colorama import Fore, Style
-
+import psutil
 from plugin import LINUX, MACOS, WINDOWS, PYTHON2, PYTHON3, plugin, require
 
 
@@ -78,7 +78,6 @@ def systeminfo_win(jarvis, s):
     os.system("systeminfo")
 
 
-@require(native="free")
 @plugin("check ram")
 def check_ram(jarvis, s):
     """
@@ -86,4 +85,18 @@ def check_ram(jarvis, s):
     -- Examples:
         check ram
     """
-    os.system("free -lm")
+    mem = psutil.virtual_memory()
+
+    def format(size):
+        mb, _ = divmod(size, 1024 * 1024)
+        gb, mb = divmod(mb, 1024)
+        return "%s GB %s MB" % (gb, mb)
+    jarvis.say("Total RAM: %s" % (format(mem.total)), Fore.BLUE)
+    if mem.percent > 80:
+        color = Fore.RED
+    elif mem.percent > 60:
+        color = Fore.YELLOW
+    else:
+        color = Fore.GREEN
+    jarvis.say("Available RAM: %s" % (format(mem.available)), color)
+    jarvis.say("RAM used: %s%%" % (mem.percent), color)
