@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-from six.moves import input
 from colorama import Fore
 import distutils.spawn
 

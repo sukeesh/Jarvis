@@ -1,6 +1,5 @@
 from colorama import Fore
 from utilities.GeneralUtilities import print_say
-from six.moves import input
 from . import mapps
 from . import umbrella
 

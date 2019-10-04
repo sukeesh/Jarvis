@@ -1,23 +1,7 @@
 language: python
-cache: pip
 matrix:
+  cache: pip
   include:
-    - name: "Python 2.7 on Linux"
-      os: linux
-      python: 2.7
-      env: TOXENV=py27
-    - name: "Python 2.7 on MacOS"
-      os: osx
-      osx_image: xcode9.3
-      language: generic
-      sudo: required
-      env: TOXENV=py27
-    - name: "Python 2.7 on Windows"
-      os: windows
-      language: shell
-      before_install:
-        - choco install python2
-      env: PATH=/c/Python27:/c/Python27/Scripts:$PATH
     - name: "Python 3.7 on Linux"
       os: linux
       dist: xenial
@@ -36,9 +20,7 @@ matrix:
         - choco install python
       env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
 install:
-  - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py27" ]; then
-      sudo -H pip2 install --upgrade -r requirements.txt;
-    elif [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py37" ]; then
+    if [ "$TRAVIS_OS_NAME" == "osx" ]; then
       sudo -H pip3 install --upgrade -r requirements.txt;
     else
       pip install --upgrade -r requirements.txt;
@@ -47,9 +29,7 @@ script:
   - cd $TRAVIS_BUILD_DIR/
   - flake8 --select E,W --max-line-length=140 --ignore E722,W503,W504,E128 jarviscli/
   - cd jarviscli/
-  - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py27" ]; then
-      python2 -m unittest discover;
-    elif [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$TOXENV" == "py37" ]; then
+    if [ "$TRAVIS_OS_NAME" == "osx" ]; then
       python3 -m unittest discover;
     else
       python -m unittest discover;

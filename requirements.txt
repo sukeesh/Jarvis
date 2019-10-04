@@ -22,7 +22,6 @@ pytimeparse
 pyttsx3; sys_platform != 'darwin'
 pywin32; sys_platform == 'win32'
 requests[security]
-six
 speedtest-cli
 sympy
 tabulate
