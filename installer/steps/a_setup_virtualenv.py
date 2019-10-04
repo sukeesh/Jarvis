@@ -8,7 +8,15 @@ import unix_windows
 section("Preparing virtualenv")
 
 # check that virtualenv installed
-if not executable_exists('virtualenv'):
+virtualenv_installed = False
+
+if unix_windows.IS_WIN:
+    virtualenv_installed = shell(unix_windows.VIRTUALENV_CMD + ' -h').success()
+else:
+    virtualenv_installed = executable_exists('virtualenv')
+
+
+if not virtualenv_installed:
     fail("""\
 Please install virtualenv!
 
@@ -30,6 +38,6 @@ if os.path.isdir("env"):
 # Create virtualenv if necessary
 if not virtualenv_exists:
     if unix_windows.IS_WIN:
-        shell("virtualenv env").should_not_fail()
+        shell("py -3 -m virtualenv env").should_not_fail()
     else:
         shell("virtualenv env --python=python3").should_not_fail()
