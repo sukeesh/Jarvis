@@ -96,6 +96,9 @@ class PluginStorage(object):
             return self._sub_plugins[name]
         return None
 
+    def change_with(self, plugin_new):
+        plugin_new._sub_plugins = self._sub_plugins
+
 
 class Plugin(pluginmanager.IPlugin, PluginStorage):
     """
