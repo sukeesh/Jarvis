@@ -29,4 +29,7 @@ if os.path.isdir("env"):
 
 # Create virtualenv if necessary
 if not virtualenv_exists:
+    if unix_windows.IS_WIN:
+        shell("virtualenv env").should_not_fail()
+    else:
         shell("virtualenv env --python=python3").should_not_fail()
