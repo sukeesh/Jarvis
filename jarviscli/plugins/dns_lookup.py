@@ -6,7 +6,6 @@ from colorama import Fore
 # a reverse DNS lookup or reverse DNS resolution (rDNS)
 # is the querying technique of the Domain Name System (DNS)
 # to determine the domain name associated with an IP address
-@alias('hostname lookup', 'hostname for')
 @plugin("dns reverse")
 def hostname_lookup(jarvis, s):
     while True:
@@ -31,7 +30,6 @@ def hostname_lookup(jarvis, s):
 # a "forward" DNS lookup is a lookup of an IP address from a domain name.
 
 
-@alias('ip lookup', 'ip for')
 @plugin("dns forward")
 def ip_lookup(jarvis, s):
     while True:
