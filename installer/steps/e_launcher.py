@@ -4,7 +4,7 @@ import unix_windows
 
 # TODO Windows Install options?
 if unix_windows.IS_WIN:
-    fw = open('jarvis', 'w')
+    fw = open('jarvis.bat', 'w')
     fw.write("""\
 @ECHO off
 CALL {JARVISPATH}\\env\\Scripts\\activate.bat
