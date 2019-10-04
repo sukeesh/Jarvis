@@ -27,31 +27,6 @@ if os.path.isdir("env"):
         virtualenv_exists = True
 
 
-def check_not_python_2(path):
-    # validate input
-    python_ok_result = shell('{} --version'.format(version))
-    python_ok_result.should_not_fail()
-    if python_ok_result.cli_output.startswith('Python 2'):
-        fail('Sorry! Python 2 not supported any more!')
-
-
 # Create virtualenv if necessary
 if not virtualenv_exists:
-    if unix_windows.IS_WIN:
-        # TODO Windows select python version
-        check_not_python_2('python')
-        shell("virtualenv env").should_not_fail()
-    else:
-        regex = re.compile("^python\\d?(\\.\\d*)?$")
-        python_versions = os.listdir('/usr/bin/')
-        python_versions = [(x, x) for x in python_versions if regex.match(x)]
-        python_versions.append(("other", False))
-        version = user_input(python_versions)
-        if version is False:
-            version = input("Python Executable: ")
-
-        check_not_python_2(version)
-
-        # ok!
-        print("Selected python version {}".format(version))
-        shell("virtualenv env --python={}".format(version)).should_not_fail()
+        shell("virtualenv env --python=python3").should_not_fail()

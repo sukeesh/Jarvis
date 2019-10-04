@@ -147,6 +147,12 @@ def shell(cmd, run_in_virtualenv=False):
     except subprocess.CalledProcessError:
         exit_code = Fail()
 
+    # python 2 compatibility
+    try:
+        cli_output = cli_output.decode("utf-8")
+    except AttributeError:
+        pass
+
     spinning_cursor_stop()
 
     time.sleep(0.5)

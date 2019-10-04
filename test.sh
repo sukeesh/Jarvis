@@ -8,6 +8,6 @@ echo "lint errors checked"
 echo ""
 cd jarviscli/
 echo "checking for unit test"
-python -m unittest discover
+python3 -m unittest discover
 echo "unit tests checked"
 echo ""
