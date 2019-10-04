@@ -9,8 +9,10 @@ else:
 if IS_WIN:
     VIRTUALENV_CMD = "env\\Scripts\\activate"
     VIRTUALENV_INSTALL_MSG = """\
+Note that virtualenv must work with Python 3!
+
 You could do:
-python -m pip install virtualenv
+py -3 -m pip install virtualenv
 """
 else:
     VIRTUALENV_CMD = "source env/bin/activate"
