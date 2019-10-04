@@ -36,7 +36,6 @@ for requirement in optional.OPTIONAL_REQUIREMENTS:
 
 section("Install *optional* non-python requirements")
 requirements_failed.append(("Install nothing", 'exit'))
-python_is_python_2 = shell("python --version 2>&1 | grep -q 'Python 2.'", True).success()
 
 while True:
     requirement = user_input(requirements_failed)
@@ -55,10 +54,6 @@ while True:
 
         if package is not False:
             package_manager = optional.get_guess(optional.PackageManager)
-            if python_is_python_2:
-                package = package[0]
-            else:
-                package = package[1]
             cmd = "{} {}".format(package_manager, package)
 
             print("\nOur Guess how to install:\n>{}".format(cmd))

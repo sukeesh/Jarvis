@@ -8,7 +8,7 @@ from tempfile import NamedTemporaryFile
 from unix_windows import IS_WIN
 
 
-# python 2 / 3 compability
+# python 2/3 compatibility
 try:
     input = raw_input
 except NameError:
@@ -41,7 +41,7 @@ def fail(msg, fatal=False):
     print('')
     if fatal:
         log("FATAL!")
-        print("Installation failed with unexpected error - This should not have happend.")
+        print("Installation failed with unexpected error - This should not have happened.")
         print("Please check logs at {}. If you open a bug report, please include this file.".format(debug_log.name))
     else:
         print("Installation failed!")
@@ -140,9 +140,10 @@ def shell(cmd, run_in_virtualenv=False):
         else:
             PRE_CMD = 'source env/bin/activate && '
 
+    cli_output = ''
     try:
-        subprocess.check_output("{}{}".format(PRE_CMD, cmd),
-                                shell=True, stderr=subprocess.STDOUT)
+        cli_output = subprocess.check_output("{}{}".format(PRE_CMD, cmd),
+                                             shell=True, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError:
         exit_code = Fail()
 
@@ -151,5 +152,8 @@ def shell(cmd, run_in_virtualenv=False):
     time.sleep(0.5)
     sys.stdout.write(' \b')
     log("Shell: Exit {}\n#################################\n\n".format(str(exit_code)))
+    log(cli_output)
+
+    exit_code.cli_output = cli_output
 
     return exit_code
