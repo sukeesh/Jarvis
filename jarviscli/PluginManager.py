@@ -114,7 +114,8 @@ class PluginManager(object):
                 parent.add_plugin(name, plugin_to_add)
             else:
                 if not plugin_existing.is_callable_plugin():
-                    parent.update_plugin(name, plugin_to_add)
+                    plugin_existing.change_with(plugin_to_add)
+                    parent.add_plugin(name, plugin_to_add)
                 else:
                     error("Duplicated plugin {}!".format(name))
 
