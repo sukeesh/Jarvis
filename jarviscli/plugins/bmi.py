@@ -95,11 +95,11 @@ class Bmi:
             while True:
                 try:
                     height = int(height)
-                    if height < 0:
+                    if height <= 0:
                         raise ValueError('Please only positive numbers')
                     break
                 except ValueError:
-                    print("Error on input type for height, please insert an integer: ")
+                    print("Please, insert a positive integer: ")
                     height = jarvis.input()
             jarvis.say("Please insert your weight in kg: ")
             weight = jarvis.input()
