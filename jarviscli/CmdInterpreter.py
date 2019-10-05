@@ -71,7 +71,7 @@ class JarvisAPI(object):
             try:
                 value = rtype(self.input(prompt, color).replace(',', '.'))
                 if (rmin is not None and value < rmin) or (rmax is not None and value > rmax):
-                    prompt = "Sorry, needs to be between {} and {}. Try again: ".format(rmin, ramx)
+                    prompt = "Sorry, needs to be between {} and {}. Try again: ".format(rmin, rmax)
                 else:
                     return value
             except ValueError:
