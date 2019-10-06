@@ -1,9 +1,8 @@
 from plugin import plugin, alias, require
 from colorama import Fore
 import requests
-
+import random
 from bs4 import BeautifulSoup
-
 
 
 @require(network=True)
@@ -12,6 +11,10 @@ class Euler():
 
     def __init__(self):
         self.project_url = 'https://www.projecteuler.net'
+
+        # Should be updated regularly
+        # Or write the code wich gets this data item from the site
+        self.last_problem = 682
 
     def __call__(self, jarvis, s):
 
@@ -27,6 +30,10 @@ class Euler():
 
         if choice == 1:
             problem_number = self.jarvis.input_number('Please, enter the desired number: ', rtype=int)
+            self.get_problem_by_number(problem_number)
+        elif choice == 2:
+            # Generate random number
+            problem_number = random.randint(1, self.last_problem)
             self.get_problem_by_number(problem_number)
 
 
