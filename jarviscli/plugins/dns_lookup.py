@@ -40,4 +40,3 @@ def ip_lookup1(jarvis, s):
 @plugin("dns reverse")
 def hostname_lookup1(jarvis, s):
     dns_lookup(jarvis, s, "ip", hostname_lookup)
-
