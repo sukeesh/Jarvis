@@ -10,7 +10,7 @@ Jarvis is a simple personal assistant for Linux, MacOS and Windows which works o
 
 ## Getting Started
 
-In order to start Jarvis just clone [this repository](https://github.com/sukeesh/Jarvis.git) and run `./setup.sh`
+In order to start Jarvis just clone [this repository](https://github.com/sukeesh/Jarvis.git) repository and run `python installer`.
 
 Run **Jarvis** from anywhere by command `jarvis`
 

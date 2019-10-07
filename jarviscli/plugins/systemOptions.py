@@ -3,7 +3,7 @@ from platform import architecture, dist, release, mac_ver
 from platform import system as sys
 from colorama import Fore, Style
 import psutil
-from plugin import LINUX, MACOS, WINDOWS, PYTHON2, PYTHON3, plugin, require
+from plugin import LINUX, MACOS, WINDOWS, plugin, require
 
 
 @require(platform=MACOS, native="pmset")
@@ -49,24 +49,17 @@ def Os__LINUX(jarvis, s):
         jarvis.say('[*] ' + _, Fore.GREEN)
 
 
-@require(python=PYTHON3, platform=LINUX)
+@require(platform=LINUX)
 @plugin('systeminfo')
-def systeminfo__PY3__LINUX(jarvis, s):
+def systeminfo__LINUX(jarvis, s):
     """Display system information with distribution logo"""
     from archey import archey
     archey.main()
 
 
-@require(python=PYTHON3, platform=MACOS, native="screenfetch")
+@require(platform=MACOS, native="screenfetch")
 @plugin('systeminfo')
-def systeminfo__PY3_MAC(jarvis, s):
-    """Display system information with distribution logo"""
-    os.system("screenfetch")
-
-
-@require(python=PYTHON2, native="screenfetch")
-@plugin('systeminfo')
-def systeminfo__PY2(jarvis, s):
+def systeminfo__MAC(jarvis, s):
     """Display system information with distribution logo"""
     os.system("screenfetch")
 

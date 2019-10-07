@@ -1,5 +1,4 @@
 from utilities.GeneralUtilities import IS_MACOS, executable_exists
-from six import PY2
 
 
 NOTIFY_LOW = 0
@@ -58,12 +57,8 @@ else:
         notify = notify__LINUX
     else:
         try:
-            if PY2:
-                import TKinter as tk
-                import tkMessageBox
-            else:
-                import tkinter as tk
-                from tkinter import messagebox as tkMessageBox
+            import tkinter as tk
+            from tkinter import messagebox as tkMessageBox
             from threading import Thread
             notify = notify__GUI_FALLBACK
         except ImportError:

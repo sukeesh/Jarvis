@@ -3,7 +3,6 @@ from cmd import Cmd
 from functools import partial
 import sys
 import traceback
-import sys
 
 from colorama import Fore
 from PluginManager import PluginManager
@@ -308,11 +307,7 @@ class CmdInterpreter(Cmd):
         """Closing Jarvis."""
         print_say("Goodbye, see you later!", self, Fore.RED)
         self.scheduler.stop_all()
-        exit()
-
-    def completedefault(self, text, line, begidx, endidx):
-        """Default completion"""
-        return [i for i in self.actions if i.startswith(text)]
+        sys.exit()
 
     def execute_once(self, command):
         self.get_api().eval(command)
@@ -321,13 +316,6 @@ class CmdInterpreter(Cmd):
     def error(self):
         """Jarvis let you know if an error has occurred."""
         print_say("I could not identify your command...", self, Fore.RED)
-
-    def get_completions(self, command, text):
-        """Returns a list with the completions of a command."""
-        dict_target = [item for item in self.actions
-                       if isinstance(item, dict) and command in item][0]
-        completions_list = dict_target[command]
-        return [i for i in completions_list if i.startswith(text) and i != '']
 
     def interrupt_handler(self, signal, frame):
         """Closes Jarvis on SIGINT signal. (Ctrl-C)"""

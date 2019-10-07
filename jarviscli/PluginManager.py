@@ -2,7 +2,6 @@ import sys
 from functools import partial
 
 import pluginmanager
-import six
 
 import plugin
 from utilities.GeneralUtilities import warning, error, executable_exists
@@ -188,10 +187,6 @@ class PluginDependency(object):
     def __init__(self):
         # plugin shoud match these requirements
         self._requirement_has_network = True
-        if six.PY2:
-            self._requirement_python = plugin.PYTHON2
-        else:
-            self._requirement_python = plugin.PYTHON3
         if sys.platform == "darwin":
             self._requirement_platform = plugin.MACOS
         elif sys.platform == "win32":
@@ -205,7 +200,6 @@ class PluginDependency(object):
     def _plugin_get_requirements(self, requirements_iter):
         plugin_requirements = {
             "platform": [],
-            "python": [],
             "network": [],
             "native": []
         }
@@ -235,10 +229,6 @@ class PluginDependency(object):
             required_platform = ", ".join(plugin_requirements["platform"])
             return "Requires os {}".format(required_platform)
 
-        if not self._check_python(plugin_requirements["python"]):
-            required_python = ", ".join(plugin_requirements["python"])
-            return "Requires Python {}".format(required_python)
-
         if not self._check_network(plugin_requirements["network"], plugin):
             return "Requires networking"
 
@@ -256,12 +246,6 @@ class PluginDependency(object):
             values += [plugin.LINUX, plugin.MACOS]
 
         return self._requirement_platform in values
-
-    def _check_python(self, values):
-        if not values:
-            return True
-
-        return self._requirement_python in values
 
     def _check_network(self, values, plugin):
         if True in values:
