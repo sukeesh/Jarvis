@@ -26,6 +26,7 @@ class Euler():
         self.jarvis.say('Please select an option below:')
         self.jarvis.say('1) Get the problem by number')
         self.jarvis.say('2) Get random problem')
+        self.jarvis.say('3) Info')
         choice = self.jarvis.input_number('Your choice: ', rtype=int)
 
         if choice == 1:
@@ -35,6 +36,8 @@ class Euler():
             # Generate random number
             problem_number = random.randint(1, self.last_problem)
             self.get_problem_by_number(problem_number)
+        elif choice == 3:
+            self.show_info()
 
 
     def get_problem_by_number(self, number):
@@ -55,4 +58,17 @@ class Euler():
         self.jarvis.say('')
         self.jarvis.say(header_to_show, Fore.GREEN)
 
+    def show_info(self):
+        self.jarvis.say('')
+        self.jarvis.say('Website: ' + self.project_url, Fore.GREEN)
+        self.jarvis.say("")
 
+
+        info_text = "Project Euler (named after Leonhard Euler) is a website dedicated to a series of computational problems intended to be solved with computer programs. "
+        info_text += "The project attracts adults and students interested in mathematics and computer programming. "
+        info_text += "Since its creation in 2001 by Colin Hughes, Project Euler has gained notability and popularity worldwide. "
+        info_text += "It includes over 670 problems, with a new one added once every one or two weeks. "
+        info_text += "Problems are of varying difficulty, but each is solvable in less than a minute of CPU time using an efficient algorithm on a modestly powered computer. "
+
+        self.jarvis.say(info_text)
+        self.jarvis.say("")
