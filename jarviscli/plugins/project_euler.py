@@ -1,5 +1,5 @@
 from plugin import plugin, alias, require
-from colorama import Fore
+from colorama import Fore, Style
 import requests
 import random
 from bs4 import BeautifulSoup
@@ -57,7 +57,11 @@ class Euler():
         header_to_show = 'Problem ' + str(number) + '. ' + problem_header
         self.jarvis.say('')
         self.jarvis.say(header_to_show, Fore.GREEN)
-        self.jarvis.say(url, Fore.GREEN)
+
+        
+        self.jarvis.say("\n")
+        self.jarvis.say("If it seems to you that text is not displayed correctly you can follow the link below.", Fore.GREEN)
+        self.jarvis.say(url)
 
     def show_info(self):
         self.jarvis.say('')
