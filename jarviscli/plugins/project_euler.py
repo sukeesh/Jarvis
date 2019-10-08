@@ -57,6 +57,7 @@ class Euler():
         header_to_show = 'Problem ' + str(number) + '. ' + problem_header
         self.jarvis.say('')
         self.jarvis.say(header_to_show, Fore.GREEN)
+        self.jarvis.say(url, Fore.GREEN)
 
     def show_info(self):
         self.jarvis.say('')
