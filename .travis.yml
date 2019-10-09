@@ -21,10 +21,10 @@ matrix:
       env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
 install:
     - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-      sudo -H pip3 install --upgrade -r requirements.txt;
-    else
-      pip install --upgrade -r requirements.txt;
-    fi
+        sudo -H pip3 install --upgrade -r requirements.txt;
+      else
+        pip install --upgrade -r requirements.txt;
+      fi
 script:
   - cd $TRAVIS_BUILD_DIR/
   - flake8 --select E,W --max-line-length=140 --ignore E722,W503,W504,E128 jarviscli/
