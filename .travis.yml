@@ -21,9 +21,9 @@ matrix:
       env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
 install:
     - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-        sudo -H pip3 install --upgrade -r requirements.txt;
+        sudo -H pip3 install --upgrade -r installer/requirements.txt;
       else
-        pip install --upgrade -r requirements.txt;
+        pip install --upgrade -r installer/requirements.txt;
       fi
 script:
   - cd $TRAVIS_BUILD_DIR/
