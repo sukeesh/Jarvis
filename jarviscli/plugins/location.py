@@ -8,7 +8,7 @@ from plugin import alias, plugin, require
 @require(network=True)
 @plugin('location')
 def location(jarvis, s):
-    """Tell a joke about Chuck Norris"""
+    """It gives you your current location"""
     send_url = "http://api.ipstack.com/check?access_key=aafa3f03dc42cd4913a79fd2d9ce514d"
     geo_req = requests.get(send_url)
     geo_json = json.loads(geo_req.text)
