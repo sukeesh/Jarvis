@@ -1,7 +1,7 @@
 import requests
 import json
 from colorama import Fore
-from plugin import alias, plugin, require
+from plugin import plugin, require
 
 
 @alias("location")
