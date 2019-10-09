@@ -1,4 +1,5 @@
 from helper import *
+from os.path import expanduser, exists
 import unix_windows
 
 
@@ -37,7 +38,28 @@ else:
     if selection == 0:
         os.system('sudo cp jarvis /usr/local/bin')
     elif selection == 1:
-        os.system('export PATH=\\$PATH:{}" >> ~/.bashrc'.format(os.getcwd()))
+        line_to_add = 'export PATH="$PATH:{}"'.format(os.getcwd())
+        bashrc = '{}/.bashrc'.format(expanduser("~"))
+
+        if not os.path.exists(bashrc):
+            print("NO .bashrc found!")
+        else:
+            line_already_exists = False
+
+            fr = open(bashrc)
+            for line in fr.readlines():
+                if line.startswith(line_to_add):
+                    line_already_exists = True
+
+
+            if line_already_exists:
+                print("Jarvis path already added to $PATH in bashrc!")
+            else:
+                fw = open(bashrc, 'a')
+                fw.write(line_to_add)
+                fw.write('\n')
+                fw.close()
+
 
     printlog('\n\nInstallation complete. Try unsing Jarvis!')
     if selection != 2:
