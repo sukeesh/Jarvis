@@ -37,8 +37,7 @@ def fail(msg, fatal=False):
     log("Installation failed")
     log(msg)
     print(msg)
-    print('')
-    print('')
+    print('\n' * 2)
     if fatal:
         log("FATAL!")
         print("Installation failed with unexpected error - This should not have happened.")
