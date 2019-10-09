@@ -27,6 +27,8 @@ else:
     fw.write(JARVIS_MACRO.format(PATH=os.getcwd()))
     fw.close()
 
+    shell('chmod +x jarvis').should_not_fail()
+
     install_options = [("Install jarvis /usr/local/bin starter (requires root)", 0),
                        ("Add {} to $PATH (.bashrc)".format(os.getcwd()), 1),
                        ("Do nothing (Call Jarvis by full path)", 2)]
