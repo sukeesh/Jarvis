@@ -44,7 +44,11 @@ class Euler():
 
         # Form link depending on the number of the task and get the page via requests module
         url = self.project_url + '/problem=' + str(number)
-        page = requests.get(url)
+        try:
+            page = requests.get(url)
+        except ConnectionError:
+            jarvis.say("Can't get info from site, exit", Fore.RED)
+            return
 
         # Use bs4 to parse the page
         soup = BeautifulSoup(page.content, 'html.parser')
@@ -59,12 +63,12 @@ class Euler():
         self.jarvis.say(header_to_show, Fore.GREEN)
 
         # Get problem text
-        problem_div = content.find('div', class_='problem_content')       
+        problem_div = content.find('div', class_='problem_content')
         problem_text = problem_div.get_text()
- 
+
         # Print the text
         self.jarvis.say(problem_text)
-        
+
         self.jarvis.say("")
         self.jarvis.say("If it seems to you that text is not displayed correctly you can follow the link below.", Fore.GREEN)
         self.jarvis.say(url)
