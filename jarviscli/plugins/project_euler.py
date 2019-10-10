@@ -42,7 +42,7 @@ class Euler():
 
     def get_problem_by_number(self, number):
 
-        # Form link depending on the number of the task and get the page via requests module
+        # Form link depending on the task number and get the page via requests module
         url = self.project_url + '/problem=' + str(number)
         try:
             page = requests.get(url)
@@ -98,7 +98,6 @@ class Euler():
         self.jarvis.say('')
         self.jarvis.say('Website: ' + self.project_url, Fore.GREEN)
         self.jarvis.say("")
-
 
         info_text = "Project Euler (named after Leonhard Euler) is a website dedicated to a series of computational problems intended to be solved with computer programs. "
         info_text += "The project attracts adults and students interested in mathematics and computer programming. "
