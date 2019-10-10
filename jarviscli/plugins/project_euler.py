@@ -64,12 +64,33 @@ class Euler():
 
         # Get problem text
         problem_div = content.find('div', class_='problem_content')
-        problem_text = problem_div.get_text()
+        dirty_text = problem_div.get_text()
+
+        # FIXME !!!
+        # Not obvious way to remove duplicate newlines
+        # But I still don't get along with regular expressions :)
+        # FIXME !!!
+        dirty_text = dirty_text.split('\n')
+        i = 0
+        while i < len(dirty_text)-1:
+            if dirty_text[i] == '' and dirty_text[i] == dirty_text[i+1]:
+                del dirty_text[i]
+            else:
+                i += 1
+
+        # Also add empty lines (if no) before and after the text for pretty output
+        if dirty_text[0] != '':
+            dirty_text.insert(0, '')
+        if dirty_text[len(dirty_text)-1] != '':
+            dirty_text.insert(len(dirty_text)-1, '')
+
+        # Form string again
+        sep = '\n'
+        problem_text = sep.join(dirty_text)
 
         # Print the text
         self.jarvis.say(problem_text)
 
-        self.jarvis.say("")
         self.jarvis.say("If it seems to you that text is not displayed correctly you can follow the link below.", Fore.GREEN)
         self.jarvis.say(url)
 
