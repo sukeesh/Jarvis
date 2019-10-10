@@ -58,8 +58,14 @@ class Euler():
         self.jarvis.say('')
         self.jarvis.say(header_to_show, Fore.GREEN)
 
+        # Get problem text
+        problem_div = content.find('div', class_='problem_content')       
+        problem_text = problem_div.get_text()
+ 
+        # Print the text
+        self.jarvis.say(problem_text)
         
-        self.jarvis.say("\n")
+        self.jarvis.say("")
         self.jarvis.say("If it seems to you that text is not displayed correctly you can follow the link below.", Fore.GREEN)
         self.jarvis.say(url)
 
