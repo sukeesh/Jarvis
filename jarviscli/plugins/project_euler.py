@@ -5,6 +5,7 @@ import random
 from bs4 import BeautifulSoup
 
 
+@alias('project euler')
 @require(network=True)
 @plugin('euler')
 class Euler():
