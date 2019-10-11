@@ -12,31 +12,13 @@ class Euler():
     def __init__(self):
         self.project_url = 'https://www.projecteuler.net'
 
-        # Should be updated regularly
-        # Or write the code wich gets this data item from the site
-        self.last_problem = 682
-
-
     def __call__(self, jarvis, s):
 
         self.jarvis = jarvis
 
         # We need the number of the last problem
         # (in order to set limits on user's input)
-        # Use bs4 to parse the page with recent problems
-        url = self.project_url + '/recent'
-        page = requests.get(url)
-        soup = BeautifulSoup(page.content, 'html.parser')
-
-        # We need only the table with recent problems
-        problem_table = soup.find('table', id='problems_table')
-
-        # The id of last problem is in the second row of the table (first is the header)
-        # So get the second element of ResultSet
-        last_problem_row = problem_table.find_all('tr')[1]
-
-        # The id is in the first column ('td' tag)
-        self.last_problem_id = int(last_problem_row.find('td').get_text())
+        self.last_problem_id = self.get_last_problem_id()
 
         self.jarvis.say('Welcome to the ProjectEuler plugin!', Fore.GREEN)
         self.jarvis.say('-----------------------------------', Fore.GREEN)
@@ -56,7 +38,6 @@ class Euler():
             self.get_problem_by_number(problem_number)
         elif choice == 3:
             self.show_info()
-
 
     def get_problem_by_number(self, number):
 
@@ -125,3 +106,23 @@ class Euler():
 
         self.jarvis.say(info_text)
         self.jarvis.say("")
+
+    def get_last_problem_id(self):
+        # We need the number of the last problem
+        # (in order to set limits on user's input)
+        # Use bs4 to parse the page with recent problems
+        url = self.project_url + '/recent'
+        page = requests.get(url)
+        soup = BeautifulSoup(page.content, 'html.parser')
+
+        # We need only the table with recent problems
+        problem_table = soup.find('table', id='problems_table')
+
+        # The id of last problem is in the second row of the table (first is the header)
+        # So get the second element of ResultSet
+        last_problem_row = problem_table.find_all('tr')[1]
+
+        # The id is in the first column ('td' tag)
+        last_problem_id = int(last_problem_row.find('td').get_text())
+
+        return(last_problem_id)
