@@ -3,6 +3,7 @@ import json
 from colorama import Fore
 from plugin import plugin, require
 
+
 @require(network=True)
 @plugin('location')
 def location(jarvis, s):
