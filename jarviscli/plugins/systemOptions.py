@@ -2,8 +2,7 @@ import os
 from platform import architecture, dist, release, mac_ver
 from platform import system as sys
 from colorama import Fore, Style
-import psutil
-from plugin import LINUX, MACOS, WINDOWS, plugin, require
+from plugin import LINUX, UNIX, MACOS, WINDOWS, plugin, require
 
 
 @require(platform=MACOS, native="pmset")
@@ -71,13 +70,26 @@ def systeminfo_win(jarvis, s):
     os.system("systeminfo")
 
 
+@require(native="free", platform=UNIX)
 @plugin("check ram")
-def check_ram(jarvis, s):
+def check_ram__UNIX(jarvis, s):
     """
     checks your system's RAM stats.
     -- Examples:
         check ram
     """
+    os.system("free -lm")
+
+
+@require(platform=WINDOWS)
+@plugin("check ram")
+def check_ram__WINDOWS(jarvis, s):
+    """
+    checks your system's RAM stats.
+    -- Examples:
+        check ram
+    """
+    import psutil
     mem = psutil.virtual_memory()
 
     def format(size):
