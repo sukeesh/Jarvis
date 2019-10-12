@@ -37,11 +37,14 @@ class Euler():
         choice = self.jarvis.input_number('Your choice: ', rtype=int, rmin=1, rmax=4)
 
         if choice == 1:
-            problem_number = self.jarvis.input_number('Please, enter the desired number: ', rtype=int)
+            problem_number = self.jarvis.input_number('Please, enter the desired number: ', 
+                                                       rtype=int,
+                                                       rmin=1,
+                                                       rmax=self.last_problem_id)
             self.get_problem_by_number(problem_number)
         elif choice == 2:
             # Generate random number
-            problem_number = random.randint(1, self.last_problem)
+            problem_number = random.randint(1, self.last_problem_id)
             self.get_problem_by_number(problem_number)
         elif choice == 3:
             self.show_info()
