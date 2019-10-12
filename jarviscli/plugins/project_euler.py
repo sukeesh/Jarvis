@@ -9,6 +9,10 @@ from bs4 import BeautifulSoup
 @require(network=True)
 @plugin('euler')
 class Euler():
+    """
+    Gives acces to problems from https://www.projecteuler.net via jarvis
+    Usage: type 'euler' or 'project euler' and select the desired menu item.
+    """
 
     def __init__(self):
         self.project_url = 'https://www.projecteuler.net'
