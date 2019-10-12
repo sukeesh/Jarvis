@@ -1,4 +1,5 @@
 import subprocess
+from utilities.GeneralUtilities import executable_exists
 from plugin import plugin, require, LINUX, WINDOWS
 
 VALID_OPTIONS = ['status', 'vendor', 'energy', 'technology', 'remaining']
@@ -22,10 +23,11 @@ def battery_WIN32(jarvis, s):
     if batt.power_plugged:
         jarvis.say("Battery is charging: %s%%" % batt.percent)
     else:
-        jarvis.say("charge = %s%%, time left = %s" % (batt.percent, secs2hours(batt.secsleft)))
+        jarvis.say("charge = %s%%, time left = %s" %
+                   (batt.percent, secs2hours(batt.secsleft)))
 
 
-@require(platform=LINUX, native='upower')
+@require(platform=LINUX)
 @plugin('battery')
 def battery_LINUX(jarvis, s):
     """
@@ -33,8 +35,22 @@ def battery_LINUX(jarvis, s):
     and if the battery is charging or not
     """
 
-    # Get the battery info
-    battery_info = get_specific_info(s.lower())
+    if executable_exists('upower'):
+        # Get the battery info using upower
+        battery_info = get_specific_info(s.lower())
+    else:
+        # Get the battery info
+        # https://askubuntu.com/a/309146
+        battery_dir = "/sys/class/power_supply/BAT0/"
+
+        def get_battery_info(info):
+            return subprocess.check_output(["cat", battery_dir + info]).decode("utf-8")[:-1]
+
+        battery_text = []
+        battery_text.append("Status: " + get_battery_info("status"))
+        battery_text.append("Charge: " + get_battery_info("capacity") + "%")
+
+        battery_info = '\n'.join(battery_text)
 
     # Display the battery status
     jarvis.say(battery_info)
