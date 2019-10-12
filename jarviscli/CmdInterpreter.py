@@ -31,16 +31,18 @@ class JarvisAPI(object):
     def __init__(self, jarvis):
         self._jarvis = jarvis
 
-    def say(self, text, color=""):
+    def say(self, text, color="", speak=True):
         """
         This method give the jarvis the ability to print a text
         and talk when sound is enable.
         :param text: the text to print (or talk)
         :param color: for text - use colorama (https://pypi.org/project/colorama/)
                       e.g. Fore.BLUE
+        :param speak: False, if text shouldn't be spoken even if speech is enabled
         """
-        self._jarvis.speak(text)
         print(color + text + Fore.RESET)
+        if speak:
+            self._jarvis.speak(text)
 
     def input(self, prompt="", color=""):
         """
