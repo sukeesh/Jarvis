@@ -32,7 +32,7 @@ class Euler():
         self.jarvis.say('1) Get the problem by number')
         self.jarvis.say('2) Get random problem')
         self.jarvis.say('3) Info')
-        choice = self.jarvis.input_number('Your choice: ', rtype=int, rmin=1, rmax=self.last_problem_id)
+        choice = self.jarvis.input_number('Your choice: ', rtype=int, rmin=1, rmax=3)
 
         if choice == 1:
             problem_number = self.jarvis.input_number('Please, enter the desired number: ', rtype=int)
