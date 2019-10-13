@@ -79,7 +79,7 @@ class Euler():
         # Not obvious way to remove duplicate newlines
         # But I still don't get along with regular expressions :)
         # FIXME !!!
-        dirty_text = dirty_text.split('\n')
+        dirty_text = dirty_text.splitlines()
         i = 0
         while i < len(dirty_text) - 1:
             if dirty_text[i] == '' and dirty_text[i] == dirty_text[i + 1]:
