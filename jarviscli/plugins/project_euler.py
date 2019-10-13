@@ -91,7 +91,7 @@ class Euler():
         if dirty_text[0] != '':
             dirty_text.insert(0, '')
         if dirty_text[len(dirty_text) - 1] != '':
-            dirty_text.insert(len(dirty_text) - 1, '')
+            dirty_text.insert(len(dirty_text), '')
 
         # Form string again
         sep = '\n'
