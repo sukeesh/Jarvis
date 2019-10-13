@@ -2,7 +2,7 @@ from plugin import plugin, alias, require
 from colorama import Fore, Style
 import requests
 import random
-from bs4 import BeautifulSoup
+import bs4
 
 
 @alias('project euler')
@@ -60,7 +60,7 @@ class Euler():
             return
 
         # Use bs4 to parse the page
-        soup = BeautifulSoup(page.content, 'html.parser')
+        soup = bs4.BeautifulSoup(page.content, 'html.parser')
 
         # We are only interested in the block with id 'content'
         content = soup.find('div', id='content')
@@ -123,7 +123,7 @@ class Euler():
         # Use bs4 to parse the page with recent problems
         url = self.project_url + '/recent'
         page = requests.get(url)
-        soup = BeautifulSoup(page.content, 'html.parser')
+        soup = bs4.BeautifulSoup(page.content, 'html.parser')
 
         # We need only the table with recent problems
         problem_table = soup.find('table', id='problems_table')
