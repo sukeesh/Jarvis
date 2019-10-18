@@ -1,4 +1,3 @@
-import signal
 from cmd import Cmd
 from functools import partial
 import sys
@@ -225,7 +224,7 @@ class CmdInterpreter(Cmd):
         self.prompt = prompt
         self.enable_voice = enable_voice
         # Register do_quit() function to SIGINT signal (Ctrl-C)
-        signal.signal(signal.SIGINT, self.interrupt_handler)
+        #signal.signal(signal.SIGINT, self.interrupt_handler)
 
         self.memory = Memory()
         self.scheduler = schedule.Scheduler()
@@ -318,10 +317,6 @@ class CmdInterpreter(Cmd):
     def error(self):
         """Jarvis let you know if an error has occurred."""
         print_say("I could not identify your command...", self, Fore.RED)
-
-    def interrupt_handler(self, signal, frame):
-        """Closes Jarvis on SIGINT signal. (Ctrl-C)"""
-        self.close()
 
     def do_status(self, s):
         """Prints plugin status status"""
