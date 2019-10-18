@@ -53,7 +53,8 @@ class Jarvis(CmdInterpreter, object):
         CmdInterpreter.__init__(self, first_reaction_text, prompt,
                                 directories, first_reaction, enable_voice)
 
-        signal.signal(signal.SIGINT, self.interrupt_handler)
+        # Close Jarvis if Ctrl-C pressed in jarvis shell
+        signal.signal(signal.SIGINT, self.cmd_interrupt_handler)
 
     def _rel_path_fix(self, dirs):
         dirs_abs = []
@@ -186,6 +187,7 @@ class Jarvis(CmdInterpreter, object):
             self.speak()
             self.cmdloop(self.first_reaction_text)
 
-    def interrupt_handler(self, signal, frame):
+    def cmd_interrupt_handler(self, signal, frame):
         """Closes Jarvis on SIGINT signal. (Ctrl-C)"""
         self.close()
+
