@@ -5,7 +5,7 @@ from plugin import alias, plugin, require
 
 @alias("tell joke")
 @require(network=True)
-@plugin('chuck')
+@plugin('joke chuck')
 def chuck(jarvis, s):
     """Tell a joke about Chuck Norris"""
     req = requests.get("https://api.chucknorris.io/jokes/random")

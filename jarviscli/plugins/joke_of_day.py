@@ -5,18 +5,19 @@ from plugins.animations import SpinnerThread
 
 
 @require(network=True)
-@plugin('jokeofday')
+@plugin('joke daily')
 class joke_of_day:
     """
     Provides you with a joke of day to help you laugh amidst the
     daily boring schedule
 
-    Enter 'jokeofday' to use
+    Enter 'joke daily' to use
 
     """
 
     def __call__(self, jarvis, s):
         jarvis.say("Welcome To The Plugin Joke Of Day!", Fore.CYAN)
+        jarvis.say("Jokes provided by jokes.one API", Fore.CYAN, False)
         print()
         joke_fetch = self.get_joke(jarvis)
         if joke_fetch is not None:
@@ -25,23 +26,15 @@ class joke_of_day:
     def get_joke(self, jarvis):
         spinner = SpinnerThread('Fetching ', 0.15)
         while True:
-            joke = jarvis.input(
-                "Select your choice \n 1: Get Joke Of Day \n 2: Exit\n", Fore.GREEN)
-            print()
-            if joke == '1':
-                url = "https://api.jokes.one/jod"
-                spinner.start()
-                r = requests.get(url)
-                if r is None:
-                    spinner.stop()
-                    jarvis.say(
-                        "Error in fetching joke - try again! later", Fore.RED)
+            url = "https://api.jokes.one/jod"
+            spinner.start()
+            r = requests.get(url)
+            if r is None:
                 spinner.stop()
-                return r.json()
-            elif joke == '2':
-                return
-            else:
-                jarvis.say("Please enter a valid choice!")
+                jarvis.say(
+                    "Error in fetching joke - try again! later", Fore.RED)
+            spinner.stop()
+            return r.json()
 
     def joke(self, jarvis, joke_fetch):
         title = joke_fetch["contents"]["jokes"][0]["joke"]["title"]
