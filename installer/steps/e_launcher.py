@@ -51,7 +51,6 @@ else:
                 if line.startswith(line_to_add):
                     line_already_exists = True
 
-
             if line_already_exists:
                 print("Jarvis path already added to $PATH in bashrc!")
             else:
@@ -59,7 +58,6 @@ else:
                 fw.write(line_to_add)
                 fw.write('\n')
                 fw.close()
-
 
     printlog('\n\nInstallation complete. Try unsing Jarvis!')
     if selection != 2:

@@ -42,7 +42,7 @@ def fail(msg, fatal=False):
     if fatal:
         log("FATAL!")
         print("Installation failed with unexpected error - This should not have happened.")
-        print("Please check logs at {}. If you open a bug report, please include this file.".format(debug_log.name))
+        print("Please check logs at \"{}\". If you open a bug report, please include this file.".format(debug_log.name))
     else:
         print("Installation failed!")
     debug_log.close()
@@ -107,7 +107,7 @@ def user_input(items):
             log("> User input {} - out of range {} - {}".format(number, 1, len(items)))
 
 
-def shell(cmd, run_in_virtualenv=False):
+def shell(cmd):
     class Fail:
         def should_not_fail(self, msg=''):
             fail(msg, fatal=True)
@@ -116,7 +116,7 @@ def shell(cmd, run_in_virtualenv=False):
             return False
 
         def __str__(self):
-            return "fail"
+            return "FAIL {}".format(self.exception)
 
     class Success:
         def should_not_fail(self, msg=''):
@@ -126,40 +126,35 @@ def shell(cmd, run_in_virtualenv=False):
             return True
 
         def __str__(self):
-            return "ok"
+            return "OK"
 
     exit_code = Success()
 
-    log("Shell: {}; run_in_virtualenv: {}".format(cmd, run_in_virtualenv))
+    log("_" * 40)
+    log("Shell: {}".format(cmd))
     spinning_cursor_start()
-
-    PRE_CMD = ''
-    if run_in_virtualenv:
-        if IS_WIN:
-            PRE_CMD = 'env\\Scripts\\activate.bat && '
-        else:
-            PRE_CMD = 'source env/bin/activate && '
 
     cli_output = ''
     try:
-        cli_output = subprocess.check_output("{}{}".format(PRE_CMD, cmd),
-                                             shell=True, stderr=subprocess.STDOUT)
-    except subprocess.CalledProcessError:
+        cli_output = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as e:
         exit_code = Fail()
+        exit_code.exception = str(e)
 
     # python 2 compatibility
     try:
         cli_output = cli_output.decode("utf-8")
     except AttributeError:
         pass
+    exit_code.cli_output = cli_output
+
+    log(cli_output)
+    log("Shell: Exit {}".format(str(exit_code)))
+    log("-" * 40)
+    log("")
 
     spinning_cursor_stop()
-
     time.sleep(0.5)
     sys.stdout.write(' \b')
-    log("Shell: Exit {}\n#################################\n\n".format(str(exit_code)))
-    log(cli_output)
-
-    exit_code.cli_output = cli_output
 
     return exit_code
