@@ -1,5 +1,6 @@
 from helper import *
 import optional
+import unix_windows
 
 
 section("Check optional requirements")
@@ -9,7 +10,9 @@ requirements_failed = []
 
 def check_optional_requirement(requirement):
     if 'pip' in requirement.keys():
-        if shell("pip install -U {}".format(" ".join(requirement['pip'])), True).success():
+        packages = " ".join(requirement['pip'])
+        CMD = "{} install -U {}".format(unix_windows.VIRTUALENV_PIP, packages)
+        if shell(CMD).success():
             return True
         else:
             return False
@@ -47,6 +50,7 @@ while True:
     guess = None
 
     printlog(requirement['name'])
+    printlog('')
     printlog(requirement['instruction'])
 
     if 'package_guess' in requirement.keys():
@@ -65,7 +69,7 @@ while True:
 
     if check_optional_requirement(requirement):
         printlog('Success!')
-        requirements_failed -= requirement
+        requirements_failed = [x for x in requirements_failed if not x[0].startswith(requirement['name'])]
     else:
         printlog('Sorry; but looks like this did not work...')
     print('')

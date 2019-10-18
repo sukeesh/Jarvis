@@ -58,7 +58,16 @@ NativeNotification = {
     "name": "Notification",
     "executable": ['notify-send'],
     "description": "Native linux notifications",
-    "instruction": ""
+    "instruction": "Please install 'notify-send' manually using your local package manager!",
+    "package_guess": {
+        "linux": {
+            'redhat': 'libnotify',
+            'arch': 'libnotify',
+            'gentoo': 'eselect-notify-send',
+            'suse': 'libnotify-tools',
+            'debian': 'libnotify-bin'
+        }
+    }
 }
 
 
@@ -66,7 +75,17 @@ FFMPEG = {
     "name": "ffmpeg",
     "executable": ['ffmpeg'],
     "description": "Download music as .mp3 instead .webm",
-    "instruction": ""
+    "instruction": "Please install 'ffmpeg' manually using your local package manager!",
+    "package_guess": {
+        "macos": "ffmpeg",
+        "linux": {
+            'redhat': 'ffmpeg',
+            'arch': 'ffmpeg',
+            'gentoo': 'ffmpeg',
+            'suse': 'ffmpeg',
+            'debian': 'ffmpeg'
+        }
+    }
 }
 
 
@@ -74,7 +93,16 @@ ESPEAK = {
     "name": "espeak",
     "executable": ['espeak'],
     "description": "Text To Speech for Jarvis to talk out loud (alternatives: sapi5 or nsss will work, too)",
-    "instruction": ""
+    "instruction": "Please install 'espeak' manually using your local package manager!",
+    "package_guess": {
+        "linux": {
+            'redhat': 'espeak',
+            'arch': 'espeak',
+            'gentoo': 'espeak',
+            'suse': 'espeak',
+            'debian': 'espeak'
+        }
+    }
 }
 
 
@@ -87,12 +115,19 @@ if not sys.platform == "darwin":
 
 def get_guess(data):
     if sys.platform == "darwin":
-        return data['macos']
+        if 'macos' in data:
+            return data['macos']
+        else:
+            return False
     elif platform.system().lower() == "linux":
-        data = data['linux']
+        if 'linux' in data:
+            data = data['linux']
+        else:
+            return False
 
         for executable, distro in LinuxDistroRecognition.items():
             if executable_exists(executable):
-                return data[distro]
+                if distro in data:
+                    return data[distro]
 
     return False

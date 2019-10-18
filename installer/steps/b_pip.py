@@ -1,6 +1,8 @@
 from helper import *
+import unix_windows
 
 
 section("Install requirements")
-
-shell("pip install -U -r installer/requirements.txt", True).should_not_fail()
+CMD = "{} install -U -r installer/requirements.txt"
+CMD = CMD.format(unix_windows.VIRTUALENV_PIP)
+shell(CMD).should_not_fail()
