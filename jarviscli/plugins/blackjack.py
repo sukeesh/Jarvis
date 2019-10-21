@@ -1,12 +1,7 @@
 import random
 from plugin import plugin
 import sys
-def clear_lines(number=1):
-    CURSOR_UP_ONE = '\x1b[1A'
-    ERASE_LINE = '\x1b[2K'
-    for i in range(number):
-        sys.stdout.write(CURSOR_UP_ONE)
-        sys.stdout.write(ERASE_LINE)
+from colorama import Fore
 def delay():
     n=input("Press enter to continue")
 def wiped_slate(player):
@@ -49,6 +44,7 @@ def move(hand,suit,cards,suits,bet):# Here, hand is a nested list inside a list.
     sum_,hand[0]=blackjacksum(hand[0])
     print("Your hand is", pprinthand(hand[0],suit[0]))
     print("Your sum is", sum_)
+    print('---------------------------')
     if sum_>21:
         print("You got busted!")
         return hand,suit, bet
@@ -56,7 +52,7 @@ def move(hand,suit,cards,suits,bet):# Here, hand is a nested list inside a list.
         print("Blackjack!")
         return hand,suit, bet
     while True:
-        choice = input("Press H to Hit, S to Stand, D to Double-Down, P to sPlit")
+        choice = input("Press H to Hit, S to Stand, D to Double-Down, P to sPlit\n")
         try:
             if choice in['H','h']:
                 newcard=random.choice(cards)
@@ -137,100 +133,104 @@ def move(hand,suit,cards,suits,bet):# Here, hand is a nested list inside a list.
 # # Main driver code
 @plugin('blackjack')
 def blackjack(jarvis,s):
-    jarvis.say("Welcome to the casino! Let's play blackjack!")
+    jarvis.say("Welcome to the casino! Let's play blackjack!",Fore.GREEN)
     player={"hands":[],"suits":[],"bets":[],'profit':[]}
     cards=[1,2,3,4,5,6,7,8,9,10,10,10,10]
     suits=['spades','hearts','diamonds','clubs']
     choice='y'
     delay()
     while choice in "Yy":
-        jarvis.say("Let's start the game!")
+        jarvis.say("Let's start the game!",Fore.BLUE)
         ########### Bets
-        jarvis.say("How much are you betting?")
+        jarvis.say("How much are you betting?",Fore.BLUE)
         bet=jarvis.input_number()
         player['bets'].append(bet)
         delay()
+        jarvis.say('---------------------------')
         ########### Cards
-        jarvis.say("Dealing the cards............")
-        jarvis.say("Your cards....")
+        jarvis.say("Dealing the cards............",Fore.BLUE)
+        jarvis.say("Your cards....",Fore.BLUE)
         hand=[random.choice(cards),random.choice(cards)]
         suit=[random.choice(suits),random.choice(suits)]
         player["hands"].append(hand)
         player["suits"].append(suit)
         jarvis.say(pprinthand(hand,suit))
         delay()
+        jarvis.say('---------------------------')
         ########### Dealer's cards
         dealerhand=[random.choice(cards),random.choice(cards)]
         dealersuit=[random.choice(suits),random.choice(suits)]
-        jarvis.say("Dealer hand: "+pprinthand(dealerhand,dealersuit,type='partially-visible'))
+        jarvis.say("Dealer hand: "+pprinthand(dealerhand,dealersuit,type='partially-visible'),Fore.MAGENTA)
         delay()
+        jarvis.say('---------------------------')
         ########### Players' moves
-        jarvis.say("It's your turn, make your choice!")
+        jarvis.say("It's your turn, make your choice!",Fore.BLUE)
         player['hands'],player['suits'],player['bets']=move(player['hands'],player['suits'],cards,suits,player['bets'])
-        jarvis.say("Your hands and respective bets for this round are:")
-        jarvis.say(pprinthandlist(player['hands'],player['suits'])+"      "+str(player['bets']))
+        jarvis.say("Your hands and respective bets for this round are:",Fore.BLUE)
+        jarvis.say(pprinthandlist(player['hands'],player['suits'])+"      "+str(player['bets']),Fore.BLUE)
         delay()
+        jarvis.say('---------------------------')
         ########### Dealer's moves
-        jarvis.say("Dealer hand: "+pprinthand(dealerhand,dealersuit))
+        jarvis.say("Dealer hand: "+pprinthand(dealerhand,dealersuit),Fore.MAGENTA)
         dealersum,dealerhand=blackjacksum(dealerhand)
-        jarvis.say("Dealer's sum is "+str(dealersum))
+        jarvis.say("Dealer's sum is "+str(dealersum),Fore.MAGENTA)
         while dealersum<17 or (dealersum==17 and 11 in dealerhand) :
-            jarvis.say("Dealer draws another card")
+            jarvis.say("Dealer draws another card",Fore.MAGENTA)
             dealerhand.append(random.choice(cards))
             dealersuit.append(random.choice(suits))
-            jarvis.say("Newcard is"+ str(dealerhand[-1])+" of "+str(dealersuit[-1]))
+            jarvis.say("Newcard is "+ str(dealerhand[-1])+" of "+str(dealersuit[-1]),Fore.MAGENTA)
             dealersum,dealerhand=blackjacksum(dealerhand)
-            jarvis.say("Dealer's sum is "+ str(dealersum))
-            jarvis.say("Dealer's hand is "+ pprinthand(dealerhand,dealersuit))
+            jarvis.say("Dealer's sum is "+ str(dealersum),Fore.MAGENTA)
+            jarvis.say("Dealer's hand is "+ pprinthand(dealerhand,dealersuit),Fore.MAGENTA)
         delay()
         ########### Profit Calculation
         jarvis.say('---------------------------')
-        jarvis.say("Let's see your results ")
+        jarvis.say("Let's see your results ",Fore.BLUE)
         for j in range(len(player['hands'])):
             hand=player['hands'][j]
             suit=player['suits'][j]
             bet=player['bets'][j]
             sum_,hand=blackjacksum(hand)
             dealersum,dealerhand=blackjacksum(dealerhand)
-            jarvis.say("For the hand- "+pprinthand(hand,suit)+'  sum is-'+str(sum_))
+            jarvis.say("For the hand- "+pprinthand(hand,suit)+'  sum is-'+str(sum_),Fore.BLUE)
             if len(hand)==2 and sum_==21:
-                jarvis.say("Blackjack!")
+                jarvis.say("Blackjack!",Fore.BLUE)
                 profit=bet*1.5
                 player['profit'].append(bet*1.5)
             elif sum_>21:
-                jarvis.say("Busted")
+                jarvis.say("Busted",Fore.BLUE)
                 profit = bet * -1
                 player['profit'].append(bet * -1)
             elif dealersum>21:
-                jarvis.say("Dealer Busted")
+                jarvis.say("Dealer Busted",Fore.BLUE)
                 profit = bet * 1
                 player['profit'].append(bet*1)
             elif dealersum>sum_:
-                jarvis.say("You lost")
+                jarvis.say("You lost",Fore.BLUE)
                 profit = bet * -1
                 player['profit'].append(bet * -1)
             elif sum_>dealersum:
-                jarvis.say("You win")
+                jarvis.say("You win",Fore.BLUE)
                 profit = bet * 1
                 player['profit'].append(bet * 1)
             elif sum_==21 and dealersum==21 and len(dealerhand)==2 and len(hand)>2:
-                jarvis.say("You lost")
+                jarvis.say("You lost",Fore.BLUE)
                 profit = bet * -1
                 player['profit'].append(bet * -1)
             elif sum_==dealersum:
-                jarvis.say("Push")
+                jarvis.say("Push",Fore.BLUE)
                 profit = bet * 0
                 player['profit'].append(bet * 0)
-            jarvis.say("Profit is- "+str(profit))
+            jarvis.say("Profit is- "+str(profit),Fore.BLUE)
         players=wiped_slate(player)
-        choice=jarvis.input("Do you wish to play another round?Y/n")
-    jarvis.say("OK then, Let's see the results")
+        choice=jarvis.input("Do you wish to play another round?Y/n \n",Fore.GREEN)
+    jarvis.say("OK then, Let's see the results",Fore.GREEN)
     # total profit calculation
     profit=sum(player['profit'])
     if profit>=0:
-        jarvis.say("Your total profit is "+str(profit))
+        jarvis.say("Your total profit is "+str(profit),Fore.GREEN)
     else:
-        jarvis.say("Your total loss is "+ str(profit * -1))
-
+        jarvis.say("Your total loss is "+ str(profit * -1),Fore.GREEN)
+    jarvis.say("Goodbye, Let's play again sometime!",Fore.GREEN)
 
 
