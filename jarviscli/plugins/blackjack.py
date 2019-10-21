@@ -14,8 +14,7 @@ def pprinthand(hand,suit,type='visible'):
     for i in range(len(temphand)):
         if temphand[i]==1 or temphand[i]==11:
             temphand[i]='A'           # 1 or 11 is value of ace.
-        elif temphand[i]==10:
-            temphand[i]='F'           # 10 is value of all face cards.
+        # 10 is value of all face cards.
         temphand[i]=str(temphand[i])+" of "+suit[i]
     if type=='visible':
         return str(temphand)
@@ -27,18 +26,24 @@ def pprinthandlist(handlist,suitlist):
         newhandlist.append(pprinthand(handlist[i],suitlist[i]))
     return str(newhandlist)
 ##################################
-def blackjacksum(hand):# computes the sum by assuming appropriate value
+def blackjacksum(orig_hand):# computes the sum by assuming appropriate value
+    hand=orig_hand[:]
+    for i in range(len(hand)):
+        if str(hand[i]) in 'JQK':
+            hand[i]=10
     if sum(hand)<=11:  # of Ace card(either 1 or 11) acc. to the sum.
         for i in range(len(hand)):
             if hand[i]==1:
                 hand[i]=11
+                orig_hand[i]=11
                 break
     elif sum(hand)>21:
         for i in range(len(hand)):
             if hand[i] == 11:
                 hand[i] = 1
+                orig_hand[i] = 1
                 break
-    return sum(hand),hand
+    return sum(hand),orig_hand
 ###################################
 def move(hand,suit,cards,suits,bet):# Here, hand is a nested list inside a list. It is a list of all hands of a player.
     sum_,hand[0]=blackjacksum(hand[0])
@@ -135,10 +140,26 @@ def move(hand,suit,cards,suits,bet):# Here, hand is a nested list inside a list.
 def blackjack(jarvis,s):
     jarvis.say("Welcome to the casino! Let's play blackjack!",Fore.GREEN)
     player={"hands":[],"suits":[],"bets":[],'profit':[]}
-    cards=[1,2,3,4,5,6,7,8,9,10,10,10,10]
+    cards=[1,2,3,4,5,6,7,8,9,10,'J','Q','K']
     suits=['spades','hearts','diamonds','clubs']
     choice='y'
     delay()
+    #######################################Instructions
+    jarvis.say('How to play:',Fore.GREEN)
+    jarvis.say('-->The goal of blackjack is to beat the dealer\'s hand without going over 21.',Fore.MAGENTA)
+    jarvis.say('-->Face cards are worth 10. Aces are worth 1 or 11, whichever makes a better hand.',Fore.MAGENTA)
+    jarvis.say('-->Each player starts with two cards, one of the dealer\'s cards is hidden until the end.',Fore.MAGENTA)
+    jarvis.say('-->To \'Hit\' is to ask for another card. To \'Stand\' is to hold your total and end your turn.',Fore.MAGENTA)
+    jarvis.say('-->If you go over 21 you bust, and the dealer wins regardless of the dealer\'s hand.',Fore.MAGENTA)
+    jarvis.say('-->If you are dealt 21 from the start (Ace & 10), you got a blackjack.',Fore.MAGENTA)
+    jarvis.say('-->Blackjack means you win 1.5 the amount of your bet.',Fore.MAGENTA)
+    jarvis.say('-->Dealer will hit until his/her cards total 17 or higher.',Fore.MAGENTA)
+    jarvis.say('-->Doubling is like a hit, only the bet is doubled and you only get one more card.',Fore.MAGENTA)
+    jarvis.say('-->Split can be done when you have two of the same card - the pair is split into two hands.',Fore.MAGENTA)
+    jarvis.say('-->Splitting also doubles the bet, because each new hand is worth the original bet.',Fore.MAGENTA)
+    jarvis.say('-->You cannot split two aces.',Fore.MAGENTA)
+    jarvis.say('-->You can double on a hand resulting from a split, tripling or quadrupling you bet.',Fore.MAGENTA)
+
     while choice in "Yy":
         jarvis.say("Let's start the game!",Fore.BLUE)
         ########### Bets
