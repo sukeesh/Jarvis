@@ -175,14 +175,14 @@ def blackjack(jarvis, s):
     while choice in "Yy":
         jarvis.say('Shuffling the cards....', Fore.BLUE)
         jarvis.say("Let's start the game!", Fore.BLUE)
-        #Bets
+        # Bets
         jarvis.say("How much are you betting?", Fore.BLUE)
         bet = jarvis.input_number()
         player['bets'].append(bet)
         delay()
         jarvis.say('---------------------------')
 
-        #Cards
+        # Cards
         jarvis.say("Dealing the cards............", Fore.BLUE)
         jarvis.say("Your cards....", Fore.BLUE)
         hand = [random.choice(cards), random.choice(cards)]
