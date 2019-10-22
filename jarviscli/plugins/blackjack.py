@@ -175,14 +175,14 @@ def blackjack(jarvis, s):
     while choice in "Yy":
         jarvis.say('Shuffling the cards....', Fore.BLUE)
         jarvis.say("Let's start the game!", Fore.BLUE)
-        ########### Bets
+        #Bets
         jarvis.say("How much are you betting?", Fore.BLUE)
         bet = jarvis.input_number()
         player['bets'].append(bet)
         delay()
         jarvis.say('---------------------------')
 
-        ########### Cards
+        #Cards
         jarvis.say("Dealing the cards............", Fore.BLUE)
         jarvis.say("Your cards....", Fore.BLUE)
         hand = [random.choice(cards), random.choice(cards)]
@@ -193,14 +193,14 @@ def blackjack(jarvis, s):
         delay()
         jarvis.say('---------------------------')
 
-        ########### Dealer's cards
+        # Dealer's cards
         dealerhand = [random.choice(cards), random.choice(cards)]
         dealersuit = [random.choice(suits), random.choice(suits)]
         jarvis.say("Dealer hand: " + pprinthand(dealerhand, dealersuit, type='partially-visible'), Fore.MAGENTA)
         delay()
         jarvis.say('---------------------------')
 
-        ########### Players' moves
+        # Players' moves
         jarvis.say("It's your turn, make your choice!", Fore.BLUE)
         player['hands'], player['suits'], player['bets'] = move(player['hands'], player['suits'], cards, suits,
                                                                 player['bets'])
@@ -209,7 +209,7 @@ def blackjack(jarvis, s):
         delay()
         jarvis.say('---------------------------')
 
-        ########### Dealer's moves
+        # Dealer's moves
         jarvis.say("Dealer hand: " + pprinthand(dealerhand, dealersuit), Fore.MAGENTA)
         dealersum, dealerhand = blackjacksum(dealerhand)
         jarvis.say("Dealer's sum is " + str(dealersum), Fore.MAGENTA)
@@ -225,7 +225,7 @@ def blackjack(jarvis, s):
         delay()
         jarvis.say('---------------------------')
 
-        ########### Profit Calculation
+        # Profit Calculation
         jarvis.say("Let's see your results ", Fore.BLUE)
         for j in range(len(player['hands'])):
             hand = player['hands'][j]
