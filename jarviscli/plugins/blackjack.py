@@ -147,6 +147,7 @@ def blackjack(jarvis,s):
     choice='y'
     delay()
 
+
     #Instructions
     jarvis.say('How to play:',Fore.GREEN)
     jarvis.say('-->The goal of blackjack is to beat the dealer\'s hand without going over 21.',Fore.CYAN)
