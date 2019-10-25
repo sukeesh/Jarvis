@@ -16,6 +16,8 @@ class Stock:
     stock losers                : Most losers in NYSE
     stock help                  : Prints help
     *** AVAILABLE ONLY FOR US EQUITIES ***
+
+    Data provided for free by IEX (https://iextrading.com/developer). View IEX’s Terms of Use (https://iextrading.com/api-exhibit-a/).
     """
 
     def __call__(self, jarvis, s):
@@ -60,6 +62,7 @@ class Stock:
             if('symbol' in data.keys()):
                 jarvis.say("Symbol: " + str(data['symbol']), Fore.GREEN)
                 jarvis.say("Price: " + str(data['price']), Fore.GREEN)
+                jarvis.say("IEX Real-Time Price (https://iextrading.com/developer)")
             elif('Error' in data.keys()):
                 jarvis.say("Invalid stock symbol name", Fore.RED)
             else:
