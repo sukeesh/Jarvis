@@ -1,15 +1,26 @@
 import requests
 from plugin import plugin
 from colorama import Fore
+from inspect import cleandoc
 import re
 
 
 @plugin('stock')
 class Stock:
+    """
+    stock <stock_id>            : Get details of stock identified by <stock_id>(one id at a time)
+    stock getid                 : Search stock id
+    stock profile <stock_id>    : Get company profile
+    stock fstatement <stock_id> : Get latest ANNUAL finincial statement of the company
+    stock gainers               : Most gainers in NYSE
+    stock losers                : Most losers in NYSE
+    stock help                  : Prints help
+    *** AVAILABLE ONLY FOR US EQUITIES ***
+    """
 
     def __call__(self, jarvis, s):
-        if not s:
-            self.usage(jarvis)
+        if not s or 'help' in s:
+            jarvis.say(cleandoc(self.__doc__), Fore.GREEN)
         else:
             ps = s.split()
             if ps[0] == 'getid':
@@ -19,8 +30,6 @@ class Stock:
                 else:
                     name = jarvis.input("Enter the name of the stock: ")
                 self.get_stock_id(jarvis, name)
-            elif ps[0] == 'help':
-                self.usage(jarvis)
             elif ps[0] == 'profile':
                 if(len(ps) != 2):
                     jarvis.say("You forgot to mention the symbol", Fore.RED)
@@ -40,17 +49,6 @@ class Stock:
             # anything else is treated as a stock symbol
             else:
                 self.get_stock_data(jarvis, s)
-
-    def usage(self, jarvis):
-        ''' Print the usage for stock command '''
-        jarvis.say("stock <stock_id>\t : Get details of stock identified by <stock_id>(one id at a time)", Fore.GREEN)
-        jarvis.say("stock getid\t\t : Search stock id", Fore.GREEN)
-        jarvis.say("stock profile <stock_id>\t : Get company profile", Fore.GREEN)
-        jarvis.say("stock fstatement <stock_id>\t : Get latest ANNUAL finincial statement of the company", Fore.GREEN)
-        jarvis.say("stock gainers\t\t : Most gainers in NYSE", Fore.GREEN)
-        jarvis.say("stock losers\t\t : Most losers in NYSE", Fore.GREEN)
-        jarvis.say("stock help\t\t : Prints help", Fore.GREEN)
-        jarvis.say("*** AVAILABLE ONLY FOR US EQUITIES ***", Fore.GREEN)
 
     def get_stock_data(self, jarvis, quote):
         ''' Given a stock symbol, get the real time price of the stock '''
