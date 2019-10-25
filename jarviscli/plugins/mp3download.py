@@ -4,7 +4,6 @@ import urllib.request
 import requests
 import urllib.parse
 
-@require(network = True)
 @plugin("mp3download")
 def mp3download(jarvis):
 
