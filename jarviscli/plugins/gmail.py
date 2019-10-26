@@ -22,8 +22,6 @@ def gmail(jarvis, s):
         return
     user = jarvis.input("Enter User id\n")                          # YOUR ID
     Pass_w = jarvis.input("\nEnter your Password\n")                # YOUR Password
-    reciever_id = jarvis.input("\nEnter reciever id\n")             # Reciever ID
-    msg = jarvis.input("\nEnter message\n")                         # message
 
     try:
         server.login(user, Pass_w)                           # user log in
@@ -35,8 +33,12 @@ def gmail(jarvis, s):
                                                                       \n\t\tStep 2. Go to account settings.
                                                                       \n\t\tStep 3. Find 'allow less secure apps' and mark it as ON.''')
         server.quit()
-        exit()
-    server.sendmail(user, reciever_id, msg)
+        return
+
+    receiver_id = jarvis.input("\nEnter receiver id\n")             # Reciever ID
+    msg = jarvis.input("\nEnter message\n")                         # message
+    server.sendmail(user, receiver_id, msg)
+
     print("MAIL sent")                                       # confirmation
     print("Closing Connection")
     # closing server connection

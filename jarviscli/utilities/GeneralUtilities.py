@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-from six.moves import input
 from colorama import Fore
 import distutils.spawn
 
 
 MACOS = 'darwin'
+WIN = 'win32'
 IS_MACOS = sys.platform == MACOS
+IS_WIN = sys.platform == WIN
 
 
 def wordIndex(data, word):

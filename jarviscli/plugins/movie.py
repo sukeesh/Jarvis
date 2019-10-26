@@ -1,7 +1,7 @@
 import imdb
-import six
 from colorama import Fore, Style
 from plugin import plugin, require
+from functools import lru_cache
 
 app = imdb.IMDb()
 
@@ -14,6 +14,7 @@ def main(jarvis, movie):
     return get_movie_by_id(movie_id)
 
 
+@lru_cache(maxsize=50, typed=False)
 def search_movie(jarvis, movie, all_results=False):
     if movie == '':
         jarvis.say("Please add movie name!", Fore.RED)
@@ -29,17 +30,9 @@ def search_movie(jarvis, movie, all_results=False):
     return results
 
 
+@lru_cache(maxsize=20, typed=False)
 def get_movie_by_id(movie_id):
     return app.get_movie(movie_id)
-
-
-# cache: Python3 only
-if six.PY3:
-    from functools import lru_cache
-
-    # equals @functools.lru_cache(maxsize=50, typed=False)
-    search_movie = lru_cache(maxsize=50, typed=False)(search_movie)
-    get_movie_by_id = lru_cache(maxsize=20, typed=False)(get_movie_by_id)
 
 
 @require(network=True)

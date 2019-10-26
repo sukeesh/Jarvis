@@ -3,11 +3,11 @@
 source env/bin/activate
 echo ""
 echo "checking for linting errors"
-flake8 --select E,W --max-line-length=140 --ignore E722 jarviscli/
+flake8 --select E,W --max-line-length=140 --ignore E722 jarviscli/ installer
 echo "lint errors checked"
 echo ""
 cd jarviscli/
 echo "checking for unit test"
-python -m unittest discover
+python3 -m unittest discover
 echo "unit tests checked"
 echo ""

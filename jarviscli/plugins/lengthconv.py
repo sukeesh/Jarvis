@@ -61,8 +61,8 @@ class lengthconv():
     def __call__(self, jarvis, s):
         while True:
             amount = jarvis.input_number('Enter an amount: ')
-            from_unit = self.get_units('Enter from which unit: ')
-            to_unit = self.get_units('Enter to which unit: ')
+            from_unit = self.get_units(jarvis, 'Enter from which unit: ')
+            to_unit = self.get_units(jarvis, 'Enter to which unit: ')
 
             if (from_unit != to_unit):
                 break
@@ -71,10 +71,9 @@ class lengthconv():
 
         convamount = self.length_convert(jarvis, amount, from_unit, to_unit)
 
+        precision = 0
         if (convamount.is_integer() is False):
-            precision = 0
             precision = jarvis.input_number("Please enter precision (max:12): ")
-            presicion = float(precision)
             while True:
                 if (precision.is_integer() and precision <= 12):
                     break
@@ -124,7 +123,7 @@ class lengthconv():
 
         return convamount
 
-    def get_units(self, prompt):
+    def get_units(self, jarvis, prompt):
 
         while True:
             u = jarvis.input(prompt).lower()

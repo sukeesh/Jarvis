@@ -2,7 +2,6 @@ import sys
 from functools import partial
 
 import pluginmanager
-import six
 
 import plugin
 from utilities.GeneralUtilities import warning, error, executable_exists
@@ -114,7 +113,8 @@ class PluginManager(object):
                 parent.add_plugin(name, plugin_to_add)
             else:
                 if not plugin_existing.is_callable_plugin():
-                    parent.update_plugin(name, plugin_to_add)
+                    plugin_existing.change_with(plugin_to_add)
+                    parent.add_plugin(name, plugin_to_add)
                 else:
                     error("Duplicated plugin {}!".format(name))
 
@@ -187,19 +187,19 @@ class PluginDependency(object):
     def __init__(self):
         # plugin shoud match these requirements
         self._requirement_has_network = True
-        if six.PY2:
-            self._requirement_python = plugin.PYTHON2
-        else:
-            self._requirement_python = plugin.PYTHON3
         if sys.platform == "darwin":
             self._requirement_platform = plugin.MACOS
-        else:
+        elif sys.platform == "win32":
+            self._requirement_platform = plugin.WINDOWS
+        elif sys.platform.startswith("linux"):
             self._requirement_platform = plugin.LINUX
+        else:
+            self._requirement_platform = None
+            warning("Unsupported platform {}".format(sys.platform))
 
     def _plugin_get_requirements(self, requirements_iter):
         plugin_requirements = {
             "platform": [],
-            "python": [],
             "network": [],
             "native": []
         }
@@ -215,7 +215,7 @@ class PluginDependency(object):
             if key in plugin_requirements:
                 plugin_requirements[key].extend(values)
             else:
-                warning("{}={}: No supportet requirement".format(key, values))
+                warning("{}={}: No supported requirement".format(key, values))
 
         return plugin_requirements
 
@@ -228,10 +228,6 @@ class PluginDependency(object):
         if not self._check_platform(plugin_requirements["platform"]):
             required_platform = ", ".join(plugin_requirements["platform"])
             return "Requires os {}".format(required_platform)
-
-        if not self._check_python(plugin_requirements["python"]):
-            required_python = ", ".join(plugin_requirements["python"])
-            return "Requires Python {}".format(required_python)
 
         if not self._check_network(plugin_requirements["network"], plugin):
             return "Requires networking"
@@ -246,13 +242,10 @@ class PluginDependency(object):
         if not values:
             return True
 
+        if plugin.UNIX in values:
+            values += [plugin.LINUX, plugin.MACOS]
+
         return self._requirement_platform in values
-
-    def _check_python(self, values):
-        if not values:
-            return True
-
-        return self._requirement_python in values
 
     def _check_network(self, values, plugin):
         if True in values:

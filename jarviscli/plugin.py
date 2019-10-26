@@ -5,12 +5,12 @@ from requests import ConnectionError
 
 
 # Constants
-# python
-PYTHON2 = "PY2"
-PYTHON3 = "PY3"
 # platform
 MACOS = "MACOS"
 LINUX = "LINUX"
+WINDOWS = "WINDOWS"
+# Shortcut for MACOS + LINUX
+UNIX = "UNIX"
 
 
 def plugin(name):
@@ -43,14 +43,12 @@ def plugin(name):
     return create_plugin
 
 
-def require(network=None, platform=None, python=None, native=None):
+def require(network=None, platform=None, native=None):
     require = []
     if network is not None:
         require.append(('network', network))
     if platform is not None:
         require.append(('platform', platform))
-    if python is not None:
-        require.append(('python', python))
     if native is not None:
         require.append(('native', native))
 
@@ -92,6 +90,9 @@ class PluginStorage(object):
         if name in self._sub_plugins:
             return self._sub_plugins[name]
         return None
+
+    def change_with(self, plugin_new):
+        plugin_new._sub_plugins = self._sub_plugins
 
 
 class Plugin(pluginmanager.IPlugin, PluginStorage):

@@ -23,6 +23,8 @@ class Bmi:
             bmi = self.calc_bmi('m', *self.ask_measurements(jarvis, "m"))
         elif system == 'imperial':
             bmi = self.calc_bmi('i', *self.ask_measurements(jarvis, "i"))
+        else:
+            return
         self.print_body_state(jarvis, bmi)
 
     def get_system(self, jarvis):
@@ -93,11 +95,11 @@ class Bmi:
             while True:
                 try:
                     height = int(height)
-                    if height < 0:
+                    if height <= 0:
                         raise ValueError('Please only positive numbers')
                     break
                 except ValueError:
-                    print("Error on input type for height, please insert an integer: ")
+                    print("Please, insert a positive integer: ")
                     height = jarvis.input()
             jarvis.say("Please insert your weight in kg: ")
             weight = jarvis.input()

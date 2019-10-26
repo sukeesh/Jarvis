@@ -1,8 +1,8 @@
 import signal
 from cmd import Cmd
 from functools import partial
-import traceback
 import sys
+import traceback
 
 from colorama import Fore
 from PluginManager import PluginManager
@@ -31,16 +31,18 @@ class JarvisAPI(object):
     def __init__(self, jarvis):
         self._jarvis = jarvis
 
-    def say(self, text, color=""):
+    def say(self, text, color="", speak=True):
         """
         This method give the jarvis the ability to print a text
         and talk when sound is enable.
         :param text: the text to print (or talk)
         :param color: for text - use colorama (https://pypi.org/project/colorama/)
                       e.g. Fore.BLUE
+        :param speak: False, if text shouldn't be spoken even if speech is enabled
         """
-        self._jarvis.speak(text)
         print(color + text + Fore.RESET)
+        if speak:
+            self._jarvis.speak(text)
 
     def input(self, prompt="", color=""):
         """
@@ -70,7 +72,7 @@ class JarvisAPI(object):
             try:
                 value = rtype(self.input(prompt, color).replace(',', '.'))
                 if (rmin is not None and value < rmin) or (rmax is not None and value > rmax):
-                    prompt = "Sorry, needs to be between {} and {}. Try again: ".format(rmin, ramx)
+                    prompt = "Sorry, needs to be between {} and {}. Try again: ".format(rmin, rmax)
                 else:
                     return value
             except ValueError:
@@ -227,7 +229,12 @@ class CmdInterpreter(Cmd):
 
         self.memory = Memory()
         self.scheduler = schedule.Scheduler()
-        self.speech = create_voice()
+        # what if the platform does not have any engines, travis doesn't have sapi5 acc to me
+        try:
+            self.speech = create_voice()
+        except Exception as e:
+            print_say("Voice not supported", self, Fore.RED)
+            print_say(str(e), self, Fore.RED)
 
         self.fixed_responses = {"what time is it": "clock",
                                 "where am i": "pinpoint",
@@ -302,11 +309,7 @@ class CmdInterpreter(Cmd):
         """Closing Jarvis."""
         print_say("Goodbye, see you later!", self, Fore.RED)
         self.scheduler.stop_all()
-        exit()
-
-    def completedefault(self, text, line, begidx, endidx):
-        """Default completion"""
-        return [i for i in self.actions if i.startswith(text)]
+        sys.exit()
 
     def execute_once(self, command):
         self.get_api().eval(command)
@@ -315,13 +318,6 @@ class CmdInterpreter(Cmd):
     def error(self):
         """Jarvis let you know if an error has occurred."""
         print_say("I could not identify your command...", self, Fore.RED)
-
-    def get_completions(self, command, text):
-        """Returns a list with the completions of a command."""
-        dict_target = [item for item in self.actions
-                       if isinstance(item, dict) and command in item][0]
-        completions_list = dict_target[command]
-        return [i for i in completions_list if i.startswith(text) and i != '']
 
     def interrupt_handler(self, signal, frame):
         """Closes Jarvis on SIGINT signal. (Ctrl-C)"""
@@ -343,7 +339,7 @@ class CmdInterpreter(Cmd):
                 print_say(
                     "{:<20}: {}".format(
                         disabled,
-                        "OR ".join(reason)),
+                        " OR ".join(reason)),
                     self)
 
     def help_status(self):
