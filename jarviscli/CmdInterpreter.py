@@ -223,8 +223,6 @@ class CmdInterpreter(Cmd):
         self.first_reaction_text = first_reaction_text
         self.prompt = prompt
         self.enable_voice = enable_voice
-        # Register do_quit() function to SIGINT signal (Ctrl-C)
-        #signal.signal(signal.SIGINT, self.interrupt_handler)
 
         self.memory = Memory()
         self.scheduler = schedule.Scheduler()
