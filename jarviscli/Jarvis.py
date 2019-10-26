@@ -78,6 +78,12 @@ class Jarvis(CmdInterpreter, object):
 
     def precmd(self, line):
         """Hook that executes before every command."""
+
+        # Set another Ctrl-C handler before any command is executed
+        # Used to send user back to shell instead of closing Jarvis
+        # if Ctrl+C shortcut is pressed while plugin is running
+        signal.signal(signal.SIGINT, self.plugin_interrupt_handler)
+
         words = line.split()
 
         # append calculate keyword to front of leading char digit (or '-') in
@@ -99,6 +105,10 @@ class Jarvis(CmdInterpreter, object):
 
     def postcmd(self, stop, line):
         """Hook that executes after every command."""
+
+        # Set the default interrupt hadnler again (see the precmd() method)
+        signal.signal(signal.SIGINT, self.cmd_interrupt_handler)
+
         if self.first_reaction:
             self.prompt = (
                 Fore.RED
@@ -191,3 +201,8 @@ class Jarvis(CmdInterpreter, object):
         """Closes Jarvis on SIGINT signal. (Ctrl-C)"""
         self.close()
 
+    def plugin_interrupt_handler(self, signal, frame):
+        # Debug message
+        print('A new interrupt handler for interactive plugins')
+
+        pass
