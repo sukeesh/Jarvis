@@ -1,6 +1,7 @@
 import requests
 import warnings
-from bs4 import BeautifulSoup
+import bs4
+from colorama import Fore
 from plugin import plugin, require
 
 
@@ -18,7 +19,7 @@ class Scraper():
     """
     
     def __call__(self, jarvis, s):
-        jarvis.say(self.search(s))
+        jarvis.say(self.search(s), Fore.BLUE)
 
 
     def search(self, question):
@@ -26,7 +27,7 @@ class Scraper():
         query = '+'.join(question.split(' '))
         url = 'https://www.google.com/search?q={}&ie=utf-8&oe=utf-8'.format(query)
         response = requests.get(url)
-        soup = BeautifulSoup(response.text, 'html.parser')
+        soup = bs4.BeautifulSoup(response.text, 'html.parser')
 
         google_answers = soup.find_all("div", {"class": "BNeawe iBp4i AP7Wnd"})
         for answer in google_answers:
@@ -55,5 +56,6 @@ class Scraper():
         result = result.split('\n')[0]
         if result.endswith('Wikipedia'):
             result = result[:result.find('Wikipedia')]
+        result += '\n'
 
         return result
