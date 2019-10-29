@@ -1,5 +1,5 @@
 import requests
-import bs4 
+import bs4
 from colorama import Fore
 from plugin import plugin, require
 
