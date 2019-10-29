@@ -54,9 +54,9 @@ def translate(jarvis, s):
 #       If both languages found, work out where the text to be translated is in the sentence and perform the translation
         if (des and srcs):
             if(currentPos < 2):
-                tex = " ".join(words[4:])
+                tex = " ".join(words[finalPos + 1:])
             else:
-                tex = " ".join(words[:len(words) - (4 + (len(words) - finalPos - 1))])  # Discards extra words at the end of the sentence
+                tex = " ".join(words[:currentPos - 1])  # Discards extra words at the end of the sentence
             performTranslation(srcs, des, tex)
 #       Otherwise perform the default method for translation
         else:
