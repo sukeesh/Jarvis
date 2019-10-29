@@ -15,7 +15,7 @@ class Scraper():
     example: google What is the Large Hadron Collider?
     """
     def __call__(self, jarvis, s):
-        jarvis.say(self.search(s))
+        jarvis.say(self.search(s), Fore.BLUE)
 
     def search(self, question):
         query = '+'.join(question.split(' '))
@@ -31,7 +31,7 @@ class Scraper():
         first_answers = soup.find_all("div", {"class": "BNeawe s3v9rd AP7Wnd"})
         for answer in first_answers:
             if answer.text:
-                return self.parse_result(answer.text), Fore.BLUE
+                return self.parse_result(answer.text)
 
         all_div = soup.find_all("div")
         google_answer_keys = ['BNeawe', 's3v9rd', 'AP7Wnd', 'iBp4i']
@@ -39,9 +39,9 @@ class Scraper():
         for div in all_div:
             for key in google_answer_keys:
                 if key in div:
-                    return self.parse_result(div.text), Fore.BLUE
+                    return self.parse_result(div.text)
 
-        return 'No Answers Found', Fore.RED
+        return 'No Answers Found'
 
     def parse_result(self, result):
         result = result.split('\n')[0]
