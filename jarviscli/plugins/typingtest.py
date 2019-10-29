@@ -1,5 +1,7 @@
 import time
 import sys
+import tty
+import termios
 import requests
 import json
 import re
@@ -7,21 +9,19 @@ import curses
 from plugin import plugin, require
 import os
 import csv
+from colorama import Fore
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
 class GameState (object):
-    def __init__(self):
-        pass
-
     RUNNING = 1
     ENDED = 2
 
 
-default_text_color = '\033[97m'
-incorrect_color = '\033[91m'
-correct_color = '\033[92m'
+default_text_color = Fore.WHITE
+incorrect_color = Fore.RED
+correct_color = Fore.GREEN
 n_words = 4
 
 total_time = 100
@@ -40,14 +40,7 @@ screen."""
 
 
 class _GetchUnix:
-    def __init__(self):
-        import tty
-        import sys
-
     def __call__(self):
-        import sys
-        import tty
-        import termios
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
         try:
@@ -170,12 +163,17 @@ def game_running():
 
 def game_end():
     info['state'] = GameState.ENDED
-    wpm = info['words'] / ((total_time - info['time_left']) / 60)
+    time_diff = (total_time - info['time_left']) / 60
+    if time_diff > 0:
+        wpm = info['words'] / ((total_time - info['time_left']) / 60)
+    else:
+        wpm = 0
+
     print(default_text_color + '\n\nWords per minute - {}'.format(wpm))
-    if(wpm >= 20):
+    if wpm >= 20:
         with open(os.path.join(FILE_PATH, "../data/typing_test_data.csv"),
-                  mode='r') as file:
-            data = list(csv.reader(file))
+                  mode='r') as f:
+            data = list(csv.reader(f))
             for i in range(len(data)):
                 if int(data[i][0]) > int(wpm) and i != 0:
                     print('You are better than {}% of people!'
