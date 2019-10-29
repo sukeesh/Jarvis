@@ -1,5 +1,5 @@
 import requests
-from bs4 import BeautifulSoup
+import bs4 
 from colorama import Fore
 from plugin import plugin, require
 
@@ -21,7 +21,7 @@ class Scraper():
         query = '+'.join(question.split(' '))
         url = f'https://www.google.com/search?q={query}&ie=utf-8&oe=utf-8'
         response = requests.get(url)
-        soup = BeautifulSoup(response.text, 'html.parser')
+        soup = bs4.BeautifulSoup(response.text, 'html.parser')
 
         google_answers = soup.find_all("div", {"class": "BNeawe iBp4i AP7Wnd"})
         for answer in google_answers:
