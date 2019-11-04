@@ -1,13 +1,13 @@
 import requests
 from colorama import Fore
-from plugin import alias, plugin, require
+from plugin import plugin, require
 
 
 @require(network=True)
 @plugin('cat fact')
 def cat_fact(jarvis, s):
     """Tells a random cat fact"""
-    
+
     req = requests.get("https://catfact.ninja/fact")
     data = req.json()
 
