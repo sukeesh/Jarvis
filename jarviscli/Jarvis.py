@@ -3,8 +3,12 @@
 import os
 from colorama import Fore
 import nltk
+import subprocess
+import json
 from utilities.GeneralUtilities import print_say
 from CmdInterpreter import CmdInterpreter
+
+
 
 PROMPT_CHAR = '~>'
 
@@ -51,6 +55,7 @@ class Jarvis(CmdInterpreter, object):
         self.use_rawinput = False
         CmdInterpreter.__init__(self, first_reaction_text, prompt,
                                 directories, first_reaction, enable_voice)
+        routines = {}
 
     def _rel_path_fix(self, dirs):
         dirs_abs = []
@@ -182,3 +187,21 @@ class Jarvis(CmdInterpreter, object):
         else:
             self.speak()
             self.cmdloop(self.first_reaction_text)
+    
+    def make_routine(self):
+        r = open('routines.json'):
+        self.routines = json.loads(r.read())
+        routine = input("Please enter name of routine. . .")
+        commands = input("Please enter commands of routine seperated by ,")
+        self.routines[routine] = commands.split(',')
+
+        with open('routines.json', "w") as fp:
+           json.dump(routines, fp, indent=4)
+        print("\nSuccess. Routines stored in ---> {0}".format(jsonfile))
+    
+    def call_routine(self):
+        routine_name = input("Enter name of routine.")
+        try:
+            subprocess.call(self.routines[routine_name], shell=True)
+        except KeyError:
+            print("Routine does not exist")
