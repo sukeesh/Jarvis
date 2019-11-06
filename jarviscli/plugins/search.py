@@ -29,7 +29,7 @@ class Search:
 
     def check_new_tab(self):
         if "new_tab" in self.command:
-            self.inputs = self.command.split(' ',1)
+            self.inputs = self.command.split(' ', 1)
             self.keyword_str = self.inputs[1]
         else:
             self.keyword_str = self.command
@@ -37,12 +37,12 @@ class Search:
 
     def create_link(self):
         self.default = "https://www.google.com/search?q="
-        self.keywords = self.keyword_str.replace(' ','+').strip()
+        self.keywords = self.keyword_str.replace(' ', '+').strip()
         # strip To remove whitespaces
         self.link = self.default + self.keywords
 
     def open_browser(self):
-        if self.new_tab == False:
+        if self.new_tab is False:
             # Opens search results in a new browser window.
             webbrowser.open_new(self.link)
         else:
