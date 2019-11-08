@@ -5,7 +5,7 @@ import subprocess
 import sys
 
 '''
-Simple akinator text based game
+Simple akinator text based game: think up a character, answer questions and akinator will find it ! 
 https://pypi.org/project/akinator.py/
 '''
 @plugin("akinator")
@@ -37,6 +37,7 @@ def opening_message(jarvis):
     jarvis.say('Rules: ')
     print_help(jarvis)
 
+''' Handling of the akinator library '''
 def main_game(jarvis):
     aki = akinator.Akinator() 
     try:
@@ -85,6 +86,7 @@ def main_game(jarvis):
         jarvis.say("Oups :(", Fore.GREEN)
 
 
+''' Print help '''
 def print_help(jarvis):
     jarvis.say("To answer, you have the following options: ", Fore.GREEN)
     jarvis.say("\t \"yes\" or \"y\" or \"0\" for YES", Fore.GREEN)
