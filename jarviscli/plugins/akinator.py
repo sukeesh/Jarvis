@@ -49,7 +49,10 @@ def main_game(jarvis):
 
     # questions loop
     while aki.progression <= 80: 
-        a = input(q + "\n\t")
+        try: 
+            a = input(q + "\n")
+        except EOFError: 
+            a = "cantDoThat" 
         if a == "b":
             try:
                 q = aki.back()
@@ -77,9 +80,9 @@ def main_game(jarvis):
         pass
     correct = jarvis.input(f"It's {aki.name} ({aki.description})! Was I correct?\n\t")
     if correct.lower() == "yes" or correct.lower() == "y":
-        jarvis.say("Yay !!! :D")
+        jarvis.say("Yay !!! :D", Fore.GREEN)
     else:
-        jarvis.say("Oups :(")
+        jarvis.say("Oups :(", Fore.GREEN)
 
 
 def print_help(jarvis):
