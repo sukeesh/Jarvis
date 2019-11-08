@@ -1,3 +1,4 @@
+akinator.py
 archey4; sys_platform != 'darwin'
 beautifulsoup4
 colorama
@@ -28,4 +29,3 @@ tabulate
 termdown
 wikipedia
 windows-curses; sys_platform == 'win32'
-akinator.py
