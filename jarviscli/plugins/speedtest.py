@@ -14,14 +14,13 @@ def speedtest(jarvis, s):
         return jarvis.connection_error()
 
     # Create a spinner on command line to show that its running
-    spinner = SpinnerThread('Running the test ', 0.15)
-    spinner.start()
+    jarvis.spinner_start('Running the test ')
 
     res.get_best_server()
     download_speed = res.download()
     upload_speed = res.upload()
 
-    spinner.stop()
+    jarvis.spinner_stop('')
 
     # Print the results
     jarvis.say('Speed test results:', Fore.GREEN)

@@ -19,9 +19,7 @@ class Cricket():
         self.score(jarvis)
 
     def _refresh(self, jarvis):
-        spinner = SpinnerThread('Fetching ', 0.15)
-        spinner.start()
-        # jarvis.spinner_start('Fetching ')
+        jarvis.spinner_start('Fetching ')
         self.all_match_data = self.c.matches()
         self.matches = []
         d = {}
@@ -30,9 +28,7 @@ class Cricket():
             d['srs'] = match['srs']
             d['mnum'] = match['mnum']
             self.matches.append(d.copy())
-        spinner.stop()
-        jarvis.say('DONE fetching match details', Fore.GREEN)
-        # jarvis.spinner_stop('DONE fetching match details')
+        jarvis.spinner_stop('DONE fetching match details')
 
     def live_score(self, index):
         if self.all_match_data[index]['mchstate'] == 'preview':
