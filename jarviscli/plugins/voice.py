@@ -4,13 +4,13 @@ from plugin import plugin
 @plugin('enable sound')
 def enable_sound(jarvis, s):
     """Let Jarvis use his voice."""
-    jarvis.enable_voice(jarvis)
+    jarvis.enable_voice()
 
 
 @plugin('disable sound')
-def disable_sound(s):
+def disable_sound(jarvis, s):
     """Deny Jarvis his voice."""
-    jarvis.disable_voice(jarvis)
+    jarvis.disable_voice()
 
 
 @plugin('say')

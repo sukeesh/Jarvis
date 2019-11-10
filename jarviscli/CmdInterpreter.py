@@ -31,6 +31,7 @@ class JarvisAPI(object):
 
     def __init__(self, jarvis):
         self._jarvis = jarvis
+        self.spinner_running=False
 
     def say(self, text, color="", speak=True):
         """
@@ -82,6 +83,10 @@ class JarvisAPI(object):
 
     def connection_error(self):
         """Print generic connection error"""
+
+        if self.is_spinner_running()==True:
+            self.spinner_stop('')
+
         self.say(JarvisAPI._CONNECTION_ERROR_MSG)
 
     def exit(self):
@@ -194,16 +199,21 @@ class JarvisAPI(object):
         Function for starting a spinner when prompted from a plugin
         and a default message for performing the task
         """
+        self.spinner_running=True
         self.spinner = SpinnerThread(message,0.15)
         self.spinner.start()
 
-    def spinner_stop(self,message="Task executed successfully! ", color=Fore.GREEN):
+    def spinner_stop(self, message="Task executed successfully! ", color=Fore.GREEN):
         """
         Function for stopping the spinner when prompted from a plugin
         and displaying the message after completing the task
         """
         self.spinner.stop()
         self.say(message,color)
+        self.spinner_running=False
+
+    def is_spinner_running(self):
+        return self.spinner_running
 
 
 def catch_all_exceptions(do, pass_self=True):
@@ -214,6 +224,8 @@ def catch_all_exceptions(do, pass_self=True):
             else:
                 do(s)
         except Exception:
+            if self.is_spinner_running()==True:
+                self.spinner_stop("It seems some error has occured")
             print(
                 Fore.RED
                 + "Some error occurred, please open an issue on github!")
@@ -330,6 +342,11 @@ class CmdInterpreter(Cmd):
 
     def close(self):
         """Closing Jarvis."""
+        
+        #Stop the spinner if it is already running
+        if self._api.is_spinner_running()==True:
+            self._api.spinner_stop('Some error has occured')
+
         print_say("Goodbye, see you later!", self, Fore.RED)
         self.scheduler.stop_all()
         sys.exit()
