@@ -13,6 +13,7 @@ from utilities.notification import notify
 from utilities.GeneralUtilities import print_say
 
 from packages.memory.memory import Memory
+from utilities.animations import SpinnerThread
 
 
 class JarvisAPI(object):
@@ -38,7 +39,7 @@ class JarvisAPI(object):
         :param text: the text to print (or talk)
         :param color: for text - use colorama (https://pypi.org/project/colorama/)
                       e.g. Fore.BLUE
-        :param speak: False, if text shouldn't be spoken even if speech is enabled
+        :param speak: False-, if text shouldn't be spoken even if speech is enabled
         """
         print(color + text + Fore.RESET)
         if speak:
@@ -123,7 +124,13 @@ class JarvisAPI(object):
         Cancel event scheduled with schedule
         :param schedule_id: id returned by schedule
         """
+        spinner=SpinnerThread('Cancelling',0.15)
+        spinner.start()
+
         self._jarvis.scheduler.cancel(schedule_id)
+
+        spinner.stop()
+        jarvis.say('Cancellation successful',Fore.GREEN)
 
     # Voice wrapper
     def enable_voice(self):
@@ -181,6 +188,22 @@ class JarvisAPI(object):
         line = self._jarvis.precmd(s)
         stop = self._jarvis.onecmd(line)
         stop = self._jarvis.postcmd(stop, line)
+
+    def spinner_start(self,message="Starting "):
+        """
+        Function for starting a spinner when prompted from a plugin
+        and a default message for performing the task
+        """
+        self.spinner = SpinnerThread(message,0.15)
+        self.spinner.start()
+
+    def spinner_stop(self,message="Task executed successfully! ", color=Fore.GREEN):
+        """
+        Function for stopping the spinner when prompted from a plugin
+        and displaying the message after completing the task
+        """
+        self.spinner.stop()
+        self.say(message,color)
 
 
 def catch_all_exceptions(do, pass_self=True):
