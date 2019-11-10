@@ -31,7 +31,7 @@ class JarvisAPI(object):
 
     def __init__(self, jarvis):
         self._jarvis = jarvis
-        self.spinner_running=False
+        self.spinner_running = False
 
     def say(self, text, color="", speak=True):
         """
@@ -84,7 +84,7 @@ class JarvisAPI(object):
     def connection_error(self):
         """Print generic connection error"""
 
-        if self.is_spinner_running()==True:
+        if self.is_spinner_running():
             self.spinner_stop('')
 
         self.say(JarvisAPI._CONNECTION_ERROR_MSG)
@@ -129,13 +129,13 @@ class JarvisAPI(object):
         Cancel event scheduled with schedule
         :param schedule_id: id returned by schedule
         """
-        spinner=SpinnerThread('Cancelling',0.15)
+        spinner = SpinnerThread('Cancelling', 0.15)
         spinner.start()
 
         self._jarvis.scheduler.cancel(schedule_id)
 
         spinner.stop()
-        jarvis.say('Cancellation successful',Fore.GREEN)
+        jarvis.say('Cancellation successful', Fore.GREEN)
 
     # Voice wrapper
     def enable_voice(self):
@@ -194,13 +194,13 @@ class JarvisAPI(object):
         stop = self._jarvis.onecmd(line)
         stop = self._jarvis.postcmd(stop, line)
 
-    def spinner_start(self,message="Starting "):
+    def spinner_start(self, message="Starting "):
         """
         Function for starting a spinner when prompted from a plugin
         and a default message for performing the task
         """
-        self.spinner_running=True
-        self.spinner = SpinnerThread(message,0.15)
+        self.spinner_running = True
+        self.spinner = SpinnerThread(message, 0.15)
         self.spinner.start()
 
     def spinner_stop(self, message="Task executed successfully! ", color=Fore.GREEN):
@@ -209,8 +209,8 @@ class JarvisAPI(object):
         and displaying the message after completing the task
         """
         self.spinner.stop()
-        self.say(message,color)
-        self.spinner_running=False
+        self.say(message, color)
+        self.spinner_running = False
 
     def is_spinner_running(self):
         return self.spinner_running
@@ -224,7 +224,7 @@ def catch_all_exceptions(do, pass_self=True):
             else:
                 do(s)
         except Exception:
-            if self.is_spinner_running()==True:
+            if self.is_spinner_running():
                 self.spinner_stop("It seems some error has occured")
             print(
                 Fore.RED
@@ -342,9 +342,9 @@ class CmdInterpreter(Cmd):
 
     def close(self):
         """Closing Jarvis."""
-        
-        #Stop the spinner if it is already running
-        if self._api.is_spinner_running()==True:
+
+        '''Stop the spinner if it is already running'''
+        if self._api.is_spinner_running():
             self._api.spinner_stop('Some error has occured')
 
         print_say("Goodbye, see you later!", self, Fore.RED)
