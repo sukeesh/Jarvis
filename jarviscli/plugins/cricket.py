@@ -1,7 +1,7 @@
 from colorama import Fore
 from pycricbuzz import Cricbuzz
 from plugin import plugin, require
-from plugins.animations import SpinnerThread
+from utilities.animations import SpinnerThread
 
 
 @require(network=True)
@@ -21,6 +21,7 @@ class Cricket():
     def _refresh(self, jarvis):
         spinner = SpinnerThread('Fetching ', 0.15)
         spinner.start()
+        # jarvis.spinner_start('Fetching ')
         self.all_match_data = self.c.matches()
         self.matches = []
         d = {}
@@ -31,6 +32,7 @@ class Cricket():
             self.matches.append(d.copy())
         spinner.stop()
         jarvis.say('DONE fetching match details', Fore.GREEN)
+        # jarvis.spinner_stop('DONE fetching match details')
 
     def live_score(self, index):
         if self.all_match_data[index]['mchstate'] == 'preview':

@@ -1,7 +1,7 @@
 import speedtest as st
 from colorama import Fore
 from plugin import plugin, require
-from plugins.animations import SpinnerThread
+from utilities.animations import SpinnerThread
 
 
 @require(network=True)
