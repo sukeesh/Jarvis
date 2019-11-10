@@ -28,12 +28,7 @@ class OpenWebsite:
     instead of 'open website'}
     """
     def __call__(self, jarvis, link):
-        check_command = link.split(' ')
-        if check_command[0] == "open":
-            inputs = link.split(' ', 2)
-        else:
-            inputs = link.split(' ', 1)
-
+        inputs = link.split(' ')
         self.main_link = inputs[0]
         self.complement = False
         if len(inputs) > 1:
@@ -44,7 +39,7 @@ class OpenWebsite:
         elif self.verify_link():
             webbrowser.open(self.main_link)
         else:
-            print("Sorry, I can't open this link.")
+            jarvis.say("Sorry, I can't open this link.")
 
     def has_on_saved_links(self):
         websites_csv = \
