@@ -2,7 +2,7 @@ import requests
 from tabulate import tabulate
 from colorama import Fore
 from plugin import plugin, require
-from plugins.animations import SpinnerThread
+from utilities.animations import SpinnerThread
 
 API_KEY = '1ebd3b92bf5041249f8c1e7a540ce98c'
 url = 'https://api.football-data.org/v2'
@@ -78,17 +78,14 @@ class Football():
         Takes input from user for selecting a competition
         """
         # Fetch top-tier competitions
-        spinner = SpinnerThread('Fetching ', 0.15)
-        spinner.start()
+        jarvis.spinner_start('Fetching ')
         r = fetch("/competitions?plan=TIER_ONE")
         if r is None:
-            spinner.stop()
-            jarvis.say("Error in fetching data - try again later.", Fore.YELLOW)
+            jarvis.spinner_stop("Error in fetching data - try again later.", Fore.YELLOW)
             return
         comps = r["competitions"]
-        spinner.stop()
+        jarvis.spinner_stop("Pick a competition:", Fore.BLUE)
         # Print the list of competitions
-        jarvis.say("Pick a competition:", Fore.BLUE)
         print()
         for i in range(r["count"]):
             print("{}: {}, {}".format(
@@ -116,15 +113,14 @@ class Football():
         Fetches details of a competition and outputs
         the competition's current standings
         """
-        # Fetch competition info
-        spinner = SpinnerThread("Fetching ", 0.15)
-        spinner.start()
+        # Fetch competition info)
+        jarvis.spinner_start('Fetching ')
         r = fetch("/competitions/{}/standings".format(compId))
         if r is None:
-            spinner.stop()
-            jarvis.say("Error in fetching data - try again later.", Fore.YELLOW)
+            jarvis.spinner_stop("Error in fetching data - try again later.", Fore.YELLOW)
             return
-        spinner.stop()
+
+        jarvis.spinner_stop('')
         print()
         self.printStandings(jarvis, r["standings"])
 
@@ -174,14 +170,13 @@ class Football():
         and prints the match info
         """
         print()
-        spinner = SpinnerThread("Fetching ", 0.15)
-        spinner.start()
+        jarvis.spinner_start('Fetching ')
         r = fetch("/matches?competitions={}".format(compId))
         if r is None:
-            spinner.stop()
-            jarvis.say("Error in fetching data - try again later.", Fore.YELLOW)
+            jarvis.spinner_stop("Error in fetching data - try again later.", Fore.YELLOW)
             return
-        spinner.stop()
+
+        jarvis.spinner_stop('')
         if r["count"] == 0:
             jarvis.say("No matches found for today.", Fore.BLUE)
             return
