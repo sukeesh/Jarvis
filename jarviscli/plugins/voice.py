@@ -14,7 +14,7 @@ def disable_sound(jarvis, s):
 
 
 @plugin('say')
-def say(s):
+def say(jarvis, s):
     """Reads what is typed."""
     if not s:
         jarvis.say("What should I say?")
