@@ -156,11 +156,11 @@ class Calculator:
                     self.ans["text"] = str(math.sqrt(float(self.a)))
             else:
                 self.ans["text"] = "Not a real number"
-        except ValueError as e:
+        except ValueError:
             self.ans["text"] = "Invalid Input "
-        except TypeError as e:
+        except TypeError:
             self.ans["text"] = "Invalid Input "
-        except OverflowError as e:
+        except OverflowError:
             self.ans["text"] = "Out of range"
 
     def fact(self):
@@ -174,11 +174,11 @@ class Calculator:
                     self.ans["text"] = "Out of Range"
             else:
                 self.ans["text"] = "Error"
-        except ValueError as e:
+        except ValueError:
             self.ans["text"] = "Invalid Input "
-        except TypeError as e:
+        except TypeError:
             self.ans["text"] = "Invalid Input "
-        except OverflowError as e:
+        except OverflowError:
             self.ans["text"] = "Out of range"
 
     def power(self):
@@ -196,11 +196,11 @@ class Calculator:
             self.ans["text"] = self.an
             if len(self.an) > 17:
                 self.ans["text"] = "Out of Range"
-        except ValueError as e:
+        except ValueError:
             self.ans["text"] = "Invalid Input "
-        except TypeError as e:
+        except TypeError:
             self.ans["text"] = "Invalid Input "
-        except OverflowError as e:
+        except OverflowError:
             self.ans["text"] = "Out of range"
 
     def cos(self):
@@ -211,11 +211,11 @@ class Calculator:
             self.ans["text"] = self.an
             if len(self.an) > 17:
                 self.ans["text"] = "Out of Range"
-        except ValueError as e:
+        except ValueError:
             self.ans["text"] = "Invalid Input "
-        except TypeError as e:
+        except TypeError:
             self.ans["text"] = "Invalid Input "
-        except OverflowError as e:
+        except OverflowError:
             self.ans["text"] = "Out of range"
 
     def tan(self):
@@ -226,11 +226,11 @@ class Calculator:
             self.ans["text"] = self.an
             if len(self.an) > 17:
                 self.ans["text"] = "Out of Range"
-        except ValueError as e:
+        except ValueError:
             self.ans["text"] = "Invalid Input "
-        except TypeError as e:
+        except TypeError:
             self.ans["text"] = "Invalid Input "
-        except OverflowError as e:
+        except OverflowError:
             self.ans["text"] = "Out of range"
 
     def c(self):
@@ -277,11 +277,11 @@ class Calculator:
                         self.ans["text"] = "Out of Range"
                 else:
                     self.ans["text"] = "Not a number"
-        except ValueError as e:
+        except ValueError:
             self.ans["text"] = "Invalid Input "
-        except TypeError as e:
+        except TypeError:
             self.ans["text"] = "Invalid Input "
-        except OverflowError as e:
+        except OverflowError:
             self.ans["text"] = "Out of range"
 
     def exit(self, event):
