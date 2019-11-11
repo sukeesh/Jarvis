@@ -18,9 +18,10 @@ class Calculator:
         """Calculator window"""
         self.calcwin = tk.Tk()
         self.calcwin.title('Jarvis Calculator')
-        self.calcwin.lift()
-        self.calcwin.attributes('-topmost', True)
         self.calcwin.geometry("350x450")
+        self.calcwin.resizable(False, False)
+        self.calcwin.attributes('-type', 'dialog')
+        self.calcwin.attributes('-topmost', True)
         self.calcwin.config(bg="blue")
 
         """Buttons and other widgets"""
