@@ -1,7 +1,6 @@
 from plugin import plugin, require
 import requests
 from colorama import Fore
-from plugins.animations import SpinnerThread
 
 
 @require(network=True)
@@ -24,16 +23,15 @@ class joke_of_day:
             self.joke(jarvis, joke_fetch)
 
     def get_joke(self, jarvis):
-        spinner = SpinnerThread('Fetching ', 0.15)
         while True:
             url = "https://api.jokes.one/jod"
-            spinner.start()
+            jarvis.spinner_start('Fetching')
             r = requests.get(url)
             if r is None:
                 spinner.stop()
                 jarvis.say(
                     "Error in fetching joke - try again! later", Fore.RED)
-            spinner.stop()
+            jarvis.spinner_stop()
             return r.json()
 
     def joke(self, jarvis, joke_fetch):
