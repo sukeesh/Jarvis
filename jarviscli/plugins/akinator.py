@@ -4,80 +4,85 @@ import akinator
 import subprocess
 import sys
 
-'''
-Simple akinator text based game: think up a character, answer questions and akinator will find it ! 
-https://pypi.org/project/akinator.py/
-'''
-@plugin("akinator")
-def akinator_main(jarvis, s): 
 
-    opening_message(jarvis) 
+"""
+Simple akinator text based game: think up a character, answer questions and akinator will find it !
+https://pypi.org/project/akinator.py/
+"""
+
+
+@plugin("akinator")
+def akinator_main(jarvis, s):
+
+    opening_message(jarvis)
     jarvis.say('Press "g" to start, or "q" to quit !')
-    while True: 
+    while True:
         user_in = jarvis.input()
         if user_in == 'q':
             jarvis.say("See you next time :D", Fore.CYAN)
-            break 
-        elif user_in == 'g': 
+            break
+        elif user_in == 'g':
             main_game(jarvis)
-            break 
-        else: 
+            break
+        else:
             jarvis.say('Press "g" to start, or "q" to quit !')
-                
 
-########################################
-######## HELPER METHODS ################
-########################################
 
-''' Messages displayed when akinator called ''' 
+# Helper methods
+
+
 def opening_message(jarvis):
+    ''' Messages displayed when akinator called '''
+
     jarvis.say('')
     jarvis.say('Let\'s play !')
     jarvis.say('You have to think of a public personality, answer to some questions and I will try to guess who it is !')
     jarvis.say('Rules: ')
     print_help(jarvis)
 
-''' Handling of the akinator library '''
+
 def main_game(jarvis):
-    aki = akinator.Akinator() 
+    ''' Handling of the akinator library '''
+
+    aki = akinator.Akinator()
     try:
-       q = aki.start_game() 
+        q = aki.start_game()
     except (akinator.AkiServerDown, akinator.AkiTechnicalError):
-        try: 
-            q = aki.start_game("en2") # 2nd server if the 1st is down 
+        try:
+            q = aki.start_game("en2")  # 2nd server if the 1st is down
         except (akinator.AkiServerDown, akinator.AkiTechnicalError):
-            q = aki.start_game("en3") # 3rd server if the 2nd is down 
+            q = aki.start_game("en3")  # 3rd server if the 2nd is down
 
     # questions loop
-    while aki.progression <= 80: 
-        try: 
+    while aki.progression <= 80:
+        try:
             a = input(q + "\n")
-        except EOFError: 
-            a = "cantDoThat" 
+        except EOFError:
+            a = "cantDoThat"
         if a == "b":
             try:
                 q = aki.back()
-            except akinator.CantGoBackAnyFurther: 
+            except akinator.CantGoBackAnyFurther:
                 pass
-        elif a == "h": 
+        elif a == "h":
             print_help(jarvis)
         elif a == "q":
             jarvis.say("See you next time !")
-            return  
-        else: 
+            return
+        else:
             try:
                 q = aki.answer(a)
-            except akinator.InvalidAnswerError: 
+            except akinator.InvalidAnswerError:
                 jarvis.say("answer not understood, type \"h\" for help", Fore.MAGENTA)
 
     aki.win()
 
-    imageViewerFromCommandLine = {'linux':'xdg-open',
-                                  'win32':'explorer',
-                                  'darwin':'open'}[sys.platform] # get an image Viewer 
+    imageViewerFromCommandLine = {'linux': 'xdg-open',
+                                  'win32': 'explorer',
+                                  'darwin': 'open'}[sys.platform]  # get an image Viewer
     try:
-        subprocess.run([imageViewerFromCommandLine, aki.picture]) # display image of answer 
-    except Exception: 
+        subprocess.run([imageViewerFromCommandLine, aki.picture])  # display image of answer
+    except Exception:
         pass
     correct = jarvis.input(f"It's {aki.name} ({aki.description})! Was I correct?\n\t")
     if correct.lower() == "yes" or correct.lower() == "y":
@@ -86,8 +91,8 @@ def main_game(jarvis):
         jarvis.say("Oups :(", Fore.GREEN)
 
 
-''' Print help '''
 def print_help(jarvis):
+    ''' Print help '''
     jarvis.say("To answer, you have the following options: ", Fore.GREEN)
     jarvis.say("\t \"yes\" or \"y\" or \"0\" for YES", Fore.GREEN)
     jarvis.say("\t \"no\" or \"n\" or \"1\" for NO", Fore.GREEN)
