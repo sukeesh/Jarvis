@@ -1,9 +1,8 @@
-import tkinter as tk
 import math
 from plugin import plugin
 
 
-@plugin("calculator")
+@plugin("gui calculator")
 class Calculator:
     """
     Opens GUI Calculator.
@@ -12,6 +11,11 @@ class Calculator:
     """
 
     def __call__(self, jarvis, s):
+        try:
+            import tkinter as tk
+        except ModuleNotFoundError:
+            jarvis.say("Tkinter not installed!")
+
         self.a = 0
         self.operator = ""
 
