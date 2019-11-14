@@ -10,7 +10,7 @@ class ParserTest(unittest.TestCase):
     def test_chuck(self):
         user_input = "Jarvis, I want to hear a joke about Chuck Norris, can you help me?"
         parsed_input = self.jarvis.parse_input(user_input).split()
-        self.assertEqual("chuck", parsed_input[0])
+        self.assertEqual("joke", parsed_input[0])
 
     def test_weather(self):
         user_input = "Mmm... I want to go for a walk. What's the weather like today?"
