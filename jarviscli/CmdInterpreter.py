@@ -224,7 +224,7 @@ def catch_all_exceptions(do, pass_self=True):
             else:
                 do(s)
         except Exception:
-            if self.is_spinner_running():
+            if self._api.is_spinner_running():
                 self.spinner_stop("It seems some error has occured")
             print(
                 Fore.RED
