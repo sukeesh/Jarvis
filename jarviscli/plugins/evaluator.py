@@ -209,11 +209,11 @@ def format_expression(s):
     # Insert missing * commonly omitted
     # 2x -> 2*x
     p = re.compile('(\\d+)([abcxyz])')
-    s = p.sub(r'\\1*\\2', s)
+    s = p.sub(r'\1*\2', s)
 
     # x(... -> x*(...
     p = re.compile('([abcxyz])\\(')
-    s = p.sub(r'\\1*(', s)
+    s = p.sub(r'\1*(', s)
 
     # (x-1)(x+1) -> (x-1)*(x+1)
     # x(... -> x*(...
