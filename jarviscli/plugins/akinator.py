@@ -1,4 +1,4 @@
-from plugin import plugin
+from plugin import plugin, require
 from colorama import Fore
 import akinator
 import subprocess
@@ -11,6 +11,7 @@ https://pypi.org/project/akinator.py/
 """
 
 
+@require(network=True)
 @plugin("akinator")
 def akinator_main(jarvis, s):
 
