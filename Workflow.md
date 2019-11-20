@@ -1,7 +1,7 @@
 # Workflow
 
 
-Trace what you are woring on in this file
+Trace what you are working on in this file
 
 ## Baptiste
 
