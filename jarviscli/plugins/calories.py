@@ -40,9 +40,9 @@ class calories:
             return None
 
         gender_no = 0
-        if(gender is "male" or gender is "man" or gender is "m"):
+        if(gender == "male" or gender == "man" or gender == "m"):
             gender_no = 5
-        elif(gender is "female" or gender is 'woman' or gender is "f"):
+        elif(gender == "female" or gender == 'woman' or gender == "f"):
             gender_no = -161
 
         if gender_no != 0 and age > 14 and height > 0.0 and weight > 0.0 and level > 0 and level < 5:
