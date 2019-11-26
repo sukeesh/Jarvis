@@ -1,9 +1,7 @@
 from plugin import plugin
 import random
- '''
-This code pics one of the random inputs given by the user like spin wheel
+'''This code picks one of the random inputs given by the user like spin wheel'''
 
- '''
 @alias("wheel spin")
 @plugin("spin wheel")
 def spin(jarvis, s):
