@@ -1,3 +1,4 @@
+akinator.py
 archey4; sys_platform != 'darwin'
 beautifulsoup4
 colorama
