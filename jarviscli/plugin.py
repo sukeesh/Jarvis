@@ -203,7 +203,7 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
         """Entry point if this plugin is called"""
         sub_command = jarvis.find_action(s, self.get_plugins().keys())
 
-        if sub_command is "None":
+        if sub_command == "None":
             # run default
             if self.is_callable_plugin():
                 self._backend[0](jarvis.get_api(), s)
