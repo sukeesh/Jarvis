@@ -2,16 +2,17 @@ import webbrowser
 import os
 import socket
 from urllib.parse import urlparse
-from plugin import plugin, require
+from plugin import plugin, alias, require
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
 @require(network=True)
-@plugin("open website")
+@alias("open website")
+@plugin("website")
 class OpenWebsite:
     """
-    This plugin will open a website using some params.
+    This plugin will open a website using some parameters.
 
     The user can open a simple website giving a complete link or
     inputting the name of the website like the examples:
@@ -20,11 +21,14 @@ class OpenWebsite:
     > open website github
     > open website github username
 
-    You can found a csv with the saved websites on:
+    You can find a csv file with a list of saved websites at:
     Jarvis/jarviscli/data/website.csv
+
+    {Alternatively, you can also use only 'website'
+    instead of 'open website'}
     """
     def __call__(self, jarvis, link):
-        inputs = link.split(' ', 1)
+        inputs = link.split(' ')
         self.main_link = inputs[0]
         self.complement = False
         if len(inputs) > 1:
@@ -35,7 +39,7 @@ class OpenWebsite:
         elif self.verify_link():
             webbrowser.open(self.main_link)
         else:
-            print("Sorry, I can't open this link.")
+            jarvis.say("Sorry, I can't open this link.")
 
     def has_on_saved_links(self):
         websites_csv = \

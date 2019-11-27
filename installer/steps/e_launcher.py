@@ -59,7 +59,7 @@ else:
                 fw.write('\n')
                 fw.close()
 
-    printlog('\n\nInstallation complete. Try unsing Jarvis!')
+    printlog('\n\nInstallation complete. Try using Jarvis!')
     if selection != 2:
         printlog('$ jarvis')
     else:
