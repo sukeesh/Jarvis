@@ -45,11 +45,12 @@ class Jarvis(CmdInterpreter, object):
 
     # This can be used to store user specific data
 
-    def __init__(self, first_reaction_text=first_reaction_text,
+    def __init__(self, skip_intro, first_reaction_text=first_reaction_text,
                  prompt=prompt, first_reaction=True, enable_voice=False,
                  directories=["jarviscli/plugins", "custom"]):
         directories = self._rel_path_fix(directories)
         self.use_rawinput = False
+        self.skip_intro = skip_intro
         CmdInterpreter.__init__(self, first_reaction_text, prompt,
                                 directories, first_reaction, enable_voice)
 
@@ -191,18 +192,22 @@ class Jarvis(CmdInterpreter, object):
         or "goodbye command")
         :return: Nothing to return.
         """
-        if command:
+        if len(command.strip()) > 0:
             self.execute_once(command)
         else:
             self.speak()
-            self.cmdloop(self.first_reaction_text)
+            if self.skip_intro:
+                self.cmdloop()
+            else:
+                self.cmdloop(self.first_reaction_text)
 
     def cmd_interrupt_handler(self, signal, frame):
         """Closes Jarvis on SIGINT signal. (Ctrl-C)"""
         self.close()
 
     def plugin_interrupt_handler(self, signal, frame):
-        # Debug message
-        print('A new interrupt handler for interactive plugins')
-
-        pass
+        if self._api.is_spinner_running():
+            self._api.spinner_stop('Abort')
+        self.scheduler.stop_all
+        import sys
+        sys.exit(42)
