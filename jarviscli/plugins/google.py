@@ -14,6 +14,7 @@ class Scraper():
 
     example: google What is the Large Hadron Collider?
     """
+
     def __call__(self, jarvis, s):
         jarvis.say(self.search(s), Fore.BLUE)
 
