@@ -27,6 +27,7 @@ class OpenWebsite:
     {Alternatively, you can also use only 'website'
     instead of 'open website'}
     """
+
     def __call__(self, jarvis, link):
         inputs = link.split(' ')
         self.main_link = inputs[0]

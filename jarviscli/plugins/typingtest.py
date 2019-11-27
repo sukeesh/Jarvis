@@ -32,6 +32,7 @@ info = {}
 class _Getch:
     """Gets a single character from standard input.  Does not echo to the
 screen."""
+
     def __init__(self):
         self.impl = _GetchUnix()
 
