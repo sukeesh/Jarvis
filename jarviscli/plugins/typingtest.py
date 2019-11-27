@@ -1,12 +1,10 @@
 import time
 import sys
-import tty
-import termios
 import requests
 import json
 import re
 import curses
-from plugin import plugin, require
+from plugin import plugin, require, UNIX
 import os
 import csv
 from colorama import Fore
@@ -42,6 +40,8 @@ screen."""
 
 class _GetchUnix:
     def __call__(self):
+        import tty
+        import termios
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
         try:
@@ -194,7 +194,7 @@ def print_screen():
     sys.stdout.write(string)
 
 
-@require(network=True)
+@require(network=True, platform=UNIX)
 @plugin("typingtest")
 def typingtest(jarvis, s):
     game_start()
