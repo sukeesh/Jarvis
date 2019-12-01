@@ -10,9 +10,10 @@ def spin(jarvis, s):
     jarvis.say('welcome to spin the wheel\n')
     jarvis.say('enter the number of elements in the wheel')
     num = jarvis.input()
+    intnum = int(num)
     jarvis.say('enter the elements one after another\n')
     wheel = []
-    for i in range(0, num):
+    for i in range(0, intnum):
         entry = jarvis.input()
         wheel.append(entry)
     jarvis.say('Let the wheel spin !!!!!!!!!\n')
