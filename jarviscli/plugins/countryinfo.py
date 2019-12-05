@@ -35,7 +35,7 @@ class country_info:
             else:
                 url = "https://restcountries.eu/rest/v2/name/%s?fullText=true" % country
                 r = requests.get(url)
-                if type(r.json()) == dict:
+                if isinstance(r.json(), dict):
                     jarvis.say("Country not found.")
                 else:
                     return r.json()

@@ -182,7 +182,7 @@ def movie_search(jarvis, movie):
     input_id = jarvis.input()
 
     # If nothing is entered, just return
-    if input_id is '':
+    if input_id == '':
         return None
     if len(input_id) != 1:
         return jarvis.say(Fore.RED + 'Please enter valid value')
