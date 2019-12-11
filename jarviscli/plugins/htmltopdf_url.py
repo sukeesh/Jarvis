@@ -1,6 +1,8 @@
 import pdfkit
-from plugin import plugin
+from plugin import plugin, require, LINUX
 
+
+@require(platform=LINUX, native=["wkhtmltopdf"], network=True)
 @plugin("htmltopdf url")
 class htmltopdf_url:
     
@@ -19,5 +21,10 @@ class htmltopdf_url:
 
 	    if not s:
 	        jarvis.say("please enter an url after calling the plugin")
+	    elif not '.' in s:
+	    	jarvis.say("please make sur your url is valid")
 	    else:
-	        pdfkit.from_url(s, s + '.pdf')
+	    	try:
+	        	pdfkit.from_url(s, s + '.pdf')
+	    	except IOError as err:
+	    		jarvis.say("IO error: {0}".format(err) + "\nMake sure your URL is valid and that you have access to the internet")

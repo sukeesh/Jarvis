@@ -1,6 +1,8 @@
 import pdfkit
-from plugin import plugin
+from plugin import plugin, require, LINUX
 
+
+@require(platform=LINUX, native=["wkhtmltopdf"])
 @plugin("htmltopdf")
 class htmltopdf:
 
