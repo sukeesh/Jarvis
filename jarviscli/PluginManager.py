@@ -259,7 +259,13 @@ class PluginDependency(object):
     def _check_native(self, values, plugin):
         missing = ""
         for native in values:
-            if not executable_exists(native):
+            if native.startswith('!'):
+                # native should not exist
+                requirement_ok = not executable_exists(native[1:])
+            else:
+                requirement_ok = executable_exists(native)
+
+            if not requirement_ok:
                 missing += native
                 missing += " "
 
