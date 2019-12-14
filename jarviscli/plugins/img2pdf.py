@@ -2,8 +2,9 @@ from plugin import plugin
 from PIL import Image
 import image2pdf
 
-
-class htmltopdf_file:
+@alias("img2pdf", "image2pdf")
+@plugin("convert image to pdf")
+class img2pdf:
     
     """transform your html file into a pdf file in the Jarvis source directory. type your url as the following:
     'htmltopdf example.html'
