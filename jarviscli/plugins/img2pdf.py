@@ -6,11 +6,7 @@ import image2pdf
 @plugin("convert image to pdf")
 class img2pdf:
     
-    """transform your html file into a pdf file in the Jarvis source directory. type your url as the following:
-    'htmltopdf example.html'
-    The output file will be the following:
-    'example.pdf'
-    Your html file must be in the jarvis source directory"""
+    """converts png file from path to pdf, the output file is in the same folder as the input file"""
 
     def __call__(self, jarvis, s):
 
