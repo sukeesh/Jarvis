@@ -2,8 +2,8 @@ from plugin import plugin
 from PIL import Image
 import image2pdf
 
-@alias("img2pdf", "image2pdf")
-@plugin("convert image to pdf")
+@alias( "image2pdf")
+@plugin("img2pdf")
 class img2pdf:
     
     """converts png file from path to pdf, the output file is in the same folder as the input file"""
@@ -24,7 +24,7 @@ class img2pdf:
                         image = Image.open(source_path)
                         
                         pdf_bytes = img2pdf.convert(source_path.filename)
-                        file = open(pdf_path, "wb")
+                        file = open(dest_path, "wb")
                         file.write(pdf_bytes)
                         image.close() 
                         file.close() 
