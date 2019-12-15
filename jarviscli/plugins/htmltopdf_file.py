@@ -1,5 +1,5 @@
 import pdfkit
-from plugin import plugin, require,  LINUX
+from plugin import plugin, require, LINUX
 
 
 @require(platform=LINUX, native=["wkhtmltopdf"])
@@ -16,13 +16,12 @@ class htmltopdf_file:
     def __call__(self, jarvis, s):
         if not s:
             jarvis.say("please enter a file name after calling the plugin")
-        elif not "html" in s:
+        elif "html" not in s:
             jarvis.say("Your file must end with '.html'")
         else:
-            #We have to add the '.' back because the Jarvis API removes it
+            # We have to add the '.' back because the Jarvis API removes it
             s = s.replace('html', '.' + 'html')
             try:
                 pdfkit.from_file(s, s.replace('.html', '') + '.pdf')
             except OSError as err:
-                jarvis.say("OS error: {0}".format(err) + "\nMake sur your file is in the source directory of \ 
-                Jarvis and is an html file")
+                jarvis.say("OS error: {0}".format(err) + "\nMake sur your file is in the source directory of Jarvis and is an html file")
