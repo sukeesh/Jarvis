@@ -29,3 +29,5 @@ tabulate
 termdown
 wikipedia
 windows-curses; sys_platform == 'win32'
+img2pdf
+pdf2jpg
