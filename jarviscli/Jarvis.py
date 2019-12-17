@@ -3,6 +3,7 @@
 import os
 from colorama import Fore
 import nltk
+import re
 from utilities.GeneralUtilities import print_say
 from CmdInterpreter import CmdInterpreter
 
@@ -49,6 +50,7 @@ class Jarvis(CmdInterpreter, object):
                  directories=["jarviscli/plugins", "custom"]):
         directories = self._rel_path_fix(directories)
         self.use_rawinput = False
+        self.regex_dot = re.compile('\\.(?!\\w)')
         CmdInterpreter.__init__(self, first_reaction_text, prompt,
                                 directories, first_reaction, enable_voice)
 
@@ -116,11 +118,13 @@ class Jarvis(CmdInterpreter, object):
         data = data.lower()
         # say command is better if data has punctuation marks
         # Hack!
-        if "say" not in data and "website" not in data:
+        if "say" not in data:
             data = data.replace("?", "")
             data = data.replace("!", "")
-            data = data.replace(".", "")
             data = data.replace(",", "")
+
+            # Remove only dots not followed by alphanumeric character to not mess up urls / numbers
+            data = self.regex_dot.sub("", data)
 
         # Check if Jarvis has a fixed response to this data
         if data in self.fixed_responses:
