@@ -27,8 +27,6 @@ class htmltopdf_file:
         elif "html" not in s:
             jarvis.say("Your file must end with '.html'")
         else:
-            # We have to add the '.' back because the Jarvis API removes it
-            s = s.replace('html', '.' + 'html')
             try:
                 pdfkit.from_file(s, s.replace('.html', '') + '.pdf')
             except OSError as err:
@@ -45,11 +43,6 @@ class htmltopdf_url:
     'google.com.pdf'
     """
     def __call__(self, jarvis, s):
-        # We have to add the '.' back because the Jarvis API removes it
-        dots = ["com", "org", "fr", "en"]
-        for el in dots:
-            if el in s:
-                s = s.replace(el, "." + el)
         if not s:
             jarvis.say("please enter an url after calling the plugin")
         elif '.' not in s:
