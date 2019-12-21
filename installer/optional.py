@@ -106,7 +106,24 @@ ESPEAK = {
 }
 
 
-OPTIONAL_REQUIREMENTS = [PortAudio, RequestsSecurity, FFMPEG, ESPEAK]
+WKHTMLTOPDF = {
+    "name": "wkhtmltopdf",
+    "executable": ['wkhtmltopdf'],
+    "description": "Convert html file or web url into pdf ",
+    "instruction": "Please install 'wkhtmltopdf' manually using your local package manager!",
+    "package_guess": {
+        "linux": {
+            'redhat': 'wkhtmltopdf',
+            'arch': 'wkhtmltopdf',
+            'gentoo': 'wkhtmltopdf',
+            'suse': 'wkhtmltopdf',
+            'debian': 'wkhtmltopdf'
+        }
+    }
+}
+
+
+OPTIONAL_REQUIREMENTS = [PortAudio, RequestsSecurity, FFMPEG, ESPEAK, WKHTMLTOPDF]
 
 
 if not sys.platform == "darwin":
