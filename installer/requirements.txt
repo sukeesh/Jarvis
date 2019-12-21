@@ -10,6 +10,7 @@ IMDbPY
 instantmusic
 mock
 nltk
+pdfkit
 pick
 pluginmanager
 psutil; sys_platform == 'win32'
