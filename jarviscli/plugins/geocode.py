@@ -3,7 +3,7 @@ import re
 import requests
 import requests.exceptions
 from colorama import Fore
-from plugin import alias, plugin, require
+from plugin import plugin, require
 
 
 @require(network=True)
