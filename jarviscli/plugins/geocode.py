@@ -6,7 +6,6 @@ from colorama import Fore
 from plugin import alias, plugin, require
 
 
-@alias('geocoder')
 @require(network=True)
 @plugin('geocode')
 class Geocoder:
