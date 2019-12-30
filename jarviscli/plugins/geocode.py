@@ -14,11 +14,11 @@ class Geocoder:
     input_addr = None
     cleaned_addr = None
     help_prompt = ("Geocoding converts street addresses to geographic"
-        " latitude and longitude. To use this tool, you can enter a"
-        " street address in this form: STREET NUMBER STREET NAME, CITY,"
-        " STATE, ZIP. For example: 1000 Main Street, Los Angeles, CA,"
-        " 90012. Currently, this tool only works for addresses in the"
-        " United States.")
+                   " latitude and longitude. To use this tool, you can enter a"
+                   " street address in this form: STREET NUMBER STREET NAME, CITY,"
+                   " STATE, ZIP. For example: 1000 Main Street, Los Angeles, CA,"
+                   " 90012. Currently, this tool only works for addresses in the"
+                   " United States.")
 
     def __call__(self, jarvis, s):
         """Run the geocoding tool by getting an address from the user, passing
@@ -40,17 +40,17 @@ class Geocoder:
         # Request failed
         if not req:
             self.jarvis.say("The geocoding service appears to be unavailable."
-                " Please try again later.", Fore.RED)
-        
+                            " Please try again later.", Fore.RED)
+
         # Request succeeded
         else:
             output = self.parse_request(req)
 
             if output:
                 for result in output:
-                    self.jarvis.say("{}: {}".format(result, 
-                        output[result]), 
-                        Fore.CYAN)
+                    self.jarvis.say("{}: {}".format(result,
+                                                    output[result]),
+                                    Fore.CYAN)
 
             else:
                 self.jarvis.say("No matching addresses found.", Fore.RED)
@@ -66,8 +66,8 @@ class Geocoder:
             URL for the geocoding API using the input address 
         """
         return ("https://geocoding.geo.census.gov/geocoder/locations/"
-            "onelineaddress?address={}&benchmark=Public_AR_Current&format="
-            "json".format(self.cleaned_addr))
+                "onelineaddress?address={}&benchmark=Public_AR_Current&format="
+                "json".format(self.cleaned_addr))
 
     def help(self):
         """Print the help prompt for the plugin"""
@@ -90,7 +90,7 @@ class Geocoder:
         while True:
             if not s:
                 s = self.jarvis.input("Enter the full street address to"
-                    " geocode (or type help for options): ") 
+                                      " geocode (or type help for options): ")
 
             if s.lower() == 'help':
                 self.help()
@@ -135,9 +135,9 @@ class Geocoder:
             # Raise HTTPErrors if encountered
             req.raise_for_status()
             return req
-        except (requests.exceptions.ConnectionError, 
-            requests.exceptions.Timeout, 
-            requests.exceptions.HTTPError):
+        except (requests.exceptions.ConnectionError,
+                requests.exceptions.Timeout,
+                requests.exceptions.HTTPError):
             return None
 
     def parse_request(self, req):
@@ -158,13 +158,13 @@ class Geocoder:
         """
         data = json.loads(req.text)
         matches = data['result']['addressMatches']
-        
+
         if matches:
             best_match = matches[0]
 
             output = {'Address matched': best_match['matchedAddress'],
-                    'Latitude': str(best_match['coordinates']['y']),
-                    'Longitude': str(best_match['coordinates']['x'])}
+                      'Latitude': str(best_match['coordinates']['y']),
+                      'Longitude': str(best_match['coordinates']['x'])}
 
         else:
             output = None
