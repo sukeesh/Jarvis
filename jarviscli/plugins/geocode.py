@@ -30,7 +30,7 @@ class Geocoder:
             An instance of Jarvis that will be used to interact with the user
         s : str
             The input string that was submitted when the plugin was launched.
-            Likely to be empty. 
+            Likely to be empty.
         """
         self.jarvis = jarvis
         self.input_addr = self.get_input_addr(s)
@@ -63,7 +63,7 @@ class Geocoder:
         Returns:
         -------
         str
-            URL for the geocoding API using the input address 
+            URL for the geocoding API using the input address
         """
         return ("https://geocoding.geo.census.gov/geocoder/locations/"
                 "onelineaddress?address={}&benchmark=Public_AR_Current&format="
@@ -80,7 +80,7 @@ class Geocoder:
         ----------
         s : str
             The input string that was submitted when the plugin was launched.
-            Likely to be empty. 
+            Likely to be empty.
 
         Returns:
         -------
@@ -121,7 +121,7 @@ class Geocoder:
         return s
 
     def get_request(self):
-        """Make a request to the geocoding API and return the request 
+        """Make a request to the geocoding API and return the request
         if it succeeds
 
         Returns:
