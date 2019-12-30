@@ -54,37 +54,6 @@ class Geocoder:
 
             else:
                 self.jarvis.say("No matching addresses found.", Fore.RED)
-    
-    def parse_request(self, req):
-        """Parse a request returned by the geocoding API to extract all
-        relevant geocoding data
-
-        Parameters
-        ----------
-        req : request.Request
-            The Request object returned by the geocoding API for an address
-            search
-
-        Returns:
-        -------
-        dict of str: str
-            A dictionary of geocoding results for the best matched address
-            from the request
-        """
-        data = json.loads(req.text)
-        matches = data['result']['addressMatches']
-        
-        if matches:
-            best_match = matches[0]
-
-            output = {'Address matched': best_match['matchedAddress'],
-                    'Latitude': str(best_match['coordinates']['y']),
-                    'Longitude': str(best_match['coordinates']['x'])}
-
-        else:
-            output = None
-
-        return output
 
     @property
     def url(self):
@@ -94,11 +63,15 @@ class Geocoder:
         Returns:
         -------
         str
-            URL to geocode the input address 
+            URL for the geocoding API using the input address 
         """
         return ("https://geocoding.geo.census.gov/geocoder/locations/"
             "onelineaddress?address={}&benchmark=Public_AR_Current&format="
             "json".format(self.cleaned_addr))
+
+    def help(self):
+        """Print the help prompt for the plugin"""
+        self.jarvis.say(self.help_prompt, Fore.BLUE)
 
     def get_input_addr(self, s):
         """Get an input address from the user and handle help commands
@@ -124,10 +97,6 @@ class Geocoder:
                 s = None
             else:
                 return s.lower()
-
-    def help(self):
-        """Print the help prompt for the plugin"""
-        self.jarvis.say(self.help_prompt, Fore.BLUE)
 
     def clean_addr(self, s):
         """Reformat a string to be URL friendly
@@ -170,3 +139,34 @@ class Geocoder:
             requests.exceptions.Timeout, 
             requests.exceptions.HTTPError):
             return None
+
+    def parse_request(self, req):
+        """Parse a request returned by the geocoding API to extract all
+        relevant geocoding data
+
+        Parameters
+        ----------
+        req : request.Request
+            The Request object returned by the geocoding API for an address
+            search
+
+        Returns:
+        -------
+        dict of str: str
+            A dictionary of geocoding results for the best matched address
+            from the request
+        """
+        data = json.loads(req.text)
+        matches = data['result']['addressMatches']
+        
+        if matches:
+            best_match = matches[0]
+
+            output = {'Address matched': best_match['matchedAddress'],
+                    'Latitude': str(best_match['coordinates']['y']),
+                    'Longitude': str(best_match['coordinates']['x'])}
+
+        else:
+            output = None
+
+        return output
