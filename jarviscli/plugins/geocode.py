@@ -33,9 +33,9 @@ class Geocoder:
             Likely to be empty. 
         """
         self.jarvis = jarvis
-        self.input_addr = self.get_input(s)
-        self.cleaned_addr = self.urlify(self.input_addr)
-        req = self.make_request()
+        self.input_addr = self.get_input_addr(s)
+        self.cleaned_addr = self.clean_addr(self.input_addr)
+        req = self.get_request()
 
         # Request failed
         if not req:
@@ -44,20 +44,9 @@ class Geocoder:
         
         # Request succeeded
         else:
-            data = json.loads(req.text)
-            matches = data['result']['addressMatches']
-            
-            if matches:
-                if len(matches) > 1:
-                    self.jarvis.say("Multiple address matches were found." 
-                        " Showing best match.", Fore.YELLOW)
+            output = self.parse_request(req)
 
-                match = data['result']['addressMatches'][0]
-
-                output = {'Address matched': match['matchedAddress'],
-                        'Latitude': str(match['coordinates']['y']),
-                        'Longitude': str(match['coordinates']['x'])}
-
+            if output:
                 for result in output:
                     self.jarvis.say("{}: {}".format(result, 
                         output[result]), 
@@ -66,6 +55,37 @@ class Geocoder:
             else:
                 self.jarvis.say("No matching addresses found.", Fore.RED)
     
+    def parse_request(self, req):
+        """Parse a request returned by the geocoding API to extract all
+        relevant geocoding data
+
+        Parameters
+        ----------
+        req : request.Request
+            The Request object returned by the geocoding API for an address
+            search
+
+        Returns:
+        -------
+        dict of str: str
+            A dictionary of geocoding results for the best matched address
+            from the request
+        """
+        data = json.loads(req.text)
+        matches = data['result']['addressMatches']
+        
+        if matches:
+            best_match = matches[0]
+
+            output = {'Address matched': best_match['matchedAddress'],
+                    'Latitude': str(best_match['coordinates']['y']),
+                    'Longitude': str(best_match['coordinates']['x'])}
+
+        else:
+            output = None
+
+        return output
+
     @property
     def url(self):
         """Format a url to access the geocoding API by combining the cleaned
@@ -77,10 +97,10 @@ class Geocoder:
             URL to geocode the input address 
         """
         return ("https://geocoding.geo.census.gov/geocoder/locations/"
-            "onelineaddress?address={}&benchmark=4&vintage=4&format="
+            "onelineaddress?address={}&benchmark=Public_AR_Current&format="
             "json".format(self.cleaned_addr))
 
-    def get_input(self, s):
+    def get_input_addr(self, s):
         """Get an input address from the user and handle help commands
 
         Parameters
@@ -109,7 +129,7 @@ class Geocoder:
         """Print the help prompt for the plugin"""
         self.jarvis.say(self.help_prompt, Fore.BLUE)
 
-    def urlify(self, s):
+    def clean_addr(self, s):
         """Reformat a string to be URL friendly
 
         Parameters
@@ -131,7 +151,7 @@ class Geocoder:
 
         return s
 
-    def make_request(self):
+    def get_request(self):
         """Make a request to the geocoding API and return the request 
         if it succeeds
 
