@@ -3,65 +3,150 @@ import re
 import requests
 import requests.exceptions
 from colorama import Fore
-from plugin import plugin, require
+from plugin import alias, plugin, require
 
 
+@alias('geocoder')
 @require(network=True)
 @plugin('geocode')
-def geocode(jarvis, s):
-    jarvis.say("Welcome to geocoder. I can use geocoding to convert a street address to a geographic latitude and longitude.", Fore.RED)
+class Geocoder:
+    jarvis = None
+    input_addr = None
+    cleaned_addr = None
+    help_prompt = ("Geocoding converts street addresses to geographic"
+        " latitude and longitude. To use this tool, you can enter a"
+        " street address in this form: STREET NUMBER STREET NAME, CITY,"
+        " STATE, ZIP. For example: 1000 Main Street, Los Angeles, CA,"
+        " 90012. Currently, this tool only works for addresses in the"
+        " United States.")
 
-    # If an address wasn't given when the plugin is launched
-    if not s:
-        s = jarvis.input("Enter the full street address to geocode: ")
-    # Parse the address to remove url-unfriendly characters
-    parsed_addr = parse_address(s)
+    def __call__(self, jarvis, s):
+        """Run the geocoding tool by getting an address from the user, passing
+        it to the geocoding API, and displaying the result.
 
-    url = "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address={}&benchmark=4&vintage=4&format=json".format(parsed_addr)
+        Parameters
+        ----------
+        jarvis : CmdInterpreter.JarvisAPI
+            An instance of Jarvis that will be used to interact with the user
+        s : str
+            The input string that was submitted when the plugin was launched.
+            Likely to be empty. 
+        """
+        self.jarvis = jarvis
+        self.input_addr = self.get_input(s)
+        self.cleaned_addr = self.urlify(self.input_addr)
+        req = self.make_request()
 
-    # Make request to geocoding API
-    req = make_request(url)
-
-    # Request failed
-    if not req:
-        jarvis.say("The geocoding service appears to be unavailable. Please try again later.", Fore.RED)
-    
-    # Request succeeded
-    else:
-        data = json.loads(req.text)
-        matches = data['result']['addressMatches']
-
-        if matches:
-            if len(matches) > 1:
-                jarvis.say("Multiple address matches were found. Showing best match.", Fore.YELLOW)
-
-            match = data['result']['addressMatches'][0]
-
-            output = {'Address matched': match['matchedAddress'],
-                    'Latitude': str(match['coordinates']['y']),
-                    'Longitude': str(match['coordinates']['x'])}
-
-            for result in output:
-                jarvis.say("{}: {}".format(result, output[result]), Fore.CYAN)
-
+        # Request failed
+        if not req:
+            self.jarvis.say("The geocoding service appears to be unavailable."
+                " Please try again later.", Fore.RED)
+        
+        # Request succeeded
         else:
-            jarvis.say('No matching addresses found.', Fore.RED)
+            data = json.loads(req.text)
+            matches = data['result']['addressMatches']
+            
+            if matches:
+                if len(matches) > 1:
+                    self.jarvis.say("Multiple address matches were found." 
+                        " Showing best match.", Fore.YELLOW)
 
-def parse_address(s):
-    # Remove everything that isn't alphanumeric or whitespace
-    s = re.sub(r"[^\w\s]", '', s)
+                match = data['result']['addressMatches'][0]
 
-    # Replace all whitespace
-    s = re.sub(r"\s+", '+', s)
+                output = {'Address matched': match['matchedAddress'],
+                        'Latitude': str(match['coordinates']['y']),
+                        'Longitude': str(match['coordinates']['x'])}
 
-    return s
+                for result in output:
+                    self.jarvis.say("{}: {}".format(result, 
+                        output[result]), 
+                        Fore.CYAN)
 
+            else:
+                self.jarvis.say("No matching addresses found.", Fore.RED)
+    
+    @property
+    def url(self):
+        """Format a url to access the geocoding API by combining the cleaned
+        input address with the API url.
 
-# Make a request to a URL. Return the request if success or None if it failed
-def make_request(url):
-    try:
-        req = requests.get(url)
-        req.raise_for_status()
-        return req
-    except (requests.exceptions.ConnectionError, requests.exceptions.Timeout, requests.exceptions.HTTPError):
-        return None
+        Returns:
+        -------
+        str
+            URL to geocode the input address 
+        """
+        return ("https://geocoding.geo.census.gov/geocoder/locations/"
+            "onelineaddress?address={}&benchmark=4&vintage=4&format="
+            "json".format(self.cleaned_addr))
+
+    def get_input(self, s):
+        """Get an input address from the user and handle help commands
+
+        Parameters
+        ----------
+        s : str
+            The input string that was submitted when the plugin was launched.
+            Likely to be empty. 
+
+        Returns:
+        -------
+        str
+            A street address (unvalidated)
+        """
+        while True:
+            if not s:
+                s = self.jarvis.input("Enter the full street address to"
+                    " geocode (or type help for options): ") 
+
+            if s.lower() == 'help':
+                self.help()
+                s = None
+            else:
+                return s.lower()
+
+    def help(self):
+        """Print the help prompt for the plugin"""
+        self.jarvis.say(self.help_prompt, Fore.BLUE)
+
+    def urlify(self, s):
+        """Reformat a string to be URL friendly
+
+        Parameters
+        ----------
+        s : str
+            A street address (unvalidated)
+
+        Returns:
+        -------
+        str
+            The street address with all special characters removed and
+            whitespace replaced with +
+        """
+        # Remove everything that isn't alphanumeric or whitespace
+        s = re.sub(r"[^\w\s]", '', s)
+
+        # Replace all whitespace
+        s = re.sub(r"\s+", '+', s)
+
+        return s
+
+    def make_request(self):
+        """Make a request to the geocoding API and return the request 
+        if it succeeds
+
+        Returns:
+        -------
+        requests.Request
+            A request object returned by the API. If any errors were
+            encountered during the request, the return will be None.
+        """
+        try:
+            req = requests.get(self.url)
+            # Raise HTTPErrors if encountered
+            req.raise_for_status()
+            return req
+        except (requests.exceptions.ConnectionError, 
+            requests.exceptions.Timeout, 
+            requests.exceptions.HTTPError):
+            return None
