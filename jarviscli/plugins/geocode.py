@@ -10,6 +10,21 @@ from plugin import alias, plugin, require
 @require(network=True)
 @plugin('geocode')
 class Geocoder:
+    """
+    Geocoding tool to convert street addresses to latitude and longitude.
+
+    Attributes
+    ----------
+    jarvis : CmdInterpreter.JarvisAPI
+        An instance of Jarvis that will be used to interact with the user
+    input_addr : str
+        A street address input by the user
+    cleaned_addr : str
+        A street address cleaned for use in a URL
+    help_prompt : str
+        A description of this tool that the user can directly access from
+        within the plugin
+    """
     jarvis = None
     input_addr = None
     cleaned_addr = None
