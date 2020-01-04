@@ -20,6 +20,8 @@ class Geocoder:
         A street address input by the user
     cleaned_addr : str
         A street address cleaned for use in a URL
+    output : dict of str: str 
+        Parsed results from the API request if a match was found
     help_prompt : str
         A description of this tool that the user can directly access from
         within the plugin
@@ -27,6 +29,7 @@ class Geocoder:
     jarvis = None
     input_addr = None
     cleaned_addr = None
+    output = None
     help_prompt = ("Geocoding converts street addresses to geographic"
                    " latitude and longitude. To use this tool, you can enter a"
                    " street address in this form: STREET NUMBER STREET NAME, CITY,"
@@ -63,12 +66,12 @@ class Geocoder:
 
         # Request succeeded
         else:
-            output = self.parse_request(req)
+            self.output = self.parse_request(req)
 
-            if output:
-                for result in output:
+            if self.output:
+                for result in self.output:
                     self.jarvis.say("{}: {}".format(result,
-                                                    output[result]),
+                                                    self.output[result]),
                                     Fore.CYAN)
 
             else:
