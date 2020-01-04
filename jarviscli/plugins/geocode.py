@@ -50,7 +50,7 @@ class Geocoder:
         # Required disclaimer per API terms of service
         self.jarvis.say("Disclaimer: This product uses the Census Bureau Data"
                         " API but is not endorsed or certified by the Census"
-                        "Bureau.", Fore.LIGHTBLACK_EX)
+                        " Bureau.", Fore.LIGHTBLACK_EX)
 
         self.input_addr = self.get_input_addr(s)
         self.cleaned_addr = self.clean_addr(self.input_addr)
