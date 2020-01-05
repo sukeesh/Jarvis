@@ -1,7 +1,5 @@
-import json
 import re
 import requests
-import requests.exceptions
 from colorama import Fore
 from plugin import plugin, require
 
@@ -22,8 +20,8 @@ class Geocoder:
         A street address cleaned for use in a URL
     output : dict of str: str
         Parsed results from the API request if a match was found
-    req : request.Request
-        Geocoding request returned by API if API could be accessed
+    response : request.Response
+        Geocoding response returned by API if API could be accessed
     help_prompt : str
         A description of this tool that the user can directly access from
         within the plugin
@@ -32,7 +30,7 @@ class Geocoder:
     input_addr = None
     cleaned_addr = None
     output = None
-    req = None
+    response = None
     help_prompt = ("Geocoding converts street addresses to geographic"
                    " latitude and longitude. To use this tool, you can enter a"
                    " street address in this form: STREET NUMBER STREET NAME, CITY,"
@@ -60,16 +58,16 @@ class Geocoder:
 
         self.input_addr = self.get_input_addr(s)
         self.cleaned_addr = self.clean_addr(self.input_addr)
-        self.req = self.get_request()
+        self.response = self.get_response()
 
         # Request failed
-        if not self.req:
+        if not self.response:
             self.jarvis.say("The geocoding service appears to be unavailable."
                             " Please try again later.", Fore.RED)
 
         # Request succeeded
         else:
-            self.output = self.parse_request(self.req)
+            self.output = self.parse_response(self.response)
 
             if self.output:
                 for result in self.output:
@@ -145,34 +143,34 @@ class Geocoder:
 
         return s
 
-    def get_request(self):
-        """Make a request to the geocoding API and return the request
+    def get_response(self):
+        """Make a request to the geocoding API and return the Response
         if it succeeds
 
         Returns:
         -------
-        requests.Request
-            A request object returned by the API. If any errors were
+        requests.Response
+            A Response object returned by the API. If any errors were
             encountered during the request, the return will be None.
         """
         try:
-            req = requests.get(self.url)
+            response = requests.get(self.url)
             # Raise HTTPErrors if encountered
-            req.raise_for_status()
-            return req
+            response.raise_for_status()
+            return response
         except (requests.exceptions.ConnectionError,
                 requests.exceptions.Timeout,
                 requests.exceptions.HTTPError):
             return None
 
-    def parse_request(self, req):
-        """Parse a request returned by the geocoding API to extract all
+    def parse_response(self, response):
+        """Parse a Response returned by the geocoding API to extract all
         relevant geocoding data
 
         Parameters
         ----------
-        req : request.Request
-            The Request object returned by the geocoding API for an address
+        response : request.Response
+            The Response object returned by the geocoding API for an address
             search
 
         Returns:
@@ -181,7 +179,7 @@ class Geocoder:
             A dictionary of geocoding results for the best matched address
             from the request
         """
-        data = json.loads(req.text)
+        data = response.json()
         matches = data['result']['addressMatches']
 
         if matches:
