@@ -11,17 +11,11 @@ class MockResponse:
     """
     This class is used to create a mock Response from requests.get 
     """
-    def __init__(self, text, status_code=200, force_fail=False):
+    def __init__(self, text):
         self.text = text
-        self.status_code = status_code
-        self.force_fail = force_fail
 
     def json(self):
         return json.loads(self.text)
-
-    def raise_for_status(self):
-        if self.force_fail:
-            raise requests.exceptions.HTTPError
 
 
 class GeocoderTest(PluginTest):
@@ -50,7 +44,7 @@ class GeocoderTest(PluginTest):
         cleaned_addr = "1315+10th+street+sacramento+ca+95814"
         self.test_geocoder(self.jarvis_api, input_addr)
         
-        if self.test_geocoder.req:
+        if self.test_geocoder.response:
             self.assertTrue(self.test_geocoder.output)
 
 
@@ -61,7 +55,7 @@ class GeocoderTest(PluginTest):
         input_addr = "this is not an address"
         self.test_geocoder(self.jarvis_api, input_addr)
         
-        if self.test_geocoder.req:
+        if self.test_geocoder.response:
             self.assertFalse(self.test_geocoder.output)
 
     def test_4_symbol_injection(self):
@@ -78,9 +72,12 @@ class GeocoderTest(PluginTest):
         """
         Test that a mock Response is correctly parsed into output data
         """
-        mock_data = {'result': {'addressMatches': [{'matchedAddress': 'Mock address', 'coordinates': {'x': 0, 'y': 0 }}]}}
+        mock_data = '{"result": {"addressMatches": [{"matchedAddress": "Mock address", "coordinates": {"x": "0", "y": "100" }}]}}'
         mock_response = MockResponse(mock_data)
-        self.assertTrue(self.test_geocoder.parse_request())
+        mock_parsed = self.test_geocoder.parse_response(mock_response)
+        expected_parsed = {'Address matched': 'Mock address', 'Latitude': '100', 'Longitude': '0'}
+
+        self.assertEqual(mock_parsed, expected_parsed)
 
 
 if __name__ == '__main__':
