@@ -79,6 +79,15 @@ class GeocoderTest(PluginTest):
 
         self.assertEqual(mock_parsed, expected_parsed)
 
+    def test_6_parse_empty_response(self):
+        """
+        Test that parsing returns nothing from an empty mock Response
+        """
+        mock_data = '{"result": {"addressMatches": []}}'
+        mock_response = MockResponse(mock_data)
+        mock_parsed = self.test_geocoder.parse_response(mock_response)
+        
+        self.assertFalse(mock_parsed)
 
 if __name__ == '__main__':
     unittest.main()
