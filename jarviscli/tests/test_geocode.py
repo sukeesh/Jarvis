@@ -3,13 +3,13 @@ import requests.exceptions
 import unittest
 from unittest import mock
 from Jarvis import Jarvis
-from tests import PluginTest  
+from tests import PluginTest
 from plugins.geocode import Geocoder
 
 
 class MockResponse:
     """
-    This class is used to create a mock Response from requests.get 
+    This class is used to create a mock Response from requests.get
     """
     def __init__(self, text):
         self.text = text
@@ -32,7 +32,7 @@ class GeocoderTest(PluginTest):
         input_addr = "1315 10th Street, Sacramento, CA 95814"
         cleaned_addr = "1315+10th+street+sacramento+ca+95814"
         self.test_geocoder(self.jarvis_api, input_addr)
-        
+
         self.assertEqual(self.test_geocoder.input_addr, input_addr.lower())
         self.assertEqual(self.test_geocoder.cleaned_addr, cleaned_addr)
 
@@ -44,7 +44,6 @@ class GeocoderTest(PluginTest):
         self.test_geocoder(self.jarvis_api, input_addr)
 
         self.assertFalse(self.test_geocoder.cleaned_addr)
-
 
     def test_3_parse_valid_response(self):
         """
@@ -64,8 +63,9 @@ class GeocoderTest(PluginTest):
         mock_data = '{"result": {"addressMatches": []}}'
         mock_response = MockResponse(mock_data)
         mock_parsed = self.test_geocoder.parse_response(mock_response)
-        
+
         self.assertFalse(mock_parsed)
+
 
 if __name__ == '__main__':
     unittest.main()
