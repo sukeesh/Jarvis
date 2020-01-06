@@ -36,29 +36,7 @@ class GeocoderTest(PluginTest):
         self.assertEqual(self.test_geocoder.input_addr, input_addr.lower())
         self.assertEqual(self.test_geocoder.cleaned_addr, cleaned_addr)
 
-    def test_2_valid_address(self):
-        """
-        Test that a valid address returns a match
-        """
-        input_addr = "1315 10th Street, Sacramento, CA 95814"
-        cleaned_addr = "1315+10th+street+sacramento+ca+95814"
-        self.test_geocoder(self.jarvis_api, input_addr)
-        
-        if self.test_geocoder.response:
-            self.assertTrue(self.test_geocoder.output)
-
-
-    def test_3_invalid_address(self):
-        """
-        Test that an invalid address returns no matches
-        """
-        input_addr = "this is not an address"
-        self.test_geocoder(self.jarvis_api, input_addr)
-        
-        if self.test_geocoder.response:
-            self.assertFalse(self.test_geocoder.output)
-
-    def test_4_symbol_injection(self):
+    def test_2_symbol_injection(self):
         """
         Test that all symbols are cleaned from the address input
         """
@@ -68,7 +46,7 @@ class GeocoderTest(PluginTest):
         self.assertFalse(self.test_geocoder.cleaned_addr)
 
 
-    def test_5_parse_valid_response(self):
+    def test_3_parse_valid_response(self):
         """
         Test that a mock Response is correctly parsed into output data
         """
@@ -79,7 +57,7 @@ class GeocoderTest(PluginTest):
 
         self.assertEqual(mock_parsed, expected_parsed)
 
-    def test_6_parse_empty_response(self):
+    def test_4_parse_empty_response(self):
         """
         Test that parsing returns nothing from an empty mock Response
         """
