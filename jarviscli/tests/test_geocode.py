@@ -1,8 +1,5 @@
 import json
-import requests.exceptions
 import unittest
-from unittest import mock
-from Jarvis import Jarvis
 from tests import PluginTest
 from plugins.geocode import Geocoder
 
