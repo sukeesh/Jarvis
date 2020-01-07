@@ -20,7 +20,7 @@ class MockResponse:
 
 class GeocoderTest(PluginTest):
     """
-    This class is testing the geocode plugin
+    This class is testing the geocode plugin.
     """
     def setUp(self):
         self.test_geocoder = self.load_plugin(Geocoder)
@@ -49,10 +49,12 @@ class GeocoderTest(PluginTest):
         """
         Test that a mock Response is correctly parsed into output data
         """
-        mock_data = '{"result": {"addressMatches": [{"matchedAddress": "Mock address", "coordinates": {"x": "0", "y": "100" }}]}}'
+        mock_data = ('{"result": {"addressMatches": [{"matchedAddress":'
+                     '"100 Fake St", "coordinates": {"x": "0", "y": "100"}}]}}')
         mock_response = MockResponse(mock_data)
         mock_parsed = self.test_geocoder.parse_response(mock_response)
-        expected_parsed = {'Address matched': 'Mock address', 'Latitude': '100', 'Longitude': '0'}
+        expected_parsed = {'Address matched': '100 Fake St',
+                           'Latitude': '100', 'Longitude': '0'}
 
         self.assertEqual(mock_parsed, expected_parsed)
 
