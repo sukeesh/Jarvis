@@ -1,3 +1,4 @@
+import re
 from utilities.GeneralUtilities import IS_MACOS, IS_WIN
 
 
@@ -70,10 +71,23 @@ class VoiceLinux():
         """
 
         if speech != '':
+            speech = self.remove_ansi_escape_seq(speech)
             self.create()
             self.engine.say(speech)
             self.engine.runAndWait()
             self.destroy()
+
+    def remove_ansi_escape_seq(self, speech):
+        """
+        This method removes ANSI escape sequences from a string. If a colorama
+        color code is accidentally passed to text_to_speech, the ANSI codes will
+        be spoken if they are not removed first.
+
+        :param speech: The text that may contain ANSI escape sequences.
+        :return: The speech with ANSI escape sequences removed. 
+        """
+        speech = re.sub('''(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]''', '', speech)
+        return speech
 
 
 class VoiceWin():
