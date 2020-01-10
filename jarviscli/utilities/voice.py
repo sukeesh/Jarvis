@@ -27,7 +27,8 @@ def remove_ansi_escape_seq(text):
     :param text: The text that may contain ANSI escape sequences.
     :return: The text with ANSI escape sequences removed. 
     """
-    text = re.sub('''(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]''', '', text)
+    if text:
+        text = re.sub('''(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]''', '', text)
     return text
 
 
