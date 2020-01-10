@@ -19,16 +19,17 @@ def create_voice():
         except OSError:
             return VoiceNotSupported()
 
+
 def remove_ansi_escape_seq(text):
     """
     This method removes ANSI escape sequences (such as a colorama color
     code) from a string so that they aren't spoken.
 
     :param text: The text that may contain ANSI escape sequences.
-    :return: The text with ANSI escape sequences removed. 
+    :return: The text with ANSI escape sequences removed.
     """
     if text:
-        text = re.sub('''(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]''', '', text)
+        text = re.sub(r'''(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]''', '', text)
     return text
 
 
