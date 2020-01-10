@@ -32,6 +32,8 @@ class JarvisAPI(object):
     def __init__(self, jarvis):
         self._jarvis = jarvis
         self.spinner_running = False
+        # Remember if voice is currently enabled or not
+        self._jarvis.enable_voice = self.get_data('enable_voice')
 
     def say(self, text, color="", speak=True):
         """
@@ -143,12 +145,14 @@ class JarvisAPI(object):
         Use text to speech for every text passed to jarvis.say()
         """
         self._jarvis.enable_voice = True
+        self.update_data('enable_voice', True)
 
     def disable_voice(self):
         """
         Stop text to speech output for every text passed to jarvis.say()
         """
         self._jarvis.enable_voice = False
+        self.update_data('enable_voice', False)
 
     def is_voice_enabled(self):
         """
