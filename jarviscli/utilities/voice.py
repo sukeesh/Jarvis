@@ -1,3 +1,4 @@
+import re
 from utilities.GeneralUtilities import IS_MACOS, IS_WIN
 
 
@@ -18,6 +19,17 @@ def create_voice():
         except OSError:
             return VoiceNotSupported()
 
+def remove_ansi_escape_seq(text):
+    """
+    This method removes ANSI escape sequences (such as a colorama color
+    code) from a string so that they aren't spoken.
+
+    :param text: The text that may contain ANSI escape sequences.
+    :return: The text with ANSI escape sequences removed. 
+    """
+    text = re.sub('''(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]''', '', text)
+    return text
+
 
 # class Voice:
 #     """
@@ -32,6 +44,7 @@ def create_voice():
 
 class VoiceMac():
     def text_to_speech(self, speech):
+        speech = remove_ansi_escape_seq(speech)
         speech = speech.replace("'", "\\'")
         system('say $\'{}\''.format(speech))
 
@@ -70,6 +83,7 @@ class VoiceLinux():
         """
 
         if speech != '':
+            speech = remove_ansi_escape_seq(speech)
             self.create()
             self.engine.say(speech)
             self.engine.runAndWait()
@@ -105,6 +119,7 @@ class VoiceWin():
         :param speech: The text we want Jarvis to generate as audio
         :return: Nothing to return.
         """
+        speech = remove_ansi_escape_seq(speech)
         self.create()
         self.engine.say(speech)
         self.engine.runAndWait()
