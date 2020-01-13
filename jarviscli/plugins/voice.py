@@ -24,3 +24,12 @@ def say(jarvis, s):
         jarvis.say(s)
         if not voice_state:
             jarvis.disable_voice()
+
+# TODO: Add a message if voice is disabled
+@plugin('talk faster')
+def talk_faster(jarvis, s):
+    jarvis.change_speech_rate(25)
+
+@plugin('talk slower')
+def talk_slower(jarvis, s):
+    jarvis.change_speech_rate(-25)
