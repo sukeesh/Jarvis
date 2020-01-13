@@ -34,6 +34,10 @@ class JarvisAPI(object):
         self.spinner_running = False
         # Remember if voice is currently enabled or not
         self._jarvis.enable_voice = self.get_data('enable_voice')
+        # Remember speech rate if it was previously set
+        self.speech_rate = self.get_data('speech_rate')
+        if not self.speech_rate:
+            self.speech_rate = 120
 
     def say(self, text, color="", speak=True):
         """
@@ -164,10 +168,12 @@ class JarvisAPI(object):
 
     def change_speech_rate(self, delta):
         """
-        Alters the rate of the speech engine by a specified amount
+        Alters the rate of the speech engine by a specified amount and remember
+        the new speech rate.
         :param delta: Amount of change to apply to speech rate
         """
-        self._jarvis.speech.change_rate(delta)
+        new_rate = self._jarvis.speech.change_rate(delta)
+        self.update_data('speech_rate', new_rate)
 
     # MEMORY WRAPPER
     def get_data(self, key):
@@ -275,9 +281,10 @@ class CmdInterpreter(Cmd):
 
         self.memory = Memory()
         self.scheduler = schedule.Scheduler()
+        self._api = JarvisAPI(self)
         # what if the platform does not have any engines, travis doesn't have sapi5 acc to me
         try:
-            self.speech = create_voice()
+            self.speech = create_voice(rate=self._api.speech_rate)
         except Exception as e:
             print_say("Voice not supported", self, Fore.RED)
             print_say(str(e), self, Fore.RED)
@@ -286,7 +293,6 @@ class CmdInterpreter(Cmd):
                                 "where am i": "pinpoint",
                                 }
 
-        self._api = JarvisAPI(self)
         self._plugin_manager = PluginManager()
 
         for directory in directories:

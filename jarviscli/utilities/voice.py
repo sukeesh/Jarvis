@@ -8,14 +8,18 @@ else:
     import pyttsx3
 
 
-def create_voice():
+# TODO: Add rate for all platforms
+def create_voice(rate=120):
+    """
+    :param rate: Speech rate for the engine
+    """
     if IS_MACOS:
         return VoiceMac()
     elif IS_WIN:
         return VoiceWin()
     else:
         try:
-            return VoiceLinux()
+            return VoiceLinux(rate)
         except OSError:
             return VoiceNotSupported()
 
@@ -52,19 +56,20 @@ class VoiceMac():
 
 
 class VoiceLinux():
-    def __init__(self):
+    def __init__(self, rate):
         """
         This constructor creates a pyttsx3 object.
         """
-        self.create()
+        self.create(rate)
 
-    def create(self):
+    def create(self, rate):
         """
         This method creates a pyttsx3 object.
+        :param rate: Speech rate for the engine. 
         :return: Nothing to return.
         """
         self.engine = pyttsx3.init()
-        self.engine.setProperty('rate', 120)
+        self.engine.setProperty('rate', rate)
 
     def destroy(self):
         """
@@ -92,9 +97,12 @@ class VoiceLinux():
         """
         This method modifies the rate of the speech engine.
         :param delta: The amount to modify the rate from the current rate.
+        :return: The updated speech rate.
         """
         current_rate = self.engine.getProperty('rate')
-        self.engine.setProperty('rate', current_rate + delta)
+        new_rate = current_rate + delta
+        self.engine.setProperty('rate', new_rate)
+        return new_rate
 
 
 class VoiceWin():
