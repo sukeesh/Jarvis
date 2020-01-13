@@ -65,7 +65,7 @@ class VoiceLinux():
     def create(self, rate):
         """
         This method creates a pyttsx3 object.
-        :param rate: Speech rate for the engine. 
+        :param rate: Speech rate for the engine.
         :return: Nothing to return.
         """
         self.engine = pyttsx3.init()
