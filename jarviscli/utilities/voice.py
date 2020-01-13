@@ -16,7 +16,7 @@ def create_voice(rate=120):
     if IS_MACOS:
         return VoiceMac()
     elif IS_WIN:
-        return VoiceWin()
+        return VoiceWin(rate)
     else:
         try:
             return VoiceLinux(rate)
@@ -106,19 +106,19 @@ class VoiceLinux():
 
 
 class VoiceWin():
-    def __init__(self):
+    def __init__(self, rate):
         """
         This constructor creates a pyttsx3 object.
         """
-        self.create()
+        self.create(rate)
 
-    def create(self):
+    def create(self, rate):
         """
         This method creates a pyttsx3 object.
         :return: Nothing to return.
         """
         self.engine = pyttsx3.init("sapi5")
-        self.engine.setProperty('rate', 120)
+        self.engine.setProperty('rate', rate)
 
     def destroy(self):
         """
@@ -135,10 +135,20 @@ class VoiceWin():
         :return: Nothing to return.
         """
         speech = remove_ansi_escape_seq(speech)
-        self.create()
         self.engine.say(speech)
         self.engine.runAndWait()
-        self.destroy()
+        self.engine.stop()
+
+    def change_rate(self, delta):
+        """
+        This method modifies the rate of the speech engine.
+        :param delta: The amount to modify the rate from the current rate.
+        :return: The updated speech rate.
+        """
+        current_rate = self.engine.getProperty('rate')
+        new_rate = current_rate + delta
+        self.engine.setProperty('rate', new_rate)
+        return new_rate
 
 
 class VoiceNotSupported():
