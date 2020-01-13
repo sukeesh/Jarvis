@@ -1,3 +1,4 @@
+from colorama import Fore
 from plugin import plugin
 
 
@@ -25,11 +26,17 @@ def say(jarvis, s):
         if not voice_state:
             jarvis.disable_voice()
 
-# TODO: Add a message if voice is disabled
 @plugin('talk faster')
 def talk_faster(jarvis, s):
-    jarvis.change_speech_rate(25)
+    if jarvis.is_voice_enabled():
+        jarvis.change_speech_rate(40)
+    else:
+        jarvis.say("Type 'enable sound' to allow Jarvis to talk out loud.", Fore.BLUE)
 
 @plugin('talk slower')
 def talk_slower(jarvis, s):
-    jarvis.change_speech_rate(-25)
+    if jarvis.is_voice_enabled():
+        jarvis.change_speech_rate(-40)
+    else:
+        jarvis.say("Type 'enable sound' to allow Jarvis to talk out loud.", Fore.BLUE)
+        
