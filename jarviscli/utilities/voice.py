@@ -57,7 +57,6 @@ class VoiceLinux():
         This constructor creates a pyttsx3 object.
         """
         self.create()
-        self.engine = None
 
     def create(self):
         """
@@ -83,13 +82,19 @@ class VoiceLinux():
 
         A bug in pyttsx3 causes segfault if speech is '', so used 'if' to avoid that.
         """
-
         if speech != '':
             speech = remove_ansi_escape_seq(speech)
-            self.create()
             self.engine.say(speech)
             self.engine.runAndWait()
-            self.destroy()
+            self.engine.stop()
+
+    def change_rate(self, delta):
+        """
+        This method modifies the rate of the speech engine.
+        :param delta: The amount to modify the rate from the current rate.
+        """
+        current_rate = self.engine.getProperty('rate')
+        self.engine.setProperty('rate', current_rate + delta)
 
 
 class VoiceWin():

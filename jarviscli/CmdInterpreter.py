@@ -162,6 +162,13 @@ class JarvisAPI(object):
         """
         return self._jarvis.enable_voice
 
+    def change_speech_rate(self, delta):
+        """
+        Alters the rate of the speech engine by a specified amount
+        :param delta: Amount of change to apply to speech rate
+        """
+        self._jarvis.speech.change_rate(delta)
+
     # MEMORY WRAPPER
     def get_data(self, key):
         """
