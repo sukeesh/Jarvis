@@ -32,12 +32,6 @@ class JarvisAPI(object):
     def __init__(self, jarvis):
         self._jarvis = jarvis
         self.spinner_running = False
-        # Remember if voice is currently enabled or not
-        self._jarvis.enable_voice = self.get_data('enable_voice')
-        # Remember speech rate if it was previously set
-        self.speech_rate = self.get_data('speech_rate')
-        if not self.speech_rate:
-            self.speech_rate = 120
 
     def say(self, text, color="", speak=True):
         """
@@ -265,8 +259,7 @@ class CmdInterpreter(Cmd):
             first_reaction_text,
             prompt,
             directories=[],
-            first_reaction=True,
-            enable_voice=False):
+            first_reaction=True):
         """
         This constructor contains a dictionary with Jarvis Actions (what Jarvis can do).
         In alphabetically order.
@@ -275,16 +268,22 @@ class CmdInterpreter(Cmd):
         self.first_reaction = first_reaction
         self.first_reaction_text = first_reaction_text
         self.prompt = prompt
-        self.enable_voice = enable_voice
         # Register do_quit() function to SIGINT signal (Ctrl-C)
         signal.signal(signal.SIGINT, self.interrupt_handler)
 
         self.memory = Memory()
         self.scheduler = schedule.Scheduler()
         self._api = JarvisAPI(self)
+
+        # Remember voice settings
+        self.enable_voice = self._api.get_data('enable_voice')
+        self.speech_rate = self._api.get_data('speech_rate')
+        if not self.speech_rate:
+            self.speech_rate = 120
+
         # what if the platform does not have any engines, travis doesn't have sapi5 acc to me
         try:
-            self.speech = create_voice(rate=self._api.speech_rate)
+            self.speech = create_voice(rate=self.speech_rate)
         except Exception as e:
             print_say("Voice not supported", self, Fore.RED)
             print_say(str(e), self, Fore.RED)

@@ -46,13 +46,13 @@ class Jarvis(CmdInterpreter, object):
     # This can be used to store user specific data
 
     def __init__(self, first_reaction_text=first_reaction_text,
-                 prompt=prompt, first_reaction=True, enable_voice=False,
+                 prompt=prompt, first_reaction=True,
                  directories=["jarviscli/plugins", "custom"]):
         directories = self._rel_path_fix(directories)
         self.use_rawinput = False
         self.regex_dot = re.compile('\\.(?!\\w)')
         CmdInterpreter.__init__(self, first_reaction_text, prompt,
-                                directories, first_reaction, enable_voice)
+                                directories, first_reaction)
 
     def _rel_path_fix(self, dirs):
         dirs_abs = []
