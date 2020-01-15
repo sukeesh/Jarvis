@@ -11,7 +11,7 @@ else:
 # TODO: Add rate for all platforms
 def create_voice(rate=120):
     """
-    :param rate: Speech rate for the engine
+    :param rate: Speech rate for the engine (if supported by the OS)
     """
     if IS_MACOS:
         return VoiceMac()
@@ -60,16 +60,16 @@ class VoiceLinux():
         """
         This constructor creates a pyttsx3 object.
         """
-        self.create(rate)
+        self.rate = rate
+        self.create()
 
-    def create(self, rate):
+    def create(self):
         """
         This method creates a pyttsx3 object.
-        :param rate: Speech rate for the engine.
         :return: Nothing to return.
         """
         self.engine = pyttsx3.init()
-        self.engine.setProperty('rate', rate)
+        self.engine.setProperty('rate', self.rate)
 
     def destroy(self):
         """
@@ -97,12 +97,10 @@ class VoiceLinux():
         """
         This method modifies the rate of the speech engine.
         :param delta: The amount to modify the rate from the current rate.
-        :return: The updated speech rate.
         """
         current_rate = self.engine.getProperty('rate')
-        new_rate = current_rate + delta
-        self.engine.setProperty('rate', new_rate)
-        return new_rate
+        self.rate = current_rate + delta
+        self.engine.setProperty('rate', self.rate)
 
 
 class VoiceWin():
@@ -110,15 +108,16 @@ class VoiceWin():
         """
         This constructor creates a pyttsx3 object.
         """
-        self.create(rate)
+        self.rate = rate
+        self.create()
 
-    def create(self, rate):
+    def create(self):
         """
         This method creates a pyttsx3 object.
         :return: Nothing to return.
         """
         self.engine = pyttsx3.init("sapi5")
-        self.engine.setProperty('rate', rate)
+        self.engine.setProperty('rate', self.rate)
 
     def destroy(self):
         """
@@ -143,12 +142,10 @@ class VoiceWin():
         """
         This method modifies the rate of the speech engine.
         :param delta: The amount to modify the rate from the current rate.
-        :return: The updated speech rate.
         """
         current_rate = self.engine.getProperty('rate')
-        new_rate = current_rate + delta
-        self.engine.setProperty('rate', new_rate)
-        return new_rate
+        self.rate = current_rate + delta
+        self.engine.setProperty('rate', self.rate)
 
 
 class VoiceNotSupported():
