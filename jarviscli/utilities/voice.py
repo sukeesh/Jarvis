@@ -8,7 +8,6 @@ else:
     import pyttsx3
 
 
-# TODO: Add rate for all platforms
 def create_voice(rate=120):
     """
     :param rate: Speech rate for the engine (if supported by the OS)
@@ -86,21 +85,26 @@ class VoiceLinux():
         :return: Nothing to return.
 
         A bug in pyttsx3 causes segfault if speech is '', so used 'if' to avoid that.
+
+        Instability in the pyttsx3 engine can cause problems if the engine is
+        not created and destroyed every time it is used.
         """
         if speech != '':
             speech = remove_ansi_escape_seq(speech)
+            self.create()
             self.engine.say(speech)
             self.engine.runAndWait()
-            self.engine.stop()
+            self.destroy()
 
     def change_rate(self, delta):
         """
-        This method modifies the rate of the speech engine.
+        This method changes the speech rate which is used to set the speech
+        engine rate.
         :param delta: The amount to modify the rate from the current rate.
+
+        Note: The actual engine rate is set by create().
         """
-        current_rate = self.engine.getProperty('rate')
-        self.rate = current_rate + delta
-        self.engine.setProperty('rate', self.rate)
+        self.rate = self.rate + delta
 
 
 class VoiceWin():
@@ -132,20 +136,25 @@ class VoiceWin():
         This method converts a text to speech.
         :param speech: The text we want Jarvis to generate as audio
         :return: Nothing to return.
+
+        Instability in the pyttsx3 engine can cause problems if the engine is
+        not created and destroyed every time it is used.
         """
         speech = remove_ansi_escape_seq(speech)
+        self.create()
         self.engine.say(speech)
         self.engine.runAndWait()
-        self.engine.stop()
+        self.destroy()
 
     def change_rate(self, delta):
         """
-        This method modifies the rate of the speech engine.
+        This method changes the speech rate which is used to set the speech
+        engine rate.
         :param delta: The amount to modify the rate from the current rate.
+
+        Note: The actual engine rate is set by create().
         """
-        current_rate = self.engine.getProperty('rate')
-        self.rate = current_rate + delta
-        self.engine.setProperty('rate', self.rate)
+        self.rate = self.rate + delta
 
 
 class VoiceNotSupported():
