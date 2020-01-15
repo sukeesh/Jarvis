@@ -166,7 +166,7 @@ class JarvisAPI(object):
         the new speech rate.
         :param delta: Amount of change to apply to speech rate
         """
-        new_rate = self._jarvis.speech.change_rate(delta)
+        self._jarvis.speech.change_rate(delta)
         self.update_data('speech_rate', self._jarvis.speech.rate)
 
     # MEMORY WRAPPER
