@@ -30,6 +30,8 @@ def say(jarvis, s):
 @require(platform=[LINUX, WINDOWS])
 @plugin('talk faster')
 def talk_faster(jarvis, s):
+    """Make Jarvis' speech engine talk faster.
+    """
     if jarvis.is_voice_enabled():
         jarvis.change_speech_rate(40)
     else:
@@ -40,6 +42,8 @@ def talk_faster(jarvis, s):
 @require(platform=[LINUX, WINDOWS])
 @plugin('talk slower')
 def talk_slower(jarvis, s):
+    """Make Jarvis' speech engine talk slower.
+    """
     if jarvis.is_voice_enabled():
         jarvis.change_speech_rate(-40)
     else:

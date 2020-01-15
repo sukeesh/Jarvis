@@ -60,6 +60,8 @@ class VoiceLinux():
         This constructor creates a pyttsx3 object.
         """
         self.rate = rate
+        self.min_rate = 50
+        self.max_rate = 500
         self.create()
 
     def create(self):
@@ -99,12 +101,17 @@ class VoiceLinux():
     def change_rate(self, delta):
         """
         This method changes the speech rate which is used to set the speech
-        engine rate.
+        engine rate. Restrict the rate to a usable range.
         :param delta: The amount to modify the rate from the current rate.
 
         Note: The actual engine rate is set by create().
         """
-        self.rate = self.rate + delta
+        if self.rate + delta > self.max_rate:
+            self.rate = self.max_rate
+        elif self.rate + delta < self.min_rate:
+            self.rate = self.min_rate
+        else:
+            self.rate = self.rate + delta
 
 
 class VoiceWin():
@@ -113,6 +120,8 @@ class VoiceWin():
         This constructor creates a pyttsx3 object.
         """
         self.rate = rate
+        self.min_rate = 50
+        self.max_rate = 500
         self.create()
 
     def create(self):
@@ -149,12 +158,17 @@ class VoiceWin():
     def change_rate(self, delta):
         """
         This method changes the speech rate which is used to set the speech
-        engine rate.
+        engine rate. Restrict the rate to a usable range.
         :param delta: The amount to modify the rate from the current rate.
 
         Note: The actual engine rate is set by create().
         """
-        self.rate = self.rate + delta
+        if self.rate + delta > self.max_rate:
+            self.rate = self.max_rate
+        elif self.rate + delta < self.min_rate:
+            self.rate = self.min_rate
+        else:
+            self.rate = self.rate + delta
 
 
 class VoiceNotSupported():
