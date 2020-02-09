@@ -1,5 +1,4 @@
 from plugin import plugin
-from colorama import Fore, Back, Style
 import time, random
 
 @plugin('memory')
@@ -52,7 +51,7 @@ class Memory:
         number = ""
         while not lost:
             number = self.create_number(jarvis, number)
-            print("The following number will only be visible for a few seconds.")
+            print("The number will only be visible for a few seconds.")
             print(number, end = "\r")
             time.sleep(2 * len(number))
             jarvis.say("Time ended.")
@@ -60,7 +59,7 @@ class Memory:
             if guess == number:
                 jarvis.say("Correct guess of " 
                 + str(len(number)) 
-                + " digit number")
+                + " digits")
             else:
                 jarvis.say("Wrong guess.")
                 jarvis.say("You were able to remember " 
