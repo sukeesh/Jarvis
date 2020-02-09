@@ -6,10 +6,10 @@ import random
 @plugin('memory')
 class Memory:
     """
-    Welcome to the Short-Term Memory Trainer! Here you can find 
+    Welcome to the Short-Term Memory Trainer! Here you can find
     all the functionalities of this plugin.
     Usage: Type memory, press enter and follow the instructions
-    Functionalities: You can train your memory by recalling a 
+    Functionalities: You can train your memory by recalling a
     random generated number.
     Find out how many digits you can remember.
     """
@@ -52,15 +52,15 @@ class Memory:
         while not lost:
             number = self.create_number(jarvis, number)
             print("The number will only be visible for a few seconds.")
-            print(number, end="\r")
+            print(number, end = "\r")
             time.sleep(2 * len(number))
             jarvis.say("Time ended.")
             guess = str(input("Type your guess:"))
             if guess == number:
-                jarvis.say("Correct guess of "+ str(len(number))+ " digits")
+                jarvis.say("Correct guess of " + str(len(number)) + " digits")
             else:
                 jarvis.say("Wrong guess.")
-                jarvis.say("You were able to remember "+ str(len(number) - 1)+ " digits")
+                jarvis.say("You were able to remember " + str(len(number) - 1) + " digits")
                 jarvis.say("Be sure to train again.")
                 lost = True
         return
