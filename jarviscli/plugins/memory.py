@@ -52,7 +52,7 @@ class Memory:
         while not lost:
             number = self.create_number(jarvis, number)
             print("The number will only be visible for a few seconds.")
-            print(number, end = "\r")
+            print(number, end="\r")
             time.sleep(2 * len(number))
             jarvis.say("Time ended.")
             guess = str(input("Type your guess:"))
