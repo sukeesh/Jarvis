@@ -78,4 +78,4 @@ class Memory:
         """
         digit = str(random.randint(0, 9))
         new = number + digit
-        return new      
+        return new
