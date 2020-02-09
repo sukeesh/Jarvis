@@ -14,9 +14,9 @@ class Memory:
 
     def __call__(self, jarvis, s):
         jarvis.say("Welcome to Memory Trainer.")
-        jarvis.say("Here we will train you by giving a number to remember.")
-        jarvis.say("Watch out, the number won't be visible for very long.")
-        jarvis.say("Each time you succeed the number will get 1 more digit.")
+        jarvis.say("We will train you by giving a number to remember.")
+        jarvis.say("The number won't be visible for very long.")
+        jarvis.say("Each time the number will get 1 more digit.")
         answer = self.get_answer(jarvis)
         if answer == 1:
             self.trainer(jarvis)
