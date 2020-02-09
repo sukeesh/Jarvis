@@ -52,19 +52,15 @@ class Memory:
         while not lost:
             number = self.create_number(jarvis, number)
             print("The number will only be visible for a few seconds.")
-            print(number, end = "\r")
+            print(number, end="\r")
             time.sleep(2 * len(number))
             jarvis.say("Time ended.")
             guess = str(input("Type your guess:"))
             if guess == number:
-                jarvis.say("Correct guess of " 
-                + str(len(number)) 
-                + " digits")
+                jarvis.say("Correct guess of "+ str(len(number))+ " digits")
             else:
                 jarvis.say("Wrong guess.")
-                jarvis.say("You were able to remember " 
-                + str(len(number) - 1) 
-                + " digits")
+                jarvis.say("You were able to remember "+ str(len(number) - 1)+ " digits")
                 jarvis.say("Be sure to train again.")
                 lost = True
         return
