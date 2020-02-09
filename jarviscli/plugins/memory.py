@@ -1,5 +1,7 @@
 from plugin import plugin
-import time, random
+import time
+import random
+
 
 @plugin('memory')
 class Memory:
@@ -23,7 +25,6 @@ class Memory:
         else:
             return
 
-
     def get_answer(self, jarvis):
         """
         Asks the user you check if he is ready to start the game
@@ -34,13 +35,12 @@ class Memory:
             try:
                 jarvis.say("Press 1 for Yes. \nPress 2 for No.")
                 c = int(input("Your choice: "))
-                if c == 2 or c == 3:
+                if c != 1 or c != 2:
                     raise ValueError('Please give a valid input')
                 break
             except ValueError:
                 print("Please give a valid input")
         return c
-
 
     def trainer(self, jarvis):
         """
@@ -68,7 +68,6 @@ class Memory:
                 jarvis.say("Be sure to train again.")
                 lost = True
         return
-
 
     def create_number(self, jarvis, number):
         """
