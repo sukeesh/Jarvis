@@ -28,4 +28,5 @@ sympy
 tabulate
 termdown
 wikipedia
+opencv-python
 windows-curses; sys_platform == 'win32'
