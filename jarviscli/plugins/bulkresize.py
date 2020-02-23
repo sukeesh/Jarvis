@@ -47,7 +47,7 @@ def spin(jarvis, s):
     """
     \nThis resizes all the images in a given directory
     to given size and renames them, Specially designed for Deep Leanring
-    data collection process. 
+    data collection process.
 
     """
     jarvis.say(' ')
