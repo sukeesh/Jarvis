@@ -15,7 +15,6 @@ def bulk_resizer(input_path, output_path, desired_size=32,
         path = input_path+"/"+name
         if os.path.isfile(path):
             filepath.append(path)
-            print(path)
     for im_pth in filepath:
         try:
             im = cv2.imread(im_pth)
@@ -23,7 +22,6 @@ def bulk_resizer(input_path, output_path, desired_size=32,
 
         except:
             continue
-        print("impath: ",im_pth)
         ratio = float(desired_size) / max(old_size)
         new_size = tuple([int(x * ratio) for x in old_size])
 
@@ -43,7 +41,6 @@ def bulk_resizer(input_path, output_path, desired_size=32,
         else:
             output_path1 = output_path + "/" + \
                 os.path.splitext(os.path.basename(im_pth))[0] + ".jpg"
-        print(output_path1)
         cv2.imwrite(output_path1, new_im)
 
 
