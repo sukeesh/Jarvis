@@ -34,7 +34,8 @@ def bulk_resizer(input_path, output_path, desired_size=32,
         top, bottom = delta_h // 2, delta_h - (delta_h // 2)
         left, right = delta_w // 2, delta_w - (delta_w // 2)
 
-        new_im = cv2.copyMakeBorder(im, top, bottom, left, right,cv2.BORDER_CONSTANT, value=color)
+        new_im = cv2.copyMakeBorder(im, top, bottom, left, right,
+                                    cv2.BORDER_CONSTANT, value=color)
         if rename:
             output_path1 = output_path + "/" + str(img_no) + ".jpg"
             img_no += 1
