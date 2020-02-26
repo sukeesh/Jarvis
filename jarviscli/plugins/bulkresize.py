@@ -12,7 +12,7 @@ def bulk_resizer(input_path, output_path, desired_size=32,
     filename = os.listdir(input_path)
     filepath = []
     for name in filename:
-        path = input_path+"/"+name
+        path = input_path + "/" + name
         if os.path.isfile(path):
             filepath.append(path)
     for im_pth in filepath:
