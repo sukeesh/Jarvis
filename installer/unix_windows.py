@@ -7,16 +7,21 @@ else:
 
 
 if IS_WIN:
-    PY3 = "py -3"
-    VIRTUALENV_CMD = "py -3 -m virtualenv"
+    if os.system('py --version') == 0:
+        PY3 = "py -3"
+        VIRTUALENV_CMD = "py -3 -m virtualenv"
+    else:
+        PY3 = "python"
+        VIRTUALENV_CMD = "python -m virtualenv"
     VIRTUALENV_PYTHON = "env\\Scripts\\python.exe"
     VIRTUALENV_PIP = "env\\Scripts\\pip.exe"
     VIRTUALENV_INSTALL_MSG = """\
 Note that virtualenv must work with Python 3!
 
 You could do:
-py -3 -m pip install virtualenv
-"""
+{PY3} -m ensurepip
+{PY3} -m pip install virtualenv
+""".format(PY3=PY3)
 
 else:
     PY3 = "python3"
