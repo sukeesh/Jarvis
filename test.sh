@@ -12,5 +12,4 @@ echo "checking for unit test"
 python3 -m unittest discover
 echo "unit tests checked"
 echo ""
-cd ..
 )
