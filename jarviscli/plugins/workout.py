@@ -1,8 +1,9 @@
 from plugin import plugin
 from colorama import Fore
 import time
+from utilities.notification import*
 
-def pushComputeRest(maximum):
+def push_compute_rest(maximum):
 	if(maximum<25):
 		rest = 30
 	elif(maximum<50):
@@ -15,12 +16,12 @@ def pushComputeRest(maximum):
 		rest = 90
 	return rest
 
-def pushComputeNum(maximum):
+def push_compute_num(maximum, jarvis):
 	num = maximum*2//5
 	num = int(num)
 	return num
 
-def pullComputeRest(maximum):
+def pull_compute_rest(maximum):
 	if(maximum<10):
 		rest = 30
 	elif(maximum<15):
@@ -33,10 +34,15 @@ def pullComputeRest(maximum):
 		rest = 90
 	return rest
 
-def pullComputeNum(maximum):
+def pull_compute_num(maximum, jarvis):
 	num = maximum*1.5//5
 	num = int(num)
 	return num
+
+def timer(rest):
+	for i in range(rest, 0, -1):
+		print(i, "sec left")
+		time.sleep(1)
 
 def pushups(jarvis, s):
 	try:
@@ -45,19 +51,24 @@ def pushups(jarvis, s):
 		jarvis.say("Please enter an integer only!", Fore.BLUE)
 		quit(jarvis)
 		return
-	num = pushComputeNum(maximum)
-	rest = pushComputeRest(maximum)
-	jarvis.say("Your program for today is 5 sets, each set is " + str(num) + " repetition with rests of " + str(rest) + " sec in between", Fore.BLUE);
+	if(maximum < 15):
+		jarvis.say("Firstly, try to reach your maximum to at least 15, then call me again!", Fore.BLUE)
+		quit(jarvis)
+		return
+	num = push_compute_num(maximum, jarvis)
+	rest = push_compute_rest(maximum)
+	jarvis.say("Your program for today is [" + str(num+2) +", " + str(num+1)+", " + str(num)+", " + str(num-1)+", " + str(num-2) + "] and " + str(rest) + " sec rest in between", Fore.BLUE);
 	s = jarvis.input("Type 's' to start and 'q' for quit\n", Fore.GREEN)
 	if (s == "'q'" or s == "q"):
 		quit(jarvis)
 	elif (s == "'s'" or s == "s"):
 		for i in range(1,6):
-			jarvis.say("Start Set "+ str(i) + " - Do " + str(num) + " pushups", Fore.RED)
+			notify("Start Set "+ str(i), "Do " + str(num+3-i) + " pushups", urgency=NOTIFY_NORMAL)
+			jarvis.say("Start Set "+ str(i) + " - Do " + str(num+3-i) + " pushups", Fore.BLUE)
 			jarvis.input("Press enter after finishing", Fore.GREEN)
 			jarvis.say("Rest: " + str(rest)+ " sec...", Fore.BLUE)
-			jarvis.say("I will notice you when to start the next set\n", Fore.BLUE)
-			time.sleep(2)
+			jarvis.say("I will notice you when to start the next set", Fore.BLUE)
+			timer(rest)
 		jarvis.say("Well done, you performed " + str(num*5) + " pushups", Fore.BLUE)
 		quit(jarvis)
 	else:
@@ -71,19 +82,26 @@ def pullups(jarvis, s):
 		jarvis.say("Please enter an integer only!", Fore.BLUE)
 		quit(jarvis)
 		return
-	num = pullComputeNum(maximum)
-	rest = pullComputeRest(maximum)
-	jarvis.say("Your program for today is 5 sets, each set is " + str(num) + " repetition with rests of " + str(rest) + " sec in between", Fore.BLUE);
+	if(maximum < 7):
+		jarvis.say("Firstly, try to reach your maximum to at least 7, then call me again!", Fore.BLUE)
+		quit(jarvis)
+		return
+	num = pull_compute_num(maximum, jarvis)
+	rest = pull_compute_rest(maximum)
+	jarvis.say("Your program for today is [" + str(num+2) +", " + str(num+1)+", " + str(num)+", " + str(num-1)+", " + str(num-2) + "] and " + str(rest) + " sec rest in between", Fore.BLUE);
 	s = jarvis.input("Type 's' to start and 'q' for quit\n", Fore.GREEN)
 	if (s == "'q'" or s == "q"):
 		quit(jarvis)
 	elif (s == "'s'" or s == "s"):
 		for i in range(1,6):
-			jarvis.say("Start Set "+ str(i) + " - Do " + str(num) + " pullups", Fore.RED)
+			if (num+3-i == 0):
+				break
+			notify("Start Set "+ str(i),  "Do " + str(num+3-i) + " pullups", urgency=NOTIFY_NORMAL)
+			jarvis.say("Start Set "+ str(i) + " - Do " + str(num+3-i) + " pullups", Fore.BLUE)
 			jarvis.input("Press enter after finishing", Fore.GREEN)
 			jarvis.say("Rest: " + str(rest)+ " sec...", Fore.BLUE)
-			jarvis.say("I will notice you when to start the next set\n", Fore.BLUE)
-			time.sleep(2)
+			jarvis.say("I will notice you when to start the next set", Fore.BLUE)
+			timer(rest)
 		jarvis.say("Well done, you performed " + str(num*5) + " pullups", Fore.BLUE)
 		quit(jarvis)
 	else:
@@ -104,10 +122,10 @@ def workout(jarvis, s):
     if (s == "'q'" or s == "q"):
     	quit(jarvis)
     elif (s == "'push'" or s == "push"):
-    	s = jarvis.input("How many times do you do pushups? Please enter an integer!\n", Fore.GREEN)
+    	s = jarvis.input("How many times can you push up? Please enter an integer!\n", Fore.GREEN)
     	pushups(jarvis, s)
     elif (s == "'pull'" or s == "pull"):
-    	s = jarvis.input("How many times do you do pullups? Please enter an integer!\n", Fore.GREEN)
+    	s = jarvis.input("How many times can you pull up? Please enter an integer!\n", Fore.GREEN)
     	pullups(jarvis, s)
     else:
     	jarvis.say("Incorrect input, please write either 'push' or 'pull'", Fore.BLUE)
