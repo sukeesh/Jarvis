@@ -6,9 +6,10 @@ echo "checking for linting errors"
 flake8 --select E,W --max-line-length=140 --ignore E722,W503,W504,E128 jarviscli/ installer
 echo "lint errors checked"
 echo ""
-cd jarviscli/
+(
+cd jarviscli || exit
 echo "checking for unit test"
 python3 -m unittest discover
 echo "unit tests checked"
 echo ""
-cd ..
+)
