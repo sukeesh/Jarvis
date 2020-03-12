@@ -64,14 +64,14 @@ def pushups(jarvis, s):
         return
     num = push_compute_num(maximum, jarvis)
     rest = push_compute_rest(maximum)
-    jarvis.say("Your program for today is [" + str(num + 2) + ", " + str(num + 1)+", " + str(num)+", " + str(
+    jarvis.say("Your program for today is [" + str(num + 2) + ", " + str(num + 1) + ", " + str(num) + ", " + str(
         num - 1) + ", " + str(num - 2) + "] and " + str(rest) + " sec rest in between", Fore.BLUE)
     s = jarvis.input("Type 's' to start and 'q' for quit\n", Fore.GREEN)
     if (s == "'q'" or s == "q"):
         quit(jarvis)
     elif (s == "'s'" or s == "s"):
         for i in range(1, 6):
-            notify("Start Set " + str(i), "Do " + str(num+3-i) +
+            notify("Start Set " + str(i), "Do " + str(num + 3 - i) +
                    " pushups", urgency=NOTIFY_NORMAL)
             jarvis.say("Start Set " + str(i) + " - Do " +
                        str(num + 3 - i) + " pushups", Fore.BLUE)
@@ -103,7 +103,7 @@ def pullups(jarvis, s):
         return
     num = pull_compute_num(maximum, jarvis)
     rest = pull_compute_rest(maximum)
-    jarvis.say("Your program for today is [" + str(num + 2) + ", " + str(num + 1)+", " + str(num) + ", " + str(
+    jarvis.say("Your program for today is [" + str(num + 2) + ", " + str(num + 1) + ", " + str(num) + ", " + str(
         num - 1) + ", " + str(num - 2) + "] and " + str(rest) + " sec rest in between", Fore.BLUE)
     s = jarvis.input("Type 's' to start and 'q' for quit\n", Fore.GREEN)
     if (s == "'q'" or s == "q"):
