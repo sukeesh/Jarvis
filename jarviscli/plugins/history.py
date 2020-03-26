@@ -1,5 +1,7 @@
 from plugin import plugin, require
+import requests
 import random
+import json
 
 @require(network=True)
 @plugin('history')
@@ -13,7 +15,7 @@ class history:
 
     def __init__(self):
         self.url = "http://history.muffinlabs.com/date"
-        self.events = ['birth', 'death', 'events']
+        self.events = ['births', 'deaths', 'events']
         self.months = ['january', 'february', 'march', 'april', 'may', 'june',
                        'july', 'august', 'september', 'october', 'november', 'december']
         self.keywords = ['today']
@@ -22,7 +24,8 @@ class history:
         config = self._parse_arguments(s)
         api_cfg = self._parse_config(config)
         query = self._generate_query(api_cfg)
-        print(query)
+        result = self._get_data(query, api_cfg)
+        print(result)
 
     def _parse_arguments(self, args):
         split_args = args.split()
@@ -75,3 +78,26 @@ class history:
         # url = api.com/date/<month>/<day>
         query_str = '{}/{}/{}'.format(self.url,  month, day)
         return query_str
+
+    def _get_data(self, query, api_cfg):
+        # send request
+        response = requests.get(query)
+        
+        # parse into json
+        result = response.json()
+
+        # randomly et one of the facts
+        facts_arr = result['data'][api_cfg['event'].capitalize()]
+        fact = random.choice(facts_arr)
+
+        # generate data from result
+        data = {
+            'date': result['date'],
+            'type': api_cfg['event'],
+            'year': fact['year'],
+            'text': fact['text'],
+            'links': fact['links']
+        }
+
+        return data
+
