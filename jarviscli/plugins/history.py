@@ -13,15 +13,16 @@ class history:
 
     def __init__(self):
         self.url = "http://history.muffinlabs.com/date"
-        self.events = {'birth', 'death', 'events'}
-        self.months = {'january', 'february', 'march', 'april', 'may', 'june',
-                       'july', 'august', 'september', 'october', 'november', 'december'}
-        self.keywords = {'today'}
+        self.events = ['birth', 'death', 'events']
+        self.months = ['january', 'february', 'march', 'april', 'may', 'june',
+                       'july', 'august', 'september', 'october', 'november', 'december']
+        self.keywords = ['today']
 
     def __call__(self, jarvis, s):
         config = self._parse_arguments(s)
-        api_args = self._parse_config(config)
-        print(api_args)
+        api_cfg = self._parse_config(config)
+        query = self._generate_query(api_cfg)
+        print(query)
 
     def _parse_arguments(self, args):
         split_args = args.split()
@@ -48,12 +49,12 @@ class history:
         # check for events
         api_cfg['event'] = config['event']
         if not api_cfg['event']:
-            api_cfg['event'] = random.choice(list(self.events))
+            api_cfg['event'] = random.choice(self.events)
 
         # check for month
         api_cfg['month'] = config['month']
         if not api_cfg['month']:
-            api_cfg['month'] = random.choice(list(self.months))
+            api_cfg['month'] = random.choice(self.months)
 
         # check for day
         api_cfg['day'] = config['day']
@@ -61,3 +62,16 @@ class history:
             api_cfg['day'] = random.randint(1, 29)
 
         return api_cfg
+
+    def _generate_query(self, api_cfg):
+        # if one of arguments passed was 'today' return default link
+        # (default link returns history facts that happend on current date)
+        if api_cfg['today']:
+            return self.url
+
+        day = api_cfg['day']
+        month = self.months.index(api_cfg['month']) + 1
+
+        # url = api.com/date/<month>/<day>
+        query_str = '{}/{}/{}'.format(self.url,  month, day)
+        return query_str
