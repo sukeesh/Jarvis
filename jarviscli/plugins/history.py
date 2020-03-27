@@ -4,6 +4,7 @@ import random
 import json
 from colorama import Fore
 
+
 @require(network=True)
 @plugin('history')
 class history:
@@ -21,6 +22,7 @@ class history:
                        'july', 'august', 'september', 'october', 'november', 'december']
         self.keywords = ['today']
         self.MAX_LINK = 3
+        self.err_cfg_str = 'Error : Please pass only one argument of type {}'
 
     def __call__(self, jarvis, s):
         if s == 'help':
@@ -28,12 +30,20 @@ class history:
             return
 
         jarvis.say("\ntype 'history help' for additional information")
+        # parse and validate arguments
         config = self._parse_arguments(s)
+        if config['err']:
+            jarvis.say(config['err'], Fore.RED)
+            return
+        # translate configurations to API recognizable
         api_cfg = self._parse_config(config)
+        # query to be sent to API
         query = self._generate_query(api_cfg)
+        # fetch result
         result = self._get_data(jarvis, query, api_cfg)
         if not result:
             return
+        # output data
         self._print_result(jarvis, result)
 
     # manual for plugin
@@ -41,38 +51,58 @@ class history:
         jarvis.say("\nWelcome to History!", Fore.CYAN)
         jarvis.say("You can use current plugin as follows:", Fore.CYAN)
         jarvis.say("    history <keyword> <event> <day> <month>", Fore.CYAN)
-        jarvis.say("    <keyword> - Program uses special keywords to easily identify your query. keywords:", Fore.CYAN)
-        jarvis.say("                * 'today' - results in getting fact that happened on this day", Fore.CYAN)
-        jarvis.say("    <event>   - Argument used to specify historical fact type, which can be one of the following:", Fore.CYAN)
+        jarvis.say(
+            "    <keyword> - Program uses special keywords to easily identify your query. keywords:", Fore.CYAN)
+        jarvis.say(
+            "                * 'today' - results in getting fact that happened on this day", Fore.CYAN)
+        jarvis.say(
+            "    <event>   - Argument used to specify historical fact type, which can be one of the following:", Fore.CYAN)
         jarvis.say("                * 'births'", Fore.CYAN)
         jarvis.say("                * 'deaths'", Fore.CYAN)
         jarvis.say("                * 'events'", Fore.CYAN)
         jarvis.say("    <month>   - Specify month", Fore.CYAN)
         jarvis.say("    <day>     - Specify day", Fore.CYAN)
-        jarvis.say("All of the arguments are optional. Not specifying results in randomization.", Fore.CYAN)
+        jarvis.say(
+            "All of the arguments are optional. Not specifying results in randomization.", Fore.CYAN)
         jarvis.say("Example: ", Fore.CYAN)
-        jarvis.say("         'history 25 march birth' - birth of a random person on 25th of March", Fore.CYAN)
-        jarvis.say("         'history 10' - random event that happened on random month but day is 10", Fore.CYAN)
-        jarvis.say("         'history today' - random type of event that happened on the present day", Fore.CYAN)
-        jarvis.say("         'history today events' - event that occured on the present day", Fore.CYAN)
-
+        jarvis.say(
+            "         'history 25 march birth' - birth of a random person on 25th of March", Fore.CYAN)
+        jarvis.say(
+            "         'history 10' - random event that happened on random month but day is 10", Fore.CYAN)
+        jarvis.say(
+            "         'history today' - random type of event that happened on the present day", Fore.CYAN)
+        jarvis.say(
+            "         'history today events' - event that occured on the present day", Fore.CYAN)
 
     # parses user given arguments and returns dictionary of configuration
+
     def _parse_arguments(self, args):
+        # validation of arguments
+        def __validate(event_type, value, cfg):
+            if cfg[event_type] is not None:
+                cfg['err'] = self.err_cfg_str.format(event_type)
+                return False
+            cfg[event_type] = value
+            return True
+
         split_args = args.split()
-        cfg = {'event': None, 'month': None, 'day': None, 'keywords': set()}
-        
+        cfg = {'event': None, 'month': None,
+               'day': None, 'keywords': set(), 'err': None}
+
         # iterate over the arguments an fill configurations
         for arg in split_args:
             if arg.isdigit():
-                cfg['day'] = arg
+                if not __validate('day', arg, cfg):
+                    return cfg
             elif arg in self.events:
-                cfg['event'] = arg
+                if not __validate('event', arg, cfg):
+                    return cfg
             elif arg in self.months:
-                cfg['month'] = arg
+                if not __validate('month', arg, cfg):
+                    return cfg
             elif arg in self.keywords:
                 cfg['keywords'].add(arg)
-        
+
         return cfg
 
     # used to further parse given configuration and validate user arguments
@@ -137,16 +167,20 @@ class history:
             }
             jarvis.spinner_stop()
         except:
-            jarvis.spinner_stop(message="\nTask execution Failed!", color=Fore.RED)
-            jarvis.say("Please check that arguments are correct and day of month is valid!", Fore.RED)
-            jarvis.say("If error occures again, then API might have crashed. Try again later.\n", Fore.RED)
+            jarvis.spinner_stop(
+                message="\nTask execution Failed!", color=Fore.RED)
+            jarvis.say(
+                "Please check that arguments are correct and day of month is valid!", Fore.RED)
+            jarvis.say(
+                "If error occures again, then API might have crashed. Try again later.\n", Fore.RED)
         finally:
             return data
 
     # prints result of query in a human readable way
     def _print_result(self, jarvis, result):
         # first line of output contains date of fact
-        jarvis.say('\nDate : {} of {}'.format(result['date'], result['year']), Fore.BLUE)
+        jarvis.say('\nDate : {} of {}'.format(
+            result['date'], result['year']), Fore.BLUE)
 
         # second line contains information
         jarvis.say('{} : {}'.format(result['type'], result['text']), Fore.BLUE)
@@ -155,4 +189,5 @@ class history:
         jarvis.say('External links : ', Fore.BLUE)
         result['links'] = result['links'][:self.MAX_LINK]
         for i in range(len(result['links'])):
-            jarvis.say('    {}). {}'.format(i+1, result['links'][i]['link']), Fore.BLUE)
+            jarvis.say('    {}). {}'.format(
+                i+1, result['links'][i]['link']), Fore.BLUE)
