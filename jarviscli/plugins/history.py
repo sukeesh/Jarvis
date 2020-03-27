@@ -74,8 +74,22 @@ class history:
         jarvis.say(
             "         'history today events' - event that occured on the present day", Fore.CYAN)
 
-    # parses user given arguments and returns dictionary of configuration
+    # function that maps shortened string to month
+    # example : 'jan'->'januray', 'decem'->'december', 'github'->None
+    def _identify_month(self, string):
+        # if length of string is less than 3 we will not be able to identify
+        # for example 'ju' can map to both 'june' and 'july'
+        if len(string) < 3:
+            return None
 
+        # iterate over each month and try to find such month that contains our string
+        # and also starts with it
+        for month in self.months:
+            if (string in month) and (month.index(string) == 0):
+                return month
+        return None
+
+    # parses user given arguments and returns dictionary of configuration
     def _parse_arguments(self, args):
         # validation of arguments
         def __validate(event_type, value, cfg):
@@ -102,7 +116,10 @@ class history:
                     return cfg
             elif arg in self.keywords:
                 cfg['keywords'].add(arg)
-
+            else:
+                mapped_month = self._identify_month(arg)
+                if mapped_month and not __validate('month', mapped_month, cfg):
+                    return cfg
         return cfg
 
     # used to further parse given configuration and validate user arguments
