@@ -32,6 +32,8 @@ class history:
         api_cfg = self._parse_config(config)
         query = self._generate_query(api_cfg)
         result = self._get_data(jarvis, query, api_cfg)
+        if not result:
+            return
         self._print_result(jarvis, result)
 
     # manual for plugin
@@ -115,29 +117,31 @@ class history:
 
     # send request and retrieves data from API
     def _get_data(self, jarvis, query, api_cfg):
-        jarvis.spinner_start('Searching through history ')
-
-        # send request
-        response = requests.get(query)
-
-        jarvis.spinner_stop()
-
-        # parse into json
-        result = response.json()
-
-        # randomly et one of the facts
-        facts_arr = result['data'][api_cfg['event'].capitalize()]
-        fact = random.choice(facts_arr)
-
-        # generate data from result
-        data = {
-            'date': result['date'],
-            'type': api_cfg['event'],
-            'year': fact['year'],
-            'text': fact['text'],
-            'links': fact['links']
-        }
-        return data
+        data = None
+        try:
+            jarvis.spinner_start('Searching through history ')
+            # send request
+            response = requests.get(query)
+            # parse into json
+            result = response.json()
+            # randomly et one of the facts
+            facts_arr = result['data'][api_cfg['event'].capitalize()]
+            fact = random.choice(facts_arr)
+            # generate data from result
+            data = {
+                'date': result['date'],
+                'type': api_cfg['event'],
+                'year': fact['year'],
+                'text': fact['text'],
+                'links': fact['links']
+            }
+            jarvis.spinner_stop()
+        except:
+            jarvis.spinner_stop(message="\nTask execution Failed!", color=Fore.RED)
+            jarvis.say("Please check that arguments are correct and day of month is valid!", Fore.RED)
+            jarvis.say("If error occures again, then API might have crashed. Try again later.\n", Fore.RED)
+        finally:
+            return data
 
     # prints result of query in a human readable way
     def _print_result(self, jarvis, result):
