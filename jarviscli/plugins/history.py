@@ -3,6 +3,7 @@ import requests
 import random
 import json
 
+
 @require(network=True)
 @plugin('history')
 class history:
@@ -19,13 +20,14 @@ class history:
         self.months = ['january', 'february', 'march', 'april', 'may', 'june',
                        'july', 'august', 'september', 'october', 'november', 'december']
         self.keywords = ['today']
+        self.MAX_LINK = 3
 
     def __call__(self, jarvis, s):
         config = self._parse_arguments(s)
         api_cfg = self._parse_config(config)
         query = self._generate_query(api_cfg)
         result = self._get_data(query, api_cfg)
-        print(result)
+        self._print_result(jarvis, result)
 
     def _parse_arguments(self, args):
         split_args = args.split()
@@ -82,7 +84,7 @@ class history:
     def _get_data(self, query, api_cfg):
         # send request
         response = requests.get(query)
-        
+
         # parse into json
         result = response.json()
 
@@ -98,6 +100,17 @@ class history:
             'text': fact['text'],
             'links': fact['links']
         }
-
         return data
 
+    def _print_result(self, jarvis, result):
+        # first line of output contains date of fact
+        jarvis.say('Date : {} of {}'.format(result['date'], result['year']))
+
+        # second line contains information
+        jarvis.say('{} : {}'.format(result['type'], result['text']))
+
+        # next lines will be links to external sources
+        jarvis.say('External links : ')
+        result['links'] = result['links'][:self.MAX_LINK]
+        for i in range(len(result['links'])):
+            jarvis.say('    {}). {}'.format(i+1, result['links'][i]['link']))
