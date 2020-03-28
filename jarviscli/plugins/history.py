@@ -13,6 +13,9 @@ class history:
 
     Enter 'history' to use:
     * history <event> <day> <month>
+
+    Attribution:
+        Data taken from wikipedia (CC BY-SA 3.0) with use of http://history.muffinlabs.com
     """
 
     def __init__(self):
