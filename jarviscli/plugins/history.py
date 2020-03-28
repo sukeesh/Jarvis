@@ -1,5 +1,6 @@
 from plugin import plugin, require
 import requests
+import datetime
 import random
 import json
 from colorama import Fore
@@ -23,7 +24,7 @@ class history:
         self.events = ['births', 'deaths', 'events']
         self.months = ['january', 'february', 'march', 'april', 'may', 'june',
                        'july', 'august', 'september', 'october', 'november', 'december']
-        self.keywords = ['today']
+        self.keywords = ['yesterday', 'today', 'tomorrow']
         self.MAX_LINK = 3
         self.err_cfg_str = 'Error : Please pass only one argument of type {}'
 
@@ -57,7 +58,11 @@ class history:
         jarvis.say(
             "    <keyword> - Program uses special keywords to easily identify your query. keywords:", Fore.CYAN)
         jarvis.say(
+            "                * 'yesterday' - results in getting fact that happened day before today", Fore.CYAN)
+        jarvis.say(
             "                * 'today' - results in getting fact that happened on this day", Fore.CYAN)
+        jarvis.say(
+            "                * 'tomorrow' - results in getting fact that happened day after today", Fore.CYAN)
         jarvis.say(
             "    <event>   - Argument used to specify historical fact type, which can be one of the following:", Fore.CYAN)
         jarvis.say("                * 'births'", Fore.CYAN)
@@ -95,30 +100,33 @@ class history:
     # parses user given arguments and returns dictionary of configuration
     def _parse_arguments(self, args):
         # validation of arguments
-        def __validate(event_type, value, cfg):
-            if cfg[event_type] is not None:
-                cfg['err'] = self.err_cfg_str.format(event_type)
-                return False
-            cfg[event_type] = value
+        def __validate(main_event_type, value, cfg, validation_arr=[]):
+            validation_arr += [main_event_type]
+            for event_type in validation_arr:
+                if cfg[event_type] is not None:
+                    cfg['err'] = self.err_cfg_str.format(event_type)
+                    return False
+            cfg[main_event_type] = value
             return True
 
         split_args = args.split()
         cfg = {'event': None, 'month': None,
-               'day': None, 'keywords': set(), 'err': None}
+               'day': None, 'keyword': None, 'err': None}
 
         # iterate over the arguments an fill configurations
         for arg in split_args:
             if arg.isdigit():
-                if not __validate('day', arg, cfg):
+                if not __validate('day', arg, cfg, ['keyword']):
                     return cfg
             elif arg in self.events:
                 if not __validate('event', arg, cfg):
                     return cfg
             elif arg in self.months:
-                if not __validate('month', arg, cfg):
+                if not __validate('month', arg, cfg, ['keyword']):
                     return cfg
             elif arg in self.keywords:
-                cfg['keywords'].add(arg)
+                if not __validate('keyword', arg, cfg, ['day', 'month']):
+                    return cfg
             else:
                 mapped_month = self._identify_month(arg)
                 if mapped_month and not __validate('month', mapped_month, cfg):
@@ -127,39 +135,55 @@ class history:
 
     # used to further parse given configuration and validate user arguments
     def _parse_config(self, config):
-        api_cfg = {}
-
-        # check for today keyword
-        api_cfg['today'] = False
-        if 'today' in config['keywords']:
-            api_cfg['today'] = True
+        api_cfg = {'event': None, 'month': None,
+                   'day': None, 'keyword': None, 'err': None}
 
         # check for events
         api_cfg['event'] = config['event']
         if not api_cfg['event']:
             api_cfg['event'] = random.choice(self.events)
 
-        # check for month
-        api_cfg['month'] = config['month']
-        if not api_cfg['month']:
-            api_cfg['month'] = random.choice(self.months)
+        # track if we got date from keywords
+        api_cfg['keyword'] = False
+        # check for keywords
+        if config['keyword']:  # if keywords present we already have date
+            api_cfg['keyword'] = True
+            # today's date
+            date = datetime.datetime.now()
+            # timestamp of one day
+            timestamp_day = datetime.timedelta(days=1)
+            if config['keyword'] == 'yesterday':
+                # if keyword was yesterday substitue timestamp from date
+                date -= timestamp_day
+            elif config['keyword'] == 'tomorrow':
+                # if keyword was yesterday add timestamp to date
+                date += timestamp_day
 
-        # check for day
-        api_cfg['day'] = config['day']
-        if not api_cfg['day']:
-            api_cfg['day'] = random.randint(1, 29)
+            api_cfg['day'] = date.day
+            api_cfg['month'] = date.month
+        else:  # if keywords were not passed we need to find/randomize date
+            # check for month
+            api_cfg['month'] = config['month']
+            if not api_cfg['month']:
+                api_cfg['month'] = random.choice(self.months)
+
+            # check for day
+            api_cfg['day'] = config['day']
+            if not api_cfg['day']:
+                api_cfg['day'] = random.randint(1, 29)
 
         return api_cfg
 
     # generates query to be sent over web to given API
     def _generate_query(self, api_cfg):
-        # if one of arguments passed was 'today' return default link
-        # (default link returns history facts that happend on current date)
-        if api_cfg['today']:
-            return self.url
-
         day = api_cfg['day']
-        month = self.months.index(api_cfg['month']) + 1
+
+        if api_cfg['keyword']:
+            # if keyword exists, then we are taking data from datetime an month is type of int
+            month = api_cfg['month']
+        else:
+            # otherwise it's string
+            month = self.months.index(api_cfg['month']) + 1
 
         # url = api.com/date/<month>/<day>
         query_str = '{}/{}/{}'.format(self.url,  month, day)
