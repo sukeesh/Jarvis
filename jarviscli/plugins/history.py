@@ -5,7 +5,6 @@ import random
 import json
 from colorama import Fore
 
-
 @require(network=True)
 @plugin('history')
 class history:
@@ -18,13 +17,26 @@ class history:
     Attribution:
         Data taken from wikipedia (CC BY-SA 3.0) with use of http://history.muffinlabs.com
     """
+    class KW:
+        """ Inner Class for Constants """
+        EVENT = 'event'
+        DAY = 'day'
+        MONTH = 'month'
+        KEYWORD = 'keyword'
+
+        DATE_YESTERDAY = 'yesterday'
+        DATE_TODAY = 'today'
+        DATE_TOMORROW = 'tomorrow'
+
+        ERROR = 'err'
 
     def __init__(self):
         self.url = "http://history.muffinlabs.com/date"
         self.events = ['births', 'deaths', 'events']
         self.months = ['january', 'february', 'march', 'april', 'may', 'june',
                        'july', 'august', 'september', 'october', 'november', 'december']
-        self.keywords = ['yesterday', 'today', 'tomorrow']
+        self.keywords = [self.KW.DATE_YESTERDAY,
+                         self.KW.DATE_TODAY, self.KW.DATE_TOMORROW]
         self.MAX_LINK = 3
         self.err_cfg_str = 'Error : Please pass only one argument of type {}'
 
@@ -36,8 +48,8 @@ class history:
         jarvis.say("\ntype 'history help' for additional information")
         # parse and validate arguments
         config = self._parse_arguments(s)
-        if config['err']:
-            jarvis.say(config['err'], Fore.RED)
+        if config[self.KW.ERROR]:
+            jarvis.say(config[self.KW.ERROR], Fore.RED)
             return
         # translate configurations to API recognizable
         api_cfg = self._parse_config(config)
@@ -80,7 +92,7 @@ class history:
         jarvis.say(
             "         'history today' - random type of event that happened on the present day", Fore.CYAN)
         jarvis.say(
-            "         'history today events' - event that occured on the present day", Fore.CYAN)
+            "         'history tomorrow events' - event that occured on the day after today", Fore.CYAN)
 
     # function that maps shortened string to month
     # example : 'jan'->'januray', 'decem'->'december', 'github'->None
@@ -104,86 +116,86 @@ class history:
             validation_arr += [main_event_type]
             for event_type in validation_arr:
                 if cfg[event_type] is not None:
-                    cfg['err'] = self.err_cfg_str.format(event_type)
+                    cfg[self.KW.ERROR] = self.err_cfg_str.format(event_type)
                     return False
             cfg[main_event_type] = value
             return True
 
         split_args = args.split()
-        cfg = {'event': None, 'month': None,
-               'day': None, 'keyword': None, 'err': None}
+        cfg = {self.KW.EVENT: None, self.KW.MONTH: None,
+               self.KW.DAY: None, self.KW.KEYWORD: None, self.KW.ERROR: None}
 
         # iterate over the arguments an fill configurations
         for arg in split_args:
             if arg.isdigit():
-                if not __validate('day', arg, cfg, ['keyword']):
+                if not __validate(self.KW.DAY, arg, cfg, [self.KW.KEYWORD]):
                     return cfg
             elif arg in self.events:
-                if not __validate('event', arg, cfg):
+                if not __validate(self.KW.EVENT, arg, cfg):
                     return cfg
             elif arg in self.months:
-                if not __validate('month', arg, cfg, ['keyword']):
+                if not __validate(self.KW.MONTH, arg, cfg, [self.KW.KEYWORD]):
                     return cfg
             elif arg in self.keywords:
-                if not __validate('keyword', arg, cfg, ['day', 'month']):
+                if not __validate(self.KW.KEYWORD, arg, cfg, [self.KW.DAY, self.KW.MONTH]):
                     return cfg
             else:
                 mapped_month = self._identify_month(arg)
-                if mapped_month and not __validate('month', mapped_month, cfg):
+                if mapped_month and not __validate(self.KW.MONTH, mapped_month, cfg):
                     return cfg
         return cfg
 
     # used to further parse given configuration and validate user arguments
     def _parse_config(self, config):
-        api_cfg = {'event': None, 'month': None,
-                   'day': None, 'keyword': None, 'err': None}
+        api_cfg = {self.KW.EVENT: None, self.KW.MONTH: None,
+                   self.KW.DAY: None, self.KW.KEYWORD: None, self.KW.ERROR: None}
 
         # check for events
-        api_cfg['event'] = config['event']
-        if not api_cfg['event']:
-            api_cfg['event'] = random.choice(self.events)
+        api_cfg[self.KW.EVENT] = config[self.KW.EVENT]
+        if not api_cfg[self.KW.EVENT]:
+            api_cfg[self.KW.EVENT] = random.choice(self.events)
 
         # track if we got date from keywords
-        api_cfg['keyword'] = False
+        api_cfg[self.KW.KEYWORD] = False
         # check for keywords
-        if config['keyword']:  # if keywords present we already have date
-            api_cfg['keyword'] = True
+        if config[self.KW.KEYWORD]:  # if keywords present we already have date
+            api_cfg[self.KW.KEYWORD] = True
             # today's date
             date = datetime.datetime.now()
             # timestamp of one day
             timestamp_day = datetime.timedelta(days=1)
-            if config['keyword'] == 'yesterday':
+            if config[self.KW.KEYWORD] == self.KW.DATE_YESTERDAY:
                 # if keyword was yesterday substitue timestamp from date
                 date -= timestamp_day
-            elif config['keyword'] == 'tomorrow':
+            elif config[self.KW.KEYWORD] == self.KW.DATE_TOMORROW:
                 # if keyword was yesterday add timestamp to date
                 date += timestamp_day
 
-            api_cfg['day'] = date.day
-            api_cfg['month'] = date.month
+            api_cfg[self.KW.DAY] = date.day
+            api_cfg[self.KW.MONTH] = date.month
         else:  # if keywords were not passed we need to find/randomize date
             # check for month
-            api_cfg['month'] = config['month']
-            if not api_cfg['month']:
-                api_cfg['month'] = random.choice(self.months)
+            api_cfg[self.KW.MONTH] = config[self.KW.MONTH]
+            if not api_cfg[self.KW.MONTH]:
+                api_cfg[self.KW.MONTH] = random.choice(self.months)
 
             # check for day
-            api_cfg['day'] = config['day']
-            if not api_cfg['day']:
-                api_cfg['day'] = random.randint(1, 29)
+            api_cfg[self.KW.DAY] = config[self.KW.DAY]
+            if not api_cfg[self.KW.DAY]:
+                api_cfg[self.KW.DAY] = random.randint(1, 29)
 
         return api_cfg
 
     # generates query to be sent over web to given API
     def _generate_query(self, api_cfg):
-        day = api_cfg['day']
+        day = api_cfg[self.KW.DAY]
 
-        if api_cfg['keyword']:
+        if api_cfg[self.KW.KEYWORD]:
             # if keyword exists, then we are taking data from datetime an month is type of int
-            month = api_cfg['month']
+            month = api_cfg[self.KW.MONTH]
         else:
             # otherwise it's string
-            month = self.months.index(api_cfg['month']) + 1
+            month = self.months.index(api_cfg[self.KW.MONTH]) + 1
 
         # url = api.com/date/<month>/<day>
         query_str = '{}/{}/{}'.format(self.url,  month, day)
@@ -199,12 +211,12 @@ class history:
             # parse into json
             result = response.json()
             # randomly et one of the facts
-            facts_arr = result['data'][api_cfg['event'].capitalize()]
+            facts_arr = result['data'][api_cfg[self.KW.EVENT].capitalize()]
             fact = random.choice(facts_arr)
             # generate data from result
             data = {
                 'date': result['date'],
-                'type': api_cfg['event'],
+                'type': api_cfg[self.KW.EVENT],
                 'year': fact['year'],
                 'text': fact['text'],
                 'links': fact['links']
