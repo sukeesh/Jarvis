@@ -19,6 +19,51 @@ def printBoard(board):
     print(board['1'] + '|' + board['2'] + '|' + board['3'])
 
 
+def checkWinner(board, jarvis, turn):
+    if board['7'] == board['8'] == board['9'] != '   ':
+        printBoard(board)
+        jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
+        jarvis.say(turn + " won!", Fore.GREEN)
+        return True
+    elif board['4'] == board['5'] == board['6'] != '   ':
+        printBoard(board)
+        jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
+        jarvis.say(turn + " won!", Fore.GREEN)
+        return True
+    elif board['1'] == board['2'] == board['3'] != '   ':
+        printBoard(board)
+        jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
+        jarvis.say(turn + " won!", Fore.GREEN)
+        return True
+    elif board['1'] == board['4'] == board['7'] != '   ':
+        printBoard(board)
+        jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
+        jarvis.say(turn + " won!", Fore.GREEN)
+        return True
+    elif board['2'] == board['5'] == board['8'] != '   ':
+        printBoard(board)
+        jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
+        jarvis.say(turn + " won!", Fore.GREEN)
+        return True
+    elif board['3'] == board['6'] == board['9'] != '   ':
+        printBoard(board)
+        jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
+        jarvis.say(turn + " won!", Fore.GREEN)
+        return True
+    elif board['7'] == board['5'] == board['3'] != '   ':
+        printBoard(board)
+        jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
+        jarvis.say(turn + " won!", Fore.GREEN)
+        return True
+    elif board['1'] == board['5'] == board['9'] != '   ':
+        printBoard(board)
+        jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
+        jarvis.say(turn + " won!", Fore.GREEN)
+        return True
+    else:
+        return False
+
+
 @plugin("tic_tac_toe")
 def game(jarvis, s):
     """	
@@ -47,47 +92,8 @@ def game(jarvis, s):
                 "This position is already filled.\nChoose another position!", Fore.RED)
             continue
 
-        # Check if someone won
         if count >= 5:
-            if board['7'] == board['8'] == board['9'] != '   ':  # across the top
-                printBoard(board)
-                jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
-                jarvis.say(turn + " won!", Fore.GREEN)
-                break
-            elif board['4'] == board['5'] == board['6'] != '   ':  # across the middle
-                printBoard(board)
-                jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
-                jarvis.say(turn + " won!", Fore.GREEN)
-                break
-            elif board['1'] == board['2'] == board['3'] != '   ':  # across the bottom
-                printBoard(board)
-                jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
-                jarvis.say(turn + " won!", Fore.GREEN)
-                break
-            elif board['1'] == board['4'] == board['7'] != '   ':  # down the left side
-                printBoard(board)
-                jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
-                jarvis.say(turn + " won!", Fore.GREEN)
-                break
-            elif board['2'] == board['5'] == board['8'] != '   ':  # down the middle
-                printBoard(board)
-                jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
-                jarvis.say(turn + " won!", Fore.GREEN)
-                break
-            elif board['3'] == board['6'] == board['9'] != '   ':  # down the right side
-                printBoard(board)
-                jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
-                jarvis.say(turn + " won!", Fore.GREEN)
-                break
-            elif board['7'] == board['5'] == board['3'] != '   ':  # diagonal
-                printBoard(board)
-                jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
-                jarvis.say(turn + " won!", Fore.GREEN)
-                break
-            elif board['1'] == board['5'] == board['9'] != '   ':  # diagonal
-                printBoard(board)
-                jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
-                jarvis.say(turn + " won!", Fore.GREEN)
+            if(checkWinner(board, jarvis, turn)):
                 break
 
         # Check if a draw
