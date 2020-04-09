@@ -5,10 +5,15 @@ board = {'7': '   ', '8': '   ', '9': '   ',
          '4': '   ', '5': '   ', '6': '   ',
          '1': '   ', '2': '   ', '3': '   '}
 
+board_keys = []
+
+for key in board:
+    board_keys.append(key)
+
 
 def restartBoard(board):
-    for key in range(1, 10):
-        board[str(key)] = "   "
+    for key in board_keys:
+        board[key] = '   '
 
 
 def printBoard(board):
@@ -83,6 +88,10 @@ def game(jarvis, s):
     while count < 10:
         printBoard(board)
         s = jarvis.input(turn + "turn. " + "Choose a position!", Fore.BLUE)
+        if s not in board_keys:
+            jarvis.say(
+                "Incorrect input. Please print any number from 1 to 9 corresponding to the position on the board!", Fore.RED)
+            continue
 
         if board[s] == '   ':
             board[s] = turn
