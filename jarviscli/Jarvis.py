@@ -4,9 +4,17 @@ import os
 from colorama import Fore
 import nltk
 import re
-from utilities.GeneralUtilities import print_say
+import sys
+from utilities.GeneralUtilities import print_say, IS_WIN
 from CmdInterpreter import CmdInterpreter
-
+# handle readline import based on os
+if IS_WIN:
+    from pyreadline import Readline
+    readline = Readline()
+else:
+    import readline
+# add hist path
+HISTORY_FILENAME = '/tmp/completer.hist'
 PROMPT_CHAR = '~>'
 
 """
@@ -49,6 +57,9 @@ class Jarvis(CmdInterpreter, object):
                  prompt=prompt, first_reaction=True,
                  directories=["jarviscli/plugins", "custom"]):
         directories = self._rel_path_fix(directories)
+        # change raw input based on os
+        if sys.platform == 'win32':
+            self.use_rawinput = False
         self.use_rawinput = False
         self.regex_dot = re.compile('\\.(?!\\w)')
         CmdInterpreter.__init__(self, first_reaction_text, prompt,
@@ -105,7 +116,9 @@ class Jarvis(CmdInterpreter, object):
             self.first_reaction = False
         if self.enable_voice:
             self.speech.text_to_speech("What can I do for you?\n")
-
+        # save commands' history
+        readline.write_history_file(HISTORY_FILENAME)
+        
     def speak(self, text=None):
         if text is None:
             text = self.first_reaction_text

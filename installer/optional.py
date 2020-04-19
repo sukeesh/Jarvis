@@ -123,6 +123,25 @@ WKHTMLTOPDF = {
 }
 
 
+READLINE = {
+    "name": "readline",
+    "pip": ['readline'],
+    "description": "Facilitate completion and reading/writing of history files",
+    "instruction": """\
+Please install 'readline' manually, consulting this link:
+https://stackoverflow.com/questions/6622490/ipython-no-readline-available-and-pip-install-readline-error""",
+    "package_guess": {
+        "linux": {
+            'redhat': 'readline',
+            'arch': 'readline',
+            'gentoo': 'readline',
+            'suse': 'readline',
+            'debian': 'readline'
+        }
+    }
+}
+
+
 OPTIONAL_REQUIREMENTS = [PortAudio, RequestsSecurity, FFMPEG, ESPEAK, WKHTMLTOPDF]
 
 
