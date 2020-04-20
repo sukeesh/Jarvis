@@ -2,6 +2,8 @@ from utilities.GeneralUtilities import IS_WIN
 
 # handle readline import based on os
 if IS_WIN:
+    import tempfile
+    from Jarvis import HISTORY_FILENAME
     from pyreadline import Readline
     readline = Readline()
 else:
@@ -14,9 +16,12 @@ from plugin import plugin
 @plugin('cat his')
 def cat_history(jarvis, s):
     """Prints the history of commands"""
-
-    cat_history = get_history_items()
-    history = '\n'.join(cat_history)
+    if IS_WIN:
+        HISTORY_FILENAME.seek(0)
+        history = str(HISTORY_FILENAME.read())
+    else:
+        cat_history = get_history_items()
+        history = '\n'.join(cat_history)
     jarvis.say(history, Fore.BLUE)
 
 # collect the commands typed
