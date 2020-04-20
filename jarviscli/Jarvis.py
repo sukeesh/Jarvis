@@ -9,7 +9,7 @@ import tempfile
 from utilities.GeneralUtilities import print_say
 from CmdInterpreter import CmdInterpreter
 
-# add hist path
+# register hist path via tempfile
 HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
 
 
