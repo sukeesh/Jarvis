@@ -9,12 +9,17 @@ from utilities.GeneralUtilities import print_say, IS_WIN
 from CmdInterpreter import CmdInterpreter
 # handle readline import based on os
 if IS_WIN:
+    import tempfile
     from pyreadline import Readline
     readline = Readline()
 else:
     import readline
 # add hist path
-HISTORY_FILENAME = '/tmp/completer.hist'
+if IS_WIN:
+    HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
+else:
+    HISTORY_FILENAME = '/tmp/completer.hist'
+
 PROMPT_CHAR = '~>'
 
 """
@@ -88,6 +93,11 @@ class Jarvis(CmdInterpreter, object):
     def precmd(self, line):
         """Hook that executes before every command."""
         words = line.split()
+        # save commands' history
+        if IS_WIN:
+            HISTORY_FILENAME.write(line+'\n')
+        else:
+            readline.write_history_file(HISTORY_FILENAME)
 
         # append calculate keyword to front of leading char digit (or '-') in
         # line
@@ -116,8 +126,6 @@ class Jarvis(CmdInterpreter, object):
             self.first_reaction = False
         if self.enable_voice:
             self.speech.text_to_speech("What can I do for you?\n")
-        # save commands' history
-        readline.write_history_file(HISTORY_FILENAME)
         
     def speak(self, text=None):
         if text is None:
