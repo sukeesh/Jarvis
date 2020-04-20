@@ -5,20 +5,13 @@ from colorama import Fore
 import nltk
 import re
 import sys
-from utilities.GeneralUtilities import print_say, IS_WIN
+import tempfile
+from utilities.GeneralUtilities import print_say
 from CmdInterpreter import CmdInterpreter
-# handle readline import based on os
-if IS_WIN:
-    import tempfile
-    from pyreadline import Readline
-    readline = Readline()
-else:
-    import readline
+
 # add hist path
-if IS_WIN:
-    HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
-else:
-    HISTORY_FILENAME = '/tmp/completer.hist'
+HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
+
 
 PROMPT_CHAR = '~>'
 
@@ -94,10 +87,7 @@ class Jarvis(CmdInterpreter, object):
         """Hook that executes before every command."""
         words = line.split()
         # save commands' history
-        if IS_WIN:
-            HISTORY_FILENAME.write(line+'\n')
-        else:
-            readline.write_history_file(HISTORY_FILENAME)
+        HISTORY_FILENAME.write(line+'\n')
 
         # append calculate keyword to front of leading char digit (or '-') in
         # line
