@@ -58,7 +58,6 @@ class Jarvis(CmdInterpreter, object):
         # change raw input based on os
         if sys.platform == 'win32':
             self.use_rawinput = False
-        self.use_rawinput = False
         self.regex_dot = re.compile('\\.(?!\\w)')
         CmdInterpreter.__init__(self, first_reaction_text, prompt,
                                 directories, first_reaction)
