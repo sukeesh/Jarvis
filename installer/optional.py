@@ -142,7 +142,7 @@ https://stackoverflow.com/questions/6622490/ipython-no-readline-available-and-pi
 }
 
 
-OPTIONAL_REQUIREMENTS = [PortAudio, RequestsSecurity, FFMPEG, ESPEAK, WKHTMLTOPDF]
+OPTIONAL_REQUIREMENTS = [PortAudio, RequestsSecurity, FFMPEG, ESPEAK, WKHTMLTOPDF, READLINE]
 
 
 if not sys.platform == "darwin":
