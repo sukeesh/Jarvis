@@ -1,5 +1,7 @@
 import re
 from utilities.GeneralUtilities import IS_MACOS, IS_WIN
+import os
+from gtts import gTTS
 
 
 if IS_MACOS:
@@ -27,7 +29,6 @@ def remove_ansi_escape_seq(text):
     """
     This method removes ANSI escape sequences (such as a colorama color
     code) from a string so that they aren't spoken.
-
     :param text: The text that may contain ANSI escape sequences.
     :return: The text with ANSI escape sequences removed.
     """
@@ -85,9 +86,7 @@ class VoiceLinux():
         This method converts a text to speech.
         :param speech: The text we want Jarvis to generate as audio
         :return: Nothing to return.
-
         A bug in pyttsx3 causes segfault if speech is '', so used 'if' to avoid that.
-
         Instability in the pyttsx3 engine can cause problems if the engine is
         not created and destroyed every time it is used.
         """
@@ -103,7 +102,6 @@ class VoiceLinux():
         This method changes the speech rate which is used to set the speech
         engine rate. Restrict the rate to a usable range.
         :param delta: The amount to modify the rate from the current rate.
-
         Note: The actual engine rate is set by create().
         """
         if self.rate + delta > self.max_rate:
@@ -145,7 +143,6 @@ class VoiceWin():
         This method converts a text to speech.
         :param speech: The text we want Jarvis to generate as audio
         :return: Nothing to return.
-
         Instability in the pyttsx3 engine can cause problems if the engine is
         not created and destroyed every time it is used.
         """
@@ -160,7 +157,6 @@ class VoiceWin():
         This method changes the speech rate which is used to set the speech
         engine rate. Restrict the rate to a usable range.
         :param delta: The amount to modify the rate from the current rate.
-
         Note: The actual engine rate is set by create().
         """
         if self.rate + delta > self.max_rate:
