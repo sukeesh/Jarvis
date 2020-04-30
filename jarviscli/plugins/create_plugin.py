@@ -151,6 +151,8 @@ EOL"""
         if os.path.isfile(custom_plugins_path + filename + ".py"):
             jarvis.say(filename + ".py created successfully inside Jarvis/custom",
                        Fore.CYAN)
+            string = "xdg-open " + custom_plugins_path + filename + ".py"
+            os.system(string)
         else:
             jarvis.say("Something went wrong in the creation of the plugin :(",
                        Fore.RED)
