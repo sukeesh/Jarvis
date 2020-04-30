@@ -6,19 +6,18 @@ based on the guidlines of the creators of the project
 to ecourage people to experiment with jarvis's plugins.
 """
 
+"""The os.path method is used to track the path in which this plugin is stored
+and locate the Jarvis/custom folder through relative pathing.
+"""
+path = os.path.abspath(__file__)
+plugins_path = os.path.dirname(path)
+custom_plugins_path = os.path.join(plugins_path, '..', '..', 'custom/')
 
 @require(platform=MACOS)
 @plugin("create plugin")
 def create_plugin_MAC(jarvis, s):
-    """The os.path method is used to track the path in which this plugin is stored
-    and locate the Jarvis/custom folder through relative pathing.
-    """
-    path = os.path.abspath(__file__)
-    plugins_path = os.path.dirname(path)
-    custom_plugins_path = os.path.join(plugins_path, '..', '..', 'custom/')
-
+    
     # Jarvis asks for the name of the plugin to create if not provided.
-
     if s == "":
         jarvis.say("Please insert the name of your plugin: ", Fore.RED)
         name = jarvis.input()
@@ -63,15 +62,8 @@ def create_plugin_MAC(jarvis, s):
 @require(platform=LINUX)
 @plugin("create plugin")
 def create_plugin_LINUX(jarvis, s):
-    """The os.path method is used to track the path in which this plugin is stored
-    and locate the Jarvis/custom folder through relative pathing.
-    """
-    path = os.path.abspath(__file__)
-    plugins_path = os.path.dirname(path)
-    custom_plugins_path = os.path.join(plugins_path, '..', '..', 'custom/')
 
     # Jarvis asks for the name of the plugin to create if not provided.
-
     if s == "":
         jarvis.say("Please insert the name of your plugin: ", Fore.RED)
         name = jarvis.input()
@@ -99,29 +91,9 @@ def create_plugin_LINUX(jarvis, s):
         """The plugin is created through the Terminal command "cat"
         and excecuted with the os.System method.
         """
-        string = """cd """ + custom_plugins_path + """
-            cat >> """ + filename + """.py << EOL
-# All plugins should inherite from this library
-from plugin import plugin
-
-# This is the standard form of a plugin for jarvis
-
-# Anytime you make a change REMEMBER TO RESTART Jarvis
-
-# You can run it through jarvis by the name
-# in the @plugin tag.
-
-
-@plugin("my plugin")
-def my_plugin(jarvis, s):
-
-    # Prints 'This is my new plugin!'
-    jarvis.say("This is my new plugin!")
-
-# For more info about plugin development visit:
-# https://github.com/sukeesh/Jarvis/blob/master/doc/PLUGINS.md
-EOL"""
+        string = create_template(custom_plugins_path, filename)
         os.system(string)
+
         if os.path.isfile(custom_plugins_path + filename + ".py"):
             jarvis.say(filename + ".py created successfully inside Jarvis/custom",
                        Fore.CYAN)
