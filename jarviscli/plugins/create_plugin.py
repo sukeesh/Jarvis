@@ -43,32 +43,10 @@ def create_plugin_MAC(jarvis, s):
             exit = True
         filename = format_filename(new_name)
     if(not exit):
-        """The plugin is created through the Terminal command "cat"
-        and excecuted with the os.System method and it is opened automaticaly
-        with the open command if created with the users deafult editor.
+        """The templated is generated through the create_template funcion
+        and is exceuted through the os.system method.
         """
-        string = """cd """ + custom_plugins_path + """
-            cat >> """ + filename + """.py << EOL
-# All plugins should inherite from this library
-from plugin import plugin
-
-# This is the standard form of a plugin for jarvis
-
-# Anytime you make a change REMEMBER TO RESTART Jarvis
-
-# You can run it through jarvis by the name
-# in the @plugin tag.
-
-
-@plugin("my plugin")
-def my_plugin(jarvis, s):
-
-    # Prints 'This is my new plugin!'
-    jarvis.say("This is my new plugin!")
-
-# For more info about plugin development visit:
-# https://github.com/sukeesh/Jarvis/blob/master/doc/PLUGINS.md
-EOL"""
+        string = create_template(custom_plugins_path, filename)
         os.system(string)
 
         if os.path.isfile(custom_plugins_path + filename + ".py"):
@@ -80,10 +58,6 @@ EOL"""
             jarvis.say("Something went wrong in the creation of the plugin :(",
                        Fore.RED)
 
-"""The only difference for LINUX os is that the file
-is not opened after creation because the LINUX open command
-uses terminal based editors which are not practical in this case.
-"""
 
 
 @require(platform=LINUX)
@@ -175,3 +149,34 @@ an invalid filename.
     filename = ''.join(c for c in name if c in valid_chars)
     filename = filename.replace(' ', '_')  # I don't like spaces in filenames.
     return filename
+
+"""This method is used to format the template of the plugin
+that is being created given the filename and the path
+in which it will be stored.
+"""
+def create_template(custom_plugins_path, filename):
+
+	template = """cd """ + custom_plugins_path + """
+            cat >> """ + filename + """.py << EOL
+# All plugins should inherite from this library
+from plugin import plugin
+
+# This is the standard form of a plugin for jarvis
+
+# Anytime you make a change REMEMBER TO RESTART Jarvis
+
+# You can run it through jarvis by the name
+# in the @plugin tag.
+
+
+@plugin("my plugin")
+def my_plugin(jarvis, s):
+
+    # Prints 'This is my new plugin!'
+    jarvis.say("This is my new plugin!")
+
+# For more info about plugin development visit:
+# https://github.com/sukeesh/Jarvis/blob/master/doc/PLUGINS.md
+EOL"""
+
+	return template
