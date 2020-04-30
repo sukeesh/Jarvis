@@ -13,10 +13,11 @@ path = os.path.abspath(__file__)
 plugins_path = os.path.dirname(path)
 custom_plugins_path = os.path.join(plugins_path, '..', '..', 'custom/')
 
+
 @require(platform=MACOS)
 @plugin("create plugin")
 def create_plugin_MAC(jarvis, s):
-    
+
     # Jarvis asks for the name of the plugin to create if not provided.
     if s == "":
         jarvis.say("Please insert the name of your plugin: ", Fore.RED)
@@ -58,7 +59,7 @@ def create_plugin_MAC(jarvis, s):
                        Fore.RED)
 
 
-
+# The difference in LINUX is the command used to open the created file
 @require(platform=LINUX)
 @plugin("create plugin")
 def create_plugin_LINUX(jarvis, s):
@@ -105,7 +106,7 @@ def create_plugin_LINUX(jarvis, s):
 
 
 def format_filename(name):
-    """Take a string and return a valid filename constructed from the string.
+	"""Take a string and return a valid filename constructed from the string.
 Uses a whitelist approach: any characters not present in valid_chars are
 removed. Also spaces are replaced with underscores.
 
@@ -113,7 +114,6 @@ Note: this method may produce invalid filenames such as ``, `.` or `..`
 When I use this method I prepend a date string like '2009_01_15_19_46_32_'
 and append a file extension like '.txt', so I avoid the potential of using
 an invalid filename.
-
 """
     import string
 
@@ -122,12 +122,12 @@ an invalid filename.
     filename = filename.replace(' ', '_')  # I don't like spaces in filenames.
     return filename
 
-"""This method is used to format the template of the plugin
+
+def create_template(custom_plugins_path, filename):
+	"""This method is used to format the template of the plugin
 that is being created given the filename and the path
 in which it will be stored.
 """
-def create_template(custom_plugins_path, filename):
-
 	template = """cd """ + custom_plugins_path + """
             cat >> """ + filename + """.py << EOL
 # All plugins should inherite from this library
