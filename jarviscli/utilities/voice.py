@@ -162,6 +162,8 @@ class VoiceWin():
         """
         speech = remove_ansi_escape_seq(speech)
         self.create()
+        voices = self.engine.getProperty('voices') #getting details of current voice
+        self.engine.setProperty('voices', voices[1].id) #changing index, changes voices. 1 for female
         self.engine.say(speech)
         self.engine.runAndWait()
         self.destroy()
