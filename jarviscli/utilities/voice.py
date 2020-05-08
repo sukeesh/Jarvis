@@ -2,6 +2,7 @@ import re
 from utilities.GeneralUtilities import IS_MACOS, IS_WIN
 import os
 from gtts import gTTS
+from playsound import playsound
 
 
 if IS_MACOS:
@@ -9,20 +10,25 @@ if IS_MACOS:
 else:
     import pyttsx3
 
-
-def create_voice(rate=120):
+def create_voice(self, gtts_status, rate=120):
     """
+    Checks that status of gtts engine, and calls the correct speech engine
     :param rate: Speech rate for the engine (if supported by the OS)
     """
-    if IS_MACOS:
-        return VoiceMac()
-    elif IS_WIN:
-        return VoiceWin(rate)
+
+    if gtts_status==True:
+        return VoiceGTTS()
+
     else:
-        try:
-            return VoiceLinux(rate)
-        except OSError:
-            return VoiceNotSupported()
+        if IS_MACOS:
+            return VoiceMac()
+        elif IS_WIN:
+            return VoiceWin(rate)
+        else:
+            try:
+                return VoiceLinux(rate)
+            except OSError:
+                return VoiceNotSupported()
 
 
 def remove_ansi_escape_seq(text):
@@ -47,6 +53,13 @@ def remove_ansi_escape_seq(text):
 #         https://pyttsx3.readthedocs.io/en/latest/
 #     """
 
+class VoiceGTTS():
+    def text_to_speech(self,speech):
+        speech = remove_ansi_escape_seq(speech)
+        tts = gTTS(speech, lang="en")
+        tts.save("voice.mp3")
+        playsound("voice.mp3")
+        os.remove("voice.mp3")
 
 class VoiceMac():
     def text_to_speech(self, speech):
@@ -127,8 +140,8 @@ class VoiceWin():
         This method creates a pyttsx3 object.
         :return: Nothing to return.
         """
-        self.engine = pyttsx3.init("sapi5")
-        self.engine.setProperty('rate', self.rate)
+        self.engine = pyttsx3.init()
+        self.engine.setProperty('rate', 180)  # setting up new voice rate
 
     def destroy(self):
         """
@@ -143,6 +156,7 @@ class VoiceWin():
         This method converts a text to speech.
         :param speech: The text we want Jarvis to generate as audio
         :return: Nothing to return.
+
         Instability in the pyttsx3 engine can cause problems if the engine is
         not created and destroyed every time it is used.
         """
@@ -157,6 +171,7 @@ class VoiceWin():
         This method changes the speech rate which is used to set the speech
         engine rate. Restrict the rate to a usable range.
         :param delta: The amount to modify the rate from the current rate.
+
         Note: The actual engine rate is set by create().
         """
         if self.rate + delta > self.max_rate:
@@ -165,6 +180,7 @@ class VoiceWin():
             self.rate = self.min_rate
         else:
             self.rate = self.rate + delta
+
 
 
 class VoiceNotSupported():
