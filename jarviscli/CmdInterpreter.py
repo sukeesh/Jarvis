@@ -142,13 +142,32 @@ class JarvisAPI(object):
         """
         Use text to speech for every text passed to jarvis.say()
         """
+        g = self.get_data('gtts_status')
+        self._jarvis.speech = create_voice(self, g, rate=120)
         self._jarvis.enable_voice = True
         self.update_data('enable_voice', True)
 
+    def disable_gtts(self):
+        """
+        Switch to native speech engine for every text passed to jarvis.say()
+        """
+        self._jarvis.gtts_status = False
+        self.update_data('gtts_status', False)
+
+    def enable_gtts(self):
+        """
+        Use google text to speech for every text passed to jarvis.say()
+        """
+        self._jarvis.gtts_status = True
+        self.update_data('gtts_status', True)
+        g = self.get_data('gtts_status')
+        self._jarvis.speech = create_voice(self, g, rate=120)
+
     def disable_voice(self):
         """
-        Stop text to speech output for every text passed to jarvis.say()
+        Stop text to speech output & disable gtts for every text passed to jarvis.say()
         """
+        self.disable_gtts()
         self._jarvis.enable_voice = False
         self.update_data('enable_voice', False)
 
@@ -277,13 +296,16 @@ class CmdInterpreter(Cmd):
 
         # Remember voice settings
         self.enable_voice = self._api.get_data('enable_voice')
+        #self.gtts_status=self._api.get_data('gtts_status')
         self.speech_rate = self._api.get_data('speech_rate')
+
         if not self.speech_rate:
             self.speech_rate = 120
 
         # what if the platform does not have any engines, travis doesn't have sapi5 acc to me
         try:
-            self.speech = create_voice(rate=self.speech_rate)
+            gtts_status = self._api.get_data('gtts_status')
+            self.speech = create_voice(self, gtts_status, rate=self.speech_rate)
         except Exception as e:
             print_say("Voice not supported", self, Fore.RED)
             print_say(str(e), self, Fore.RED)
