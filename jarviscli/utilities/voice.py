@@ -10,13 +10,13 @@ if IS_MACOS:
 else:
     import pyttsx3
 
-def create_voice(self, gtts_status, rate=120):
+def create_voice(self, gtts_status, rate=180):
     """
     Checks that status of gtts engine, and calls the correct speech engine
     :param rate: Speech rate for the engine (if supported by the OS)
     """
 
-    if gtts_status==True:
+    if gtts_status is True:
         return VoiceGTTS()
 
     else:
@@ -60,6 +60,7 @@ class VoiceGTTS():
         tts.save("voice.mp3")
         playsound("voice.mp3")
         os.remove("voice.mp3")
+
 
 class VoiceMac():
     def text_to_speech(self, speech):
@@ -141,7 +142,7 @@ class VoiceWin():
         :return: Nothing to return.
         """
         self.engine = pyttsx3.init()
-        self.engine.setProperty('rate', 180)  # setting up new voice rate
+        self.engine.setProperty('rate', self.rate)
 
     def destroy(self):
         """
@@ -162,8 +163,9 @@ class VoiceWin():
         """
         speech = remove_ansi_escape_seq(speech)
         self.create()
-        voices = self.engine.getProperty('voices') #getting details of current voice
-        self.engine.setProperty('voices', voices[1].id) #changing index, changes voices. 1 for female
+        self.engine.setProperty('rate', 170) # setting up new voice rate
+        voices = self.engine.getProperty('voices') # getting details of current voice
+        self.engine.setProperty('voices', voices[1].id) # changing index, changes voices. 1 for female
         self.engine.say(speech)
         self.engine.runAndWait()
         self.destroy()
@@ -182,7 +184,6 @@ class VoiceWin():
             self.rate = self.min_rate
         else:
             self.rate = self.rate + delta
-
 
 
 class VoiceNotSupported():
