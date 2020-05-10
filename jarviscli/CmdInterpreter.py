@@ -296,7 +296,6 @@ class CmdInterpreter(Cmd):
 
         # Remember voice settings
         self.enable_voice = self._api.get_data('enable_voice')
-        #self.gtts_status=self._api.get_data('gtts_status')
         self.speech_rate = self._api.get_data('speech_rate')
 
         if not self.speech_rate:

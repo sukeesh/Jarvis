@@ -6,6 +6,7 @@ from CmdInterpreter import JarvisAPI
 # this test class contains test cases for the plugins "gtts" and "disable_gtts"
 # which are included in the "voice.py" file in the "plugins" folder
 
+
 class VoiceTest(PluginTest):
 
     # test "gtts" plugin
@@ -19,7 +20,6 @@ class VoiceTest(PluginTest):
         # verify that "gtts" plugin code works
         self.assertEqual(self._jarvis.gtts_status, True)
 
-
     # test "disable_gtts" plugin
     def setUp2(self):
         self.test = self.load_plugin(voice.disable_gtts)
@@ -30,6 +30,7 @@ class VoiceTest(PluginTest):
 
         # verify that "disable_gtts" plugin code works
         self.assertEqual(self._jarvis.gtts_status, False)
+
 
 if __name__ == '__main__':
     unittest.main()

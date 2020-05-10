@@ -10,6 +10,7 @@ if IS_MACOS:
 else:
     import pyttsx3
 
+
 def create_voice(self, gtts_status, rate=180):
     """
     Checks that status of gtts engine, and calls the correct speech engine
@@ -54,7 +55,7 @@ def remove_ansi_escape_seq(text):
 #     """
 
 class VoiceGTTS():
-    def text_to_speech(self,speech):
+    def text_to_speech(self, speech):
         speech = remove_ansi_escape_seq(speech)
         tts = gTTS(speech, lang="en")
         tts.save("voice.mp3")
@@ -163,9 +164,9 @@ class VoiceWin():
         """
         speech = remove_ansi_escape_seq(speech)
         self.create()
-        self.engine.setProperty('rate', 170) # setting up new voice rate
-        voices = self.engine.getProperty('voices') # getting details of current voice
-        self.engine.setProperty('voices', voices[1].id) # changing index, changes voices. 1 for female
+        self.engine.setProperty('rate', 170)  # setting up new voice rate
+        voices = self.engine.getProperty('voices')  # getting details of current voice
+        self.engine.setProperty('voices', voices[1].id)  # changing index, changes voices. 1 for female
         self.engine.say(speech)
         self.engine.runAndWait()
         self.destroy()
