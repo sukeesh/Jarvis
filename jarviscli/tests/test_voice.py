@@ -11,26 +11,26 @@ class VoiceTest(PluginTest):
 
     # test "gtts" plugin
     def setUp(self):
-        self.test = self.load_plugin(voice.gtts)
+        self.test_gtts = self.load_plugin(voice.gtts)
 
     def test_gtts(self):
         # run "gtts" plugin code
-        self.test.run(voice.gtts)
+        self.test_gtts.run(voice.gtts)
 
         # verify that "gtts" plugin code works
-        self.assertEqual(self.get_data('gtts_status'), True)
+        self.assertEqual(self.jarvis_api.get_data('gtts_status'), True)
 
 
     # test "disable_gtts" plugin
     def setUp(self):
-        self.test = self.load_plugin(voice.disable_gtts)
+        self.test_disable_gtts = self.load_plugin(voice.disable_gtts)
 
     def test_disable_gtts(self):
         # run "disable_gtts" plugin code
-        self.test.run(voice.disable_gtts)
+        self.test_disable_gtts.run(voice.disable_gtts)
 
         # verify that "disable_gtts" plugin code works
-        self.assertEqual(self.get_data('gtts_status'), False)
+        self.assertEqual(self.jarvis_api.get_data('gtts_status'), False)
 
 if __name__ == '__main__':
     unittest.main()
