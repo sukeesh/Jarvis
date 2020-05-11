@@ -18,7 +18,7 @@ class VoiceTest(PluginTest):
         self.test.run(voice.gtts)
 
         # verify that "gtts" plugin code works
-        self.assertEqual(self.get_data('gtts_status'), True)
+        self.assertEqual(self._jarvis.get_data('gtts_status'), True)
 
 
     # test "disable_gtts" plugin
@@ -30,7 +30,7 @@ class VoiceTest(PluginTest):
         self.test.run(voice.disable_gtts)
 
         # verify that "disable_gtts" plugin code works
-        self.assertEqual(self.get_data('gtts_status'), False)
+        self.assertEqual(self._jarvis.get_data('gtts_status'), False)
 
 if __name__ == '__main__':
     unittest.main()
