@@ -34,7 +34,7 @@ def say(jarvis, s):
 @plugin('disable gtts')
 def disable_gtts(jarvis, s):
     """Reads what is typed without using gtts."""
-    voice_state = jarvis.is_voice_enabled()
+    voice_state = jarvis.is_voice_enabled
     jarvis.disable_gtts()
     jarvis.speech = jarvis.enable_voice()
 
@@ -45,7 +45,7 @@ def disable_gtts(jarvis, s):
 @plugin('gtts')
 def gtts(jarvis, s):
     """Reads what is typed using gtts."""
-    voice_state = jarvis.is_voice_enabled()
+    voice_state = jarvis.is_voice_enabled
     jarvis.enable_gtts()
 
     if not voice_state:
