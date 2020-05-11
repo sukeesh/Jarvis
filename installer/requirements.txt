@@ -28,8 +28,8 @@ speedtest-cli
 sympy
 tabulate
 termdown
-wikipedia
 opencv-python
+wikipedia
 gtts
 playsound
 windows-curses; sys_platform == 'win32'
