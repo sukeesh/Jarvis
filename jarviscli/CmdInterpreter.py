@@ -151,14 +151,12 @@ class JarvisAPI(object):
         """
         Switch to native speech engine for every text passed to jarvis.say()
         """
-        self._jarvis.gtts_status = False
         self.update_data('gtts_status', False)
 
     def enable_gtts(self):
         """
         Use google text to speech for every text passed to jarvis.say()
         """
-        self._jarvis.gtts_status = True
         self.update_data('gtts_status', True)
         g = self.get_data('gtts_status')
         self._jarvis.speech = create_voice(self, g, rate=120)
