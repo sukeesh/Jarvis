@@ -19,7 +19,6 @@ def create_voice(self, gtts_status, rate=180):
 
     if gtts_status is True:
         return VoiceGTTS()
-
     else:
         if IS_MACOS:
             return VoiceMac()

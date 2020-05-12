@@ -149,7 +149,7 @@ class JarvisAPI(object):
 
     def disable_gtts(self):
         """
-        Switch to native speech engine for every text passed to jarvis.say()
+        Switch to default speech engine for every text passed to jarvis.say()
         """
         self.update_data('gtts_status', False)
 
