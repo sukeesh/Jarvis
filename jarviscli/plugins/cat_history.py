@@ -11,4 +11,3 @@ def cat_history(jarvis, s):
     HISTORY_FILENAME.seek(0)
     history = str(HISTORY_FILENAME.read())
     jarvis.say(history, Fore.BLUE)
-    
