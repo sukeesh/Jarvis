@@ -3,6 +3,7 @@ import os
 import glob
 
 from plugin import plugin
+from colorama import Fore
 
 
 def bulk_resizer(input_path, output_path, desired_size=32,
