@@ -55,20 +55,20 @@ def spin(jarvis, s):
 
     """
     jarvis.say(' ')
-    jarvis.say('This is bulk resizer it will resize the image into given',
-               'size with padding !!!! Specially designed for Deep Leanring',
-               ' data collection process')
-    jarvis.say('Enter the path of directory with images to be resized : ')
+    jarvis.say('This is bulk resizer. Bulkresizer is a plugin that resizes images into a given size with padding!!!', Fore.BLUE)
+    jarvis.say('Specially designed for Deep Learning and data collection process.', Fore.BLUE)
+    jarvis.say(' ')
+    jarvis.say('Enter the path of directory with images to be resized : ', Fore.BLUE)
     path1 = jarvis.input()
-    jarvis.say('Should I rename them to non repeating whole number series?',
-               'y/n :')
+    jarvis.say('Should I rename them to non repeating whole number series?', Fore.YELLOW)
+    jarvis.say('Press y for "YES" n for "NO"', Fore.YELLOW)
     rename = jarvis.input()
-    jarvis.say('Enter the path of output directory :')
+    jarvis.say('Enter the path of output directory :', Fore.YELLOW)
     path2 = jarvis.input()
-    jarvis.say("Enter the target size :")
+    jarvis.say("Enter the target size :", Fore.YELLOW)
     size = jarvis.input_number(rtype=int)
     if rename == 'y':
         bulk_resizer(path1, path2, size, [0, 0, 0], True)
     else:
         bulk_resizer(path1, path2, size, [0, 0, 0], False)
-    jarvis.say("Resizing Compleated!! Thank you for using jarvis")
+    jarvis.say("Resizing Compleated!! Thank you for using jarvis", Fore.GREEN)
