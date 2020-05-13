@@ -59,7 +59,7 @@ def score_word(target, word):
     return score * 1.0 / len(word)
 
 
-def find_letter(letters, l, index):
+def find_letter(letters, lex, index):
     """
     Find the first occurrence of a letter in a word after a given index.
 
@@ -69,11 +69,11 @@ def find_letter(letters, l, index):
     :return: index of the found occurrence, otherwise -1
     """
     try:
-        index_offset = letters.index(l, index + 1)
+        index_offset = letters.index(lex, index + 1)
     except ValueError:
         letters.reverse()
         try:
-            index_offset = len(letters) - letters.index(l,
+            index_offset = len(letters) - letters.index(lex,
                                                         len(letters) - index) - 1
         except ValueError:
             index_offset = -1

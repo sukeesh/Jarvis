@@ -5,6 +5,7 @@ import random
 import json
 from colorama import Fore
 
+
 @require(network=True)
 @plugin('history')
 class history:
@@ -198,7 +199,7 @@ class history:
             month = self.months.index(api_cfg[self.KW.MONTH]) + 1
 
         # url = api.com/date/<month>/<day>
-        query_str = '{}/{}/{}'.format(self.url,  month, day)
+        query_str = '{}/{}/{}'.format(self.url, month, day)
         return query_str
 
     # send request and retrieves data from API
@@ -246,4 +247,4 @@ class history:
         result['links'] = result['links'][:self.MAX_LINK]
         for i in range(len(result['links'])):
             jarvis.say('    {}). {}'.format(
-                i+1, result['links'][i]['link']), Fore.BLUE)
+                i + 1, result['links'][i]['link']), Fore.BLUE)
