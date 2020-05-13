@@ -1,10 +1,11 @@
-import os
-from colorama import Fore
-from plugin import plugin, require, MACOS, LINUX
 """This plugin is developed for developers as its use is to create a template
 based on the guidlines of the creators of the project
 to ecourage people to experiment with jarvis's plugins.
 """
+
+import os
+from colorama import Fore
+from plugin import plugin, require, MACOS, LINUX
 
 """The os.path method is used to track the path in which this plugin is stored
 and locate the Jarvis/custom folder through relative pathing.
@@ -33,9 +34,12 @@ def create_plugin_MAC(jarvis, s):
     or in the custom plugins folder and also asks the user if he wants to exit
     """
     while(os.path.isfile(CUSTOM_PLUGINS_PATH + filename + ".py") or
-          os.path.isfile(PLUGINS_PATH + "/" + filename + ".py") and not exit):
-        jarvis.say("A plugin with the name '" + filename + "' already exists", Fore.RED)
-        jarvis.say("Please choose another name or type 'exit' for obvious results:", Fore.CYAN)
+          os.path.isfile(PLUGINS_PATH + "/" + filename + ".py") and
+          not exit):
+        jarvis.say("A plugin with the name '" + filename +
+                   "' already exists", Fore.RED)
+        jarvis.say("Please choose another name or type 'exit' " +
+                   "for obvious results:", Fore.CYAN)
 
         new_name = jarvis.input()
         if new_name == 'exit':
@@ -49,8 +53,8 @@ def create_plugin_MAC(jarvis, s):
         os.system(string)
 
         if os.path.isfile(CUSTOM_PLUGINS_PATH + filename + ".py"):
-            jarvis.say(filename + ".py created successfully inside Jarvis/custom",
-                       Fore.CYAN)
+            jarvis.say(filename + ".py created successfully inside " +
+                       "Jarvis/custom", Fore.CYAN)
             string = "open " + CUSTOM_PLUGINS_PATH + filename + ".py"
             os.system(string)
         else:
@@ -80,8 +84,10 @@ def create_plugin_LINUX(jarvis, s):
     """
     while(os.path.isfile(CUSTOM_PLUGINS_PATH + filename + ".py") or
           os.path.isfile(PLUGINS_PATH + "/" + filename + ".py") and not exit):
-        jarvis.say("A plugin with the name '" + filename + "' already exists", Fore.RED)
-        jarvis.say("Please choose another name or type 'exit' for obvious results:", Fore.CYAN)
+        jarvis.say("A plugin with the name '" + filename +
+                   "' already exists", Fore.RED)
+        jarvis.say("Please choose another name or type 'exit' " +
+                   "for obvious results:", Fore.CYAN)
 
         new_name = jarvis.input()
         if new_name == 'exit':
@@ -95,8 +101,8 @@ def create_plugin_LINUX(jarvis, s):
         os.system(string)
 
         if os.path.isfile(CUSTOM_PLUGINS_PATH + filename + ".py"):
-            jarvis.say(filename + ".py created successfully inside Jarvis/custom",
-                       Fore.CYAN)
+            jarvis.say(filename + ".py created successfully inside " +
+                       "Jarvis/custom", Fore.CYAN)
             string = "xdg-open " + CUSTOM_PLUGINS_PATH + filename + ".py"
             os.system(string)
         else:
