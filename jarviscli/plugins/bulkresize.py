@@ -58,11 +58,12 @@ def bulk_resizer(input_path, output_path, desired_size=32,
 @plugin("bulkresizer")
 def spin(jarvis, s):
     """
-    \nThis resizes all the images in a given directory
+    This resizes all the images in a given directory
     to given size and renames them, Specially designed for Deep Leanring
     data collection process.
 
     """
+    answer = ""
     jarvis.say(' ')
     jarvis.say('This is bulk resizer. Bulkresizer is a plugin that resizes images into a given size with padding!!!', Fore.BLUE)
     jarvis.say('Specially designed for Deep Learning and data collection process.', Fore.BLUE)
@@ -78,6 +79,16 @@ def spin(jarvis, s):
     rename = jarvis.input()
     jarvis.say('Enter the path of output directory :', Fore.YELLOW)
     path2 = jarvis.input()
+    if not dir_exist(path2):
+        jarvis.say('The path ' + path2 + ' does not exist. Do you want to create it?', Fore.YELLOW)
+        jarvis.say('Print y for "YES" n for "NO"', Fore.YELLOW)
+        answer = jarvis.input()
+    if answer is 'y':
+        create_dir(path2)
+    else:
+        while not dir_exist(path2):
+            jarvis.say('The output path does not exist. Please type an existing path!', Fore.YELLOW)
+            path2 = jarvis.input()
     jarvis.say("Enter the target size :", Fore.YELLOW)
     size = jarvis.input_number(rtype=int)
     if rename == 'y':
