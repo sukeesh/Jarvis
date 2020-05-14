@@ -52,7 +52,7 @@ def create_plugin_MAC(jarvis, s):
         string = create_template(CUSTOM_PLUGINS_PATH, filename)
         os.system(string)
 
-        if os.path.isfile(CUSTOM_PLUGINS_PATH + filename + ".py"):
+        if file_exists(filename):
             jarvis.say(filename + ".py created successfully inside " +
                        "Jarvis/custom", Fore.CYAN)
             string = "open " + CUSTOM_PLUGINS_PATH + filename + ".py"
@@ -100,7 +100,7 @@ def create_plugin_LINUX(jarvis, s):
         string = create_template(CUSTOM_PLUGINS_PATH, filename)
         os.system(string)
 
-        if os.path.isfile(CUSTOM_PLUGINS_PATH + filename + ".py"):
+        if file_exists(filename):
             jarvis.say(filename + ".py created successfully inside " +
                        "Jarvis/custom", Fore.CYAN)
             string = "xdg-open " + CUSTOM_PLUGINS_PATH + filename + ".py"
@@ -109,6 +109,14 @@ def create_plugin_LINUX(jarvis, s):
             jarvis.say("Something went wrong in the creation of the plugin :(",
                        Fore.RED)
 
+def file_exists(filename):
+    """This method is used to check if a file with
+    the name "filename" exists in the Jarvis/custom folder
+    """
+    if os.path.isfile(CUSTOM_PLUGINS_PATH + filename + ".py"):
+        return True
+    else:
+        return False
 
 def format_filename(name):
 
