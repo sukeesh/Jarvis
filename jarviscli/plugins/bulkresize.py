@@ -9,6 +9,9 @@ from colorama import Fore
 def valid_path(path):
     return True if os.path.isdir(path) else False
 
+def dir_exist(path):
+    return True if os.path.exists(path) else False
+
 def bulk_resizer(input_path, output_path, desired_size=32,
                  color=[0, 0, 0], rename=True):
     img_no = 0
