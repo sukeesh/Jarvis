@@ -109,6 +109,7 @@ def create_plugin_LINUX(jarvis, s):
             jarvis.say("Something went wrong in the creation of the plugin :(",
                        Fore.RED)
 
+
 def file_exists(filename):
     """This method is used to check if a file with
     the name "filename" exists in the Jarvis/custom folder
@@ -117,6 +118,7 @@ def file_exists(filename):
         return True
     else:
         return False
+
 
 def format_filename(name):
 
