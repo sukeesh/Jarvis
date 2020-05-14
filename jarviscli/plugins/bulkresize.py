@@ -69,6 +69,10 @@ def spin(jarvis, s):
     jarvis.say(' ')
     jarvis.say('Enter the path of directory with images to be resized : ', Fore.BLUE)
     path1 = jarvis.input()
+    while not valid_path(path1):
+        jarvis.say('The path ' + path1 + ' does not lead to a directory!', Fore.RED)
+        jarvis.say('Please enter a path that leads to an EXISTING DIRECTORY.', Fore.RED)
+        path1 = jarvis.input()
     jarvis.say('Should I rename them to non repeating whole number series?', Fore.YELLOW)
     jarvis.say('Press y for "YES" n for "NO"', Fore.YELLOW)
     rename = jarvis.input()
