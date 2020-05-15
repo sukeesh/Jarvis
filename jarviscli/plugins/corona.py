@@ -28,7 +28,7 @@ class CoronaInfo:
             jarvis.say(f"\tnew recovered: {new_recovered}", Fore.GREEN)
 
             total_recovered = corona_info["TotalRecovered"]
-            jarvis.say(f"\total recovered: {total_recovered}", Fore.GREEN)
+            jarvis.say(f"\ttotal recovered: {total_recovered}", Fore.GREEN)
         else:
             jarvis.say(f"Cant find the country \"{s}\"", Fore.RED)
 
