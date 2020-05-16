@@ -42,7 +42,8 @@ class JarvisAPI(object):
                       e.g. Fore.BLUE
         :param speak: False-, if text shouldn't be spoken even if speech is enabled
         """
-        print(color + text + Fore.RESET)
+        print(color + text + Fore.RESET, flush=True)
+
         if speak:
             self._jarvis.speak(text)
 
@@ -318,6 +319,8 @@ class CmdInterpreter(Cmd):
 
         self._activate_plugins()
         self._init_plugin_info()
+
+        self._api.say(self.first_reaction_text)
 
     def _init_plugin_info(self):
         plugin_status_formatter = {
