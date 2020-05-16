@@ -16,6 +16,16 @@ def dir_exist(path):
 def create_dir(path):
     os.makedirs(path)
 
+def list_contents(input_path):
+    filepath = list()
+    filename = os.listdir(input_path)
+
+    for name in filename:
+        path = input_path + "/" + name
+        if os.path.isfile(path) and get_extension(path):
+            filepath.append(path)
+    return filepath
+
 def get_extension(path):
     file_extension = os.path.splitext(path)[1]
     
@@ -26,14 +36,8 @@ def get_extension(path):
 
 def bulk_resizer(input_path, output_path, desired_size=32,
                  color=[0, 0, 0], rename=True):
-    img_no = 0
+    filepath = list_contents(input_path)
 
-    filename = os.listdir(input_path)
-    filepath = []
-    for name in filename:
-        path = input_path + "/" + name
-        if os.path.isfile(path):
-            filepath.append(path)
     for im_pth in filepath:
         try:
             im = cv2.imread(im_pth)
