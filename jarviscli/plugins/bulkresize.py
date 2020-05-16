@@ -39,12 +39,9 @@ def bulk_resizer(input_path, output_path, desired_size=32,
     filepath = list_contents(input_path)
 
     for im_pth in filepath:
-        try:
-            im = cv2.imread(im_pth)
-            old_size = im.shape[:2]
 
-        except:
-            continue
+        im = cv2.imread(im_pth)
+        old_size = im.shape[:2]
         ratio = float(desired_size) / max(old_size)
         new_size = tuple([int(x * ratio) for x in old_size])
 
