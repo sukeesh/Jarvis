@@ -34,6 +34,16 @@ def get_extension(path):
     else:
         return False
 
+def rename_img(path, number):
+    output_path = path + '/' + str(number) + '.jpg'
+    return output_path
+
+def output_path_concat(path, im_path):
+    output_path = path + '/' + \
+        os.path.splitext(os.path.basename(im_path))[0] + '.jpg'
+    
+    return output_path
+
 def bulk_resizer(input_path, output_path, desired_size=32,
                  color=[0, 0, 0], rename=True):
     filepath = list_contents(input_path)
@@ -57,11 +67,9 @@ def bulk_resizer(input_path, output_path, desired_size=32,
         new_im = cv2.copyMakeBorder(im, top, bottom, left, right,
                                     cv2.BORDER_CONSTANT, value=color)
         if rename:
-            output_path1 = output_path + "/" + str(img_no) + ".jpg"
-            img_no += 1
+            output_path1 = rename_img(output_path, filepath.index(im_pth))
         else:
-            output_path1 = output_path + "/" + \
-                os.path.splitext(os.path.basename(im_pth))[0] + ".jpg"
+            output_path1 = output_path_concat(output_path, im_pth)
         cv2.imwrite(output_path1, new_im)
 
 
