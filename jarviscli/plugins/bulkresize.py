@@ -1,6 +1,5 @@
 import cv2
 import os
-import glob
 
 from plugin import plugin
 from colorama import Fore
