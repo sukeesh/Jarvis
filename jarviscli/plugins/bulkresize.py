@@ -93,6 +93,7 @@ def spin(jarvis, s):
     jarvis.say(' ')
     jarvis.say('Enter the path of directory with images to be resized : ', Fore.BLUE)
     path1 = jarvis.input()
+    path1 = remove_backslash(path1)
     while not valid_path(path1):
         jarvis.say('The path ' + path1 + ' does not lead to a directory!', Fore.RED)
         jarvis.say('Please enter a path that leads to an EXISTING DIRECTORY.', Fore.RED)
