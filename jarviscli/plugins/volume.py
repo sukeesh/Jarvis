@@ -20,6 +20,24 @@ def increase_volume__MAC(jarvis, s):
     )
 
 
+@require(platform=MACOS, native="osascript")
+@plugin('max volume')
+def max_volume__MAC(jarvis, s):
+    """Maximizes your speaker's sound."""
+    system(
+        'osascript -e "set volume output volume 100"'
+    )
+
+
+@require(platform=MACOS, native="osascript")
+@plugin('mute')
+def mute__MAC(jarvis, s):
+    """Mute: Silence your speaker's sound."""
+    system(
+        'osascript -e "set volume output volume 0"'
+    )
+
+
 @require(platform=LINUX, native="pactl")
 @plugin('decrease volume')
 def decrease_volume__LINUX(jarvis, s):
@@ -39,6 +57,6 @@ def decrease_volume__MAC(jarvis, s):
 
 @require(platform=LINUX, native="pactl")
 @plugin('mute')
-def mute(jarvis, s):
+def mute__LINUX(jarvis, s):
     """Mute: Silence your speaker's sound."""
     system("pactl -- set-sink-mute 0 toggle")
