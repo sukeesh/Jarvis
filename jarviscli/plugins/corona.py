@@ -20,7 +20,11 @@ class CoronaInfo:
             jarvis.say(cleandoc(self.__doc__), Fore.GREEN)
         else:
             corona_info = self.get_corona_info(s)
-            if corona_info:
+            if corona_info == "URLError":
+                jarvis.say(f"Result was not available at the moment. Try again!!", Fore.RED)
+            elif corona_info is None:
+                jarvis.say(f"Cant find the country \"{s}\"", Fore.RED)
+            else:
                 location = corona_info["Country"]
                 jarvis.say(f"\t+++++++++++++++++++++++++++++++++++++++", Fore.CYAN)
                 jarvis.say(f"\tCorona status: \"{location}\"", Fore.CYAN)
@@ -43,13 +47,13 @@ class CoronaInfo:
 
                 total_recovered = corona_info["TotalRecovered"]
                 jarvis.say(f"\tTotal recovered		: {total_recovered}", Fore.GREEN)
-            else:
-                jarvis.say(f"Cant find the country \"{s}\"", Fore.RED)
 
     def get_corona_info(self, country_name):
         url = "https://api.covid19api.com/summary"
         response = requests.get(url)
-        print(response)
+        # Intermittently URL responds with a message - You have reached maximum request limit.
+        if(response.text == "You have reached maximum request limit."):
+            return "URLError"
         result = response.json()
         if country_name:
             for country in result["Countries"]:
@@ -61,5 +65,5 @@ class CoronaInfo:
                     return country
             return None
         global_info = result["Global"]
-        global_info["CountryCode"] = "Worldwide"
+        global_info["Country"] = "Worldwide"
         return result["Global"]
