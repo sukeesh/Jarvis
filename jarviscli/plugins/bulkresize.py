@@ -5,6 +5,7 @@ import glob
 from plugin import plugin
 from colorama import Fore
 
+IMAGE_FORMATS = ['.jpg', '.png', '.jpeg', '.svg']
 
 def valid_path(path):
     return True if os.path.isdir(path) else False
@@ -14,6 +15,14 @@ def dir_exist(path):
 
 def create_dir(path):
     os.makedirs(path)
+
+def get_extension(path):
+    file_extension = os.path.splitext(path)[1]
+    
+    if file_extension in IMAGE_FORMATS:
+        return True
+    else:
+        return False
 
 def bulk_resizer(input_path, output_path, desired_size=32,
                  color=[0, 0, 0], rename=True):
