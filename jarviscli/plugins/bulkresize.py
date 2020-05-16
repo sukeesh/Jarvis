@@ -26,6 +26,11 @@ def list_contents(input_path):
             filepath.append(path)
     return filepath
 
+def remove_backslash(path):
+    if '\ ' in path:
+        path = path.replace('\ ', ' ')
+    return path
+
 def get_extension(path):
     file_extension = os.path.splitext(path)[1]
     
