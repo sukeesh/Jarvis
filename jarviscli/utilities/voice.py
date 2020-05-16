@@ -1,8 +1,15 @@
 import re
 from utilities.GeneralUtilities import IS_MACOS, IS_WIN
 import os
+import subprocess
 from gtts import gTTS
-from playsound import playsound
+from pydub import AudioSegment, playback
+
+
+# patch pydup - hide std output
+FNULL = open(os.devnull, 'w')
+_subprocess_call = playback.subprocess.call
+playback.subprocess.call = lambda cmd: _subprocess_call(cmd, stdout=FNULL, stderr=subprocess.STDOUT)
 
 
 if IS_MACOS:
@@ -58,7 +65,8 @@ class VoiceGTTS():
         speech = remove_ansi_escape_seq(speech)
         tts = gTTS(speech, lang="en")
         tts.save("voice.mp3")
-        playsound("voice.mp3")
+        audio = AudioSegment.from_mp3('voice.mp3')
+        playback.play(audio)
         os.remove("voice.mp3")
 
 
