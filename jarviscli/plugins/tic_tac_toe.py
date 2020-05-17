@@ -79,7 +79,7 @@ def game(jarvis, s):
      4 | 5 | 6
     -----------
      1 | 2 | 3
-     """
+    """
 
     restartBoard(board)
     turn = ' X '
