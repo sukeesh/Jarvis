@@ -6,6 +6,7 @@ from colorama import Fore
 
 IMAGE_FORMATS = ['.jpg', '.png', '.jpeg', '.svg']
 
+
 def valid_path(path):
     '''Checks if a given path leads to a valid directory
 
@@ -18,6 +19,7 @@ def valid_path(path):
         a string variable that represents a path
     '''
     return True if os.path.isdir(path) else False
+
 
 def dir_exist(path):
     '''Checks if a directory path exists
@@ -32,6 +34,7 @@ def dir_exist(path):
     '''
     return True if os.path.exists(path) else False
 
+
 def create_dir(path):
     '''Creates a new directory
 
@@ -44,6 +47,7 @@ def create_dir(path):
         a string that represents the path of the dir that will be created
     '''
     os.makedirs(path)
+
 
 def list_contents(input_path):
     '''Lists all the image files of a given path dirextory
@@ -65,6 +69,7 @@ def list_contents(input_path):
             filepath.append(path)
     return filepath
 
+
 def remove_backslash(path):
     '''Removes all the backslashes from a path and replace them with spaces
 
@@ -79,6 +84,7 @@ def remove_backslash(path):
     if '\ ' in path:
         path = path.replace('\ ', ' ')
     return path
+
 
 def get_extension(path):
     '''Checks if an extension of a file path is an image using IMAGE_FORMATS list
@@ -99,6 +105,7 @@ def get_extension(path):
     else:
         return False
 
+
 def rename_img(path, number):
     '''Renames a file path of an image
 
@@ -115,6 +122,7 @@ def rename_img(path, number):
     output_path = path + '/' + str(number) + '.jpg'
     return output_path
 
+
 def output_path_concat(path, im_path):
     '''Creates a file path of an image
 
@@ -129,8 +137,8 @@ def output_path_concat(path, im_path):
     '''
     output_path = path + '/' + \
         os.path.splitext(os.path.basename(im_path))[0] + '.jpg'
-    
     return output_path
+
 
 def bulk_resizer(input_path, output_path, desired_size=32,
                  color=[0, 0, 0], rename=True):
@@ -192,30 +200,48 @@ def spin(jarvis, s):
     """
     answer = ""
     jarvis.say(' ')
-    jarvis.say('This is bulk resizer. Bulkresizer is a plugin that resizes images into a given size with padding!!!', Fore.BLUE)
-    jarvis.say('Specially designed for Deep Learning and data collection process.', Fore.BLUE)
+    jarvis.say(
+        'This is bulk resizer. ' +
+        'Bulkresizer is a plugin that resizes images' +
+        'into a given size with padding!!!', Fore.BLUE)
+    jarvis.say(
+        'Specially designed for Deep Learning ' +
+        'and data collection process.', Fore.BLUE)
     jarvis.say(' ')
-    jarvis.say('Enter the path of directory with images to be resized : ', Fore.BLUE)
+    jarvis.say(
+        'Enter the path of directory with images to be resized : ',
+        Fore.BLUE)
     path1 = jarvis.input()
     path1 = remove_backslash(path1)
     while not valid_path(path1):
-        jarvis.say('The path ' + path1 + ' does not lead to a directory!', Fore.RED)
-        jarvis.say('Please enter a path that leads to an EXISTING DIRECTORY.', Fore.RED)
+        jarvis.say(
+            'The path ' + path1 +
+            ' does not lead to a directory!', Fore.RED)
+        jarvis.say(
+            'Please enter a path that leads to an EXISTING DIRECTORY.',
+            Fore.RED)
         path1 = jarvis.input()
-    jarvis.say('Should I rename them to non repeating whole number series?', Fore.YELLOW)
+    jarvis.say(
+        'Should I rename them to non repeating whole number series?',
+        Fore.YELLOW)
     jarvis.say('Press y for "YES" n for "NO"', Fore.YELLOW)
     rename = jarvis.input()
     jarvis.say('Enter the path of output directory :', Fore.YELLOW)
     path2 = jarvis.input()
     if not dir_exist(path2):
-        jarvis.say('The path ' + path2 + ' does not exist. Do you want to create it?', Fore.YELLOW)
+        jarvis.say(
+            'The path ' + path2 + ' does not exist. Do you want to create it?',
+            Fore.YELLOW)
         jarvis.say('Print y for "YES" n for "NO"', Fore.YELLOW)
         answer = jarvis.input()
     if answer is 'y':
         create_dir(path2)
     else:
         while not dir_exist(path2):
-            jarvis.say('The output path does not exist. Please type an existing path!', Fore.YELLOW)
+            jarvis.say(
+                'The output path does not exist. ' +
+                'Please type an existing path!',
+                Fore.YELLOW)
             path2 = jarvis.input()
     jarvis.say("Enter the target size :", Fore.YELLOW)
     size = jarvis.input_number(rtype=int)
