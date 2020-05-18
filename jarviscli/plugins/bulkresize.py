@@ -81,8 +81,8 @@ def remove_backslash(path):
     path: a path (str)
         a string that represents a path that leads to a valid dir
     '''
-    if '\ ' in path:
-        path = path.replace('\ ', ' ')
+    if '\\ ' in path:
+        path = path.replace('\\ ', ' ')
     return path
 
 
