@@ -33,7 +33,7 @@ class create_pluginTest(PluginTest):
     def test_format_filename(self):
         actual = create_plugin.format_filename("my test!@#")
         expected = "my_test"
-        self.assertEquals(actual, expected)
+        self.assertEqual(actual, expected)
 
     def test_file_exists_True(self):
         actual = create_plugin.file_exists("test")
