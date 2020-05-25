@@ -16,6 +16,7 @@ pluginmanager
 psutil; sys_platform == 'win32'
 pycricbuzz
 pydoc-markdown
+pydub
 pync==1.6.1; sys_platform == 'darwin'
 pypiwin32; sys_platform == 'win32'
 pyreadline; sys_platform == 'win32'
@@ -28,6 +29,8 @@ speedtest-cli
 sympy
 tabulate
 termdown
-wikipedia
 opencv-python
+wikipedia
+gtts
+playsound
 windows-curses; sys_platform == 'win32'
