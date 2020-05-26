@@ -175,6 +175,39 @@ class PluginManager(object):
         self._load()
         return self._plugins_loaded
 
+    def get_features(self, plugin_name):
+        """
+        Returns all disabled plugins names as dictionary
+        Key: name
+        Value: List of reasons why disabled
+        """
+
+        self._load()
+        return self._parse_features(
+            self._cache.get_plugins()[plugin_name].feature())
+
+    def _parse_features(self, features_iter):
+        plugin_features = {
+            "case_sensitive": False,
+            "punctuation": True
+        }
+
+        if features_iter is None:
+            return plugin_features
+
+        for feature in features_iter:
+            key = feature[0]
+            value = feature[1]
+
+            if not isinstance(value, bool):
+                warning("{}={}: No supported requirement".format(key, value))
+
+            if key in plugin_features:
+                plugin_features[key] = value
+            else:
+                warning("{}={}: No supported requirement".format(key, value))
+
+        return plugin_features
 
 class PluginDependency(object):
     """

@@ -1,6 +1,6 @@
 import os
 import re
-from plugin import plugin, require, LINUX
+from plugin import plugin, require, LINUX, MACOS, feature
 
 
 @require(native="id")
@@ -42,6 +42,46 @@ def whoami(jarvis, s):
                 # possible long options
                 i not in options
             ):
+                return False
+
+        return True
+
+    if s == "":
+        os.system("id -un")
+        return
+
+    if not check(s):
+        jarvis.say("There seems to be some awkward stuff ...?")
+        return
+
+    os.system("id " + str(s))
+
+
+@feature(case_sensitive=True)
+@require(native="id")
+@require(platform=MACOS)
+@plugin("whoami")
+def whoami(jarvis, s):
+    """
+    Tells you the current user name
+    whoami:          says the current effective user ID's name
+    whoami -options: passes the options to the linux
+    command "id" and returns the response
+    """
+
+    def check(s) -> bool:
+        """
+        Ensure that the string is not damaging
+        """
+
+        for i in s.split(" "):
+            if (
+                # possible short options:
+                # Mac OS contains only single letter options for "id"
+                not re.match("-[AFGMPafmgpu]+$", i)
+            ):
+                jarvis.say("This did not work the way "
+                           "you wanted it to work, right? " + i)
                 return False
 
         return True

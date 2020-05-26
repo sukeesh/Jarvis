@@ -34,6 +34,7 @@ def plugin(name):
         # create class
         plugin_class._require = []
         plugin_class._complete = []
+        plugin_class._feature = []
         plugin_class._alias = []
         plugin_class._name = name
         plugin_class._backend = (run,)
@@ -56,6 +57,18 @@ def require(network=None, platform=None, native=None):
         plugin._require.extend(require)
         return plugin
     return __require
+
+
+def feature(case_sensitive=False):
+    feature = []
+
+    if case_sensitive is not None:
+        feature.append(("case_sensitive", case_sensitive))
+
+    def __feature(plugin):
+        plugin._feature.extend(feature)
+        return plugin
+    return __feature
 
 
 def complete(*complete):
@@ -151,6 +164,12 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
         # yield each sub command
         for complete in self.get_plugins().keys():
             yield complete
+
+    def feature(self):
+        """Set with @feature"""
+        if not hasattr(self, '_feature') or not self._feature:
+            return None
+        return self._feature
 
     def get_doc(self):
         """Parses plugin doc string"""

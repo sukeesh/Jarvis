@@ -115,7 +115,7 @@ class Jarvis(CmdInterpreter, object):
             self.first_reaction = False
         if self.enable_voice:
             self.speech.text_to_speech("What can I do for you?\n")
-        
+
     def speak(self, text=None):
         if text is None:
             text = self.first_reaction_text
@@ -125,17 +125,6 @@ class Jarvis(CmdInterpreter, object):
 
     def parse_input(self, data):
         """This method gets the data and assigns it to an action"""
-        data = data.lower()
-        # say command is better if data has punctuation marks
-        # Hack!
-        if "say" not in data:
-            data = data.replace("?", "")
-            data = data.replace("!", "")
-            data = data.replace(",", "")
-
-            # Remove only dots not followed by alphanumeric character to not mess up urls / numbers
-            data = self.regex_dot.sub("", data)
-
         # Check if Jarvis has a fixed response to this data
         if data in self.fixed_responses:
             output = self.fixed_responses[data]  # change return to output =
@@ -164,7 +153,9 @@ class Jarvis(CmdInterpreter, object):
 
         # check word by word if exists an action with the same name
         for action in actions:
-            words_remaining = data.split()  # this will help us to stop the iteration
+            features = self._plugin_manager.get_features(action)
+            # this will help us to stop the iteration
+            words_remaining = self._split_data_words(data, features)
             for word in words:
                 words_remaining.remove(word)
                 # For the 'near' keyword, the words before 'near' are also
@@ -196,3 +187,21 @@ class Jarvis(CmdInterpreter, object):
         else:
             self.speak()
             self.cmdloop(self.first_reaction_text)
+
+    def _split_data_words(self, data, features):
+        if (features is None) or (features and not features["case_sensitive"]):
+            output = data.lower()
+        else:
+            output = data
+        # say command is better if data has punctuation marks
+        # Hack!
+        if (features is None) or features["punctuation"]:
+            output = output.replace("?", "")
+            output = output.replace("!", "")
+            output = output.replace(",", "")
+
+            # Remove only dots not followed by alphanumeric character
+            # to not mess up urls / numbers
+            output = self.regex_dot.sub("", output)
+
+        return output.split()
