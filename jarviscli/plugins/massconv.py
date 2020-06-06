@@ -84,9 +84,9 @@ class massconv():
         jarvis.say(outputText)
 
     def mass_convert(self, jarvis, amount, fr, to):
-        if fr in self.rev_units: 
+        if fr in self.rev_units:
             fr = self.rev_units[fr]
-        if to in self.rev_units: 
+        if to in self.rev_units:
             to = self.rev_units[to]
 
         for i in range(len(self.mass_units)):
