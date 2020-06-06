@@ -86,7 +86,7 @@ class Jarvis(CmdInterpreter, object):
         """Hook that executes before every command."""
         words = line.split()
         # save commands' history
-        HISTORY_FILENAME.write(line+'\n')
+        HISTORY_FILENAME.write(line + '\n')
 
         # append calculate keyword to front of leading char digit (or '-') in
         # line
@@ -116,10 +116,7 @@ class Jarvis(CmdInterpreter, object):
         if self.enable_voice:
             self.speech.text_to_speech("What can I do for you?\n")
 
-    def speak(self, text=None):
-        if text is None:
-            text = self.first_reaction_text
-
+    def speak(self, text):
         if self.enable_voice:
             self.speech.text_to_speech(text)
 
@@ -208,8 +205,7 @@ class Jarvis(CmdInterpreter, object):
         if command:
             self.execute_once(command)
         else:
-            self.speak()
-            self.cmdloop(self.first_reaction_text)
+            self.cmdloop()
 
     def _parse_plugin_features(self, features_iter):
         plugin_features = {

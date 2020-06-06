@@ -123,7 +123,6 @@ WKHTMLTOPDF = {
 }
 
 
-
 OPTIONAL_REQUIREMENTS = [PortAudio, RequestsSecurity, FFMPEG, ESPEAK, WKHTMLTOPDF]
 
 
