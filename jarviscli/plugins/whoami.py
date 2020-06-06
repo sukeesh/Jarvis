@@ -76,12 +76,12 @@ def whoami(jarvis, s):
 
         for i in s.split(" "):
             if (
+                # valid POSIX user names or UIDs
+                not re.match("(^[a-z][a-z0-9-]*$)|(^[0-9]+$)", i)
+                and
                 # possible short options:
-                # Mac OS contains only single letter options for "id"
-                not re.match("-[AFGMPafmgpu]+$", i)
+                not re.match("-[AFGMPagpunr]+$", i)
             ):
-                jarvis.say("This did not work the way "
-                           "you wanted it to work, right? " + i)
                 return False
 
         return True

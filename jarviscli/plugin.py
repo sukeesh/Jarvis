@@ -220,7 +220,7 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
 
     def run(self, jarvis, s):
         """Entry point if this plugin is called"""
-        sub_command = jarvis.find_action(s, self.get_plugins().keys())
+        sub_command = jarvis.parse_input(s, s.split())
 
         if sub_command == "None":
             # run default
