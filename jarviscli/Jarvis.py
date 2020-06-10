@@ -182,13 +182,13 @@ class Jarvis(CmdInterpreter, object):
                 if word == "near":
                     action_index = index
                     initial_words = words[:action_index]
-                    output = action_plugin.name() + " " \
+                    output = word + " " \
                              + " ".join(initial_words + ["|"] + words_remaining)
                     action_plugin = self._plugin_manager.get_plugins()[action]
                 elif word == action:  # command name exists
                     action_found = True
                     action_index = index
-                    output = " ".join(words_remaining)
+                    output = word + " " + " ".join(words_remaining)
                     action_plugin = self._plugin_manager.get_plugins()[action]
                     break
             if action_found:
