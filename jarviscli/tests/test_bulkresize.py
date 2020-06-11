@@ -68,6 +68,16 @@ class Bulkresize(PluginTest):
         expected = 'jarvis/jarviscli/plugins/image.jpg'
         actual = bulkresize.output_path_concat(test_path, test_image_name)
         self.assertEqual(actual, expected)
+
+    def test_get_extension_true(self):
+        test_path = 'jarvis/jarviscli/plugins/image.jpg'
+        actual = bulkresize.get_extension(test_path)
+        self.assertTrue(actual)
+
+    def test_get_extension_false(self):
+        test_path = 'jarvis/jarviscli/plugins/image.py'
+        actual = bulkresize.get_extension(test_path)
+        self.assertFalse(actual)
     
     def test_spin(self):
         self.queue_input(DATA_PATH + 'images/')
