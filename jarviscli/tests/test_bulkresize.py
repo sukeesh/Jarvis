@@ -16,7 +16,7 @@ class Bulkresize(PluginTest):
 
     def setUp(self):
         self.bulkresize_module = self.load_plugin(spin)
-    
+
     def test_valid_path(self):
         valid_test_dir = os.path.join(DATA_PATH, 'images')
         actual = bulkresize.valid_path(valid_test_dir)
@@ -78,7 +78,7 @@ class Bulkresize(PluginTest):
         test_path = 'jarvis/jarviscli/plugins/image.py'
         actual = bulkresize.get_extension(test_path)
         self.assertFalse(actual)
-    
+
     def test_spin(self):
         self.queue_input(DATA_PATH + 'images/')
         self.queue_input('y')
@@ -89,6 +89,7 @@ class Bulkresize(PluginTest):
         excepted = 'Resizing Compleated!! Thank you for using jarvis'
         self.assertEqual(actual, excepted)
         os.remove(DATA_PATH + 'images/0.jpg')
+
 
 if __name__ == '__main__':
     unittest.main()
