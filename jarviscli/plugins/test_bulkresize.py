@@ -55,6 +55,19 @@ class Bulkresize(PluginTest):
         bulkresize.create_dir(path)
         os_makedirs.assert_called_once_with(path)
 
+    def test_rename_img(self):
+        num = 1
+        test_path = 'jarvis/jarviscli/plugins/'
+        expected = 'jarvis/jarviscli/plugins/1.jpg'
+        actual = bulkresize.rename_img(test_path, num)
+        self.assertEqual(actual, expected)
+
+    def test_output_path_concat(self):
+        test_path = 'jarvis/jarviscli/plugins/'
+        test_image_name = 'image.jpg'
+        expected = 'jarvis/jarviscli/plugins/image.jpg'
+        actual = bulkresize.output_path_concat(test_path, test_image_name)
+        self.assertEqual(actual, expected)
 
 if __name__ == '__main__':
     unittest.main()
