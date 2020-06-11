@@ -7,7 +7,7 @@ from plugin import plugin, require, LINUX
 def open(jarvis, s):
 
     if(s != ""):
-        string = "xdg-open " + "/usr/share/applications/" + s + ".desktop"
+        string = "gtk-launch " + "/usr/share/applications/" + s + ".desktop"
         os.system(string)
     else:
         jarvis.say("avaliable options are:")
