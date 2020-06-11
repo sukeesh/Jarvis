@@ -18,7 +18,7 @@ class Bulkresize(PluginTest):
         self.bulkresize_module = self.load_plugin(spin)
     
     def test_valid_path(self):
-        valid_test_dir = os.path.join(DATA_PATH, 'test_dir')
+        valid_test_dir = os.path.join(DATA_PATH, 'images')
         actual = bulkresize.valid_path(valid_test_dir)
         self.assertTrue(actual)
 
@@ -28,7 +28,7 @@ class Bulkresize(PluginTest):
         self.assertFalse(actual)
 
     def test_dir_exist(self):
-        dir_exist = os.path.join(DATA_PATH, 'test_dir')
+        dir_exist = os.path.join(DATA_PATH, 'images')
         actual = bulkresize.dir_exist(dir_exist)
         self.assertTrue(actual)
 
@@ -38,8 +38,8 @@ class Bulkresize(PluginTest):
         self.assertFalse(actual)
 
     def test_list_contents(self):
-        expected_list = [DATA_PATH + 'test_dir/' + 'test.png']
-        test_path = os.path.join(DATA_PATH, 'test_dir')
+        expected_list = [DATA_PATH + 'images/' + 'dummy-man.jpg']
+        test_path = os.path.join(DATA_PATH, 'images')
         actual = bulkresize.list_contents(test_path)
         self.assertListEqual(actual, expected_list)
 
@@ -57,17 +57,28 @@ class Bulkresize(PluginTest):
 
     def test_rename_img(self):
         num = 1
-        test_path = 'jarvis/jarviscli/plugins/'
+        test_path = 'jarvis/jarviscli/plugins'
         expected = 'jarvis/jarviscli/plugins/1.jpg'
         actual = bulkresize.rename_img(test_path, num)
         self.assertEqual(actual, expected)
 
     def test_output_path_concat(self):
-        test_path = 'jarvis/jarviscli/plugins/'
+        test_path = 'jarvis/jarviscli/plugins'
         test_image_name = 'image.jpg'
         expected = 'jarvis/jarviscli/plugins/image.jpg'
         actual = bulkresize.output_path_concat(test_path, test_image_name)
         self.assertEqual(actual, expected)
+    
+    def test_spin(self):
+        self.queue_input(DATA_PATH + 'images/')
+        self.queue_input('y')
+        self.queue_input(DATA_PATH + 'images/')
+        self.queue_input('200')
+        self.bulkresize_module.run(' ')
+        actual = self.history_say().last_text()
+        excepted = 'Resizing Compleated!! Thank you for using jarvis'
+        self.assertEqual(actual, excepted)
+        os.remove(DATA_PATH + 'images/0.jpg')
 
 if __name__ == '__main__':
     unittest.main()
