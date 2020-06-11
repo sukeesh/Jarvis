@@ -13,13 +13,13 @@ if hasattr(sys, 'real_prefix'):
     fail("""Please exit virtualenv!""")
 
 # check that virtualenv on python3 installed
+py3_installed = shell("{} --version".format(unix_windows.PY3))
+if not py3_installed.success() or not py3_installed.cli_output.startswith('Python 3'):
+    fail("Please install Python3!\n")
+
 py3venv_installed = shell("{} --version".format(unix_windows.VIRTUALENV_CMD))
 if not py3venv_installed.success():
     venv_installed = shell("virtualenv --version")
-    py3_installed = shell("{} --version".format(unix_windows.PY3))
-
-    if not py3_installed.success():
-        printlog("Please install Python3!\n")
 
     if not venv_installed.success():
         printlog("Please install virtualenv!")

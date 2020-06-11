@@ -1,3 +1,4 @@
+akinator.py
 archey4; sys_platform != 'darwin'
 beautifulsoup4
 colorama
@@ -9,22 +10,27 @@ IMDbPY
 instantmusic
 mock
 nltk
+pdfkit
 pick
 pluginmanager
 psutil; sys_platform == 'win32'
 pycricbuzz
 pydoc-markdown
+pydub
 pync==1.6.1; sys_platform == 'darwin'
 pypiwin32; sys_platform == 'win32'
 pyreadline; sys_platform == 'win32'
 python-dateutil
 pytimeparse
-pyttsx3; sys_platform != 'darwin'
+pyttsx3 == 2.71; sys_platform != 'darwin'
 pywin32; sys_platform == 'win32'
 requests[security]
 speedtest-cli
 sympy
 tabulate
 termdown
+opencv-python
 wikipedia
+gtts
+playsound
 windows-curses; sys_platform == 'win32'

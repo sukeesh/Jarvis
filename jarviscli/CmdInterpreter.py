@@ -42,7 +42,8 @@ class JarvisAPI(object):
                       e.g. Fore.BLUE
         :param speak: False-, if text shouldn't be spoken even if speech is enabled
         """
-        print(color + text + Fore.RESET)
+        print(color + text + Fore.RESET, flush=True)
+
         if speak:
             self._jarvis.speak(text)
 
@@ -142,13 +143,32 @@ class JarvisAPI(object):
         """
         Use text to speech for every text passed to jarvis.say()
         """
+        g = self.get_data('gtts_status')
+        self._jarvis.speech = create_voice(self, g, rate=120)
         self._jarvis.enable_voice = True
+        self.update_data('enable_voice', True)
+
+    def disable_gtts(self):
+        """
+        Switch to default speech engine for every text passed to jarvis.say()
+        """
+        self.update_data('gtts_status', False)
+
+    def enable_gtts(self):
+        """
+        Use google text to speech for every text passed to jarvis.say()
+        """
+        self.update_data('gtts_status', True)
+        g = self.get_data('gtts_status')
+        self._jarvis.speech = create_voice(self, g, rate=120)
 
     def disable_voice(self):
         """
-        Stop text to speech output for every text passed to jarvis.say()
+        Stop text to speech output & disable gtts for every text passed to jarvis.say()
         """
+        self.disable_gtts()
         self._jarvis.enable_voice = False
+        self.update_data('enable_voice', False)
 
     def is_voice_enabled(self):
         """
@@ -157,6 +177,15 @@ class JarvisAPI(object):
         Default: False (disabled)
         """
         return self._jarvis.enable_voice
+
+    def change_speech_rate(self, delta):
+        """
+        Alters the rate of the speech engine by a specified amount and remember
+        the new speech rate.
+        :param delta: Amount of change to apply to speech rate
+        """
+        self._jarvis.speech.change_rate(delta)
+        self.update_data('speech_rate', self._jarvis.speech.rate)
 
     # MEMORY WRAPPER
     def get_data(self, key):
@@ -224,7 +253,7 @@ def catch_all_exceptions(do, pass_self=True):
             else:
                 do(s)
         except Exception:
-            if self.is_spinner_running():
+            if self._api.is_spinner_running():
                 self.spinner_stop("It seems some error has occured")
             print(
                 Fore.RED
@@ -248,8 +277,7 @@ class CmdInterpreter(Cmd):
             first_reaction_text,
             prompt,
             directories=[],
-            first_reaction=True,
-            enable_voice=False):
+            first_reaction=True):
         """
         This constructor contains a dictionary with Jarvis Actions (what Jarvis can do).
         In alphabetically order.
@@ -258,15 +286,24 @@ class CmdInterpreter(Cmd):
         self.first_reaction = first_reaction
         self.first_reaction_text = first_reaction_text
         self.prompt = prompt
-        self.enable_voice = enable_voice
         # Register do_quit() function to SIGINT signal (Ctrl-C)
         signal.signal(signal.SIGINT, self.interrupt_handler)
 
         self.memory = Memory()
         self.scheduler = schedule.Scheduler()
+        self._api = JarvisAPI(self)
+
+        # Remember voice settings
+        self.enable_voice = self._api.get_data('enable_voice')
+        self.speech_rate = self._api.get_data('speech_rate')
+
+        if not self.speech_rate:
+            self.speech_rate = 120
+
         # what if the platform does not have any engines, travis doesn't have sapi5 acc to me
         try:
-            self.speech = create_voice()
+            gtts_status = self._api.get_data('gtts_status')
+            self.speech = create_voice(self, gtts_status, rate=self.speech_rate)
         except Exception as e:
             print_say("Voice not supported", self, Fore.RED)
             print_say(str(e), self, Fore.RED)
@@ -275,7 +312,6 @@ class CmdInterpreter(Cmd):
                                 "where am i": "pinpoint",
                                 }
 
-        self._api = JarvisAPI(self)
         self._plugin_manager = PluginManager()
 
         for directory in directories:
@@ -283,6 +319,8 @@ class CmdInterpreter(Cmd):
 
         self._activate_plugins()
         self._init_plugin_info()
+
+        self._api.say(self.first_reaction_text)
 
     def _init_plugin_info(self):
         plugin_status_formatter = {

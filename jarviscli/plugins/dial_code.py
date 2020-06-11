@@ -16,6 +16,7 @@ class DialCode:
     Alias(es): phone code of
                dialing code of
     """
+
     def __call__(self, jarvis, s):
         # Call handle_input() function wich returns the code
         # (or False if no such country)
@@ -80,6 +81,7 @@ class CountryByhDC:
                country with dialing code
                countries with dialing code
     """
+
     def __call__(self, jarvis, s):
         countries = self.handle_input(s)
 

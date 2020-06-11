@@ -50,8 +50,21 @@ def fail(msg, fatal=False):
 
 
 def log(msg):
-    debug_log.write(msg)
-    debug_log.write('\n')
+    try:
+        debug_log.write(msg)
+        debug_log.write('\n')
+    except Exception as e:
+        print('------------------------------')
+        print("Logging failed?")
+        print(repr(e))
+        print(str(e))
+        print(str(e.args))
+        print('msg:')
+        try:
+            print(str(msg))
+        except:
+            print('msg unprintable')
+        print('-----------------------------')
 
 
 def printlog(msg):
@@ -136,10 +149,11 @@ def shell(cmd):
 
     cli_output = ''
     try:
-        cli_output = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT)
+        cli_output = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
     except subprocess.CalledProcessError as e:
         exit_code = Fail()
         exit_code.exception = str(e)
+        cli_output += str(e.output)
 
     # python 2 compatibility
     try:

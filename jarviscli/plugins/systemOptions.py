@@ -1,6 +1,7 @@
 import os
-from platform import architecture, dist, release, mac_ver
+from platform import architecture, release, mac_ver
 from platform import system as sys
+import distro
 from colorama import Fore, Style
 from plugin import LINUX, UNIX, MACOS, WINDOWS, plugin, require
 
@@ -32,7 +33,7 @@ def Os__MAC(jarvis, s):
     jarvis.say('[*] Kernel Release Version: ' + release(), Fore.GREEN)
     jarvis.say('[*] macOS System version: ' + mac_ver()[0], Fore.GREEN)
     for _ in architecture():
-        if _ is not '':
+        if _ != '':
             jarvis.say('[*] ' + _, Fore.GREEN)
 
 
@@ -43,7 +44,7 @@ def Os__LINUX(jarvis, s):
     jarvis.say('[!] Operating System Information', Fore.BLUE)
     jarvis.say('[*] ' + sys(), Fore.GREEN)
     jarvis.say('[*] ' + release(), Fore.GREEN)
-    jarvis.say('[*] ' + dist()[0], Fore.GREEN)
+    jarvis.say('[*] ' + distro.name(), Fore.GREEN)
     for _ in architecture():
         jarvis.say('[*] ' + _, Fore.GREEN)
 

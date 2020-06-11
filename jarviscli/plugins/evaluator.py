@@ -148,6 +148,10 @@ def limit(jarvis, s):
         except NotImplementedError:
             return "Sorry, cannot solve..."
 
+    if s == '':
+        jarvis.say("Usage: limit TERM")
+        return
+
     s_split = s.split()
     limit_to = []
     term = ""
@@ -163,7 +167,12 @@ def limit(jarvis, s):
 
     term = remove_equals(jarvis, term)
     term = format_expression(term)
-    term = solve_y(term)
+
+    try:
+        term = solve_y(term)
+    except (sympy.SympifyError, TypeError):
+        jarvis.say('Error, not a valid term')
+        return
 
     x = sympy.Symbol('x')
 
@@ -209,11 +218,11 @@ def format_expression(s):
     # Insert missing * commonly omitted
     # 2x -> 2*x
     p = re.compile('(\\d+)([abcxyz])')
-    s = p.sub(r'\\1*\\2', s)
+    s = p.sub(r'\1*\2', s)
 
     # x(... -> x*(...
     p = re.compile('([abcxyz])\\(')
-    s = p.sub(r'\\1*(', s)
+    s = p.sub(r'\1*(', s)
 
     # (x-1)(x+1) -> (x-1)*(x+1)
     # x(... -> x*(...

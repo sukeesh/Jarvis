@@ -3,8 +3,15 @@
 import os
 from colorama import Fore
 import nltk
+import re
+import sys
+import tempfile
 from utilities.GeneralUtilities import print_say
 from CmdInterpreter import CmdInterpreter
+
+# register hist path via tempfile
+HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
+
 
 PROMPT_CHAR = '~>'
 
@@ -45,12 +52,15 @@ class Jarvis(CmdInterpreter, object):
     # This can be used to store user specific data
 
     def __init__(self, first_reaction_text=first_reaction_text,
-                 prompt=prompt, first_reaction=True, enable_voice=False,
+                 prompt=prompt, first_reaction=True,
                  directories=["jarviscli/plugins", "custom"]):
         directories = self._rel_path_fix(directories)
-        self.use_rawinput = False
+        # change raw input based on os
+        if sys.platform == 'win32':
+            self.use_rawinput = False
+        self.regex_dot = re.compile('\\.(?!\\w)')
         CmdInterpreter.__init__(self, first_reaction_text, prompt,
-                                directories, first_reaction, enable_voice)
+                                directories, first_reaction)
 
     def _rel_path_fix(self, dirs):
         dirs_abs = []
@@ -75,6 +85,8 @@ class Jarvis(CmdInterpreter, object):
     def precmd(self, line):
         """Hook that executes before every command."""
         words = line.split()
+        # save commands' history
+        HISTORY_FILENAME.write(line + '\n')
 
         # append calculate keyword to front of leading char digit (or '-') in
         # line
@@ -104,10 +116,7 @@ class Jarvis(CmdInterpreter, object):
         if self.enable_voice:
             self.speech.text_to_speech("What can I do for you?\n")
 
-    def speak(self, text=None):
-        if text is None:
-            text = self.first_reaction_text
-
+    def speak(self, text):
         if self.enable_voice:
             self.speech.text_to_speech(text)
 
@@ -116,11 +125,13 @@ class Jarvis(CmdInterpreter, object):
         data = data.lower()
         # say command is better if data has punctuation marks
         # Hack!
-        if "say" not in data and "website" not in data:
+        if "say" not in data:
             data = data.replace("?", "")
             data = data.replace("!", "")
-            data = data.replace(".", "")
             data = data.replace(",", "")
+
+            # Remove only dots not followed by alphanumeric character to not mess up urls / numbers
+            data = self.regex_dot.sub("", data)
 
         # Check if Jarvis has a fixed response to this data
         if data in self.fixed_responses:
@@ -180,5 +191,4 @@ class Jarvis(CmdInterpreter, object):
         if command:
             self.execute_once(command)
         else:
-            self.speak()
-            self.cmdloop(self.first_reaction_text)
+            self.cmdloop()

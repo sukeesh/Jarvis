@@ -8,7 +8,7 @@ from utilities.dateTime import WeekDay
 
 
 def main(jarvis, s):
-    cmd_key_words = ['check', 'weather', 'forecast', 'in', 'for']
+    cmd_key_words = ['check', 'weather', 'forecast', 'in', 'for', 'a', 'week']
     cmd_words = s.strip().split()
     # location will be defined by the words given that are not the key words
     location = ' '.join(filter(lambda word: word.lower()
