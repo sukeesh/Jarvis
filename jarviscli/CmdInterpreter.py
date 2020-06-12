@@ -426,7 +426,7 @@ class CmdInterpreter(Cmd):
         else:
             print_say("", self)
             headerString = "These are valid commands for Jarvis"
-            formatString = "Format : command ([aliases for command]"
+            formatString = "Format: command ([aliases for command]"
             print_say(headerString, self)
             print_say(formatString, self, Fore.BLUE)
             pluginDict = self._plugin_manager.get_plugins()
