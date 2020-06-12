@@ -419,13 +419,16 @@ class CmdInterpreter(Cmd):
                         disabled,
                         " OR ".join(reason)),
                     self)
+
     def do_help(self, arg):
         if arg:
             Cmd.do_help(self, arg)
         else:
             print_say("", self)
-            print_say("These are valid commands for Jarvis", self)
-            print_say("Format: command ([aliases for command]", self, Fore.BLUE)
+            headerString = "These are valid commands for Jarvis"
+            formatString = "Format : command ([aliases for command]"
+            print_say(headerString, self)
+            print_say(formatString, self, Fore.BLUE)
             pluginDict = self._plugin_manager.get_plugins()
             uniquePlugins = {}
             for key in pluginDict.keys():
@@ -434,7 +437,7 @@ class CmdInterpreter(Cmd):
                     uniquePlugins[plugin.get_name()] = plugin
             helpOutput = []
             for name in sorted(uniquePlugins.keys()):
-                if (name == "help" ):
+                if (name == "help"):
                     continue
                 try:
                     aliasString = ", ".join(uniquePlugins[name].alias())
@@ -447,6 +450,7 @@ class CmdInterpreter(Cmd):
                     helpOutput.append(name)
 
             Cmd.columnize(self, helpOutput)
+
     def help_status(self):
         print_say("Prints info about enabled or disabled plugins", self)
         print_say("Use \"status short\" to omit detailed information.", self)
