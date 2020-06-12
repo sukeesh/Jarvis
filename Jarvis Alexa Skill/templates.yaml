@@ -1,0 +1,40 @@
+welcome_jarvis: Hello! Welcome to Jarvis skill. Would you like to use Spin The Wheel, Calories, Temperature Converter, Gmail or Stock skill?
+
+
+welcome: Welcome to Spin the Wheel game. Ready to play?
+
+enter: Can you enter ten numbers?
+
+result: The result is: {{res}} ! Thank you for playing Spin the wheel!
+
+
+welcome_cal: Welcome! Ready to learn your recommended calorie intake?
+
+enter_cal: Can you enter the information about you following this order: age, height(cms), weight(kg), workout level(1-4), gender?
+
+cal_result: The result is: Daily caloric intake: {{dci}} , Loss weight calories: {{lwc}} , Put on  weight calories: {{powc}}
+
+
+welcome_tempconv: Welcome! Ready to convert the temperature degrees?
+
+enter_temp_type: Can you enter the temperature degrees you wish to convert and their current type?
+
+tempconv_result: {{temp}} degrees {{type}} is {{new_temp}} degrees {{new_type}}
+
+
+welcome_stock: Welcome to the Jarvis stock assistant. Please provide the stock you want to know about.
+
+symbolprice: {{symbol}} . {{price}} .
+
+error2 : Error. Please retry.
+
+error : Invalid stock symbol name.
+
+name: Cannot find the name. Try again later.
+
+
+welcome_gmail: Hi! Welcome to another Jarvis gmail session! Please provide your email and password.
+
+login: User is logged in.
+
+asking: Do you want to send an email? Please provide user and message.
