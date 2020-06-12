@@ -442,12 +442,12 @@ class CmdInterpreter(Cmd):
                 try:
                     aliasString = ", ".join(uniquePlugins[name].alias())
                     if (aliasString != ""):
-                        pluginOutput = name + " (" + aliasString + ")"
+                        pluginOutput = "* " + name + " (" + aliasString + ")"
                         helpOutput.append(pluginOutput)
                     else:
-                        helpOutput.append(name)
+                        helpOutput.append("* " + name)
                 except AttributeError:
-                    helpOutput.append(name)
+                    helpOutput.append("* " + name)
 
             Cmd.columnize(self, helpOutput)
 
