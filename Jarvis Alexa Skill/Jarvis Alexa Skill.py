@@ -85,6 +85,32 @@ def answer(ans):
                 new_type = "Celsius"
             msg = render_template('tempconv_result')
             return statement(msg)
+    elif ans == "Stock" :
+        def new_stock():
+            welcome_msg = render_template(welcome_stock)
+            return statement(welcome_msg)
+
+        @ask.intent("StockAnswerIntent")
+        def get_stockprice(stock):
+            url = 'https://financialmodelingprep.com/api/v3/stock/real-time-price/' + stock
+            resp = requests.get(url)
+            if(resp.status_code == 200):
+                data = resp.json()
+                if('symbol' in data.keys()):
+                    symbol = "Symbol is " + str(data['symbol'])
+                    price = "Price is " + str(data['price'])
+                    sp = render_template("symbolprice")
+                    return statement(sp)
+                elif('Error' in data.keys()):
+                    err = render_template("error")
+                    return statement(err)
+                else:
+                    erro = render_template("error2")
+                    return statement(erro)
+            else:
+                name = render_template("name")
+                return statement(name)
+    
             
 if __name__ == '__main__':
     app.run(debug=True)
