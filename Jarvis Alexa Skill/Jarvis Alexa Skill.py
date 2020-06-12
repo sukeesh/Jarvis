@@ -18,6 +18,11 @@ def exercise_level(self, level):
     multiplier = multipliers.get(level, 1)
     return multiplier
 
+@ask.launch
+def new_game():
+    welcome_msg = render_template('welcome_jarvis')
+    return question(welcome_msg)
+
 @ask.intent("AnswerIntent")
 def answer(ans):
 
@@ -64,10 +69,22 @@ def answer(ans):
             powc = str(brm_put_on)
             msg = render_template('cal_result')
             return statement(msg)
-@ask.launch
-def new_game():
-    welcome_msg = render_template('welcome_jarvis')
-    return question(welcome_msg)
+        
+    elif ans == "Temperature Converter" :
+        def enter_temp():
+            ent_msg = render_template('enter_temp_type')
+            return statement(ent_msg)
+
+        @ask.intent("TempConvAnswerIntent", convert={'temp': float})
+        def answer(temp, type):
+            if type == "Celsius" :
+                new_temp = round((temp * 9 / 5 + 32), 2)
+                new_type == "Fahrenheit"
+            elif type == "Fahrenheit" :
+                new_temp = round(((temp - 32) * 5 / 9), 2)
+                new_type = "Celsius"
+            msg = render_template('tempconv_result')
+            return statement(msg)
             
 if __name__ == '__main__':
     app.run(debug=True)
