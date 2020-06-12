@@ -419,7 +419,34 @@ class CmdInterpreter(Cmd):
                         disabled,
                         " OR ".join(reason)),
                     self)
+    def do_help(self, arg):
+        if arg:
+            Cmd.do_help(self, arg)
+        else:
+            print_say("", self)
+            print_say("These are valid commands for Jarvis", self)
+            print_say("Format: command ([aliases for command]", self, Fore.BLUE)
+            pluginDict = self._plugin_manager.get_plugins()
+            uniquePlugins = {}
+            for key in pluginDict.keys():
+                plugin = pluginDict[key]
+                if(plugin not in uniquePlugins.keys()):
+                    uniquePlugins[plugin.get_name()] = plugin
+            helpOutput = []
+            for name in sorted(uniquePlugins.keys()):
+                if (name == "help" ):
+                    continue
+                try:
+                    aliasString = ", ".join(uniquePlugins[name].alias())
+                    if (aliasString != ""):
+                        pluginOutput = name + " (" + aliasString + ")"
+                        helpOutput.append(pluginOutput)
+                    else:
+                        helpOutput.append(name)
+                except AttributeError:
+                    helpOutput.append(name)
 
+            Cmd.columnize(self, helpOutput)
     def help_status(self):
         print_say("Prints info about enabled or disabled plugins", self)
         print_say("Use \"status short\" to omit detailed information.", self)
