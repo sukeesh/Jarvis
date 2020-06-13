@@ -85,6 +85,31 @@ def answer(ans):
                 new_type = "Celsius"
             msg = render_template('tempconv_result')
             return statement(msg)
+        
+    elif ans == "Gmail" :
+        def new_gmail():
+            welcome_msg = render_template(welcome_gmail)
+            return statement(welcome_msg)
+
+        @ask.intent("GmailAnswerIntent")
+        def login(email, password):
+                    server = smtplib.SMTP("smtp.gmail.com", 587)
+                    server.ehlo()
+                    server.starttls()
+                    server.login(user, Pass_w)
+                    login_msg = render_template("login")
+                    server.quit()
+                    return statement(login_msg)
+
+        @ask.intent("YesIntent")
+        def ask_send():
+            ask_msg = render_template("asking")
+            return question(ask_msg)
+
+        @ask.intent("GmailSecAnswerIntent")
+        def send(user, msg):
+            server.sendmail(user,msg)        
+        
     elif ans == "Stock" :
         def new_stock():
             welcome_msg = render_template(welcome_stock)
