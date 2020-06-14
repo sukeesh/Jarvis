@@ -1,5 +1,5 @@
-from plugin import plugin
-
+from plugin import plugin, alias
+@alias("state capital", "state abbreviation")
 @plugin("stateinfo")
 class stateinfo:
     """
@@ -124,7 +124,7 @@ class stateinfo:
             try:
                 capital = capital_dict[s]
                 abbr = abbrev_dict[s]
-                jarvis.say("The capital of " + s.title() + "is " + capital.title())
+                jarvis.say("The capital of " + s.title() + " is " + capital.title())
                 jarvis.say("The postal abbreviation is " + abbr.upper()) 
             except KeyError:
                 jarvis.say("Please enter a valid U.S. state")
