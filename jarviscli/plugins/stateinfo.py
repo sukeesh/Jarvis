@@ -1,10 +1,12 @@
 from plugin import plugin, alias
+
+
 @alias("state capital", "state abbreviation")
 @plugin("stateinfo")
 class stateinfo:
     """
-    Use this plugin to get the postal abbreviation and state capital of a given state
-    Usage: stateinfo [command] 
+    Get the postal abbreviation and state capital of a given U.S. state
+    Usage: stateinfo [command]
     Aliases: state
              state capital
              state abbreviation
@@ -13,12 +15,12 @@ class stateinfo:
         capital_dict = {
             'alabama': 'montgomery',
             'alaska': 'juneau',
-            'arizona':'phoenix',
-            'arkansas':'little rock',
+            'arizona': 'phoenix',
+            'arkansas': 'little rock',
             'california': 'sacramento',
-            'colorado':'denver',
-            'connecticut':'hartford',
-            'delaware':'dover',
+            'colorado': 'denver',
+            'connecticut': 'hartford',
+            'delaware': 'dover',
             'florida': 'tallahassee',
             'georgia': 'atlanta',
             'hawaii': 'honolulu',
@@ -60,7 +62,7 @@ class stateinfo:
             'washington': 'olympia',
             'west virginia': 'charleston',
             'wisconsin': 'madison',
-            'wyoming': 'cheyenne'  
+            'wyoming': 'cheyenne'
         }
         abbrev_dict = {
             'alabama': 'al',
@@ -100,7 +102,7 @@ class stateinfo:
             'new york': 'ny',
             'north carolina': 'nc',
             'north dakota': 'nd',
-            'northern mariana islands':'mp',
+            'northern mariana islands': 'mp',
             'ohio': 'oh',
             'oklahoma': 'ok',
             'oregon': 'or',
@@ -122,12 +124,11 @@ class stateinfo:
         }
         if s:
             try:
-                capital = capital_dict[s]
-                abbr = abbrev_dict[s]
-                jarvis.say("The capital of " + s.title() + " is " + capital.title())
-                jarvis.say("The postal abbreviation is " + abbr.upper()) 
+                capital = capital_dict[s].title()
+                abbreviation = abbrev_dict[s].upper()
+                jarvis.say("The capital of " + s.title() + " is " + capital)
+                jarvis.say("The postal abbreviation is " + abbreviation)
             except KeyError:
                 jarvis.say("Please enter a valid U.S. state")
-            
         else:
             jarvis.say("Please input a state. Usage: stateinfo [state]")
