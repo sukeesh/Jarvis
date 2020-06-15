@@ -31,6 +31,7 @@ tabulate
 termdown
 opencv-python
 wikipedia
+win10toast; sys_platform == 'win32'
 gtts
 playsound
 windows-curses; sys_platform == 'win32'
