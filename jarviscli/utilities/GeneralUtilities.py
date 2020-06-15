@@ -3,13 +3,16 @@ import sys
 import os
 from colorama import Fore
 import distutils.spawn
+from platform import win32_ver
 
 
 MACOS = 'darwin'
 WIN = 'win32'
 IS_MACOS = sys.platform == MACOS
 IS_WIN = sys.platform == WIN
-
+WIN_VER = None
+if IS_WIN:
+    WIN_VER = win32_ver()[0]
 
 def wordIndex(data, word):
     wordList = data.split()
