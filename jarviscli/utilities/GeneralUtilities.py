@@ -14,6 +14,7 @@ WIN_VER = None
 if IS_WIN:
     WIN_VER = win32_ver()[0]
 
+
 def wordIndex(data, word):
     wordList = data.split()
     return wordList.index(word)

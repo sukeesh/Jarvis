@@ -21,11 +21,12 @@ def notify__LINUX(name, body, urgency=NOTIFY_NORMAL):
     system("notify-send -u {} '{}' '{}'".format(urgency, str(name), str(body)))
 
 
-WIN_URGENCY_CONVERTER = {0: None, 1: 'icons\\default.ico', 2: "icons\\red.ico"}
+WIN_URGENCY_CONVERTER = {0: None, 1: 'icons\\default.ico', 2: "icons\\warn.ico"}
 
 
 def notify__WIN10(name, body, urgency=NOTIFY_NORMAL):
     win10toast.ToastNotifier().show_toast(name, body, duration=5, icon_path=WIN_URGENCY_CONVERTER[urgency])
+
 
 GUI_FALLBACK_DISPLAY_TIME = 3000
 
