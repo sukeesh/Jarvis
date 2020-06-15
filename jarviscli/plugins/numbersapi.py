@@ -19,6 +19,10 @@ def numbersapi(jarvis, s):
         jarvis.say(numbersapi.__doc__, Fore.GREEN)
         return
 
+    if any((not part.isnumeric() for part in parts)):
+        jarvis.say("\tPlease, pass valid integers as arguments.", Fore.RED)
+        return
+
     for number in parts:
         data = get_data(jarvis, number)
         if data:
