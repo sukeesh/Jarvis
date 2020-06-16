@@ -6,7 +6,7 @@ import nltk
 import re
 import sys
 import tempfile
-from utilities.GeneralUtilities import print_say
+from utilities.GeneralUtilities import print_say, warning
 from CmdInterpreter import CmdInterpreter
 
 # register hist path via tempfile
@@ -102,7 +102,7 @@ class Jarvis(CmdInterpreter, object):
         if not words:
             line = "None"
         else:
-            line = self.parse_input(line)
+            line = self.parse_input(line, words)
         return line
 
     def postcmd(self, stop, line):
@@ -120,17 +120,18 @@ class Jarvis(CmdInterpreter, object):
         if self.enable_voice:
             self.speech.text_to_speech(text)
 
-    def parse_input(self, data):
+    def parse_input(self, line, words):
         """This method gets the data and assigns it to an action"""
-        data = data.lower()
+        data = line.lower()
         # say command is better if data has punctuation marks
         # Hack!
-        if "say" not in data:
+        if 'say' not in data:
             data = data.replace("?", "")
             data = data.replace("!", "")
             data = data.replace(",", "")
 
-            # Remove only dots not followed by alphanumeric character to not mess up urls / numbers
+            # Remove only dots not followed by alphanumeric character
+            # to not mess up urls / numbers
             data = self.regex_dot.sub("", data)
 
         # Check if Jarvis has a fixed response to this data
@@ -139,16 +140,24 @@ class Jarvis(CmdInterpreter, object):
         else:
             # if it doesn't have a fixed response, look if the data corresponds
             # to an action
-            output = self.find_action(
+            action_plugin, action_index, output = self.find_action(
                 data, self._plugin_manager.get_plugins().keys())
+            if hasattr(action_plugin, '_feature'):
+                plugin_features = \
+                  self._parse_plugin_features(action_plugin.feature())
+                if plugin_features['case_sensitive']:
+                    output = action_plugin.get_name() + " " + \
+                             " ".join(words[action_index + 1:])
         return output
 
     def find_action(self, data, actions):
         """Checks if input is a defined action.
         :return: returns the action"""
+        action_index = 0
         output = "None"
+        action_plugin = None
         if not actions:
-            return output
+            return action_plugin, action_index, output
 
         action_found = False
         words = data.split()
@@ -161,22 +170,27 @@ class Jarvis(CmdInterpreter, object):
 
         # check word by word if exists an action with the same name
         for action in actions:
-            words_remaining = data.split()  # this will help us to stop the iteration
-            for word in words:
+            # this will help us to stop the iteration
+            words_remaining = data.split()
+            for index, word in enumerate(words):
                 words_remaining.remove(word)
                 # For the 'near' keyword, the words before 'near' are also
                 # needed
                 if word == "near":
-                    initial_words = words[:words.index('near')]
-                    output = word + " " +\
-                        " ".join(initial_words + ["|"] + words_remaining)
+                    action_index = index
+                    initial_words = words[:action_index]
+                    output = action_plugin.name() + " " \
+                             + " ".join(initial_words + ["|"] + words_remaining)
+                    action_plugin = self._plugin_manager.get_plugins()[action]
                 elif word == action:  # command name exists
                     action_found = True
-                    output = word + " " + " ".join(words_remaining)
+                    action_index = index
+                    output = " ".join(words_remaining)
+                    action_plugin = self._plugin_manager.get_plugins()[action]
                     break
             if action_found:
                 break
-        return output
+        return action_plugin, action_index, output
 
     def executor(self, command):
         """
@@ -192,3 +206,26 @@ class Jarvis(CmdInterpreter, object):
             self.execute_once(command)
         else:
             self.cmdloop()
+
+    def _parse_plugin_features(self, features_iter):
+        plugin_features = {
+            "case_sensitive": False,
+            "punctuation": True
+        }
+
+        if features_iter is None:
+            return plugin_features
+
+        for feature in features_iter:
+            key = feature[0]
+            value = feature[1]
+
+            if not isinstance(value, bool):
+                warning("{}={}: No supported requirement".format(key, value))
+
+            if key in plugin_features:
+                plugin_features[key] = value
+            else:
+                warning("{}={}: No supported requirement".format(key, value))
+
+        return plugin_features
