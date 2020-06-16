@@ -1,10 +1,9 @@
-import unittest
 import os
+import unittest
+
 from mock import call, patch
 from plugins import music
-from CmdInterpreter import JarvisAPI
-
-from tests import PluginTest, MockHistoryBuilder
+from tests import MockHistoryBuilder, PluginTest
 
 
 class MusicTest(PluginTest):

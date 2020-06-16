@@ -1,7 +1,8 @@
 import tempfile
 
-from Jarvis import HISTORY_FILENAME
 from colorama import Fore
+
+from jarvis import HISTORY_FILENAME
 from plugin import plugin
 
 

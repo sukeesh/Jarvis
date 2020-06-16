@@ -3,7 +3,6 @@ from inspect import cleandoc, isclass
 import pluginmanager
 from requests import ConnectionError
 
-
 # Constants
 # platform
 MACOS = "MACOS"
@@ -152,6 +151,8 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
 
     def alias(self):
         """Set with @alias"""
+        if not hasattr(self, '_alias'):
+            return []
         return self._alias
 
     def complete(self):
@@ -218,22 +219,17 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
 
         return doc
 
-    def run(self, jarvis, s):
+    def run(self, jarvis_api, s):
         """Entry point if this plugin is called"""
-        sub_command = jarvis.parse_input(s, s.split())
-
-        if sub_command == "None":
-            # run default
-            if self.is_callable_plugin():
-                self._backend[0](jarvis.get_api(), s)
-            else:
-                jarvis.get_api().say("Sorry, I could not recognise your command. Did you mean:")
-                for sub_command in self._sub_plugins.keys():
-                    jarvis.get_api().say("    * {} {}".format(self.get_name(), sub_command))
+        # run default
+        if self.is_callable_plugin():
+            self._backend[0](jarvis_api, s)
+            return True
         else:
-            command = sub_command.split()[0]
-            new_s = " ".join(sub_command.split()[1:])
-            self.get_plugins(command).run(jarvis, new_s)
+            jarvis_api.say("Sorry, I could not recognise your command. Did you mean:")
+            for sub_command in self._sub_plugins.keys():
+                jarvis_api.say("    * {} {}".format(self.get_name(), sub_command))
+            return False
 
     def _plugin_run_with_network_error(self, run_func, jarvis, s):
         """

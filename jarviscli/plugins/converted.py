@@ -1,9 +1,8 @@
 """
 Plugins not fully converted but simply "wrapped" as plugins.
 """
-from packages import (directions_to, forecast, mapps, near_me,
-                      timeIn, weather_pinpoint, weatherIn)
-
+from packages import (directions_to, forecast, mapps, near_me, timeIn,
+                      weather_pinpoint, weatherIn)
 from plugin import plugin, require
 
 
@@ -72,7 +71,11 @@ def do_near(self, data):
 @require(network=True)
 @plugin("pinpoint")
 def do_pinpoint(self, s):
-    """Jarvis will pinpoint your location."""
+    """
+    Jarvis will pinpoint your location.
+    -- Examples:
+        where am I
+    """
     mapps.locate_me()
 
 

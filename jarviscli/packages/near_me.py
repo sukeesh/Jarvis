@@ -1,5 +1,5 @@
 from utilities.GeneralUtilities import wordIndex
-import CmdInterpreter
+
 from . import mapps
 
 
@@ -8,9 +8,8 @@ def main(data):
     try:
         things = " ".join(word_list[0:wordIndex(data, "|")])
     except ValueError:
-        cmd = CmdInterpreter.CmdInterpreter("", "")
-        cmd.help_near()
-        return
+        print('Value error')
+        return False
 
     if " me" in data:
         city = 0
