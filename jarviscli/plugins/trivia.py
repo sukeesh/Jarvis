@@ -7,12 +7,9 @@ import requests
 class trivia:
     errCode = "An error occurred. Please try again later."
     """
-    Welcome to the Countryinfo plugin documentation! Here you will be able
-    to find all the functionalities of the plugin.
-    Usage: Type countryinfo and follow the instructions.
-    This plugin gives you several important details corresponding to country which is asked as an input
-    Please enter country name in smallcase
-    Go on and explore your information!!
+    Usage: Type trivia and follow the instructions.
+    This plugin gives you trivia questions (mcq or true/false)
+    for you to test your trivia knowledge
     """
 
     def __call__(self, jarvis, s):
@@ -32,6 +29,7 @@ class trivia:
         url = "https://opentdb.com/api.php?amount=1"
         r = requests.get(url)
         return r.json()
+
     def true_false_question(self, jarvis, trivia_fetch):
         response_code = trivia_fetch["response_code"]
         if (response_code != 0):
@@ -56,9 +54,8 @@ class trivia:
             jarvis.say("Correct!!")
         else:
             jarvis.say("Sorry, that's incorrect")
-        
+
     def mcq_question(self, jarvis, trivia_fetch):
-        print(str(trivia_fetch))
         response_code = trivia_fetch["response_code"]
         if (response_code != 0):
             jarvis.say(errCode)
@@ -66,7 +63,7 @@ class trivia:
         else:
             question = trivia_fetch["results"][0]["question"]
             question = question.replace("&quot;", "\"")
-            question = question.replace('&#039;', "'") 
+            question = question.replace('&#039;', "'")
             jarvis.say("Multiple Choice: " + question)
             options = trivia_fetch["results"][0]["incorrect_answers"]
             correct_answer = trivia_fetch["results"][0]["correct_answer"]
@@ -80,7 +77,7 @@ class trivia:
                 jarvis.say(str(option_count) + ". " + option)
             self.mcq_answer(jarvis, answersDict, correct_answer, option_count)
         return
-    
+
     def mcq_answer(self, jarvis, answersDict, correctAnswer, maxCount):
         answerPrompt = "Please enter an integer 1-" + str(maxCount)
         answer = jarvis.input(answerPrompt + "\n")
@@ -92,5 +89,3 @@ class trivia:
             jarvis.say("Correct!!")
         else:
             jarvis.say("Sorry, that's incorrect")
-        
-
