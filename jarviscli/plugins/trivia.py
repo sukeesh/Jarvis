@@ -88,4 +88,4 @@ class trivia:
         if (userAnswer == correctAnswer):
             jarvis.say("Correct!!")
         else:
-            jarvis.say("Sorry, that's incorrect")
+            jarvis.say("Sorry, the correct answer was " + correctAnswer)
