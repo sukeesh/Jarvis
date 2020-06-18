@@ -4,7 +4,8 @@ from functools import partial
 import pluginmanager
 
 import plugin
-from utilities.GeneralUtilities import warning, error, executable_exists
+from plugin import Platform
+from utilities.GeneralUtilities import error, executable_exists, warning
 
 
 class PluginManager(object):
@@ -28,6 +29,7 @@ class PluginManager(object):
         self._backend.set_file_filters(__ends_with_py)
         self._backend.add_blacklisted_directories("jarviscli/packages/aiml")
         self._backend.add_blacklisted_directories("jarviscli/packages/memory")
+        self._backend.add_blacklisted_plugins(plugin.Platform)
 
     def add_directory(self, path):
         """Add directory to search path for plugins"""
@@ -175,6 +177,50 @@ class PluginManager(object):
         self._load()
         return self._plugins_loaded
 
+    def add(self, plugin):
+        self._backend.add_plugins(plugin)
+
+    def dump_android(self):
+        self._load()
+        imports = []
+        plugins = []
+
+        for _plugin in self._backend.get_instances():
+            require = _plugin.require()
+            platforms = []
+            for key, value in require:
+                if key == 'platform':
+                    if isinstance(value, plugin.Platform):
+                        platforms.append(value)
+                    else:
+                        platforms.extend(value)
+
+            if plugin.Platform.ANDROID in platforms:
+                imports += [_plugin._origin]
+                plugins += [_plugin._origin + '.' + _plugin.__class__.__name__]
+
+        imports = sorted(list(set(imports)))
+        plugins = sorted(plugins)
+
+        return """\
+###############################
+#    AUTO-GENERATED FILE      #
+#      DO NOT MODIFY          #
+###############################
+
+import {}
+
+from plugin_manager import PluginManager
+
+
+def build_plugin_manager():
+    plugin_manager = PluginManager()
+    plugin_manager.add({}())
+
+    return plugin_manager
+""".format('\nimport '.join(imports),
+           '())\nplugin_manager.add('.join(plugins))
+
 
 class PluginDependency(object):
     """
@@ -188,11 +234,11 @@ class PluginDependency(object):
         # plugin shoud match these requirements
         self._requirement_has_network = True
         if sys.platform == "darwin":
-            self._requirement_platform = plugin.MACOS
+            self._requirement_platform = Platform.MACOS
         elif sys.platform == "win32":
-            self._requirement_platform = plugin.WINDOWS
+            self._requirement_platform = Platform.WINDOWS
         elif sys.platform.startswith("linux"):
-            self._requirement_platform = plugin.LINUX
+            self._requirement_platform = Platform.LINUX
         else:
             self._requirement_platform = None
             warning("Unsupported platform {}".format(sys.platform))
@@ -209,7 +255,7 @@ class PluginDependency(object):
             key = requirement[0]
             values = requirement[1]
 
-            if isinstance(values, str) or isinstance(values, bool):
+            if isinstance(values, str) or isinstance(values, bool) or isinstance(values, Platform):
                 values = [values]
 
             if key in plugin_requirements:
@@ -226,7 +272,7 @@ class PluginDependency(object):
         plugin_requirements = self._plugin_get_requirements(plugin.require())
 
         if not self._check_platform(plugin_requirements["platform"]):
-            required_platform = ", ".join(plugin_requirements["platform"])
+            required_platform = ", ".join([x.name for x in plugin_requirements["platform"]])
             return "Requires os {}".format(required_platform)
 
         if not self._check_network(plugin_requirements["network"], plugin):
@@ -242,8 +288,10 @@ class PluginDependency(object):
         if not values:
             return True
 
-        if plugin.UNIX in values:
-            values += [plugin.LINUX, plugin.MACOS]
+        if Platform.UNIX in values:
+            values += [Platform.LINUX, Platform.MACOS]
+        if Platform.DESKTOP in values:
+            values += [Platform.LINUX, Platform.WINDOWS, Platform.MACOS]
 
         return self._requirement_platform in values
 

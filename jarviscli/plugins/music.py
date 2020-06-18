@@ -1,7 +1,8 @@
 import os
+
 from colorama import Fore
 
-from plugin import plugin, alias, require, LINUX
+from plugin import Platform, alias, plugin, require
 
 
 def find_cached_music(music):
@@ -13,7 +14,7 @@ def find_cached_music(music):
 
 
 @alias("music")
-@require(platform=LINUX)
+@require(platform=Platform.LINUX)
 @plugin('play')
 def play(jarvis, data):
     """

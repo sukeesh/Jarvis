@@ -1,7 +1,8 @@
-import requests
-import bs4
-
 import json
+
+import bs4
+import requests
+
 from plugin import plugin, require
 
 

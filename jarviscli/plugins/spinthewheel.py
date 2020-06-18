@@ -1,5 +1,6 @@
-from plugin import plugin
 import random
+
+from plugin import plugin
 
 
 def spinit(list):

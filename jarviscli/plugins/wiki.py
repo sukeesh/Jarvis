@@ -1,5 +1,6 @@
 import wikipedia
-from plugin import plugin, complete, require
+
+from plugin import complete, plugin, require
 
 
 @require(network=True)

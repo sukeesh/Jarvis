@@ -3,7 +3,7 @@ from time import ctime
 
 from colorama import Fore
 
-from plugin import plugin, require
+from plugin import plugin
 
 
 @plugin('clock')

@@ -1,8 +1,10 @@
-from plugin import plugin, alias, require
-from colorama import Fore, Style
-import requests
 import random
+
 import bs4
+import requests
+from colorama import Fore, Style
+
+from plugin import alias, plugin, require
 
 
 @alias('project euler')

@@ -1,8 +1,8 @@
 import pdfkit
-from plugin import plugin, require, LINUX
+from plugin import Platform, plugin, require
 
 
-@require(platform=LINUX, native=["wkhtmltopdf"])
+@require(platform=Platform.LINUX, native=["wkhtmltopdf"])
 @plugin("htmltopdf")
 class htmltopdf:
     """Convert your html file or web page into pdf file"""
@@ -10,7 +10,7 @@ class htmltopdf:
         jarvis.say("Welcome to the htmltopdf convertor! \nType 'help htmltopdf' to learn how to use it")
 
 
-@require(platform=LINUX, native=["wkhtmltopdf"])
+@require(platform=Platform.LINUX, native=["wkhtmltopdf"])
 @plugin("htmltopdf file")
 class htmltopdf_file:
     """
@@ -33,7 +33,7 @@ class htmltopdf_file:
                 jarvis.say("OS error: {0}".format(err) + "\nMake sur your file is in the source directory of Jarvis and is an html file")
 
 
-@require(platform=LINUX, native=["wkhtmltopdf"], network=True)
+@require(platform=Platform.LINUX, native=["wkhtmltopdf"], network=True)
 @plugin("htmltopdf url")
 class htmltopdf_url:
     """

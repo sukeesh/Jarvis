@@ -1,5 +1,6 @@
+from colorama import Back, Fore, Style
+
 from plugin import plugin
-from colorama import Fore, Back, Style
 
 
 @plugin('bmi')

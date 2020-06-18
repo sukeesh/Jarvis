@@ -1,7 +1,9 @@
-from plugin import plugin
-from colorama import Fore
 import time
-from utilities.notification import*
+
+from colorama import Fore
+
+from plugin import plugin
+from utilities.notification import *
 
 
 def push_compute_rest(maximum):

@@ -1,11 +1,12 @@
 from os import system
+
 from colorama import Fore
 
+from plugin import Platform, plugin, require
 from utilities.GeneralUtilities import executable_exists
-from plugin import plugin, require, UNIX, WINDOWS
 
 
-@require(platform=UNIX)
+@require(platform=Platform.UNIX)
 @plugin('ip')
 class IP():
     """
@@ -38,7 +39,7 @@ class IP():
         system(self._public_ip_v6)
 
 
-@require(platform=WINDOWS)
+@require(platform=Platform.WINDOWS)
 @plugin('ip')
 def ip_WIN32(jarvis, s):
     """

@@ -1,4 +1,4 @@
-from plugin import plugin, alias
+from plugin import alias, plugin
 
 
 @alias("state capital", "state abbreviation")

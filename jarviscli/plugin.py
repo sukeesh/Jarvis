@@ -1,15 +1,19 @@
+import enum
 from inspect import cleandoc, isclass
 
 import pluginmanager
 from requests import ConnectionError
 
-# Constants
-# platform
-MACOS = "MACOS"
-LINUX = "LINUX"
-WINDOWS = "WINDOWS"
-# Shortcut for MACOS + LINUX
-UNIX = "UNIX"
+
+class Platform(enum.Enum):
+    MACOS = 0
+    LINUX = 1
+    WINDOWS = 2
+    ANDROID = 3
+    # Shortcut for MACOS + LINUX
+    UNIX = -1
+    # Shortcut for MACOS + LINUX + WINDOW
+    DESKTOP = -2
 
 
 def plugin(name):
@@ -38,6 +42,10 @@ def plugin(name):
         plugin_class._name = name
         plugin_class._backend = (run,)
         plugin_class._backend_instance = run
+
+        module = run.__module__.replace('_', '.')[:-2]
+        module = module.replace('pluginmanager.plugin.', 'jarviscli.plugins.')
+        plugin_class._origin = module
 
         return plugin_class
     return create_plugin

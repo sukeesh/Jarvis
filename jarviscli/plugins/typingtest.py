@@ -1,13 +1,15 @@
-import time
-import sys
-import requests
-import json
-import re
-import curses
-from plugin import plugin, require, UNIX
-import os
 import csv
+import curses
+import json
+import os
+import re
+import sys
+import time
+
+import requests
 from colorama import Fore
+
+from plugin import Platform, plugin, require
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
@@ -194,7 +196,7 @@ def print_screen():
     sys.stdout.write(string)
 
 
-@require(network=True, platform=UNIX)
+@require(network=True, platform=Platform.UNIX)
 @plugin("typingtest")
 def typingtest(jarvis, s):
     game_start()

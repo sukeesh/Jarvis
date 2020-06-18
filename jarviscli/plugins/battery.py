@@ -1,12 +1,13 @@
-import subprocess
-from utilities.GeneralUtilities import executable_exists
-from plugin import plugin, require, LINUX, WINDOWS
 import os
+import subprocess
+
+from plugin import Platform, plugin, require
+from utilities.GeneralUtilities import executable_exists
 
 VALID_OPTIONS = ['status', 'vendor', 'energy', 'technology', 'remaining']
 
 
-@require(platform=WINDOWS)
+@require(platform=Platform.WINDOWS)
 @plugin('battery')
 def battery_WIN32(jarvis, s):
     """
@@ -28,7 +29,7 @@ def battery_WIN32(jarvis, s):
                    (batt.percent, secs2hours(batt.secsleft)))
 
 
-@require(platform=LINUX, native='upower')
+@require(platform=Platform.LINUX, native='upower')
 @plugin('battery')
 def battery_LINUX(jarvis, s):
     """
@@ -97,7 +98,7 @@ def get_specific_info(info_required):
     return output
 
 
-@require(platform=LINUX, native='!upower')
+@require(platform=Platform.LINUX, native='!upower')
 @plugin('battery')
 def battery_LINUX_FALLBACK(jarvis, s):
     """

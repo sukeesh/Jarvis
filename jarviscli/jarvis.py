@@ -1,13 +1,9 @@
-# -*- coding: utf-8 -*-
-
-import os
 import tempfile
 from cmd import Cmd
 from typing import Dict, Optional
 
 from colorama import Fore
 
-import nltk
 from api import JarvisAPI
 from plugin import Plugin
 from plugin_manager import PluginManager
@@ -18,36 +14,15 @@ HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
 
 
 class Jarvis:
-    def __init__(self, language_parser, directories=["jarviscli/plugins", "custom"]):
-        directories = self._rel_path_fix(directories)
+    def __init__(self, language_parser, plugin_manager):
         self.jarvis_api = JarvisAPI()
         self.language_parser = language_parser
+        self.plugin_manager = plugin_manager
 
-        self._plugin_manager = PluginManager()
-
-        for directory in directories:
-            self._plugin_manager.add_directory(directory)
-
-        self.language_parser.train(self._plugin_manager.get_plugins().values())
+        self.language_parser.train(self.plugin_manager.get_plugins().values())
 
         self.cache = ''
         self.stdout = self
-
-    def _rel_path_fix(self, dirs):
-        dirs_abs = []
-        work_dir = os.path.dirname(__file__)
-        # remove 'jarviscli/' from path
-        work_dir = os.path.dirname(work_dir)
-
-        # fix nltk path
-        nltk.data.path.append(os.path.join(work_dir, "jarviscli/data/nltk"))
-
-        # relative -> absolute paths
-        for directory in dirs:
-            if not directory.startswith(work_dir):
-                directory = os.path.join(work_dir, directory)
-            dirs_abs.append(directory)
-        return dirs_abs
 
     def register_io(self, jarvis_io):
         self.jarvis_api.io = jarvis_io
@@ -55,8 +30,8 @@ class Jarvis:
 
     def plugin_info(self):
         plugin_status_formatter = {
-            "disabled": len(self._plugin_manager.get_disabled()),
-            "enabled": self._plugin_manager.get_number_plugins_loaded(),
+            "disabled": len(self.plugin_manager.get_disabled()),
+            "enabled": self.plugin_manager.get_number_plugins_loaded(),
             "red": Fore.RED,
             "blue": Fore.BLUE,
             "reset": Fore.RESET
@@ -71,7 +46,7 @@ class Jarvis:
 
     def activate_plugins(self):
         """Generate do_XXX, help_XXX and (optionally) complete_XXX functions"""
-        for (plugin_name, plugin) in self._plugin_manager.get_plugins().items():
+        for (plugin_name, plugin) in self.plugin_manager.get_plugins().items():
             yield plugin
             plugin.init(self.jarvis_api)
 
@@ -145,7 +120,7 @@ class Jarvis:
             formatString = "Format: command ([aliases for command])"
             self.jarvis_api.say(headerString)
             self.jarvis_api.say(formatString, Fore.BLUE)
-            pluginDict = self._plugin_manager.get_plugins()
+            pluginDict = self.plugin_manager.get_plugins()
             uniquePlugins: Dict[str, Plugin] = {}
             for key in pluginDict.keys():
                 plugin = pluginDict[key]

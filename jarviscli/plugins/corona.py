@@ -1,7 +1,9 @@
+from inspect import cleandoc
+
 import requests
 from colorama import Fore
+
 from plugin import plugin, require
-from inspect import cleandoc
 
 
 @require(network=True)

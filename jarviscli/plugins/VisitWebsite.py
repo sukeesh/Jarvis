@@ -1,8 +1,9 @@
-import webbrowser
 import os
 import socket
+import webbrowser
 from urllib.parse import urlparse
-from plugin import plugin, alias, require
+
+from plugin import alias, plugin, require
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 

@@ -1,7 +1,7 @@
-from plugin import plugin, require, alias
+import nltk
 from googletrans import Translator
 from googletrans.constants import LANGCODES, LANGUAGES, SPECIAL_CASES
-import nltk
+from plugin import alias, plugin, require
 
 
 @require(network=True)

@@ -1,6 +1,8 @@
-from plugin import plugin, alias
 import socket
+
 from colorama import Fore
+
+from plugin import alias, plugin
 
 
 def ip_lookup(hostname):

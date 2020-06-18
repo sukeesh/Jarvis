@@ -1,4 +1,5 @@
 import os
+
 from plugin import plugin
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))

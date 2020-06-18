@@ -1,8 +1,9 @@
-import cv2
 import os
 
-from plugin import plugin
+import cv2
 from colorama import Fore
+
+from plugin import plugin
 
 IMAGE_FORMATS = ['.jpg', '.png', '.jpeg', '.svg']
 

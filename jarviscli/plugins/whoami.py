@@ -1,10 +1,11 @@
 import os
 import re
-from plugin import plugin, require, LINUX, MACOS, feature
+
+from plugin import Platform, feature, plugin, require
 
 
 @require(native="id")
-@require(platform=LINUX)
+@require(platform=Platform.LINUX)
 @plugin("whoami")
 def whoami(jarvis, s):
     """
@@ -59,7 +60,7 @@ def whoami(jarvis, s):
 
 @feature(case_sensitive=True)
 @require(native="id")
-@require(platform=MACOS)
+@require(platform=Platform.MACOS)
 @plugin("whoami")
 def whoami(jarvis, s):
     """

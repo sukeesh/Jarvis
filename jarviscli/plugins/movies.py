@@ -1,9 +1,11 @@
 import os
+
 from colorama import Fore
-from plugin import plugin, require, LINUX
+
+from plugin import Platform, plugin, require
 
 
-@require(platform=LINUX, native='ims')
+@require(platform=Platform.LINUX, native='ims')
 @plugin('movies')
 def movies(jarvis, s):
     """Jarvis will find a good movie for you"""

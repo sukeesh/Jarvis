@@ -1,5 +1,6 @@
-from plugin import plugin
 import csv
+
+from plugin import plugin
 
 
 @plugin("write agenda")

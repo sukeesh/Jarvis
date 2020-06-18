@@ -1,11 +1,13 @@
-from plugin import plugin, require
-from utilities.GeneralUtilities import IS_WIN
-import os
-import sys
-import requests
-import json
 import base64
 import glob
+import json
+import os
+
+import requests
+
+from plugin import plugin, require
+from utilities.GeneralUtilities import IS_WIN
+
 if IS_WIN:
     from pyreadline import Readline
     readline = Readline()

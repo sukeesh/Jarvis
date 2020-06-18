@@ -4,8 +4,10 @@ to ecourage people to experiment with jarvis's plugins.
 """
 
 import os
+
 from colorama import Fore
-from plugin import plugin, require, MACOS, LINUX
+
+from plugin import Platform, plugin, require
 
 """The os.path method is used to track the path in which this plugin is stored
 and locate the Jarvis/custom folder through relative pathing.
@@ -14,7 +16,7 @@ PLUGINS_PATH = os.path.dirname(os.path.abspath(__file__))
 CUSTOM_PLUGINS_PATH = os.path.join(PLUGINS_PATH, '..', '..', 'custom/')
 
 
-@require(platform=MACOS)
+@require(platform=Platform.MACOS)
 @plugin("create plugin")
 def create_plugin_MAC(jarvis, s):
 
@@ -63,7 +65,7 @@ def create_plugin_MAC(jarvis, s):
 
 
 # The difference in LINUX is the command used to open the created file
-@require(platform=LINUX)
+@require(platform=Platform.LINUX)
 @plugin("create plugin")
 def create_plugin_LINUX(jarvis, s):
 

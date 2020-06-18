@@ -1,9 +1,11 @@
 # !!! This uses the https://newsapi.org/ api. TO comply with the TOU
 # !!! we must link back to this site whenever we display results.
 import json
-import requests
 import webbrowser
+
+import requests
 from colorama import Fore
+
 from plugin import plugin, require
 
 

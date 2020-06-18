@@ -1,7 +1,8 @@
 import requests
-from tabulate import tabulate
 from colorama import Fore
+
 from plugin import plugin, require
+from tabulate import tabulate
 from utilities.animations import SpinnerThread
 
 API_KEY = '1ebd3b92bf5041249f8c1e7a540ce98c'

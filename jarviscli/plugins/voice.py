@@ -1,5 +1,6 @@
 from colorama import Fore
-from plugin import LINUX, UNIX, MACOS, WINDOWS, plugin, require
+
+from plugin import Platform, plugin, require
 
 
 @plugin('enable sound')
@@ -52,7 +53,7 @@ def gtts(jarvis, s):
         jarvis.disable_voice()
 
 
-@require(platform=[LINUX, WINDOWS])
+@require(platform=[Platform.LINUX, Platform.WINDOWS])
 @plugin('talk faster')
 def talk_faster(jarvis, s):
     """Make Jarvis' speech engine talk faster.
@@ -64,7 +65,7 @@ def talk_faster(jarvis, s):
             Fore.BLUE)
 
 
-@require(platform=[LINUX, WINDOWS])
+@require(platform=[Platform.LINUX, Platform.WINDOWS])
 @plugin('talk slower')
 def talk_slower(jarvis, s):
     """Make Jarvis' speech engine talk slower.
