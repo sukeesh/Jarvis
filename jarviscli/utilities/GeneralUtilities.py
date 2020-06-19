@@ -15,15 +15,10 @@ if IS_WIN:
     WIN_VER = win32_ver()[0]
 
 
-def wordIndex(data, word):
-    wordList = data.split()
-    return wordList.index(word)
-
-
 def print_say(text, self, color=""):
     """
-        This method give the jarvis the ability to print a text
-        and talk when sound is enable.
+        Gives Jarvis the ability to print text
+        and talk when sound is enabled.
         :param text: the text to print (or talk)
                color: Fore.COLOR (ex Fore.BLUE), color for text
         :return: Nothing to return.

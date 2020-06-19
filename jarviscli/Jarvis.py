@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 
 import os
 from colorama import Fore
@@ -9,7 +9,7 @@ import tempfile
 from utilities.GeneralUtilities import print_say
 from CmdInterpreter import CmdInterpreter
 
-# register hist path via tempfile
+# register hist path
 HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
 
 
@@ -31,9 +31,8 @@ PROMPT_CHAR = '~>'
 
 
 class Jarvis(CmdInterpreter, object):
-    # We use this variable at Breakpoint #1.
-    # We use this in order to allow Jarvis say "Hi", only at the first
-    # interaction.
+    # variable used at Breakpoint #1.
+    # allows Jarvis say "Hi", only at the first interaction.
     first_reaction_text = ""
     first_reaction_text += Fore.BLUE + \
         'Jarvis\' sound is by default disabled.' + Fore.RESET
@@ -49,13 +48,13 @@ class Jarvis(CmdInterpreter, object):
         + "{} Hi, what can I do for you?\n".format(PROMPT_CHAR)
         + Fore.RESET)
 
-    # This can be used to store user specific data
+    # Used to store user specific data
 
     def __init__(self, first_reaction_text=first_reaction_text,
                  prompt=prompt, first_reaction=True,
                  directories=["jarviscli/plugins", "custom"]):
         directories = self._rel_path_fix(directories)
-        # change raw input based on os
+
         if sys.platform == 'win32':
             self.use_rawinput = False
         self.regex_dot = re.compile('\\.(?!\\w)')
@@ -85,11 +84,9 @@ class Jarvis(CmdInterpreter, object):
     def precmd(self, line):
         """Hook that executes before every command."""
         words = line.split()
-        # save commands' history
         HISTORY_FILENAME.write(line + '\n')
 
-        # append calculate keyword to front of leading char digit (or '-') in
-        # line
+        # append calculate keyword to front of leading char digit (or '-') in line
         if words and (words[0].isdigit() or line[0] == "-"):
             line = "calculate " + line
             words = line.split()
@@ -124,18 +121,17 @@ class Jarvis(CmdInterpreter, object):
         """This method gets the data and assigns it to an action"""
         data = data.lower()
         # say command is better if data has punctuation marks
-        # Hack!
         if "say" not in data:
             data = data.replace("?", "")
             data = data.replace("!", "")
             data = data.replace(",", "")
 
-            # Remove only dots not followed by alphanumeric character to not mess up urls / numbers
+            # input sanitisation to not mess up urls / numbers
             data = self.regex_dot.sub("", data)
 
         # Check if Jarvis has a fixed response to this data
         if data in self.fixed_responses:
-            output = self.fixed_responses[data]  # change return to output =
+            output = self.fixed_responses[data]
         else:
             # if it doesn't have a fixed response, look if the data corresponds
             # to an action
@@ -161,11 +157,10 @@ class Jarvis(CmdInterpreter, object):
 
         # check word by word if exists an action with the same name
         for action in actions:
-            words_remaining = data.split()  # this will help us to stop the iteration
+            words_remaining = data.split()
             for word in words:
                 words_remaining.remove(word)
-                # For the 'near' keyword, the words before 'near' are also
-                # needed
+                # For the 'near' keyword, the words before 'near' are also needed
                 if word == "near":
                     initial_words = words[:words.index('near')]
                     output = word + " " +\

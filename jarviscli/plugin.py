@@ -4,7 +4,6 @@ import pluginmanager
 from requests import ConnectionError
 
 
-# Constants
 # platform
 MACOS = "MACOS"
 LINUX = "LINUX"
