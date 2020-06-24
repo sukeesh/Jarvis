@@ -51,6 +51,8 @@ class PluginManager(object):
         self._backend.collect_plugins()
         (enabled, disabled) = self._validate_plugins(self._backend.get_plugins())
 
+        self.language_parser.train(enabled)
+
         for plugin_to_add in enabled:
             self._load_plugin(plugin_to_add, self._cache)
 
