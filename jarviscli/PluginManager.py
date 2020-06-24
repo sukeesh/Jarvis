@@ -5,6 +5,7 @@ import pluginmanager
 
 import plugin
 from utilities.GeneralUtilities import warning, error, executable_exists
+from jarviscli.language import default, snips
 
 
 class PluginManager(object):
@@ -28,6 +29,8 @@ class PluginManager(object):
         self._backend.set_file_filters(__ends_with_py)
         self._backend.add_blacklisted_directories("jarviscli/packages/aiml")
         self._backend.add_blacklisted_directories("jarviscli/packages/memory")
+        self.language_parser = default.DefaultLanguageParser(
+            snips.LanguageParser())
 
     def add_directory(self, path):
         """Add directory to search path for plugins"""
@@ -48,6 +51,8 @@ class PluginManager(object):
 
         self._backend.collect_plugins()
         (enabled, disabled) = self._validate_plugins(self._backend.get_plugins())
+
+        self.language_parser.train(enabled)
 
         for plugin_to_add in enabled:
             self._load_plugin(plugin_to_add, self._cache)

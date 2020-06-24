@@ -10,6 +10,8 @@ from utilities.GeneralUtilities import print_say, warning
 from CmdInterpreter import CmdInterpreter
 
 # register hist path via tempfile
+from jarviscli.LanguageParser import LanguageParser
+
 HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
 
 
@@ -30,7 +32,7 @@ PROMPT_CHAR = '~>'
 """
 
 
-class Jarvis(CmdInterpreter, object):
+class Jarvis(CmdInterpreter, LanguageParser, object):
     # We use this variable at Breakpoint #1.
     # We use this in order to allow Jarvis say "Hi", only at the first
     # interaction.
@@ -143,14 +145,19 @@ class Jarvis(CmdInterpreter, object):
         else:
             # if it doesn't have a fixed response, look if the data corresponds
             # to an action
-            action_plugin, action_index, output = self.find_action(
+            action_plugin = self.find_action(
                 data, self._plugin_manager.get_plugins().keys())
-            if hasattr(action_plugin, '_feature'):
-                plugin_features = \
-                  self._parse_plugin_features(action_plugin.feature())
-                if plugin_features['case_sensitive']:
-                    output = action_plugin.get_name() + " " + \
-                             " ".join(words[action_index + 1:])
+
+            print(action_plugin.get_name())
+
+            output = action_plugin.get_name()
+
+            # if hasattr(action_plugin, '_feature'):
+            #     plugin_features = \
+            #       self._parse_plugin_features(action_plugin.feature())
+            #     if plugin_features['case_sensitive']:
+            #         output = action_plugin.get_name() + " " + \
+            #                  " ".join(words[action_index + 1:])
         return output
 
     def find_action(self, data, actions):
@@ -166,34 +173,39 @@ class Jarvis(CmdInterpreter, object):
         words = data.split()
         actions = list(actions)
 
-        # return longest matching word
-        # TODO: Implement real and good natural language processing
-        # But for now, this code returns acceptable results
-        actions.sort(key=lambda l: len(l), reverse=True)
+        identified_action = self._plugin_manager.language_parser.\
+            identify_action(data)
 
-        # check word by word if exists an action with the same name
-        for action in actions:
-            # this will help us to stop the iteration
-            words_remaining = data.split()
-            for index, word in enumerate(words):
-                words_remaining.remove(word)
-                # For the 'near' keyword, the words before 'near' are also
-                # needed
-                if word == "near":
-                    action_index = index
-                    initial_words = words[:action_index]
-                    output = word + " " \
-                             + " ".join(initial_words + ["|"] + words_remaining)
-                    action_plugin = self._plugin_manager.get_plugins()[action]
-                elif word == action:  # command name exists
-                    action_found = True
-                    action_index = index
-                    output = word + " " + " ".join(words_remaining)
-                    action_plugin = self._plugin_manager.get_plugins()[action]
-                    break
-            if action_found:
-                break
-        return action_plugin, action_index, output
+        return self._plugin_manager.get_plugins()[identified_action]
+
+        # # return longest matching word
+        # # TODO: Implement real and good natural language processing
+        # # But for now, this code returns acceptable results
+        # actions.sort(key=lambda l: len(l), reverse=True)
+        #
+        # # check word by word if exists an action with the same name
+        # for action in actions:
+        #     # this will help us to stop the iteration
+        #     words_remaining = data.split()
+        #     for index, word in enumerate(words):
+        #         words_remaining.remove(word)
+        #         # For the 'near' keyword, the words before 'near' are also
+        #         # needed
+        #         if word == "near":
+        #             action_index = index
+        #             initial_words = words[:action_index]
+        #             output = word + " " +\
+        #                      " ".join(initial_words + ["|"] + words_remaining)
+        #             action_plugin = self._plugin_manager.get_plugins()[action]
+        #         elif word == action:  # command name exists
+        #             action_found = True
+        #             action_index = index
+        #             output = word + " " + " ".join(words_remaining)
+        #             action_plugin = self._plugin_manager.get_plugins()[action]
+        #             break
+        #     if action_found:
+        #         break
+        # return action_plugin, action_index, output
 
     def executor(self, command):
         """
