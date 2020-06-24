@@ -23,16 +23,18 @@ class personality_test:
     """
     Runs Personality test
     Taken from: https://openpsychometrics.org/tests/OJTS/development/#liscmark
-    Test is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
+     Test is licensed under Creative Commons
+     Attribution-NonCommercial-ShareAlike 4.0
+     International License.
     """
+
     def __init__(self):
         self.Q = read_questions()
-        # random.shuffle(self.Q)
         self.answers = {}
         self.instruction = Back.YELLOW + "There are a total of " +\
-        "32 pairs of descriptions. For each pair, choose on a scale of " +\
-        "1-5. Choose 1 if you are all the way to the left, and choose " +\
-        "3 if you are in the middle, etc." + Style.RESET_ALL
+            "32 pairs of descriptions. For each pair, choose on a scale of " +\
+            "1-5. Choose 1 if you are all the way to the left, and choose " +\
+            "3 if you are in the middle, etc." + Style.RESET_ALL
 
         self.types = ['IE', 'SN', 'FT', 'JP']
         self.scoring_scheme = ((30, (15, 23, 27), (3, 7, 11, 19, 31)),
@@ -90,6 +92,8 @@ class personality_test:
                 Back.MAGENTA,
                 self.type,
                 Style.RESET_ALL))
-        jarvis.say("Redirecting to your personality analysis in 3s...", color=Fore.BLUE)
+        jarvis.say(
+            "Redirecting to your personality analysis\
+                 in 3s...", color=Fore.BLUE)
         time.sleep(3)
         self.open_analysis()
