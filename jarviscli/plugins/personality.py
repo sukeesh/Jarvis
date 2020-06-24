@@ -1,6 +1,8 @@
 import os
 import random
 from colorama import Fore, Back, Style
+import webbrowser
+import time
 from plugin import plugin
 
 
@@ -16,27 +18,21 @@ def read_questions():
     return Q
 
 
-def read_analysis():
-    analysis = {}
-    with open(os.path.join(FILE_PATH,
-                           "../data/personality_analysis.tsv")) as f:
-        for line in f:
-            line = line.strip().split('\t')
-            analysis[line[0]] = line[1]
-    return analysis
-
-
 @plugin("personality")
 class personality_test:
+    """
+    Runs Personality test
+    Taken from: https://openpsychometrics.org/tests/OJTS/development/#liscmark
+    Test is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
+    """
     def __init__(self):
         self.Q = read_questions()
-        self.analysis = read_analysis()
         # random.shuffle(self.Q)
         self.answers = {}
-        self.instruction = Back.YELLOW + """There are a total of \
-            32 pairs of descriptions. For each pair, choose on a scale of \
-                1-5. Choose 1 if you are all the way to the left, and choose \
-                     3 if you are in the middle, etc.""" + Style.RESET_ALL
+        self.instruction = Back.YELLOW + "There are a total of " +\
+        "32 pairs of descriptions. For each pair, choose on a scale of " +\
+        "1-5. Choose 1 if you are all the way to the left, and choose " +\
+        "3 if you are in the middle, etc." + Style.RESET_ALL
 
         self.types = ['IE', 'SN', 'FT', 'JP']
         self.scoring_scheme = ((30, (15, 23, 27), (3, 7, 11, 19, 31)),
@@ -61,6 +57,10 @@ class personality_test:
             else:
                 self.type.append(personality_type[1])
         self.type = ''.join(self.type)
+
+    def open_analysis(self):
+        url = "https://www.16personalities.com/{}-personality"
+        webbrowser.open_new(url.format(self.type.lower()))
 
     def __call__(self, jarvis, s):
         prompt = "{black}Q{Q_id} {cyan}{left} {black}--- {green}{right}"
@@ -90,5 +90,6 @@ class personality_test:
                 Back.MAGENTA,
                 self.type,
                 Style.RESET_ALL))
-        jarvis.say("{}Your personality analysis: {}{}{}".format(
-            Fore.BLUE, Fore.BLACK, self.analysis[self.type], Style.RESET_ALL))
+        jarvis.say("Redirecting to your personality analysis in 3s...", color=Fore.BLUE)
+        time.sleep(3)
+        self.open_analysis()
