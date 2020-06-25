@@ -35,3 +35,6 @@ win10toast; sys_platform == 'win32'
 gtts
 playsound
 windows-curses; sys_platform == 'win32'
+Image
+img2pdf
+fpdf
