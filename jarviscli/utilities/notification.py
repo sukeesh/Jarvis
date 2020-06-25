@@ -1,4 +1,4 @@
-from utilities.GeneralUtilities import IS_MACOS, executable_exists
+from utilities.GeneralUtilities import IS_MACOS, IS_WIN, WIN_VER, executable_exists
 
 
 NOTIFY_LOW = 0
@@ -19,6 +19,13 @@ LINUX_URGENCY_CONVERTER = {0: 'low', 1: 'normal', 2: 'critical'}
 def notify__LINUX(name, body, urgency=NOTIFY_NORMAL):
     urgency = LINUX_URGENCY_CONVERTER[urgency]
     system("notify-send -u {} '{}' '{}'".format(urgency, str(name), str(body)))
+
+
+WIN_URGENCY_CONVERTER = {0: None, 1: 'icons\\default.ico', 2: "icons\\warn.ico"}
+
+
+def notify__WIN10(name, body, urgency=NOTIFY_NORMAL):
+    win10toast.ToastNotifier().show_toast(name, body, duration=5, icon_path=WIN_URGENCY_CONVERTER[urgency])
 
 
 GUI_FALLBACK_DISPLAY_TIME = 3000
@@ -51,6 +58,9 @@ def notify__CLI_FALLBACK(name, body, urgency=NOTIFY_NORMAL):
 if IS_MACOS:
     import pync
     notify = notify__MAC
+elif IS_WIN and WIN_VER == '10':
+    import win10toast
+    notify = notify__WIN10
 else:
     if executable_exists("notify-send"):
         from os import system

@@ -8,24 +8,24 @@ FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
 @require(network=True)
-@alias("open website")
+@alias("visit website")
 @plugin("website")
 class OpenWebsite:
     """
-    This plugin will open a website using some parameters.
+    This plugin will visit a website using some parameters.
 
-    The user can open a simple website giving a complete link or
+    The user can visit a simple website giving a complete link or
     inputting the name of the website like the examples:
 
-    > open website www.google.com
-    > open website github
-    > open website github username
+    > visit website www.google.com
+    > visit website github
+    > visit website github username
 
     You can find a csv file with a list of saved websites at:
     Jarvis/jarviscli/data/website.csv
 
     {Alternatively, you can also use only 'website'
-    instead of 'open website'}
+    instead of 'visit website'}
     """
 
     def __call__(self, jarvis, link):

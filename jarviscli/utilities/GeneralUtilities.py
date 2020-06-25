@@ -3,23 +3,22 @@ import sys
 import os
 from colorama import Fore
 import distutils.spawn
+from platform import win32_ver
 
 
 MACOS = 'darwin'
 WIN = 'win32'
 IS_MACOS = sys.platform == MACOS
 IS_WIN = sys.platform == WIN
-
-
-def wordIndex(data, word):
-    wordList = data.split()
-    return wordList.index(word)
+WIN_VER = None
+if IS_WIN:
+    WIN_VER = win32_ver()[0]
 
 
 def print_say(text, self, color=""):
     """
-        This method give the jarvis the ability to print a text
-        and talk when sound is enable.
+        Gives Jarvis the ability to print text
+        and talk when sound is enabled.
         :param text: the text to print (or talk)
                color: Fore.COLOR (ex Fore.BLUE), color for text
         :return: Nothing to return.
