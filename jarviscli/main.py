@@ -5,7 +5,7 @@ import colorama
 
 import nltk
 from jarvis import Jarvis
-from language import default
+from language import default, snips
 from plugin_manager import PluginManager
 
 
@@ -16,7 +16,8 @@ def check_python_version():
 def main_cli():
     from ui.cmd_interpreter import CmdInterpreter
 
-    language_parser = default.DefaultLanguageParser()
+    #language_parser = default.DefaultLanguageParser()
+    language_parser = snips.LanguageParser()
     plugin_manager = build_plugin_manager()
     jarvis = Jarvis(language_parser, plugin_manager)
     cmd_interpreter = CmdInterpreter(jarvis)

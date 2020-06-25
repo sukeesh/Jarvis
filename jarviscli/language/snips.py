@@ -1,9 +1,9 @@
-
 import re
+
 import pluginmanager
 
+from plugin import PluginStorage
 from snips_nlu import SnipsNLUEngine
-from jarviscli.plugin import PluginStorage
 
 
 class LanguageParser(pluginmanager.IPlugin, PluginStorage):
@@ -13,7 +13,7 @@ class LanguageParser(pluginmanager.IPlugin, PluginStorage):
 
     def __init__(self):
         super(pluginmanager.IPlugin, self).__init__()
-        self._sub_plugins = {}
+        self._plugins = {}
         self._pre_train_json = dict()
         self._pre_train_json['intents'] = {}
         self._pre_train_json['entities'] = {}
@@ -31,10 +31,17 @@ class LanguageParser(pluginmanager.IPlugin, PluginStorage):
             _data = list()
             _data.append(dict({'text': plugin.get_name()}))
             intent['utterances'].append(dict({"data": _data}))
-            self._pre_train_json['intents']['_'.join(
-                re.findall(r"[\w']+", plugin.get_name()))] = intent
+            intent_name = '_'.join(re.findall(r"[\w']+", plugin.get_name()))
+            self._pre_train_json['intents'][intent_name] = intent
+            self._plugins[intent_name] = plugin
+
+            # handle sub commands (recursive)
+            self._generate_pre_train_json(plugin.get_plugins().values())
 
     def identify_action(self, action):
         parsed_action = self.nlu_engine.parse(action)
         print(parsed_action)
-        return parsed_action['intent']['intentName']
+        intent_name = parsed_action['intent']['intentName']
+        if intent_name not in self._plugins:
+            return None
+        return self._plugins[intent_name]
