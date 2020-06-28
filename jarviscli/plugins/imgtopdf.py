@@ -48,27 +48,19 @@ class ImageToPDF:
                 self.incorrect_option(jarvis)
                 continue
 
-            # Choosing the pdf file saving destination
-            user_choice = jarvis.input(
-                'Would you like to save the file in the same folder?[y/n] ')
-            user_choice = user_choice.lower()
-            if user_choice == 'yes' or user_choice == 'y':
-                destination = self.getParentDirectory(self.path)
-            elif user_choice == 'no' or user_choice == 'n':
-                destination = jarvis.input('Enter the folder destination: ')
-
-            # Naming and saving the pdf file
+            destination = self.get_saving_directory(jarvis)
+             # Naming and saving the pdf file
             file_name = jarvis.input('What would you like to name your pdf? ')
-            destination = destination + '/' + file_name + '.pdf'
-            print('Final Destination ' + destination)
-            self.save_pdf(jarvis, pdf_bytes, destination)
+            pdf_destination = destination + '/' + file_name + '.pdf'
+            print('Final Destination ' + pdf_destination)
+            self.save_pdf(jarvis, pdf_bytes, pdf_destination)
 
     def available_options(self, jarvis):
         """
         Message displayed to prompt the user about converting
         images to pdf
         """
-        jarvis.say('Select one of the two options:')
+        jarvis.say('Select one of the following options:')
         jarvis.say('1: Convert a single image')
         jarvis.say('2: Convert all images of the folder')
         jarvis.say('3: Quit')
@@ -116,7 +108,24 @@ class ImageToPDF:
         pdf_file.close()
         jarvis.say('Your pdf is created successfully', Fore.GREEN)
 
-    def getParentDirectory(self, path):
+    def get_saving_directory(self, jarvis):
+        """
+        Returns the final directory where the files must be saved
+        """
+        user_choice = jarvis.input('Would you like to save the file in the same folder?[y/n] ')
+        user_choice = user_choice.lower()
+        if user_choice == 'yes' or user_choice == 'y':
+            destination = self.get_parent_directory(self.path)
+        elif user_choice == 'no' or user_choice == 'n':
+            destination = jarvis.input('Enter the folder destination: ')
+            if not os.path.exists(destination):
+                os.makedirs(destination)
+                
+        os.chdir(destination)
+
+        return destination
+
+    def get_parent_directory(self, path):
         """
         Removes the image name from the folder and returns
         the remaining path
