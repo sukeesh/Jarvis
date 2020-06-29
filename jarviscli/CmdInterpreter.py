@@ -3,6 +3,7 @@ from cmd import Cmd
 from functools import partial
 import sys
 import traceback
+import os
 
 from colorama import Fore
 from PluginManager import PluginManager
@@ -10,7 +11,7 @@ from PluginManager import PluginManager
 from utilities import schedule
 from utilities.voice import create_voice
 from utilities.notification import notify
-from utilities.GeneralUtilities import print_say
+from utilities.GeneralUtilities import print_say, get_parent_directory
 
 from packages.memory.memory import Memory
 from utilities.animations import SpinnerThread
@@ -244,6 +245,32 @@ class JarvisAPI(object):
     def is_spinner_running(self):
         return self.spinner_running
 
+    
+    def get_saving_directory(self, path):
+        """
+        Returns the final directory where the files must be saved
+        """
+        user_choice = self.input('Would you like to save the file in the same folder?[y/n] ')
+        user_choice = user_choice.lower()
+        if user_choice == 'yes' or user_choice == 'y':
+            destination = get_parent_directory(path)
+        elif user_choice == 'no' or user_choice == 'n':
+            destination = self.input('Enter the folder destination: ')
+            if not os.path.exists(destination):
+                os.makedirs(destination)
+                
+        os.chdir(destination)
+
+        return destination
+
+    def incorrect_option(self):
+        """
+        A function to notify the user that an incorrect option
+        has been entered and prompting him to enter a correct one
+        """
+        self.say("Oops! Looks like you entered an incorrect option", Fore.RED)
+        self.say("Look at the options once again:", Fore.GREEN)
+
 
 def catch_all_exceptions(do, pass_self=True):
     def try_do(self, s):
@@ -263,6 +290,8 @@ def catch_all_exceptions(do, pass_self=True):
             traceback.print_exc()
             print(Fore.RESET)
     return try_do
+
+
 
 
 class CmdInterpreter(Cmd):

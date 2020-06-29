@@ -45,10 +45,10 @@ class ImageToPDF:
 
             # For an incorrectly entered option
             else:
-                self.incorrect_option(jarvis)
+                jarvis.incorrect_option()
                 continue
 
-            destination = self.get_saving_directory(jarvis)
+            destination = jarvis.get_saving_directory(self.path)
              # Naming and saving the pdf file
             file_name = jarvis.input('What would you like to name your pdf? ')
             pdf_destination = destination + '/' + file_name + '.pdf'
@@ -90,14 +90,6 @@ class ImageToPDF:
         pdf_bytes = img2pdf.convert(source_images)
         return pdf_bytes
 
-    def incorrect_option(self, jarvis):
-        """
-        A function to notify the user that an incorrect option
-        has been entered and prompting him to enter a correct one
-        """
-        jarvis.say("Oops! Looks like you entered an incorrect option", Fore.RED)
-        jarvis.say("Look at the options once again:", Fore.GREEN)
-
     def save_pdf(self, jarvis, pdf_bytes, destination):
         """
         Save the pdf to the thus supplied location
@@ -107,30 +99,3 @@ class ImageToPDF:
         pdf_file.write(pdf_bytes)
         pdf_file.close()
         jarvis.say('Your pdf is created successfully', Fore.GREEN)
-
-    def get_saving_directory(self, jarvis):
-        """
-        Returns the final directory where the files must be saved
-        """
-        user_choice = jarvis.input('Would you like to save the file in the same folder?[y/n] ')
-        user_choice = user_choice.lower()
-        if user_choice == 'yes' or user_choice == 'y':
-            destination = self.get_parent_directory(self.path)
-        elif user_choice == 'no' or user_choice == 'n':
-            destination = jarvis.input('Enter the folder destination: ')
-            if not os.path.exists(destination):
-                os.makedirs(destination)
-                
-        os.chdir(destination)
-
-        return destination
-
-    def get_parent_directory(self, path):
-        """
-        Removes the image name from the folder and returns
-        the remaining path
-        """
-        path = path.split('/')
-        path.pop()
-        destination = '/'.join(path)
-        return destination
