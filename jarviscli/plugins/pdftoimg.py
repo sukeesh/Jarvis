@@ -32,7 +32,12 @@ class PdfToImage:
 
             # Converting a pdf with a given path to image
             elif user_input == '1':
-                pdf_path = jarvis.input('Enter the full path of the pdf: ')
+                while True:
+                    pdf_path = jarvis.input('Enter the full path of the pdf: ')
+                    if os.path.exists(pdf_path) and (pdf_path.endswith('.pdf')):
+                        break
+                    else:
+                        jarvis.say('Opps! Looks like you entered an invalid path. Kindly Re-enter',Fore.RED)
                 pages = self.convert_to_images(pdf_path, jarvis)
 
             # For an incorrectly entered option

@@ -250,14 +250,21 @@ class JarvisAPI(object):
         """
         Returns the final directory where the files must be saved
         """
-        user_choice = self.input('Would you like to save the file in the same folder?[y/n] ')
-        user_choice = user_choice.lower()
-        if user_choice == 'yes' or user_choice == 'y':
-            destination = get_parent_directory(path)
-        elif user_choice == 'no' or user_choice == 'n':
-            destination = self.input('Enter the folder destination: ')
-            if not os.path.exists(destination):
-                os.makedirs(destination)
+        while True:
+            user_choice = self.input('Would you like to save the file in the same folder?[y/n] ')
+            user_choice = user_choice.lower()
+        
+            if user_choice == 'yes' or user_choice == 'y':
+                destination = get_parent_directory(path)
+                break
+
+            elif user_choice == 'no' or user_choice == 'n':
+                destination = self.input('Enter the folder destination: ')
+                if not os.path.exists(destination):
+                    os.makedirs(destination)
+                break
+            else:
+                self.incorrect_option()
                 
         os.chdir(destination)
 

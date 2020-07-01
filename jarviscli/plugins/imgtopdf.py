@@ -34,13 +34,23 @@ class ImageToPDF:
 
             # For single image to be converted to pdf
             elif user_input == '1':
-                image_path = jarvis.input('Enter the full path of the image: ')
+                while True:
+                    image_path = jarvis.input('Enter the full path of the image: ')
+                    if os.path.exists(image_path) and (image_path.endswith('.jpg') or image_path.endswith('.png')):
+                        break
+                    else:
+                        jarvis.say('Opps! Looks like you entered an invalid path. Kindly Re-enter',Fore.RED)
                 pdf_bytes = self.single_image_to_pdf(jarvis, image_path)
 
             # For multiple images in a folder to be converted to pdf
             elif user_input == '2':
-                folder_path = jarvis.input(
-                    'Enter the full path of the folder: ')
+                while True:
+                    folder_path = jarvis.input(
+                        'Enter the full path of the folder: ')
+                    if os.path.exists(folder_path):
+                        break
+                    else:
+                        jarvis.say('Opps! Looks like you entered an invalid path. Kindly Re-enter',Fore.RED)
                 pdf_bytes = self.folder_to_pdf(jarvis, folder_path)
 
             # For an incorrectly entered option
