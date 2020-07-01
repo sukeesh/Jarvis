@@ -35,11 +35,13 @@ class ImageToPDF:
             # For single image to be converted to pdf
             elif user_input == '1':
                 while True:
-                    image_path = jarvis.input('Enter the full path of the image: ')
+                    image_path = jarvis.input(
+                        'Enter the full path of the image: ')
                     if os.path.exists(image_path) and (image_path.endswith('.jpg') or image_path.endswith('.png')):
                         break
                     else:
-                        jarvis.say('Opps! Looks like you entered an invalid path. Kindly Re-enter',Fore.RED)
+                        jarvis.say(
+                            'Opps! Looks like you entered an invalid path. Kindly Re-enter', Fore.RED)
                 pdf_bytes = self.single_image_to_pdf(jarvis, image_path)
 
             # For multiple images in a folder to be converted to pdf
@@ -50,7 +52,8 @@ class ImageToPDF:
                     if os.path.exists(folder_path):
                         break
                     else:
-                        jarvis.say('Opps! Looks like you entered an invalid path. Kindly Re-enter',Fore.RED)
+                        jarvis.say(
+                            'Opps! Looks like you entered an invalid path. Kindly Re-enter', Fore.RED)
                 pdf_bytes = self.folder_to_pdf(jarvis, folder_path)
 
             # For an incorrectly entered option
@@ -59,7 +62,7 @@ class ImageToPDF:
                 continue
 
             destination = jarvis.get_saving_directory(self.path)
-             # Naming and saving the pdf file
+            # Naming and saving the pdf file
             file_name = jarvis.input('What would you like to name your pdf? ')
             pdf_destination = destination + '/' + file_name + '.pdf'
             print('Final Destination ' + pdf_destination)

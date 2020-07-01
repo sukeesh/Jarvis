@@ -76,7 +76,8 @@ class JarvisAPI(object):
             try:
                 value = rtype(self.input(prompt, color).replace(',', '.'))
                 if (rmin is not None and value < rmin) or (rmax is not None and value > rmax):
-                    prompt = "Sorry, needs to be between {} and {}. Try again: ".format(rmin, rmax)
+                    prompt = "Sorry, needs to be between {} and {}. Try again: ".format(
+                        rmin, rmax)
                 else:
                     return value
             except ValueError:
@@ -245,15 +246,15 @@ class JarvisAPI(object):
     def is_spinner_running(self):
         return self.spinner_running
 
-    
     def get_saving_directory(self, path):
         """
         Returns the final directory where the files must be saved
         """
         while True:
-            user_choice = self.input('Would you like to save the file in the same folder?[y/n] ')
+            user_choice = self.input(
+                'Would you like to save the file in the same folder?[y/n] ')
             user_choice = user_choice.lower()
-        
+
             if user_choice == 'yes' or user_choice == 'y':
                 destination = get_parent_directory(path)
                 break
@@ -265,7 +266,7 @@ class JarvisAPI(object):
                 break
             else:
                 self.incorrect_option()
-                
+
         os.chdir(destination)
 
         return destination
@@ -297,8 +298,6 @@ def catch_all_exceptions(do, pass_self=True):
             traceback.print_exc()
             print(Fore.RESET)
     return try_do
-
-
 
 
 class CmdInterpreter(Cmd):
@@ -339,7 +338,8 @@ class CmdInterpreter(Cmd):
         # what if the platform does not have any engines, travis doesn't have sapi5 acc to me
         try:
             gtts_status = self._api.get_data('gtts_status')
-            self.speech = create_voice(self, gtts_status, rate=self.speech_rate)
+            self.speech = create_voice(
+                self, gtts_status, rate=self.speech_rate)
         except Exception as e:
             print_say("Voice not supported", self, Fore.RED)
             print_say(str(e), self, Fore.RED)

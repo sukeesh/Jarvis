@@ -3,8 +3,8 @@ from plugin import plugin
 from colorama import Fore
 from pdf2image import convert_from_path
 
-@plugin('pdf to images')
 
+@plugin('pdf to images')
 class PdfToImage:
     """
     A tool for converting and storing all the
@@ -37,7 +37,8 @@ class PdfToImage:
                     if os.path.exists(pdf_path) and (pdf_path.endswith('.pdf')):
                         break
                     else:
-                        jarvis.say('Opps! Looks like you entered an invalid path. Kindly Re-enter',Fore.RED)
+                        jarvis.say(
+                            'Opps! Looks like you entered an invalid path. Kindly Re-enter', Fore.RED)
                 pages = self.convert_to_images(pdf_path, jarvis)
 
             # For an incorrectly entered option
@@ -47,7 +48,7 @@ class PdfToImage:
 
             destination = jarvis.get_saving_directory(self.path)
             self.save_images(pages, destination, jarvis)
-          
+
     def convert_to_images(self, pdf_path, jarvis):
         """
         Convert all the pages in the pdf to individual
@@ -68,7 +69,7 @@ class PdfToImage:
 
     def save_images(self, pages, destination, jarvis):
         """
-        Save the thus generated images to the destination 
+        Save the thus generated images to the destination
         specified
         """
         page_count = 1
