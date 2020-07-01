@@ -3,12 +3,10 @@ import datetime
 from plugin import plugin, require
 from colorama import Fore
 
-API_KEY = "b13ad5f4c1msh55b5d06158c224cp14d63djsnac01e7128355"
 URL = "https://api-basketball.p.rapidapi.com/"
-headers = {	
-    "x-rapidapi-host": "api-basketball.p.rapidapi.com",
-	"x-rapidapi-key":API_KEY
-}
+API_KEY = "b13ad5f4c1msh55b5d06158c224cp14d63djsnac01e7128355"
+headers = {"x-rapidapi-host": "api-basketball.p.rapidapi.com", "x-rapidapi-key": API_KEY}
+
 
 def fetch_data(route):
     r = requests.get(URL + route, headers=headers)
@@ -17,18 +15,19 @@ def fetch_data(route):
         return None
     return r
 
+
 @require(network=True)
 @plugin("basketball")
-class Basketball():
+class basketball():
     def __call__(self, jarvis, s):
         print("Football data provided by the api-basketball.com\n")
         while True:
             option = self.get_option(jarvis)
             if option is None:
                 return
-            self.procces_chosen_option(option,jarvis)
+            self.procces_chosen_option(option, jarvis)
 
-    def procces_chosen_option(self,option,jarvis):
+    def procces_chosen_option(self, option, jarvis):
         if option == "search_team":
             self.search_team(jarvis)
         elif option == "list_leagues":
@@ -40,7 +39,7 @@ class Basketball():
         else:
             return
 
-    def list_leagues(self,jarvis):
+    def list_leagues(self, jarvis):
         jarvis.spinner_start('Fetching...')
         response = fetch_data("leagues")
         if response is None:
@@ -50,38 +49,37 @@ class Basketball():
         leagues = response["response"]
         jarvis.spinner_stop("Found {} Leagues".format(total_count))
         for i in range(total_count):
-            print(" {}. {} {}".format(i+1,leagues[i]["country"]["name"],leagues[i]["name"]))
+            print(" {}. {} {}".format(i + 1, leagues[i]["country"]["name"], leagues[i]["name"]))
 
-    def search_request(self,jarvis,query,search_name):
-        value = jarvis.input("Enter {} Name: ".format(search_name),Fore.GREEN)
+    def search_request(self, jarvis, query, search_name):
+        value = jarvis.input("Enter {} Name: ".format(search_name), Fore.GREEN)
         while len(value.strip()) < 3:
             print()
-            print("The Search {} must be at least 3 characters in length",search_name.lower())
-            value = jarvis.input("Enter League Name: ",Fore.GREEN)
+            print("The Search {} must be at least 3 characters in length", search_name.lower())
+            value = jarvis.input("Enter {} Name: ".format(search_name), Fore.GREEN)
         jarvis.spinner_start('Searching...')
-        response = fetch_data("{}?search={}".format(query,value.strip()))
+        response = fetch_data("{}?search={}".format(query, value.strip()))
         if response is None:
             jarvis.spinner_stop("Error While Searching {} - Try Again Later.".format(search_name), Fore.YELLOW)
             return
         return response
 
-    def search_team(self,jarvis):
-        response = self.search_request(jarvis,"teams","Team")
+    def search_team(self, jarvis):
+        response = self.search_request(jarvis, "teams", "Team")
         if response is None:
             return
         found_count = response["results"]
-        if found_count  == 0:
+        if found_count == 0:
             jarvis.spinner_stop("Nothing was Found With Given Name", Fore.YELLOW)
             return
         jarvis.spinner_stop("Found {} Teams".format(found_count))
         teams = response["response"]
         for i in range(found_count):
             team = teams[i]
-            print(" {}. '{}' Country: {}".format(i+1,team["name"],team["country"]["name"]))
+            print(" {}. '{}' Country: {}".format(i + 1, team["name"], team["country"]["name"]))
 
-    
-    def search_league(self,jarvis):
-        response = self.search_request(jarvis,"leagues","League")
+    def search_league(self, jarvis):
+        response = self.search_request(jarvis, "leagues", "League")
         if response is None:
             return
         found_count = response["results"]
@@ -94,15 +92,13 @@ class Basketball():
             league = leagues[i]
             name = league["name"]
             seasons = league["seasons"]
-            print(" {}. {} {}".format(i+1,league["country"]["name"],name))
+            print(" {}. {} {}".format(i + 1, league["country"]["name"], name))
             if len(seasons) > 0:
-                print("  Last {} {} Seasons".format(len(seasons),name))
+                print("  Last {} {} Seasons".format(len(seasons), name))
                 for j in range(len(seasons)):
-                    print("   Season: {} Start: {} End: {}".format(seasons[j]["season"],seasons[j]["start"],seasons[j]["end"]))
-        
+                    print("   Season: {} Start: {} End: {}".format(seasons[j]["season"], seasons[j]["start"], seasons[j]["end"]))
 
-
-    def todays_games(self,jarvis):
+    def todays_games(self, jarvis):
         jarvis.spinner_start('Fetching...')
         date = datetime.datetime.now().strftime('%Y-%m-%d')
         response = fetch_data("games?date={}".format(date))
@@ -120,16 +116,11 @@ class Basketball():
             time = match["time"]
             country = match["country"]["name"]
             league = match["league"]["name"]
-            teams = "{} VS {}".format(match["teams"]["home"]["name"],match["teams"]["away"]["name"])
-            print(" {}. {} {} {} {}".format(i+1,country,league,time,teams))
+            teams = "{} VS {}".format(match["teams"]["home"]["name"], match["teams"]["away"]["name"])
+            print(" {}. {} {} {} {}".format(i + 1, country, league, time, teams))
 
-    def get_option(self,jarvis):
-        options ={
-            1:"todays_games",
-            2:"search_team",
-            3:"list_leagues",
-            4:"search_league"
-        }
+    def get_option(self, jarvis):
+        options = {1: "todays_games", 2: "search_team", 3: "list_leagues", 4: "search_league"}
 
         print()
         jarvis.say("How Can I Help You?", Fore.BLUE)
@@ -142,11 +133,11 @@ class Basketball():
         print()
         choice = self.get_choice(jarvis)
         if choice == -1:
-            return;
+            return
         else:
             return options[choice]
 
-    def get_choice(self,jarvis):
+    def get_choice(self, jarvis):
         while True:
             try:
                 inserted_value = int(jarvis.input("Enter your choice: ", Fore.GREEN))
