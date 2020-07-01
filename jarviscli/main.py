@@ -3,9 +3,8 @@ import sys
 
 import colorama
 
-import nltk
 from jarvis import Jarvis
-from language import default, snips
+from language import default
 from plugin_manager import PluginManager
 
 
@@ -15,6 +14,7 @@ def check_python_version():
 
 def main_cli():
     from ui.cmd_interpreter import CmdInterpreter
+    from langugage import snips
 
     #language_parser = default.DefaultLanguageParser()
     language_parser = snips.LanguageParser()
@@ -31,8 +31,8 @@ def main_gui():
     from kivy.utils import platform
 
     if platform == 'android':
-        import uti.ui.android_plugins
-        plugin_manager = util.ui.android_plugins.build_plugin_manager()
+        import ui.gui.android_plugins
+        plugin_manager = ui.gui.android_plugins.build_plugin_manager()
     else:
         plugin_manager = build_plugin_manager()
 
@@ -61,6 +61,7 @@ def _rel_path_fix(dirs):
     work_dir = os.path.dirname(work_dir)
 
     # fix nltk path
+    import nltk
     nltk.data.path.append(os.path.join(work_dir, "jarviscli/data/nltk"))
 
     # relative -> absolute paths

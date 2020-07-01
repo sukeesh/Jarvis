@@ -21,3 +21,4 @@ myinfo\.csv
 .vscode
 .buildozer
 .mypy_cache
+bin
