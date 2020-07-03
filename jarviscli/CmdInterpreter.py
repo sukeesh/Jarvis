@@ -3,6 +3,7 @@ from cmd import Cmd
 from functools import partial
 import sys
 import traceback
+import os
 
 from colorama import Fore
 from PluginManager import PluginManager
@@ -10,7 +11,7 @@ from PluginManager import PluginManager
 from utilities import schedule
 from utilities.voice import create_voice
 from utilities.notification import notify
-from utilities.GeneralUtilities import print_say
+from utilities.GeneralUtilities import print_say, get_parent_directory
 
 from packages.memory.memory import Memory
 from utilities.animations import SpinnerThread
@@ -75,7 +76,8 @@ class JarvisAPI(object):
             try:
                 value = rtype(self.input(prompt, color).replace(',', '.'))
                 if (rmin is not None and value < rmin) or (rmax is not None and value > rmax):
-                    prompt = "Sorry, needs to be between {} and {}. Try again: ".format(rmin, rmax)
+                    prompt = "Sorry, needs to be between {} and {}. Try again: ".format(
+                        rmin, rmax)
                 else:
                     return value
             except ValueError:
@@ -244,6 +246,39 @@ class JarvisAPI(object):
     def is_spinner_running(self):
         return self.spinner_running
 
+    def get_saving_directory(self, path):
+        """
+        Returns the final directory where the files must be saved
+        """
+        while True:
+            user_choice = self.input(
+                'Would you like to save the file in the same folder?[y/n] ')
+            user_choice = user_choice.lower()
+
+            if user_choice == 'yes' or user_choice == 'y':
+                destination = get_parent_directory(path)
+                break
+
+            elif user_choice == 'no' or user_choice == 'n':
+                destination = self.input('Enter the folder destination: ')
+                if not os.path.exists(destination):
+                    os.makedirs(destination)
+                break
+            else:
+                self.incorrect_option()
+
+        os.chdir(destination)
+
+        return destination
+
+    def incorrect_option(self):
+        """
+        A function to notify the user that an incorrect option
+        has been entered and prompting him to enter a correct one
+        """
+        self.say("Oops! Looks like you entered an incorrect option", Fore.RED)
+        self.say("Look at the options once again:", Fore.GREEN)
+
 
 def catch_all_exceptions(do, pass_self=True):
     def try_do(self, s):
@@ -303,7 +338,8 @@ class CmdInterpreter(Cmd):
         # what if the platform does not have any engines, travis doesn't have sapi5 acc to me
         try:
             gtts_status = self._api.get_data('gtts_status')
-            self.speech = create_voice(self, gtts_status, rate=self.speech_rate)
+            self.speech = create_voice(
+                self, gtts_status, rate=self.speech_rate)
         except Exception as e:
             print_say("Voice not supported", self, Fore.RED)
             print_say(str(e), self, Fore.RED)

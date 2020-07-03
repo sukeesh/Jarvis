@@ -66,3 +66,14 @@ def unsupported(platform, silent=False):
 def executable_exists(name):
     binary_path = distutils.spawn.find_executable(name)
     return binary_path is not None and os.access(binary_path, os.X_OK)
+
+
+def get_parent_directory(path):
+    """
+    Removes the file name from the folder and returns
+    the remaining path
+    """
+    path = path.split('/')
+    path.pop()
+    destination = '/'.join(path)
+    return destination
