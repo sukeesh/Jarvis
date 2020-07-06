@@ -19,7 +19,7 @@ class XXXTest(PluginTest):
         self.test.run(TEST_STRING)
          
         # verify that code works
-        self.assertEqual(self.history_say.last_text, EXPECTED_OUTPUT)
+        self.assertEqual(self.history_say().last_text(), EXPECTED_OUTPUT)
 
 
 if __name__ == '__main__':
