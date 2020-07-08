@@ -26,5 +26,5 @@ def get_user_input(jarvis):
         except ValueError:
             jarvis.say("Sorry, I didn't understand that.", Fore.RED)
             continue
-    
+
     return ls
