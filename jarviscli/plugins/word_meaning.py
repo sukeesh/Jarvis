@@ -22,5 +22,5 @@ def get_meaning(jarvis, s):
                 full_string = str(num+1) + ') ' + text 
                 jarvis.say(full_string)
     else:
-        jarvis.say("I couldn't find meaning of" + s)
+        jarvis.say("I couldn't find meaning of " + s)
 
