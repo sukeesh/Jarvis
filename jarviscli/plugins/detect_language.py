@@ -35,6 +35,7 @@ def generate_response(jarvis, output):
     else:
         jarvis.say("I couldn't identify the language", Fore.BLUE)
 
+
 def open_model():
     """
     Opens a language detector model and disables warnings
@@ -44,6 +45,7 @@ def open_model():
     with open(os.devnull, "w") as f, contextlib.redirect_stdout(f):
         model = fasttext.load_model(model_path)
     return model
+    
 
 def open_languages():
     """
