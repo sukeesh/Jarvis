@@ -39,3 +39,4 @@ Image
 img2pdf
 pdf2image
 fasttext
+PyDictionary
