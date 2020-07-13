@@ -82,7 +82,7 @@ def get_pressure(jarvis, fulldata, sol):
     jarvis.say("PRESSURE:", Fore.YELLOW)
     pressure = fulldata[sol]['PRE']
 
-    avg = "AVG speed: " + str(round(pressure['av'], 1)) + " Pa"
+    avg = "AVG pressure: " + str(round(pressure['av'], 1)) + " Pa"
     ct = "Recorded samples: " + str(pressure['ct'])
     min_pressure = "MIN pressure: " + str(round(pressure['mn'], 1)) + " Pa"
     max_pressure = "MAX pressure: " + str(round(pressure['mx'], 1)) + " Pa"
