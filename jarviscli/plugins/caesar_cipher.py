@@ -1,5 +1,6 @@
 from plugin import plugin
 from colorama import Fore
+import string
 
 
 @plugin("caesar cipher")
@@ -41,15 +42,26 @@ def plain_to_cipher(jarvis):
     converted = ""
 
     for i in user_input:
-        if i.isalpha():
-            if i.isupper():
-                converted += chr((ord(i) - 68) % 26 + 65)
+        if is_ascii(i):
+            if i.isalpha():
+                if i.isupper():
+                    converted += chr((ord(i) - 68) % 26 + 65)
+                else:
+                    converted += chr((ord(i) - 100) % 26 + 97)
             else:
-                converted += chr((ord(i) - 100) % 26 + 97)
+                converted += i
         else:
-            converted += i
+            x = ord(i)
+            if x >= 192 and x <= 255:
+                converted += chr((ord(i) - 195) % 63 + 192)
+            else:
+                converted += i
 
     jarvis.say(converted, Fore.YELLOW)
+
+
+def is_ascii(s):
+    return all(ord(c) < 128 for c in s)
 
 
 def cipher_to_plain(jarvis):
@@ -57,13 +69,20 @@ def cipher_to_plain(jarvis):
     converted = ""
 
     for i in user_input:
-        if i.isalpha():
-            if i.isupper():
-                converted += chr((ord(i) - 62) % 26 + 65)
+        if is_ascii(i):
+            if i.isalpha():
+                if i.isupper():
+                    converted += chr((ord(i) - 62) % 26 + 65)
+                else:
+                    converted += chr((ord(i) - 94) % 26 + 97)
             else:
-                converted += chr((ord(i) - 94) % 26 + 97)
+                converted += i
         else:
-            converted += i
+            x = ord(i)
+            if x >= 192 and x <= 255:
+                converted += chr((ord(i) - 189) % 63 + 192)
+            else:
+                converted += i
 
     jarvis.say(converted, Fore.YELLOW)
 
