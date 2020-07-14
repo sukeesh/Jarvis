@@ -1,6 +1,11 @@
-from plugin import plugin
+import contextlib
+import json
+import os
+
 from colorama import Fore
-import fasttext, os, contextlib, json
+
+import fasttext
+from plugin import plugin
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
@@ -45,7 +50,7 @@ def open_model():
     with open(os.devnull, "w") as f, contextlib.redirect_stdout(f):
         model = fasttext.load_model(model_path)
     return model
-    
+
 
 def open_languages():
     """
