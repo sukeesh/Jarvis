@@ -38,4 +38,3 @@ windows-curses; sys_platform == 'win32'
 Image
 img2pdf
 pdf2image
-fasttext
