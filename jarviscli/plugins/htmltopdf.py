@@ -6,6 +6,7 @@ from plugin import plugin, require, LINUX
 @plugin("htmltopdf")
 class htmltopdf:
     """Convert your html file or web page into pdf file"""
+
     def __call__(self, jarvis, s):
         jarvis.say("Welcome to the htmltopdf convertor! \nType 'help htmltopdf' to learn how to use it")
 
@@ -21,6 +22,7 @@ class htmltopdf_file:
     'example.pdf'
     Your html file must be in the jarvis source directory
     """
+
     def __call__(self, jarvis, s):
         if not s:
             jarvis.say("please enter a file name after calling the plugin")
@@ -42,6 +44,7 @@ class htmltopdf_url:
     The output file will be the following:
     'google.com.pdf'
     """
+
     def __call__(self, jarvis, s):
         if not s:
             jarvis.say("please enter an url after calling the plugin")

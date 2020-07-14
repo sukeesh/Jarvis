@@ -54,6 +54,14 @@ RequestsSecurity = {
 }
 
 
+Fasttext = {
+    "name": "Fasttext language recognition",
+    "pip": ['fasttext'],
+    "description": "Fasttext is a text classification library capable of detecting 176 languages.",
+    "instructions": "https://github.com/facebookresearch/fastText/#requirements"
+}
+
+
 NativeNotification = {
     "name": "Notification",
     "executable": ['notify-send'],
@@ -123,7 +131,7 @@ WKHTMLTOPDF = {
 }
 
 
-OPTIONAL_REQUIREMENTS = [PortAudio, RequestsSecurity, FFMPEG, ESPEAK, WKHTMLTOPDF]
+OPTIONAL_REQUIREMENTS = [PortAudio, RequestsSecurity, FFMPEG, ESPEAK, WKHTMLTOPDF, Fasttext]
 
 
 if not sys.platform == "darwin":

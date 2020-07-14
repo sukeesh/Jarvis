@@ -8,6 +8,7 @@ class MockResponse:
     """
     This class is used to create a mock Response from requests.get
     """
+
     def __init__(self, text):
         self.text = text
 
@@ -19,6 +20,7 @@ class GeocoderTest(PluginTest):
     """
     This class is testing the geocode plugin.
     """
+
     def setUp(self):
         self.test_geocoder = self.load_plugin(Geocoder)
 

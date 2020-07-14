@@ -1,6 +1,10 @@
-from utilities.GeneralUtilities import wordIndex
 import CmdInterpreter
 from . import mapps
+
+
+def wordIndex(data, word):
+    wordList = data.split()
+    return wordList.index(word)
 
 
 def main(data):
