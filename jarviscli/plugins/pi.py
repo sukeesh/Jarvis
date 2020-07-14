@@ -3,6 +3,7 @@ import os
 from colorama import Fore
 
 
+
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 NUM_NEXT = 100
 
@@ -15,7 +16,6 @@ def next_pi(jarvis, s):
     # print(today)
 
     pi_file = open(os.path.join(FILE_PATH, '../data/pi.txt'), 'r')
-
     pi_number = pi_file.read()
     index = 4
     while True:
