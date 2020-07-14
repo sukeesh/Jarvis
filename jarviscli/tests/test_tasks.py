@@ -60,7 +60,7 @@ class TaskManagerTest(PluginTest):
             if task_list[i]["name"] == task_name:
                 try:
                     result = task_list[i]["priority"] == desired_priority
-                except:
+                except BaseException:
                     pass
         self.remove_task_from_memory(task_name)
         return result

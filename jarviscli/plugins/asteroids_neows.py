@@ -5,7 +5,7 @@ import datetime
 
 API_KEY = '1ebd3b92bf5041249f8c1e7a540ce98c'
 headers = {'X-Auth-Token': API_KEY}
-#url = 'https://api.nasa.gov/neo/rest/v1/feed?start_date=2020-07-10&end_date=2020-07-10&api_key=DqXuTRFieGmR5EbdTpPA0tIbDybBhuVmWNerhOdN'
+# url = 'https://api.nasa.gov/neo/rest/v1/feed?start_date=2020-07-10&end_date=2020-07-10&api_key=DqXuTRFieGmR5EbdTpPA0tIbDybBhuVmWNerhOdN'
 
 
 @require(network=True)
@@ -15,7 +15,7 @@ def neows(jarvis, s):
     if option == 8:
         return
 
-    dt = str(datetime.date.today() + datetime.timedelta(days=option-1))
+    dt = str(datetime.date.today() + datetime.timedelta(days=option - 1))
     print_objects(jarvis, dt)
 
 
@@ -31,7 +31,7 @@ def print_objects(jarvis, dt):
     print()
 
     for i in range(0, r["element_count"]):
-        print("---" + str(i+1) + "---")
+        print("---" + str(i + 1) + "---")
         name = "Name: " + neos[i]["name"]
         jarvis.say(name, Fore.BLUE)
 
@@ -80,7 +80,7 @@ def get_option(jarvis):
     while True:
         try:
             option = int(jarvis.input("Enter your choice: ", Fore.GREEN))
-            if option >=1 and option <=8:
+            if option >= 1 and option <= 8:
                 return option
             else:
                 jarvis.say(
@@ -89,6 +89,7 @@ def get_option(jarvis):
             jarvis.say(
                 "Invalid input! Enter a number from the choices provided.", Fore.YELLOW)
         print()
+
 
 def fetch(url):
     r = requests.get(url, headers=headers)
