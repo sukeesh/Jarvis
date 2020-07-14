@@ -100,7 +100,6 @@ class VoiceLinux(Voice_general):
     def __init__(self, rate):
         super().__init__(rate)
 
-
     def text_to_speech(self, speech):
         """
         :param speech: The text we want Jarvis to generate as audio

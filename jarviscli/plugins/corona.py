@@ -15,6 +15,7 @@ class CoronaInfo:
 
     ** Data provided by: https://api.covid19api.com/
     """
+
     def __call__(self, jarvis, s):
         if 'help' in s:
             jarvis.say(cleandoc(self.__doc__), Fore.GREEN)

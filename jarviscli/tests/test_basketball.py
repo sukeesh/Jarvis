@@ -11,7 +11,6 @@ class BasketballTest(PluginTest):
     """
     Tests For Basketball Plugin
     !!! test will be executed only if user has added his own api.basketball.com API_KEY
-    
     """
 
     def setUp(self):

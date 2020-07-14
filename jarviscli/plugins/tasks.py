@@ -30,7 +30,7 @@ class TaskManager():
             try:
                 priority = self.tasks[i]["priority"]
                 jarvis.say("{}. {} PR: {}".format(i + 1, self.tasks[i]["name"], priority), self.get_color_with_priority(priority))
-            except:
+            except BaseException:
                 jarvis.say("{}. {}".format(i + 1, self.tasks[i]["name"]))
 
     def get_color_with_priority(self, priority):
@@ -126,7 +126,7 @@ class TaskManager():
                     return 2
                 else:
                     return 1
-            except:
+            except BaseException:
                 return 0
 
         def sort_by_name(task):
@@ -143,7 +143,7 @@ class TaskManager():
                 priority = sorted_tasks[i]["priority"]
                 color = self.get_color_with_priority(priority)
                 jarvis.say("{}. {} PR: {}".format(i + 1, sorted_tasks[i]["name"], priority), color)
-            except:
+            except BaseException:
                 jarvis.say("{}. {}".format(i + 1, sorted_tasks[i]["name"]))
 
     def procces_chosen_option(self, option, jarvis):
