@@ -16,3 +16,15 @@ def call_routine(jarvis, s):
     success = jarvis.execute_routine(s)
     if not success:
         jarvis.say("The routine you requested doesn't seem to exist.")
+
+@plugin("list routines")
+def list_routines(jarvis, s):
+    routines = jarvis.get_data("routines")
+    for i in routines.keys():
+        jarvis.say(str(i))
+
+@plugin("delete routine")
+def delete_routines(jarvis, s):
+    routines = jarvis.get_data("routines")
+    routines.pop(s)
+    jarvis.update_data("routines", routines)
