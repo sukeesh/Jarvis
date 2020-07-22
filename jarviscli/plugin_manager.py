@@ -196,8 +196,9 @@ class PluginManager(object):
                         platforms.extend(value)
 
             if plugin.Platform.ANDROID in platforms:
-                imports += [_plugin._origin]
-                plugins += [_plugin._origin + '.' + _plugin.__class__.__name__]
+                origin = _plugin._origin.replace('jarviscli.', '')
+                imports += [origin]
+                plugins += [origin + '.' + _plugin.__class__.__name__]
 
         imports = sorted(list(set(imports)))
         plugins = sorted(plugins)

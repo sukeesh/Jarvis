@@ -9,7 +9,7 @@ from utilities.voice import create_voice
 
 class DummyIO:
     def say(self, text, color=''):
-        pass
+        print(text)
 
     def inptu(self, prompt="", color=""):
         pass
@@ -44,6 +44,8 @@ class JarvisAPI:
         if not self.speech_rate:
             self.speech_rate = 120
 
+        self.io = DummyIO()
+
         # what if the platform does not have any engines, travis doesn't have sapi5 acc to me
         try:
             gtts_status = self.get_data('gtts_status')
@@ -52,7 +54,6 @@ class JarvisAPI:
             self.say("Voice not supported", self, Fore.RED)
             self.say(str(e), self, Fore.RED)
 
-        self.io = DummyIO()
 
     def say(self, text, color="", speak=True):
         """
