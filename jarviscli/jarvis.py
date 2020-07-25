@@ -14,12 +14,15 @@ HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
 
 
 class Jarvis:
-    def __init__(self, language_parser, plugin_manager):
+    def __init__(self, language_parser, plugin_manager, server):
         self.jarvis_api = JarvisAPI()
         self.language_parser = language_parser
         self.plugin_manager = plugin_manager
+        self.server = server
 
-        self.language_parser.train(self.plugin_manager.get_plugins().values())
+        plugin_values = self.plugin_manager.get_plugins().values()
+        self.language_parser.train(plugin_values)
+        self.server.init_server_endpoints(jarvis_plugins=plugin_values)
 
         self.cache = ''
         self.stdout = self

@@ -263,3 +263,6 @@ class JarvisAPI:
 
     def is_spinner_running(self):
         return self.spinner_running
+
+    def get_server(self):
+        return self.io.cmd_interpreter._jarvis.server

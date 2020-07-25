@@ -4,6 +4,7 @@ import sys
 import colorama
 
 from jarvis import Jarvis
+from ui.server import server
 from language import default
 from plugin_manager import PluginManager
 
@@ -14,12 +15,12 @@ def check_python_version():
 
 def main_cli():
     from ui.cmd_interpreter import CmdInterpreter
-    from langugage import snips
+    from language import snips
 
-    #language_parser = default.DefaultLanguageParser()
     language_parser = snips.LanguageParser()
     plugin_manager = build_plugin_manager()
-    jarvis = Jarvis(language_parser, plugin_manager)
+    jarvis_server = server.JarvisServer()
+    jarvis = Jarvis(language_parser, plugin_manager, jarvis_server)
     cmd_interpreter = CmdInterpreter(jarvis)
 
     command = " ".join(sys.argv[1:]).strip()
@@ -37,7 +38,8 @@ def main_gui():
         plugin_manager = build_plugin_manager()
 
     language_parser = default.DefaultLanguageParser()
-    jarvis = Jarvis(language_parser, plugin_manager)
+    jarvis_server = server.JarvisServer()
+    jarvis = Jarvis(language_parser, plugin_manager, jarvis_server)
     jarvis_gui = JarvisApp(jarvis)
 
     jarvis_gui.run()
