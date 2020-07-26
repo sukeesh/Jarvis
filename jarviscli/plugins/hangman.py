@@ -80,6 +80,12 @@ def hangman(jarvis, s):
         print("Word To Guess Was : "+actualWordToGuess.upper())
         terminateFlag = continueOrNot()
 
+    goodByeText = "#########################################\n" \
+                  "#               Farewell!               #\n" \
+                  "#       May The Force Be With You!      #\n" \
+                  "#########################################\n"
+    print(goodByeText)
+
 def continueOrNot():
     terminationFlag = 0
     desire = input("Do You Want To Play Again? (Y/N) ")
