@@ -1,5 +1,4 @@
 import copy
-import keyboard
 import os
 import time
 from pynput import keyboard
@@ -10,36 +9,15 @@ isRight= 0
 isLeft= 0
 terminate = 0
 
-
-def on_press(key):
-    global  isRight
-    global  isLeft
-    global terminate
-    if key == keyboard.Key.a:
-        isLeft = 1
-        isRight = 0
-    elif key == keyboard.Key.d:
-        isRight = 1
-        isLeft = 0
-    elif key == keyboard.Key.p:
-        terminate = 1
-        print(terminate)
-
-
 @plugin('breakout')
 def breakoutRunner(jarvis, s):
-    with keyboard.Listener(
-            on_press=on_press) as listener:
-        listener.join()
-    listener.start()
-    while 1:
-        a = 3
-    # p1 = Process(target=breakout())
-    # p2 = Process(target=breakoutListener())
+    p1 = Process(target=breakout())
+    p2 = Process(target=breakoutListener())
 
-    # p1.start()
-    # p1.join()
-    # p2.start()
+    p1.start()
+    p1.join()
+    p2.start()
+    p2.join()
 
 def breakoutListener():
     global terminate
@@ -54,7 +32,7 @@ def breakoutListener():
         if keyboard.is_pressed('d'):
             isRight = 1
             isLeft = 0
-        if keyboard.is_pressed("e"):
+        if keyboard.is_pressed('p'):
             terminate = 1
 
 def breakout():
@@ -101,7 +79,8 @@ def breakout():
             vy *= -1
         if game_board[ball_y][ball_x] == '_':
             vy *= -1
-        if ball_y >= 10:
+        if ball_y >= 9:
+            
             print("life decreased")
         game_board[ball_y][ball_x] = ' '
         ball_x += vx
