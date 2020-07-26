@@ -1,6 +1,7 @@
 from plugin import plugin
 from random_word import RandomWords
 
+
 @plugin('hangman')
 def hangman(jarvis, s):
     initialText = "#########################################\n" \
@@ -17,14 +18,14 @@ def hangman(jarvis, s):
         usedLetters = ""
         actualWordToGuess = ""
         while len(actualWordToGuess) < 4:
-            try :
+            try:
                 actualWordToGuess = randomWords.get_random_word()
             except:
                 continue
         actualWordToGuess = actualWordToGuess.lower()
         wordToGuess = ""
         for x in range(len(actualWordToGuess)):
-            wordToGuess = wordToGuess+"_"
+            wordToGuess = wordToGuess + "_"
         while 1:
             if lives == 0:
                 print("You Lost!\n")
@@ -32,7 +33,7 @@ def hangman(jarvis, s):
             if actualWordToGuess == wordToGuess:
                 print("You Won!\n")
                 break
-            print("Word To Guess Looks Like This : "+wordToGuess+"\n")
+            print("Word To Guess Looks Like This : " + wordToGuess + "\n")
             guess = input("Enter Your Guess : ")
             print("\n")
             guess = guess.strip()
@@ -43,30 +44,30 @@ def hangman(jarvis, s):
             if len(guess) == 0:
                 print("Woops! You Have Not Entered Anything\n")
                 lives = lives - 1
-                print("Penalty! Lives Decrease By 1, Remains : "+str(lives)+"\n")
-                drawStickMan(8-lives)
+                print("Penalty! Lives Decrease By 1, Remains : " + str(lives) + "\n")
+                drawStickMan(8 - lives)
                 continue
             if len(guess) > 1:
                 print("Woops! You Have Entered Input Longer Than Character Size\n")
                 lives = lives - 1
-                print("Penalty! Lives Decrease By 1, Remains : "+str(lives)+"\n")
-                drawStickMan(8-lives)
+                print("Penalty! Lives Decrease By 1, Remains : " + str(lives) + "\n")
+                drawStickMan(8 - lives)
                 continue
             if guess in usedLetters:
                 print("Woops! You Have Entered Letter That Is Already Used\n")
                 lives = lives - 1
-                print("Penalty! Lives Decrease By 1, Remains : "+str(lives)+"\n")
-                drawStickMan(8-lives)
+                print("Penalty! Lives Decrease By 1, Remains : " + str(lives) + "\n")
+                drawStickMan(8 - lives)
                 continue
             if guess not in actualWordToGuess:
                 print("Woops! You Have Entered Wrong Guess\n")
                 lives = lives - 1
-                print("Penalty! Lives Decrease By 1, Remains : "+str(lives)+"\n")
-                drawStickMan(8-lives)
+                print("Penalty! Lives Decrease By 1, Remains : " + str(lives) + "\n")
+                drawStickMan(8 - lives)
                 continue
             if guess.lower() in actualWordToGuess:
                 print("YES! You Have Entered Correct Guess\n")
-                drawStickMan(8-lives)
+                drawStickMan(8 - lives)
 
             usedLetters = usedLetters + guess
             newWordToGuess = ""
@@ -77,7 +78,7 @@ def hangman(jarvis, s):
                     newWordToGuess = newWordToGuess + wordToGuess[position]
             wordToGuess = newWordToGuess
 
-        print("Word To Guess Was : "+actualWordToGuess.upper())
+        print("Word To Guess Was : " + actualWordToGuess.upper())
         terminateFlag = continueOrNot()
 
     goodByeText = "#########################################\n" \
@@ -85,6 +86,7 @@ def hangman(jarvis, s):
                   "#       May The Force Be With You!      #\n" \
                   "#########################################\n"
     print(goodByeText)
+
 
 def continueOrNot():
     terminationFlag = 0
@@ -102,6 +104,7 @@ def continueOrNot():
     elif desire == "y":
         print("Hangman Game Resets!\n")
     return terminationFlag
+
 
 def drawStickMan(phaseMain):
     stickman = ""
@@ -127,4 +130,3 @@ def drawStickMan(phaseMain):
             stickman = stickman + "   |__   __\n"
         phase = phase + 1
     print(stickman)
-

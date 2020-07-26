@@ -3,7 +3,6 @@ import os
 from colorama import Fore
 
 
-
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 NUM_NEXT = 100
 
