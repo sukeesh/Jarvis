@@ -59,6 +59,7 @@ def breakoutListener():
 
 def breakout():
     global terminate
+    numScores = 0
     game_board_template = [
         ['#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'],
         ['#', ' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', ' ', '#'],
@@ -79,6 +80,9 @@ def breakout():
     paddle_y = 9
     paddle_x = 10
     while 1:
+        if numScores ==68:
+            print("YOU WON!")
+            break
         os.system('cls')
         if terminate :
             break
@@ -93,6 +97,7 @@ def breakout():
         if ball_x >= 19 or ball_x <= 1:
             vx *= -1
         if ball_y <= 1 or game_board[ball_y][ball_x] == '-':
+            numScores+=1
             vy *= -1
         if game_board[ball_y][ball_x] == '_':
             vy *= -1
