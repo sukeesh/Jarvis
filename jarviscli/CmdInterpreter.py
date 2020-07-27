@@ -243,33 +243,6 @@ class JarvisAPI(object):
 
     def is_spinner_running(self):
         return self.spinner_running
-    
-    def create_routine(self, commands, name):
-        """
-        Saves a new routine to memory with a name and a list of instructions.
-        :return: Nothing to return. 
-        """
-        routines = self.get_data("routines")
-        if routines is None:
-            self.add_data("routines", {name: commands})
-        else:
-            routines[name] = commands
-            self.update_data("routines", routines)
-    
-    def execute_routine(self, name):
-        """
-        Executes a routine saved in memory based on its name. If the routine doesn't exist, returns False.
-
-        :return: Whether or not the requested routine exists.
-        """
-        routines = self.get_data("routines")
-        try:
-            routine = routines[name]
-        except (TypeError, KeyError) as e:
-            return False
-        for command in routine:
-            self.eval(command)
-        return True
 
 
 def catch_all_exceptions(do, pass_self=True):
