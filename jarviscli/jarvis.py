@@ -22,7 +22,6 @@ class Jarvis:
 
         plugin_values = self.plugin_manager.get_plugins().values()
         self.language_parser.train(plugin_values)
-        self.server.init_server_endpoints(self, plugin_values)
 
         self.cache = ''
         self.stdout = self

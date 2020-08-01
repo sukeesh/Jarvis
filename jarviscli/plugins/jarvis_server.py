@@ -13,7 +13,7 @@ def server_start(jarvis, s):
         else:
             jarvis_server.server_host, jarvis_server.port = s.split(" ")[0], int(s.split(" ")[1])
 
-    jarvis.server_thread = Process(target=jarvis_server.start_server)
+    jarvis.server_thread = Process(target=jarvis_server.start_server, args=(jarvis, ))
     jarvis.server_thread.start()
 
 

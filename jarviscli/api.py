@@ -54,7 +54,6 @@ class JarvisAPI:
             self.say("Voice not supported", self, Fore.RED)
             self.say(str(e), self, Fore.RED)
 
-
     def say(self, text, color="", speak=True):
         """
         This method give the jarvis the ability to print a text
@@ -265,4 +264,5 @@ class JarvisAPI:
         return self.spinner_running
 
     def get_server(self):
-        return self.io.cmd_interpreter._jarvis.server
+        return self._jarvis.server
+

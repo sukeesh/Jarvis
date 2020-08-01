@@ -14,6 +14,9 @@ class Platform(enum.Enum):
     UNIX = -1
     # Shortcut for MACOS + LINUX + WINDOW
     DESKTOP = -2
+    # there are some plugins that should only be working on a server
+    # or when the server is enabled
+    SERVER = 4
 
 
 def plugin(name):
