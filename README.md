@@ -10,7 +10,7 @@ Jarvis is a simple personal assistant for Linux, MacOS and Windows which works o
 
 ## Getting Started
 
-In order to start Jarvis just clone [this repository](https://github.com/sukeesh/Jarvis.git) repository and run `python installer`.
+In order to start Jarvis just clone [this repository](https://github.com/sukeesh/Jarvis.git) and run `python installer`.
 
 Run **Jarvis** from anywhere by command `jarvis`
 
@@ -29,8 +29,8 @@ You can start by typing `help` within the Jarvis command line to check what Jarv
 
 - PRs are accepted!!
 - We follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) guidelines. Before making a PR, make sure that your code is according to PEP 8 standards.
-- If you have some ideas for new features and you don't have time to implement them please open an issue with the tag new_feature
-- Please don't forget to comment (document) your code
+- If you have some ideas for new features and you don't have time to implement them please open an issue with the tag new_feature.
+- Please don't forget to comment (document) your code!
 
 
 
@@ -100,4 +100,4 @@ See also the list of [contributors](https://github.com/sukeesh/Jarvis/graphs/con
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
