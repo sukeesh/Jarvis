@@ -80,7 +80,7 @@ def get_host_info(jarvis, s):
     return None
 
 
-@require(platform=UNIX, network=True)
+@require(platform=UNIX, network=True, native=['whois', 'nslookup', 'ping'])
 @plugin("hostinfo")
 def main(jarvis, s):
     get_host_info(jarvis, s)

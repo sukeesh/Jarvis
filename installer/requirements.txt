@@ -31,6 +31,7 @@ sympy
 tabulate
 termdown
 opencv-python
+whois
 wikipedia
 win10toast; sys_platform == 'win32'
 gtts
