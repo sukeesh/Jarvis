@@ -82,8 +82,9 @@ class RemindTodoBase:
         for entry in data:
             ask_str.append(self.format(jarvis, entry))
 
-        title = 'Please choose task to remove (select with space)'
+        title = 'Please choose task to remove (select with space, j and k to move up and down)'
         selected = pick(ask_str, title, multi_select=True)
+        print(selected)
         selected = [entry[1] for entry in selected]
 
         new_data = []
@@ -157,7 +158,7 @@ class TodoBase(RemindTodoBase):
         if len(ask_str) == 0:
             return None
 
-        title = 'Please choose from todo list:'
+        title = 'Please choose from todo list (j and k to move up and down, enter to select):'
         _, index = pick(ask_str, title)
 
         return data[index]
@@ -380,7 +381,12 @@ class Todo_Progress(TodoBase):
 
     def __call__(self, jarvis, s):
         entry = self.select_one_remind(jarvis)
-        entry['progress'] = jarvis.input("Progress: ")
+        inp = jarvis.input("Set a progress level between 0 and 100, as a percentage: ")
+        if inp.isnumeric() and 0 <= int(inp) <= 100:
+            entry['progress'] = int(inp)
+        else:
+            jarvis.say("The progress level must be an integer between 0 and 100.", color=Fore.MAGENTA)
+    
         self.modify(jarvis, entry)
 
 
