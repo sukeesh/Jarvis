@@ -104,13 +104,14 @@ class RemindTodoBase:
         data.append(modified_entry)
         self.save_data(jarvis, data)
 
-    def do_print(self, jarvis):
+    def do_print(self, jarvis, should_print=lambda x: True):
         todo_list = self.get_data(jarvis)
 
         if len(todo_list) == 0:
             jarvis.say("No entry!")
         for entry in todo_list:
-            jarvis.say(self.format(jarvis, entry))
+            if should_print(entry):
+                jarvis.say(self.format(jarvis, entry))
 
 
 class TodoBase(RemindTodoBase):
@@ -350,6 +351,12 @@ class Todo(TodoBase):
 
     def __call__(self, jarvis, s):
         self.do_print(jarvis)
+
+
+@plugin('todo incomplete')
+class Todo_Incomplete(TodoBase):
+    def __call__(self, jarvis, s):
+        self.do_print(jarvis, lambda entry: entry['progress'] < 100)
 
 
 @plugin('todo add')
