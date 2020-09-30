@@ -2,7 +2,9 @@
 
 [![Build Status](https://travis-ci.org/sukeesh/Jarvis.svg?branch=master)](https://travis-ci.org/sukeesh/Jarvis) [![Join the chat at https://gitter.im/Sukeesh_Jarvis/Lobby](https://badges.gitter.im/Sukeesh_Jarvis/Lobby.svg)](https://gitter.im/Sukeesh_Jarvis/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-A Personal Assistant for Linux, MacOS and Windows
+A Personal Assistant for Linux, MacOS and Windows.
+you can do a lot of things with it.
+you can also make your jarvis to say a audio, just like real jarvis like iron man movie.
 
 ![Jarvis](http://i.imgur.com/xZ8x9ES.jpg)
 
