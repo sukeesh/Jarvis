@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/sukeesh/Jarvis.svg?branch=master)](https://travis-ci.org/sukeesh/Jarvis) [![Join the chat at https://gitter.im/Sukeesh_Jarvis/Lobby](https://badges.gitter.im/Sukeesh_Jarvis/Lobby.svg)](https://gitter.im/Sukeesh_Jarvis/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-A Personal Assistant for Linux, MacOS and Windows
+Jarvis for Linux, MacOS and Windows
 
 ![Jarvis](http://i.imgur.com/xZ8x9ES.jpg)
 
