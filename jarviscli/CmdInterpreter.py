@@ -81,7 +81,7 @@ class JarvisAPI(object):
                 else:
                     return value
             except ValueError:
-                prompt = 'Sorry, needs to be a number. Try again: '
+                prompt = 'Sorry, needs to be a number, please try again: '
                 continue
 
     def connection_error(self):
