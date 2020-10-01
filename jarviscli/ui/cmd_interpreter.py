@@ -36,11 +36,11 @@ class CmdInterpreter(Cmd):
 {BLUE}Jarvis' sound is by default disabled.{RESET}
 {BLUE}In order to let Jarvis talk out load type:{RESET}{RED}enable sound{RESET}
 Type 'help' for a list of available actions.
-""".format(BLUE=Fore.BLUE, RESET=Fore.RESET, RED=Fore.RED)
+""".format(BLUE=Fore.RED, RESET=Fore.RESET, RED=Fore.GREEN)
 
     prompt = (
         Fore.RED
-        + "{} Hi, what can I do for you?\n".format(PROMPT_CHAR)
+        + "{} Hi, what should i do for you?\n".format(PROMPT_CHAR)
         + Fore.RESET)
 
     def __init__(self, jarvis):
