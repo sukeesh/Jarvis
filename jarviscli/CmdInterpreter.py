@@ -11,7 +11,7 @@ from PluginManager import PluginManager
 from utilities import schedule
 from utilities.voice import create_voice
 from utilities.notification import notify
-from utilities.GeneralUtilities import print_say, get_parent_directory
+from utilities.GeneralUtilities import get_parent_directory
 
 from packages.memory.memory import Memory
 from utilities.animations import SpinnerThread
@@ -327,6 +327,7 @@ class CmdInterpreter(Cmd):
         self.memory = Memory()
         self.scheduler = schedule.Scheduler()
         self._api = JarvisAPI(self)
+        self.say = self._api.say
 
         # Remember voice settings
         self.enable_voice = self._api.get_data('enable_voice')
@@ -336,13 +337,14 @@ class CmdInterpreter(Cmd):
             self.speech_rate = 120
 
         # what if the platform does not have any engines, travis doesn't have sapi5 acc to me
+
         try:
             gtts_status = self._api.get_data('gtts_status')
             self.speech = create_voice(
                 self, gtts_status, rate=self.speech_rate)
         except Exception as e:
-            print_say("Voice not supported", self, Fore.RED)
-            print_say(str(e), self, Fore.RED)
+            self.say("Voice not supported", Fore.RED)
+            self.say(str(e), Fore.RED)
 
         self.fixed_responses = {"what time is it": "clock",
                                 "where am i": "pinpoint",
@@ -421,7 +423,7 @@ class CmdInterpreter(Cmd):
         if self._api.is_spinner_running():
             self._api.spinner_stop('Some error has occured')
 
-        print_say("Goodbye, see you later!", self, Fore.RED)
+        self.say("Goodbye, see you later!", self, Fore.RED)
         self.scheduler.stop_all()
         sys.exit()
 
@@ -431,7 +433,7 @@ class CmdInterpreter(Cmd):
 
     def error(self):
         """Jarvis let you know if an error has occurred."""
-        print_say("I could not identify your command...", self, Fore.RED)
+        self.say("I could not identify your command...", Fore.RED)
 
     def interrupt_handler(self, signal, frame):
         """Closes Jarvis on SIGINT signal. (Ctrl-C)"""
@@ -441,30 +443,28 @@ class CmdInterpreter(Cmd):
         """Prints plugin status status"""
         count_enabled = self._plugin_manager.get_number_plugins_loaded()
         count_disabled = len(self._plugin_manager.get_disabled())
-        print_say(
+        self.say(
             "{} Plugins enabled, {} Plugins disabled.".format(
                 count_enabled,
-                count_disabled),
-            self)
+                count_disabled))
 
         if "short" not in s and count_disabled > 0:
-            print_say("", self)
+            self.say("", self)
             for disabled, reason in self._plugin_manager.get_disabled().items():
-                print_say(
+                self.say(
                     "{:<20}: {}".format(
                         disabled,
-                        " OR ".join(reason)),
-                    self)
+                        " OR ".join(reason)))
 
     def do_help(self, arg):
         if arg:
             Cmd.do_help(self, arg)
         else:
-            print_say("", self)
+            self.say("")
             headerString = "These are valid commands for Jarvis"
             formatString = "Format: command ([aliases for command])"
-            print_say(headerString, self)
-            print_say(formatString, self, Fore.BLUE)
+            self.say(headerString)
+            self.say(formatString, Fore.BLUE)
             pluginDict = self._plugin_manager.get_plugins()
             uniquePlugins = {}
             for key in pluginDict.keys():
@@ -488,5 +488,5 @@ class CmdInterpreter(Cmd):
             Cmd.columnize(self, helpOutput)
 
     def help_status(self):
-        print_say("Prints info about enabled or disabled plugins", self)
-        print_say("Use \"status short\" to omit detailed information.", self)
+        self.say("Prints info about enabled or disabled plugins")
+        self.say("Use \"status short\" to omit detailed information.")
