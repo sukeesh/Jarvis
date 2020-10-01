@@ -1,6 +1,6 @@
 # How to create tests
 
-## Test plugins
+## Test plugins - Amazing Project
 
 Use this as a macro (replace XXX with the module you want to test):
 
