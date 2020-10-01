@@ -91,6 +91,12 @@ Run with docker (docker needs to be installed and running):
 [sudo] make build_docker
 [sudo] make run_docker
 ```
+## Useful Commands
+1. help
+2. jarvis
+3. restaurants near me
+4. book shopping
+4. favourite place to visit
 
 ## Authors
 
