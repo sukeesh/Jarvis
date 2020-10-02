@@ -6,6 +6,7 @@ import nltk
 import re
 import sys
 import tempfile
+import new
 from utilities.GeneralUtilities import print_say
 from CmdInterpreter import CmdInterpreter
 
