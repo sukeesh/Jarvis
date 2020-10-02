@@ -1,14 +1,12 @@
 # Jarvis
 
- ![](icons/jarvis.png)
+[![Build Status](https://travis-ci.org/sukeesh/Jarvis.svg?branch=master)](https://travis-ci.org/sukeesh/Jarvis) [![Join the chat at https://gitter.im/Sukeesh_Jarvis/Lobby](https://badges.gitter.im/Sukeesh_Jarvis/Lobby.svg)](https://gitter.im/Sukeesh_Jarvis/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-<!-- [![Build Status](https://travis-ci.org/sukeesh/Jarvis.svg?branch=master)](https://travis-ci.org/sukeesh/Jarvis) [![Join the chat at https://gitter.im/Sukeesh_Jarvis/Lobby](https://badges.gitter.im/Sukeesh_Jarvis/Lobby.svg)](https://gitter.im/Sukeesh_Jarvis/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
- -->
 A Personal Assistant for Linux, MacOS and Windows
 
 ![Jarvis](http://i.imgur.com/xZ8x9ES.jpg)
 
-Jarvis is a simple personal assistant for Linux, MacOS and Windows which works on the command line. He can talk to you if you enable his voice. He can tell you the weather, he can find restaurants and other places near you. He can do some great stuff for you.
+Jarvis is a simple personal assistant for Linux, MacOS and Windows which works on the command line. It can speak if you enable it's voice. It can tell you the weather, find restaurants and other places near you. It is capable of doing a lot of stuff for you.
 
 ## Getting Started
 
