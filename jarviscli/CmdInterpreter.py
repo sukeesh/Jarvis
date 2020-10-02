@@ -423,7 +423,7 @@ class CmdInterpreter(Cmd):
         if self._api.is_spinner_running():
             self._api.spinner_stop('Some error has occured')
 
-        self.say("Goodbye, see you later!", self, Fore.RED)
+        self.say("Goodbye, see you later!", Fore.RED)
         self.scheduler.stop_all()
         sys.exit()
 
@@ -449,7 +449,7 @@ class CmdInterpreter(Cmd):
                 count_disabled))
 
         if "short" not in s and count_disabled > 0:
-            self.say("", self)
+            self.say("")
             for disabled, reason in self._plugin_manager.get_disabled().items():
                 self.say(
                     "{:<20}: {}".format(
