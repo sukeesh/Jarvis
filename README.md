@@ -36,9 +36,9 @@ You can start by typing `help` within the Jarvis command line to check what Jarv
 
 ### QuickStart: Create a new feature (plugin)
 
-Create new file custom/hello_world.py
+Create new file `custom/hello_world.py`
 
-```
+```python
 from plugin import plugin
 
 
@@ -94,7 +94,7 @@ Run with docker (docker needs to be installed and running):
 
 ## Authors
 
- **sukeesh**
+ [**sukeesh**](https://github.com/sukeesh)
 
 See also the list of [contributors](https://github.com/sukeesh/Jarvis/graphs/contributors) who have participated in this project.
 
