@@ -209,10 +209,8 @@ class Football():
         if status != "SCHEDULED":
             # Get the score after 90 mins ordinary time
             scores = match["score"]
-            homeScore = scores["halfTime"]["homeTeam"] + \
-                scores["fullTime"]["homeTeam"]
-            awayScore = scores["halfTime"]["awayTeam"] + \
-                scores["fullTime"]["awayTeam"]
+            homeScore = scores["fullTime"]["homeTeam"]
+            awayScore = scores["fullTime"]["awayTeam"]
             lines.append("SCORE: {} - {}".format(homeScore, awayScore))
             if scores["extraTime"]["homeTeam"] is not None:
                 # Match went on to extra time
