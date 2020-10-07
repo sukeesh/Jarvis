@@ -1,7 +1,7 @@
-import subprocess
-from utilities.GeneralUtilities import executable_exists
-from plugin import plugin, require, LINUX, WINDOWS
 import os
+import subprocess
+
+from plugin import LINUX, WINDOWS, plugin, require
 
 VALID_OPTIONS = ['status', 'vendor', 'energy', 'technology', 'remaining']
 

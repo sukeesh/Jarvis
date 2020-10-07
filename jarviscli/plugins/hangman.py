@@ -20,13 +20,13 @@ def hangman(jarvis, s):
         while len(actualWordToGuess) < 4:
             try:
                 actualWordToGuess = randomWords.get_random_word()
-            except:
+            except BaseException:
                 continue
         actualWordToGuess = actualWordToGuess.lower()
         wordToGuess = ""
         for x in range(len(actualWordToGuess)):
             wordToGuess = wordToGuess + "_"
-        while 1:
+        while True:
             if lives == 0:
                 print("You Lost!\n")
                 break
