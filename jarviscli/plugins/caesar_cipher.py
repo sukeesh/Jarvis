@@ -1,6 +1,6 @@
-from plugin import plugin
 from colorama import Fore
-import string
+
+from plugin import plugin
 
 
 @plugin("caesar cipher")

@@ -1,6 +1,8 @@
-from plugin import plugin
-from colorama import Back, Fore, Style
 import random
+
+from colorama import Back
+
+from plugin import plugin
 
 
 @plugin('rockpaperscissors')

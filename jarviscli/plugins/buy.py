@@ -1,8 +1,6 @@
-from plugin import plugin
-import os
-import subprocess
-import sys
 import webbrowser
+
+from plugin import plugin
 
 
 @plugin("buy")

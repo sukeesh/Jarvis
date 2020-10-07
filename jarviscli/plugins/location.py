@@ -1,6 +1,7 @@
-import requests
 import json
-from colorama import Fore
+
+import requests
+
 from plugin import plugin, require
 
 

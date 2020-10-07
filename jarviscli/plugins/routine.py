@@ -7,7 +7,7 @@ ROUTINES = "routines"
 def create_routine(jarvis, commands, name):
     """
     Saves a new routine to memory with a name and a list of instructions.
-    :return: Nothing to return. 
+    :return: Nothing to return.
     """
     routines = jarvis.get_data(ROUTINES)
     if routines is None:

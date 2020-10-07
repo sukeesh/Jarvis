@@ -8,11 +8,11 @@ def expression_checker(jarvis, s):
     operators = "+-*/"
     brackets = "()"
 
-    while 1 :
+    while True:
         expression = input("Enter Expression To Analyze : ")
         while len(expression.strip()) == 0:
             expression = input("Expression Length is 0 , Enter Again : ")
-        if expression.lower() == "stop" :
+        if expression.lower() == "stop":
             print("You Terminated Expression Checker! Bye!")
             break
         terminateCurrentAnalyzation = 0
@@ -46,7 +46,7 @@ def expression_checker(jarvis, s):
                 previousIsOpenBracket = 0
                 previousIsCloseBracket = 0
             elif character == '(':
-                if previousIsDigit or previousIsCloseBracket :
+                if previousIsDigit or previousIsCloseBracket:
                     print("Not Valid Expression! Invalid Expression Character Progression")
                     terminateCurrentAnalyzation = 1
                     break
@@ -55,7 +55,7 @@ def expression_checker(jarvis, s):
                 previousIsOpenBracket = 1
                 previousIsCloseBracket = 0
             elif character == ')':
-                if previousIsOperator or previousIsOpenBracket :
+                if previousIsOperator or previousIsOpenBracket:
                     print("Not Valid Expression! Invalid Expression Character Progression")
                     terminateCurrentAnalyzation = 1
                     break
@@ -82,7 +82,6 @@ def expression_checker(jarvis, s):
         if len(stack) != 0:
             print("Not Valid Expression! Invalid Bracket Progression")
             terminateCurrentAnalyzation = 1
-        if terminateCurrentAnalyzation :
+        if terminateCurrentAnalyzation:
             continue
         print("Expression Is Valid!")
-

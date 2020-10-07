@@ -1,20 +1,19 @@
+import os
 import signal
-from cmd import Cmd
-from functools import partial
 import sys
 import traceback
-import os
+from cmd import Cmd
+from functools import partial
 
 from colorama import Fore
-from PluginManager import PluginManager
-
-from utilities import schedule
-from utilities.voice import create_voice
-from utilities.notification import notify
-from utilities.GeneralUtilities import get_parent_directory
 
 from packages.memory.memory import Memory
+from PluginManager import PluginManager
+from utilities import schedule
 from utilities.animations import SpinnerThread
+from utilities.GeneralUtilities import get_parent_directory
+from utilities.notification import notify
+from utilities.voice import create_voice
 
 
 class JarvisAPI(object):
@@ -138,7 +137,7 @@ class JarvisAPI(object):
         self._jarvis.scheduler.cancel(schedule_id)
 
         spinner.stop()
-        jarvis.say('Cancellation successful', Fore.GREEN)
+        self.say('Cancellation successful', Fore.GREEN)
 
     # Voice wrapper
     def enable_voice(self):

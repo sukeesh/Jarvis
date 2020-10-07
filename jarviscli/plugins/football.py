@@ -1,8 +1,8 @@
 import requests
-from tabulate import tabulate
 from colorama import Fore
+
 from plugin import plugin, require
-from utilities.animations import SpinnerThread
+from tabulate import tabulate
 
 API_KEY = '1ebd3b92bf5041249f8c1e7a540ce98c'
 url = 'https://api.football-data.org/v2'

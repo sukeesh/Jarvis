@@ -1,5 +1,6 @@
-from plugin import plugin, require
 import requests
+
+from plugin import plugin, require
 
 
 @require(network=True)
@@ -33,7 +34,7 @@ class trivia:
     def true_false_question(self, jarvis, trivia_fetch):
         response_code = trivia_fetch["response_code"]
         if (response_code != 0):
-            jarvis.say(errCode)
+            jarvis.say(response_code)
             return
         else:
             question = trivia_fetch["results"][0]["question"]
@@ -58,7 +59,7 @@ class trivia:
     def mcq_question(self, jarvis, trivia_fetch):
         response_code = trivia_fetch["response_code"]
         if (response_code != 0):
-            jarvis.say(errCode)
+            jarvis.say(response_code)
             return
         else:
             question = trivia_fetch["results"][0]["question"]

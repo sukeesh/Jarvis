@@ -1,8 +1,10 @@
-from plugin import plugin, alias, require
-from colorama import Fore, Style
-import requests
 import random
+
 import bs4
+import requests
+from colorama import Fore
+
+from plugin import alias, plugin, require
 
 
 @alias('project euler')
@@ -56,7 +58,7 @@ class Euler():
         try:
             page = requests.get(url)
         except ConnectionError:
-            jarvis.say("Can't get info from site, exit", Fore.RED)
+            self.jarvis.say("Can't get info from site, exit", Fore.RED)
             return
 
         # Use bs4 to parse the page
@@ -112,7 +114,8 @@ class Euler():
         info_text += "problems intended to be solved with computer programs. "
         info_text += "The project attracts adults and students interested in mathematics and computer programming. "
         info_text += "Since its creation in 2001 by Colin Hughes, Project Euler has gained notability and popularity worldwide. "
-        info_text += "It now includes " + str(self.last_problem_id) + " problems. A new one is added once every one or two weeks. "
+        info_text += "It now includes " + str(self.last_problem_id) + \
+            " problems. A new one is added once every one or two weeks. "
         info_text += "Problems are of varying difficulty, but each is solvable in less than a minute of CPU time using an efficient "
         info_text += "algorithm on a modestly powered computer. "
 
