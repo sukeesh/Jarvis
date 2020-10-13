@@ -1,6 +1,8 @@
-from plugin import plugin, alias
 from random import randint
-from colorama import Fore, Style
+
+from colorama import Fore
+
+from plugin import alias, plugin
 
 
 # function for generating 4-digit number

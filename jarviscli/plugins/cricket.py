@@ -1,7 +1,7 @@
 from colorama import Fore
-from pycricbuzz import Cricbuzz
+
 from plugin import plugin, require
-from utilities.animations import SpinnerThread
+from pycricbuzz import Cricbuzz
 
 
 @require(network=True)
