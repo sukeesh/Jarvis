@@ -122,7 +122,7 @@ class MacManagerLinux():
                                    shell=True, universal_newlines=True,
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.STDOUT)
-        new_out = subprocess.Popen(["ip addr show"], shell=True,
+        new_out = subprocess.Popen(["ip link"], shell=True,
                                    universal_newlines=True,
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.STDOUT)
