@@ -65,23 +65,26 @@ class MacManagerLinux():
                            "from the choices provided.", Fore.YELLOW)
 
     def request_devices(self, jarvis):
-        out = subprocess.Popen(["ifconfig"], universal_newlines=True,
+        out = subprocess.Popen(["ip link"], universal_newlines=True,
+                               shell=True,
                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT
                                )
         (res, stderr) = out.communicate()
         res = str(res)
-        arr = res.split("\n\n")
+        arr = res.split('\n')
         arr.remove('')
+        span = 2
+        arr1 = ["\n".join(arr[i:i+span]) for i in range(0, len(arr), span)]
         devices = []
-        for x in arr:
+        for x in arr1:
             device_name = x.split(':')
-            if device_name[0] == 'lo':
+            if device_name[1].strip() == 'lo':
                 pass
             else:
                 regex = re.compile(r'([0-9a-f]{2}(?::[0-9a-f]{2}){5})')
                 mac = re.findall(regex, x)
-                if len(mac) == 1:
-                    devices.append({device_name[0]: mac[0]})
+                if len(mac) >= 1:
+                    devices.append({device_name[1].strip(): mac[0]})
                 else:
                     pass
         return devices
@@ -102,16 +105,16 @@ class MacManagerLinux():
             return choice
 
     def change_mac(self, device, mac, jarvis):
-        down = subprocess.Popen([f"sudo ifconfig {device} down"],
+        down = subprocess.Popen([f"sudo ip link set {device} down"],
                                 shell=True, universal_newlines=True,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.STDOUT)
         down.communicate()
-        change = subprocess.Popen([f"sudo ifconfig {device} hw ether {mac}"],
+        change = subprocess.Popen([f"sudo ip link set {device} address {mac}"],
                                   shell=True, universal_newlines=True,
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.STDOUT)
-        up = subprocess.Popen([f"sudo ifconfig {device} up"],
+        up = subprocess.Popen([f"sudo ip link set {device} up"],
                               shell=True, universal_newlines=True,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.STDOUT)
@@ -119,7 +122,7 @@ class MacManagerLinux():
                                    shell=True, universal_newlines=True,
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.STDOUT)
-        new_out = subprocess.Popen(["ifconfig"], shell=True,
+        new_out = subprocess.Popen(["ip addr show"], shell=True,
                                    universal_newlines=True,
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.STDOUT)
