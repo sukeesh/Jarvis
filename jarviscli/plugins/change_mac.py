@@ -1,8 +1,10 @@
-from plugin import LINUX, plugin, require
-from platform import system as sys
-from colorama import Fore
-import subprocess
 import re
+import subprocess
+from platform import system as sys
+
+from colorama import Fore
+
+from plugin import LINUX, plugin, require
 
 
 @require(platform=LINUX)
@@ -22,7 +24,7 @@ class MacManagerLinux():
             return
         device_choice = list(devices[choice - 1].keys())[0]
         mac_choice = self.get_new_mac(
-                                "Please choose a new MAC address: ", jarvis)
+            "Please choose a new MAC address: ", jarvis)
         jarvis.say('Setting device ' + str(device_choice) +
                    ' to MAC address: ' + str(mac_choice))
         new_mac = self.change_mac(device_choice, mac_choice, jarvis)
@@ -74,7 +76,7 @@ class MacManagerLinux():
         arr = res.split('\n')
         arr.remove('')
         span = 2
-        arr1 = ["\n".join(arr[i:i+span]) for i in range(0, len(arr), span)]
+        arr1 = ["\n".join(arr[i:i + span]) for i in range(0, len(arr), span)]
         devices = []
         for x in arr1:
             device_name = x.split(':')
