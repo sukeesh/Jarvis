@@ -12,6 +12,7 @@ def hello_world(jarvis, s):
 
 Or use "callable" class:
 
+
 ```
 from plugin import plugin
 
