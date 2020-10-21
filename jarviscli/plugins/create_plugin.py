@@ -123,7 +123,6 @@ def file_exists(filename):
 
 
 def format_filename(name):
-
     """Take a string and return a valid filename constructed from the string.
 Uses a whitelist approach: any characters not present in valid_chars are
 removed. Also spaces are replaced with underscores.

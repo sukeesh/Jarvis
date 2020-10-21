@@ -55,7 +55,7 @@ def timer(rest):
 def pushups(jarvis, s):
     try:
         maximum = int(s)
-    except:
+    except BaseException:
         jarvis.say("Please enter an integer only!", Fore.BLUE)
         quit(jarvis)
         return
@@ -94,7 +94,7 @@ def pushups(jarvis, s):
 def pullups(jarvis, s):
     try:
         maximum = int(s)
-    except:
+    except BaseException:
         jarvis.say("Please enter an integer only!", Fore.BLUE)
         quit(jarvis)
         return

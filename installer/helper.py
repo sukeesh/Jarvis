@@ -62,7 +62,7 @@ def log(msg):
         print('msg:')
         try:
             print(str(msg))
-        except:
+        except BaseException:
             print('msg unprintable')
         print('-----------------------------')
 

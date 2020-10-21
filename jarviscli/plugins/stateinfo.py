@@ -11,6 +11,7 @@ class stateinfo:
              state capital
              state abbreviation
     """
+
     def __call__(self, jarvis, s):
         capital_dict = {
             'alabama': 'montgomery',

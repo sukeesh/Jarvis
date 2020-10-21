@@ -235,7 +235,7 @@ def spin(jarvis, s):
             Fore.YELLOW)
         jarvis.say('Print y for "YES" n for "NO"', Fore.YELLOW)
         answer = jarvis.input()
-    if answer is 'y':
+    if answer == 'y':
         create_dir(path2)
     else:
         while not dir_exist(path2):

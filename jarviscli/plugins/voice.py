@@ -8,9 +8,9 @@ def enable_sound(jarvis, s):
     """Let Jarvis use his voice."""
     jarvis.speech = jarvis.enable_voice()
     jarvis.say(Fore.BLUE + "Jarvis uses Googles speech engine.\nDo you consent with data "
-    + "collection when Jarvis talks out loud? If yes, type:" + Fore.RED + " gtts")
+               + "collection when Jarvis talks out loud? If yes, type:" + Fore.RED + " gtts")
     jarvis.say(Fore.BLUE + "If not, Jarvis will talk using the built-in speech engine. "
-    + " If you wish to disable GTTS, type: " + Fore.RED + "disable gtts")
+               + " If you wish to disable GTTS, type: " + Fore.RED + "disable gtts")
 
 
 @plugin('disable sound')
@@ -62,7 +62,7 @@ def talk_faster(jarvis, s):
         jarvis.change_speech_rate(40)
     else:
         jarvis.say("Type 'enable sound' to allow Jarvis to talk out loud.",
-            Fore.BLUE)
+                   Fore.BLUE)
 
 
 @require(platform=[Platform.LINUX, Platform.WINDOWS])
@@ -74,4 +74,4 @@ def talk_slower(jarvis, s):
         jarvis.change_speech_rate(-40)
     else:
         jarvis.say("Type 'enable sound' to allow Jarvis to talk out loud.",
-            Fore.BLUE)
+                   Fore.BLUE)

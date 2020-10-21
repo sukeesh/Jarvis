@@ -85,35 +85,31 @@ class VoiceMac():
         system('say $\'{}\''.format(speech))
 
 
-class VoiceLinux():
+class Voice_general():
     def __init__(self, rate):
-        """
-        This constructor creates a pyttsx3 object.
-        """
         self.rate = rate
         self.min_rate = 50
         self.max_rate = 500
         self.create()
 
     def create(self):
-        """
-        This method creates a pyttsx3 object.
-        :return: Nothing to return.
-        """
         self.engine = pyttsx3.init()
         self.engine.setProperty('rate', self.rate)
 
     def destroy(self):
         """
-        This method destroys a pyttsx3 object in order
+        Destroys a pyttsx3 object in order
         to create a new one in the next interaction.
-        :return: Nothing to return.
         """
         del self.engine
 
+
+class VoiceLinux(Voice_general):
+    def __init__(self, rate):
+        super().__init__(rate)
+
     def text_to_speech(self, speech):
         """
-        This method converts a text to speech.
         :param speech: The text we want Jarvis to generate as audio
         :return: Nothing to return.
         A bug in pyttsx3 causes segfault if speech is '', so used 'if' to avoid that.
@@ -129,7 +125,7 @@ class VoiceLinux():
 
     def change_rate(self, delta):
         """
-        This method changes the speech rate which is used to set the speech
+        Changes the speech rate which is used to set the speech
         engine rate. Restrict the rate to a usable range.
         :param delta: The amount to modify the rate from the current rate.
         Note: The actual engine rate is set by create().
@@ -143,20 +139,14 @@ class VoiceLinux():
 
 
 class VoiceWin():
+
     def __init__(self, rate):
-        """
-        This constructor creates a pyttsx3 object.
-        """
         self.rate = rate
         self.min_rate = 50
         self.max_rate = 500
         self.create()
 
     def create(self):
-        """
-        This method creates a pyttsx3 object.
-        :return: Nothing to return.
-        """
         self.engine = pyttsx3.init()
         self.engine.setProperty('rate', self.rate)
 

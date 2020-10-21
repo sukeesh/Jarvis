@@ -224,7 +224,7 @@ class history:
                 'links': fact['links']
             }
             jarvis.spinner_stop()
-        except:
+        except BaseException:
             jarvis.spinner_stop(
                 message="\nTask execution Failed!", color=Fore.RED)
             jarvis.say(

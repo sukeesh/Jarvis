@@ -1,6 +1,6 @@
 import random
 
-from colorama import Back, Fore, Style
+from colorama import Back
 
 from plugin import plugin
 

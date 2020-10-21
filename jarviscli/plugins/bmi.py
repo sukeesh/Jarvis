@@ -1,4 +1,4 @@
-from colorama import Back, Fore, Style
+from colorama import Back, Style
 
 from plugin import plugin
 

@@ -1,5 +1,3 @@
-import tempfile
-
 from colorama import Fore
 
 from jarvis import HISTORY_FILENAME

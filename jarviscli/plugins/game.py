@@ -1,6 +1,6 @@
 from random import randint
 
-from colorama import Fore, Style
+from colorama import Fore
 
 from plugin import alias, plugin
 

@@ -1,5 +1,5 @@
 akinator.py
-archey4; sys_platform != 'darwin'
+archey4==4.6.0.post1; sys_platform != 'darwin'
 beautifulsoup4
 colorama
 distro
@@ -17,6 +17,7 @@ psutil; sys_platform == 'win32'
 pycricbuzz
 pydoc-markdown
 pydub
+pyjokes
 pync==1.6.1; sys_platform == 'darwin'
 pypiwin32; sys_platform == 'win32'
 pyreadline; sys_platform == 'win32'
@@ -24,13 +25,19 @@ python-dateutil
 pytimeparse
 pyttsx3 == 2.71; sys_platform != 'darwin'
 pywin32; sys_platform == 'win32'
+random-word
 requests[security]
 speedtest-cli
 sympy
 tabulate
 termdown
 opencv-python
+whois
 wikipedia
+win10toast; sys_platform == 'win32'
 gtts
 playsound
 windows-curses; sys_platform == 'win32'
+Image
+img2pdf
+pdf2image

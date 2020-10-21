@@ -3,7 +3,6 @@ from colorama import Fore
 
 from plugin import plugin, require
 from tabulate import tabulate
-from utilities.animations import SpinnerThread
 
 API_KEY = '1ebd3b92bf5041249f8c1e7a540ce98c'
 url = 'https://api.football-data.org/v2'
@@ -210,10 +209,8 @@ class Football():
         if status != "SCHEDULED":
             # Get the score after 90 mins ordinary time
             scores = match["score"]
-            homeScore = scores["halfTime"]["homeTeam"] + \
-                scores["fullTime"]["homeTeam"]
-            awayScore = scores["halfTime"]["awayTeam"] + \
-                scores["fullTime"]["awayTeam"]
+            homeScore = scores["fullTime"]["homeTeam"]
+            awayScore = scores["fullTime"]["awayTeam"]
             lines.append("SCORE: {} - {}".format(homeScore, awayScore))
             if scores["extraTime"]["homeTeam"] is not None:
                 # Match went on to extra time
