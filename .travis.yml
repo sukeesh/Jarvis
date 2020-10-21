@@ -1,17 +1,15 @@
 language: python
-matrix:
+jobs:
   cache: pip
   include:
     - name: "Python 3.7 on Linux"
       os: linux
       dist: xenial
-      sudo: true
       python: 3.7
       env: TOXENV=py37
     - name: "Python 3.7 on MacOS"
       os: osx
       language: generic
-      sudo: required
       env: TOXENV=py37
     - name: "Python 3.7 on Windows"
       os: windows

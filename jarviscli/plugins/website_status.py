@@ -1,6 +1,8 @@
-from plugin import plugin
 import urllib.request
+
 from colorama import Fore
+
+from plugin import plugin
 
 
 @plugin("website status")

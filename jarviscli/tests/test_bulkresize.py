@@ -1,12 +1,10 @@
-from unittest import mock
-import unittest
 import os
-from Jarvis import Jarvis
-from plugins.bulkresize import spin
+import unittest
+from unittest import mock
+
 from plugins import bulkresize
-
+from plugins.bulkresize import spin
 from tests import PluginTest
-
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(CURRENT_PATH, '..', 'data/')

@@ -1,15 +1,19 @@
+import enum
 from inspect import cleandoc, isclass
 
 import pluginmanager
 from requests import ConnectionError
 
 
-# platform
-MACOS = "MACOS"
-LINUX = "LINUX"
-WINDOWS = "WINDOWS"
-# Shortcut for MACOS + LINUX
-UNIX = "UNIX"
+class Platform(enum.Enum):
+    MACOS = 0
+    LINUX = 1
+    WINDOWS = 2
+    ANDROID = 3
+    # Shortcut for MACOS + LINUX
+    UNIX = -1
+    # Shortcut for MACOS + LINUX + WINDOW
+    DESKTOP = -2
 
 
 def plugin(name):
@@ -33,10 +37,15 @@ def plugin(name):
         # create class
         plugin_class._require = []
         plugin_class._complete = []
+        plugin_class._feature = []
         plugin_class._alias = []
         plugin_class._name = name
         plugin_class._backend = (run,)
         plugin_class._backend_instance = run
+
+        module = run.__module__.replace('_', '.')[:-2]
+        module = module.replace('pluginmanager.plugin.', 'jarviscli.plugins.')
+        plugin_class._origin = module
 
         return plugin_class
     return create_plugin
@@ -55,6 +64,18 @@ def require(network=None, platform=None, native=None):
         plugin._require.extend(require)
         return plugin
     return __require
+
+
+def feature(case_sensitive=False):
+    feature = []
+
+    if case_sensitive is not None:
+        feature.append(("case_sensitive", case_sensitive))
+
+    def __feature(plugin):
+        plugin._feature.extend(feature)
+        return plugin
+    return __feature
 
 
 def complete(*complete):
@@ -138,6 +159,8 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
 
     def alias(self):
         """Set with @alias"""
+        if not hasattr(self, '_alias'):
+            return []
         return self._alias
 
     def complete(self):
@@ -150,6 +173,12 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
         # yield each sub command
         for complete in self.get_plugins().keys():
             yield complete
+
+    def feature(self):
+        """Set with @feature"""
+        if not hasattr(self, '_feature') or not self._feature:
+            return None
+        return self._feature
 
     def get_doc(self):
         """Parses plugin doc string"""
@@ -198,22 +227,17 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
 
         return doc
 
-    def run(self, jarvis, s):
+    def run(self, jarvis_api, s):
         """Entry point if this plugin is called"""
-        sub_command = jarvis.find_action(s, self.get_plugins().keys())
-
-        if sub_command == "None":
-            # run default
-            if self.is_callable_plugin():
-                self._backend[0](jarvis.get_api(), s)
-            else:
-                jarvis.get_api().say("Sorry, I could not recognise your command. Did you mean:")
-                for sub_command in self._sub_plugins.keys():
-                    jarvis.get_api().say("    * {} {}".format(self.get_name(), sub_command))
+        # run default
+        if self.is_callable_plugin():
+            self._backend[0](jarvis_api, s)
+            return True
         else:
-            command = sub_command.split()[0]
-            new_s = " ".join(sub_command.split()[1:])
-            self.get_plugins(command).run(jarvis, new_s)
+            jarvis_api.say("Sorry, I could not recognise your command. Did you mean:")
+            for sub_command in self._sub_plugins.keys():
+                jarvis_api.say("    * {} {}".format(self.get_name(), sub_command))
+            return False
 
     def _plugin_run_with_network_error(self, run_func, jarvis, s):
         """

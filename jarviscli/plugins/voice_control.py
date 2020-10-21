@@ -1,7 +1,8 @@
 import os
-from jarviscli.plugin import plugin, require
 
 import socket
+from plugin import plugin, require
+
 
 voice_control_installed = True
 try:

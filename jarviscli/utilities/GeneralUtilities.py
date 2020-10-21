@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-import sys
-import os
-from colorama import Fore
 import distutils.spawn
+import os
 from platform import win32_ver
+import sys
+import warnings
 
+from colorama import Fore
 
 MACOS = 'darwin'
 WIN = 'win32'
@@ -22,7 +23,15 @@ def print_say(text, self, color=""):
         :param text: the text to print (or talk)
                color: Fore.COLOR (ex Fore.BLUE), color for text
         :return: Nothing to return.
-        """
+
+        .. deprecated::
+            Use ``JarvisAPI.say(text, color="", speak=True))`` instead.
+    """
+    warnings.warn(
+        "GeneralUtilities.print_say is deprecated now and will be \
+        removed in the future. Please use \
+        ``JarvisAPI.say(text, color=\"\", speak=True))`` instead.",
+        DeprecationWarning)
     print(color + text + Fore.RESET)
     if self.enable_voice:
         self.speech.text_to_speech(text)
@@ -55,11 +64,14 @@ def unsupported(platform, silent=False):
         def wrapped(*args, **kwargs):
             if sys.platform == platform:
                 if not silent:
-                    print('{}Command is unsupported for platform `{}`{}'.
-                          format(Fore.RED, sys.platform, Fore.RESET))
+                    print(
+                        '{}Command is unsupported for platform `{}`{}'.format(
+                            Fore.RED, sys.platform, Fore.RESET))
             else:
                 func(*args, **kwargs)
+
         return wrapped
+
     return noop_wrapper
 
 

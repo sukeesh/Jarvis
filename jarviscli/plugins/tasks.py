@@ -1,6 +1,7 @@
-from plugin import plugin, require
 from colorama import Fore
+
 from packages.memory.memory import Memory
+from plugin import plugin
 
 
 @plugin("tasks")
@@ -29,7 +30,8 @@ class TaskManager():
         for i in range(task_count):
             try:
                 priority = self.tasks[i]["priority"]
-                jarvis.say("{}. {} PR: {}".format(i + 1, self.tasks[i]["name"], priority), self.get_color_with_priority(priority))
+                jarvis.say("{}. {} PR: {}".format(
+                    i + 1, self.tasks[i]["name"], priority), self.get_color_with_priority(priority))
             except BaseException:
                 jarvis.say("{}. {}".format(i + 1, self.tasks[i]["name"]))
 
@@ -78,14 +80,16 @@ class TaskManager():
 
     def add_priority_to_task(self, jarvis):
         options = {1: "High", 2: "Medium", 3: "Low"}
-        task_index = self.choose_task("EXIT Add Priority Mode", "Exit Priority Mode or Choose Taks To Add Priority: ", jarvis)
+        task_index = self.choose_task("EXIT Add Priority Mode",
+                                      "Exit Priority Mode or Choose Taks To Add Priority: ", jarvis)
         if task_index == -1:
             return
         priority = self.get_priority(jarvis)
         if priority == -1:
             return
         task_name = self.tasks[task_index - 1]["name"]
-        new_tasks = map(lambda t: {"name": task_name, "priority": options[priority]} if t["name"] == task_name else t, self.tasks)
+        new_tasks = map(lambda t: {"name": task_name,
+                                   "priority": options[priority]} if t["name"] == task_name else t, self.tasks)
         self.update_tasks(list(new_tasks))
 
     def delete_task(self, jarvis):

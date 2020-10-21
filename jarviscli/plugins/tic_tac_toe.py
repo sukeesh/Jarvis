@@ -1,5 +1,6 @@
-from plugin import plugin
 from colorama import Fore
+
+from plugin import plugin
 
 board = {'7': '   ', '8': '   ', '9': '   ',
          '4': '   ', '5': '   ', '6': '   ',

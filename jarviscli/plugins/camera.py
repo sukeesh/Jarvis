@@ -1,9 +1,11 @@
 import os
+
 from colorama import Fore
-from plugin import plugin, require, LINUX, MACOS
+
+from plugin import Platform, plugin, require
 
 
-@require(native="cheese", platform=LINUX)
+@require(native="cheese", platform=Platform.LINUX)
 @plugin('open camera')
 def open_camera__LINUX(jarvis, s):
     """Jarvis will open the camera for you."""
@@ -11,7 +13,7 @@ def open_camera__LINUX(jarvis, s):
     os.system("cheese")
 
 
-@require(platform=MACOS)
+@require(platform=Platform.MACOS)
 @plugin('open camera')
 def open_camera__MAC(jarvis, s):
     """Jarvis will open the camera for you."""

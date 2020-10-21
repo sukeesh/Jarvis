@@ -1,7 +1,9 @@
-import imdb
-from colorama import Fore, Style
-from plugin import plugin, require
 from functools import lru_cache
+
+from colorama import Fore, Style
+
+import imdb
+from plugin import plugin, require
 
 app = imdb.IMDb()
 

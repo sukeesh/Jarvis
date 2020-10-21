@@ -1,8 +1,10 @@
-from plugin import plugin, require
-from colorama import Fore
-import akinator
 import subprocess
 import sys
+
+from colorama import Fore
+
+import akinator
+from plugin import plugin, require
 
 
 """
@@ -85,7 +87,7 @@ def main_game(jarvis):
         subprocess.run([imageViewerFromCommandLine, aki.picture])  # display image of answer
     except Exception:
         pass
-    correct = jarvis.input(f"It's {aki.name} ({aki.description})! Was I correct?\n\t")
+    correct = jarvis.input(f"It's {aki.first_guess['name']} ({aki.first_guess['description']})! Was I correct?\n\t")
     if correct.lower() == "yes" or correct.lower() == "y":
         jarvis.say("Yay !!! :D", Fore.GREEN)
     else:

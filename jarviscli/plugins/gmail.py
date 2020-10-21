@@ -1,5 +1,6 @@
-import smtplib                                               # import stmplib
-from plugin import plugin                                    # import plugin
+import smtplib  # import stmplib
+
+from plugin import plugin  # import plugin
 
 
 @plugin('gmail')                                             # decorator

@@ -19,3 +19,6 @@ jarvis
 jarviscli/data/key_timein.json
 myinfo\.csv
 .vscode
+.buildozer
+.mypy_cache
+bin

@@ -1,26 +1,28 @@
 import os
-from platform import architecture, release, mac_ver
+from platform import architecture, mac_ver, release
 from platform import system as sys
-import distro
+
 from colorama import Fore, Style
-from plugin import LINUX, UNIX, MACOS, WINDOWS, plugin, require
+
+import distro
+from plugin import Platform, plugin, require
 
 
-@require(platform=MACOS, native="pmset")
+@require(platform=Platform.MACOS, native="pmset")
 @plugin('screen off')
 def screen_off__MAC(jarvis, s):
     """Turn of screen instantly"""
     os.system('pmset displaysleepnow')
 
 
-@require(platform=LINUX, native="xset")
+@require(platform=Platform.LINUX, native="xset")
 @plugin('screen off')
 def screen_off__LINUX(jarvis, s):
     """Turn of screen instantly"""
     os.system('xset dpms force off')
 
 
-@require(platform=MACOS)
+@require(platform=Platform.MACOS)
 @plugin('os')
 def Os__MAC(jarvis, s):
     """Displays information about your operating system"""
@@ -37,7 +39,7 @@ def Os__MAC(jarvis, s):
             jarvis.say('[*] ' + _, Fore.GREEN)
 
 
-@require(platform=[LINUX, WINDOWS])
+@require(platform=[Platform.LINUX, Platform.WINDOWS])
 @plugin('os')
 def Os__LINUX(jarvis, s):
     """Displays information about your operating system"""
@@ -49,7 +51,7 @@ def Os__LINUX(jarvis, s):
         jarvis.say('[*] ' + _, Fore.GREEN)
 
 
-@require(platform=LINUX)
+@require(platform=Platform.LINUX)
 @plugin('systeminfo')
 def systeminfo__LINUX(jarvis, s):
     """Display system information with distribution logo"""
@@ -57,21 +59,21 @@ def systeminfo__LINUX(jarvis, s):
     archey.main()
 
 
-@require(platform=MACOS, native="screenfetch")
+@require(platform=Platform.MACOS, native="screenfetch")
 @plugin('systeminfo')
 def systeminfo__MAC(jarvis, s):
     """Display system information with distribution logo"""
     os.system("screenfetch")
 
 
-@require(platform=WINDOWS)
+@require(platform=Platform.WINDOWS)
 @plugin('systeminfo')
 def systeminfo_win(jarvis, s):
     """Display system infomation"""
     os.system("systeminfo")
 
 
-@require(native="free", platform=UNIX)
+@require(native="free", platform=Platform.UNIX)
 @plugin("check ram")
 def check_ram__UNIX(jarvis, s):
     """
@@ -82,7 +84,7 @@ def check_ram__UNIX(jarvis, s):
     os.system("free -lm")
 
 
-@require(platform=WINDOWS)
+@require(platform=Platform.WINDOWS)
 @plugin("check ram")
 def check_ram__WINDOWS(jarvis, s):
     """

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import re
-import sympy
 
 from colorama import Fore
 
+import sympy
 from plugin import alias, plugin
 
 

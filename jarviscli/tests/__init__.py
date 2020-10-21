@@ -1,7 +1,8 @@
 import unittest
-from functools import partial
-from CmdInterpreter import JarvisAPI
 from collections import deque
+from functools import partial
+
+from api import JarvisAPI
 
 
 class MockJarvisAPI(JarvisAPI):

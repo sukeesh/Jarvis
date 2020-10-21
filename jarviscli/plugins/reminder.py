@@ -1,12 +1,12 @@
+import datetime
 import json
 import time
-import datetime
+
+from colorama import Fore
 
 from pick import pick
-from colorama import Fore
-from pytimeparse.timeparse import timeparse
-
 from plugin import plugin
+from pytimeparse.timeparse import timeparse
 from utilities.textParser import parse_date
 
 

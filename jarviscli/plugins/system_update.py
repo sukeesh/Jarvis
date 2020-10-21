@@ -2,16 +2,16 @@
 import os
 import subprocess
 
-from plugin import plugin, require, LINUX, MACOS
+from plugin import Platform, plugin, require
 
 
-@require(platform=MACOS)
+@require(platform=Platform.MACOS)
 @plugin("update system")
 def update_system__macos(jarvis, s):
     os.system('brew upgrade && brew update')
 
 
-@require(platform=LINUX)
+@require(platform=Platform.LINUX)
 @require(native='lsb_release')
 @plugin("update system")
 def update_system(jarvis, s):

@@ -1,7 +1,6 @@
 import unittest
-from Jarvis import Jarvis
-from plugins.quote import Quote
 
+from plugins.quote import Quote
 from tests import PluginTest
 
 
