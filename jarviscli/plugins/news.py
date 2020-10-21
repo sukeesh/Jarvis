@@ -77,7 +77,7 @@ class News:
             jarvis.say("Missing API key", Fore.RED)
             jarvis.say("Visit https://newsapi.org/ to get the key", Fore.RED)
             jarvis.say(
-                "Use \'news updatekey\' command to add a key\n",
+                "Use 'news updatekey' command to add a key\n",
                 Fore.RED)
         elif s == "" or s == " ":
             self.parse_articles(self.get_headlines(jarvis), jarvis)
