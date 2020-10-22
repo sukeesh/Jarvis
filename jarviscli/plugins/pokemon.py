@@ -2,7 +2,6 @@ import random
 import re
 
 import requests
-import pprint
 from colorama import Fore
 
 from plugin import plugin, require
