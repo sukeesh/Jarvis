@@ -8,6 +8,7 @@ from plugins import pokemon
 
 
 class PokemonTest(PluginTest):
+    """ Test suite for the pokemon plugin. Based off test_chuck.py. """
 
     def setUp(self):
         self.test = self.load_plugin(pokemon.pokemon)

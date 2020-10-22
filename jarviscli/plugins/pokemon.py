@@ -22,7 +22,7 @@ def parse_species_data(poke_data):
     gen = poke_data['generation']['name']
     is_legendary = 'Yes' if poke_data['is_legendary'] else 'No'
     is_mythical = 'Yes' if poke_data['is_mythical'] else 'No'
-    
+
     # Get random description text (English only)
     # TODO: not just English text
     flavor_texts = [ft for ft in poke_data['flavor_text_entries'] if ft['language']['name'] == 'en']
