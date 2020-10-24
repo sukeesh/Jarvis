@@ -23,9 +23,8 @@ class wifiPasswordGetter():
                    '\nPassword: ' + strip_password)
 
     def get_wifi_profiles(self):
-        out = subprocess.Popen(
-                               ["ls",
-                                "/etc/NetworkManager/system-connections/"],
+        out = subprocess.Popen(["ls",
+                               "/etc/NetworkManager/system-connections/"],
                                universal_newlines=True,
                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT
                                )
@@ -35,7 +34,7 @@ class wifiPasswordGetter():
 
     def show_options(self, jarvis, arr):
         count = 1
-        for x in range(len(arr)-1):
+        for x in range(len(arr) - 1):
             option = arr[x]
             jarvis.say(str(count) + ": " + option)
             count = count + 1
