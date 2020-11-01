@@ -56,7 +56,7 @@ def pokemon(jarvis, s):
                        'and GAME FREAK, inc. and is protected by various '
                        'copyrights and trademarks. This use is soley for '
                        'educational purposes to learn more about Pokemon.\n',
-                        Fore.YELLOW)
+                      Fore.YELLOW)
             jarvis.say(poke_text, Fore.BLUE)
         except (ValueError, KeyError):
             jarvis.say('Something went wrong. Please try again later.\n', Fore.RED)
