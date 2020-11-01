@@ -51,11 +51,12 @@ def pokemon(jarvis, s):
         try:
             poke_data = res.json()
             poke_text = parse_species_data(poke_data)
-            jarvis.say('DISCLAIMER: This Pokemon fact is the intellectual'
-                       'property of Nintendo, Creatures, inc., and GAME FREAK,'
-                       'inc. and is protected by various copyrights and '
-                       'trademarks. This use is soley for educational '
-                       'purposes to learn more about Pokemon.\n', Fore.YELLOW)
+            jarvis.say('DISCLAIMER: This Pokemon fact is the intellectual '
+                       'property of Nintendo, Creatures, inc., '
+                       'and GAME FREAK, inc. and is protected by various '
+                       'copyrights and trademarks. This use is soley for '
+                       'educational purposes to learn more about Pokemon.\n',
+                        Fore.YELLOW)
             jarvis.say(poke_text, Fore.BLUE)
         except (ValueError, KeyError):
             jarvis.say('Something went wrong. Please try again later.\n', Fore.RED)
