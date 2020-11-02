@@ -6,7 +6,7 @@ from pick import pick
 from colorama import Fore
 from pytimeparse.timeparse import timeparse
 
-from plugin import plugin
+from plugin import plugin, alias
 from utilities.textParser import parse_date
 
 
@@ -71,6 +71,17 @@ class TagBase:
 
         jarvis.update_data(self.next_id_key, next_id + 1)
         return next_id
+
+    def clean_up_entry(self, jarvis, entry):
+        id = entry["id"]
+        todos = TodoBase().get_data(jarvis)
+        for todo in todos:
+            new_tags = []
+            for tag_id in todo["tags"]:
+                if tag_id != id:
+                    new_tags.append(tag_id)
+            todo["tags"] = new_tags
+        TodoBase().save_data(jarvis, todos)
     
     def format(self, jarvis, tag):
         return tag["name"]
@@ -93,6 +104,42 @@ class TagBase:
         _, index = pick(ask_str, title)
 
         return data[index]
+
+    def remove(self, jarvis, s):
+        data = self.load_tags(jarvis)
+        if len(data) == 0:
+            jarvis.say("Nothing to remove!")
+            return
+
+        if s.startswith("everything") or s.startswith("all"):
+            for entry in data:
+                self.clean_up_entry(jarvis, entry)
+
+            data = []
+            self.save_data(jarvis, data)
+
+            jarvis.say("ok")
+            return
+
+        # open selection menu
+        ask_str = []
+        for entry in data:
+            ask_str.append(self.format(jarvis, entry))
+
+        title = 'Please choose tag to remove (select with space, j and k to move up and down)'
+        selected = pick(ask_str, title, multi_select=True)
+        print(selected)
+        selected = [entry[1] for entry in selected]
+
+        new_data = []
+        for index, entry in enumerate(data):
+            entry = data[index]
+            if index not in selected:
+                new_data.append(entry)
+            else:
+                self.clean_up_entry(jarvis, entry)
+
+        self.save_tags(jarvis, new_data)
 
 
 class RemindTodoBase:
@@ -260,6 +307,30 @@ class TodoBase(RemindTodoBase):
                 entry["tags"] = []
         
         self.save_data(jarvis, data)
+    
+    def remove_tag(self, jarvis, s):
+        tb = TagBase()
+        tags = tb.load_tags(jarvis)
+        print(tags)
+        entry = self.select_one_remind(jarvis)
+        print(entry)
+        ask_str = []
+        id_map = []
+        for tag in tags:
+            if tag['id'] in entry['tags']:
+                ask_str.append(tb.format(jarvis, tag))
+                id_map.append(tag['id'])
+
+        if len(ask_str) == 0:
+            jarvis.say("There are no tags to delete!")
+            return
+
+        title = 'Please choose from tag list (j and k to move up and down, enter to select):'
+        _, index = pick(ask_str, title)
+
+        entry['tags'].pop(entry['tags'].index(id_map[index]))
+
+        self.modify(jarvis, entry)
 
 
 class RemindBase(RemindTodoBase):
@@ -515,6 +586,15 @@ class Todo_Tag(TodoBase):
         self.modify(jarvis, entry)
 
 
+@plugin('todo del tag')
+class Todo_Del_Tag(TodoBase):
+    """
+    Remove a tag from a todo item.
+    """
+    def __call__(self, jarvis, s):
+        self.remove_tag(jarvis, s)
+
+
 @plugin('todo filter')
 class Todo_Filter(TodoBase):
     """
@@ -534,7 +614,7 @@ class Tags(TagBase):
     def __call__(self, jarvis, s):
         self.do_print(jarvis)
 
-
+@alias('tags create', 'tags add')
 @plugin('tags new')
 class Tags_New(TagBase):
     """
@@ -542,6 +622,15 @@ class Tags_New(TagBase):
     """
     def __call__(self, jarvis, s):
         self.add_tag(jarvis, s)
+
+
+@plugin('tags remove')
+class Tags_Remove(TagBase):
+    """
+    Remove a pre-existing tag.
+    """
+    def __call__(self, jarvis, s):
+        self.remove(jarvis, s)
 
 
 @plugin('remind')
