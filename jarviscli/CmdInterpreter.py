@@ -432,7 +432,7 @@ class CmdInterpreter(Cmd):
         sys.exit()
 
     def execute_once(self, command):
-        self._api.eval(command)
+        self.get_api().eval(command)
         sys.exit()
 
     def error(self):
