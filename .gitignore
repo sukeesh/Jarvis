@@ -1,5 +1,6 @@
 todolist.txt
 reminderlist.txt
+agenda.csv
 *.bak
 jarviscli/packages/memory/memory.json
 *.egg-info
@@ -19,3 +20,4 @@ jarvis
 jarviscli/data/key_timein.json
 myinfo\.csv
 .vscode
+*.code-workspace
