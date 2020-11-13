@@ -25,10 +25,11 @@ Module content:
 
 * TagBase: Used by TodoBase to apply searchable tags to entries
 
-* Plugins (Todo, Todo_Add, Todo_Incomplete, Todo_Progress, Todo_Remove, 
-          Remind, Remind_At, Remind_In, Remind_Remove) - oneliner based on 
+* Plugins (Todo, Todo_Add, Todo_Incomplete, Todo_Progress, Todo_Remove,
+          Remind, Remind_At, Remind_In, Remind_Remove) - oneliner based on
           TodoBase and RemindBase to "export" functionality as Plugins
 """
+
 
 class TagBase:
     save_key = "reminder_tags"
@@ -41,10 +42,10 @@ class TagBase:
             jarvis.add_data(self.save_key, [])
 
         return tags
-    
+
     def save_tags(self, jarvis, tags):
         jarvis.update_data(self.save_key, tags)
-    
+
     def add_tag(self, jarvis, name):
         data = self.load_tags(jarvis)
         new_tag = {
@@ -60,7 +61,7 @@ class TagBase:
         for tag in tags:
             if tag["id"] == id:
                 final_tag = tag
-        
+
         return final_tag
 
     def get_next_id(self, jarvis):
@@ -82,15 +83,15 @@ class TagBase:
                     new_tags.append(tag_id)
             todo["tags"] = new_tags
         TodoBase().save_data(jarvis, todos)
-    
+
     def format(self, jarvis, tag):
         return tag["name"]
-    
+
     def do_print(self, jarvis):
         tags = self.load_tags(jarvis)
         for tag in tags:
             jarvis.say(self.format(jarvis, tag))
-    
+
     def select_one_tag(self, jarvis):
         data = self.load_tags(jarvis)
         ask_str = []
@@ -128,7 +129,6 @@ class TagBase:
 
         title = 'Please choose tag to remove (select with space, j and k to move up and down)'
         selected = pick(ask_str, title, multi_select=True)
-        print(selected)
         selected = [entry[1] for entry in selected]
 
         new_data = []
@@ -197,7 +197,6 @@ class RemindTodoBase:
 
         title = 'Please choose task to remove (select with space, j and k to move up and down)'
         selected = pick(ask_str, title, multi_select=True)
-        print(selected)
         selected = [entry[1] for entry in selected]
 
         new_data = []
@@ -257,7 +256,7 @@ class TodoBase(RemindTodoBase):
         message = entry['message']
         schedule = self.interact().format_interact(jarvis, entry)
         post = ""
-        for addon in addons:            
+        for addon in addons:
             if addon == 'progress':
                 progress = entry['progress']
                 if progress != '':
@@ -271,8 +270,8 @@ class TodoBase(RemindTodoBase):
 
                 if len(tags) > 0:
                     tag_base = TagBase()
-                    tag_strs = [tag_base.format(jarvis, tag_base.get_tag_by_id(jarvis, tag_id)) 
-                                for tag_id 
+                    tag_strs = [tag_base.format(jarvis, tag_base.get_tag_by_id(jarvis, tag_id))
+                                for tag_id
                                 in tags]
                     tag_str = ", ".join(tag_strs)
                     post += f' | Tagged with: {tag_str}'
@@ -297,7 +296,7 @@ class TodoBase(RemindTodoBase):
         _, index = pick(ask_str, title)
 
         return data[index]
-    
+
     def update_to_tags(self, jarvis):
         data = self.get_data(jarvis)
         for entry in data:
@@ -305,15 +304,13 @@ class TodoBase(RemindTodoBase):
                 entry["tags"]
             except KeyError:
                 entry["tags"] = []
-        
+
         self.save_data(jarvis, data)
-    
+
     def remove_tag(self, jarvis, s):
         tb = TagBase()
         tags = tb.load_tags(jarvis)
-        print(tags)
         entry = self.select_one_remind(jarvis)
-        print(entry)
         ask_str = []
         id_map = []
         for tag in tags:
@@ -565,7 +562,7 @@ class Todo_Progress(TodoBase):
             entry['progress'] = int(inp)
         else:
             jarvis.say("The progress level must be an integer between 0 and 100.", color=Fore.MAGENTA)
-    
+
         self.modify(jarvis, entry)
 
 
@@ -578,6 +575,9 @@ class Todo_Tag(TodoBase):
         entry = self.select_one_remind(jarvis)
         tags = TagBase()
         selected_tag = tags.select_one_tag(jarvis)
+        if selected_tag is None:
+            jarvis.say("No tags available to select.")
+
         try:
             entry["tags"].append(selected_tag["id"])
         except KeyError:
@@ -614,6 +614,7 @@ class Tags(TagBase):
     def __call__(self, jarvis, s):
         self.do_print(jarvis)
 
+
 @alias('tags create', 'tags add')
 @plugin('tags new')
 class Tags_New(TagBase):
@@ -621,7 +622,8 @@ class Tags_New(TagBase):
     Create a new tag.
     """
     def __call__(self, jarvis, s):
-        self.add_tag(jarvis, s)
+        if not s.isalnum():
+            self.add_tag(jarvis, s)
 
 
 @plugin('tags remove')
