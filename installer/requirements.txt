@@ -5,6 +5,7 @@ colorama
 distro
 flake8
 forex-python
+geopy
 googletrans
 IMDbPY
 instantmusic
