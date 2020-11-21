@@ -11,7 +11,7 @@ from plugin import plugin
 # This is the standard form of a plugin for jarvis
 
 
-def print_address(jarvis, location,  address):
+def print_address(jarvis, location, address):
     """Output polling location information."""
     site_info = ""
     for line in address:
