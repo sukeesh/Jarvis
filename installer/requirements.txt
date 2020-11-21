@@ -8,7 +8,6 @@ forex-python
 geopy
 googletrans
 IMDbPY
-instantmusic
 mock
 nltk
 pdfkit

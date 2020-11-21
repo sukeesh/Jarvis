@@ -305,7 +305,6 @@ class CmdInterpreter(Cmd):
     # interaction.
 
     # This can be used to store user specific data
-
     def __init__(
             self,
             first_reaction_text,
@@ -317,9 +316,14 @@ class CmdInterpreter(Cmd):
         In alphabetically order.
         """
         Cmd.__init__(self)
+        command = " ".join(sys.argv[1:]).strip()
         self.first_reaction = first_reaction
         self.first_reaction_text = first_reaction_text
         self.prompt = prompt
+        if (command):
+            self.first_reaction = False
+            self.first_reaction_text = ""
+            self.prompt = ""
         # Register do_quit() function to SIGINT signal (Ctrl-C)
         signal.signal(signal.SIGINT, self.interrupt_handler)
 
@@ -354,8 +358,9 @@ class CmdInterpreter(Cmd):
         for directory in directories:
             self._plugin_manager.add_directory(directory)
 
+        if (not command):
+            self._init_plugin_info()
         self._activate_plugins()
-        self._init_plugin_info()
 
         self._api.say(self.first_reaction_text)
 
@@ -428,7 +433,7 @@ class CmdInterpreter(Cmd):
 
     def execute_once(self, command):
         self.get_api().eval(command)
-        self.close()
+        sys.exit()
 
     def error(self):
         """Jarvis let you know if an error has occurred."""
