@@ -32,7 +32,7 @@ def print_address(jarvis, location,  address):
 def get_voter_info(jarvis, s, address):
     """Get voter info from API and output to user."""
     # Formulate API request
-    url = "https: // www.googleapis.com/civicinfo/v2/voterinfo?"
+    url = "https://www.googleapis.com/civicinfo/v2/voterinfo?"
     url += "key=AIzaSyCvgOE0UnZ0m3Mtb0UAcImwJ7baaPJ1CnM"
     url += "&address=" + urllib.parse.quote(str(address))
     if s:
