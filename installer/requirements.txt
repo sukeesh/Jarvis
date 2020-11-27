@@ -5,10 +5,12 @@ colorama
 distro
 flake8
 forex-python
+gitpython
 googletrans
 IMDbPY
 mock
 nltk
+pathlib
 pdfkit
 pick
 pluginmanager
