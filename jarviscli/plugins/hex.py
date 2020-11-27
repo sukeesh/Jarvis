@@ -17,6 +17,6 @@ def binary(jarvis, s):
         return
     else:
         if n < 0:
-            jarvis.say("-" + hex(n)[3:], Fore.YELLOW)
+            jarvis.say("-" + hex(n)[3:].upper(), Fore.YELLOW)
         else:
-            jarvis.say(hex(n)[2:], Fore.YELLOW)
+            jarvis.say(hex(n)[2:].upper(), Fore.YELLOW)
