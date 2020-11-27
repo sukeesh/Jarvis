@@ -21,7 +21,7 @@ class HexTest(PluginTest):
 
     def test_negative_1205(self):
         self.test.run("-1205")
-        self.assertEqual(self.history_say().last_text(), "-4B5")
+        self.assertEqual(self.history_say().last_text(), "-4b5")
 
 
 if __name__ == '__main__':
