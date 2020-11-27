@@ -5,7 +5,7 @@ from plugins import hex
 
 class HexTest(PluginTest):
     def setUp(self):
-        self.test = self.load_plugin(hex.hex)
+        self.test = self.load_plugin(hex.binary)
 
     def test_0(self):
         self.test.run("0")
