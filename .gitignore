@@ -17,5 +17,7 @@ setup.py
 jarvis.bat
 jarvis
 jarviscli/data/key_timein.json
+jarviscli/data/Google_api_key.json
+VoterInfo.json
 myinfo\.csv
 .vscode
