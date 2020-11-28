@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import re
 
+import sympy
 from colorama import Fore
 
-import sympy
 from plugin import alias, plugin
 
 
@@ -299,19 +299,19 @@ def curvesketch(jarvis, s):
     section(jarvis, s)
 
     section(jarvis, "Graph")
-    jarvis.eval('plot {}'.format(s))
+    jarvis.execute_once('plot {}'.format(s))
 
     section(jarvis, "Limit")
-    jarvis.eval('limit {}'.format(term))
+    jarvis.execute_once('limit {}'.format(term))
 
     section(jarvis, "Intersection x-axis")
-    jarvis.eval('solve {}'.format(term))
+    jarvis.execute_once('solve {}'.format(term))
 
     section(jarvis, "Intersection y-axis")
     jarvis.say(str(get_y(0).round(9)), Fore.BLUE)
 
     section(jarvis, "Factor")
-    jarvis.eval('factor {}'.format(term))
+    jarvis.execute_once('factor {}'.format(term))
 
     section(jarvis, "Derivative")
     x = sympy.Symbol('x')

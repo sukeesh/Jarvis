@@ -6,28 +6,9 @@ from cmd import Cmd
 import colorama
 from colorama import Fore
 
+from utilities.animations import SpinnerThread
+
 PROMPT_CHAR = '~>'
-
-
-class CmdInterpreterJarvisAPI():
-    def __init__(self, cmd_interpreter):
-        super().__init__()
-        self.cmd_interpreter = cmd_interpreter
-
-    def say(self, text, color=''):
-        print(color + text + Fore.RESET, flush=True)
-
-    def input(self, prompt="", color=""):
-        # we can't use input because for some reason input() and color codes do not work on
-        # windows cmd
-        sys.stdout.write(color + prompt + Fore.RESET)
-        sys.stdout.flush()
-        text = sys.stdin.readline()
-        # return without newline
-        return text.rstrip()
-
-    def exit(self):
-        self.cmd_interpreter.close()
 
 
 class CmdInterpreter(Cmd):
@@ -51,8 +32,6 @@ Type 'help' for a list of available actions.
         super().__init__()
 
         self._jarvis = jarvis
-        _api_io = CmdInterpreterJarvisAPI(self)
-        self._api = self._jarvis.register_io(_api_io)
 
         # enable color on windows
         colorama.init()
@@ -66,10 +45,37 @@ Type 'help' for a list of available actions.
         signal.signal(signal.SIGINT, self.interrupt_handler)
         self.first_reaction_text += self._jarvis.plugin_info()
 
-        for plugin in self._jarvis.activate_plugins():
+        for plugin in self._jarvis.get_plugins().values():
             self._add_plugin(plugin)
 
-        self._api.say(self.first_reaction_text)
+        self.say(self.first_reaction_text)
+
+    def say(self, text, color=''):
+        print(color + text + Fore.RESET, flush=True)
+
+    def start(self):
+        self.cmdloop()
+
+    def stop(self):
+        # to be implemented
+        pass
+
+    def input(self, prompt="", color=""):
+        # we can't use input because for some reason input() and color codes do not work on
+        # windows cmd
+        sys.stdout.write(color + prompt + Fore.RESET)
+        sys.stdout.flush()
+        text = sys.stdin.readline()
+        # return without newline
+        return text.rstrip()
+
+    def spinner_start(self, message="Starting "):
+        self.spinner = SpinnerThread(message, 0.15)
+        self.spinner.start()
+
+    def spinner_stop(self, message="Task executed successfully! ", color=Fore.GREEN):
+        self.spinner.stop()
+        self.say(message, color)
 
     def _add_plugin(self, plugin):
         plugin.run = catch_all_exceptions(plugin.run)
@@ -85,17 +91,6 @@ Type 'help' for a list of available actions.
                 "complete_"
                 + plugin.get_name(),
                 complete(completions))
-
-    def close(self):
-        """Closing Jarvis."""
-
-        '''Stop the spinner if it is already running'''
-        if self._api.is_spinner_running():
-            self._api.spinner_stop('Some error has occured')
-
-        self._api.say("Goodbye, see you later!", Fore.RED)
-        self._api.scheduler.stop_all()
-        sys.exit()
 
     def precmd(self, line: str) -> str:
         return line
@@ -113,50 +108,18 @@ Type 'help' for a list of available actions.
                 + "{} What can I do for you?\n".format(PROMPT_CHAR)
                 + Fore.RESET)
             self.first_reaction = False
-        self._api._speak("What can I do for you?\n")
+        self.say(self.prompt)
 
     def error(self):
         """Jarvis let you know if an error has occurred."""
-        self._api.say("I could not identify your command...", Fore.RED)
+        self.say("I could not identify your command...", Fore.RED)
 
     def interrupt_handler(self, signal, frame):
         """Closes Jarvis on SIGINT signal. (Ctrl-C)"""
-        self.close()
+        self._jarvis.exit()
 
     def do_status(self, s):
         """Prints plugin status status"""
-        count_enabled = self._plugin_manager.get_number_plugins_loaded()
-        count_disabled = len(self._plugin_manager.get_disabled())
-        self._api.say(
-            "{} Plugins enabled, {} Plugins disabled.".format(
-                count_enabled,
-                count_disabled),
-            self)
-
-        if "short" not in s and count_disabled > 0:
-            self._api.say("", self)
-            for disabled, reason in self._plugin_manager.get_disabled().items():
-                self._say(
-                    "{:<20}: {}".format(
-                        disabled,
-                        " OR ".join(reason)),
-                    self)
-
-    def executor(self, command):
-        """
-        If command is not empty, we execute it and terminate.
-        Else, this method opens a terminal session with the user.
-        We can say that it is the core function of this whole class
-        and it joins all the function above to work together like a
-        clockwork. (Terminates when the user send the "exit", "quit"
-        or "goodbye command")
-        :return: Nothing to return.
-        """
-        if command:
-            self._jarvis.execute_once(command)
-            self.exit()
-        else:
-            self.cmdloop()
 
 
 def catch_all_exceptions(do, pass_self=True):

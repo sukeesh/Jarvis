@@ -1,6 +1,5 @@
 from plugin import plugin
 
-
 ROUTINES = "routines"
 
 
@@ -29,7 +28,7 @@ def execute_routine(jarvis, name):
     except (TypeError, KeyError) as e:
         return False
     for command in routine:
-        jarvis.eval(command)
+        jarvis.execute_once(command)
     return True
 
 

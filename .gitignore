@@ -22,3 +22,4 @@ myinfo\.csv
 .buildozer
 .mypy_cache
 bin
+.pyre

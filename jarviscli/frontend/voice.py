@@ -1,7 +1,8 @@
-import re
-from utilities.GeneralUtilities import IS_MACOS, IS_WIN
 import os
+import re
 import subprocess
+
+from utilities.GeneralUtilities import IS_MACOS, IS_WIN
 
 try:
     from gtts import gTTS
@@ -26,6 +27,47 @@ else:
         HAS_PYTTSX3 = False
 
 
+def remove_ansi_escape_seq(text):
+    """
+    This method removes ANSI escape sequences (such as a colorama color
+    code) from a string so that they aren't spoken.
+    :param text: The text that may contain ANSI escape sequences.
+    :return: The text with ANSI escape sequences removed.
+    """
+    if text:
+        text = re.sub(r'''(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]''', '', text)
+    return text
+
+
+class JarvisVoice:
+    def __init__(self, jarvis):
+        self.jarvis = jarvis
+        self.speech_rate = self.jarvis.get_data('speech_rate')
+
+        if not self.speech_rate:
+            self.speech_rate = 120
+
+    def start(self):
+        ggts_status = self.jarvis.get_data('gtts_status')
+        self.backend = create_voice(self, ggts_status, rate=self.speech_rate)
+
+    def stop(self):
+        self.backend.destroy()
+
+    def say(self, text, color=''):
+        if len(text) == 0:
+            return
+        self.backend.text_to_speech(text)
+
+    def input(self, *args):
+        # VOICE CANNOT INPUT ANYTHING
+        pass
+
+    def change_speech_rate(self, delta):
+        self.speech_rate += delta
+        self.backend.change_rate(delta)
+
+
 def create_voice(self, gtts_status, rate=180):
     """
     Checks that status of gtts engine, and calls the correct speech engine
@@ -46,29 +88,15 @@ def create_voice(self, gtts_status, rate=180):
                 return VoiceNotSupported()
 
 
-def remove_ansi_escape_seq(text):
-    """
-    This method removes ANSI escape sequences (such as a colorama color
-    code) from a string so that they aren't spoken.
-    :param text: The text that may contain ANSI escape sequences.
-    :return: The text with ANSI escape sequences removed.
-    """
-    if text:
-        text = re.sub(r'''(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]''', '', text)
-    return text
+class Voice:
+    def change_rate(self, delta):
+        print('Speech rate change not implemented')
+
+    def destroy(self):
+        pass
 
 
-# class Voice:
-#     """
-#     ABOUT: This class is the Voice of Jarvis.
-#         The methods included in this class
-#         generate audio output of Jarvis while
-#         interacting with the user.
-#     DOCUMENTATION on pyttsx3:
-#         https://pyttsx3.readthedocs.io/en/latest/
-#     """
-
-class VoiceGTTS():
+class VoiceGTTS(Voice):
     def text_to_speech(self, speech):
         speech = remove_ansi_escape_seq(speech)
         tts = gTTS(speech, lang="en")
@@ -78,14 +106,23 @@ class VoiceGTTS():
         os.remove("voice.mp3")
 
 
-class VoiceMac():
+class VoiceMac(Voice):
     def text_to_speech(self, speech):
         speech = remove_ansi_escape_seq(speech)
         speech = speech.replace("'", "\\'")
         system('say $\'{}\''.format(speech))
 
 
-class Voice_general():
+class VoiceLinux(Voice):
+    """
+     ABOUT: This class is the Voice of Jarvis.
+         The methods included in this class
+         generate audio output of Jarvis while
+         interacting with the user.
+     DOCUMENTATION on pyttsx3:
+         https://pyttsx3.readthedocs.io/en/latest/
+    """
+
     def __init__(self, rate):
         self.rate = rate
         self.min_rate = 50
@@ -102,11 +139,6 @@ class Voice_general():
         to create a new one in the next interaction.
         """
         del self.engine
-
-
-class VoiceLinux(Voice_general):
-    def __init__(self, rate):
-        super().__init__(rate)
 
     def text_to_speech(self, speech):
         """
@@ -138,8 +170,7 @@ class VoiceLinux(Voice_general):
             self.rate = self.rate + delta
 
 
-class VoiceWin():
-
+class VoiceWin(Voice):
     def __init__(self, rate):
         self.rate = rate
         self.min_rate = 50
@@ -192,7 +223,7 @@ class VoiceWin():
             self.rate = self.rate + delta
 
 
-class VoiceNotSupported():
+class VoiceNotSupported(Voice):
     def __init__(self):
         self.warning_print = False
 

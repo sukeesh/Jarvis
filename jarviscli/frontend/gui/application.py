@@ -2,31 +2,15 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager
 
-from ui.gui.screen_prompt import PromptScreen
+from frontend.gui.screen_prompt import PromptScreen
 
-Builder.load_file('ui/gui/screen_prompt.kv')
-
-
-class GuiIO():
-    def __init__(self, app):
-        self.app = app
-
-    def say(self, text, color=""):
-        self.app.say(text)
-
-    def input(self, prompt="", color=""):
-        return ''
-
-    def exit(self):
-        pass
+Builder.load_file('jarviscli/frontend/gui/screen_prompt.kv')
 
 
 class JarvisApp(App):
     def __init__(self, jarvis):
-        super().__init__()
         self.jarvis = jarvis
-        self.api_io = GuiIO(self)
-        self.jarvis.register_io(self.api_io)
+        super().__init__()
 
     def build(self):
         self.screen_manager = ScreenManager()

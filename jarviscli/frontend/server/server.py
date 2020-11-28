@@ -2,13 +2,22 @@ import re
 
 from flask import Flask
 
-from jarvis import Jarvis
-from language import snips
 
+class JarvisServer:
+    def __init__(self, jarvis):
+        self.jarvis = jarvis
 
-class ServerIO:
-    def __init__(self):
+        self.server_app = Flask(__name__)
+        self.host_name = "0.0.0.0"
+        self.port = 8008
+        self.auth_string = "new String that I created just so I could access this just for myself"
+        self.routes = [
+            dict(route="/health", endpoint="/health", func=self._health)
+        ]
+
+        self.init_server_endpoints(jarvis_plugins=jarvis.get_plugins().values())
         self.recorded_texts = []
+        self.start_server()
 
     def say(self, text, color=''):
         self.recorded_texts.append(text)
@@ -27,35 +36,12 @@ class ServerIO:
         self.recorded_texts = []
         return tmp
 
-
-class JarvisServer:
-
-    def __init__(self):
-
-        self.server_app = Flask(__name__)
-        self.host_name = "0.0.0.0"
-        self.port = 8008
-        self.auth_string = "new String that I created just so I could access this just for myself"
-        self.routes = [
-            dict(route="/health", endpoint="/health", func=self._health)
-        ]
-
     def start_server(self):
         print("Starting a thread for home server!")
-
-        from main import build_plugin_manager
-        plugin_manager = build_plugin_manager()
-        language_parser = snips.LanguageParser()
-        jarvis_server = JarvisServer()
-        self.io = ServerIO()
-
-        self.jarvis = Jarvis(language_parser, plugin_manager, jarvis_server)
-        self.jarvis.register_io(self.io)
-
         self.server_app.run(host=self.host_name, port=self.port, threaded=True, debug=True, use_reloader=False)
 
     def check_running(self) -> bool:
-        pass
+        return True
 
     def init_server_endpoints(self, jarvis_plugins):
 
@@ -73,8 +59,8 @@ class JarvisServer:
 
     def _wrap_plugin(self, plugin):
         def _run():
-            plugin.run(self.jarvis.jarvis_api, '')
-            _text = self.io.fetch_recorded_texts()
+            plugin.run(self.jarvis, '')
+            _text = self.fetch_recorded_texts()
             print(_text)
             return '\n'.join(_text)
         return _run

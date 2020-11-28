@@ -1,35 +1,228 @@
 import tempfile
+import threading
 from cmd import Cmd
 from typing import Dict, Optional
 
 from colorama import Fore
 
-from api import JarvisAPI
+import frontend.cmd_interpreter
+import frontend.gui.jarvis_gui
+import frontend.server.server
+import frontend.voice
+from packages.memory.memory import Memory
 from plugin import Plugin
-from plugin_manager import PluginManager
+from utilities import schedule
 from utilities.GeneralUtilities import warning
+from utilities.notification import notify
 
 # register hist path via tempfile
 HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
 
 
 class Jarvis:
-    def __init__(self, language_parser, plugin_manager, server):
-        self.jarvis_api = JarvisAPI()
+    _CONNECTION_ERROR_MSG = "You are not connected to Internet"
+
+    AVAILABLE_FRONTENDS = {'cli': frontend.cmd_interpreter.CmdInterpreter,
+                           'gui': frontend.gui.jarvis_gui.JarvisGui,
+                           'server': frontend.server.server.JarvisServer,
+                           'voice': frontend.voice.JarvisVoice,
+                           # 'voiceIn': JarvisVoiceControl
+                           }
+
+    def __init__(self, language_parser, plugin_manager):
         self.language_parser = language_parser
         self.plugin_manager = plugin_manager
-        self.server = server
 
-        plugin_values = self.plugin_manager.get_plugins().values()
-        self.language_parser.train(plugin_values)
-        self.server.init_server_endpoints(jarvis_plugins=plugin_values)
+        self.plugins = self.plugin_manager.get_plugins()
+        self.language_parser.train(self.plugins.values())
 
         self.cache = ''
         self.stdout = self
 
-    def register_io(self, jarvis_io):
-        self.jarvis_api.io = jarvis_io
-        return self.jarvis_api
+        self.spinner_running = False
+
+        self.memory = Memory()
+        self.scheduler = schedule.Scheduler()
+
+        self.active_frontends = {}
+
+        for plugin in self.plugins.values():
+            plugin.init(self)
+
+    def activate_frontend(self, frontend):
+        if frontend not in self.active_frontends:
+            _f = self.AVAILABLE_FRONTENDS[frontend](self)
+            self.active_frontends[frontend] = _f
+
+            threading.Thread(target=_f.start).start()
+
+    def disable_frontend(self, frontend):
+        if frontend in self.active_frontends:
+            if self.spinner_running:
+                self.active_frontends[frontend].spinner_stop()
+            self.active_frontends[frontend].stop()
+            del self.active_frontends[frontend]
+
+    def run(self):
+        for _frontend in self.active_frontends.values():
+            _frontend.start()
+
+    def get_plugins(self):
+        return self.plugins
+
+    def say(self, text, color="", speak=True):
+        """
+        This method give the jarvis the ability to print a text
+        and talk when sound is enable.
+        :param text: the text to print (or talk)
+        :param color: for text - use colorama (https://pypi.org/project/colorama/)
+                      e.g. Fore.BLUE
+        :param speak: False-, if text shouldn't be spoken even if speech is enabled
+        """
+        for _frontend in self.active_frontends.values():
+            _frontend.say(text, color)
+
+    def input(self, prompt="", color=""):
+        """
+        Get user input
+        """
+        for _frontend in self.active_frontends.values():
+            _frontend.input(prompt, color)
+
+    def exit(self):
+        """Immediately exit Jarvis"""
+        self.say("Goodbye, see you later!", Fore.RED)
+
+        for _frontend_name in [x for x in self.active_frontends.keys()]:
+            self.disable_frontend(_frontend_name)
+
+        self.jarvis.scheduler.stop_all()
+
+        import sys
+        sys.exit()
+
+    def _speak(self, text):
+        if self.enable_voice:
+            self.speech.text_to_speech(text)
+
+    def input_number(self, prompt="", color="", rtype=float, rmin=None, rmax=None):
+        """
+        Get user input: As number.
+
+        Guaranteed only returns number - ask user till correct number entered.
+
+        :param prompt: Printed to console
+        :param color: Color of prompot
+        :param rtype: type of return value; e.g. float (default) or int
+        :param rmin: Minum of values returned
+        :param rmax: Maximum of values returned
+        """
+        while True:
+            try:
+                value = rtype(self.input(prompt, color).replace(',', '.'))
+                if (rmin is not None and value < rmin) or (rmax is not None and value > rmax):
+                    prompt = "Sorry, needs to be between {} and {}. Try again: ".format(rmin, rmax)
+                else:
+                    return value
+            except ValueError:
+                prompt = 'Sorry, needs to be a number. Try again: '
+                continue
+
+    def connection_error(self):
+        """Print generic connection error"""
+
+        if self.is_spinner_running():
+            self.spinner_stop('')
+
+        self.say(self._CONNECTION_ERROR_MSG)
+
+    def notification(self, msg, time_seconds=0):
+        """
+        Sends notification msg in time_in milliseconds
+        :param msg: Message. Either String (message body) or tuple (headline, message body)
+        :param time_seconds: Time in seconds to wait before showing notification
+        """
+        if isinstance(msg, tuple):
+            headline, message = msg
+        elif isinstance(msg, str):
+            headline = "Jarvis"
+            message = msg
+        else:
+            raise ValueError("msg not a string or tuple")
+
+        if time_seconds == 0:
+            notify(headline, message)
+        else:
+            schedule(time_seconds, notify, headline, message)
+
+    def schedule(self, time_seconds, function, *args):
+        """
+        Schedules function
+        After time_seconds call function with these parameter:
+           - reference to this JarvisAPI instance
+           - schedule_id (return value of this function)
+           - *args
+        :return: integer, id - use with cancel
+        """
+        return self.scheduler.create_event(
+            time_seconds, function, self, *args)
+
+    def cancel(self, schedule_id):
+        """
+        Cancel event scheduled with schedule
+        :param schedule_id: id returned by schedule
+        """
+        self.scheduler.cancel(schedule_id)
+        self.say('Cancellation successful', Fore.GREEN)
+
+    # MEMORY WRAPPER
+    def get_data(self, key):
+        """
+        Get a specific key from memory
+        """
+        return self.memory.get_data(key)
+
+    def add_data(self, key, value):
+        """
+        Add a key and value to memory
+        """
+        self.memory.add_data(key, value)
+        self.memory.save()
+
+    def update_data(self, key, value):
+        """
+        Updates a key with supplied value.
+        """
+        self.memory.update_data(key, value)
+        self.memory.save()
+
+    def del_data(self, key):
+        """
+        Delete a key from memory
+        """
+        self.memory.del_data(key)
+        self.memory.save()
+
+    def spinner_start(self, message="Starting "):
+        """
+        Function for starting a spinner when prompted from a plugin
+        and a default message for performing the task
+        """
+        self.spinner_running = True
+        for _frontend in self.active_frontend:
+            _frontend.spinner_start(message)
+
+    def spinner_stop(self, message="Task executed successfully! ", color=Fore.GREEN):
+        """
+        Function for stopping the spinner when prompted from a plugin
+        and displaying the message after completing the task
+        """
+        self.spinner_running = False
+        for _frontend in self.active_frontend:
+            _frontend.spinner_stop(message)
+
+    def is_spinner_running(self):
+        return self.spinner_running
 
     def plugin_info(self):
         plugin_status_formatter = {
@@ -47,12 +240,6 @@ class Jarvis:
 
         return plugin_status.format(**plugin_status_formatter)
 
-    def activate_plugins(self):
-        """Generate do_XXX, help_XXX and (optionally) complete_XXX functions"""
-        for (plugin_name, plugin) in self.plugin_manager.get_plugins().items():
-            yield plugin
-            plugin.init(self.jarvis_api)
-
     def execute_once(self, command: str) -> Optional[bool]:
         # save commands' history
         HISTORY_FILENAME.write(command + '\n')
@@ -66,14 +253,14 @@ class Jarvis:
         if plugin is None:
             return None
 
-        s = self.build_s_string(command, plugin)
-        ret = plugin.run(self.jarvis_api, s)
+        s = self._build_s_string(command, plugin)
+        ret = plugin.run(self, s)
 
         if ret is False:
             return False
         return True
 
-    def build_s_string(self, data: str, plugin: Plugin):
+    def _build_s_string(self, data: str, plugin: Plugin):
         features = self._parse_plugin_features(plugin.feature())
 
         if not features['punctuation']:
@@ -116,13 +303,13 @@ class Jarvis:
 
     def do_help(self, plugin: Optional[Plugin]):
         if plugin is not None:
-            self.jarvis_api.say(plugin.get_doc())
+            self.say(plugin.get_doc())
         else:
-            self.jarvis_api.say("")
+            self.say("")
             headerString = "These are valid commands for Jarvis"
             formatString = "Format: command ([aliases for command])"
-            self.jarvis_api.say(headerString)
-            self.jarvis_api.say(formatString, Fore.BLUE)
+            self.say(headerString)
+            self.say(formatString, Fore.BLUE)
             pluginDict = self.plugin_manager.get_plugins()
             uniquePlugins: Dict[str, Plugin] = {}
             for key in pluginDict.keys():
@@ -147,7 +334,7 @@ class Jarvis:
 
     def write(self, line):
         if line.endswith('\n'):
-            self.jarvis_api.say(self.cache + line[:-1])
+            self.say(self.cache + line[:-1])
             self.cache = ''
         else:
             self.cache += line
