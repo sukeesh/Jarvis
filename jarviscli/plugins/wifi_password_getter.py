@@ -12,6 +12,7 @@ class wifiPasswordGetter():
     wifis that you have connected to and then display the password if selected
 
     """
+
     def __call__(self, jarvis, s):
         profiles = self.get_wifi_profiles()
         choice = self.show_options(jarvis, profiles)
@@ -23,19 +24,15 @@ class wifiPasswordGetter():
                    '\nPassword: ' + strip_password)
 
     def get_wifi_profiles(self):
-        out = subprocess.Popen(
-                               ["ls",
-                                "/etc/NetworkManager/system-connections/"],
-                               universal_newlines=True,
-                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-                               )
+        out = subprocess.Popen(["ls", "/etc/NetworkManager/system-connections/"],
+                               universal_newlines=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         (res, stderr) = out.communicate()
         data = res.split('\n')
         return data
 
     def show_options(self, jarvis, arr):
         count = 1
-        for x in range(len(arr)-1):
+        for x in range(len(arr) - 1):
             option = arr[x]
             jarvis.say(str(count) + ": " + option)
             count = count + 1
