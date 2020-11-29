@@ -24,6 +24,11 @@ def build_jarvis():
 
 
 def start(args, jarvis):
+    if args.server_hostname is not None:
+        jarvis.update_data('SERVER_HOSTNAME', args.server_hostname)
+    if args.server_port is not None:
+        jarvis.update_data('SERVER_PORT', args.server_port)
+
     if args.enable_cli:
         jarvis.activate_frontend('cli')
     if args.enable_server:
@@ -33,8 +38,8 @@ def start(args, jarvis):
     voice = jarvis.get_data('voice_status')
     if args.enable_voice or voice and not args.disable_voice:
         jarvis.activate_frontend('voice')
-    if args.enable_speech_recognition:
-        jarvis.activate_frontend('speech_recognition')
+    if args.enable_voice_control:
+        jarvis.activate_frontend('voice_control')
 
     if len(args.CMD) == 0:
         jarvis.run()

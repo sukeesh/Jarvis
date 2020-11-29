@@ -9,6 +9,7 @@ import frontend.cmd_interpreter
 import frontend.gui.jarvis_gui
 import frontend.server.server
 import frontend.voice
+import frontend.voice_control
 from packages.memory.memory import Memory
 from plugin import Plugin
 from utilities import schedule
@@ -26,7 +27,7 @@ class Jarvis:
                            'gui': frontend.gui.jarvis_gui.JarvisGui,
                            'server': frontend.server.server.JarvisServer,
                            'voice': frontend.voice.JarvisVoice,
-                           # 'voiceIn': JarvisVoiceControl
+                           'voice_control': frontend.voice_control.VoiceControl
                            }
 
     def __init__(self, language_parser, plugin_manager):

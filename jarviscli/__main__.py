@@ -11,10 +11,12 @@ if __name__ == '__main__':
     parser.add_argument('--with-gui', dest='enable_gui', action='store_true')
     parser.add_argument('--with-voice', dest='enable_voice', action='store_true')
     parser.add_argument('--without-voice', dest='disable_voice', action='store_true')
-    parser.add_argument('--with-speech-recognition', dest='enable_speech_recognition',
+    parser.add_argument('--with-voice-control', dest='enable_voice_control',
                         action='store_true')
     parser.add_argument('--without-cli', dest='enable_cli',
                         action='store_false')
+    parser.add_argument('--server-hostname', dest='server_hostname', nargs=1, default=None)
+    parser.add_argument('--server-port', dest='server_port', nargs=1, default=None)
     parser.add_argument('CMD', type=str, nargs='*')
     args = parser.parse_args()
     sys.argv = sys.argv[0]

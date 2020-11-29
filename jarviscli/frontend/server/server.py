@@ -8,8 +8,13 @@ class JarvisServer:
         self.jarvis = jarvis
 
         self.server_app = Flask(__name__)
-        self.host_name = "0.0.0.0"
-        self.port = 8008
+        self.host_name = jarvis.get_data('SERVER_HOSTNAME')
+        if self.host_name is None:
+            self.host_name = '0.0.0.0'
+        self.port = jarvis.get_data('SERVER_PORT')
+        if self.port is None:
+            self.port = 8080
+
         self.auth_string = "new String that I created just so I could access this just for myself"
         self.routes = [
             dict(route="/health", endpoint="/health", func=self._health)
@@ -17,7 +22,6 @@ class JarvisServer:
 
         self.init_server_endpoints(jarvis_plugins=jarvis.get_plugins().values())
         self.recorded_texts = []
-        self.start_server()
 
     def say(self, text, color=''):
         self.recorded_texts.append(text)
@@ -27,7 +31,11 @@ class JarvisServer:
         # because 'input' might be tricky to implement
         pass
 
-    def exit(self):
+    def start(self):
+        print("Starting a thread for home server!")
+        self.server_app.run(host=self.host_name, port=self.port, threaded=True, debug=True, use_reloader=False)
+
+    def stop(self):
         # STOP SERVER
         pass
 
@@ -35,13 +43,6 @@ class JarvisServer:
         tmp = self.recorded_texts
         self.recorded_texts = []
         return tmp
-
-    def start_server(self):
-        print("Starting a thread for home server!")
-        self.server_app.run(host=self.host_name, port=self.port, threaded=True, debug=True, use_reloader=False)
-
-    def check_running(self) -> bool:
-        return True
 
     def init_server_endpoints(self, jarvis_plugins):
 
