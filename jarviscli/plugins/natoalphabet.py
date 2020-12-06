@@ -1,9 +1,4 @@
-import sys
-import nltk
-from nltk.corpus import wordnet
 from plugin import plugin
-
-nltk.data.path.append("jarviscli/data/ntlk")
 
 @plugin('natoalphabet')
 def natoalphabet(jarvis, s):
