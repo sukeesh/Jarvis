@@ -24,14 +24,15 @@ class Hear():
         listen = False
         _jarvis = jarvis._jarvis  # calling jarvis object.
         print("Say your language")
-        _jarvis.speech.text_to_speech("Say your language", "en")
+        _jarvis.speech.text_to_speech("Say your language", "en")  # Prompt the user for a language.
         while listen is False:
             try:
                 with sr.Microphone() as source:
-                    r.adjust_for_ambient_noise(source)
+                    r.adjust_for_ambient_noise(source)    # Adjusts for background noise.
                     audio = r.listen(source)  # Storing audio.
                     dest = r.recognize_google(audio).lower()
                     print(dest)
+                # The if-statements check for valid language.
                 if dest in SPECIAL_CASES:
                     dest = SPECIAL_CASES[dest]
                     listen = True
@@ -40,6 +41,7 @@ class Hear():
                     listen = True
                 else:
                     jarvis.say("\nInvalid source language\nTry again")
+
                 if listen is True:
                     if dest == "en":
                         self.english(jarvis, _jarvis, r)
@@ -47,6 +49,8 @@ class Hear():
                         self.other_lang(jarvis, _jarvis, r, dest)
             except sr.UnknownValueError:
                 continue  # For ignoring the unrecognized words error
+
+    # The english function will run the program without calls to translate.
 
     def english(self, jarvis, _jarvis, r):
         start_up = "Voice mode activated in english, say stop to stop listening"
@@ -62,6 +66,7 @@ class Hear():
                     audio = r.listen(source)
                     pinger = r.recognize_google(audio).lower()
                     print(pinger)
+                # Program will stop if word 'stop' is recognized.
                 if pinger == "stop":
                     listen = False
                     print("Listening Stopped")
@@ -74,13 +79,14 @@ class Hear():
             except LookupError:
                 _jarvis.speech.text_to_speech("Cannot understand command", lang=dest)
             except sr.UnknownValueError:
-                continue
+                continue  # For ignoring when user is not speaking.
             except sr.RequestError:
                 print("Could not request results from Google Recognition service")
                 continue  # It will ignore connecting server error.
 
     def other_lang(self, jarvis, _jarvis, r, dest):
         translator = Translator()
+        # Start-up line translated then voiced.
         start_up = "Voice mode activated in language " + LANGUAGES[dest] + ", say stop to stop listening mode"
         start_up = translator.translate(start_up, dest=dest, src="en")
         start_up = u"""
