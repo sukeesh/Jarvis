@@ -64,6 +64,10 @@ jarvis is cool
 
 [Click here](doc/PLUGINS.md) to learn more about plugins.
 
+### Plugins Marketplace
+
+[Click here](doc/PLUGINS_MARKETPLACE.md) to learn more about the plugins marketplace.
+
 ### Creating a test
 
 Creating a test is optional but never a bad idea ;).
