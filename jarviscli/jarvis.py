@@ -1,6 +1,7 @@
 import tempfile
 import threading
 from cmd import Cmd
+from threading import Semaphore
 from typing import Dict, Optional
 
 from colorama import Fore
@@ -46,6 +47,7 @@ class Jarvis:
         self.scheduler = schedule.Scheduler()
 
         self.active_frontends = {}
+        self.running = Semaphore()
 
         for plugin in self.plugins.values():
             plugin.init(self)
@@ -54,19 +56,41 @@ class Jarvis:
         if frontend not in self.active_frontends:
             _f = self.AVAILABLE_FRONTENDS[frontend](self)
             self.active_frontends[frontend] = _f
-
-            threading.Thread(target=_f.start).start()
+            _f.thread = threading.Thread(target=_f.start)
+            if self.running._value == 0:
+                _f.thread.start()
 
     def disable_frontend(self, frontend):
         if frontend in self.active_frontends:
             if self.spinner_running:
                 self.active_frontends[frontend].spinner_stop()
             self.active_frontends[frontend].stop()
+            thread = self.active_frontends[frontend].thread
             del self.active_frontends[frontend]
+            return thread
 
     def run(self):
         for _frontend in self.active_frontends.values():
-            _frontend.start()
+            _frontend.thread.start()
+        self._prompt()
+
+        self.running.acquire()
+
+        # Stop Jarvis -> release self.running
+        # exit-code should be executed from main thread
+        # to avoid strange behaviour
+
+        self.running.acquire()
+
+        self.say("Goodbye, see you later!", Fore.RED)
+        self.scheduler.stop_all()
+
+        for _frontend_name in [x for x in self.active_frontends.keys()]:
+            print('Stopping {}'.format(_frontend_name))
+            self.disable_frontend(_frontend_name).join()
+
+        import sys
+        sys.exit(0)
 
     def get_plugins(self):
         return self.plugins
@@ -92,15 +116,8 @@ class Jarvis:
 
     def exit(self):
         """Immediately exit Jarvis"""
-        self.say("Goodbye, see you later!", Fore.RED)
-
-        for _frontend_name in [x for x in self.active_frontends.keys()]:
-            self.disable_frontend(_frontend_name)
-
-        self.jarvis.scheduler.stop_all()
-
-        import sys
-        sys.exit()
+        print('EXIT IMMEDIATELY')
+        self.running.release()
 
     def _speak(self, text):
         if self.enable_voice:
@@ -210,7 +227,7 @@ class Jarvis:
         and a default message for performing the task
         """
         self.spinner_running = True
-        for _frontend in self.active_frontend:
+        for _frontend in self.active_frontend.values():
             _frontend.spinner_start(message)
 
     def spinner_stop(self, message="Task executed successfully! ", color=Fore.GREEN):
@@ -219,7 +236,7 @@ class Jarvis:
         and displaying the message after completing the task
         """
         self.spinner_running = False
-        for _frontend in self.active_frontend:
+        for _frontend in self.active_frontend.values():
             _frontend.spinner_stop(message)
 
     def is_spinner_running(self):
@@ -258,8 +275,12 @@ class Jarvis:
         ret = plugin.run(self, s)
 
         if ret is False:
-            return False
-        return True
+            self.say("I could not identify your command...", Fore.RED)
+        self._prompt()
+
+    def _prompt(self):
+        for _f in self.active_frontends.values():
+            _f.show_prompt()
 
     def _build_s_string(self, data: str, plugin: Plugin):
         features = self._parse_plugin_features(plugin.feature())

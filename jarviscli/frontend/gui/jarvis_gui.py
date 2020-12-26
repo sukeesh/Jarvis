@@ -9,6 +9,10 @@ class JarvisGui():
     def say(self, text, color=""):
         self.app.say(text)
 
+    def show_prompt(self):
+        # TODO
+        pass
+
     def input(self, prompt="", color=""):
         return ''
 

@@ -25,3 +25,4 @@ myinfo\.csv
 .mypy_cache
 bin
 .pyre
+voice.mp3

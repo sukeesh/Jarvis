@@ -7,11 +7,16 @@ import colorama
 from colorama import Fore
 
 from utilities.animations import SpinnerThread
+from utilities.cli import cancel, input
 
 PROMPT_CHAR = '~>'
 
 
 class CmdInterpreter(Cmd):
+    """
+    Cmd source code:
+    https://github.com/python/cpython/blob/master/Lib/cmd.py
+    """
 
     first_reaction_text = """\
 {BLUE}Jarvis' sound is by default disabled.{RESET}
@@ -19,10 +24,11 @@ class CmdInterpreter(Cmd):
 Type 'help' for a list of available actions.
 """.format(BLUE=Fore.BLUE, RESET=Fore.RESET, RED=Fore.RED)
 
-    prompt = (
+    prompt_msg = (
         Fore.RED
         + "{} Hi, what can I do for you?\n".format(PROMPT_CHAR)
         + Fore.RESET)
+    prompt = ''
 
     def __init__(self, jarvis):
         """
@@ -35,10 +41,6 @@ Type 'help' for a list of available actions.
 
         # enable color on windows
         colorama.init()
-        # change raw input based on os
-        if sys.platform == 'win32':
-            self.use_rawinput = False
-
         self.first_reaction = True
 
         # Register do_quit() function to SIGINT signal (Ctrl-C)
@@ -50,24 +52,55 @@ Type 'help' for a list of available actions.
 
         self.say(self.first_reaction_text)
 
+        self._do_stop = False
+        self._cancel_input = False
+
     def say(self, text, color=''):
         print(color + text + Fore.RESET, flush=True)
 
+    def show_prompt(self):
+        """Hook that executes after every command."""
+        if self.first_reaction:
+            self.prompt_msg = (
+                Fore.RED
+                + "{} What can I do for you?\n".format(PROMPT_CHAR)
+                + Fore.RESET)
+            self.first_reaction = False
+        self.say(self.prompt_msg)
+
     def start(self):
-        self.cmdloop()
+        try:
+            import readline
+            self.old_completer = readline.get_completer()
+            readline.set_completer(self.complete)
+            readline.parse_and_bind(self.completekey+": complete")
+        except ImportError:
+            pass
+
+        while not self._do_stop:
+            line = input(self.prompt)
+            if not len(line):
+                line = 'EOF'
+            line = self.precmd(line)
+            stop = self.onecmd(line)
+            stop = self.postcmd(stop, line)
+        self.postloop()
 
     def stop(self):
-        # to be implemented
-        pass
+        self._do_stop = True
+        # cancel input
+        cancel()
 
-    def input(self, prompt="", color=""):
-        # we can't use input because for some reason input() and color codes do not work on
-        # windows cmd
-        sys.stdout.write(color + prompt + Fore.RESET)
+    def postcmd(self, *args):
+        super().postcmd(*args)
+        return self._do_stop
+
+    def input(self, _prompt="", color=""):
+        # color even for windows cmd
+        sys.stdout.write(color + _prompt + Fore.RESET)
         sys.stdout.flush()
-        text = sys.stdin.readline()
-        # return without newline
-        return text.rstrip()
+
+        return input()
 
     def spinner_start(self, message="Starting "):
         self.spinner = SpinnerThread(message, 0.15)
@@ -96,27 +129,14 @@ Type 'help' for a list of available actions.
         return line
 
     def onecmd(self, s: str):
-        result = self._jarvis.execute_once(s)
-        if result is None:
-            self.error()
-
-    def postcmd(self, stop, line):
-        """Hook that executes after every command."""
-        if self.first_reaction:
-            self.prompt = (
-                Fore.RED
-                + "{} What can I do for you?\n".format(PROMPT_CHAR)
-                + Fore.RESET)
-            self.first_reaction = False
-        self.say(self.prompt)
-
-    def error(self):
-        """Jarvis let you know if an error has occurred."""
-        self.say("I could not identify your command...", Fore.RED)
+        self._jarvis.execute_once(s)
 
     def interrupt_handler(self, signal, frame):
         """Closes Jarvis on SIGINT signal. (Ctrl-C)"""
-        self._jarvis.exit()
+        try:
+            self._jarvis.exit()
+        except SystemExit:
+            pass
 
     def do_status(self, s):
         """Prints plugin status status"""

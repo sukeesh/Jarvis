@@ -26,6 +26,9 @@ class JarvisServer:
     def say(self, text, color=''):
         self.recorded_texts.append(text)
 
+    def prompt(self):
+        pass
+
     def input(self, prompt="", color=""):
         # TO IMPLEMENT PROBABLY LATER
         # because 'input' might be tricky to implement

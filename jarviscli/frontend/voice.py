@@ -2,6 +2,7 @@ import os
 import re
 import subprocess
 
+from utilities.cli import HiddenPrints
 from utilities.GeneralUtilities import IS_MACOS, IS_WIN
 
 try:
@@ -59,6 +60,9 @@ class JarvisVoice:
             return
         self.backend.text_to_speech(text)
 
+    def show_prompt(self):
+        self.say('What can I do for you?')
+
     def input(self, *args):
         # VOICE CANNOT INPUT ANYTHING
         pass
@@ -98,12 +102,13 @@ class Voice:
 
 class VoiceGTTS(Voice):
     def text_to_speech(self, speech):
-        speech = remove_ansi_escape_seq(speech)
-        tts = gTTS(speech, lang="en")
-        tts.save("voice.mp3")
-        audio = AudioSegment.from_mp3('voice.mp3')
-        playback.play(audio)
-        os.remove("voice.mp3")
+        with HiddenPrints():
+            speech = remove_ansi_escape_seq(speech)
+            tts = gTTS(speech, lang="en")
+            tts.save("voice.mp3")
+            audio = AudioSegment.from_mp3('voice.mp3')
+            playback.play(audio)
+            os.remove("voice.mp3")
 
 
 class VoiceMac(Voice):
@@ -150,10 +155,11 @@ class VoiceLinux(Voice):
         """
         if speech != '':
             speech = remove_ansi_escape_seq(speech)
-            self.create()
-            self.engine.say(speech)
-            self.engine.runAndWait()
-            self.destroy()
+            with HiddenPrints():
+                self.create()
+                self.engine.say(speech)
+                self.engine.runAndWait()
+                self.destroy()
 
     def change_rate(self, delta):
         """
