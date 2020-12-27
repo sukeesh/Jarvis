@@ -34,7 +34,7 @@ def print_say(text, self, color=""):
         DeprecationWarning)
     print(color + text + Fore.RESET)
     if self.enable_voice:
-        self.speech.text_to_speech(text)
+        self.speech.text_to_speech(text, "en")
 
 
 # Functions for printing user output

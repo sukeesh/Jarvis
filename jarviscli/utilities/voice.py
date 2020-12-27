@@ -61,9 +61,9 @@ def remove_ansi_escape_seq(text):
 #     """
 
 class VoiceGTTS():
-    def text_to_speech(self, speech):
+    def text_to_speech(self, speech, lang="en"):
         speech = remove_ansi_escape_seq(speech)
-        tts = gTTS(speech, lang="en")
+        tts = gTTS(speech, lang=lang)
         tts.save("voice.mp3")
         audio = AudioSegment.from_mp3('voice.mp3')
         playback.play(audio)
@@ -71,7 +71,7 @@ class VoiceGTTS():
 
 
 class VoiceMac():
-    def text_to_speech(self, speech):
+    def text_to_speech(self, speech, lang="en"):
         speech = remove_ansi_escape_seq(speech)
         speech = speech.replace("'", "\\'")
         system('say $\'{}\''.format(speech))
@@ -100,7 +100,7 @@ class VoiceLinux(Voice_general):
     def __init__(self, rate):
         super().__init__(rate)
 
-    def text_to_speech(self, speech):
+    def text_to_speech(self, speech, lang="en"):
         """
         :param speech: The text we want Jarvis to generate as audio
         :return: Nothing to return.
@@ -150,7 +150,7 @@ class VoiceWin():
         """
         del self.engine
 
-    def text_to_speech(self, speech):
+    def text_to_speech(self, speech, lang="en"):
         """
         This method converts a text to speech.
         :param speech: The text we want Jarvis to generate as audio
