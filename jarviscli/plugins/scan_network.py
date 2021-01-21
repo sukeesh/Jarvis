@@ -27,7 +27,7 @@ def show_output(jarvis, results):
 
 
 @require(network=True)
-@require(platform=LINUX)
+@require(native="nmap", platform=LINUX)
 @plugin('scan_network')
 def scan(jarvis, s):
     """
