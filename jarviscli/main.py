@@ -62,7 +62,7 @@ def start_gui(jarvis):
 
 
 def build_plugin_manager():
-    directories = ["jarviscli/core", "jarviscli/plugins", "custom"]
+    directories = ["jarviscli/core", "jarviscli/plugins", "custom", 'marketplace']
     directories = _rel_path_fix(directories)
 
     plugin_manager = PluginManager()
