@@ -1,8 +1,10 @@
-from plugin import plugin, require
-from colorama import Fore
-import akinator
 import subprocess
 import sys
+
+from colorama import Fore
+
+import akinator
+from plugin import plugin, require
 
 
 """

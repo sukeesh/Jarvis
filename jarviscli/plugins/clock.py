@@ -8,7 +8,11 @@ from plugin import plugin
 
 @plugin('clock')
 def clock(jarvis, s):
-    """Gives information about time"""
+    """
+    Gives information about time
+    -- Example:
+        what time is it
+    """
     jarvis.say(ctime(), Fore.BLUE)
 
 
@@ -34,10 +38,9 @@ def timer(jarvis, s):
     SPACE   Pause
     Q       Quit
 
-    Usages:
-
-    timer 10
-    timer 1h5m30s
+    -- Example:
+        timer 10
+        timer 1h5m30s
     """
     k = s.split(' ', 1)
     if k[0] == '':

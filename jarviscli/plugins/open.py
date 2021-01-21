@@ -1,8 +1,9 @@
 import os
-from plugin import plugin, require, LINUX
+
+from plugin import Platform, plugin, require
 
 
-@require(platform=LINUX)
+@require(platform=Platform.LINUX)
 @plugin('open')
 def open(jarvis, s):
 

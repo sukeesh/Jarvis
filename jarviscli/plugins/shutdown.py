@@ -1,8 +1,9 @@
 import os
-from plugin import plugin, require, LINUX, MACOS, WINDOWS
+
+from plugin import Platform, plugin, require
 
 
-@require(platform=LINUX)
+@require(platform=Platform.LINUX)
 @plugin('shutdown')
 def shutdown_LINUX(jarvis, s):
     """
@@ -21,7 +22,7 @@ def shutdown_LINUX(jarvis, s):
     os.system(string)
 
 
-@require(platform=MACOS)
+@require(platform=Platform.MACOS)
 @plugin('shutdown')
 def shutdown_MACOS(jarvis, s):
     """
@@ -40,7 +41,7 @@ def shutdown_MACOS(jarvis, s):
     os.system(string)
 
 
-@require(platform=WINDOWS)
+@require(platform=Platform.WINDOWS)
 @plugin('shutdown')
 def shutdown_WIN32(jarvis, s):
     """
@@ -59,7 +60,7 @@ def shutdown_WIN32(jarvis, s):
     os.system(string)
 
 
-@require(platform=LINUX)
+@require(platform=Platform.LINUX)
 @plugin('reboot')
 def reboot_LINUX(jarvis, s):
     """Reboot the system"""
@@ -69,7 +70,7 @@ def reboot_LINUX(jarvis, s):
     os.system(string)
 
 
-@require(platform=MACOS)
+@require(platform=Platform.MACOS)
 @plugin('reboot')
 def reboot_MACOS(jarvis, s):
     """Reboot the system"""
@@ -77,7 +78,7 @@ def reboot_MACOS(jarvis, s):
     os.system(string)
 
 
-@require(platform=WINDOWS)
+@require(platform=Platform.WINDOWS)
 @plugin('reboot')
 def reboot_WIN32(jarvis, s):
     """Reboot the system"""
@@ -87,7 +88,7 @@ def reboot_WIN32(jarvis, s):
     os.system(string)
 
 
-@require(native="systemctl", platform=LINUX)
+@require(native="systemctl", platform=Platform.LINUX)
 @plugin('hibernate')
 def hibernate_LINUX(jarvis, s):
     """
@@ -100,7 +101,7 @@ def hibernate_LINUX(jarvis, s):
     os.system('sudo systemctl hibernate')
 
 
-@require(platform=WINDOWS)
+@require(platform=Platform.WINDOWS)
 @plugin('hibernate')
 def hibernate_WIN32(jarvis, s):
     """Hibernates the system"""
@@ -108,7 +109,7 @@ def hibernate_WIN32(jarvis, s):
     os.system(string)
 
 
-@require(native="systemctl", platform=LINUX)
+@require(native="systemctl", platform=Platform.LINUX)
 @plugin('hybridsleep')
 def hybridsleep_LINUX(jarvis, s):
     """
@@ -120,7 +121,7 @@ def hybridsleep_LINUX(jarvis, s):
     os.system("sudo systemctl hybrid-sleep")
 
 
-@require(platform=WINDOWS)
+@require(platform=Platform.WINDOWS)
 @plugin('hybridsleep')
 def hybridsleep_WIN32(jarvis, s):
     """Performs shutdown and prepares forfast startup"""
@@ -128,7 +129,7 @@ def hybridsleep_WIN32(jarvis, s):
     os.system(string)
 
 
-@require(platform=WINDOWS)
+@require(platform=Platform.WINDOWS)
 @plugin('log off')
 def log_off_WIN32(jarvis, s):
     """Log off the system"""
@@ -136,7 +137,7 @@ def log_off_WIN32(jarvis, s):
     os.system(string)
 
 
-@require(native="systemctl", platform=LINUX)
+@require(native="systemctl", platform=Platform.LINUX)
 @plugin('suspend')
 def suspend_LINUX(jarvis, s):
     """

@@ -1,7 +1,9 @@
-from plugin import plugin
 import random
 import string
+
 from colorama import Fore
+
+from plugin import plugin
 
 
 @plugin("random password")

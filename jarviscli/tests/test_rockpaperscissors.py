@@ -1,7 +1,7 @@
 import unittest
-from tests import PluginTest
+
 from plugins.rockpaperscissors import rockpaperscissors
-from Jarvis import Jarvis
+from tests import PluginTest
 
 
 class RockpaperscissorsTest(PluginTest):

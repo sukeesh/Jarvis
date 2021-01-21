@@ -1,7 +1,8 @@
 import unittest
-from tests import PluginTest
+
+from jarvis import Jarvis
 from plugins.timeconv import timeconv
-from Jarvis import Jarvis
+from tests import PluginTest
 
 
 class TimeconvTest(PluginTest):

@@ -1,41 +1,31 @@
-import re
-from utilities.GeneralUtilities import IS_MACOS, IS_WIN
 import os
+import re
 import subprocess
-from gtts import gTTS
-from pydub import AudioSegment, playback
 
+from utilities.cli import HiddenPrints
+from utilities.GeneralUtilities import IS_MACOS, IS_WIN
 
-# patch pydup - hide std output
-FNULL = open(os.devnull, 'w')
-_subprocess_call = playback.subprocess.call
-playback.subprocess.call = lambda cmd: _subprocess_call(cmd, stdout=FNULL, stderr=subprocess.STDOUT)
+try:
+    from gtts import gTTS
+    from pydub import AudioSegment, playback
+    # patch pydup - hide std output
+    FNULL = open(os.devnull, 'w')
+    _subprocess_call = playback.subprocess.call
+    playback.subprocess.call = lambda cmd: _subprocess_call(cmd, stdout=FNULL, stderr=subprocess.STDOUT)
+
+    HAS_GTTS = True
+except ImportError:
+    HAS_GTTS = False
 
 
 if IS_MACOS:
     from os import system
 else:
-    import pyttsx3
-
-
-def create_voice(self, gtts_status, rate=180):
-    """
-    Checks that status of gtts engine, and calls the correct speech engine
-    :param rate: Speech rate for the engine (if supported by the OS)
-    """
-
-    if gtts_status is True:
-        return VoiceGTTS()
-    else:
-        if IS_MACOS:
-            return VoiceMac()
-        elif IS_WIN:
-            return VoiceWin(rate)
-        else:
-            try:
-                return VoiceLinux(rate)
-            except OSError:
-                return VoiceNotSupported()
+    try:
+        import pyttsx3
+        HAS_PYTTSX3 = True
+    except ImportError:
+        HAS_PYTTSX3 = False
 
 
 def remove_ansi_escape_seq(text):
@@ -50,34 +40,94 @@ def remove_ansi_escape_seq(text):
     return text
 
 
-# class Voice:
-#     """
-#     ABOUT: This class is the Voice of Jarvis.
-#         The methods included in this class
-#         generate audio output of Jarvis while
-#         interacting with the user.
-#     DOCUMENTATION on pyttsx3:
-#         https://pyttsx3.readthedocs.io/en/latest/
-#     """
+class JarvisVoice:
+    def __init__(self, jarvis):
+        self.jarvis = jarvis
+        self.speech_rate = self.jarvis.get_data('speech_rate')
 
-class VoiceGTTS():
+        if not self.speech_rate:
+            self.speech_rate = 120
+
+    def start(self):
+        ggts_status = self.jarvis.get_data('gtts_status')
+        self.backend = create_voice(self, ggts_status, rate=self.speech_rate)
+
+    def stop(self):
+        self.backend.destroy()
+
+    def say(self, text, color=''):
+        if len(text) == 0:
+            return
+        self.backend.text_to_speech(text)
+
+    def show_prompt(self):
+        self.say('What can I do for you?')
+
+    def input(self, *args):
+        # VOICE CANNOT INPUT ANYTHING
+        pass
+
+    def change_speech_rate(self, delta):
+        self.speech_rate += delta
+        self.backend.change_rate(delta)
+
+
+def create_voice(self, gtts_status, rate=180):
+    """
+    Checks that status of gtts engine, and calls the correct speech engine
+    :param rate: Speech rate for the engine (if supported by the OS)
+    """
+
+    if HAS_GTTS and gtts_status is True:
+        return VoiceGTTS()
+    else:
+        if IS_MACOS:
+            return VoiceMac()
+        elif IS_WIN:
+            return VoiceWin(rate)
+        else:
+            try:
+                return VoiceLinux(rate)
+            except OSError:
+                return VoiceNotSupported()
+
+
+class Voice:
+    def change_rate(self, delta):
+        print('Speech rate change not implemented')
+
+    def destroy(self):
+        pass
+
+
+class VoiceGTTS(Voice):
     def text_to_speech(self, speech):
-        speech = remove_ansi_escape_seq(speech)
-        tts = gTTS(speech, lang="en")
-        tts.save("voice.mp3")
-        audio = AudioSegment.from_mp3('voice.mp3')
-        playback.play(audio)
-        os.remove("voice.mp3")
+        with HiddenPrints():
+            speech = remove_ansi_escape_seq(speech)
+            tts = gTTS(speech, lang="en")
+            tts.save("voice.mp3")
+            audio = AudioSegment.from_mp3('voice.mp3')
+            playback.play(audio)
+            os.remove("voice.mp3")
 
 
-class VoiceMac():
+class VoiceMac(Voice):
     def text_to_speech(self, speech):
         speech = remove_ansi_escape_seq(speech)
         speech = speech.replace("'", "\\'")
         system('say $\'{}\''.format(speech))
 
 
-class Voice_general():
+class VoiceLinux(Voice):
+    """
+     ABOUT: This class is the Voice of Jarvis.
+         The methods included in this class
+         generate audio output of Jarvis while
+         interacting with the user.
+     DOCUMENTATION on pyttsx3:
+         https://pyttsx3.readthedocs.io/en/latest/
+    """
+
     def __init__(self, rate):
         self.rate = rate
         self.min_rate = 50
@@ -95,11 +145,6 @@ class Voice_general():
         """
         del self.engine
 
-
-class VoiceLinux(Voice_general):
-    def __init__(self, rate):
-        super().__init__(rate)
-
     def text_to_speech(self, speech):
         """
         :param speech: The text we want Jarvis to generate as audio
@@ -110,10 +155,11 @@ class VoiceLinux(Voice_general):
         """
         if speech != '':
             speech = remove_ansi_escape_seq(speech)
-            self.create()
-            self.engine.say(speech)
-            self.engine.runAndWait()
-            self.destroy()
+            with HiddenPrints():
+                self.create()
+                self.engine.say(speech)
+                self.engine.runAndWait()
+                self.destroy()
 
     def change_rate(self, delta):
         """
@@ -130,8 +176,7 @@ class VoiceLinux(Voice_general):
             self.rate = self.rate + delta
 
 
-class VoiceWin():
-
+class VoiceWin(Voice):
     def __init__(self, rate):
         self.rate = rate
         self.min_rate = 50
@@ -184,7 +229,7 @@ class VoiceWin():
             self.rate = self.rate + delta
 
 
-class VoiceNotSupported():
+class VoiceNotSupported(Voice):
     def __init__(self):
         self.warning_print = False
 

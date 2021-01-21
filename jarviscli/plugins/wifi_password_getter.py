@@ -1,10 +1,10 @@
-from plugin import LINUX, plugin, require
+from plugin import Platform, plugin, require
 from platform import system as sys
 from colorama import Fore
 import subprocess
 
 
-@require(platform=LINUX)
+@require(platform=Platform.LINUX)
 @plugin("wifi")
 class wifiPasswordGetter():
     """

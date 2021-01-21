@@ -1,5 +1,6 @@
 import webbrowser
-from plugin import require, plugin
+
+from plugin import plugin, require
 
 
 @require(network=True)

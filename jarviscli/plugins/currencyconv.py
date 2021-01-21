@@ -1,6 +1,7 @@
-import os
 import csv
+import os
 from decimal import Decimal
+
 from forex_python.bitcoin import BtcConverter
 from forex_python.converter import CurrencyRates
 from plugin import plugin, require

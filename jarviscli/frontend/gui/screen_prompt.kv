@@ -1,0 +1,29 @@
+<PromptScreen>:
+	impl: _prompt
+    jarvis: None
+
+	Prompt:
+		id: _prompt
+        jarvis: root.jarvis
+
+<Prompt>:
+	output: _output
+	prompt_text: _prompt_text
+
+	orientation: 'vertical'
+	TextInput:
+		id: _output
+		multiline: True
+		text: "Test"
+		disabled: True
+
+	BoxLayout:
+		size_hint: 1.0, 0.2
+		orientation: 'horizontal'
+		TextInput:
+			id: _prompt_text
+			multiline: False
+			text: 'TEST'
+		Button:
+			text: "OK"
+			on_press: root.press_ok()

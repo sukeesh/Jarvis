@@ -1,10 +1,13 @@
-from colorama import Fore
-import re
 import random
+import re
+
+from colorama import Fore
+
+from plugin import Platform, plugin, require
 from utilities.textParser import parse_number
-from plugin import plugin
 
 
+@require(platform=[Platform.ANDROID, Platform.DESKTOP])
 @plugin('roll')
 class Roll():
     """

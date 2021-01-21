@@ -1,7 +1,9 @@
-from plugin import plugin, alias
-import os
 import json
+import os
+
 from colorama import Fore
+
+from plugin import alias, plugin
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 

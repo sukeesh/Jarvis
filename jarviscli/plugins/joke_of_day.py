@@ -29,7 +29,7 @@ class joke_of_day:
             jarvis.spinner_start('Fetching')
             r = requests.get(url)
             if r is None:
-                jarvis.spinner.stop()
+                jarvis.spinner_stop()
                 jarvis.say(
                     "Error in fetching joke - try again! later", Fore.RED)
             jarvis.spinner_stop()

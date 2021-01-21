@@ -1,5 +1,6 @@
-from plugin import plugin, require
 import requests
+
+from plugin import plugin, require
 
 
 @require(network=True)

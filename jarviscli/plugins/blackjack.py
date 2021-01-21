@@ -1,6 +1,8 @@
 import random
-from plugin import plugin
+
 from colorama import Fore
+
+from plugin import plugin
 
 
 def delay():  # method to pause after a series of actions have been completed.

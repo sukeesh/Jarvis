@@ -1,5 +1,6 @@
-from plugin import plugin
 from colorama import Fore
+
+from plugin import plugin
 
 
 @plugin("binary")

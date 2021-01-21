@@ -1,8 +1,10 @@
-import requests
-from plugin import plugin
-from colorama import Fore
-from inspect import cleandoc
 import re
+from inspect import cleandoc
+
+import requests
+from colorama import Fore
+
+from plugin import plugin
 
 
 @plugin('stock')

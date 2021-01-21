@@ -21,3 +21,8 @@ jarviscli/data/Google_api_key.json
 VoterInfo.json
 myinfo\.csv
 .vscode
+.buildozer
+.mypy_cache
+bin
+.pyre
+voice.mp3

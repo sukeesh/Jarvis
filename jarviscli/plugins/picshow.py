@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import webbrowser
-from plugin import plugin, require, alias
+
+from plugin import alias, plugin, require
 
 
 @alias('show pics')

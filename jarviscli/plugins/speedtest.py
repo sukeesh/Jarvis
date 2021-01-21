@@ -8,6 +8,7 @@ from plugin import plugin, require
 @plugin('speedtest')
 def speedtest(jarvis, s):
     """Runs a speedtest on your internet connection"""
+    import speedtest as st
     try:
         res = st.Speedtest()
     except st.ConfigRetrievalError:

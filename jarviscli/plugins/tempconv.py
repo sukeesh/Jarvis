@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import re
+
 from colorama import Fore
+
 from plugin import plugin
 
 

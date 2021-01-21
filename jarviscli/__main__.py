@@ -1,24 +1,25 @@
-# -*- coding: utf-8 -*-
-import Jarvis
-import colorama
+import argparse
 import sys
 
-
-def check_python_version():
-    return sys.version_info[0] == 3
-
-
-def main():
-    # enable color on windows
-    colorama.init()
-    # start Jarvis
-    jarvis = Jarvis.Jarvis()
-    command = " ".join(sys.argv[1:]).strip()
-    jarvis.executor(command)
-
+import main
 
 if __name__ == '__main__':
-    if check_python_version():
-        main()
-    else:
-        print("Sorry! Only Python 3 supported.")
+    main.assert_python_version()
+
+    parser = argparse.ArgumentParser('Generate metadata json file')
+    parser.add_argument('--with-server', dest='enable_server', action='store_true')
+    parser.add_argument('--with-gui', dest='enable_gui', action='store_true')
+    parser.add_argument('--with-voice', dest='enable_voice', action='store_true')
+    parser.add_argument('--without-voice', dest='disable_voice', action='store_true')
+    parser.add_argument('--with-voice-control', dest='enable_voice_control',
+                        action='store_true')
+    parser.add_argument('--without-cli', dest='enable_cli',
+                        action='store_false')
+    parser.add_argument('--server-hostname', dest='server_hostname', nargs=1, default=None)
+    parser.add_argument('--server-port', dest='server_port', nargs=1, default=None)
+    parser.add_argument('CMD', type=str, nargs='*')
+    args = parser.parse_args()
+    sys.argv = sys.argv[0]
+
+    jarvis = main.build_jarvis()
+    main.start(args, jarvis)

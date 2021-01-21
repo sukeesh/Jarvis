@@ -1,6 +1,6 @@
 from colorama import Fore
 
-from Jarvis import HISTORY_FILENAME
+from jarvis import HISTORY_FILENAME
 from plugin import plugin
 
 

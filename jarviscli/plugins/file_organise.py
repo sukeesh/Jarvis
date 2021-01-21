@@ -1,11 +1,12 @@
-from __future__ import print_function
-from colorama import Fore
 import os
 import sys
-from plugin import plugin, require, UNIX
+
+from colorama import Fore
+
+from plugin import Platform, plugin, require
 
 
-@require(platform=UNIX)
+@require(platform=Platform.UNIX)
 @plugin('file organise')
 class File_Organise():
     """

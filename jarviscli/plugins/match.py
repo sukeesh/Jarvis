@@ -1,5 +1,7 @@
 from os import system
+
 from colorama import Fore
+
 from plugin import plugin, require
 
 

@@ -1,4 +1,5 @@
 import requests
+
 from plugin import plugin
 
 # ANSI escape sequences to print in color
