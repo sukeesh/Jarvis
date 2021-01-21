@@ -1,6 +1,6 @@
 import nmap
 import json
-from plugin import plugin, require
+from plugin import plugin, require, LINUX
 from colorama import Fore
 
 
@@ -27,6 +27,7 @@ def show_output(jarvis, results):
 
 
 @require(network=True)
+@require(platform=LINUX)
 @plugin('scan_network')
 def scan(jarvis, s):
     """
