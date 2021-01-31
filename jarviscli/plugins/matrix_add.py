@@ -6,7 +6,7 @@ def get_matrix(jarvis, r, c):
     matrix = []
     for i in range(r):
         row_str = jarvis.input("enter row #{:d}: ".format(i))
-        
+        cur_row=[]
         for n in row_str.split():
             try :
                 int(n)
