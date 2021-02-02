@@ -1,6 +1,7 @@
 import unittest
 from functools import partial
 from CmdInterpreter import JarvisAPI
+from PluginManager import PluginDependency
 from collections import deque
 
 
@@ -199,6 +200,7 @@ class PluginTest(unittest.TestCase):
     def _setUp(self):
         if 'jarvis_api' not in self.__dict__ or self.jarvis_api is None:
             self.jarvis_api = MockJarvisAPI()
+            self.plugin_dependency = PluginDependency()
 
     def load_plugin(self, plugin_class):
         """
@@ -211,6 +213,14 @@ class PluginTest(unittest.TestCase):
 
         plugin_backend = plugin_class()._backend[0]
         plugin_backend.run = partial(plugin_backend, self.jarvis_api)
+
+        valid = self.plugin_dependency.check(plugin_class())
+        if valid is True:
+            plugin_backend.valid = True
+        else:
+            print("\n\nWARNING! Can't test plugin {} ({})\n\n".format(plugin_class, valid))
+            plugin_backend.valid = False
+
         return plugin_backend
 
     def tearDown(self):
