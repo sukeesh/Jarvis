@@ -59,7 +59,7 @@ class speedconv:
         # we can use conv_to_mpers to create every possible conversion with
         #  this formula
     def convert_speed(self, value, inside, out):
-        return value*self.conv_to_mpers[inside]/self.conv_to_mpers[out]
+        return value * self.conv_to_mpers[inside] / self.conv_to_mpers[out]
 
     def units_input(self, jarvis, text):
 

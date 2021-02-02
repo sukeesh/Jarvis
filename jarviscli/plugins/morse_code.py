@@ -33,7 +33,7 @@ class morsecode:
         '1': '.----', '2': '..---', '3': '...--',
         '4': '....-', '5': '.....', '6': '-....',
         '7': '--...', '8': '---..', '9': '----.',
-        '0': '-----',  ',': '--..--', '.': '.-.-.-',
+        '0': '-----', ',': '--..--', '.': '.-.-.-',
         '?': '..--..', '/': '-..-.', '-': '-....-',
         '(': '-.--.', ')': '-.--.-'
     }
@@ -128,7 +128,7 @@ class morsecode:
                         decoded += list(self.morse_code.keys()
                                         )[list(self.morse_code.values()
                                                ).index(current)]
-                    except:
+                    except BaseException:
                         decoded = "This is a false morse code"
                         return decoded
 

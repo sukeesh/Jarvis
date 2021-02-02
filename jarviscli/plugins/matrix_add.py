@@ -6,22 +6,22 @@ def get_matrix(jarvis, r, c):
     matrix = []
     for i in range(r):
         row_str = jarvis.input("enter row #{:d}: ".format(i))
-        cur_row=[]
+        cur_row = []
         for n in row_str.split():
-            try :
+            try:
                 int(n)
-            except:
+            except BaseException:
                 cur_row.append(0)
             else:
                 cur_row.append(int(n))
         while len(cur_row) != c:
             jarvis.say("Row length should be {:d}".format(c))
             row_str = jarvis.input("enter row #{:d}: ".format(i))
-            
+
             for n in row_str.split():
-                try :
+                try:
                     int(n)
-                except:
+                except BaseException:
                     cur_row.append(0)
                 else:
                     cur_row.append(int(n))
