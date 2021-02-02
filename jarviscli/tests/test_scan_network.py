@@ -8,6 +8,9 @@ class ScanNetworkTest(PluginTest):
         self.test = self.load_plugin(scan)
 
     def test_TESTCASE_1(self):
+        if not self.test.valid:
+            return
+
         # run code
         self.test.run('127.0.0.1')
 
