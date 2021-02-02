@@ -1,10 +1,9 @@
 import nmap
-from nmap import PortScanner
 from plugin import plugin, require, LINUX
 from colorama import Fore
 
 
-def error_output(jarvis, nm_scan: PortScanner) -> None:
+def error_output(jarvis, nm_scan) -> None:
     jarvis.say('Please, check your input is correct\n', Fore.RED)
     jarvis.say('This might hint what the problem is:\n', Fore.YELLOW)
     jarvis.say(str(nm_scan.scaninfo()['error']), Fore.YELLOW)
@@ -36,6 +35,9 @@ def scan(jarvis, s: str) -> None:
     Scans provided network for all connected devices
     Usage example: jarvis scan_network 172.16.1.10/24
     """
+    # can't import top level since this import only works
+    # if nmap is installed
+    from nmap import PortScanner
     nm_scan: PortScanner = nmap.PortScanner()
     jarvis.say('Please wait, this might take a while!')
     if not s:
