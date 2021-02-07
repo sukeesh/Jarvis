@@ -1,6 +1,7 @@
 from plugin import plugin
 import time
 import random
+import sys
 
 
 @plugin('memory')
@@ -35,7 +36,7 @@ class Memory:
             try:
                 jarvis.say("Press 1 for Yes. \nPress 2 for No.")
                 c = int(input("Your choice: "))
-                if c != 1 or c != 2:
+                if c != 1 and c != 2:
                     raise ValueError('Please give a valid input')
                 break
             except ValueError:
@@ -52,8 +53,10 @@ class Memory:
         while not lost:
             number = self.create_number(jarvis, number)
             print("The number will only be visible for a few seconds.")
-            print(number, end="\r")
+            sys.stdout.write(number)
             time.sleep(2 * len(number))
+            sys.stdout.write('\r')
+            sys.stdout.flush() 
             jarvis.say("Time ended.")
             guess = str(input("Type your guess:"))
             if guess == number:
@@ -68,8 +71,11 @@ class Memory:
     def create_number(self, jarvis, number):
         """
         Creates the new number with the new digit
-
         """
-        digit = str(random.randint(0, 9))
-        new = number + digit
+        new = ""
+        i = 0
+        while (i <= len(number)):
+            digit = str(random.randint(0, 9))
+            new = new + digit
+            i = i + 1
         return new
