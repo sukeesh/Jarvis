@@ -63,7 +63,7 @@ class Memory:
                 jarvis.say("Correct guess of " + str(len(number)) + " digits")
             else:
                 jarvis.say("Wrong guess.")
-                jarvis.say("You were able to remember " + str(len(number) - 1) + " digits")
+                jarvis.say("You remembered " + str(len(number) - 1) + " digits")
                 jarvis.say("Be sure to train again.")
                 lost = True
         return
