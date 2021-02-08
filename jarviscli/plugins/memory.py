@@ -54,9 +54,10 @@ class Memory:
             number = self.create_number(jarvis, number)
             print("The number will only be visible for a few seconds.")
             sys.stdout.write(number)
+            sys.stdout.flush()
             time.sleep(2 * len(number))
             sys.stdout.write('\r')
-            sys.stdout.flush() 
+            sys.stdout.flush()
             jarvis.say("Time ended.")
             guess = str(input("Type your guess:"))
             if guess == number:
