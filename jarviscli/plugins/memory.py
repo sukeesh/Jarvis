@@ -70,7 +70,7 @@ class Memory:
 
     def create_number(self, jarvis, number):
         """
-        Creates the new number with the new digit
+        Creates new number with one more digit
         """
         new = ""
         i = 0
