@@ -38,7 +38,7 @@ You can start by typing `help` within the Jarvis command line to check what Jarv
 
 Create new file custom/hello_world.py
 
-```
+```python
 from plugin import plugin
 
 
@@ -49,7 +49,7 @@ def helloworld(jarvis, s):
 ```
 
 Check it out!
-```
+```bash
 ./jarvis
 Jarvis' sound is by default disabled.
 In order to let Jarvis talk out loud type: enable sound
