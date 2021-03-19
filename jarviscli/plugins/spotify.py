@@ -10,14 +10,13 @@ SPOTIPY_CLIENT_SECRET = '898fbca894d6401785d5f061771fa25d'
 REDIRECT_URI = 'http://localhost:8080'
 scope = 'user-read-playback-state user-library-read user-modify-playback-state user-read-currently-playing'
 
-
 @require(network=True)
 @plugin('spotify')
 class Spotify:
     """
     This plugin can manage your Spotify music on any device
 
-    example: spotify play track Never gonna give you up, powered by Pierrecoulon1
+    example: spotify play track you never gonna give you up, powered by Pierrecoulon1
     """
 
     def __call__(self, jarvis, s):
