@@ -6,7 +6,7 @@ from plugin import plugin, require
 @require(network=True)
 @plugin("nationalize")
 def nationalize(jarvis, s):
-    """Tells the nationality of someone based on his name, powered by Pierrecoulon1"""
+    """Tells the nationality of someone based on his name, powered by www.boredapi.com"""
     req = requests.get("https://api.nationalize.io?name=" + s)
     data = req.json()
     if data == "":
