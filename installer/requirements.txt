@@ -44,3 +44,8 @@ Image
 img2pdf
 pdf2image
 python-nmap
+googleapiclient
+google_auth_oauthlib
+pickle
+datetime
+google
