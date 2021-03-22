@@ -2,10 +2,11 @@ import requests
 from colorama import Fore
 from plugin import plugin, require
 
+
 @require(network=True)
 @plugin("activity")
 def activity(jarvis, s):
-    """Tells a activity to do when you're bored, powered by Pierrecoulon1"""
+    """Tells a activity to do when you're bored, powered by www.boredapi.com"""
 
     req = requests.get("https://www.boredapi.com/api/activity")
     data = req.json()
