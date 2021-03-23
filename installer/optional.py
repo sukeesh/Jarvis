@@ -130,8 +130,24 @@ WKHTMLTOPDF = {
     }
 }
 
+HTOP = {
+    "name": "htop",
+    "executable": ['htop'],
+    "description": "Interactive system-monitor process-viewer and process-manager",
+    "instruction": "Please install 'htop' manually using your local package manager!",
+    "package_guess": {
+        "linux": {
+            'redhat': 'htop',
+            'arch': 'htop',
+            'gentoo': 'htop',
+            'suse': 'htop',
+            'debian': 'htop'
+        }
+    }
+}
 
-OPTIONAL_REQUIREMENTS = [PortAudio, RequestsSecurity, FFMPEG, ESPEAK, WKHTMLTOPDF, Fasttext]
+
+OPTIONAL_REQUIREMENTS = [PortAudio, RequestsSecurity, FFMPEG, ESPEAK, WKHTMLTOPDF, Fasttext,HTOP]
 
 
 if not sys.platform == "darwin":
