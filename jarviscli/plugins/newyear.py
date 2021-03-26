@@ -1,8 +1,7 @@
 from plugin import plugin
 
-
-@plugin("christmas-tree")
-def new_year(jarvis, data):
+@plugin("christmas")
+def newyear(jarvis, s):
     tree = "     *\n"\
            "    ###\n"\
            "   #####\n"\
