@@ -8,7 +8,7 @@ PackageManager = {
     "macos": "brew install",
     "linux": {
         "readhat": "sudo yum",
-        "arch": "sudo packman -S",
+        "arch": "sudo pacman -S",
         "gentoo": "sudo emerge --ask --verbose",
         "suse": "sudo zypper install",
         "debian": "sudo apt-get install"
@@ -18,7 +18,7 @@ PackageManager = {
 
 LinuxDistroRecognition = {
     "yum": "redhat",
-    "packman": "arch",
+    "pacman": "arch",
     "emerge": "gentoo",
     "zypper": "suse",
     "apt-get": "debian"
