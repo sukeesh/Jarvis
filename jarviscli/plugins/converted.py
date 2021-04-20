@@ -46,8 +46,9 @@ def check_weather(self, s):
 def directions(self, data):
     """
     Get directions about a destination you are interested to.
-    -- Example:
+    -- Examples:
         directions to the Eiffel Tower
+        directions from the Arc de Triomphe to the Eiffel Tower
     """
     self = self._jarvis
 
