@@ -77,6 +77,8 @@ def search_near(things, city=0):
         print("{COLOR}Hold on! I'll show {THINGS} near {CITY}{COLOR_RESET}"
               .format(COLOR=Fore.GREEN, COLOR_RESET=Fore.RESET,
                       THINGS=things, CITY=city))
+        url = "https://www.google.com/maps/search/{0}+near+{1}".format(
+            things, city)
     else:
         print("{COLOR}Hold on!, I'll show {THINGS} near you{COLOR_RESET}"
               .format(COLOR=Fore.GREEN, COLOR_RESET=Fore.RESET, THINGS=things))
