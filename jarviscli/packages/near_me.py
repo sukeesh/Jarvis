@@ -25,5 +25,4 @@ def main(data):
     else:
         word_list = data.split()
         city = " ".join(word_list[word_list.index("|") + 1:])
-        print(city)
     mapps.search_near(things, city)
