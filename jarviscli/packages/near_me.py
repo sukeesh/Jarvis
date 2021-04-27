@@ -4,13 +4,15 @@ from . import mapps
 
 def main(data):
     """
-    Extracts from the given argument, the things and the area to be searched, which can
-    be either a specific area or the user's location.
+    Extracts from the given argument, the things and the area to be
+    searched, which can be either a specific area or the user's
+    location.
 
     Parameters
     ----------
     data: str
-        A variable that contains the things and the area to be searched.
+        A variable that contains the things and the area to be
+        searched.
     """
     word_list = data.split()
     try:
