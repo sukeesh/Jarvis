@@ -7,7 +7,11 @@ class file_manage:
     def __call__(self,jarvis,s):
         self.get_file_directory(jarvis)
         self.get_cmd(jarvis)
-        self.delete(jarvis,self.file)
+
+        if self.cmd == "delete":
+            self.delete(jarvis,self.file)
+        elif self.cmd == "move":
+            self.move(jarvis,self.file)
 
     def get_file_directory(self,jarvis):
         self.file = jarvis.input("Enter the directory of the file you would like to edit: ")
@@ -31,7 +35,7 @@ class file_manage:
 
             # check if command is valid. If not, end cycle
             if self.cmd not in self.possibleCmds:
-                jarvis.say("invalid command")
+                jarvis.say("Invalid command")
             else:
                 cmdValid = True
 
@@ -58,7 +62,7 @@ class file_manage:
                     # break loop if no confirmation
                     yes = False
                 else:
-                    jarvis.say("invalid input")
+                    jarvis.say("Invalid input")
 
         else:
             jarvis.say("file does not exist")
@@ -66,8 +70,14 @@ class file_manage:
     def move(self,jarvis,file):
         # function to move files
 
-        # get destination
-        dest = jarvis.input("Where would you like to move this file to?")
+        path_invalid = True
+        while path_invalid:
+            # get destination
+            dest = jarvis.input("Where would you like to move this file to? :")
 
-        # move from old location
-        shutil.move(file,dest)
+            if os.path.exists(dest):
+                # move from old location
+                shutil.move(file,dest)
+                path_invalid = False
+            else:
+                jarvis.say("Invalid path")
