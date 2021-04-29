@@ -12,6 +12,8 @@ class file_manage:
             self.delete(jarvis,self.file)
         elif self.cmd == "move":
             self.move(jarvis,self.file)
+        elif self.cmd == "rename":
+            self.rename(jarvis,self.file)
 
     def get_file_directory(self,jarvis):
         self.file = jarvis.input("Enter the directory of the file you would like to edit: ")
@@ -81,3 +83,22 @@ class file_manage:
                 path_invalid = False
             else:
                 jarvis.say("Invalid path")
+
+    def rename(self,jarvis,file):
+        # function to rename files
+
+        path_invalid = True
+        while path_invalid:
+            # get new name
+            new_name = jarvis.input("What would you like to rename this file to? :")
+
+            # get root directory
+            root = os.path.split(file)[0]
+
+            new_dir = os.path.join(root,new_name)
+
+            try:
+                os.rename(file,new_dir)
+                path_invalid = False
+            except:
+                jarvis.say("Invalid Path")
