@@ -33,7 +33,7 @@ speedtest-cli
 sympy
 tabulate
 termdown
-opencv-python
+opencv-python-headless
 whois
 wikipedia
 win10toast; sys_platform == 'win32'
