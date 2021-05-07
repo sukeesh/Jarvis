@@ -77,7 +77,7 @@ else:
     inputimeout = win_inputimeout
 
 
-def input(prompt):
+def input(prompt=""):
     if (prompt != ''):
         print(prompt)
 
