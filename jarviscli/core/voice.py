@@ -35,7 +35,7 @@ def enable_sound(jarvis, s):
 @plugin('disable sound')
 def disable_sound(jarvis, s):
     """Deny Jarvis his voice."""
-    jarvis.update_data(VOICE_ENABLED_KEY, True)
+    jarvis.update_data(VOICE_ENABLED_KEY, False)
     jarvis.disable_frontend("voice")
 
 

@@ -5,71 +5,68 @@ from plugin import require, plugin
 
 @require(network=True)
 @plugin("garmin connect")
-class GarminConnect:
+def connect_garmin(jarvis, s):
+    """
+    Initialize Garmin client with credentials
+    Only needed when your program is initialized
+    """
+    from garminconnect import Garmin
+    from garminconnect import (
+        GarminConnectConnectionError,
+        GarminConnectTooManyRequestsError,
+        GarminConnectAuthenticationError,
+    )
 
-    def __call__(self, jarvis, s):
-        self.connect_garmin(jarvis, s)
+    jarvis.garmin_client = None
+    jarvis.say("Attempting connect...")
 
-    def connect_garmin(self, jarvis, s):
-        """
-        Initialize Garmin client with credentials
-        Only needed when your program is initialized
-        """
-        from garminconnect import Garmin
-        from garminconnect import (
-            GarminConnectConnectionError,
-            GarminConnectTooManyRequestsError,
-            GarminConnectAuthenticationError,
-        )
+    user = jarvis.input("UserID: ")  # YOUR ID
+    pass_word = jarvis.input("\nPassword: ", password=True)  # YOUR Password
 
-        jarvis.garmin_client = None
-        jarvis.say("Attempting connect...")
-
-        user = jarvis.input("UserID: ")  # YOUR ID
-        pass_word = jarvis.input("\nPassword: ", password=True)  # YOUR Password
-
-        print(user)
-        print(pass_word)
-
-        try:
-            jarvis.garmin_client = Garmin(user, pass_word)
-        except (
-            GarminConnectConnectionError,
-            GarminConnectAuthenticationError,
-            GarminConnectTooManyRequestsError,
-        ) as err:
-            jarvis.say("Error occurred during Garmin Connect Client init: %s" % err)
-            return
-        except Exception:  # pylint: disable=broad-except
-            jarvis.say("Unknown error occurred during Garmin Connect Client init")
-            return
+    try:
+        jarvis.garmin_client = Garmin(user, pass_word)
+    except (
+        GarminConnectConnectionError,
+        GarminConnectAuthenticationError,
+        GarminConnectTooManyRequestsError,
+    ) as err:
+        jarvis.say("Error occurred during Garmin Connect Client init: %s" % err)
+        return
+    except Exception:  # pylint: disable=broad-except
+        jarvis.say("Unknown error occurred during Garmin Connect Client init")
+        return
 
 
-        """
-        Login to Garmin Connect portal
-        Only needed at start of your program
-        The library will try to relogin when session expires
-        """
-        jarvis.say("Logging in Garmin client...")
-        try:
-            jarvis.garmin_client.login()
-        except (
-            GarminConnectConnectionError,
-            GarminConnectAuthenticationError,
-            GarminConnectTooManyRequestsError,
-        ) as err:
-            jarvis.say("Error occurred during Garmin Connect Client login: %s" % err)
-            return
-        except Exception:  # pylint: disable=broad-except
-            jarvis.say("Unknown error occurred during Garmin Connect Client login")
-            return
+    """
+    Login to Garmin Connect portal
+    Only needed at start of your program
+    The library will try to relogin when session expires
+    """
+    jarvis.say("Logging in Garmin client...")
+    try:
+        jarvis.garmin_client.login()
+    except (
+        GarminConnectConnectionError,
+        GarminConnectAuthenticationError,
+        GarminConnectTooManyRequestsError,
+    ) as err:
+        jarvis.say("Error occurred during Garmin Connect Client login: %s" % err)
+        return
+    except Exception:  # pylint: disable=broad-except
+        jarvis.say("Unknown error occurred during Garmin Connect Client login")
+        return
 
 
 def call_connect(jarvis, s):
     if hasattr(jarvis, "garmin_client"):
         return
-    connect = GarminConnect()
-    print(connect)
+    jarvis.execute_once('garmin connect')
+
+
+def call_stats(jarvis, s):
+    if hasattr(jarvis, 'garmin_stats'):
+        return
+    jarvis.execute_once('garmin stats')
 
 
 def group_stats(stats):
@@ -167,16 +164,19 @@ def garmin_stats(jarvis, s):
         GarminConnectTooManyRequestsError,
         GarminConnectAuthenticationError,
     )
-    from datetime import date
+    from datetime import date, datetime
     import json
+
+    call_connect(jarvis, s)
 
     jarvis.say("Printing garmin stats for today!")
     try:
 
         stats = jarvis.garmin_client.get_stats(date.today().isoformat())
-        grouped = group_stats(stats)
+        jarvis.garmin_stats = group_stats(stats)
+        jarvis.garmin_stats['timestamp'] = datetime.now()
         jarvis.say(json.dumps(
-            grouped,
+            jarvis.garmin_stats,
             indent=2))
     except (
             GarminConnectConnectionError,
