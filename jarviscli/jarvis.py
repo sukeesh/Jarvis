@@ -107,12 +107,12 @@ class Jarvis:
         for _frontend in self.active_frontends.values():
             _frontend.say(text, color)
 
-    def input(self, prompt="", color=""):
+    def input(self, prompt="", color="", password=False):
         """
         Get user input
         """
         for _frontend in self.active_frontends.values():
-            _frontend.input(prompt, color)
+            return _frontend.input(prompt, color, password)
 
     def exit(self):
         """Immediately exit Jarvis"""

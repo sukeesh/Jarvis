@@ -62,7 +62,7 @@ def disable_gtts(jarvis, s):
         reload_voice(jarvis)
 
 
-@plugin('enable_gtts')
+@plugin('enable gtts')
 def gtts(jarvis, s):
     """Reads what is typed using gtts."""
     jarvis.update_data(GTTS_KEY, True)

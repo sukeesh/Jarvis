@@ -2,6 +2,7 @@ import signal
 import sys
 import traceback
 from cmd import Cmd
+from getpass import getpass
 
 import colorama
 from colorama import Fore
@@ -95,11 +96,13 @@ Type 'help' for a list of available actions.
         super().postcmd(*args)
         return self._do_stop
 
-    def input(self, _prompt="", color=""):
+    def input(self, _prompt="", color="", password=False):
         # color even for windows cmd
         sys.stdout.write(color + _prompt + Fore.RESET)
         sys.stdout.flush()
 
+        if password:
+            return getpass()
         return input()
 
     def spinner_start(self, message="Starting "):
