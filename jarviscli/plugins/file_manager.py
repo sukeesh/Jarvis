@@ -3,14 +3,6 @@ import shutil
 
 from plugin import plugin
 
-<<<<<<< HEAD
-@plugin("file manage")
-class file_manage:
-    """"
-    Can manipulate files by deleting, moving, or renaming. 
-    """"
-=======
-
 @plugin("file manage")
 class file_manage:
     """"
