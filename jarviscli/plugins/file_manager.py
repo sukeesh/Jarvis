@@ -3,22 +3,30 @@ import shutil
 
 from plugin import plugin
 
+<<<<<<< HEAD
 @plugin("file manage")
 class file_manage:
     """"
     Can manipulate files by deleting, moving, or renaming. 
     """"
+=======
+
+@plugin("file manage")
+class file_manage:
+    """"
+    Can manipulate files by deleting, moving, or renaming.
+    """
 
     def __call__(self, jarvis, s):
         self.get_file_directory(jarvis)
         self.get_cmd(jarvis)
 
         if self.cmd == "delete":
-            self.delete(jarvis,self.file)
+            self.delete(jarvis, self.file)
         elif self.cmd == "move":
-            self.move(jarvis,self.file)
+            self.move(jarvis, self.file)
         elif self.cmd == "rename":
-            self.rename(jarvis,self.file)
+            self.rename(jarvis, self.file)
 
     def get_file_directory(self, jarvis):
         self.file = jarvis.input("Enter the directory of the file you would like to edit: ")
@@ -103,7 +111,7 @@ class file_manage:
             # get root directory
             root = os.path.split(file)[0]
 
-            new_dir = os.path.join(root,new_name)
+            new_dir = os.path.join(root, new_name)
 
             try:
                 os.rename(file, new_dir)

@@ -1,6 +1,6 @@
 import unittest
 from tests import PluginTest
-from plugins.lengthconv import lengthconv
+from plugins.length_conv import lengthconv
 from Jarvis import Jarvis
 
 
