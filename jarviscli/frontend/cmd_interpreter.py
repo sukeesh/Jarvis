@@ -74,7 +74,7 @@ Type 'help' for a list of available actions.
             import readline
             self.old_completer = readline.get_completer()
             readline.set_completer(self.complete)
-            readline.parse_and_bind(self.completekey+": complete")
+            readline.parse_and_bind(self.completekey + ": complete")
         except ImportError:
             pass
 

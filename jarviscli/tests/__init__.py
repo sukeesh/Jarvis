@@ -3,7 +3,6 @@ from collections import deque
 from functools import partial
 
 from jarvis import Jarvis
-import frontend.cmd_interpreter
 
 
 class MockJarvisAPI(Jarvis):
