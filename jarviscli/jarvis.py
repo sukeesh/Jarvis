@@ -22,7 +22,7 @@ HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
 
 
 class Jarvis:
-    _CONNECTION_ERROR_MSG = "You are not connected to Internet"
+    _CONNECTION_ERROR_MSG = "It seems like I'm not connected to the Internet. Check your connection and try again!"
 
     AVAILABLE_FRONTENDS = {'cli': frontend.cmd_interpreter.CmdInterpreter,
                            'gui': frontend.gui.jarvis_gui.JarvisGui,
@@ -227,7 +227,7 @@ class Jarvis:
         and a default message for performing the task
         """
         self.spinner_running = True
-        for _frontend in self.active_frontend.values():
+        for _frontend in self.active_frontends.values():
             _frontend.spinner_start(message)
 
     def spinner_stop(self, message="Task executed successfully! ", color=Fore.GREEN):
@@ -236,7 +236,7 @@ class Jarvis:
         and displaying the message after completing the task
         """
         self.spinner_running = False
-        for _frontend in self.active_frontend.values():
+        for _frontend in self.active_frontends.values():
             _frontend.spinner_stop(message)
 
     def is_spinner_running(self):

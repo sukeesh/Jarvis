@@ -2,10 +2,11 @@ import unittest
 from collections import deque
 from functools import partial
 
-from api import JarvisAPI
+from jarvis import Jarvis
+import frontend.cmd_interpreter
 
 
-class MockJarvisAPI(JarvisAPI):
+class MockJarvisAPI(Jarvis):
     def __init__(self):
         self.call_history = MockHistoryBuilder().\
             add_field('operation').\
@@ -29,11 +30,14 @@ class MockJarvisAPI(JarvisAPI):
             add_field('args').\
             build()
 
+        # TODO!!!! Fails if you add an active frontend.
+        #  Either need to mock frontends or need to mock the spinner thread in frontends.
+        self.active_frontends = {}
         self.data = {}
         self._input_queue = deque()
         self.is_voice_enabled = False
 
-    def say(self, text, color=""):
+    def say(self, text, color="", speak=True):
         # remove \n
         text = text.rstrip('\n')
         self.say_history.record(text, color)
@@ -42,13 +46,13 @@ class MockJarvisAPI(JarvisAPI):
     def queue_input(self, text):
         self._input_queue.append(text)
 
-    def input(self, prompt='', color=''):
+    def input(self, prompt='', color='', password=False):
         if len(self._input_queue) == 0:
             raise BaseException("MockJarvisAPI: No predefined answer in queue - add answer with 'self.queue_input(\"TEXT\")'")
         return self._input_queue.popleft()
 
     def input_number(self, prompt='', color='', rtype=float, rmin=None, rmax=None):
-        return JarvisAPI.input_number(self, prompt, color, rtype, rmin, rmax)
+        return Jarvis.input_number(self, prompt, color, rtype, rmin, rmax)
 
     def connection_error(self):
         self.call_history.record('connection_error', (), None)
@@ -223,7 +227,7 @@ class PluginTest(unittest.TestCase):
         """
         self.jarvis_api.queue_input(msg)
 
-    def histroy_call(self):
+    def history_call(self):
         """
         Returns MockHistory instance. Fields:
 
