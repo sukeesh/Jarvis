@@ -10,12 +10,18 @@ garminconnect
 geopy
 gitpython
 googletrans
+gtts
+Image
 IMDbPY
+img2pdf
 mock
 nltk
+opencv-python-headless
 pathlib
+pdf2image
 pdfkit
 pick
+playsound
 pluginmanager
 psutil; sys_platform == 'win32'
 pycricbuzz
@@ -35,13 +41,7 @@ speedtest-cli
 sympy
 tabulate
 termdown
-opencv-python-headless
 whois
 wikipedia
 win10toast; sys_platform == 'win32'
-gtts
-playsound
 windows-curses; sys_platform == 'win32'
-Image
-img2pdf
-pdf2image

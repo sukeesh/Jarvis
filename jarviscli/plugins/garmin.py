@@ -26,16 +26,15 @@ def connect_garmin(jarvis, s):
     try:
         jarvis.garmin_client = Garmin(user, pass_word)
     except (
-        GarminConnectConnectionError,
-        GarminConnectAuthenticationError,
-        GarminConnectTooManyRequestsError,
+            GarminConnectConnectionError,
+            GarminConnectAuthenticationError,
+            GarminConnectTooManyRequestsError,
     ) as err:
         jarvis.say("Error occurred during Garmin Connect Client init: %s" % err)
         return
     except Exception:  # pylint: disable=broad-except
         jarvis.say("Unknown error occurred during Garmin Connect Client init")
         return
-
 
     """
     Login to Garmin Connect portal
@@ -46,9 +45,9 @@ def connect_garmin(jarvis, s):
     try:
         jarvis.garmin_client.login()
     except (
-        GarminConnectConnectionError,
-        GarminConnectAuthenticationError,
-        GarminConnectTooManyRequestsError,
+            GarminConnectConnectionError,
+            GarminConnectAuthenticationError,
+            GarminConnectTooManyRequestsError,
     ) as err:
         jarvis.say("Error occurred during Garmin Connect Client login: %s" % err)
         return
@@ -136,15 +135,15 @@ def garmin_client_name(jarvis, s):
         GarminConnectTooManyRequestsError,
         GarminConnectAuthenticationError,
     )
-    
+
     call_connect(jarvis, s)
-    
+
     try:
         jarvis.say("Garmin Client Full name: " + jarvis.garmin_client.get_full_name())
     except (
-        GarminConnectConnectionError,
-        GarminConnectAuthenticationError,
-        GarminConnectTooManyRequestsError,
+            GarminConnectConnectionError,
+            GarminConnectAuthenticationError,
+            GarminConnectTooManyRequestsError,
     ) as err:
         jarvis.say("Error occurred during Garmin Connect Client get full name: %s" % err)
         return
@@ -202,16 +201,16 @@ def garmin_unit_system(jarvis, s):
         GarminConnectAuthenticationError,
     )
     call_connect(jarvis, s)
-    
+
     try:
         jarvis.say("Garmin unit System: " + jarvis.garmin_client.get_unit_system())
     except (
-        GarminConnectConnectionError,
-        GarminConnectAuthenticationError,
-        GarminConnectTooManyRequestsError,
+            GarminConnectConnectionError,
+            GarminConnectAuthenticationError,
+            GarminConnectTooManyRequestsError,
     ) as err:
         jarvis.say("Error occurred during Garmin Connect Client get unit system: %s" % err)
-        return 
+        return
     except Exception:  # pylint: disable=broad-except
         jarvis.say("Unknown error occurred during Garmin Connect Client get unit system")
         return
@@ -237,9 +236,9 @@ def garmin_activity_today(jarvis, s):
     try:
         jarvis.say(json.dumps(jarvis.garmin_client.get_stats(date.today().isoformat()), indent=2))
     except (
-        GarminConnectConnectionError,
-        GarminConnectAuthenticationError,
-        GarminConnectTooManyRequestsError,
+            GarminConnectConnectionError,
+            GarminConnectAuthenticationError,
+            GarminConnectTooManyRequestsError,
     ) as err:
         jarvis.say("Error occurred during Garmin Connect Client get stats: %s" % err)
         return
@@ -266,9 +265,9 @@ def garmin_steps(jarvis, s):
     try:
         jarvis.say(json.dumps(jarvis.garmin_client.get_steps_data(date.today().isoformat()), indent=2))
     except (
-        GarminConnectConnectionError,
-        GarminConnectAuthenticationError,
-        GarminConnectTooManyRequestsError,
+            GarminConnectConnectionError,
+            GarminConnectAuthenticationError,
+            GarminConnectTooManyRequestsError,
     ) as err:
         jarvis.say("Error occurred during Garmin Connect Client get steps data: %s" % err)
         return
@@ -280,7 +279,6 @@ def garmin_steps(jarvis, s):
 @require(network=True)
 @plugin("garmin heart rate")
 def garmin_heart_rate(jarvis, s):
-
     """
     Get heart rate data
     """
@@ -295,13 +293,12 @@ def garmin_heart_rate(jarvis, s):
     jarvis.say("Getting heart rate information for date: {" + str(date.today().isoformat()) + "}")
     try:
         jarvis.say(json.dumps(
-            jarvis.garmin_client.
-                get_heart_rates(date.today().isoformat()),
+            jarvis.garmin_client.get_heart_rates(date.today().isoformat()),
             indent=2))
     except (
-        GarminConnectConnectionError,
-        GarminConnectAuthenticationError,
-        GarminConnectTooManyRequestsError,
+            GarminConnectConnectionError,
+            GarminConnectAuthenticationError,
+            GarminConnectTooManyRequestsError,
     ) as err:
         jarvis.say("Error occurred during Garmin Connect Client get heart rates: %s" % err)
         return
@@ -327,13 +324,12 @@ def garmin_body_composition(jarvis, s):
     jarvis.say("Getting Body Composition information for date: {" + str(date.today().isoformat()) + "}")
     try:
         jarvis.say(json.dumps(
-            jarvis.garmin_client.
-                get_body_composition(date.today().isoformat()),
+            jarvis.garmin_client.get_body_composition(date.today().isoformat()),
             indent=2))
     except (
-        GarminConnectConnectionError,
-        GarminConnectAuthenticationError,
-        GarminConnectTooManyRequestsError,
+            GarminConnectConnectionError,
+            GarminConnectAuthenticationError,
+            GarminConnectTooManyRequestsError,
     ) as err:
         jarvis.say("Error occurred during Garmin Connect Client get body composition: %s" % err)
         return
