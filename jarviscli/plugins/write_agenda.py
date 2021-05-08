@@ -27,7 +27,6 @@ def write_agenda(jarvis, s):
     # list with event's details
     events_list = []
 
-
     # warning message in case agenda file is already open before
     # actually implementing write agenda feature
     while True:
@@ -38,7 +37,6 @@ def write_agenda(jarvis, s):
         except IOError:
             input("Agenda file is open! "
                   "Please close the Excel file and press Enter to retry.")
-
 
     # passing new event's inputs
     while loop:
@@ -73,7 +71,6 @@ def write_agenda(jarvis, s):
         event_option = jarvis.input("Would you like "
                                     "to add anything more?(y/n): ")
 
-
         if event_option == 'y':
             # restart variable's values
             # in case invalid input was given before
@@ -85,7 +82,6 @@ def write_agenda(jarvis, s):
         else:
             print("Sorry, invalid input was given! Please try again.")
             invalid_input = True
-
 
     # check if List is empty
     if not events_list:
@@ -104,7 +100,6 @@ def write_agenda(jarvis, s):
                 csv_file.close()
         except IOError:
             print("I/O error!")
-
 
 @plugin("read agenda")
 def read_agenda(jarvis, s):
