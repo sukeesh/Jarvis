@@ -5,6 +5,7 @@ colorama
 distro
 flake8
 forex-python
+garminconnect
 geopy
 gitpython
 googletrans
@@ -33,7 +34,7 @@ speedtest-cli
 sympy
 tabulate
 termdown
-opencv-python
+opencv-python-headless
 whois
 wikipedia
 win10toast; sys_platform == 'win32'
@@ -43,4 +44,3 @@ windows-curses; sys_platform == 'win32'
 Image
 img2pdf
 pdf2image
-garminconnect
