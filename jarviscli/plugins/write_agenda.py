@@ -101,6 +101,7 @@ def write_agenda(jarvis, s):
         except IOError:
             print("I/O error!")
 
+
 @plugin("read agenda")
 def read_agenda(jarvis, s):
     try:
