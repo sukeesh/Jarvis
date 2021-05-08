@@ -4,6 +4,7 @@ beautifulsoup4
 colorama
 distro
 flake8
+flask
 forex-python
 garminconnect
 geopy
