@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from plugins.tempconv import Tempconv
+from plugins.temp_conv import Tempconv
 
 from tests import PluginTest
 

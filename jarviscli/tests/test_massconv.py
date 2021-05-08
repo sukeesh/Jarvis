@@ -1,6 +1,6 @@
 import unittest
 from tests import PluginTest
-from plugins.massconv import massconv
+from plugins.mass_conv import massconv
 from Jarvis import Jarvis
 
 

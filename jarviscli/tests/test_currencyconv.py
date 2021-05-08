@@ -1,6 +1,6 @@
 import unittest
 from Jarvis import Jarvis
-from plugins.currencyconv import Currencyconv
+from plugins.currency_conv import Currencyconv
 
 from tests import PluginTest
 
