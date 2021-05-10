@@ -46,6 +46,7 @@ Type 'help' for a list of available actions.
 
         # Register do_quit() function to SIGINT signal (Ctrl-C)
         signal.signal(signal.SIGINT, self.interrupt_handler)
+        # self.first_reaction_text += self._jarvis.frontend_info()
         self.first_reaction_text += self._jarvis.plugin_info()
 
         for plugin in self._jarvis.get_plugins().values():

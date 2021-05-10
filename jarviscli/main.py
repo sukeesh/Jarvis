@@ -48,7 +48,7 @@ def start(args, jarvis):
 
 
 def start_cli(jarvis):
-    from ui.cmd_interpreter import CmdInterpreter
+    from frontend.cmd_interpreter import CmdInterpreter
     cmd_interpreter = CmdInterpreter(jarvis)
 
     command = " ".join(sys.argv[1:]).strip()
