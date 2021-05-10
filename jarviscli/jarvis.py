@@ -69,6 +69,24 @@ class Jarvis:
             del self.active_frontends[frontend]
             return thread
 
+    def frontend_info(self):
+        frontend_status_formatter = {
+            "available": len(self.AVAILABLE_FRONTENDS),
+            "active": len(self.active_frontends),
+            "red": Fore.RED,
+            "blue": Fore.BLUE,
+            "reset": Fore.RESET
+        }
+
+        frontend_status = "Jarvis can only be active on {active} frontends for now.\n" \
+                          "We are working on getting the other frontends working.\n"
+
+        frontend_status += "{red}{active} {blue}frontends loaded of" \
+                           " {red}{available} {blue}frontends. More information: {red}status\n"
+        frontend_status += Fore.RESET
+
+        return frontend_status.format(**frontend_status_formatter)
+
     def run(self):
         for _frontend in self.active_frontends.values():
             _frontend.thread.start()
@@ -336,7 +354,7 @@ class Jarvis:
             uniquePlugins: Dict[str, Plugin] = {}
             for key in pluginDict.keys():
                 plugin = pluginDict[key]
-                if(plugin not in uniquePlugins.keys()):
+                if (plugin not in uniquePlugins.keys()):
                     uniquePlugins[plugin.get_name()] = plugin
             helpOutput = []
             for name in sorted(uniquePlugins.keys()):
