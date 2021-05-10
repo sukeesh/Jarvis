@@ -68,16 +68,21 @@ def call_stats(jarvis, s):
     jarvis.execute_once('garmin stats')
 
 
-def group_stats(stats):
+def group_stats(incoming_stats):
+    stats = dict()
     heart_rate = dict()
     sleep = dict()
     stress = dict()
     activity = dict()
+    wellness = dict()
+    floors = dict()
+    body_battery = dict()
+    intensity = dict()
     calories = dict()
     steps = dict()
     spo2 = dict()
 
-    for (key, value) in stats.items():
+    for (key, value) in incoming_stats.items():
         # CALORIES
         if "calorie" in key or "Calorie" in key:
             calories[key] = value
@@ -93,35 +98,41 @@ def group_stats(stats):
         # STRESS
         elif "Stress" in key or "stress" in key:
             stress[key] = value
-        # REST
-        else:
+        # SLEEP
+        elif "sleep" in key or "Sleep" in key or "sedentary" in key or "sedentary" in key:
+            sleep[key] = value
+        elif "awake" in key or "Awake" in key:
+            sleep[key] = value
+        # ACTIVITIES
+        elif "wellness" in key or "Wellness" in key:
+            wellness[key] = value
+        elif "floors" in key or "Floors" in key:
+            floors[key] = value
+        elif "bodyBattery" in key:
+            body_battery[key] = value
+        elif "intensity" in key or "Intensity" in key:
+            intensity[key] = value
+        # GENERAL IN ACTIVITIES
+        elif "active" in key or "Active" in key or "activity" in key or "Activity" in key:
             activity[key] = value
+        elif 'total' in key or "duration" in key:
+            activity[key] = value
+        else:
+            stats[key] = value
 
-    stats = dict()
     stats['heart_rate'] = heart_rate
     stats['calories'] = calories
     stats['steps'] = steps
     stats['spo2'] = spo2
     stats['stress'] = stress
+    stats['sleep'] = sleep
+    activity['wellness'] = wellness
+    activity['floors'] = floors
+    activity['body_battery'] = body_battery
+    activity['intensity'] = intensity
     stats['activity'] = activity
 
     return stats
-
-
-def ignore_none(d):
-    """
-    Delete keys with the value ``None`` in a dictionary, recursively.
-
-    This alters the input so you may wish to ``copy`` the dict first.
-    """
-    # For Python 3, write `list(d.items())`; `d.items()` won’t work
-    # For Python 2, write `d.items()`; `d.iteritems()` won’t work
-    for key, value in list(d.items()):
-        if (value is None) or (value == "null"):
-            del d[key]
-        elif isinstance(value, dict):
-            ignore_none(value)
-    return d  # For convenience
 
 
 @require(network=True)
@@ -170,22 +181,20 @@ def garmin_stats(jarvis, s):
 
     jarvis.say("Printing garmin stats for today!")
     try:
-
         stats = jarvis.garmin_client.get_stats(date.today().isoformat())
         jarvis.garmin_stats = group_stats(stats)
-        jarvis.garmin_stats['timestamp'] = datetime.now()
-        jarvis.say(json.dumps(
-            jarvis.garmin_stats,
-            indent=2))
+        jarvis.say(json.dumps(jarvis.garmin_stats, indent=2))
+
     except (
             GarminConnectConnectionError,
             GarminConnectAuthenticationError,
             GarminConnectTooManyRequestsError,
     ) as err:
-        jarvis.say("Error occurred during Garmin Connect Client get unit system: %s" % err)
+        print(err.with_traceback())
+        jarvis.say("Error occurred during Garmin Connect Client get stats: %s" % err)
         return
-    except Exception:  # pylint: disable=broad-except
-        jarvis.say("Unknown error occurred during Garmin Connect Client get unit system")
+    except Exception as exception:  # pylint: disable=broad-except
+        jarvis.say("Unknown error occurred during Garmin Connect Client get stats: %s" % exception)
         return
 
 
@@ -234,7 +243,7 @@ def garmin_activity_today(jarvis, s):
 
     jarvis.say("Printing Activity information for {" + str(date.today().isoformat()) + "}")
     try:
-        jarvis.say(json.dumps(jarvis.garmin_client.get_stats(date.today().isoformat()), indent=2))
+        jarvis.say(json.dumps(jarvis.garmin_client.get_activities(0, 10), indent=2))
     except (
             GarminConnectConnectionError,
             GarminConnectAuthenticationError,
@@ -260,6 +269,8 @@ def garmin_steps(jarvis, s):
     )
     from datetime import date
     import json
+
+    call_connect(jarvis, s)
 
     jarvis.say("Getting steps information for date: {" + str(date.today().isoformat()) + "}")
     try:
@@ -289,6 +300,8 @@ def garmin_heart_rate(jarvis, s):
     )
     from datetime import date
     import json
+
+    call_connect(jarvis, s)
 
     jarvis.say("Getting heart rate information for date: {" + str(date.today().isoformat()) + "}")
     try:
@@ -321,6 +334,8 @@ def garmin_body_composition(jarvis, s):
     from datetime import date
     import json
 
+    call_connect(jarvis, s)
+
     jarvis.say("Getting Body Composition information for date: {" + str(date.today().isoformat()) + "}")
     try:
         jarvis.say(json.dumps(
@@ -337,45 +352,68 @@ def garmin_body_composition(jarvis, s):
         jarvis.say("Unknown error occurred during Garmin Connect Client get body composition")
         return
 
-#
-# """
-# Get stats and body composition data
-# """
-# jarvis.say("garmin_client.get_stats_and_body_composition(%s)", today.isoformat())
-# jarvis.say("----------------------------------------------------------------------------------------")
-# try:
-#     jarvis.say(garmin_client.get_stats_and_body(today.isoformat()))
-# except (
-#     GarminConnectConnectionError,
-#     GarminConnectAuthenticationError,
-#     GarminConnectTooManyRequestsError,
-# ) as err:
-#     jarvis.say("Error occurred during Garmin Connect Client get stats and body composition: %s" % err)
-#     return
-# except Exception:  # pylint: disable=broad-except
-#     jarvis.say("Unknown error occurred during Garmin Connect Client get stats and body composition")
-#     return
-#
-#
-# """
-# Get activities data
-# """
-# jarvis.say("garmin_client.get_activities(0,1)")
-# jarvis.say("----------------------------------------------------------------------------------------")
-# try:
-#     activities = garmin_client.get_activities(0,1) # 0=start, 1=limit
-#     jarvis.say(activities)
-# except (
-#     GarminConnectConnectionError,
-#     GarminConnectAuthenticationError,
-#     GarminConnectTooManyRequestsError,
-# ) as err:
-#     jarvis.say("Error occurred during Garmin Connect Client get activities: %s" % err)
-#     return
-# except Exception:  # pylint: disable=broad-except
-#     jarvis.say("Unknown error occurred during Garmin Connect Client get activities")
-#     return
-#
+
+@require(network=True)
+@plugin("garmin stats and body")
+def garmin_stats_and_body(jarvis, s):
+    """
+    Get stats and body composition data
+    """
+    from garminconnect import (
+        GarminConnectConnectionError,
+        GarminConnectTooManyRequestsError,
+        GarminConnectAuthenticationError,
+    )
+    from datetime import date
+    import json
+
+    call_connect(jarvis, s)
+
+    jarvis.say("Getting Stats and Body Composition information for date: {" + str(date.today().isoformat()) + "}")
+
+    try:
+        jarvis.say(json.dumps(jarvis.garmin_client.get_stats_and_body(date.today().isoformat()), indent=2))
+    except (
+        GarminConnectConnectionError,
+        GarminConnectAuthenticationError,
+        GarminConnectTooManyRequestsError,
+    ) as err:
+        jarvis.say("Error occurred during Garmin Connect Client get stats and body composition: %s" % err)
+        return
+    except Exception:  # pylint: disable=broad-except
+        jarvis.say("Unknown error occurred during Garmin Connect Client get stats and body composition")
+        return
+
+
+@require(network=True)
+@plugin("garmin sleep")
+def garmin_sleep(jarvis, s):
+    """
+    Get sleep data
+    """
+    from garminconnect import (
+        GarminConnectConnectionError,
+        GarminConnectTooManyRequestsError,
+        GarminConnectAuthenticationError,
+    )
+    from datetime import date
+    import json
+
+    call_connect(jarvis, s)
+
+    jarvis.say("Getting Sleep information for date: {" + str(date.today().isoformat()) + "}")
+    try:
+        jarvis.say(json.dumps(jarvis.garmin_client.get_sleep_data(date.today().isoformat()), indent=2))
+    except (
+        GarminConnectConnectionError,
+        GarminConnectAuthenticationError,
+        GarminConnectTooManyRequestsError,
+    ) as err:
+        jarvis.say("Error occurred during Garmin Connect Client get sleep data: %s" % err)
+        return
+    except Exception:  # pylint: disable=broad-except
+        jarvis.say("Unknown error occurred during Garmin Connect Client get sleep data")
+        return
 #
 # """
 # Download an Activity
@@ -417,23 +455,7 @@ def garmin_body_composition(jarvis, s):
 #     return
 #
 #
-# """
-# Get sleep data
-# """
-# jarvis.say("garmin_client.get_sleep_data(%s)", today.isoformat())
-# jarvis.say("----------------------------------------------------------------------------------------")
-# try:
-#     jarvis.say(garmin_client.get_sleep_data(today.isoformat()))
-# except (
-#     GarminConnectConnectionError,
-#     GarminConnectAuthenticationError,
-#     GarminConnectTooManyRequestsError,
-# ) as err:
-#     jarvis.say("Error occurred during Garmin Connect Client get sleep data: %s" % err)
-#     return
-# except Exception:  # pylint: disable=broad-except
-#     jarvis.say("Unknown error occurred during Garmin Connect Client get sleep data")
-#     return
+
 #
 #
 # """

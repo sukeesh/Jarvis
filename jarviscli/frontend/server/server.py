@@ -35,7 +35,7 @@ class JarvisServer:
         pass
 
     def start(self):
-        print("Starting a thread for home server!")
+        self.jarvis.say("Starting a thread for home server!")
         self.server_app.run(host=self.host_name, port=self.port, threaded=True, debug=True, use_reloader=False)
 
     def stop(self):
