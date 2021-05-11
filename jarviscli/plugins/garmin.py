@@ -20,8 +20,24 @@ def connect_garmin(jarvis, s):
     jarvis.garmin_client = None
     jarvis.say("Attempting connect...")
 
-    user = jarvis.input("UserID: ")  # YOUR ID
-    pass_word = jarvis.input("\nPassword: ", password=True)  # YOUR Password
+    plugin_key = "garminconnect"
+    user, pass_word = jarvis.get_user_pass(plugin_key)
+    if user is None:
+        user = jarvis.input("UserID: ")  # YOUR ID
+        pass_word = jarvis.input("Password: ", password=True)  # YOUR Password
+
+        # SAVE credentials
+        save = jarvis.input("Save Credentials (encrypted) ? (y/n) ")
+        if save == 'y':
+            jarvis.save_user_pass(plugin_key, user, pass_word)
+
+    else:
+        saved = jarvis.input("Use saved password for " + user + "? (y/n) ")
+        if saved == 'n':
+            pass_word = jarvis.input("Password: ", password=True)  # YOUR Password
+            update = jarvis.input("Update password (encrypted) ? (y/n) ")
+            if update == 'y':
+                jarvis.update_user_pass(plugin_key, user, pass_word)
 
     try:
         jarvis.garmin_client = Garmin(user, pass_word)
@@ -44,6 +60,7 @@ def connect_garmin(jarvis, s):
     jarvis.say("Logging in Garmin client...")
     try:
         jarvis.garmin_client.login()
+        jarvis.say("Client Logged in")
     except (
             GarminConnectConnectionError,
             GarminConnectAuthenticationError,

@@ -1,5 +1,6 @@
 import json
 import os
+from cryptography.fernet import Fernet
 
 '''
 This class allows storage of values in json format. It adds an easy
@@ -24,13 +25,13 @@ example:
 module_path = os.path.dirname(__file__)
 
 
-class Memory:
-    '''
+class KeyVault:
+    """
         Initialize data with saved json file
-    '''
+    """
 
-    def __init__(self, mfile='memory.json'):
-        self.json_file = os.path.join(module_path, mfile)
+    def __init__(self, kv_file='key_vault.json'):
+        self.json_file = os.path.join(module_path, kv_file)
         self.data = ''
         # Try to open file if it doesnt exist it will throw an error
         try:
@@ -106,3 +107,57 @@ class Memory:
     def save(self):
         with open(self.json_file, 'w') as f:
             json.dump(self.data, f)
+
+    def generate_secret_key(self):
+        secret_key = self.get_data("secret_key")
+        if secret_key is None:
+            secret_key = Fernet.generate_key()
+            self.add_data("secret_key", secret_key.decode('utf-8'))
+        return secret_key
+
+    def get_secret_key(self):
+        secret_key = self.get_data("secret_key")
+        return secret_key
+
+    def save_user_pass(self, key, user, password):
+        """
+            Saves user-pass to disk.
+        """
+
+        secret_key = self.generate_secret_key()
+        f = Fernet(secret_key)
+        sha_pass = f.encrypt(password.encode('utf-8'))
+
+        user_pass = dict()
+        user_pass['user'] = user
+        user_pass['pass'] = sha_pass.decode('utf-8')
+        self.data[key] = user_pass
+
+    def get_user_pass(self, key):
+        """
+            Gets user-pass from disk.
+        """
+
+        secret_key = self.get_secret_key()
+
+        try:
+            user_pass = self.data[key]
+        except BaseException:
+            return None, None
+
+        f = Fernet(secret_key)
+        decrypt_pass = f.decrypt(user_pass['pass'].encode('utf-8')).decode('utf-8')
+        return user_pass['user'], decrypt_pass
+
+    def update_user_pass(self, key, user, password):
+        """
+            Updates user-pass on disk.
+        """
+
+        secret_key = self.get_secret_key()
+        f = Fernet(secret_key)
+        sha_pass = f.encrypt(password.encode('utf-8'))
+        user_pass = dict()
+        user_pass['user'] = user
+        user_pass['pass'] = sha_pass.decode('utf-8')
+        self.data[key] = user_pass

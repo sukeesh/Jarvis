@@ -21,12 +21,29 @@ def gmail(jarvis, s):
         # in case of failure
         print("Could Not connect to Gmail")
         return
-    user = jarvis.input("User id: ")                          # YOUR ID
-    Pass_w = jarvis.input("\nPassword: ", password=True)                # YOUR Password
+
+    plugin_key = "gmail"
+    user, pass_word = jarvis.get_user_pass(plugin_key)
+    if user is None:
+        user = jarvis.input("UserID: ")  # YOUR ID
+        pass_word = jarvis.input("Password: ", password=True)  # YOUR Password
+
+        # SAVE credentials
+        save = jarvis.input("Save Credentials (encrypted) ? (y/n) ")
+        if save == 'y':
+            jarvis.save_user_pass(plugin_key, user, pass_word)
+
+    else:
+        saved = jarvis.input("Use saved password for " + user + "? (y/n) ")
+        if saved == 'n':
+            pass_word = jarvis.input("Password: ", password=True)  # YOUR Password
+            update = jarvis.input("Update password (encrypted) ? (y/n) ")
+            if update == 'y':
+                jarvis.update_user_pass(plugin_key, user, pass_word)
 
     try:
-        server.login(user, Pass_w)                           # user log in
-        print("User Logged in")
+        server.login(user, pass_word)
+        jarvis.say("User Logged in")
     except BaseException:
         print(
             '''Allow Less secure apps in GOOGLE ACCOUNT SETTINGS to use SMTP services by following the given steps:
