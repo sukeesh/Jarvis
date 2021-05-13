@@ -63,7 +63,8 @@ jarvis is cool
 ### Plugins
 
 [Click here](doc/PLUGINS.md) to learn more about plugins.
-[Click here](doc/PLUGINS-LIST.md) for a list (not complete) of plugins that come with the master branch..
+
+[Click here](doc/PLUGINS-LIST.md) for a list (not complete) of plugins that come with the master branch.
 
 
 ### Creating a test
