@@ -147,7 +147,7 @@ HTOP = {
 }
 
 
-OPTIONAL_REQUIREMENTS = [PortAudio, RequestsSecurity, FFMPEG, ESPEAK, WKHTMLTOPDF, Fasttext,HTOP]
+OPTIONAL_REQUIREMENTS = [PortAudio, RequestsSecurity, FFMPEG, ESPEAK, WKHTMLTOPDF, Fasttext, HTOP]
 
 
 if not sys.platform == "darwin":
