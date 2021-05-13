@@ -3,6 +3,7 @@ import shutil
 
 from plugin import plugin
 
+
 @plugin("file manage")
 class file_manage:
     """"
@@ -55,7 +56,7 @@ class file_manage:
     def delete(self, jarvis, file):
         # function to delete files
 
-        if self.folder == False:
+        if self.folder is False:
             # first, check if file exists
             if os.path.exists(file):
 
@@ -86,7 +87,6 @@ class file_manage:
 
             else:
                 jarvis.say("file does not exist")
-
 
     def move(self, jarvis, file):
         # function to move files
