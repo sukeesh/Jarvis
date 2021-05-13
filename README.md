@@ -64,6 +64,8 @@ jarvis is cool
 
 [Click here](doc/PLUGINS.md) to learn more about plugins.
 
+[Click here](doc/PLUGINS-LIST.md) for a list (not complete) of plugins that come with the master branch.
+
 ### Creating a test
 
 Creating a test is optional but never a bad idea ;).
