@@ -1,32 +1,50 @@
+# GMAIL ONLY
+# ----------
+
+# A few notes: This uses less-secured apps by default for GMail, so I would
+# not recommend using this script from an email account you care about.
+#
+# To enable less-secured apps with GMail, go to the following link:
+#   https://myaccount.google.com/lesssecureapps?utm_source=google-account&utm_medium=web
+# Please note that it may take a few minutes for these changes to register.
+#
+# If you would like to use this script with GMail on a secured account,
+# please use the GMail API.
+#   To install the GMail API, run:
+#       pip install --upgrade google-api-python-client
+#   Next, substitute the logic below with code adapted from here:
+#       https://medium.com/lyfepedia/sending-emails-with-gmail-api-and-python-49474e32c81f
+# To use the GMail API you will have to create a workspace admin account for yourself,
+# which costs a little something every year.
+
 import smtplib  # import stmplib
+from email.message import EmailMessage
 
-from plugin import plugin  # import plugin
+from plugin import plugin, require, alias, Platform  # import plugin
+
+EMAIL_HOST = 'smtp.gmail.com'  # 'smtp.gmail.com' for gmail
+EMAIL_PORT = 587  # 587 for gmail
+
+# Add more providers if yours isn't here.
+PROVIDERS = {
+    'att': '@txt.att.net',
+    'boost': '@smsmyboostmobile.com',
+    'cricket': '@sms.cricketwireless.net',
+    'sprint': '@messaging.sprintpcs.com',
+    'tmobile': '@tmomail.net',
+    'uscellular': '@email.uscc.net',
+    'verizon': '@vtext.com',
+    'virgin': '@vmobl.com',
+}
 
 
-@plugin('gmail')                                             # decorator
-def gmail(jarvis, s):
-    '''
-    Sending email from a gmail account using SMTP services.
-    To use this plugin :
-                1. User should have a gmail id.
-                2. Less secure apps should be allowed to access the gmail account.
-    '''
-    try:
-        # establshing server connection
-        server = smtplib.SMTP("smtp.gmail.com", 587)
-        server.ehlo()
-        server.starttls()
-        print("SERVER CONNECTED")
-    except BaseException:
-        # in case of failure
-        print("Could Not connect to Gmail")
-        return
-
+def get_user_pass(jarvis):
     plugin_key = "gmail"
     user, pass_word = jarvis.get_user_pass(plugin_key)
     if user is None:
-        user = jarvis.input("UserID: ")  # YOUR ID
-        pass_word = jarvis.input("Password: ", password=True)  # YOUR Password
+        user = jarvis.input("Your Email \n(This uses less-secured apps by default for GMail, \nso I would not "
+                            "recommend using this script from an \nemail account you care about.): \t\t")
+        pass_word = jarvis.input("", password=True)  # YOUR Password
 
         # SAVE credentials
         save = jarvis.input("Save Credentials (encrypted) ? (y/n) ")
@@ -36,29 +54,110 @@ def gmail(jarvis, s):
     else:
         saved = jarvis.input("Use saved password for " + user + "? (y/n) ")
         if saved == 'n':
-            pass_word = jarvis.input("Password: ", password=True)  # YOUR Password
+            pass_word = jarvis.input("", password=True)  # YOUR Password
             update = jarvis.input("Update password (encrypted) ? (y/n) ")
             if update == 'y':
                 jarvis.update_user_pass(plugin_key, user, pass_word)
 
+    return user, pass_word
+
+
+def format_email(send_to, send_from, subject, body):
+    """Format the email body."""
+
+    msg = EmailMessage()
+    msg.set_content(body)
+    msg['Subject'] = subject
+    msg['From'] = send_from
+    msg['To'] = send_to
+
+    return msg
+
+
+def send_message(final_message, email_user, email_pass):
+    """Send email to recipient."""
+
     try:
-        server.login(user, pass_word)
-        jarvis.say("User Logged in")
+        smtp = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT)
+        smtp.starttls()
     except BaseException:
-        print(
-            '''Allow Less secure apps in GOOGLE ACCOUNT SETTINGS to use SMTP services by following the given steps:
-                                                                      \n\t\tStep 1. Log in to email using your browser.
-                                                                      \n\t\tStep 2. Go to account settings.
-                                                                      \n\t\tStep 3. Find 'allow less secure apps' and mark it as ON.''')
-        server.quit()
+        print("Could Not connect to Gmail")
         return
 
-    receiver_id = jarvis.input("\nEnter receiver id\n")             # Reciever ID
-    msg = jarvis.input("\nEnter message\n")                         # message
-    server.sendmail(user, receiver_id, msg)
+    try:
+        smtp.login(email_user, email_pass)
+        smtp.send_message(final_message)
+        print("Sent!")  # confirmation
+    except Exception:
+        print("Unable to send text right now, please try again later.")
+    finally:
+        smtp.close()
 
-    print("MAIL sent")                                       # confirmation
-    print("Closing Connection")
-    # closing server connection
-    server.quit()
-    print("Server closed")
+
+def send_mail(send_to, send_from, final_message, email_user, email_pass):
+    """Send email to recipient."""
+
+    try:
+        smtp = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT)
+        smtp.starttls()
+    except BaseException:
+        print("Could Not connect to Gmail")
+        return
+
+    try:
+        smtp.login(email_user, email_pass)
+        smtp.sendmail(send_from, send_to, final_message)
+        print("Sent!")  # confirmation
+    except Exception as e:
+        print("Unable to send text right now, please try again later.")
+        print(e.with_traceback())
+    finally:
+        smtp.close()
+
+
+@plugin('gmail')  # decorator
+def gmail(jarvis, s):
+    """
+    Sending email from a gmail account using SMTP services.
+    To use this plugin :
+                1. User should have a gmail id.
+                2. Less secure apps should be allowed to access the gmail account.
+    """
+    user, pass_word = get_user_pass(jarvis)
+    receiver_id = jarvis.input("\nEnter receiver id\n")  # Reciever ID
+    msg = jarvis.input("\nEnter message\n")  # message
+    send_mail(receiver_id, user, msg, user, pass_word)
+
+
+@require(network=True, platform=[Platform.MACOS, Platform.LINUX])
+@alias("message")
+@plugin("text")
+def text(jarvis, s):
+    """
+    Sending texts from a gmail account using SMTP services.
+    To use this plugin :
+                1. User should have a gmail id.
+                2. Less secure apps should be allowed to access the gmail account.
+    """
+    provider = None
+    phone_number = None
+    display_name = None
+
+    your_email, email_pass = get_user_pass(jarvis)
+
+    if s == "":
+        phone_number = jarvis.input("Enter Phone Number: ")
+        provider = jarvis.input("Enter Provider \n(Available: " + str(PROVIDERS.keys()) + "): ")
+        # display_name = jarvis.input("Any preferences on display name? \n"
+        #                                  "Enter (if null, your email shows as display name):")
+
+    enter_subject = jarvis.input("Enter Subject: ")
+    enter_text = jarvis.input("Enter Text (Enter is send): ")
+    if phone_number[:2] == "+1":
+        send_to = f'{phone_number}{PROVIDERS[provider]}'
+    else:
+        send_to = f'+1{phone_number}{PROVIDERS[provider]}'
+    send_from = your_email
+
+    final_message = format_email(send_to, send_from, enter_subject, enter_text)
+    send_message(final_message, your_email, email_pass)
