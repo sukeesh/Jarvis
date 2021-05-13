@@ -80,15 +80,15 @@ class file_manage:
                     jarvis.say("Invalid input")
         else:
             jarvis.say("file does not exist")
-                    if confirmation == "y":
-                        try:
-                            # delete file
-                            if not self.folder:
-                                os.remove(file)
-                            else:
-                                os.rmdir(file)
-                        except:
-                            jarvis.say("Invalid file path")
+                if confirmation == "y":
+                    try:
+                        # delete file
+                        if not self.folder:
+                            os.remove(file)
+                        else:
+                            os.rmdir(file)
+                    except:
+                        jarvis.say("Invalid file path")
 
                         # break loop after removing file
                         yes = False
