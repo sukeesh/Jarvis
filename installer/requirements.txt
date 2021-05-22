@@ -19,6 +19,7 @@ img2pdf
 mock
 nltk
 opencv-python-headless
+pandas
 pathlib
 pdf2image
 pdfkit
