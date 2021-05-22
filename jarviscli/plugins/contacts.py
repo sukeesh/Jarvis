@@ -36,4 +36,3 @@ def get_contact(jarvis, s):
         name = jarvis.input("Name: ")
 
     print(contact_list[contact_list.name == name])
-
