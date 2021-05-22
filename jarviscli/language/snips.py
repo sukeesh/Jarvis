@@ -40,7 +40,7 @@ class LanguageParser(pluginmanager.IPlugin, PluginStorage):
 
     def identify_action(self, action):
         parsed_action = self.nlu_engine.parse(action)
-        print(parsed_action)
+        # print(parsed_action)
         intent_name = parsed_action['intent']['intentName']
         if intent_name not in self._plugins:
             return None
