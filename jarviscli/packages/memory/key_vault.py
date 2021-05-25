@@ -2,6 +2,7 @@ import json
 import os
 from cryptography.fernet import Fernet
 from packages.memory.memory import Memory
+from getpass import getpass
 
 '''
 This class allows storage of values in json format. It adds an easy
@@ -38,23 +39,47 @@ class KeyVault(Memory):
         returns the json string
     '''
 
-    def generate_secret_key(self):
+    def _generate_secret_key(self):
+        self.enter_key_vault()
         secret_key = self.get_data("secret_key")
         if secret_key is None:
             secret_key = Fernet.generate_key()
+            # TODO: fix this
+            # password = self.first_key_vault_experience()
+            # f = Fernet(password)
+            # sha_secret_key = f.encrypt(secret_key)
             self.add_data("secret_key", secret_key.decode('utf-8'))
+        self.exit_key_vault()
         return secret_key
 
-    def get_secret_key(self):
-        secret_key = self.get_data("secret_key")
-        return secret_key
+    def first_key_vault_experience(self):
+        print("This is the first time you are accessing the key vault!")
+        print("Welcome!!")
+        print("Let me start by giving you some information:")
+        print("The key vault is to store your confidential information,")
+        print("you know, things like passwords, or api secret and key combinations.")
+        print("I also do want you to know that the key vault will keep everything encrypted for you.")
+        print("Which means that I have algorithms built-in to hide information from others, for you.")
+        print("But first, let us take a password from you to secure the key_vault.")
+        print("We will not be storing this password!")
+        print("At the same time, we will need this password to access any of your secrets,\n"
+              "so please enter something you can remember later.")
+
+        return getpass()
+
+    def _get_secret_key(self):
+        self.enter_key_vault()
+        sha_secret_key = self.get_data("secret_key")
+        # f = Fernet(getpass())
+        # secret_key = f.decrypt(sha_secret_key.encode('utf-8')).decode('utf-8')
+        self.exit_key_vault()
+        return sha_secret_key
 
     def save_user_pass(self, key, user, password):
         """
             Saves user-pass to disk.
         """
-
-        secret_key = self.generate_secret_key()
+        secret_key = self._generate_secret_key()
         f = Fernet(secret_key)
         sha_pass = f.encrypt(password.encode('utf-8'))
 
@@ -67,8 +92,7 @@ class KeyVault(Memory):
         """
             Gets user-pass from disk.
         """
-
-        secret_key = self.get_secret_key()
+        secret_key = self._get_secret_key()
 
         try:
             user_pass = self.data[key]
@@ -84,10 +108,16 @@ class KeyVault(Memory):
             Updates user-pass on disk.
         """
 
-        secret_key = self.get_secret_key()
+        secret_key = self._get_secret_key()
         f = Fernet(secret_key)
         sha_pass = f.encrypt(password.encode('utf-8'))
         user_pass = dict()
         user_pass['user'] = user
         user_pass['pass'] = sha_pass.decode('utf-8')
         self.data[key] = user_pass
+
+    def exit_key_vault(self):
+        print("-" * 50 + "KEY-VAULT" + "-" * 50)
+
+    def enter_key_vault(self):
+        print("-" * 50 + "KEY-VAULT" + "-" * 50)
