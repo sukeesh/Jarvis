@@ -29,7 +29,7 @@ class DialCode:
         else:
             # Ask whether to print all available countries if False
             jarvis.say(Fore.RED + "Can't find code for country "
-                                + Fore.WHITE + "'" + s + "'")
+                       + Fore.WHITE + "'" + s + "'")
             choice = jarvis.input(Fore.GREEN + 'Print avaliable countries?'
                                   + Fore.WHITE + ' (y/N): ')
 
@@ -62,9 +62,9 @@ class DialCode:
         for i in data:
             if country in [i["country_name"].lower(), i["country_code"].lower()]:
                 code = i["dial_code"]
-                return(code)
+                return (code)
 
-        return(False)
+        return (False)
 
 
 @alias('country with phone code',
@@ -113,6 +113,6 @@ class CountryByhDC:
                 countries.append(i["country_name"])
 
         if len(countries) >= 1:
-            return(countries)
+            return (countries)
         else:
-            return(False)
+            return (False)

@@ -19,7 +19,6 @@ CUSTOM_PLUGINS_PATH = os.path.join(PLUGINS_PATH, '..', '..', 'custom/')
 @require(platform=Platform.MACOS)
 @plugin("create plugin")
 def create_plugin_MAC(jarvis, s):
-
     # Jarvis asks for the name of the plugin to create if not provided.
     if s == "":
         jarvis.say("Please insert the name of your plugin: ", Fore.RED)
@@ -35,9 +34,9 @@ def create_plugin_MAC(jarvis, s):
     """Checks if file already exists in either the plugins main folder
     or in the custom plugins folder and also asks the user if he wants to exit
     """
-    while(os.path.isfile(CUSTOM_PLUGINS_PATH + filename + ".py") or
-          os.path.isfile(PLUGINS_PATH + "/" + filename + ".py") and
-          not exit):
+    while (os.path.isfile(CUSTOM_PLUGINS_PATH + filename + ".py") or
+           os.path.isfile(PLUGINS_PATH + "/" + filename + ".py") and
+           not exit):
         jarvis.say("A plugin with the name '" + filename +
                    "' already exists", Fore.RED)
         jarvis.say("Please choose another name or type 'exit' " +
@@ -47,7 +46,7 @@ def create_plugin_MAC(jarvis, s):
         if new_name == 'exit':
             exit = True
         filename = format_filename(new_name)
-    if(not exit):
+    if (not exit):
         """The templated is generated through the create_template funcion
         and is exceuted through the os.system method.
         """
@@ -68,7 +67,6 @@ def create_plugin_MAC(jarvis, s):
 @require(platform=Platform.LINUX)
 @plugin("create plugin")
 def create_plugin_LINUX(jarvis, s):
-
     # Jarvis asks for the name of the plugin to create if not provided.
     if s == "":
         jarvis.say("Please insert the name of your plugin: ", Fore.RED)
@@ -84,8 +82,8 @@ def create_plugin_LINUX(jarvis, s):
     """Checks if file already exists in either the plugins main folder
     or in the custom plugins folder and also asks the user if he wants to exit
     """
-    while(os.path.isfile(CUSTOM_PLUGINS_PATH + filename + ".py") or
-          os.path.isfile(PLUGINS_PATH + "/" + filename + ".py") and not exit):
+    while (os.path.isfile(CUSTOM_PLUGINS_PATH + filename + ".py") or
+           os.path.isfile(PLUGINS_PATH + "/" + filename + ".py") and not exit):
         jarvis.say("A plugin with the name '" + filename +
                    "' already exists", Fore.RED)
         jarvis.say("Please choose another name or type 'exit' " +
@@ -95,7 +93,7 @@ def create_plugin_LINUX(jarvis, s):
         if new_name == 'exit':
             exit = True
         filename = format_filename(new_name)
-    if(not exit):
+    if (not exit):
         """The plugin is created through the Terminal command "cat"
         and excecuted with the os.System method.
         """

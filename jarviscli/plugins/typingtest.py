@@ -1,5 +1,4 @@
 import csv
-import curses
 import json
 import os
 import re
@@ -14,7 +13,7 @@ from plugin import Platform, plugin, require
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
-class GameState (object):
+class GameState(object):
     RUNNING = 1
     ENDED = 2
 
@@ -120,8 +119,8 @@ def take_input():
     if (entered_letter == letter_object.letter):
         letter_object.state = Letter.State.CORRECT
         info['score'] += 1
-        if(entered_letter == ' '):
-            if(not info['mistake_in_current_word']):
+        if (entered_letter == ' '):
+            if (not info['mistake_in_current_word']):
                 info['words'] += 1
             info['mistake_in_current_word'] = False
     else:
@@ -152,7 +151,7 @@ def game_start():
 
 
 def game_running():
-    while(info['state'] == GameState.RUNNING):
+    while (info['state'] == GameState.RUNNING):
         time_0 = time.time()
 
         print_screen()
@@ -160,7 +159,7 @@ def game_running():
 
         time_1 = time.time()
         info['time_left'] -= (time_1 - time_0)
-        if(info['time_left'] <= 0 or info['position'] == len(info['text'])):
+        if (info['time_left'] <= 0 or info['position'] == len(info['text'])):
             game_end()
 
 

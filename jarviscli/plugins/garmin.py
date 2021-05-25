@@ -191,7 +191,7 @@ def garmin_stats(jarvis, s):
         GarminConnectTooManyRequestsError,
         GarminConnectAuthenticationError,
     )
-    from datetime import date, datetime
+    from datetime import date
     import json
 
     call_connect(jarvis, s)
@@ -391,9 +391,9 @@ def garmin_stats_and_body(jarvis, s):
     try:
         jarvis.say(json.dumps(jarvis.garmin_client.get_stats_and_body(date.today().isoformat()), indent=2))
     except (
-        GarminConnectConnectionError,
-        GarminConnectAuthenticationError,
-        GarminConnectTooManyRequestsError,
+            GarminConnectConnectionError,
+            GarminConnectAuthenticationError,
+            GarminConnectTooManyRequestsError,
     ) as err:
         jarvis.say("Error occurred during Garmin Connect Client get stats and body composition: %s" % err)
         return
@@ -422,9 +422,9 @@ def garmin_sleep(jarvis, s):
     try:
         jarvis.say(json.dumps(jarvis.garmin_client.get_sleep_data(date.today().isoformat()), indent=2))
     except (
-        GarminConnectConnectionError,
-        GarminConnectAuthenticationError,
-        GarminConnectTooManyRequestsError,
+            GarminConnectConnectionError,
+            GarminConnectAuthenticationError,
+            GarminConnectTooManyRequestsError,
     ) as err:
         jarvis.say("Error occurred during Garmin Connect Client get sleep data: %s" % err)
         return

@@ -1,5 +1,6 @@
-from plugin import plugin
 from colorama import Fore
+
+from plugin import plugin
 
 
 def get_matrix(jarvis, r, c):

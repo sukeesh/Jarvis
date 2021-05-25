@@ -1,13 +1,14 @@
 """Jarvis plugin to get public voter information based on the users address."""
 import json
-import geopy
-import urllib.parse
-import requests
-import shutil
 import os
-from packages.mapps import get_location
+import shutil
+import urllib.parse
+
+import geopy
+import requests
 from colorama import Fore
 
+from packages.mapps import get_location
 # All plugins should inherite from this library
 from plugin import plugin
 
@@ -54,10 +55,10 @@ def get_voter_info(jarvis, s, address):
         )
         return -1
     election_title_str = (
-        "Showing results for "
-        + str(voterInfo["election"]["name"])
-        + " on "
-        + str(voterInfo["election"]["electionDay"])
+            "Showing results for "
+            + str(voterInfo["election"]["name"])
+            + " on "
+            + str(voterInfo["election"]["electionDay"])
     )
     jarvis.say(election_title_str, Fore.RED)
 
@@ -87,11 +88,11 @@ def get_voter_info(jarvis, s, address):
         jarvis.say("There are also these elections in your area:", Fore.BLUE)
         for election in voterInfo["otherElections"]:
             election_title_str = (
-                str(election["name"])
-                + " on "
-                + str(election["electionDay"])
-                + " id: "
-                + str(election["id"])
+                    str(election["name"])
+                    + " on "
+                    + str(election["electionDay"])
+                    + " id: "
+                    + str(election["id"])
             )
             jarvis.say(election_title_str, Fore.RED)
         jarvis.say(
@@ -148,7 +149,7 @@ def voter_info(jarvis, s):
     # Get users location
     current_location = get_location()
     coordinates = (
-        str(current_location["latitude"]) + ", " + str(current_location["longitude"])
+            str(current_location["latitude"]) + ", " + str(current_location["longitude"])
     )
     geo = geopy.geocoders.Nominatim(user_agent="Jarvis")
     address = geo.reverse(coordinates)

@@ -2,9 +2,9 @@ import os
 from platform import architecture, mac_ver, release
 from platform import system as sys
 
+import distro
 from colorama import Fore, Style
 
-import distro
 from plugin import Platform, plugin, require
 
 
@@ -99,6 +99,7 @@ def check_ram__WINDOWS(jarvis, s):
         mb, _ = divmod(size, 1024 * 1024)
         gb, mb = divmod(mb, 1024)
         return "%s GB %s MB" % (gb, mb)
+
     jarvis.say("Total RAM: %s" % (format(mem.total)), Fore.BLUE)
     if mem.percent > 80:
         color = Fore.RED

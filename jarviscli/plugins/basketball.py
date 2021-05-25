@@ -1,8 +1,10 @@
-import requests
 import datetime
-from plugin import plugin, require
+
+import requests
 from colorama import Fore
+
 from packages.memory.memory import Memory
+from plugin import plugin, require
 
 URL = "https://api-basketball.p.rapidapi.com/"
 
@@ -59,7 +61,7 @@ class basketball():
         else:
             return
 
-    def update_api_key(self, jarvis,):
+    def update_api_key(self, jarvis, ):
         user_api_key = jarvis.input("Enter New Api-BasketBall.com API_KEY: ", Fore.GREEN)
         m = Memory("basketball.json")
         m.update_data("API_KEY", user_api_key)
@@ -123,7 +125,8 @@ class basketball():
             if len(seasons) > 0:
                 print("  Last {} {} Seasons".format(len(seasons), name))
                 for j in range(len(seasons)):
-                    print("   Season: {} Start: {} End: {}".format(seasons[j]["season"], seasons[j]["start"], seasons[j]["end"]))
+                    print("   Season: {} Start: {} End: {}".format(seasons[j]["season"], seasons[j]["start"],
+                                                                   seasons[j]["end"]))
 
     def todays_games(self, jarvis):
         jarvis.spinner_start('Fetching...')

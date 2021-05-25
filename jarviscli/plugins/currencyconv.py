@@ -4,6 +4,7 @@ from decimal import Decimal
 
 from forex_python.bitcoin import BtcConverter
 from forex_python.converter import CurrencyRates
+
 from plugin import plugin, require
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -42,7 +43,7 @@ class Currencyconv():
         else:
             result = c.convert(fr, to, Decimal(amount))
         outputText = str(amount) + " " + fr + \
-            " are equal to " + str(result) + " " + to
+                     " are equal to " + str(result) + " " + to
         jarvis.say(outputText)
 
     def find_currencies(self):
@@ -73,5 +74,5 @@ class Currencyconv():
                 prompt = 'Please enter a valid country or currency: '
                 continue
             else:
-                prompt = 'Type -show help- to see valid currencies '\
+                prompt = 'Type -show help- to see valid currencies ' \
                          'or -try again- to continue: '

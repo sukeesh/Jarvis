@@ -42,7 +42,7 @@ class rockpaperscissors():
 
         i = 1
 
-        while(i <= int(rounds)):
+        while (i <= int(rounds)):
 
             user_move = self.get_users("Enter your move: ")
 
@@ -54,7 +54,7 @@ class rockpaperscissors():
                 txt = "You:" + str(user_score) + "  Jarvis:" + str(jarvis_score) + "  "
                 if (user_score > jarvis_score):
                     txt = txt + Back.GREEN + "You Winning" + Back.RESET
-                elif(user_score < jarvis_score):
+                elif (user_score < jarvis_score):
                     txt = txt + Back.RED + "You Losing" + Back.RESET
                 else:
                     txt = txt + Back.WHITE + "Tie" + Back.RESET

@@ -4,7 +4,7 @@ from plugin import plugin
 
 
 def spinit(list):
-    return(random.choice(list))
+    return (random.choice(list))
 
 
 @plugin("spinwheel")

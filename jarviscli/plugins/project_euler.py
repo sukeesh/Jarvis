@@ -102,7 +102,8 @@ class Euler():
         # Print the text
         self.jarvis.say(problem_text)
 
-        self.jarvis.say("If it seems to you that text is not displayed correctly you can follow the link below.", Fore.GREEN)
+        self.jarvis.say("If it seems to you that text is not displayed correctly you can follow the link below.",
+                        Fore.GREEN)
         self.jarvis.say(url)
 
     def show_info(self):
@@ -115,7 +116,7 @@ class Euler():
         info_text += "The project attracts adults and students interested in mathematics and computer programming. "
         info_text += "Since its creation in 2001 by Colin Hughes, Project Euler has gained notability and popularity worldwide. "
         info_text += "It now includes " + str(self.last_problem_id) + \
-            " problems. A new one is added once every one or two weeks. "
+                     " problems. A new one is added once every one or two weeks. "
         info_text += "Problems are of varying difficulty, but each is solvable in less than a minute of CPU time using an efficient "
         info_text += "algorithm on a modestly powered computer. "
 
@@ -140,4 +141,4 @@ class Euler():
         # The id is in the first column ('td' tag)
         last_problem_id = int(last_problem_row.find('td').get_text())
 
-        return(last_problem_id)
+        return (last_problem_id)

@@ -1,9 +1,11 @@
 """Plugin that creates templated workspace folders for various languages."""
-import git
-from distutils.dir_util import copy_tree
 import os
 import pathlib
+from distutils.dir_util import copy_tree
+
+import git
 from colorama import Fore
+
 # All plugins should inherite from this library
 from plugin import plugin
 

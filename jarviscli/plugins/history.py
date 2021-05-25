@@ -19,6 +19,7 @@ class history:
     Attribution:
         Data taken from wikipedia (CC BY-SA 3.0) with use of http://history.muffinlabs.com
     """
+
     class KW:
         """ Inner Class for Constants """
         EVENT = 'event'
@@ -78,7 +79,8 @@ class history:
         jarvis.say(
             "                * 'tomorrow' - results in getting fact that happened day after today", Fore.CYAN)
         jarvis.say(
-            "    <event>   - Argument used to specify historical fact type, which can be one of the following:", Fore.CYAN)
+            "    <event>   - Argument used to specify historical fact type, which can be one of the following:",
+            Fore.CYAN)
         jarvis.say("                * 'births'", Fore.CYAN)
         jarvis.say("                * 'deaths'", Fore.CYAN)
         jarvis.say("                * 'events'", Fore.CYAN)

@@ -5,7 +5,6 @@ from plugin import plugin
 
 @plugin("random number")
 def generate_random_number(jarvis, numbers):
-
     if numbers != "":
         input_numbers = numbers.split(' ', 1)
 

@@ -1,7 +1,9 @@
+import datetime
+
 import requests
 from colorama import Fore
+
 from plugin import plugin, require
-import datetime
 
 API_KEY = 'OsZ9DfFtdgR6zPlVjxFTch1Np5zAcqt9g9i34ga2'
 headers = {'X-Auth-Token': API_KEY}

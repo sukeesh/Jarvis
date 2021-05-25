@@ -10,6 +10,7 @@ from utilities.GeneralUtilities import IS_WIN
 
 if IS_WIN:
     from pyreadline import Readline
+
     readline = Readline()
 else:
     import readline

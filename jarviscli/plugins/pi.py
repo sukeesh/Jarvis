@@ -1,7 +1,8 @@
-from plugin import plugin
 import os
+
 from colorama import Fore
 
+from plugin import plugin
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 NUM_NEXT = 100

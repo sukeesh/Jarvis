@@ -1,6 +1,5 @@
 import re
 import subprocess
-from platform import system as sys
 
 from colorama import Fore
 

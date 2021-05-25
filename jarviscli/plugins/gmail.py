@@ -110,7 +110,6 @@ def send_mail(send_to, send_from, final_message, email_user, email_pass):
         print("Sent!")  # confirmation
     except Exception as e:
         print("Unable to send text right now, please try again later.")
-        print(e.with_traceback())
     finally:
         smtp.close()
 

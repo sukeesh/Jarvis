@@ -1,7 +1,8 @@
-from plugin import plugin
-import sys
 import os
 import socket
+import sys
+
+from plugin import plugin
 
 
 def has_internet():

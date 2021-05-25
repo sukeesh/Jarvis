@@ -1,5 +1,6 @@
-from plugin import plugin
 from random_word import RandomWords
+
+from plugin import plugin
 
 
 @plugin('hangman')

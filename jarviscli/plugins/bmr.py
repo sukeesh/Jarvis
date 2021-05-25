@@ -18,10 +18,10 @@ def bmr(jarvis, s):
     # for catching errors
     try:
         # formula changes based on sex
-        if(sex == 'F'):
+        if (sex == 'F'):
             Bmr = (float(height) * 6.25) + (float(weight) * 9.99) - (float(age) * 4.92) - 116
             jarvis.say(str(Bmr))
-        elif(sex == 'M'):
+        elif (sex == 'M'):
             Bmr = (float(height) * 6.25) + (float(weight) * 9.99) - (float(age) * 4.92) - 5
             jarvis.say(str(Bmr))
         else:

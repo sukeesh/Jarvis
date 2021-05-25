@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 
 from plugin import plugin
@@ -9,6 +11,9 @@ def save(contacts):
 
 @plugin("add contact")
 def add_contact(jarvis, s):
+    if not os.path.isfile('./data/contacts.csv'):
+        os.mknod("./data/contacts.csv")
+
     contact_list = pd.read_csv('./data/contacts.csv')
     name = phone = email = carrier = None
     new_contact = dict()

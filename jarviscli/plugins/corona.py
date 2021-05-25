@@ -55,15 +55,15 @@ class CoronaInfo:
         url = "https://api.covid19api.com/summary"
         response = requests.get(url)
         # Intermittently URL responds with a message - You have reached maximum request limit.
-        if(response.text == "You have reached maximum request limit."):
+        if (response.text == "You have reached maximum request limit."):
             return "URLError"
         result = response.json()
         if country_name:
             for country in result["Countries"]:
                 if (
-                    country_name == country["Country"].lower()
-                    or country_name == country["CountryCode"].lower()
-                    or country_name == country["Slug"].lower()
+                        country_name == country["Country"].lower()
+                        or country_name == country["CountryCode"].lower()
+                        or country_name == country["Slug"].lower()
                 ):
                     return country
             return None

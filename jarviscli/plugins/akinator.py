@@ -1,11 +1,10 @@
 import subprocess
 import sys
 
+import akinator
 from colorama import Fore
 
-import akinator
 from plugin import plugin, require
-
 
 """
 Simple akinator text based game: think up a character, answer questions and akinator will find it !
@@ -16,7 +15,6 @@ https://pypi.org/project/akinator.py/
 @require(network=True)
 @plugin("akinator")
 def akinator_main(jarvis, s):
-
     opening_message(jarvis)
     jarvis.say('Press "g" to start, or "q" to quit !')
     while True:
@@ -39,7 +37,8 @@ def opening_message(jarvis):
 
     jarvis.say('')
     jarvis.say('Let\'s play !')
-    jarvis.say('You have to think of a public personality, answer to some questions and I will try to guess who it is !')
+    jarvis.say(
+        'You have to think of a public personality, answer to some questions and I will try to guess who it is !')
     jarvis.say('Rules: ')
     print_help(jarvis)
 

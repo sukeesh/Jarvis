@@ -114,6 +114,7 @@ def plot(jarvis, s):
         plot x**2
         plot y=x(x+1)(x-1)
     """
+
     def _plot(expr):
         sympy.plotting.plot(expr)
         return ""
@@ -140,6 +141,7 @@ def limit(jarvis, s):
         limit @1 1/(1-x)
         limit @1 @2 1/((1-x)(2-x))
     """
+
     def try_limit(term, x, to, directory=''):
         try:
             return sympy.Limit(term, x, to, directory).doit()
