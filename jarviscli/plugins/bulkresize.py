@@ -137,7 +137,7 @@ def output_path_concat(path, im_path):
         a string that leads to an existing image file path
     '''
     output_path = path + '/' + \
-                  os.path.splitext(os.path.basename(im_path))[0] + '.jpg'
+        os.path.splitext(os.path.basename(im_path))[0] + '.jpg'
     return output_path
 
 

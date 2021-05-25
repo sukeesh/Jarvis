@@ -34,11 +34,11 @@ def translate(jarvis, s):
             word = words[i]
             currentPos = i
 
-            #           Do not include lang codes in the tests when using full sentence command since words can conflict with them (Eg. hi -> Hindi).
-            #           This code looks like it includes them, but since the googletrans API is implemented such that the languages are stored in
-            #           dictionaries, when the "in" operator is used, it only checks the keys of the dictionary, not the values. Therefore, the
-            #           LANG_CODES dictionary must be used to check full language names instead of the LANGUAGES dictionary. For more clarification,
-            #           have a look at the code on the googletrans github.
+            # Do not include lang codes in the tests when using full sentence command since words can conflict with them (Eg. hi -> Hindi).
+            # This code looks like it includes them, but since the googletrans API is implemented such that the languages are stored in
+            # dictionaries, when the "in" operator is used, it only checks the keys of the dictionary, not the values. Therefore, the
+            # LANG_CODES dictionary must be used to check full language names instead of the LANGUAGES dictionary. For more clarification,
+            # have a look at the code on the googletrans github.
             if (word in LANGCODES):
                 srcs = word
                 break
@@ -47,12 +47,12 @@ def translate(jarvis, s):
         for i in range(currentPos + 1, len(words)):
             word = words[i]
             finalPos = i
-            #           Do not include LANGCODES in the tests when using full sentence command since words can conflict with them (Eg. hi -> Hindi)
+            # Do not include LANGCODES in the tests when using full sentence command since words can conflict with them (Eg. hi -> Hindi)
             if (word in LANGCODES):
                 des = word
                 break
 
-        #       If both languages found, work out where the text to be translated is in the sentence and perform the translation
+        # If both languages found, work out where the text to be translated is in the sentence and perform the translation
         if (des and srcs):
             if (currentPos < 2):
                 tex = " ".join(words[finalPos + 1:])

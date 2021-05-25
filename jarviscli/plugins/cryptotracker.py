@@ -2,7 +2,6 @@ import requests
 
 from plugin import plugin
 
-
 # ANSI escape sequences to print in color
 
 
@@ -19,8 +18,6 @@ favorite = [
     'BTC/LTC',
     'BTC/XRP'
 ]
-
-
 # If the price is down, print in red. If the price is up, print in green
 
 
@@ -30,13 +27,13 @@ def print_in_color(change):
     else:
         return color.GREEN + str(change) + color.TAIL
 
-
 # Main function. It requires the base and target
 # crypto symbols, e.g. [BTC, XRP]
 # to build a URL.
 
 
 def query(base, target):
+
     # Bulding a url from base and target currency symbols
     # It must look like this: https://api.cryptonator.com/api/ticker/btc-eth
 
@@ -50,9 +47,7 @@ def query(base, target):
 
     # This error occurs if the pair is non-existent
     except KeyError:
-        print(
-            "Wrong pair {}/{}! \nFull list of symbols is here: https://coinmarketcap.com/all/views/all/\n".format(base,
-                                                                                                                  target))
+        print("Wrong pair {}/{}! \nFull list of symbols is here: https://coinmarketcap.com/all/views/all/\n".format(base, target))
 
     # Results
     else:

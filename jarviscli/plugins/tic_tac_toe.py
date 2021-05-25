@@ -91,8 +91,7 @@ def game(jarvis, s):
         s = jarvis.input(turn + "turn. " + "Choose a position!", Fore.BLUE)
         if s not in board_keys:
             jarvis.say(
-                "Incorrect input. Please print any number from 1 to 9 corresponding to the position on the board!",
-                Fore.RED)
+                "Incorrect input. Please print any number from 1 to 9 corresponding to the position on the board!", Fore.RED)
             continue
 
         if board[s] == '   ':
@@ -104,7 +103,7 @@ def game(jarvis, s):
             continue
 
         if count >= 5:
-            if (checkWinner(board, jarvis, turn)):
+            if(checkWinner(board, jarvis, turn)):
                 break
 
         # Check if a draw

@@ -1,9 +1,7 @@
-from os import popen
-from pprint import pprint
-from re import findall
-
 from whois import query, exceptions
-
+from pprint import pprint
+from os import popen
+from re import findall
 from plugin import plugin, require, Platform
 
 

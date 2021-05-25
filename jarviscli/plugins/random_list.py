@@ -1,8 +1,6 @@
-import random
-
-from colorama import Fore
-
 from plugin import plugin
+import random
+from colorama import Fore
 
 
 @plugin("random list")

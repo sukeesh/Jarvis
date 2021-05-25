@@ -30,7 +30,7 @@ class File_Organise():
                 Fore.LIGHTBLUE_EX
                 + "Searching in {}...".format(
                     (root[0])[
-                    :70]),
+                        :70]),
                 end="\r")
             sys.stdout.flush()
             if dir_name == root[0].split('/')[-1]:

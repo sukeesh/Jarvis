@@ -1,6 +1,5 @@
-import random
-
 from plugin import plugin
+import random
 
 
 @plugin("give me advice")

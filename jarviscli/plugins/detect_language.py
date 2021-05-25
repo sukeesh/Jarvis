@@ -2,9 +2,9 @@ import contextlib
 import json
 import os
 
-import fasttext
 from colorama import Fore
 
+import fasttext
 from plugin import plugin
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))

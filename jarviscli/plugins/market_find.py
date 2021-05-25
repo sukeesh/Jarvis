@@ -4,7 +4,6 @@ import requests
 from bs4 import BeautifulSoup
 # Jarvis
 from colorama import Fore
-
 from plugin import plugin, require
 
 
