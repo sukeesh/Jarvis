@@ -319,6 +319,21 @@ class Jarvis:
             self.say("I could not identify your command...", Fore.RED)
         self._prompt()
 
+    def internal_execute(self, command: str, s: str, **kwargs):
+        # save commands' history
+        HISTORY_FILENAME.write(command + '\n')
+
+        plugin = self.language_parser.identify_action(command)
+
+        if command.startswith('help'):
+            self.do_help(plugin)
+            return True
+
+        if plugin is None:
+            return None
+
+        return plugin.internal_execute(self, s)
+
     def _prompt(self):
         for _f in self.active_frontends.values():
             _f.show_prompt()

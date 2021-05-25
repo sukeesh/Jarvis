@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
-
+from plugins.user_pass import user_pass
 from plugin import require, plugin
+
+
+GARMIN = "garminconnect"
 
 
 @require(network=True)
@@ -20,24 +23,7 @@ def connect_garmin(jarvis, s):
     jarvis.garmin_client = None
     jarvis.say("Attempting connect...")
 
-    plugin_key = "garminconnect"
-    user, pass_word = jarvis.get_user_pass(plugin_key)
-    if user is None:
-        user = jarvis.input("UserID: ")  # YOUR ID
-        pass_word = jarvis.input("Password: ", password=True)  # YOUR Password
-
-        # SAVE credentials
-        save = jarvis.input("Save Credentials (encrypted) ? (y/n) ")
-        if save == 'y':
-            jarvis.save_user_pass(plugin_key, user, pass_word)
-
-    else:
-        saved = jarvis.input("Use saved password for " + user + "? (y/n) ")
-        if saved == 'n':
-            pass_word = jarvis.input("Password: ", password=True)  # YOUR Password
-            update = jarvis.input("Update password (encrypted) ? (y/n) ")
-            if update == 'y':
-                jarvis.update_user_pass(plugin_key, user, pass_word)
+    user, pass_word = jarvis.internal_execute("user pass", GARMIN)
 
     try:
         jarvis.garmin_client = Garmin(user, pass_word)
@@ -76,7 +62,7 @@ def connect_garmin(jarvis, s):
 def call_connect(jarvis, s):
     if hasattr(jarvis, "garmin_client"):
         return
-    jarvis.execute_once('garmin connect')
+    jarvis.internal_execute('garmin connect', "")
 
 
 def call_stats(jarvis, s):
@@ -207,7 +193,6 @@ def garmin_stats(jarvis, s):
             GarminConnectAuthenticationError,
             GarminConnectTooManyRequestsError,
     ) as err:
-        print(err.with_traceback())
         jarvis.say("Error occurred during Garmin Connect Client get stats: %s" % err)
         return
     except Exception as exception:  # pylint: disable=broad-except

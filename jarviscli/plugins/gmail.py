@@ -21,6 +21,7 @@ import smtplib  # import stmplib
 from email.message import EmailMessage
 
 from plugin import plugin, require, alias, Platform  # import plugin
+from plugins.user_pass import user_pass
 
 EMAIL_HOST = 'smtp.gmail.com'  # 'smtp.gmail.com' for gmail
 EMAIL_PORT = 587  # 587 for gmail
@@ -37,29 +38,7 @@ PROVIDERS = {
     'virgin': '@vmobl.com',
 }
 
-
-def get_user_pass(jarvis):
-    plugin_key = "gmail"
-    user, pass_word = jarvis.get_user_pass(plugin_key)
-    if user is None:
-        user = jarvis.input("Your Email \n(This uses less-secured apps by default for GMail, \nso I would not "
-                            "recommend using this script from an \nemail account you care about.): \t\t")
-        pass_word = jarvis.input("", password=True)  # YOUR Password
-
-        # SAVE credentials
-        save = jarvis.input("Save Credentials (encrypted) ? (y/n) ")
-        if save == 'y':
-            jarvis.save_user_pass(plugin_key, user, pass_word)
-
-    else:
-        saved = jarvis.input("Use saved password for " + user + "? (y/n) ")
-        if saved == 'n':
-            pass_word = jarvis.input("", password=True)  # YOUR Password
-            update = jarvis.input("Update password (encrypted) ? (y/n) ")
-            if update == 'y':
-                jarvis.update_user_pass(plugin_key, user, pass_word)
-
-    return user, pass_word
+GMAIL = "gmail"
 
 
 def format_email(send_to, send_from, subject, body):
@@ -122,7 +101,9 @@ def gmail(jarvis, s):
                 1. User should have a gmail id.
                 2. Less secure apps should be allowed to access the gmail account.
     """
-    user, pass_word = get_user_pass(jarvis)
+    jarvis.say("Jarvis uses less-secured apps by default for GMail, \nso I would not "
+               "recommend using this script from an \nemail account you care about.\t\t")
+    user, pass_word = jarvis.internal_execute("user pass", GMAIL)
     receiver_id = jarvis.input("\nEnter receiver id\n")  # Reciever ID
     msg = jarvis.input("\nEnter message\n")  # message
     send_mail(receiver_id, user, msg, user, pass_word)
@@ -142,7 +123,9 @@ def text(jarvis, s):
     phone_number = None
     display_name = None
 
-    your_email, email_pass = get_user_pass(jarvis)
+    jarvis.say("Jarvis uses less-secured apps by default for GMail, \nso I would not "
+               "recommend using this script from an \nemail account you care about.\t\t")
+    your_email, email_pass = jarvis.internal_execute("user pass", GMAIL)
 
     if s == "":
         phone_number = jarvis.input("Enter Phone Number: ")
