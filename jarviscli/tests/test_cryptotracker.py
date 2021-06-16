@@ -16,13 +16,13 @@ class TestCryptotracker(PluginTest):
 
     def test_print_in_color_red(self):
         change = -1.54
-        colored_text = Fore.RED + str(change) + "%" + Fore.RESET
+        colored_text = Fore.RED + str(change) + Fore.RESET
         self.assertEqual(cryptotracker.print_in_color(change),
                          colored_text)
 
     def test_print_in_color_green(self):
         change = 1.54
-        colored_text = Fore.GREEN + str(change) + "%" + Fore.RESET
+        colored_text = Fore.GREEN + str(change) + Fore.RESET
         self.assertEqual(cryptotracker.print_in_color(change),
                          colored_text)
 

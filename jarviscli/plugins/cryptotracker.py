@@ -24,9 +24,9 @@ def print_in_color(change):
         The price change.
     """
     if float(change) < 0:
-        return Fore.RED + str(change) + "%" + Fore.RESET
+        return Fore.RED + str(change) + Fore.RESET
     else:
-        return Fore.GREEN + str(change) + "%" + Fore.RESET
+        return Fore.GREEN + str(change) + Fore.RESET
 
 
 def check_prices(base, target):
