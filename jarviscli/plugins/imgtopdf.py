@@ -1,8 +1,10 @@
+import os
+
 import img2pdf
 from PIL import Image
-import os
-from plugin import plugin
 from colorama import Fore
+
+from plugin import plugin
 
 
 @plugin('image to pdf')

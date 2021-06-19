@@ -12,6 +12,7 @@ import frontend.server.server
 import frontend.voice
 import frontend.voice_control
 from packages.memory.memory import Memory
+from packages.memory.key_vault import KeyVault
 from plugin import Plugin
 from utilities import schedule
 from utilities.GeneralUtilities import warning
@@ -44,6 +45,7 @@ class Jarvis:
         self.spinner_running = False
 
         self.memory = Memory()
+        self.key_vault = KeyVault()
         self.scheduler = schedule.Scheduler()
 
         self.active_frontends = {}
@@ -239,6 +241,27 @@ class Jarvis:
         self.memory.del_data(key)
         self.memory.save()
 
+    # KEY VAULT WRAPPER
+    def save_user_pass(self, key, user, password):
+        """
+        Saves the username and password combination
+        """
+        self.key_vault.save_user_pass(key, user, password)
+        self.key_vault.save()
+
+    def update_user_pass(self, key, user, password):
+        """
+        Updates the username and password combination
+        """
+        self.key_vault.update_user_pass(key, user, password)
+        self.key_vault.save()
+
+    def get_user_pass(self, key):
+        """
+        Gets the username and password combination
+        """
+        return self.key_vault.get_user_pass(key)
+
     def spinner_start(self, message="Starting "):
         """
         Function for starting a spinner when prompted from a plugin
@@ -295,6 +318,21 @@ class Jarvis:
         if ret is False:
             self.say("I could not identify your command...", Fore.RED)
         self._prompt()
+
+    def internal_execute(self, command: str, s: str, **kwargs):
+        # save commands' history
+        HISTORY_FILENAME.write(command + '\n')
+
+        plugin = self.language_parser.identify_action(command)
+
+        if command.startswith('help'):
+            self.do_help(plugin)
+            return True
+
+        if plugin is None:
+            return None
+
+        return plugin.internal_execute(self, s)
 
     def _prompt(self):
         for _f in self.active_frontends.values():

@@ -2,7 +2,6 @@ import os
 import subprocess
 
 from plugin import Platform, plugin, require
-from utilities.GeneralUtilities import executable_exists
 
 VALID_OPTIONS = ['status', 'vendor', 'energy', 'technology', 'remaining']
 
@@ -70,16 +69,16 @@ def get_specific_info(info_required):
         # User has entered something invalid
         # Show the list of valid options
         return "Invalid option given. Here's a list of options:\n" + \
-            ', '.join(VALID_OPTIONS)
+               ', '.join(VALID_OPTIONS)
 
     # Run command to get full information about the battery
     battery_info_command = subprocess.Popen([
-                                            "upower",
-                                            "-i",
-                                            "/org/freedesktop/UPower/devices/battery_BAT0"
-                                            ],
-                                            stdout=subprocess.PIPE
-                                            )
+        "upower",
+        "-i",
+        "/org/freedesktop/UPower/devices/battery_BAT0"
+    ],
+        stdout=subprocess.PIPE
+    )
 
     # From the above output, only get the specific info required
     specific_info_command = subprocess.Popen(grep_command,

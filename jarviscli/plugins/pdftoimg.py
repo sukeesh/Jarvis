@@ -1,7 +1,9 @@
 import os
-from plugin import plugin
+
 from colorama import Fore
 from pdf2image import convert_from_path
+
+from plugin import plugin
 
 
 @plugin('pdf to images')

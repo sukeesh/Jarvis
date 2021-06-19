@@ -1,7 +1,8 @@
-from plugin import Platform, plugin, require
-from platform import system as sys
-from colorama import Fore
 import subprocess
+
+from colorama import Fore
+
+from plugin import Platform, plugin, require
 
 
 @require(platform=Platform.LINUX)

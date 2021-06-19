@@ -34,14 +34,14 @@ def whoami(jarvis, s):
 
         for i in s.split(" "):
             if (
-                # valid POSIX user names or UIDs
-                not re.match("(^[a-z][a-z0-9-]*$)|(^[0-9]+$)", i)
-                and
-                # possible short options
-                not re.match("^-[agnruzGZ]+$", i)
-                and
-                # possible long options
-                i not in options
+                    # valid POSIX user names or UIDs
+                    not re.match("(^[a-z][a-z0-9-]*$)|(^[0-9]+$)", i)
+                    and
+                    # possible short options
+                    not re.match("^-[agnruzGZ]+$", i)
+                    and
+                    # possible long options
+                    i not in options
             ):
                 return False
 
@@ -77,11 +77,11 @@ def whoami(jarvis, s):
 
         for i in s.split(" "):
             if (
-                # valid POSIX user names or UIDs
-                not re.match("(^[a-z][a-z0-9-]*$)|(^[0-9]+$)", i)
-                and
-                # possible short options:
-                not re.match("-[AFGMPagpunr]+$", i)
+                    # valid POSIX user names or UIDs
+                    not re.match("(^[a-z][a-z0-9-]*$)|(^[0-9]+$)", i)
+                    and
+                    # possible short options:
+                    not re.match("-[AFGMPagpunr]+$", i)
             ):
                 return False
 

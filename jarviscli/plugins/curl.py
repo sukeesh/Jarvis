@@ -4,10 +4,11 @@ HTTP Method, Content Type, Data, Endpoint. The output is the curl request.
 The plugin also validates the user input before generating the curl output.
 """
 
+import json
+
+from colorama import Fore
 
 from plugin import plugin
-import json
-from colorama import Fore
 
 
 @plugin("generate curl")
@@ -52,7 +53,7 @@ class GenerateCurl(object):
             jarvis.exit()
 
         if self._valid_method(jarvis) and self._valid_content_type(jarvis) and \
-           self._valid_data(jarvis) and self._valid_endpoint(jarvis):
+                self._valid_data(jarvis) and self._valid_endpoint(jarvis):
             pass
         else:
             jarvis.exit()

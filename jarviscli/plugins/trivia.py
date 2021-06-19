@@ -18,7 +18,7 @@ class trivia:
         question_type = trivia_fetch["results"][0]["type"]
         options = trivia_fetch["results"][0]["incorrect_answers"]
         if trivia_fetch is not None:
-            if(question_type == "multiple"):
+            if (question_type == "multiple"):
                 self.mcq_question(jarvis, trivia_fetch)
             else:
                 self.true_false_question(jarvis, trivia_fetch)

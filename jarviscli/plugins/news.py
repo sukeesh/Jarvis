@@ -196,7 +196,7 @@ class News:
                 "You have not configured any source. Getting top headlines\n",
                 Fore.GREEN)
             url = "https://newsapi.org/v2/top-headlines?country=us&apiKey=" + \
-                self.get_api_key(jarvis)
+                  self.get_api_key(jarvis)
         else:
             url = "https://newsapi.org/v2/top-headlines?sources="
             for source in sources:

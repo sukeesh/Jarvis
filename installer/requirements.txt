@@ -1,7 +1,9 @@
 akinator.py
+apiclient
 archey4==4.6.0.post1; sys_platform != 'darwin'
 beautifulsoup4
 colorama
+cryptography
 distro
 flake8
 flask
@@ -17,6 +19,7 @@ img2pdf
 mock
 nltk
 opencv-python-headless
+pandas
 pathlib
 pdf2image
 pdfkit

@@ -239,6 +239,18 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
                 jarvis_api.say("    * {} {}".format(self.get_name(), sub_command))
             return False
 
+    def internal_execute(self, jarvis_api, s):
+        """Entry point if this plugin is called"""
+        # run default
+        if self.is_callable_plugin():
+            return self._backend[0](jarvis_api, s)
+        else:
+            jarvis_api.say("Sorry, I could not recognise your command. Did you mean:")
+            for sub_command in self._sub_plugins.keys():
+                jarvis_api.say("    * {} {}".format(self.get_name(), sub_command))
+            raise ValueError("A plugin was not found for the plugin you tried to call. "
+                             "Check the name you are calling with and try again!")
+
     def _plugin_run_with_network_error(self, run_func, jarvis, s):
         """
         Calls run_func(jarvis, s); try-catch ConnectionError

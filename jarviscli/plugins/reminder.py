@@ -3,12 +3,11 @@ import json
 import time
 
 from colorama import Fore
-
 from pick import pick
 from pytimeparse.timeparse import timeparse
+
 from plugin import plugin, alias
 from utilities.textParser import parse_date
-
 
 """
 Module content:
@@ -524,6 +523,7 @@ class Todo_Incomplete(TodoBase):
     """
     Lists incomplete todo items.
     """
+
     def __call__(self, jarvis, s):
         self.do_print(jarvis, lambda entry: entry['progress'] < 100)
 
@@ -571,6 +571,7 @@ class Todo_Tag(TodoBase):
     """
     Add a tag to an item which lets you filter later.
     """
+
     def __call__(self, jarvis, s):
         entry = self.select_one_remind(jarvis)
         tags = TagBase()
@@ -591,6 +592,7 @@ class Todo_Del_Tag(TodoBase):
     """
     Remove a tag from a todo item.
     """
+
     def __call__(self, jarvis, s):
         self.remove_tag(jarvis, s)
 
@@ -600,6 +602,7 @@ class Todo_Filter(TodoBase):
     """
     Filter items on your todo list by tag.
     """
+
     def __call__(self, jarvis, s):
         tags = TagBase()
         selected_tag = tags.select_one_tag(jarvis)
@@ -611,6 +614,7 @@ class Tags(TagBase):
     """
     List currently created tags.
     """
+
     def __call__(self, jarvis, s):
         self.do_print(jarvis)
 
@@ -621,6 +625,7 @@ class Tags_New(TagBase):
     """
     Create a new tag.
     """
+
     def __call__(self, jarvis, s):
         if not s.isalnum():
             self.add_tag(jarvis, s)
@@ -631,6 +636,7 @@ class Tags_Remove(TagBase):
     """
     Remove a pre-existing tag.
     """
+
     def __call__(self, jarvis, s):
         self.remove(jarvis, s)
 

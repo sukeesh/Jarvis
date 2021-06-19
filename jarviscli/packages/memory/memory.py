@@ -1,7 +1,6 @@
 import json
 import os
 
-
 '''
 This class allows storage of values in json format. It adds an easy
 Interface to save values to disk.

@@ -1,4 +1,5 @@
 import pdfkit
+
 from plugin import Platform, plugin, require
 
 
@@ -32,7 +33,8 @@ class htmltopdf_file:
             try:
                 pdfkit.from_file(s, s.replace('.html', '') + '.pdf')
             except OSError as err:
-                jarvis.say("OS error: {0}".format(err) + "\nMake sur your file is in the source directory of Jarvis and is an html file")
+                jarvis.say("OS error: {0}".format(
+                    err) + "\nMake sur your file is in the source directory of Jarvis and is an html file")
 
 
 @require(platform=Platform.LINUX, native=["wkhtmltopdf"], network=True)
@@ -54,4 +56,5 @@ class htmltopdf_url:
             try:
                 pdfkit.from_url(s, s + '.pdf')
             except IOError as err:
-                jarvis.say("IO error: {0}".format(err) + "\nMake sure your URL is valid and that you have access to the internet")
+                jarvis.say("IO error: {0}".format(
+                    err) + "\nMake sure your URL is valid and that you have access to the internet")
