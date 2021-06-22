@@ -7,7 +7,7 @@ flake8
 forex-python
 geopy
 gitpython
-googletrans
+googletrans==3.1.0a0
 IMDbPY
 mock
 nltk
