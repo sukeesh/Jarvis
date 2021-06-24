@@ -24,38 +24,36 @@ class InternationalDayTest(PluginTest):
         current_date = "2021-06-24"
         current_day = 24
         current_month = 6
-        if os.name == "posix":
-            filepath = '/data/international_days.csv'
-        else:
+        # The below file path runs only for Windows
+        if (os.name in ("nt", "dos", "ce")):
             filepath = r'data\international_days.csv'
-        with open(filepath) as csv_file:
-            result = self.test.find_international_day(current_date,
-                                                      current_day,
-                                                      current_month, csv_file)
-            expected_message = "The concerned date is " + Fore.YELLOW + \
-                               str(current_date) + Fore.RESET + \
-                               ", but there isn't an International" \
-                               " Day for today :("
-            self.assertEqual(result, expected_message)
+            with open(filepath) as csv_file:
+                result = self.test.find_international_day(current_date,
+                                                          current_day,
+                                                          current_month, csv_file)
+                expected_message = "The concerned date is " + Fore.YELLOW + \
+                                   str(current_date) + Fore.RESET + \
+                                   ", but there isn't an International" \
+                                   " Day for today :("
+                self.assertEqual(result, expected_message)
 
     def test_find_international_day_case2(self):
         current_date = "2021-02-11"
         current_day = 11
         current_month = 2
-        if os.name == "posix":
-            filepath = '/data/international_days.csv'
-        else:
+        # The below file path runs only for Windows
+        if (os.name in ("nt", "dos", "ce")):
             filepath = r'data\international_days.csv'
-        with open(filepath) as csv_file:
-            result = self.test.find_international_day(current_date,
-                                                      current_day,
-                                                      current_month, csv_file)
-            expected_message = "The concerned date is " + Fore.RESET +\
-                               Fore.YELLOW + \
-                str(current_date) + \
-                Fore.RESET + ", International Day" \
-                " of Women and Girls in Science"
-            self.assertEqual(result, expected_message)
+            with open(filepath) as csv_file:
+                result = self.test.find_international_day(current_date,
+                                                          current_day,
+                                                          current_month, csv_file)
+                expected_message = "The concerned date is " + Fore.RESET +\
+                                   Fore.YELLOW + \
+                    str(current_date) + \
+                    Fore.RESET + ", International Day" \
+                    " of Women and Girls in Science"
+                self.assertEqual(result, expected_message)
 
     def test_find_date(self):
         expected = '2021-06-24'
