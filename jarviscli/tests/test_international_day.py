@@ -2,6 +2,7 @@ import unittest
 from tests import PluginTest
 from colorama import Fore
 from plugins.international_day import InternationalDay
+import os
 
 
 class InternationalDayTest(PluginTest):
@@ -23,7 +24,11 @@ class InternationalDayTest(PluginTest):
         current_date = "2021-06-24"
         current_day = 24
         current_month = 6
-        with open(r'data\international_days.csv') as csv_file:
+        if os.name == "posix":
+            filepath = '/data/international_days.csv'
+        else:
+            filepath = r'data\international_days.csv'
+        with open(filepath) as csv_file:
             result = self.test.find_international_day(current_date,
                                                       current_day,
                                                       current_month, csv_file)
@@ -37,7 +42,11 @@ class InternationalDayTest(PluginTest):
         current_date = "2021-02-11"
         current_day = 11
         current_month = 2
-        with open(r'data\international_days.csv') as csv_file:
+        if os.name == "posix":
+            filepath = '/data/international_days.csv'
+        else:
+            filepath = r'data\international_days.csv'
+        with open(filepath) as csv_file:
             result = self.test.find_international_day(current_date,
                                                       current_day,
                                                       current_month, csv_file)
