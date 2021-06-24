@@ -2,7 +2,6 @@ import unittest
 from tests import PluginTest
 from colorama import Fore
 from plugins.international_day import InternationalDay
-from unittest.mock import patch
 
 
 class InternationalDayTest(PluginTest):
