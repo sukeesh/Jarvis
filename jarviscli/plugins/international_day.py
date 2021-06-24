@@ -96,15 +96,15 @@ class InternationalDay:
                 # If not it includes the International Day
                 if not row[current_month]:
                     print_message += Fore.YELLOW +\
-                                  str(current_date) + Fore.RESET + \
-                                  ", but there isn't an International" \
-                                  " Day for today :("
+                        str(current_date) + Fore.RESET + \
+                        ", but there isn't an International" \
+                        " Day for today :("
                     break
                 else:
                     print_message += Fore.RESET + Fore.YELLOW + \
-                                  str(current_date) + \
-                                  Fore.RESET + ", " + \
-                                  str(row[current_month])
+                        str(current_date) + \
+                        Fore.RESET + ", " + \
+                        str(row[current_month])
                     break
         return print_message
 
