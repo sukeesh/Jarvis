@@ -114,19 +114,22 @@ class WifiPasswordGetterLINUX:
 class WifiPasswordGetterWINDOWS:
     """
     A Jarvis plugin for Windows, that will find and display all the profiles of the
-    wifis that you have connected to and then display the password if selected.
-
+    wifis that you have connected to and then display the password, if selected or
+    display instantly the password of the requested wifi, e.g. wifi or wifi wifi_name.
     """
 
     def __call__(self, jarvis, s):
-        profiles = self.get_wifi_profiles()
-        if len(profiles) == 0:
-            jarvis.say("No connected wifi found!", Fore.RED)
-            return
-        choice = self.show_options(jarvis, profiles)
-        if choice == -1:
-            return
-        self.display_password(jarvis, profiles[choice - 1])
+        if s:
+            self.display_password(jarvis, s)
+        else:
+            profiles = self.get_wifi_profiles()
+            if len(profiles) == 0:
+                jarvis.say("No connected wifi found!", Fore.YELLOW)
+                return
+            choice = self.show_options(jarvis, profiles)
+            if choice == -1:
+                return
+            self.display_password(jarvis, profiles[choice - 1])
 
     def get_wifi_profiles(self):
         """
@@ -222,4 +225,6 @@ class WifiPasswordGetterWINDOWS:
                            '\nPassword: ' + "UNKNOWN")
 
         except subprocess.CalledProcessError:
-            jarvis.say("Encoding Error Occurred")
+            jarvis.say(
+                "Unable to get the password for this wifi. Make sure you enter the correct wifi name!",
+                Fore.YELLOW)
