@@ -34,10 +34,10 @@ class market_buy():
         plugin_dir = os.path.join(self.MARKETPLACE_PATH, s)
         os.makedirs(plugin_dir, exist_ok=True)
         try:
+            # In the case where the repo was already downloaded.
+            shutil.rmtree(plugin_dir)
+            os.makedirs(plugin_dir)
             target_dir = os.path.join(self.MARKETPLACE_PATH, s.split('/')[0])
-            if os.path.isdir(target_dir):
-                shutil.rmtree(target_dir)
-                os.makedirs(plugin_dir)
             git.Git(target_dir).clone(repo_link)
         except ValueError as e:
             e('Please input a valid GitHub_User/Github_Repo.')
