@@ -10,7 +10,7 @@ from plugin import plugin, require
 @require(network=True)
 @plugin('market find')
 def market_search(jarvis, s):
-    """Search Github Topics (a.k.a. market) to find baskets
+    """Search Github Topics (a.k.a. market) to find the top baskets
     (single or bunch of plugins together).
 
     Check the PLUGIN_MARKETPLACE.md for more information.
@@ -21,7 +21,7 @@ def market_search(jarvis, s):
     repository shown. Ex: "market find n=15"
     """
     # Downloading page
-    URL = 'https://github.com/topics/jarvis-plugins'
+    URL = 'https://github.com/topics/jarvis-plugin'
     page = requests.get(URL)
 
     # Inserting into the Beautiful Soup framework
