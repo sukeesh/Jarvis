@@ -13,16 +13,16 @@ class market_buy():
     Check the PLUGIN_MARKETPLACE.md for more information.
     """
     # Absolute path for Jarvis/marketplace
-    MARKETPLACE_PATH = os.path.join((os.sep).join(os.path.normpath(__file__).split(os.sep)[0:-3]),
-                                    'marketplace')
+    MARKETPLACE_PATH = os.path.join((os.sep).join(
+        os.path.normpath(__file__).split(os.sep)[0:-3]),
+        'marketplace')
     MAINTAIN_PYTHON_ONLY = True
-    
+
     def cleanse_non_py(self, parent_folder):
         for root, dirs, files in os.walk(parent_folder):
             for f in files:
                 if '.py' not in f:
                     os.unlink(os.path.join(root, f))
-        
 
     def __call__(self, jarvis, s):
         homepage = 'https://github.com/'
@@ -42,7 +42,7 @@ class market_buy():
         except ValueError as e:
             e('Please input a valid GitHub_User/Github_Repo.')
         os.system('cd ' + plugin_dir + ' && ls -l')
-        
+
         for root, dirs, files in os.walk(plugin_dir):
             if '.git' in root:
                 continue
@@ -53,12 +53,11 @@ class market_buy():
                         os.system((f'cd {jarvis_folder} && ' +
                                    'env/bin/pip install -U -r ' +
                                    os.path.join(root, f)))
-        
+
         # Deleting the .git folder from the cloned repo.
         shutil.rmtree(os.path.join(plugin_dir, '.git'))
-        
+
         if self.MAINTAIN_PYTHON_ONLY:
             self.cleanse_non_py(plugin_dir)
-        
+
         jarvis.say('Operation completed. Please restart Jarvis.')
-        
