@@ -4,7 +4,7 @@ from plugin import plugin
 
 
 @plugin("caesar cipher")
-def caesar_cipher_converter(jarvis, str):
+def caesar_cipher_converter(jarvis):
     option = get_option(jarvis)
     if option == 1:
         plain_to_cipher(jarvis)
@@ -52,7 +52,7 @@ def plain_to_cipher(jarvis):
                 converted += i
         else:
             x = ord(i)
-            if x >= 192 and x <= 255:
+            if 192 <= x <= 255:
                 converted += chr((ord(i) - 195) % 63 + 192)
             else:
                 converted += i
@@ -79,7 +79,7 @@ def cipher_to_plain(jarvis):
                 converted += i
         else:
             x = ord(i)
-            if x >= 192 and x <= 255:
+            if 192 <= x <= 255:
                 converted += chr((ord(i) - 189) % 63 + 192)
             else:
                 converted += i

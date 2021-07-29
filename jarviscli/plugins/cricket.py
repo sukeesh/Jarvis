@@ -68,11 +68,9 @@ class Cricket():
     def commentary(self, index):
         selected_match = self.all_match_data[index]
         data = self.c.commentary(self.matches[index]['id'])
-        comm = {}
-        comm['matchinfo'] = "{}, {}".format(
-            selected_match['srs'], selected_match['mnum'])
-        comm['status'] = "{}".format(selected_match['status'])
-        comm['commentary'] = data['commentary']
+        comm = {'matchinfo': "{}, {}".format(
+            selected_match['srs'], selected_match['mnum']), 'status': "{}".format(selected_match['status']),
+            'commentary': data['commentary']}
         text = []
         for com in comm['commentary']:
             line = ''
@@ -105,11 +103,9 @@ class Cricket():
     def scorecard(self, index):
         selected_match = self.all_match_data[index]
         data = self.c.scorecard(self.matches[index]['id'])
-        card = {}
-        card['matchinfo'] = "{}, {}".format(
-            selected_match['srs'], selected_match['mnum'])
-        card['status'] = "{}".format(selected_match['status'])
-        card['scorecard'] = data['scorecard']
+        card = {'matchinfo': "{}, {}".format(
+            selected_match['srs'], selected_match['mnum']), 'status': "{}".format(selected_match['status']),
+            'scorecard': data['scorecard']}
         text = ''
         text += Fore.LIGHTYELLOW_EX + \
             card['matchinfo'] + '\n' + card['status'] + '\n\n'
@@ -156,7 +152,7 @@ class Cricket():
         res = self.live_score(selected_match_id)
         print(res)
 
-        if(res == Fore.RED + "MATCH YET TO BEGIN"):
+        if res == Fore.RED + "MATCH YET TO BEGIN":
             return
 
         while True:

@@ -10,7 +10,7 @@ VALID_OPTIONS = ['status', 'vendor', 'energy', 'technology', 'remaining']
 @plugin('battery')
 def battery_WIN32(jarvis, s):
     """
-    Provides basic info about battery fo win32
+    Provides basic info about battery for win32
     """
     # https://stackoverflow.com/a/41988506/6771356
     import psutil
@@ -32,8 +32,7 @@ def battery_WIN32(jarvis, s):
 @plugin('battery')
 def battery_LINUX(jarvis, s):
     """
-    Provides battery status like battery percentage
-    and if the battery is charging or not
+    Provides battery status eg: percentage
     """
 
     # Get the battery info using upower
@@ -67,18 +66,17 @@ def get_specific_info(info_required):
         grep_command.append(grep_text)
     else:
         # User has entered something invalid
-        # Show the list of valid options
         return "Invalid option given. Here's a list of options:\n" + \
-            ', '.join(VALID_OPTIONS)
+               ', '.join(VALID_OPTIONS)
 
     # Run command to get full information about the battery
     battery_info_command = subprocess.Popen([
-                                            "upower",
-                                            "-i",
-                                            "/org/freedesktop/UPower/devices/battery_BAT0"
-                                            ],
-                                            stdout=subprocess.PIPE
-                                            )
+        "upower",
+        "-i",
+        "/org/freedesktop/UPower/devices/battery_BAT0"
+    ],
+        stdout=subprocess.PIPE
+    )
 
     # From the above output, only get the specific info required
     specific_info_command = subprocess.Popen(grep_command,
@@ -91,7 +89,6 @@ def get_specific_info(info_required):
     # Get the output after piping both the commands
     output = specific_info_command.communicate()[0]
 
-    # Convert the output from bytes to string
     output = output.decode("utf-8")
 
     return output
@@ -99,7 +96,7 @@ def get_specific_info(info_required):
 
 @require(platform=LINUX, native='!upower')
 @plugin('battery')
-def battery_LINUX_FALLBACK(jarvis, s):
+def battery_linux_fallback(jarvis, s):
     """
     Provides battery status like battery percentage
     and if the battery is charging or not
@@ -121,11 +118,8 @@ def battery_LINUX_FALLBACK(jarvis, s):
     def get_battery_info(info):
         return subprocess.check_output(["cat", battery_dir + info]).decode("utf-8")[:-1]
 
-    battery_text = []
-    battery_text.append("Status: " + get_battery_info("status"))
-    battery_text.append("Charge: " + get_battery_info("capacity") + "%")
+    battery_text = ["Status: " + get_battery_info("status"), "Charge: " + get_battery_info("capacity") + "%"]
 
     battery_info = '\n'.join(battery_text)
 
-    # Display the battery status
     jarvis.say(battery_info)

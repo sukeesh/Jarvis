@@ -4,7 +4,7 @@ from plugin import plugin
 
 @plugin("bmr")
 def bmr(jarvis, s):
-    """A Jarvis plugin to calculate
+    """calculates
     your Basal  Metabolic Rate (BMR) and
     your Active Metabolic Rate(AMR)"""
 
@@ -12,7 +12,6 @@ def bmr(jarvis, s):
     jarvis.say("1. Yes, let's start! \n2. Sorry,"
                " I don't know what BMR is :( \n ")
     jarvis.say("Please enter your choice: ")
-    # validate the input for choice
     choice = jarvis.input()
     while True:
         if choice == "1" or choice == "2":
@@ -22,7 +21,6 @@ def bmr(jarvis, s):
             jarvis.say("Please enter your choice: ")
             choice = jarvis.input()
 
-    # print definition of BMR
     if choice == "2":
         jarvis.say("\nBasal Metabolic Rate (BMR)", Fore.GREEN)
         jarvis.say("is the number of calories your body needs"
@@ -34,7 +32,6 @@ def bmr(jarvis, s):
     jarvis.say("What's your gender? (M/F)")
     while True:
         sex = jarvis.input()
-        # ignore lower or upper letters
         if sex.upper() == "M" or sex.upper() == "F":
             break
         jarvis.say("Sorry, invalid input was given!"
@@ -77,14 +74,12 @@ def bmr(jarvis, s):
     jarvis.say("BMR: " + str(bmr), Fore.GREEN)
     jarvis.say("\nNow that you know your BMR,\nwould you like to calculate "
                "your AMR too based on it?\n")
-    # print definition of AMR
     jarvis.say("Active Metabolic Rate (AMR)", Fore.GREEN)
     jarvis.say("is the actual amount of calories you burn\n"
                "each day due to physical activities\n"
                "like going to the gym, aerobics\n")
     jarvis.say("Please enter your choice(Y/N): ")
     amr_choice = jarvis.input()
-    # choice of calculating the amr or not
     while True:
         if amr_choice.upper() == "Y" or amr_choice.upper() == "N":
             break
@@ -111,8 +106,6 @@ def bmr(jarvis, s):
                 jarvis.say("Please enter your choice: ")
                 exercise_level = jarvis.input()
 
-        # calculate the amr
-        # depending on the exercise level
         if exercise_level == "1":
             amr = bmr * 1.2
         if exercise_level == "2":

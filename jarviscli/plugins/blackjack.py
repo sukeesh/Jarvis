@@ -268,7 +268,6 @@ def blackjack(jarvis, s):
 
     jarvis.say("OK then, Let's see the results", Fore.GREEN)
     jarvis.say('---------------------------')
-    # total profit calculation
     profit = sum(player['profit'])
     if profit >= 0:
         jarvis.say("Your total profit is " + str(profit), Fore.GREEN)

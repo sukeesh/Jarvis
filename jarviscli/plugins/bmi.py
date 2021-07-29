@@ -30,8 +30,7 @@ class Bmi:
 
     def get_system(self, jarvis):
         """
-        Asks for the user to choose which system he wants to use
-        1 for metric and 2 for imperial
+        Asks user to choose which system they want to use
         """
         syst = {1: 'metric', 2: 'imperial'}
         jarvis.say("Metric system: Type your height in centimeter, weight in kg")
@@ -66,7 +65,7 @@ class Bmi:
     def print_body_state(self, jarvis, bmi):
         """
         According the bmi number, print_body_state finds out the state of the body
-        and prints it to the user using colorama library for some coloring
+        and prints it to the user
         """
         print("BMI:", str(bmi))
         if bmi < 16:
@@ -87,8 +86,7 @@ class Bmi:
 
     def ask_measurements(self, jarvis, s):
         """
-        Asks user to imput his measurements according the system he is using.
-        If the user doesn't input an Integer, jarvis will ask him to insert value again.
+        Asks user to input their measurements according to their units.
         """
         if s == "m":
             jarvis.say("Please insert your height in centimeter: ")
