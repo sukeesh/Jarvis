@@ -62,7 +62,7 @@ def directions(self, data):
 @plugin("near")
 def do_near(self, data):
     """
-    Jarvis can find what is near you!
+    finds places near you
     -- Examples:
         restaurants near me
         museums near the eiffel tower
@@ -80,7 +80,7 @@ def do_pinpoint(self, s):
 @require(network=True)
 @plugin("umbrella")
 def do_umbrella(self, s):
-    """If you're leaving your place, Jarvis will inform you if you might need an umbrella or not."""
+    """will inform you if you might need an umbrella or not."""
     self = self._jarvis
 
     s = 'umbrella'

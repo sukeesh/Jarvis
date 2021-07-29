@@ -9,7 +9,7 @@ IMAGE_FORMATS = ['.jpg', '.png', '.jpeg', '.svg']
 
 
 def valid_path(path):
-    '''Checks if a given path leads to a valid directory
+    """Checks if a given path leads to a valid directory
 
     Returns true if the path leads to valid dir, false otherwise
 
@@ -18,12 +18,12 @@ def valid_path(path):
 
     path: a path (str)
         a string variable that represents a path
-    '''
+    """
     return True if os.path.isdir(path) else False
 
 
 def dir_exist(path):
-    '''Checks if a directory path exists
+    """Checks if a directory path exists
 
     Returns true if the dir path exists, false otherwise
 
@@ -32,12 +32,12 @@ def dir_exist(path):
 
     path: a path (str)
         a string that represents a path
-    '''
+    """
     return True if os.path.exists(path) else False
 
 
 def create_dir(path):
-    '''Creates a new directory
+    """Creates a new directory
 
     Returns nothing. This function simply creates a new dir
 
@@ -46,12 +46,12 @@ def create_dir(path):
 
     path: a path (str)
         a string that represents the path of the dir that will be created
-    '''
+    """
     os.makedirs(path)
 
 
 def list_contents(input_path):
-    '''Lists all the image files of a given path dirextory
+    """Lists all the image files of a given path dirextory
 
     Returns a list that contains only the image files of given path directory
 
@@ -60,7 +60,7 @@ def list_contents(input_path):
 
     input_path: a path (str)
         a string that represents a path that leads to a valid dir
-    '''
+    """
     filepath = list()
     filename = os.listdir(input_path)
 
@@ -72,7 +72,7 @@ def list_contents(input_path):
 
 
 def remove_backslash(path):
-    '''Removes all the backslashes from a path and replace them with spaces
+    """Removes all the backslashes from a path and replace them with spaces
 
     Returns a new path without backslashes
 
@@ -81,14 +81,14 @@ def remove_backslash(path):
 
     path: a path (str)
         a string that represents a path that leads to a valid dir
-    '''
+    """
     if '\\ ' in path:
         path = path.replace('\\ ', ' ')
     return path
 
 
 def get_extension(path):
-    '''Checks if an extension of a file path is an image using IMAGE_FORMATS list
+    """Checks if an extension of a file path is an image using IMAGE_FORMATS list
 
     Returns true if the extension of the file path represents
     an image, false otherwise
@@ -98,7 +98,7 @@ def get_extension(path):
 
     path: a path (str)
         a string that leads to a file path
-    '''
+    """
     file_extension = os.path.splitext(path)[1]
 
     if file_extension in IMAGE_FORMATS:
@@ -108,7 +108,7 @@ def get_extension(path):
 
 
 def rename_img(path, number):
-    '''Renames a file path of an image
+    """Renames a file path of an image
 
     Returns a new name of the file path for the resized images
 
@@ -119,13 +119,13 @@ def rename_img(path, number):
         a string that leads to an existing file path
     number: a number (int)
         a number that is used in the concatination for the image rename
-    '''
+    """
     output_path = path + '/' + str(number) + '.jpg'
     return output_path
 
 
 def output_path_concat(path, im_path):
-    '''Creates a file path of an image
+    """Creates a file path of an image
 
     Returns an output file path for the resized images
 
@@ -135,14 +135,16 @@ def output_path_concat(path, im_path):
         a string that lead to an existing file path
     im_path: an image path (str)
         a string that leads to an existing image file path
-    '''
+    """
     output_path = path + '/' + \
         os.path.splitext(os.path.basename(im_path))[0] + '.jpg'
     return output_path
 
 
 def bulk_resizer(input_path, output_path, desired_size=32,
-                 color=[0, 0, 0], rename=True):
+                 color=None, rename=True):
+    if color is None:
+        color = [0, 0, 0]
     filepath = list_contents(input_path)
     '''Resizes the images into a given size
 
@@ -250,4 +252,4 @@ def spin(jarvis, s):
         bulk_resizer(path1, path2, size, [0, 0, 0], True)
     else:
         bulk_resizer(path1, path2, size, [0, 0, 0], False)
-    jarvis.say("Resizing Compleated!! Thank you for using jarvis", Fore.GREEN)
+    jarvis.say("Resizing Completed!! Thank you for using jarvis", Fore.GREEN)

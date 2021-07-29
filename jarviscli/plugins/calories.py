@@ -5,7 +5,7 @@ from plugin import plugin
 @plugin("calories")
 class calories:
     """
-    A Jarvis plugin to calculate and print the recommended daily calorie
+    calculates recommended daily calorie
     intake,calories for weight add and loss.
     The calculating method is based on gender, age, height and weight.
     since it uses the Miffin-St Jeor Equation as it is considered the
@@ -31,7 +31,6 @@ class calories:
         """
         jarvis.say("Hello there! To calculate your daily calorie intake "
                    "I need to get to know you a bit more...")
-        # Reads the input gender and calls the validation method.
         gender = jarvis.input("What's your gender? (M/F) ")
         while not self.validate_gender(gender):
             print(Fore.YELLOW + "Sorry, invalid input was given! Please"
@@ -42,12 +41,11 @@ class calories:
         while not self.validate_age(age):
             age = jarvis.input()
         age = int(age)
-        # Reads the input height and calls the validation method.
         height = jarvis.input("What is your height? (cm) ")
         while not self.validate_height(height):
             height = jarvis.input()
         height = int(height)
-        # Reads the input weight and calls the validation method.
+
         weight = jarvis.input("What is your weight? (kg) ")
         while not self.validate_weight(weight):
             weight = jarvis.input()
@@ -67,7 +65,7 @@ class calories:
         while not self.validate_workout_level(workout_level):
             workout_level = jarvis.input()
         workout_level = int(workout_level)
-        # Calls the calories method to calculate the daily intake
+
         brm_info = self.calories(gender, age, height, weight, workout_level)
         jarvis.say("\nYour personal calorie data!", Fore.CYAN)
         jarvis.say("Daily calorie intake:    " + Fore.RESET +
@@ -142,12 +140,10 @@ class calories:
         and the intake to gain more weight.
         """
         if gender.lower == "m":
-            # A constant value based on gender
             gender_no = 5
         else:
             # A constant value based on gender
             gender_no = -161
-        # The calculation of the intake that preserves weight
         brm = float(10 * weight + 6.25 * height - 5
                     * age + gender_no) * self.exercise_level(workout_level)
         # The calculation of the intake to lose weight

@@ -45,7 +45,7 @@ def create_plugin_MAC(jarvis, s):
         if new_name == 'exit':
             exit = True
         filename = format_filename(new_name)
-    if(not exit):
+    if not exit:
         """The templated is generated through the create_template funcion
         and is exceuted through the os.system method.
         """
@@ -93,7 +93,7 @@ def create_plugin_LINUX(jarvis, s):
         if new_name == 'exit':
             exit = True
         filename = format_filename(new_name)
-    if(not exit):
+    if not exit:
         """The plugin is created through the Terminal command "cat"
         and excecuted with the os.System method.
         """
