@@ -5,8 +5,7 @@ import json
 import requests
 from colorama import Fore
 
-# this sets the path to the modules directory not the directory it was
-# call from
+# this sets the path to the modules directory not the directory it was called from
 module_path = os.path.dirname(__file__)
 module_path = module_path + '/../data/'
 
@@ -75,9 +74,7 @@ def getLocation(s):
     try:
         lat = j['results'][0]['geometry']['location']['lat']    # Latitude
         lng = j['results'][0]['geometry']['location']['lng']    # Longitude
-        # Returns both latitude and longitude as a tuple
         return lat, lng
     except IndexError:
-        # Error handled after try except
         pass
     raise Exception(r.text)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 import requests
-from . import mapps
+from . import maps
 from packages import weather_pinpoint as pinpoint
 from packages.memory.memory import Memory
 from colorama import Fore
@@ -18,7 +18,7 @@ def main(self, s):
         '').strip()
 
     # Checks country
-    country = mapps.get_location()['country_name']
+    country = maps.get_location()['country_name']
 
     # If country is US, shows weather in Fahrenheit
     if country == 'United States':

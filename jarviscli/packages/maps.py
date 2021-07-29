@@ -56,7 +56,6 @@ def weather(city=None):
     r = requests.get(send_url)
     j = json.loads(r.text)
 
-    # check if the city entered is not found
     if 'message' in j and j['message'] == 'city not found':
         print(Fore.BLUE + "City Not Found" + Fore.RESET)
         return False

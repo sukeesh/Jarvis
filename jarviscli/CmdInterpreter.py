@@ -66,9 +66,9 @@ class JarvisAPI(object):
         Guaranteed only returns number - ask user till correct number entered.
 
         :param prompt: Printed to console
-        :param color: Color of prompot
+        :param color: Color of prompt
         :param rtype: type of return value; e.g. float (default) or int
-        :param rmin: Minum of values returned
+        :param rmin: Minimum of values returned
         :param rmax: Maximum of values returned
         """
         while True:

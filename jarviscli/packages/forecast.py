@@ -5,7 +5,7 @@ import requests
 from colorama import Fore
 
 from utilities.dateTime import WeekDay
-from . import mapps
+from . import maps
 
 
 def main(jarvis, s):
@@ -15,7 +15,7 @@ def main(jarvis, s):
     location = ' '.join(filter(lambda word: word.lower()
                                not in cmd_key_words, cmd_words)).strip()
 
-    current_location = mapps.get_location()
+    current_location = maps.get_location()
 
     # if no location is given, use the current location
     if not location:

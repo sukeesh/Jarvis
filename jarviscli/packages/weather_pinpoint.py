@@ -1,13 +1,13 @@
 from colorama import Fore
 from utilities.GeneralUtilities import print_say
-from . import mapps
+from . import maps
 from . import umbrella
 
 
 def main(memory, self, s):
     location = memory.get_data('city')  # Will return None if no value
     if location is None:
-        city = mapps.get_location()['city']
+        city = maps.get_location()['city']
         print_say("It appears you are in {CITY} Is this correct? (y/n)"
                   .format(CITY=city), self, Fore.RED)
         i = input()
@@ -19,13 +19,13 @@ def main(memory, self, s):
         if s == 'umbrella':
             umbrella.main(str(city))
         else:
-            city_found = mapps.weather(str(city))
+            city_found = maps.weather(str(city))
         if city_found:
             memory.update_data('city', city)
             memory.save()
     else:
         loc = str(location)
-        city = mapps.get_location()['city']
+        city = maps.get_location()['city']
         if city != loc:
             print_say(
                 "It appears you are in {CITY}. But you set your location to {LOC}" .format(
@@ -45,7 +45,7 @@ def main(memory, self, s):
                     if s == 'umbrella':
                         umbrella.main(city)
                     else:
-                        mapps.weather(city)
+                        maps.weather(city)
                 except BaseException:
                     print_say("I couldn't locate you", self, Fore.RED)
             else:
@@ -53,7 +53,7 @@ def main(memory, self, s):
                     if s == 'umbrella':
                         umbrella.main(loc)
                     else:
-                        mapps.weather(loc)
+                        maps.weather(loc)
                 except BaseException:
                     print_say("I couldn't locate you", self, Fore.RED)
         else:
@@ -61,6 +61,6 @@ def main(memory, self, s):
                 if s == 'umbrella':
                     umbrella.main(loc)
                 else:
-                    mapps.weather(loc)
+                    maps.weather(loc)
             except BaseException:
                 print_say("I couldn't locate you", self, Fore.RED)

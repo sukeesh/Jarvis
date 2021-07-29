@@ -1,4 +1,4 @@
-from . import mapps
+from . import maps
 
 
 def main(data):
@@ -25,4 +25,4 @@ def main(data):
     else:
         to_city = " ".join(word_list[to_index + 1:])
         from_city = 0
-    mapps.directions(to_city, from_city)
+    maps.directions(to_city, from_city)

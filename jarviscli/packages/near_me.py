@@ -1,5 +1,5 @@
 import CmdInterpreter
-from . import mapps
+from . import maps
 
 
 def main(data):
@@ -27,4 +27,4 @@ def main(data):
     else:
         word_list = data.split()
         city = " ".join(word_list[word_list.index("|") + 1:])
-    mapps.search_near(things, city)
+    maps.search_near(things, city)
