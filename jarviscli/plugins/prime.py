@@ -21,10 +21,10 @@ def prime(jarvis, s):
             jarvis.say("That's not a natural number")
         else:
             if n % 2 == 0:
-                jarvis.say("That's not a prime number")
+                jarvis.say("That's not a prime number, it can be divided by 2")
                 return
             for i in range(3, int(sqrt(n)) + 1, 2):
                 if n % i == 0:
-                    jarvis.say("That's not a prime number")
+                    jarvis.say("That's not a prime number, it can be divided by " + str(i))
                     return
             jarvis.say("Congrats ! It's a prime number !")

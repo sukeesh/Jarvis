@@ -1,28 +1,19 @@
 from nltk.tokenize import word_tokenize as wt, sent_tokenize as st
 from nltk.corpus import wordnet
-from nltk.stem import WordNetLemmatizer
 from collections import Counter
-import nltk
 import numpy as np
-import matplotlib.pyplot as plt
 from nltk.corpus import stopwords
 from nltk import FreqDist
-import os
 import requests
-import json
 import spacy
 import random
 import requests
 from google_trans_new import google_translator
 from difflib import SequenceMatcher
+from string import punctuation
+from unicodedata import category
 
 from plugin import plugin
-
-FILE_PATH = os.path.abspath(os.path.dirname(__file__))
-
-nltk.download('punkt')
-nltk.download('stopwords')
-nltk.download('wordnet')
 
 
 def get_text_from_news(query, apiKey):
@@ -74,15 +65,6 @@ def word_analyzer(corpus, number, filename, title, app_id, app_key, lang, loc=''
         Forbidden_List = {'often': False, 'sometimes': False, 'usually': False, 'always': False,
                           'oftentimes': False, 'occasionally': False, 'regularly': False, 'frequently': False,
                           'first': False, 'second': False, 'third': False}
-
-        with open(os.path.join(FILE_PATH, '../data/4300fullstopwords.txt'), mode='r') as f:
-            for line in f:
-                w = line.split()
-                w = w[0]
-                Forbidden_List[w.lower()] = False
-        from nltk.corpus import stopwords
-        from string import punctuation
-        from unicodedata import category
         for w in stopwords.words('english') + list(punctuation):
             if w not in Forbidden_List:
                 Forbidden_List[w] = False
@@ -143,7 +125,6 @@ def word_analyzer(corpus, number, filename, title, app_id, app_key, lang, loc=''
         return question, OrgWord
 
     def syn_ant(word):
-        from nltk.corpus import wordnet
         synonyms = []
         antonyms = []
         for syn in wordnet.synsets(word):
@@ -324,60 +305,60 @@ def word_analyzer(corpus, number, filename, title, app_id, app_key, lang, loc=''
     if len(testyourself) == 0:
         return
     testCheck = jarvis.input("Do you wish to test your learned vocabulary? (y/n)")
-    while True:
-        try:
-            testLimit = int(jarvis.input("Enter a limit of exercices. "))
-            break
-        except ValueError:
-            jarvis.say("Please enter a valid limit.")
-    if testLimit >= len(testyourself):
-        testLimit = len(testyourself)
-
     if testCheck.strip().lower() == 'y':
-        userAsnwer = []
-        random.shuffle(testyourself)
-        if saving:
-            f.write('\t\t\t\t\t\t\t\t\t\tTest Yourself\n')
-            f.write('\n')
-        jarvis.say('\t\t\t\t\t\t\t\t\t\tTest Yourself\n')
-        jarvis.say('\n')
-        ids = 0
-        for i in testyourself:
-            ids = ids + 1
-            if ids > testLimit:
+        while True:
+            try:
+                testLimit = int(jarvis.input("Enter a limit of exercices. "))
                 break
-            if saving:
-                f.write(str(ids) + '. ' + i[0] + ' (Hint: ' + i[1] + ')\n')
-            jarvis.say(str(ids) + '. ' + i[0] + ' (Hint: ' + i[1] + ')\n')
-            userAsnwer.append(input("Your answer: "))
-        if saving:
-            f.write('\n')
-            f.write('\t\t\t\t\t\t\t\t\t\tAnswer Keys\n')
-            f.write('\n')
-        jarvis.say('\n')
-        jarvis.say('\t\t\t\t\t\t\t\t\t\tAnswer Keys\n')
-        jarvis.say('\n')
+            except ValueError:
+                jarvis.say("Please enter a valid limit.")
+        if testLimit >= len(testyourself):
+            testLimit = len(testyourself)
 
-        ids = 0
-        correctAnswer = 0
-        for i in testyourself:
-            ids = ids + 1
-            if ids > testLimit:
-                break
-            flag = False
-            s = SequenceMatcher(None, userAsnwer[ids - 1].strip().lower(), i[2].strip().lower())
-            if s.ratio() > .8:
-                correctAnswer += 1
-                flag = True
+            userAsnwer = []
+            random.shuffle(testyourself)
             if saving:
-                f.write(str(ids) + '. Your answer: ' + userAsnwer[ids - 1] + '| Correct Answer:' + i[2] + '| ' + str(
+                f.write('\t\t\t\t\t\t\t\t\t\tTest Yourself\n')
+                f.write('\n')
+            jarvis.say('\t\t\t\t\t\t\t\t\t\tTest Yourself\n')
+            jarvis.say('\n')
+            ids = 0
+            for i in testyourself:
+                ids = ids + 1
+                if ids > testLimit:
+                    break
+                if saving:
+                    f.write(str(ids) + '. ' + i[0] + ' (Hint: ' + i[1] + ')\n')
+                jarvis.say(str(ids) + '. ' + i[0] + ' (Hint: ' + i[1] + ')\n')
+                userAsnwer.append(input("Your answer: "))
+            if saving:
+                f.write('\n')
+                f.write('\t\t\t\t\t\t\t\t\t\tAnswer Keys\n')
+                f.write('\n')
+            jarvis.say('\n')
+            jarvis.say('\t\t\t\t\t\t\t\t\t\tAnswer Keys\n')
+            jarvis.say('\n')
+
+            ids = 0
+            correctAnswer = 0
+            for i in testyourself:
+                ids = ids + 1
+                if ids > testLimit:
+                    break
+                flag = False
+                s = SequenceMatcher(None, userAsnwer[ids - 1].strip().lower(), i[2].strip().lower())
+                if s.ratio() > .8:
+                    correctAnswer += 1
+                    flag = True
+                if saving:
+                    f.write(str(ids) + '. Your answer: ' + userAsnwer[ids - 1] + '| Correct Answer:' + i[2] + '| ' + str(
+                        flag) + '\t')
+                jarvis.say(str(ids) + '. Your answer: ' + userAsnwer[ids - 1] + '| Correct Answer:' + i[2] + '| ' + str(
                     flag) + '\t')
-            jarvis.say(str(ids) + '. Your answer: ' + userAsnwer[ids - 1] + '| Correct Answer:' + i[2] + '| ' + str(
-                flag) + '\t')
-        score = correctAnswer / len(testyourself)
-        if saving:
-            f.write('Your score is ' + str(np.round(score, 2)) + '\n')
-        jarvis.say('Your score is ' + str(np.round(score, 2)) + '\n')
+            score = correctAnswer / len(testyourself)
+            if saving:
+                f.write('Your score is ' + str(np.round(score, 2)) + '\n')
+            jarvis.say('Your score is ' + str(np.round(score, 2)) + '\n')
     if saving:
         jarvis.say('Writing file terminated. Refer to ' + loc + filename + '.txt')
 
@@ -391,10 +372,10 @@ def call(jarvis, s):
         'This is an application which extracts the unique words related to a query from internet and news, then generates a .txt output file that contains the definition, etymology, example, and question about the extracted words.')
     jarvis.say(
         'Note that you need to have an oxford api-key in order to continue the process. If you do not possess the key, please refer to https://developer.oxforddictionaries.com/ to obtain your api-key.')
-    apiKey = '0611eb618d244d15af619451f9d2007b'
     while (True):
-        app_id = str(jarvis.input('Enter your oxford Api-ID: '))
-        app_key = str(jarvis.input('Enter your oxford Api-Key: '))
+        api_id = str(jarvis.input('Enter your oxford Api-ID: '))
+        api_key = str(jarvis.input('Enter your oxford Api-Key: '))
+        api_key_news = str(jarvis.input('Enter your news Api-Key: '))
         query = str(jarvis.input('Enter your query: '))
         numofwords = int(jarvis.input('Enter the maximum number of words that should be exctracted (maximum=1000)'))
         if numofwords > 1000:
@@ -407,9 +388,9 @@ def call(jarvis, s):
                 'Enter the folder location in which the output ".txt file" will be stored (e.g. E:/Documents/Words/)'))
             saving = True
         jarvis.say('Please wait to complete the process.')
-        corpus = get_text_from_news(query.lower(), apiKey)
+        corpus = get_text_from_news(query.lower(), api_key_news)
         try:
-            word_analyzer(corpus, numofwords, query.capitalize(), 'News Word Analysis for ' + query, app_id, app_key,
+            word_analyzer(corpus, numofwords, query.capitalize(), 'News Word Analysis for ' + query, api_id, api_key,
                           'fr', loc, saving, jarvis)
         except:
             jarvis.say(

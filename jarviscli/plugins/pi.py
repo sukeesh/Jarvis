@@ -11,10 +11,10 @@ NUM_NEXT = 100
 @plugin("pi")
 def next_pi(jarvis, s):
     """
-    Give the number of digit for pi
+    Give the number of digits for pi
     """
     if s == "":
-        s = jarvis.input("Number of digit after dot? ")
+        s = jarvis.input("Number of digits after decimal point? ")
     try:
         n = int(s)
     except ValueError:

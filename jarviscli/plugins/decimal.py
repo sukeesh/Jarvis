@@ -83,8 +83,16 @@ def convert_base(jarvis, s):
         else:
             lst = s.split(" ")
             firstbase, number, secondbase = lst[0], lst[1], lst[2]
-    firstbase = int(firstbase)
-    secondbase = int(secondbase)
+    
+    try:
+        firstbase = int(firstbase)
+        secondbase = int(secondbase)
+    except ValueError:
+        jarvis.say("Your input is invalid, at least one base is not a number")
+        return
+    if firstbase < 1 or firstbase > 16 or secondbase < 1 or secondbase > 16:
+        jarvis.say("Can only support bases from 1 to 16")
+        return
     deciNumber = toDeci(number, firstbase)
     if deciNumber == -1:
         jarvis.say("Your input is invalid ")
