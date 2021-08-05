@@ -4,7 +4,7 @@ from plugin import plugin
 
 
 @plugin("caesar cipher")
-def caesar_cipher_converter(jarvis):
+def caesar_cipher_converter(jarvis, s):
     option = get_option(jarvis)
     if option == 1:
         plain_to_cipher(jarvis)
