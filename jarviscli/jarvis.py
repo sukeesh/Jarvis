@@ -11,8 +11,8 @@ import frontend.gui.jarvis_gui
 import frontend.server.server
 import frontend.voice
 import frontend.voice_control
-from packages.memory.memory import Memory
 from packages.memory.key_vault import KeyVault
+from packages.memory.memory import Memory
 from plugin import Plugin
 from utilities import schedule
 from utilities.GeneralUtilities import warning
@@ -28,7 +28,7 @@ class Jarvis:
     AVAILABLE_FRONTENDS = {'cli': frontend.cmd_interpreter.CmdInterpreter,
                            'gui': frontend.gui.jarvis_gui.JarvisGui,
                            'server': frontend.server.server.JarvisServer,
-                           'voice': frontend.voice.JarvisVoice,
+                           'tts': frontend.voice.JarvisVoice,
                            'voice_control': frontend.voice_control.VoiceControl
                            }
 
@@ -307,16 +307,12 @@ class Jarvis:
 
         if command.startswith('help'):
             self.do_help(plugin)
-            return True
-
-        if plugin is None:
-            return None
-
-        s = self._build_s_string(command, plugin)
-        ret = plugin.run(self, s)
-
-        if ret is False:
+        elif plugin is None:
             self.say("I could not identify your command...", Fore.RED)
+        else:
+            s = self._build_s_string(command, plugin)
+            plugin.run(self, s)
+
         self._prompt()
 
     def internal_execute(self, command: str, s: str, **kwargs):

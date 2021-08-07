@@ -29,17 +29,17 @@ def start(args, jarvis):
     if args.server_port is not None:
         jarvis.update_data('SERVER_PORT', args.server_port)
 
-    if args.enable_cli:
-        jarvis.activate_frontend('cli')
-    if args.enable_server:
-        jarvis.activate_frontend('server')
-    if args.enable_gui:
-        jarvis.activate_frontend('gui')
-    voice = jarvis.get_data('voice_status')
-    if args.enable_voice or voice and not args.disable_voice:
-        jarvis.activate_frontend('voice')
-    if args.enable_voice_control:
-        jarvis.activate_frontend('voice_control')
+    def startup(args_enable, args_disable, frontend_id):
+        if args_disable:
+            pass
+        elif args_enable or jarvis.get_data('status_' + frontend_id) is True:
+            jarvis.activate_frontend(frontend_id)
+
+    startup(args.enable_server, args.disable_server, 'server')
+    startup(args.enable_gui, args.disable_gui, 'gui')
+    startup(args.enable_tts, args.disable_tts, 'tts')
+    startup(args.enable_voice_control, args.disable_voice_control, 'voice_control')
+    startup(True, args.disable_cli, 'cli')
 
     if len(args.CMD) == 0:
         jarvis.run()
