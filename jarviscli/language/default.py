@@ -3,7 +3,7 @@ import re
 from colorama import Fore
 
 
-class DefaultLanguageParser():
+class DefaultLanguageParser:
     def __init__(self):
         self.plugins = {}
         self.regex_dot = re.compile('\\.(?!\\w)')

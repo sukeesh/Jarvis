@@ -7,6 +7,7 @@ if __name__ == '__main__':
     main.assert_python_version()
 
     parser = argparse.ArgumentParser('Generate metadata json file')
+    parser.add_argument('--offline', dest='offline', action='store_true')
     parser.add_argument('--enable-server', dest='enable_server', action='store_true')
     parser.add_argument('--disable-server', dest='disable_server', action='store_true')
     parser.add_argument('--enable-gui', dest='enable_gui', action='store_true')
@@ -23,4 +24,5 @@ if __name__ == '__main__':
     sys.argv = sys.argv[0]
 
     jarvis = main.build_jarvis()
+
     main.start(args, jarvis)

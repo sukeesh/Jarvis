@@ -13,6 +13,7 @@ import frontend.voice
 import frontend.voice_control
 from packages.memory.key_vault import KeyVault
 from packages.memory.memory import Memory
+from packages.online_status import OnlineStatus
 from plugin import Plugin
 from utilities import schedule
 from utilities.GeneralUtilities import warning
@@ -23,7 +24,7 @@ HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
 
 
 class Jarvis:
-    _CONNECTION_ERROR_MSG = "It seems like I'm not connected to the Internet. Check your connection and try again!"
+    _CONNECTION_ERROR_MSG = "It seems like I'm not connected to the Internet. Check your connection and type 'connect'!"
 
     AVAILABLE_FRONTENDS = {'cli': frontend.cmd_interpreter.CmdInterpreter,
                            'gui': frontend.gui.jarvis_gui.JarvisGui,
@@ -32,12 +33,10 @@ class Jarvis:
                            'voice_control': frontend.voice_control.VoiceControl
                            }
 
-    def __init__(self, language_parser, plugin_manager):
-        self.language_parser = language_parser
+    def __init__(self, language_parser_class, plugin_manager):
         self.plugin_manager = plugin_manager
 
         self.plugins = self.plugin_manager.get_plugins()
-        self.language_parser.train(self.plugins.values())
 
         self.cache = ''
         self.stdout = self
@@ -51,8 +50,38 @@ class Jarvis:
         self.active_frontends = {}
         self.running = Semaphore()
 
-        for plugin in self.plugins.values():
+        self.online_status = OnlineStatus()
+        self.offline_only = False
+        self.plugins_offline = {}
+        self.plugins_online = {}
+
+        for name, plugin in self.plugins.items():
             plugin.init(self)
+
+            if plugin._require_network():
+                self.plugins_online[name] = plugin
+            else:
+                self.plugins_offline[name] = plugin
+
+        self.language_parser_online = language_parser_class()
+        self.language_parser_online.train(self.plugins.values())
+        self.language_parser_offline = language_parser_class()
+        self.language_parser_offline.train(self.plugins_offline.values())
+
+    def set_offline_mode(self, state=True):
+        self.offline_only = True
+
+    def get_plugins(self):
+        if not self.offline_only and self.online_status.get_online_status():
+            return self.plugins
+        else:
+            return self.plugins_offline
+
+    def get_language_parser(self):
+        if not self.offline_only and self.online_status.get_online_status():
+            return self.language_parser_online
+        else:
+            return self.language_parser_offline
 
     def activate_frontend(self, frontend):
         if frontend not in self.active_frontends:
@@ -112,9 +141,6 @@ class Jarvis:
         import sys
         sys.exit(0)
 
-    def get_plugins(self):
-        return self.plugins
-
     def say(self, text, color="", speak=True):
         """
         This method give the jarvis the ability to print a text
@@ -168,6 +194,8 @@ class Jarvis:
 
     def connection_error(self):
         """Print generic connection error"""
+
+        self.online_status.refresh()
 
         if self.is_spinner_running():
             self.spinner_stop('')
@@ -303,7 +331,7 @@ class Jarvis:
         # save commands' history
         HISTORY_FILENAME.write(command + '\n')
 
-        plugin = self.language_parser.identify_action(command)
+        plugin = self.get_language_parser().identify_action(command)
 
         if command.startswith('help'):
             self.do_help(plugin)
@@ -319,7 +347,7 @@ class Jarvis:
         # save commands' history
         HISTORY_FILENAME.write(command + '\n')
 
-        plugin = self.language_parser.identify_action(command)
+        plugin = self.get_language_parser().identify_action(command)
 
         if command.startswith('help'):
             self.do_help(plugin)
@@ -384,7 +412,7 @@ class Jarvis:
             formatString = "Format: command ([aliases for command])"
             self.say(headerString)
             self.say(formatString, Fore.BLUE)
-            pluginDict = self.plugin_manager.get_plugins()
+            pluginDict = self.get_plugins()
             uniquePlugins: Dict[str, Plugin] = {}
             for key in pluginDict.keys():
                 plugin = pluginDict[key]

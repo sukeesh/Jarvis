@@ -14,7 +14,7 @@ def assert_python_version():
 def build_jarvis():
     from language import snips
 
-    language_parser = snips.LanguageParser()
+    language_parser = snips.LanguageParser
     if 'ANDROID_ARGUMENT' in os.environ:
         import frontend.gui.android_plugins
         plugin_manager = frontend.gui.android_plugins.build_plugin_manager()
@@ -28,6 +28,8 @@ def start(args, jarvis):
         jarvis.update_data('SERVER_HOSTNAME', args.server_hostname)
     if args.server_port is not None:
         jarvis.update_data('SERVER_PORT', args.server_port)
+    if args.offline:
+        jarvis.set_offline_mode()
 
     def startup(args_enable, args_disable, frontend_id):
         if args_disable:

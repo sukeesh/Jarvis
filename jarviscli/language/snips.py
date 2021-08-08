@@ -1,18 +1,14 @@
 import re
 
-import pluginmanager
-
-from plugin import PluginStorage
 from snips_nlu import SnipsNLUEngine
 
 
-class LanguageParser(pluginmanager.IPlugin, PluginStorage):
+class LanguageParser:
     """
       interface to parse input text
     """
 
     def __init__(self):
-        super(pluginmanager.IPlugin, self).__init__()
         self._plugins = {}
         self._pre_train_json = dict()
         self._pre_train_json['intents'] = {}

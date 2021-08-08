@@ -13,20 +13,6 @@ else:
         'voice_control_requirements (install portaudio + re-run setup.sh)']
 
 
-def has_internet():
-    return False
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    try:
-        socket.setdefaulttimeout(3)
-        sock.connect(('8.8.8.8', 8000))
-
-        return True
-
-    except socket.timeout:
-        return False
-
-
 class VoiceControl:
     def __init__(self, jarvis):
         self.jarvis = jarvis
@@ -35,7 +21,7 @@ class VoiceControl:
     def start(self):
         r = sr.Recognizer()
 
-        connected = has_internet()
+        connected = jarvis.has_internet()
 
         while self.listen is True:
             while True:

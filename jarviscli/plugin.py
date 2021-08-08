@@ -119,6 +119,10 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
     """
     """
     _backend = None
+    _require = []
+    _complete = []
+    _feature = []
+    _name = []
 
     def __init__(self):
         super(pluginmanager.IPlugin, self).__init__()
@@ -156,6 +160,12 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
     def require(self):
         """Set with @require"""
         return self._require
+
+    def _require_network(self):
+        for key, value in self.require():
+            if key == 'network':
+                return value
+        return False
 
     def alias(self):
         """Set with @alias"""
