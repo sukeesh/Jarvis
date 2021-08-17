@@ -361,8 +361,9 @@ class CmdInterpreter(Cmd):
         if (not command):
             self._init_plugin_info()
         self._activate_plugins()
-
-        self._api.say(self.first_reaction_text)
+        
+        if self.first_reaction:
+            self._api.say(self.first_reaction_text)
 
     def _init_plugin_info(self):
         plugin_status_formatter = {
