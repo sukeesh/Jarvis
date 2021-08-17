@@ -7,7 +7,7 @@ from getpass import getpass
 import colorama
 from colorama import Fore
 
-from utilities.animations import SpinnerThread
+from frontend.cli.spinner import SpinnerThread
 from utilities.cli import cancel, input
 
 PROMPT_CHAR = '~>'

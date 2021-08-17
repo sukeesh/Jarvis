@@ -6,18 +6,18 @@ from typing import Dict, Optional
 
 from colorama import Fore
 
-import frontend.cmd_interpreter
+import frontend.cli.cmd_interpreter
 import frontend.gui.jarvis_gui
 import frontend.server.server
 import frontend.voice
 import frontend.voice_control
 from packages.memory.key_vault import KeyVault
 from packages.memory.memory import Memory
+from packages.notification import notify
 from packages.online_status import OnlineStatus
+from packages.schedule import Scheduler
 from plugin import Plugin
-from utilities import schedule
 from utilities.GeneralUtilities import warning
-from utilities.notification import notify
 
 # register hist path via tempfile
 HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
@@ -26,7 +26,7 @@ HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
 class Jarvis:
     _CONNECTION_ERROR_MSG = "It seems like I'm not connected to the Internet. Check your connection and type 'connect'!"
 
-    AVAILABLE_FRONTENDS = {'cli': frontend.cmd_interpreter.CmdInterpreter,
+    AVAILABLE_FRONTENDS = {'cli': frontend.cli.cmd_interpreter.CmdInterpreter,
                            'gui': frontend.gui.jarvis_gui.JarvisGui,
                            'server': frontend.server.server.JarvisServer,
                            'tts': frontend.voice.JarvisVoice,
@@ -45,7 +45,7 @@ class Jarvis:
 
         self.memory = Memory()
         self.key_vault = KeyVault()
-        self.scheduler = schedule.Scheduler()
+        self.scheduler = Scheduler()
 
         self.active_frontends = {}
         self.running = Semaphore()

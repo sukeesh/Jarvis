@@ -22,13 +22,14 @@ class OnlineStatus:
         self.last_checked = time.time()
 
     def _has_internet(self):
+        print('Check online status')
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         try:
             socket.setdefaulttimeout(3)
-            sock.connect(('9.9.9.9', 8000))
+            sock.connect(('9.9.9.9', 53))
             return True
-        except socket.timeout:
+        except socket.timeout as e:
             return False
-        except OSError:
+        except OSError as e:
             return False

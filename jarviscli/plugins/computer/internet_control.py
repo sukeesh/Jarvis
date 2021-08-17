@@ -4,22 +4,10 @@ import os
 import socket
 
 
-def has_internet():
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    try:
-        socket.setdefaulttimeout(3)
-        sock.connect(('8.8.8.8', 8000))
-
-        return True
-
-    except socket.timeout:
-        return False
-
 
 @plugin("internet")
 def internet(jarvis, s):
-    connected = has_internet()
+    connected = jarvis.online_status.get_online_status
 
     if connected:
         if sys.platform == "win32":
