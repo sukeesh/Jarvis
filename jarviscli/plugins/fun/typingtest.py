@@ -174,8 +174,7 @@ def game_end():
 
     print(default_text_color + '\n\nWords per minute - {}'.format(wpm))
     if wpm >= 20:
-        with open(os.path.join(FILE_PATH, "../data/typing_test_data.csv"),
-                  mode='r') as f:
+        with open(jarvis.data_file("typing_test_data.csv"), mode='r') as f:
             data = list(csv.reader(f))
             for i in range(len(data)):
                 if int(data[i][0]) > int(wpm) and i != 0:
@@ -200,3 +199,6 @@ def print_screen():
 @plugin("typingtest")
 def typingtest(jarvis, s):
     game_start()
+
+
+ng_

@@ -3,18 +3,17 @@ import os
 import pathlib
 from distutils.dir_util import copy_tree
 
-import git
 from colorama import Fore
 
+import git
 # All plugins should inherite from this library
 from plugin import plugin
-
-DATA_PATH = os.path.abspath(os.path.dirname(__file__))
-DATA_PATH = DATA_PATH[:-8] + '/data/workspaces'
 
 
 @plugin("workspace")
 def generate_workspace(jarvis, s):
+    DATA_PATH = jarvis.data_file('workspaces')
+
     """Generate a template workspace in the directory specified by the user."""
     path = pathlib.Path(jarvis.input(
         "Please input the path of your new workspace directory.\n", Fore.BLUE))

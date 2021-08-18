@@ -1,3 +1,4 @@
+import os
 import tempfile
 import threading
 from cmd import Cmd
@@ -34,6 +35,7 @@ class Jarvis:
                            }
 
     def __init__(self, language_parser_class, plugin_manager):
+        self._data_dir = os.path.join(os.path.dirname(__file__), 'data')
         self.plugin_manager = plugin_manager
 
         self.plugins = self.plugin_manager.get_plugins()
@@ -310,6 +312,9 @@ class Jarvis:
 
     def is_spinner_running(self):
         return self.spinner_running
+
+    def data_file(self, *path):
+        return os.path.join(self._data_dir, *path)
 
     def plugin_info(self):
         plugin_status_formatter = {

@@ -1,24 +1,22 @@
 import os
 import random
-from colorama import Fore, Back, Style
-import webbrowser
 import time
+import webbrowser
+
+from colorama import Back, Fore, Style
+
 from plugin import plugin
 
 
-FILE_PATH = os.path.abspath(os.path.dirname(__file__))
-
-
-def read_questions():
+def read_questions(jarvis):
     Q = []
-    with open(os.path.join(FILE_PATH,
-                           "../data/personality_questions.tsv")) as f:
+    with open(jarvis.data_file('personality_questions.tsv')) as f:
         for i, line in enumerate(f):
             Q.append([i + 1] + line.strip().split('\t'))
     return Q
 
 
-@plugin("personality")
+@ plugin("personality")
 class personality_test:
     """
     Runs Personality test
@@ -28,13 +26,14 @@ class personality_test:
      International License.
     """
 
-    def __init__(self):
-        self.Q = read_questions()
+    def init(self, jarvis):
+        self.Q = read_questions(jarvis)
         self.answers = {}
-        self.instruction = Back.YELLOW + "There are a total of " +\
-            "32 pairs of descriptions. For each pair, choose on a scale of " +\
-            "1-5. Choose 1 if you are all the way to the left, and choose " +\
-            "3 if you are in the middle, etc." + Style.RESET_ALL
+        self.instruction = (Back.YELLOW + "There are a total of " +
+                            "32 pairs of descriptions. For each pair, choose on a scale of " +
+                            "1-5. Choose 1 if you are all the way to the left, and choose " +
+                            "3 if you are in the middle, etc." + Style.RESET_ALL
+                            )
 
         self.types = ['IE', 'SN', 'FT', 'JP']
         self.scoring_scheme = ((30, (15, 23, 27), (3, 7, 11, 19, 31)),

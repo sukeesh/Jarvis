@@ -6,8 +6,6 @@ from forex_python.bitcoin import BtcConverter
 from forex_python.converter import CurrencyRates
 from plugin import plugin, require
 
-FILE_PATH = os.path.abspath(os.path.dirname(__file__))
-
 
 @require(network=True)
 @plugin('currencyconv')
@@ -50,7 +48,7 @@ class Currencyconv():
         find_currency creates a dict with the inputs that forex-python accepts
         """
 
-        with open(os.path.join(FILE_PATH, "../data/currencies.csv"), mode='r') as infile:
+        with open(jarvis.get_data('currencies.csv'), mode='r') as infile:
             reader = csv.reader(infile)
             mydict = {r.upper(): row[2] for row in reader for r in row[0:3]}
         return mydict

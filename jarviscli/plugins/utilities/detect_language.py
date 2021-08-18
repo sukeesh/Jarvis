@@ -7,8 +7,6 @@ from colorama import Fore
 import fasttext
 from plugin import plugin
 
-FILE_PATH = os.path.abspath(os.path.dirname(__file__))
-
 
 @plugin("detect lang")
 def detect_language(jarvis, s):
@@ -19,7 +17,7 @@ def detect_language(jarvis, s):
     while s == "":
         s = jarvis.input("Enter text \n")
 
-    model = open_model()
+    model = open_model(jarvis)
     output = model.predict(s)
     generate_response(jarvis, output)
 
@@ -30,7 +28,7 @@ def generate_response(jarvis, output):
     """
     score = output[1][0]
     label = output[0][0]
-    code_to_lang = open_languages()
+    code_to_lang = open_languages(jarvis)
     lang_code = label.split('_')[-1]
     language = code_to_lang[lang_code]
     if score > 0.5:
@@ -41,22 +39,22 @@ def generate_response(jarvis, output):
         jarvis.say("I couldn't identify the language", Fore.BLUE)
 
 
-def open_model():
+def open_model(javis):
     """
     Opens a language detector model and disables warnings
     """
-    model_path = os.path.join(FILE_PATH, "../data/lid.176.ftz")
+    model_path = jarvis.data_file("lid.176.ftz")
     fasttext.FastText.eprint = print
     with open(os.devnull, "w") as f, contextlib.redirect_stdout(f):
         model = fasttext.load_model(model_path)
     return model
 
 
-def open_languages():
+def open_languages(jarvis):
     """
     Opens a dictionary from code to its corresponding language
     """
-    language_path = os.path.join(FILE_PATH, "../data/code_to_lang.json")
+    language_path = jarvis.data_file('code_to_lang.json')
     with open(language_path, 'r') as f:
         languages = json.load(f)
     return languages

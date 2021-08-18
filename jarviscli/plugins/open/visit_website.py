@@ -5,8 +5,6 @@ from urllib.parse import urlparse
 
 from plugin import alias, plugin, require
 
-FILE_PATH = os.path.abspath(os.path.dirname(__file__))
-
 
 @require(network=True)
 @alias("visit website")
@@ -44,8 +42,7 @@ class OpenWebsite:
             jarvis.say("Sorry, I can't open this link.")
 
     def has_on_saved_links(self):
-        websites_csv = \
-            open(os.path.join(FILE_PATH, "../data/websites.csv"), 'r')
+        websites_csv = open(jarvis.data_file('websites.csv'), 'r')
         for website in websites_csv:
             website = website.rstrip()  # remove newline
             information = website.split(',')

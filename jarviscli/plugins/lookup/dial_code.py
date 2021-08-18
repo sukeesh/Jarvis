@@ -5,8 +5,6 @@ from colorama import Fore
 
 from plugin import alias, plugin
 
-FILE_PATH = os.path.abspath(os.path.dirname(__file__))
-
 
 @alias('phone code of',
        'dialing code of')
@@ -20,9 +18,12 @@ class DialCode:
     """
 
     def __call__(self, jarvis, s):
+        with open(jarvis.data_file('dial_codes.json'), 'r'):
+            data = json.loads(codes_file.read())
+
         # Call handle_input() function wich returns the code
         # (or False if no such country)
-        code = self.handle_input(s)
+        code = self.handle_input(s, data)
 
         if code:
             jarvis.say(Fore.GREEN + 'Dial code is ' + Fore.WHITE + code)
@@ -34,29 +35,13 @@ class DialCode:
                                   + Fore.WHITE + ' (y/N): ')
 
             if choice in ['y', 'Y']:
-                # Open the file with dial codes
-                codes_file = open(os.path.join(FILE_PATH,
-                                               "../data/dial_codes.json"), 'r')
-
-                data = json.loads(codes_file.read())
-
-                all_countries = ''
                 for i in data:
                     all_countries += i["country_name"]
                     all_countries += ' * '
 
                 jarvis.say(all_countries)
 
-    def handle_input(self, country):
-
-        # Open the file with dial codes
-        codes_file = open(os.path.join(FILE_PATH,
-                                       "../data/dial_codes.json"), 'r')
-
-        # Load json with codes from file
-        data = json.loads(codes_file.read())
-        codes_file.close()
-
+    def handle_input(self, country, data):
         # Compare user's input to each "country_name" in json
         # and find necessary code
         for i in data:
@@ -67,11 +52,11 @@ class DialCode:
         return (False)
 
 
-@alias('country with phone code',
-       'countries with dial code',
-       'countries with phone code',
-       'country with dialing code',
-       'countries with dialing code')
+@ alias('country with phone code',
+        'countries with dial code',
+        'countries with phone code',
+        'country with dialing code',
+        'countries with dialing code')
 @plugin('country with dial code')
 class CountryByhDC:
     """
@@ -85,7 +70,7 @@ class CountryByhDC:
     """
 
     def __call__(self, jarvis, s):
-        countries = self.handle_input(s)
+        countries = self.handle_input(s, jarvis)
 
         if countries:
             # String from countries list
@@ -94,14 +79,9 @@ class CountryByhDC:
         else:
             jarvis.say(Fore.RED + "Can't find country with code " + Fore.WHITE + "'" + s + "'")
 
-    def handle_input(self, code):
-        # Open the file with dial codes
-        codes_file = open(os.path.join(FILE_PATH,
-                                       "../data/dial_codes.json"), 'r')
-
-        # Load json from file
-        data = json.loads(codes_file.read())
-        codes_file.close()
+    def handle_input(self, code, jarvis):
+        with open(jarvis.data_file('dial_codes.json'), 'r'):
+            data = json.loads(codes_file.read())
 
         # Compare user's input to each "country_name" in json
         # and find necessary countries

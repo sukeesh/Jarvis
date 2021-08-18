@@ -2,8 +2,6 @@ import os
 
 from plugin import plugin
 
-FILE_PATH = os.path.abspath(os.path.dirname(__file__))
-
 
 @plugin("mips")
 class MipsConverter:
@@ -41,7 +39,7 @@ class MipsConverter:
             jarvis.say(
                 "please enter a valid Assembly statement or a Machine code statement in Hex.")
 
-    def __init__(self):
+    def init(self, jarvis):
         # all lists which hold necessary info to interpret the command
         self.__com = []
         self.__form = []
@@ -58,7 +56,7 @@ class MipsConverter:
         self.__regCode = []
 
         # populating the lists with info from the files
-        commands = open(os.path.join(FILE_PATH, "../data/mips_coms.txt"), 'r')
+        commands = open(jarvis.data_file('mips_coms.txt'), 'r')
 
         for line in commands:
             line = ''.join(line.split())
@@ -94,7 +92,7 @@ class MipsConverter:
 
         commands.close()
 
-        regs = open(os.path.join(FILE_PATH, "../data/mips_regs.txt"), 'r')
+        regs = open(jarvis.data_file('mips_regs.txt'), 'r')
 
         for line in regs:
             line = ''.join(line.split())
