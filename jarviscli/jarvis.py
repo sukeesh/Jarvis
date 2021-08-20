@@ -1,6 +1,7 @@
 import os
 import tempfile
 import threading
+import traceback
 from cmd import Cmd
 from threading import Semaphore
 from typing import Dict, Optional
@@ -41,9 +42,6 @@ class Jarvis:
 
     def __init__(self, language_parser_class, plugin_manager):
         self._data_dir = os.path.join(os.path.dirname(__file__), 'data')
-        self.plugin_manager = plugin_manager
-
-        self.plugins = self.plugin_manager.get_plugins()
 
         self.cache = ''
         self.stdout = self
@@ -62,8 +60,18 @@ class Jarvis:
         self.plugins_offline = {}
         self.plugins_online = {}
 
+        self.plugin_manager = plugin_manager
+        self.plugin_manager.set_key_vault(self.key_vault)
+        self.plugins = self.plugin_manager.get_plugins()
+
         for name, plugin in self.plugins.items():
-            plugin.init(self)
+            # plugin.run = catch_all_exceptions(plugin.run)
+            try:
+                plugin.init(self)
+            except Exception as e:
+                print("Failed init plugin")
+                print(e)
+                traceback.print_exc()
 
             if plugin.require().network:
                 self.plugins_online[name] = plugin
@@ -337,7 +345,7 @@ class Jarvis:
 
         return plugin_status.format(**plugin_status_formatter)
 
-    def execute_once(self, command: str) -> Optional[bool]:
+    def eval(self, command: str) -> Optional[bool]:
         # save commands' history
         HISTORY_FILENAME.write(command + '\n')
 
@@ -349,8 +357,14 @@ class Jarvis:
             self.say("I could not identify your command...", Fore.RED)
         else:
             s = self._build_s_string(command, plugin)
-            plugin.run(self, s)
+            call_args = {}
+            for api_key in plugin.require().api_keys:
+                call_args[api_key] = self.get_user_pass(api_key)[1]
 
+            plugin.run(self, s, **call_args)
+
+    def execute_once(self, command: str) -> Optional[bool]:
+        self.eval(command)
         self._prompt()
 
     def internal_execute(self, command: str, s: str, **kwargs):
@@ -450,3 +464,26 @@ class Jarvis:
             self.cache = ''
         else:
             self.cache += line
+
+
+def catch_all_exceptions(do, pass_self=True):
+    def try_do(self, s, **args):
+        try:
+            if pass_self:
+                do(self, s, **args)
+            else:
+                do(s, **args)
+        # except ConnectionError:
+        #    # TODO GO OFFLINE
+        #    pass
+        except Exception:
+            if self.is_spinner_running():
+                self.spinner_stop("It seems some error has occured")
+            print(
+                Fore.RED
+                + "Some error occurred, please open an issue on github!")
+            print("Here is error:")
+            print('')
+            traceback.print_exc()
+            print(Fore.RESET)
+    return try_do

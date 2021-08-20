@@ -16,6 +16,36 @@ class Platform(enum.Enum):
     DESKTOP = -2
 
 
+class PluginRequirements:
+    def __init__(self):
+        self.platforms = []
+        self.natives = []
+        self.api_keys = []
+        self.network = False
+
+    def _require(self, collection, new_elements):
+        if isinstance(new_elements, list):
+            for element in new_elements:
+                self._require(collection, element)
+        else:
+            element = new_elements
+            if element not in collection:
+                collection.append(element)
+
+    def require_platform(self, platform):
+        self._require(self.platforms, platform)
+
+    def require_native(self, native):
+        self._require(self.natives, native)
+
+    def require_api_key(self, api_key):
+        self._require(self.api_keys, api_key)
+
+    def require_network(self, network_status):
+        if network_status is True:
+            self.network = True
+
+
 def plugin(name):
     """
     Convert function in Plugin Class
@@ -35,7 +65,7 @@ def plugin(name):
             run = run()
 
         # create class
-        plugin_class._require = []
+        plugin_class._require = PluginRequirements()
         plugin_class._complete = []
         plugin_class._feature = []
         plugin_class._alias = []
@@ -51,19 +81,18 @@ def plugin(name):
     return create_plugin
 
 
-def require(network=None, platform=None, native=None):
-    require = []
-    if network is not None:
-        require.append(('network', network))
-    if platform is not None:
-        require.append(('platform', platform))
-    if native is not None:
-        require.append(('native', native))
-
-    def __require(plugin):
-        plugin._require.extend(require)
+def require(network=None, platform=None, native=None, api_key=None):
+    def _require(plugin):
+        if network is not None:
+            plugin._require.require_network(network)
+        if platform is not None:
+            plugin._require.require_platform(platform)
+        if native is not None:
+            plugin._require.require_native(native)
+        if api_key is not None:
+            plugin._require.require_api_key(api_key)
         return plugin
-    return __require
+    return _require
 
 
 def feature(case_sensitive=False):
@@ -119,7 +148,7 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
     """
     """
     _backend = None
-    _require = []
+    _require = PluginRequirements()
     _complete = []
     _feature = []
     _name = []
@@ -160,12 +189,6 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
     def require(self):
         """Set with @require"""
         return self._require
-
-    def _require_network(self):
-        for key, value in self.require():
-            if key == 'network':
-                return value
-        return False
 
     def alias(self):
         """Set with @alias"""
@@ -237,11 +260,11 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
 
         return doc
 
-    def run(self, jarvis_api, s):
+    def run(self, jarvis_api, s, **args):
         """Entry point if this plugin is called"""
         # run default
         if self.is_callable_plugin():
-            self._backend[0](jarvis_api, s)
+            self._backend[0](jarvis_api, s, **args)
             return True
         else:
             jarvis_api.say("Sorry, I could not recognise your command. Did you mean:")
@@ -260,15 +283,3 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
                 jarvis_api.say("    * {} {}".format(self.get_name(), sub_command))
             raise ValueError("A plugin was not found for the plugin you tried to call. "
                              "Check the name you are calling with and try again!")
-
-    def _plugin_run_with_network_error(self, run_func, jarvis, s):
-        """
-        Calls run_func(jarvis, s); try-catch ConnectionError
-
-        This method is auto-used if require() yields ("network", True). Do not
-        use m
-        """
-        try:
-            run_func(jarvis, s)
-        except ConnectionError:
-            jarvis.get_api().connection_error()

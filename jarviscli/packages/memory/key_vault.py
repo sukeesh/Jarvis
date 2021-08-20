@@ -1,8 +1,10 @@
 import json
 import os
-from cryptography.fernet import Fernet
-from packages.memory.memory import Memory
 from getpass import getpass
+
+from cryptography.fernet import Fernet
+
+from packages.memory.memory import Memory
 
 '''
 This class allows storage of values in json format. It adds an easy
@@ -34,6 +36,14 @@ class KeyVault(Memory):
 
     def __init__(self, kv_file='key_vault.json'):
         super().__init__(kv_file)
+        self._valid_api_key_names = []
+
+    def add_valid_api_key_name(self, name):
+        if name not in self._valid_api_key_names:
+            self._valid_api_key_names.append(name)
+
+    def get_valid_api_key_names(self):
+        return sorted(self._valid_api_key_names)
 
     '''
         returns the json string

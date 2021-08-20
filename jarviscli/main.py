@@ -46,7 +46,7 @@ def start(args, jarvis):
     if len(args.CMD) == 0:
         jarvis.run()
     else:
-        jarvis.execute_once(' '.join(args.CMD))
+        jarvis.eval(' '.join(args.CMD))
 
 
 def start_cli(jarvis):

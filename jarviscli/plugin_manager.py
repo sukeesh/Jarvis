@@ -45,6 +45,9 @@ class PluginManager(object):
         self._backend.add_blacklisted_directories("jarviscli/packages/memory")
         self._backend.add_blacklisted_plugins(plugin.Platform)
 
+    def set_key_vault(self, *args):
+        self._plugin_dependency.set_key_vault(*args)
+
     def add_directory(self, path):
         """Add directory to search path for plugins"""
         self._backend.add_plugin_directories(path)
@@ -245,6 +248,8 @@ class PluginDependency(object):
     """
 
     def __init__(self):
+        self.key_vault = None
+
         # plugin shoud match these requirements
         self._requirement_has_network = True
         if sys.platform == "darwin":
@@ -257,44 +262,25 @@ class PluginDependency(object):
             self._requirement_platform = None
             warning("Unsupported platform {}".format(sys.platform))
 
-    def _plugin_get_requirements(self, requirements_iter):
-        plugin_requirements = {
-            "platform": [],
-            "network": [],
-            "native": []
-        }
-
-        # parse requirements
-        for requirement in requirements_iter:
-            key = requirement[0]
-            values = requirement[1]
-
-            if isinstance(values, str) or isinstance(values, bool) or isinstance(values, Platform):
-                values = [values]
-
-            if key in plugin_requirements:
-                plugin_requirements[key].extend(values)
-            else:
-                warning("{}={}: No supported requirement".format(key, values))
-
-        return plugin_requirements
+    def set_key_vault(self, key_vault):
+        self.key_vault = key_vault
 
     def check(self, plugin):
         """
         Parses plugin.require(). Plase refere plugin.Plugin-documentation
         """
-        plugin_requirements = self._plugin_get_requirements(plugin.require())
-
-        if not self._check_platform(plugin_requirements["platform"]):
-            required_platform = ", ".join([x.name for x in plugin_requirements["platform"]])
+        requirements = plugin.require()
+        if not self._check_platform(requirements.platforms):
+            required_platform = ", ".join([x.name for x in requirements.platforms])
             return "Requires os {}".format(required_platform)
 
-        if not self._check_network(plugin_requirements["network"], plugin):
-            return "Requires networking"
-
-        natives_ok = self._check_native(plugin_requirements["native"], plugin)
+        natives_ok = self._check_native(requirements.natives)
         if natives_ok is not True:
             return natives_ok
+
+        api_key_ok = self._check_api_keys(requirements.api_keys)
+        if api_key_ok is not True:
+            return api_key_ok
 
         return True
 
@@ -309,16 +295,7 @@ class PluginDependency(object):
 
         return self._requirement_platform in values
 
-    def _check_network(self, values, plugin):
-        if True in values:
-            if not self._requirement_has_network:
-                return False
-            self._plugin_patch_network_error_message(plugin)
-            return True
-
-        return True
-
-    def _check_native(self, values, plugin):
+    def _check_native(self, values):
         missing = ""
         for native in values:
             if native.startswith('!'):
@@ -328,16 +305,28 @@ class PluginDependency(object):
                 requirement_ok = executable_exists(native)
 
             if not requirement_ok:
-                missing += native
-                missing += " "
+                missing += " " + native
 
         if not missing:
             return True
 
-        message = "Missing native executables {}"
+        message = "Missing native executables{}"
         return message.format(missing)
 
-    def _plugin_patch_network_error_message(self, plugin):
-        if "plugin._network_error_patched" not in plugin.__dict__:
-            plugin.run = partial(
-                plugin._plugin_run_with_network_error, plugin.run)
+    def _check_api_keys(self, values):
+        missing = ""
+        for apikey in values:
+            if self.key_vault is None:
+                requirement_ok = False
+            else:
+                self.key_vault.add_valid_api_key_name(apikey)
+                requirement_ok = self.key_vault.get_user_pass(apikey)[1] is not None
+
+            if not requirement_ok:
+                missing += " " + apikey
+
+        if not missing:
+            return True
+
+        message = "Missing api key{}. Add with 'apikey add'"
+        return message.format(missing)

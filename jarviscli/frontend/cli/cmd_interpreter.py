@@ -115,7 +115,6 @@ Type 'help' for a list of available actions.
         self.say(message, color)
 
     def _add_plugin(self, plugin):
-        plugin.run = catch_all_exceptions(plugin.run)
 
         completions = [i for i in plugin.complete()]
         if len(completions) > 0:
@@ -144,23 +143,3 @@ Type 'help' for a list of available actions.
 
     def do_status(self, s):
         """Prints plugin status status"""
-
-
-def catch_all_exceptions(do, pass_self=True):
-    def try_do(self, s):
-        try:
-            if pass_self:
-                do(self, s)
-            else:
-                do(s)
-        except Exception:
-            if self.is_spinner_running():
-                self.spinner_stop("It seems some error has occured")
-            print(
-                Fore.RED
-                + "Some error occurred, please open an issue on github!")
-            print("Here is error:")
-            print('')
-            traceback.print_exc()
-            print(Fore.RESET)
-    return try_do
