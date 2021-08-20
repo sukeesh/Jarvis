@@ -18,7 +18,7 @@ class DialCode:
     """
 
     def __call__(self, jarvis, s):
-        with open(jarvis.data_file('dial_codes.json'), 'r'):
+        with open(jarvis.data_file('dial_codes.json'), 'r') as codes_file:
             data = json.loads(codes_file.read())
 
         # Call handle_input() function wich returns the code
@@ -80,7 +80,7 @@ class CountryByhDC:
             jarvis.say(Fore.RED + "Can't find country with code " + Fore.WHITE + "'" + s + "'")
 
     def handle_input(self, code, jarvis):
-        with open(jarvis.data_file('dial_codes.json'), 'r'):
+        with open(jarvis.data_file('dial_codes.json'), 'r') as codes_file:
             data = json.loads(codes_file.read())
 
         # Compare user's input to each "country_name" in json

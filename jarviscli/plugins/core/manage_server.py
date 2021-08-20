@@ -3,7 +3,7 @@ from multiprocessing import Process
 from plugin import Platform, plugin, require
 
 
-@require(network=True, platform=Platform.MACOS)
+@require(network=True)
 @plugin("server start")
 def server_start(jarvis, s):
     if s != "":
@@ -17,13 +17,13 @@ def server_start(jarvis, s):
     jarvis.activate_frontend('server')
 
 
-@require(network=True, platform=Platform.MACOS)
+@require(network=True)
 @plugin("server stop")
 def server_stop(jarvis, s):
     jarvis.deactivate_frontend('server')
 
 
-@require(network=True, platform=Platform.MACOS)
+@require(network=True)
 @plugin("server restart")
 def server_restart(jarvis, s):
     jarvis.deactivate_frontend('server')

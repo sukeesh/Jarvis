@@ -14,7 +14,8 @@ import frontend.voice
 import frontend.voice_control
 from packages.memory.key_vault import KeyVault
 from packages.memory.memory import Memory
-from packages.notification import notify
+from packages.notification import (NOTIFY_CRITICAL, NOTIFY_LOW, NOTIFY_NORMAL,
+                                   notify)
 from packages.online_status import OnlineStatus
 from packages.schedule import Scheduler
 from plugin import Plugin
@@ -33,6 +34,10 @@ class Jarvis:
                            'tts': frontend.voice.JarvisVoice,
                            'voice_control': frontend.voice_control.VoiceControl
                            }
+
+    NOTIFY_LOW = NOTIFY_LOW
+    NOTIFY_NORMAL = NOTIFY_NORMAL
+    NOTIFY_CRITICAL = NOTIFY_CRITICAL
 
     def __init__(self, language_parser_class, plugin_manager):
         self._data_dir = os.path.join(os.path.dirname(__file__), 'data')
@@ -60,7 +65,7 @@ class Jarvis:
         for name, plugin in self.plugins.items():
             plugin.init(self)
 
-            if plugin._require_network():
+            if plugin.require().network:
                 self.plugins_online[name] = plugin
             else:
                 self.plugins_offline[name] = plugin
@@ -204,7 +209,7 @@ class Jarvis:
 
         self.say(self._CONNECTION_ERROR_MSG)
 
-    def notification(self, msg, time_seconds=0):
+    def notification(self, msg, time_seconds=0, urgency=NOTIFY_NORMAL):
         """
         Sends notification msg in time_in milliseconds
         :param msg: Message. Either String (message body) or tuple (headline, message body)
@@ -221,7 +226,7 @@ class Jarvis:
         if time_seconds == 0:
             notify(headline, message)
         else:
-            schedule(time_seconds, notify, headline, message)
+            self.schedule(time_seconds, notify, headline, message)
 
     def schedule(self, time_seconds, function, *args):
         """

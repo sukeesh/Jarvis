@@ -3,7 +3,6 @@ import time
 from colorama import Fore
 
 from plugin import plugin
-from utilities.notification import *
 
 
 def push_compute_rest(maximum):
@@ -73,8 +72,8 @@ def pushups(jarvis, s):
         quit(jarvis)
     elif (s == "'s'" or s == "s"):
         for i in range(1, 6):
-            notify("Start Set " + str(i), "Do " + str(num + 3 - i) +
-                   " pushups", urgency=NOTIFY_NORMAL)
+            jarvis.notification(("Start Set " + str(i), "Do " + str(num + 3 - i) +
+                                 " pushups"), urgency=jarvis.NOTIFY_NORMAL)
             jarvis.say("Start Set " + str(i) + " - Do " +
                        str(num + 3 - i) + " pushups", Fore.BLUE)
             jarvis.input("Press enter after finishing", Fore.GREEN)
@@ -114,8 +113,8 @@ def pullups(jarvis, s):
         for i in range(1, 6):
             if (num + 3 - i == 0):
                 break
-            notify("Start Set " + str(i), "Do " + str(num + 3 - i) +
-                   " pullups", urgency=NOTIFY_NORMAL)
+            jarvis.notification(("Start Set " + str(i), "Do " + str(num + 3 - i) +
+                                 " pullups"), urgency=jarvis.NOTIFY_NORMAL)
             jarvis.say("Start Set " + str(i) + " - Do " +
                        str(num + 3 - i) + " pullups", Fore.BLUE)
             jarvis.input("Press enter after finishing", Fore.GREEN)
@@ -135,7 +134,7 @@ def quit(jarvis):
     jarvis.say("Stay fit - do workout!", Fore.BLUE)
 
 
-@plugin("workout")
+@ plugin("workout")
 def workout(jarvis, s):
     """Provides a workout programm according to user's abilities
     Formula to generate a relevant program is taken from:

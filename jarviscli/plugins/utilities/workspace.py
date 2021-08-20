@@ -10,7 +10,7 @@ import git
 from plugin import plugin
 
 
-@plugin("workspace")
+@plugin("create project")
 def generate_workspace(jarvis, s):
     DATA_PATH = jarvis.data_file('workspaces')
 

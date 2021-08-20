@@ -199,6 +199,3 @@ def print_screen():
 @plugin("typingtest")
 def typingtest(jarvis, s):
     game_start()
-
-
-ng_
