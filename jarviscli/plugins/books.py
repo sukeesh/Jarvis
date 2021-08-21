@@ -54,7 +54,7 @@ def extract_genre(jarvis, s):
                     'span',
                     class_="minirating").text.strip().split(" ")[0])
             record = (book, author, rating)
-        except BaseException:
+        except:
             record = None
 
         if record is not None:
