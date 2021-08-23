@@ -24,7 +24,6 @@ You could do:
 """.format(PY3=PY3)
     VIRTUALENV_PIP_DOWNLOAD = "env\\Scripts\\python.exe -m"
 
-
 else:
     PY3 = "python3"
     VIRTUALENV_CMD = "virtualenv --python=python3"
@@ -37,3 +36,4 @@ Or use Pip:
     > [sudo] pip install virtualenv
 """
     VIRTUALENV_PIP_DOWNLOAD = "env/bin/python -m"
+    
