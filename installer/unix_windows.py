@@ -22,6 +22,7 @@ You could do:
 {PY3} -m ensurepip
 {PY3} -m pip install virtualenv
 """.format(PY3=PY3)
+    VIRTUALENV_PIP_DOWNLOAD = "env\\Scripts\\python.exe -m"
 
 else:
     PY3 = "python3"
@@ -34,3 +35,5 @@ For example on Ubuntu you could do
 Or use Pip:
     > [sudo] pip install virtualenv
 """
+    VIRTUALENV_PIP_DOWNLOAD = "env/bin/python -m"
+    
