@@ -1,4 +1,4 @@
-from plugin import plugin, require
+from plugin import plugin, require, alias
 from bs4 import BeautifulSoup
 import requests
 
