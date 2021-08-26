@@ -1,11 +1,26 @@
 from plugin import Platform, plugin, require
 
 HELP_TEXTS = {
-    'newsapi_org': 'https://newsapi.org/'
+    'newsapi_org': 'https://newsapi.org/',
+    'google': 'https://console.developers.google.com/apis'
+
 }
 
 
-@plugin("apikey add")
+HELP_TEXTS_LONG = {
+    'google': """\
+Please create an API key here: https://console.developers.google.com/apis/credentials
+then copy the value to 'key' in jarviscli/data/Google_api_key.json
+To create an api key you must select a project (creating one if you do not have one yet)
+, then you must select 'create credentials' > 'API key'.
+
+More detailed instructions can be found here: "
+https://developers.google.com/civic-information/docs/using_api
+"""
+}
+
+
+@ plugin("apikey add")
 def apikey_add(jarvis, s):
     valid_api_keys = jarvis.key_vault.get_valid_api_key_names()
     options = []
@@ -26,7 +41,7 @@ def apikey_add(jarvis, s):
     jarvis.say("Thanks!")
 
 
-@plugin("apikey update")
+@ plugin("apikey update")
 def apikey_update(jarvis, s):
     valid_api_keys = jarvis.key_vault.get_valid_api_key_names()
     for i, api_key in enumerate(valid_api_keys):

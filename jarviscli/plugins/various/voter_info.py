@@ -1,20 +1,16 @@
 """Jarvis plugin to get public voter information based on the users address."""
 import json
-import geopy
-import urllib.parse
-import requests
-import shutil
 import os
-from packages.mapps import get_location
+import shutil
+import urllib.parse
+
+import requests
 from colorama import Fore
 
+import geopy
+from packages.mapps import get_location
 # All plugins should inherite from this library
 from plugin import plugin
-
-DATA_PATH = os.path.abspath(os.path.dirname(__file__))
-DATA_PATH = DATA_PATH[:-8] + "/data"
-KEY_JSON_FILE = "/Google_api_key.json"
-KEY = ""
 
 
 def print_address(jarvis, location, address):
@@ -34,11 +30,11 @@ def print_address(jarvis, location, address):
     jarvis.say("----------------------------------------")
 
 
-def get_voter_info(jarvis, s, address):
+def get_voter_info(jarvis, s, address, google_api_key):
     """Get voter info from API and output to user."""
     # Formulate API request
     url = "https://www.googleapis.com/civicinfo/v2/voterinfo?key="
-    url += KEY
+    url += google_api_key
     url += "&address=" + urllib.parse.quote(str(address))
     if s:
         url += "&electionId=" + s
@@ -102,8 +98,9 @@ def get_voter_info(jarvis, s, address):
     return voterInfo
 
 
+@require(network=True, api_key='google')
 @plugin("voterinfo")
-def voter_info(jarvis, s):
+def voter_info(jarvis, s, google=None):
     """
     Jarvis plugin that gets public voter information based on user's address.
 
@@ -116,33 +113,10 @@ def voter_info(jarvis, s):
     up besides the one provided. Additionally stores much more
     information in VoterInfo.json in the user's current directory.
 
+    Powered by Google API
     """
     # Welome message
     jarvis.say("Welcome to the Jarvis Voter Information plugin!", Fore.BLUE)
-
-    # Get user API key
-    if not os.path.isfile(DATA_PATH + KEY_JSON_FILE):
-        shutil.copy2(
-            DATA_PATH + "/sampleGoogle_api_key.json", DATA_PATH + KEY_JSON_FILE
-        )
-
-    with open(DATA_PATH + KEY_JSON_FILE) as json_file:
-        json_obj = json.load(json_file)
-        global KEY
-        KEY = str(json_obj["key"])
-        if KEY == "YOUR_KEY_HERE":
-            jarvis.say(
-                "In order to use the Voter Information Plugin you will need a Google API key.\n"
-                + "Please create an API key here: https://console.developers.google.com/apis/credentials\n"
-                + "then copy the value to 'key' in jarviscli/data/Google_api_key.json\n"
-                + "To create an api key you must select a project (creating one if you do not have one yet)"
-                + ", then you must select 'create credentials' > 'API key'.\n"
-                + "More detailed instructions can be found here: "
-                + "https://developers.google.com/civic-information/docs/using_api\n",
-                Fore.BLUE,
-            )
-            return
-
     jarvis.say("Please wait while I get your location ....", Fore.BLUE)
 
     # Get users location
@@ -156,12 +130,13 @@ def voter_info(jarvis, s):
     # Verify location with user
     user_check_location = "I have your location as " + str(address)
     jarvis.say(user_check_location, Fore.RED)
+
     user_confirmation = jarvis.input("Is this correct? (yes/no)\n")
     if user_confirmation == "no":
         address = jarvis.input("Please enter your correct address .... \n")
 
     # Get election info
-    elections = get_voter_info(jarvis, s, address)
+    elections = get_voter_info(jarvis, s, address, google)
 
     # Store all information to local directory
     if elections != -1:
