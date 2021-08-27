@@ -13,6 +13,7 @@ import frontend.gui.jarvis_gui
 import frontend.server.server
 import frontend.voice
 import frontend.voice_control
+from packages.geolocation import Location, LocationFields
 from packages.memory.key_vault import KeyVault
 from packages.memory.memory import Memory
 from packages.notification import (NOTIFY_CRITICAL, NOTIFY_LOW, NOTIFY_NORMAL,
@@ -39,6 +40,7 @@ class Jarvis:
     NOTIFY_LOW = NOTIFY_LOW
     NOTIFY_NORMAL = NOTIFY_NORMAL
     NOTIFY_CRITICAL = NOTIFY_CRITICAL
+    LOCATION_FIELDS = LocationFields
 
     def __init__(self, language_parser_class, plugin_manager):
         self._data_dir = os.path.join(os.path.dirname(__file__), 'data')
@@ -51,6 +53,7 @@ class Jarvis:
         self.memory = Memory()
         self.key_vault = KeyVault()
         self.scheduler = Scheduler()
+        self.location = Location()
 
         self.active_frontends = {}
         self.running = Semaphore()
@@ -134,6 +137,7 @@ class Jarvis:
         return frontend_status.format(**frontend_status_formatter)
 
     def run(self):
+        self.location.init(self)
         for _frontend in self.active_frontends.values():
             _frontend.thread.start()
         self._prompt()
@@ -351,6 +355,9 @@ class Jarvis:
 
     def is_spinner_running(self):
         return self.spinner_running
+
+    def get_location(self, field):
+        return self.location.get(field, self)
 
     def data_file(self, *path):
         return os.path.join(self._data_dir, *path)
