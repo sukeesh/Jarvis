@@ -10,7 +10,7 @@ from colorama import Fore
 import geopy
 from packages.mapps import get_location
 # All plugins should inherite from this library
-from plugin import plugin
+from plugin import plugin, require
 
 
 def print_address(jarvis, location, address):

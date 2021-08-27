@@ -1,4 +1,4 @@
-from plugin import Platform, plugin, require
+from plugin import plugin
 
 HELP_TEXTS = {
     'newsapi_org': 'https://newsapi.org/',

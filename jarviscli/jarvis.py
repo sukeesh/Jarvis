@@ -84,7 +84,7 @@ class Jarvis:
         self.language_parser_offline.train(self.plugins_offline.values())
 
     def set_offline_mode(self, state=True):
-        self.offline_only = True
+        self.offline_only = state
 
     def get_plugins(self):
         if not self.offline_only and self.online_status.get_online_status():
