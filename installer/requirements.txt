@@ -16,6 +16,7 @@ gtts
 Image
 IMDbPY
 img2pdf
+inquirer
 kivy
 mock
 nltk

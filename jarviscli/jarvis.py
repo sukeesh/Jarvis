@@ -173,7 +173,33 @@ class Jarvis:
         Get user input
         """
         for _frontend in self.active_frontends.values():
-            return _frontend.input(prompt, color, password)
+            # TODO LOGIC
+            value = _frontend.input(prompt, color, password)
+            if value is not None:
+                return value
+
+    def choose(self, options_dict):
+        """
+        Dict which consists out of Key and a tuple
+          * Message
+          * Default value or list of possible values or None
+        """
+        if not isinstance(options_dict, dict):
+            options_dict = {'main': options_dict}
+            return self.choose(options_dict)['main']
+
+        for _frontend in self.active_frontends.values():
+            # TODO LOGIC
+            value = _frontend.choose(options_dict)
+            if value is not None:
+                return value
+
+    def choose_path(self, message):
+        for _frontend in self.active_frontends.values():
+            # TODO LOGIC
+            value = _frontend.choose_path(message)
+            if value is not None:
+                return value
 
     def exit(self):
         """Immediately exit Jarvis"""

@@ -7,6 +7,7 @@ from getpass import getpass
 import colorama
 from colorama import Fore
 
+import inquirer
 from frontend.cli.spinner import SpinnerThread
 from utilities.cli import cancel, input
 
@@ -105,6 +106,24 @@ Type 'help' for a list of available actions.
         if password:
             return getpass()
         return input()
+
+    def choose(self, options_dict):
+        def build_question(key, text, params):
+            if isinstance(params, list):
+                return inquirer.Checkbox(key, message=text, choices=params)
+            if isinstance(params, set):
+                return inquirer.List(key, message=text, choices=params)
+            elif isinstance(params, str):
+                return inquirer.Text(key, message=text, default=value)
+            elif params is None:
+                return inquirer.confirm(message=text)
+            assert False, 'unknown parameter for choose'
+
+        questions = [build_question(key, text, params) for key, (text, params) in options_dict.items()]
+        return inquirer.prompt(questions)
+
+    def choose_path(self, message):
+        return inquirer.prompt(inquirer.Path('file', message=message))['file']
 
     def spinner_start(self, message="Starting "):
         self.spinner = SpinnerThread(message, 0.15)
