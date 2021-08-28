@@ -86,8 +86,8 @@ class Bulkresize(PluginTest):
         self.queue_input('200')
         self.bulkresize_module.run(' ')
         actual = self.history_say().last_text()
-        excepted = 'Resizing Compleated!! Thank you for using jarvis'
-        self.assertEqual(actual, excepted)
+        expected = 'Resizing Completed!! Thank you for using jarvis'
+        self.assertEqual(actual, expected)
         os.remove(DATA_PATH + 'images/0.jpg')
 
 
