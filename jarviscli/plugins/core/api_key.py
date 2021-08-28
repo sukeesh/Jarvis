@@ -2,8 +2,8 @@ from plugin import plugin
 
 HELP_TEXTS = {
     'newsapi_org': 'https://newsapi.org/',
-    'google': 'https://console.developers.google.com/apis'
-
+    'google': 'https://console.developers.google.com/apis',
+    'openwathermap': 'https://openweathermap.org/appid'
 }
 
 

@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-from plugins.user_pass import user_pass
-from plugin import require, plugin
-
+from plugin import plugin, require
 
 GARMIN = "garminconnect"
 

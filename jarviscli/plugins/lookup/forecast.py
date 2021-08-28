@@ -1,27 +1,36 @@
 # -*- coding: utf-8 -*-
 import json
-import requests
 
+import requests
 from colorama import Fore
 
+from plugin import alias, plugin, require
 from utilities.dateTime import WeekDay
-from . import mapps
 
 
-def main(jarvis, s):
+@require(network=True, api_key='openweathermap')
+@plugin('forecast')
+def forecast(jarvis, s, openweathermap=None):
+    """
+    checks the weather forecast for the next 7 days.
+    -- Examples:
+        check forecast
+        check forecast in Madrid
+    """
+
     cmd_key_words = ['check', 'weather', 'forecast', 'in', 'for', 'a', 'week']
     cmd_words = s.strip().split()
     # location will be defined by the words given that are not the key words
     location = ' '.join(filter(lambda word: word.lower()
                                not in cmd_key_words, cmd_words)).strip()
 
-    current_location = mapps.get_location()
-
     # if no location is given, use the current location
     if not location:
         location = "{},{}".format(
-            current_location['city'], current_location['country_code'])
-    country = current_location['country_name']
+            jarvis.get_location(jarvis.LocationFields.CITY),
+            jarvis.get_location(jarvis.LocationFields.COUNTRY))
+
+    country = jarvis.get_location(jarvis.LocationFields.COUNTRY)
 
     # If country is not US, shows weather in Celsius
     units = {
@@ -37,8 +46,8 @@ def main(jarvis, s):
 
     send_url = (
         "http://api.openweathermap.org/data/2.5/forecast/daily?q={0}&cnt={1}"
-        "&APPID=ab6ec687d641ced80cc0c935f9dd8ac9&units={2}".format(
-            location, '7', units['url_units'])
+        "&APPID={2}&units={3}".format(
+            location, '7', openweathermap, units['url_units'])
     )
 
     r = requests.get(send_url)
@@ -53,8 +62,7 @@ def main(jarvis, s):
             ),
             Fore.BLUE
         )
-        print(jarvis)
-        jarvis.say("TEST")
+
         for cnt, day_dict in enumerate(j['list']):
             jarvis.say("{}:".format(week_from_today[cnt]), Fore.BLUE)
             jarvis.say("\tWeather: {}".format(
@@ -72,3 +80,36 @@ def main(jarvis, s):
             )
     except KeyError:
         jarvis.say("The forecast information could not be found.", Fore.RED)
+
+
+@require(network=True, api_key='openwathermap')
+@plugin("umbrella")
+def do_umbrella(self, s, openwathermap=None):
+    """If you're leaving your place, Jarvis will inform you if you might need an umbrella or not."""
+    city = "{},{}".format(
+        jarvis.get_location(jarvis.LocationFields.CITY),
+        jarvis.get_location(jarvis.LocationFields.COUNTRY))
+
+    send_url = (
+        "http://api.openweathermap.org/data/2.5/forecast/daily?q={0}&cnt=1&APPID={1}&units=metric".format(
+            city, openweathermap)
+    )
+
+    r = requests.get(send_url)
+    j = json.loads(r.text)
+    rain = j['list'][0]['weather'][0]['id']
+    if rain >= 300 and rain <= 500:  # In case of drizzle or light rain
+        print(
+            Fore.CYAN
+            + "It appears that you might need an umbrella today."
+            + Fore.RESET)
+    elif rain > 700:
+        print(
+            Fore.CYAN
+            + "Good news! You can leave your umbrella at home for today!"
+            + Fore.RESET)
+    else:
+        print(
+            Fore.CYAN
+            + "Uhh, bad luck! If you go outside, take your umbrella with you."
+            + Fore.RESET)

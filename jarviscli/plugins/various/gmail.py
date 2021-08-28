@@ -20,8 +20,7 @@
 import smtplib  # import stmplib
 from email.message import EmailMessage
 
-from plugin import plugin, require, alias, Platform  # import plugin
-from plugins.user_pass import user_pass
+from plugin import Platform, alias, plugin, require  # import plugin
 
 EMAIL_HOST = 'smtp.gmail.com'  # 'smtp.gmail.com' for gmail
 EMAIL_PORT = 587  # 587 for gmail

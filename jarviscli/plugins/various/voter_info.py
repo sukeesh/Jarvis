@@ -8,7 +8,6 @@ import requests
 from colorama import Fore
 
 import geopy
-from packages.mapps import get_location
 # All plugins should inherite from this library
 from plugin import plugin, require
 
