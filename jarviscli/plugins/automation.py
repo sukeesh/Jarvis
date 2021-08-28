@@ -2,7 +2,7 @@ import os
 from plugin import plugin, require, LINUX
 
 """
-This plugin is helpful software Engineer it helps them to automate installation of docker,Hadoop,basic linux commands,webserver configuration. 
+This plugin is helpful for software Engineer. it helps them to automate installation of docker,Hadoop,basic linux commands,webserver configuration. 
 
 """
 @require(platform=LINUX)
