@@ -5,7 +5,7 @@ import subprocess
 import platform
 import pyautogui
 
-
+@require(native='scrot')
 @alias("capture", "screen")
 @plugin('screen_capture')
 def capture_screen(jarvis, s):
