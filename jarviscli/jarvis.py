@@ -13,6 +13,7 @@ import frontend.gui.jarvis_gui
 import frontend.server.server
 import frontend.voice
 import frontend.voice_control
+from dependency import Dependency
 from packages.geolocation import Location, LocationFields
 from packages.memory.key_vault import KeyVault
 from packages.memory.memory import Memory
@@ -21,7 +22,7 @@ from packages.notification import (NOTIFY_CRITICAL, NOTIFY_LOW, NOTIFY_NORMAL,
 from packages.online_status import OnlineStatus
 from packages.schedule import Scheduler
 from plugin import Plugin
-from utilities.GeneralUtilities import warning
+from utilities.GeneralUtilities import error, warning
 
 # register hist path via tempfile
 HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
@@ -52,8 +53,12 @@ class Jarvis:
 
         self.memory = Memory()
         self.key_vault = KeyVault()
+
+        dependency = Dependency(self.key_vault)
+        self.frontend_status = dependency.check(self.AVAILABLE_FRONTENDS.values())
+
         self.scheduler = Scheduler()
-        self.location = Location()
+        self.location = Location(dependency)
 
         self.active_frontends = {}
         self.running = Semaphore()
@@ -63,9 +68,7 @@ class Jarvis:
         self.plugins_offline = {}
         self.plugins_online = {}
 
-        self.plugin_manager = plugin_manager
-        self.plugin_manager.set_key_vault(self.key_vault)
-        self.plugins = self.plugin_manager.get_plugins()
+        self.dependency_status, self.plugins = plugin_manager.load(dependency)
 
         for name, plugin in self.plugins.items():
             # plugin.run = catch_all_exceptions(plugin.run)
@@ -103,6 +106,9 @@ class Jarvis:
 
     def activate_frontend(self, frontend):
         if frontend not in self.active_frontends:
+            if self.AVAILABLE_FRONTENDS[frontend] not in self.frontend_status.enabled:
+                error("Frontend {} not enabled. For more details type 'status'".format(frontend))
+                return
             _f = self.AVAILABLE_FRONTENDS[frontend](self)
             self.active_frontends[frontend] = _f
             _f.thread = threading.Thread(target=_f.start)
@@ -361,22 +367,6 @@ class Jarvis:
 
     def data_file(self, *path):
         return os.path.join(self._data_dir, *path)
-
-    def plugin_info(self):
-        plugin_status_formatter = {
-            "disabled": len(self.plugin_manager.get_disabled()),
-            "enabled": self.plugin_manager.get_number_plugins_loaded(),
-            "red": Fore.RED,
-            "blue": Fore.BLUE,
-            "reset": Fore.RESET
-        }
-
-        plugin_status = "{red}{enabled} {blue}plugins loaded"
-        if plugin_status_formatter['disabled'] > 0:
-            plugin_status += " {red}{disabled} {blue}plugins disabled. More information: {red}status\n"
-        plugin_status += Fore.RESET
-
-        return plugin_status.format(**plugin_status_formatter)
 
     def eval(self, command: str) -> Optional[bool]:
         # save commands' history

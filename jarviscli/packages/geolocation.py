@@ -53,6 +53,9 @@ class Location:
     KEY = 'LOCATION_PROVIDERS'
     MESSAGE = 'Hi! I can receive basic information about you (location, timezone, ...). Please tell me what providers I should use.'
 
+    def __init__(self, dependency):
+        pass
+
     def init(self, jarvis):
         providers_list = jarvis.get_data(self.KEY)
         if providers_list is None:

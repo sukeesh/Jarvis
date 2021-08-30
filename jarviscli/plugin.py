@@ -1,49 +1,8 @@
-import enum
 from inspect import cleandoc, isclass
+from dependency import Requirements, require, Platform
 
 import pluginmanager
 from requests import ConnectionError
-
-
-class Platform(enum.Enum):
-    MACOS = 0
-    LINUX = 1
-    WINDOWS = 2
-    ANDROID = 3
-    # Shortcut for MACOS + LINUX
-    UNIX = -1
-    # Shortcut for MACOS + LINUX + WINDOW
-    DESKTOP = -2
-
-
-class PluginRequirements:
-    def __init__(self):
-        self.platforms = []
-        self.natives = []
-        self.api_keys = []
-        self.network = False
-
-    def _require(self, collection, new_elements):
-        if isinstance(new_elements, list):
-            for element in new_elements:
-                self._require(collection, element)
-        else:
-            element = new_elements
-            if element not in collection:
-                collection.append(element)
-
-    def require_platform(self, platform):
-        self._require(self.platforms, platform)
-
-    def require_native(self, native):
-        self._require(self.natives, native)
-
-    def require_api_key(self, api_key):
-        self._require(self.api_keys, api_key)
-
-    def require_network(self, network_status):
-        if network_status is True:
-            self.network = True
 
 
 def plugin(name):
@@ -65,7 +24,7 @@ def plugin(name):
             run = run()
 
         # create class
-        plugin_class._require = PluginRequirements()
+        plugin_class._require = Requirements()
         plugin_class._complete = []
         plugin_class._feature = []
         plugin_class._alias = []
@@ -79,20 +38,6 @@ def plugin(name):
 
         return plugin_class
     return create_plugin
-
-
-def require(network=None, platform=None, native=None, api_key=None):
-    def _require(plugin):
-        if network is not None:
-            plugin._require.require_network(network)
-        if platform is not None:
-            plugin._require.require_platform(platform)
-        if native is not None:
-            plugin._require.require_native(native)
-        if api_key is not None:
-            plugin._require.require_api_key(api_key)
-        return plugin
-    return _require
 
 
 def feature(case_sensitive=False):
@@ -148,7 +93,7 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
     """
     """
     _backend = None
-    _require = PluginRequirements()
+    _require = Requirements()
     _complete = []
     _feature = []
     _name = []
