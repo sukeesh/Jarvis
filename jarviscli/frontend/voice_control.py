@@ -1,84 +1,73 @@
 import socket
-
-voice_control_installed = True
-try:
-    import speech_recognition as sr
-except ImportError:
-    voice_control_installed = False
-
-if voice_control_installed:
-    requirements = []
-else:
-    requirements = [
-        'voice_control_requirements (install portaudio + re-run setup.sh)']
+import struct
+from dependency import require
+GTTS_KEY = 'gtts_status'
 
 
+@require(imports=['speech_recognition', 'pvporcupine', 'pyaudio'])
 class VoiceControl:
     def __init__(self, jarvis):
         self.jarvis = jarvis
         self.listen = True
 
     def start(self):
-        r = sr.Recognizer()
+        import pvporcupine
+        import pyaudio
+        import speech_recognition as sr
 
-        connected = jarvis.has_internet()
+        keyword = 'jarvis'
+
+        porcupine = pvporcupine.create(
+            library_path=pvporcupine.LIBRARY_PATH,
+            model_path=pvporcupine.MODEL_PATH,
+            keyword_paths=[pvporcupine.KEYWORD_PATHS[keyword]],
+            sensitivities=[0.5]
+        )
+
+        pa = pyaudio.PyAudio()
+        audio_stream = pa.open(
+                rate=porcupine.sample_rate,
+                channels=1,
+                format=pyaudio.paInt16,
+                input=True,
+                frames_per_buffer=porcupine.frame_length,
+                input_device_index=None)
+
+        r = sr.Recognizer()
+        connected = self.jarvis.has_internet()
+
+        self.jarvis.say("LISTEN")
 
         while self.listen is True:
-            while True:
-                try:
-                    print("LISTEN")
-                    with sr.Microphone() as source:
-                        r.energy_threshold = 50
-                        r.adjust_for_ambient_noise(source, duration=2)  # Eleminating the noise.
-                        try:
-                            audio = r.listen(source, phrase_time_limit=0.2)  # Storing audio.
-                        except sr.WaitTimeoutError as e:
-                            print("retry")
-                            continue
+                pcm = audio_stream.read(porcupine.frame_length)
+                pcm = struct.unpack_from("h" * porcupine.frame_length, pcm)
 
-                        print('5')
-
-                        if not self.listen:
-                            return
-
-                        # google recognition disabled for jarvis recognition
-                        pinger = r.recognize_sphinx(audio)
+                result = porcupine.process(pcm)
+                if result >= 0:
+                    self.jarvis.say("I'm listening")
 
                     try:
-                        print(pinger)
-                        if (pinger.lower() == "jarvis"):
-                            self.jarvis.say("I'm listening")
-                            break
-                        print(pinger.lower())
-                    except LookupError as e:
-                        print(e)
-                        continue   # For ignoring if your are not speaking anything.
-                except sr.UnknownValueError as e:
-                    print(e)
-                    continue  # For ignoring the unreconized words error
+                        with sr.Microphone() as source:
+                            r.adjust_for_ambient_noise(source)
+                            audio = r.listen(source)
 
-            try:
-                with sr.Microphone() as source:
-                    r.adjust_for_ambient_noise(source)
-                    audio = r.listen(source)
+                            if connected and self.jarvis.get_data(GTTS_KEY) is not False:
+                                pinger = r.recognize_google(audio).lower()
+                            else:
+                                pinger = r.recognize_sphinx(audio).lower()
 
-                    if connected:
-                        pinger = r.recognize_google(audio).lower()
+                            print(pinger)
+                            line = pinger
+                            self.jarvis.execute_once(line)
 
-                    else:
-                        pinger = r.recognize_sphinx(audio).lower()
+                    except LookupError:
+                        self.jarvis.say.say('Audio cannot be read!')
+                    except sr.UnknownValueError:
+                        continue
+                    except sr.RequestError:
+                        self.jarvis.say("Could not request results from Google Recognition service")
+                        continue  # It will ignore connecting server error.
 
-                    print(pinger)
-                    line = pinger
-                    self.jarvis.execute_once(line)
-
-            except LookupError:
-                self.jarvis.say.say('Audio cannot be read!')
-            except sr.UnknownValueError:
-                continue
-            except sr.RequestError:
-                self.jarvis.say("Could not request results from Google Recognition service")
-                continue  # It will ignore connecting server error.
 
     def say(self, *args):
         # Voice control cannot say anything

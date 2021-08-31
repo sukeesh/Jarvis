@@ -1,15 +1,11 @@
 from colorama import Fore
 
 from plugin import Platform, plugin, require
+from frontend.voice_control import GTTS_KEY
 
-GTTS_KEY = 'gtts_status'
 VOICE_ENABLED_KEY = 'voice_status'
 VOICE_MODULE = 'voice'
 
-
-def reload_voice(jarvis):
-    jarvis.disable_frontend(VOICE_MODULE)
-    jarvis.activate_frontend(VOICE_MODULE)
 
 
 def is_voice_enabled(jarvis):
@@ -56,19 +52,13 @@ def say(jarvis, s):
 @plugin('disable gtts')
 def disable_gtts(jarvis, s):
     """Reads what is typed without using gtts."""
-    jarvis.update_data(GTTS_KEY, True)
-
-    if is_voice_enabled(jarvis):
-        reload_voice(jarvis)
+    jarvis.update_data(GTTS_KEY, False)
 
 
 @plugin('enable gtts')
 def gtts(jarvis, s):
     """Reads what is typed using gtts."""
     jarvis.update_data(GTTS_KEY, True)
-
-    if is_voice_enabled(jarvis):
-        reload_voice(jarvis)
 
 
 def change_speed(jarvis, s):

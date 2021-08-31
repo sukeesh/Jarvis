@@ -92,14 +92,17 @@ class Jarvis:
     def set_offline_mode(self, state=True):
         self.offline_only = state
 
+    def has_internet(self):
+        return not self.offline_only and self.online_status.get_online_status()
+
     def get_plugins(self):
-        if not self.offline_only and self.online_status.get_online_status():
+        if self.has_internet():
             return self.plugins
         else:
             return self.plugins_offline
 
     def get_language_parser(self):
-        if not self.offline_only and self.online_status.get_online_status():
+        if self.has_internet():
             return self.language_parser_online
         else:
             return self.language_parser_offline
