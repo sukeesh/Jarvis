@@ -87,6 +87,7 @@ def equations(jarvis, term):
         jarvis,
         term,
         calculator=lambda expr: sympy.solve(
+            expr,
             equations,
             dict=True))
 
