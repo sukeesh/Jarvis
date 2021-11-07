@@ -60,7 +60,7 @@ while True:
             package_manager = optional.get_guess(optional.PackageManager)
             cmd = "{} {}".format(package_manager, package)
 
-            print("\nOur Guess how to install:\n>{}".format(cmd))
+            print("\nOur tip on how to install this: \n>{}".format(cmd))
     print('')
     input('continue  ')
     print('')
