@@ -7,7 +7,7 @@ The following is a set of guidelines for contributing to Jarvis, which is hosted
 ### Short Version
 
 * PRs are accepted :)
-* We follow [PEP 8](https://www.python.org/dev/peps/pep-0008/formatting) formatting. Before making a pull request ensure that your code is according to PEP 8 standards
+* We follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) formatting. Before making a pull request ensure that your code is according to PEP 8 standards
 * If you have some ideas for new features but don't have the time to implement them, please open an issue with the tag new_feature
 * Don't forget to comment and add docstrings to your code where needed!
 
