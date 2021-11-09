@@ -23,11 +23,18 @@ The following is a set of guidelines for contributing to Jarvis, which is hosted
 
 [Styleguides](#styleguides)
   * [Git Commit Messages](#git-commit-messages)
-  * [JavaScript Styleguide](#javascript-styleguide)
-  * [CoffeeScript Styleguide](#coffeescript-styleguide)
-  * [Specs Styleguide](#specs-styleguide)
+  * [Python Styleguide](#python-styleguide)
   * [Documentation Styleguide](#documentation-styleguide)
 
 [Additional Notes](#additional-notes)
   * [Issue and Pull Request Labels](#issue-and-pull-request-labels)
 
+
+## What if I Just Have a Question?
+
+> **Note:** Please don't file an issue just to ask a question. 
+1. Read the README, and see if that answers you.
+2. Read this whole document.
+If you still have a question, search existing issues and you may find that there's a topic similar to that of your question. You can ask your question as a comment in that issue.
+
+## How Can I Contribute?
