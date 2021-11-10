@@ -27,12 +27,7 @@ You can start by typing `help` within the Jarvis command line to check what Jarv
 
 ## Contributing
 
-- PRs are accepted!!
-- We follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) guidelines. Before making a PR, make sure that your code is according to PEP 8 standards.
-- If you have some ideas for new features and you don't have time to implement them please open an issue with the tag new_feature.
-- Please don't forget to comment (document) your code!
-
-
+Check out our [CONTRIBUTING.md](CONTRIBUTING.md) to learn how you can contribute!
 
 ### QuickStart: Create a new feature (plugin)
 
