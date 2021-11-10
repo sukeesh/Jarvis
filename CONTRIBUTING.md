@@ -26,9 +26,6 @@ The following is a set of guidelines for contributing to Jarvis, which is hosted
   * [Python Styleguide](#python-styleguide)
   * [Documentation Styleguide](#documentation-styleguide)
 
-[Additional Notes](#additional-notes)
-  * [Issue and Pull Request Labels](#issue-and-pull-request-labels)
-
 
 ## What if I Just Have a Question?
 
@@ -125,18 +122,26 @@ Here's a quick summary:
 
 If you fixed a bug regarding Jarvis's speech, you'd phrase it: 
 
-
 'Fix bug regarding Jarvis speech' ✔️
 
-
 'Fixed bug for speech' ❌
+
 'Fixes speech' ❌
 
 ### Python Styleguide
 
+1. Most importantly, when contributing to a file, follow the existing convention.
+2. If you're creating a new script follow the official [styleguide](#official-styleguide).
 
+##### Official Styleguife 
+
+Python Code: [PEP 8](https://pep8.org/)
 
 ### Documentation Styleguide
+
+Python Comments and Docstrings: [Google Guidelines](https://google.github.io/styleguide/pyguide.html#s3.8.1-comments-in-doc-strings)
+
+Markdown files: Follow the convention used in existing markdown files in the repository.
 
 
 
