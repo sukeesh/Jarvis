@@ -91,6 +91,7 @@ These are the steps to take to successfully contribute code to the Jarvis repo:
 
 1. **Find a potential contribution that you want to make**. You can do this by either going throught the existing [list of issues](https://github.com/sukeesh/Jarvis/issues) and picking one, or by opening a new issue.
 2. **Assign it to yourself by commenting on the issue** and saying that you will fix it.
+> **Note:** Remember to periodically comment an update on the issue to let everyone know that you're still working on it, or else someone else may take up the same issue.
 3. **Fork the main branch** so you have a repository on your Github called your_username/Jarvis.
 4. **Make commits to this forked repository**. You can clone this repository onto your computer and then push your commits to it, or take the less popular approach and make your commits directly in the forked Github repo.
 5. **After finishing all your commits**, [squash](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjIoemS1Y30AhWzyIsBHWprDJYQFnoECAQQAw&url=https%3A%2F%2Fdocs.github.com%2Fen%2Fdesktop%2Fcontributing-and-collaborating-using-github-desktop%2Fmanaging-commits%2Fsquashing-commits&usg=AOvVaw0NwD3KXuURsZVEN7oK_bW2) them into a single commit if there's too many repetitive ones.
