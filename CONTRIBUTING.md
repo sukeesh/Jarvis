@@ -108,3 +108,35 @@ Please follow these steps to have your contribution merged asap:
 2. [Squash](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjIoemS1Y30AhWzyIsBHWprDJYQFnoECAQQAw&url=https%3A%2F%2Fdocs.github.com%2Fen%2Fdesktop%2Fcontributing-and-collaborating-using-github-desktop%2Fmanaging-commits%2Fsquashing-commits&usg=AOvVaw0NwD3KXuURsZVEN7oK_bW2) your commits into a single one if there's a lot of repetitive, similar commits.
 
 While the prerequisites above must be satisfied prior to having your pull request reviewed, the reviewer(s) may ask you to complete additional design work, tests, or other changes before your pull request can be ultimately accepted.
+
+## Styleguides
+
+### Git Commit Messages
+
+Follow common practices as described very well [here](https://chris.beams.io/posts/git-commit/).
+
+Here's a quick summary:
+* **Write the first line of your commit in the imperative tense**, not past tense.
+* Write concise one line commits where possible.
+* Write a body wherever needed.
+* Make a commit for every **logical change**.
+
+##### Example:
+
+If you fixed a bug regarding Jarvis's speech, you'd phrase it: 
+
+
+'Fix bug regarding Jarvis speech' ✔️
+
+
+'Fixed bug for speech' ❌
+'Fixes speech' ❌
+
+### Python Styleguide
+
+
+
+### Documentation Styleguide
+
+
+
