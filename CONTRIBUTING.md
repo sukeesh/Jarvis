@@ -73,7 +73,7 @@ Before creating feature suggestions, please check [this list](#before-submitting
 
 #### Before Submitting A Feature Suggestion
 
-* **Check if that feature**
+* **Check if that feature already exists**
 * **Check if you have the latest version** of Jarvis
 * **Perform a [quick search](https://github.com/sukeesh/Jarvis/issues)** to see if the feature/enhancement has already been suggested. If it has, add a comment to the existing issue instead of opening a new one.
 
@@ -82,6 +82,7 @@ Before creating feature suggestions, please check [this list](#before-submitting
 Enhancement suggestions are tracked as GitHub [issues](https://guides.github.com/features/issues/).
 
 * **Use a clear and descriptive title** for the issue to identify the suggestion
+* **Use the tag new_feature** in the issue
 * **Provide a description of the suggested feature**
 
 ### Your First Code Contribution
