@@ -18,7 +18,7 @@ The following is a set of guidelines for contributing to Jarvis, which is hosted
 [How Can I Contribute?](#how-can-i-contribute)
   * [Reporting Bugs](#reporting-bugs)
   * [Suggesting Enhancements](#suggesting-enhancements)
-  * [Beginners: Your First Contribution](#beginners-your-first-contribution)
+  * [Beginners: Your First Contribution](#beginners:-your-first-contribution)
   * [Pull Requests](#pull-requests)
 
 [Styleguides](#styleguides)
