@@ -18,6 +18,7 @@ The following is a set of guidelines for contributing to Jarvis, which is hosted
 [How Can I Contribute?](#how-can-i-contribute)
   * [Reporting Bugs](#reporting-bugs)
   * [Suggesting Enhancements](#suggesting-enhancements)
+  * [Adding documentation](#adding-documentation)
   * [Beginners: Your First Contribution](#beginners-your-first-contribution)
   * [Pull Requests](#pull-requests)
 
@@ -81,6 +82,15 @@ Enhancement suggestions are tracked as GitHub [issues](https://guides.github.com
 * **Use a clear and descriptive title** for the issue to identify the suggestion
 * **Use the tag new_feature** in the issue
 * **Provide a description of the suggested feature**
+
+### Adding Documentation
+
+Every project benefits from having better documentation! With this in mind, Pull Requests that address documentation are welcome! 
+
+These contributions can be in many forms:
+
+* Added/Improved docstrings and comments for functions/classes
+* Added/Improved markdown files (README, CONTRIBUTING etc) that help visitors navigate the repository
 
 ### Beginners: Your First Contribution
 
