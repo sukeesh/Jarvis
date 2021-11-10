@@ -85,8 +85,17 @@ Enhancement suggestions are tracked as GitHub [issues](https://guides.github.com
 * **Use the tag new_feature** in the issue
 * **Provide a description of the suggested feature**
 
-### Your First Code Contribution
+### Beginners: Your First Code Contribution
 
+These are the steps to take to successfully contribute code to the Jarvis repo:
+
+1. **Find a potential contribution that you want to make**. You can do this by either going throught the existing [list of issues](https://github.com/sukeesh/Jarvis/issues) and picking one, or by opening a new issue.
+2. **Assign it to yourself by commenting on the issue** and saying that you will fix it.
+3. **Fork the main branch** so you have a repository on your Github called <your_username>/Jarvis.
+4. **Make commits to this forked repository**. You can clone this repository onto your computer and then push your commits to it, or take the less popular approach and make your commits directly in the forked Github repo.
+5. **After finishing all your commits**, squash them into a single commit if there's too many.
+6. **In the forked repository, click on 'Pull Requests' and then make a new pull request**. Make sure that you are comparing your repo, <username>/Jarvis to the main repo <sukeesh>/Jarvis.
+7. **Submit the pull request**. Refer to the [pull requests](#pull-requests) section below to see details about them.
 
 ### Pull Requests
 
