@@ -93,7 +93,7 @@ These are the steps to take to successfully contribute code to the Jarvis repo:
 2. **Assign it to yourself by commenting on the issue** and saying that you will fix it.
 3. **Fork the main branch** so you have a repository on your Github called your_username/Jarvis.
 4. **Make commits to this forked repository**. You can clone this repository onto your computer and then push your commits to it, or take the less popular approach and make your commits directly in the forked Github repo.
-5. **After finishing all your commits**, squash them into a single commit if there's too many.
+5. **After finishing all your commits**, [squash](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjIoemS1Y30AhWzyIsBHWprDJYQFnoECAQQAw&url=https%3A%2F%2Fdocs.github.com%2Fen%2Fdesktop%2Fcontributing-and-collaborating-using-github-desktop%2Fmanaging-commits%2Fsquashing-commits&usg=AOvVaw0NwD3KXuURsZVEN7oK_bW2) them into a single commit if there's too many repetitive ones.
 6. **In the forked repository, click on 'Pull Requests' and then make a new pull request**. Make sure that you are comparing your repo, your_username/Jarvis to the main repo sukeesh/Jarvis.
 7. **Submit the pull request**. Refer to the [pull requests](#pull-requests) section below to see details about them.
 
@@ -104,5 +104,6 @@ Congratulations! You've just made your first pull request!
 Please follow these steps to have your contribution merged asap:
 
 1. Follow the [styleguides](#styleguides)
+2. [Squash](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjIoemS1Y30AhWzyIsBHWprDJYQFnoECAQQAw&url=https%3A%2F%2Fdocs.github.com%2Fen%2Fdesktop%2Fcontributing-and-collaborating-using-github-desktop%2Fmanaging-commits%2Fsquashing-commits&usg=AOvVaw0NwD3KXuURsZVEN7oK_bW2) your commits into a single one if there's a lot of repetitive, similar commits.
 
 While the prerequisites above must be satisfied prior to having your pull request reviewed, the reviewer(s) may ask you to complete additional design work, tests, or other changes before your pull request can be ultimately accepted.
