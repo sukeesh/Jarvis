@@ -18,7 +18,7 @@ The following is a set of guidelines for contributing to Jarvis, which is hosted
 [How Can I Contribute?](#how-can-i-contribute)
   * [Reporting Bugs](#reporting-bugs)
   * [Suggesting Enhancements](#suggesting-enhancements)
-  * [Beginners: Your First Contribution](#beginners:-your-first-contribution)
+  * [Beginners: Your First Contribution](#beginners-your-first-contribution)
   * [Pull Requests](#pull-requests)
 
 [Styleguides](#styleguides)
@@ -82,7 +82,7 @@ Enhancement suggestions are tracked as GitHub [issues](https://guides.github.com
 * **Use the tag new_feature** in the issue
 * **Provide a description of the suggested feature**
 
-### Beginners: Your First Code Contribution
+### Beginners: Your First Contribution
 
 These are the steps to take to successfully contribute code to the Jarvis repo:
 
