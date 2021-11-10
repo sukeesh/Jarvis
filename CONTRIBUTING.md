@@ -133,7 +133,7 @@ If you fixed a bug regarding Jarvis's speech, you'd phrase it:
 1. Most importantly, when contributing to a file, follow the existing convention.
 2. If you're creating a new script follow the official [styleguide](#official-styleguide).
 
-##### Official Styleguife 
+##### Official Styleguide 
 
 Python Code: [PEP 8](https://pep8.org/)
 
