@@ -13,8 +13,6 @@ The following is a set of guidelines for contributing to Jarvis, which is hosted
 
 ### Table Of Contents
 
-[What if I just have a question?](#what-if-i-just-have-a-question)
-
 [How Can I Contribute?](#how-can-i-contribute)
   * [Reporting Bugs](#reporting-bugs)
   * [Suggesting Enhancements](#suggesting-enhancements)
@@ -26,14 +24,6 @@ The following is a set of guidelines for contributing to Jarvis, which is hosted
   * [Git Commit Messages](#git-commit-messages)
   * [Python Styleguide](#python-styleguide)
   * [Documentation Styleguide](#documentation-styleguide)
-
-
-## What if I Just Have a Question?
-
-> **Note:** Please don't file an issue just to ask a question. 
-1. Read the README, and see if that answers you.
-2. Read this whole document.
-If you still have a question, search existing issues and you may find that there's a topic similar to that of your question. You can ask your question as a comment in that issue.
 
 ## How Can I Contribute?
 
