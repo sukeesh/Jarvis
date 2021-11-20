@@ -172,3 +172,20 @@ def shell(cmd):
     sys.stdout.write(' \b')
 
     return exit_code
+
+
+def get_default_shell():
+    '''
+    Determine and return the default shell
+    of the current logged in user.
+    Args:
+        None
+    Returns:
+        shell name (str)
+    '''
+    try:
+        bin_path = os.environ.get('SHELL')
+        return bin_path.split(os.path.sep)[-1]
+    except AttributeError:
+        # SHELL environment not set
+        return None
