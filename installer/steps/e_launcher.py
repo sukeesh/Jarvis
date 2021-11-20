@@ -29,9 +29,13 @@ python "{PATH}/jarviscli" "$@"
     fw.close()
 
     shell('chmod +x jarvis').should_not_fail()
-
+    # get the SHELL of the current user
+    user_shell = get_default_shell()
+    if user_shell is None:
+        # Fallback
+        user_shell = 'bash'
     install_options = [("Install jarvis /usr/local/bin starter (requires root)", 0),
-                       ("Add {} to $PATH (.bashrc)".format(os.getcwd()), 1),
+                       ("Add {} to $PATH (.{}rc)".format(os.getcwd(), user_shell, ), 1),
                        ("Do nothing (Call Jarvis by full path)", 2)]
     selection = user_input(install_options)
 
@@ -39,22 +43,22 @@ python "{PATH}/jarviscli" "$@"
         os.system('sudo cp jarvis /usr/local/bin')
     elif selection == 1:
         line_to_add = 'export PATH="$PATH:{}"'.format(os.getcwd())
-        bashrc = '{}/.bashrc'.format(expanduser("~"))
+        shell_rc = '{}/.{}rc'.format(expanduser("~"), user_shell)
 
-        if not os.path.exists(bashrc):
-            print("NO .bashrc found!")
+        if not os.path.exists(shell_rc):
+            print(f"NO .{user_shell}rc found!")
         else:
             line_already_exists = False
 
-            fr = open(bashrc)
+            fr = open(shell_rc)
             for line in fr.readlines():
                 if line.startswith(line_to_add):
                     line_already_exists = True
 
             if line_already_exists:
-                print("Jarvis path already added to $PATH in bashrc!")
+                print(f"Jarvis path already added to $PATH in .{user_shell}rc!")
             else:
-                fw = open(bashrc, 'a')
+                fw = open(shell_rc, 'a')
                 fw.write(line_to_add)
                 fw.write('\n')
                 fw.close()
