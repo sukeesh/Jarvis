@@ -31,17 +31,22 @@ python "{PATH}/jarviscli" "$@"
     shell('chmod +x jarvis').should_not_fail()
     # get the SHELL of the current user
     user_shell = get_default_shell()
-    if user_shell is None:
-        # Fallback
-        user_shell = 'bash'
-    install_options = [("Install jarvis /usr/local/bin starter (requires root)", 0),
-                       ("Add {} to $PATH (.{}rc)".format(os.getcwd(), user_shell, ), 1),
-                       ("Do nothing (Call Jarvis by full path)", 2)]
+    _do_nothing_str = "Do nothing (Call Jarvis by full path)"
+    install_options = [("Install jarvis /usr/local/bin starter (requires root)", 0),]
+    if user_shell in SUPPORTED_SHELLS:
+        install_options += [
+            ("Add {} to $PATH (.{}rc)".format(os.getcwd(), user_shell, ), 1),
+            (_do_nothing_str, 2)
+        ]
+    else:
+        install_options += [
+            (_do_nothing_str, 1)
+        ]
     selection = user_input(install_options)
 
     if selection == 0:
         os.system('sudo cp jarvis /usr/local/bin')
-    elif selection == 1:
+    elif selection == 1 and user_shell in SUPPORTED_SHELLS:
         line_to_add = 'export PATH="$PATH:{}"'.format(os.getcwd())
         shell_rc = '{}/.{}rc'.format(expanduser("~"), user_shell)
 
@@ -64,7 +69,7 @@ python "{PATH}/jarviscli" "$@"
                 fw.close()
 
     printlog('\n\nInstallation complete. Try using Jarvis!')
-    if selection != 2:
+    if selection == 0 or (selection == 1 and user_shell in SUPPORTED_SHELLS):
         printlog('$ jarvis')
     else:
         printlog('$ {}/jarvis'.format(os.getcwd()))

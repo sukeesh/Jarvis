@@ -7,6 +7,10 @@ from threading import Thread
 from tempfile import NamedTemporaryFile
 from unix_windows import IS_WIN
 
+SUPPORTED_SHELLS = [
+    'bash',
+    'zsh',
+]
 
 # python 2/3 compatibility
 try:
