@@ -1,5 +1,5 @@
 akinator.py
-archey4==4.6.0.post1; sys_platform != 'darwin'
+archey4==4.13.3; sys_platform != 'darwin'
 beautifulsoup4
 colorama
 distro
@@ -7,7 +7,7 @@ flake8
 forex-python
 geopy
 gitpython
-googletrans==3.1.0a0
+googletrans==3.0.0
 IMDbPY
 mock
 nltk
@@ -25,7 +25,7 @@ pypiwin32; sys_platform == 'win32'
 pyreadline; sys_platform == 'win32'
 python-dateutil
 pytimeparse
-pyttsx3 == 2.71; sys_platform != 'darwin'
+pyttsx3 ==2.90; sys_platform != 'darwin'
 pywin32; sys_platform == 'win32'
 random-word
 requests[security]
