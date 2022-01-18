@@ -5,8 +5,6 @@ beautifulsoup4
 colorama
 cryptography
 distro
-Pillow
-pyautogui
 flake8
 flask
 forex-python
