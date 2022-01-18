@@ -1,12 +1,12 @@
 import os
 
-import jarvis as jarvis
-from plugin import plugin, require, LINUX, MACOS, WINDOWS
 import pyautogui as pg
+from plugin import LINUX, MACOS, WINDOWS, plugin, require
+
 
 @require(platform=WINDOWS)
 @plugin('screencapture')
-def Scrrencapture_Windows():
+def Screencapture_Windows(jarvis, s):
     """
     By holding Windows + Alt + R key we start screen capture in
     """
@@ -25,10 +25,9 @@ def Scrrencapture_Windows():
         jarvis.say('Screen Recording Ended')
 
 
-
 @require(platform=LINUX)
 @plugin('screencapture')
-def Scrrencapture_LINUX():
+def Scrrencapture_LINUX(jarvis, s):
     """
     By holding Ctrl + Alt + Shift + R key we start screen capture in
     """
@@ -52,7 +51,7 @@ def Scrrencapture_LINUX():
 
 @require(platform=MACOS)
 @plugin('screencapture')
-def Scrrencapture_MACOS():
+def Scrrencapture_MACOS(jarvis, s):
     """
     By holding Ctrl + Alt + Shift + R key we start screen capture in
     """
