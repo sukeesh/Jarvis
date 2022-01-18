@@ -3,7 +3,6 @@ import sys
 
 from helper import executable_exists
 
-
 PackageManager = {
     "macos": "brew install",
     "linux": {
@@ -144,6 +143,14 @@ HTOP = {
             'debian': 'htop'
         }
     }
+}
+
+
+PYAUTOGUI = {
+    "name": "pyautogui",
+    "pip": ['pyautogui'],
+    "description": "Required for automation (e.g. automatic key presses)",
+    "instrauction": ""
 }
 
 
