@@ -44,3 +44,5 @@ Image
 img2pdf
 pdf2image
 python-nmap
+PyPDF2
+fasttext
