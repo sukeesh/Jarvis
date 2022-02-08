@@ -71,15 +71,10 @@ def checkWinner(board, jarvis, turn):
 
 @plugin("tic_tac_toe")
 def game(jarvis, s):
-    """
-    The tic tac toe game for two players
-    Positions on the board are placed as follow
-     7 | 8 | 9
-    -----------
-     4 | 5 | 6
-    -----------
-     1 | 2 | 3
-    """
+    print('The tic tac toe game for two players.')
+    print('Positions on the board are placed as follow:')
+    print('7 | 8 | 9\n-----------\n4 | 5 | 6\n-----------\n1 | 2 | 3')
+    print('\n\n\nEnter the numbers on your keyboard to place your piece.')
 
     restartBoard(board)
     turn = ' X '
