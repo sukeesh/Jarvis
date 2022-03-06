@@ -1,9 +1,6 @@
 import requests
 from plugin import plugin, alias, require
-
-
-class weatherReportException(Exception):
-    """An exception for invalid location inputs"""
+from colorama import Fore
 
 
 @require(network=True)
@@ -11,23 +8,44 @@ class weatherReportException(Exception):
 @plugin("weather report")
 class WeatherReport:
     """The user will input a location as a string, and the WeatherDB database will be used to make a GET request and
-    fetch data. Then, the user can pick future days from the upcoming week to see the weather report for. """
+    fetch data. Then, the user can see the weather forecast for the upcoming week if they wish. """
 
     def __call__(self, jarvis: "JarvisAPI", s: str) -> None:
-        print_weather()
+        self.print_weather(jarvis)
 
+    def print_weather(self, jarvis: "JarvisAPI"):
+        jarvis.say("What city are you located in?")
+        jarvis.say("(Only type the city name, not country/province/state.)")
+        loc = jarvis.input("Enter city name: ")
+        loc = loc.lower()
+        x = requests.get('https://weatherdbi.herokuapp.com/data/weather/' + loc)
+        y = x.json()
+        if 'status' in y and y['status'] == 'fail':
+            jarvis.say("Invalid location entered!", color=Fore.RED)
+        else:
+            jarvis.say("Location: ", Fore.BLUE)
+            jarvis.say(y['region'] + ", ")
+            jarvis.say("Approx.time: ", Fore.BLUE)
+            jarvis.say(y['currentConditions']['dayhour'] + ", ")
+            jarvis.say("Temperature: ", Fore.BLUE)
+            jarvis.say(str(y['currentConditions']['temp']['c']) + " deg. C, ")
+            jarvis.say("Precipitation: ", Fore.BLUE)
+            jarvis.say(str(y['currentConditions']['precip']) + ", ")
+            jarvis.say("Humidity: ", Fore.BLUE)
+            jarvis.say(str(y['currentConditions']['humidity']) + ", ")
+            jarvis.say("Wind: ", Fore.BLUE)
+            jarvis.say(str(y['currentConditions']['wind']['km']) + " km/h")
+            self.ask_for_forecast(jarvis, y)
 
-def print_weather():
-    loc = 'kamloops'
-    x = requests.get('https://weatherdbi.herokuapp.com/data/weather/' + loc, )
-    y = x.json()
-    print("Location: " + y['region'] + ", ")
-    print("Approx. time: " + y['currentConditions']['dayhour'] + ", ")
-    print("Temperature: " + str(y['currentConditions']['temp']['c']) + " deg. C, ")
-    print("Precipitation: " + str(y['currentConditions']['precip']) + ", ")
-    print("Humidity: " + str(y['currentConditions']['humidity']) + ", ")
-    print("Wind :" + str(y['currentConditions']['wind']['km']) + " km/h")
-
-
-if __name__ == '__weather_report__':
-    print_weather()
+    def ask_for_forecast(self, jarvis: "JarvisAPI", jason):
+        selected_days = jarvis.input("Would you like to see the weather forecast for the next week? Y/N ")
+        selected_days = selected_days.lower()
+        if selected_days == 'y':
+            for p in jason['next_days']:
+                jarvis.say(p['day'] + ": ", Fore.BLUE)
+                jarvis.say(p['comment'] + ", with a min. temp. of " + str(p['min_temp']['c']) +
+                           " deg. C and a max.temp. of " + str(p['max_temp']['c']) + " deg. C.")
+        elif selected_days == 'n':
+            jarvis.say("Thank you! Goodbye.")
+        else:
+            jarvis.say("Invalid input.", color=Fore.RED)
