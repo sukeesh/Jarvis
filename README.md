@@ -14,10 +14,6 @@ In order to start Jarvis just clone [this repository](https://github.com/sukeesh
 
 Run **Jarvis** from anywhere by command `jarvis`
 
-On Mac OS X run `source setup.sh`
-
-On Windows run `setup.bat`
-
 You can start by typing `help` within the Jarvis command line to check what Jarvis can do for you.
 
 
