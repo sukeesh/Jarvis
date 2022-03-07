@@ -16,13 +16,7 @@ class market_buy():
     MARKETPLACE_PATH = os.path.join((os.sep).join(
         os.path.normpath(__file__).split(os.sep)[0:-3]),
         'marketplace')
-    MAINTAIN_PYTHON_ONLY = True
 
-    def cleanse_non_py(self, parent_folder):
-        for root, dirs, files in os.walk(parent_folder):
-            for f in files:
-                if '.py' not in f:
-                    os.unlink(os.path.join(root, f))
 
     def __call__(self, jarvis, s):
         homepage = 'https://github.com/'
@@ -54,10 +48,5 @@ class market_buy():
                                    'env/bin/pip install -U -r ' +
                                    os.path.join(root, f)))
 
-        # Deleting the .git folder from the cloned repo.
-        shutil.rmtree(os.path.join(plugin_dir, '.git'))
-
-        if self.MAINTAIN_PYTHON_ONLY:
-            self.cleanse_non_py(plugin_dir)
 
         jarvis.say('Operation completed. Please restart Jarvis.')
