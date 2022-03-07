@@ -18,7 +18,7 @@ Create a Github repository and tag it with "jarvis-plugin". Create plugins follo
 
 However the *market buy* only needs the _your_plugin.py_
 
-The whole repo will be saved in the folder _marketplace/_, and your plugin will be installed and read for use when you restart Jarvis.
+The whole repo will be saved in the folder _marketplace/_, and your plugin will be installed and be ready for use when you restart Jarvis.
 
 ## Plugin functions
 
