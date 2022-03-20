@@ -31,7 +31,7 @@ def activity(jarvis, s):
         response += "but it's expensive. "
 
     if (data.get('participants') > 1):
-        response += "It's a group activity of" + str(data.get('participants')) + "participants"
+        response += "It's a group activity of " + str(data.get('participants')) + " participants. "
 
-    response += data.get('activity')
+    response += data.get('activity')  + "."
     jarvis.say(response, Fore.BLUE)
