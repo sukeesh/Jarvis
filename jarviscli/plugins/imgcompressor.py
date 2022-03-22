@@ -13,7 +13,7 @@ class ImageCompressor:
 
     def __init__(self):
         self.quality = None
-        self.formats = ('.jpg', '.jpeg', '.png')
+        self.formats = {'.jpg': 'JPEG', '.jpeg': 'JPEG', '.png': 'PNG'}
 
     def __call__(self, jarvis, s):
         self.img_compressor(jarvis)
@@ -22,7 +22,7 @@ class ImageCompressor:
         jarvis.say('')
         jarvis.say('This tool will help you compress a image')
         jarvis.say(
-            'The given images will be compressed and saved on the same directory with a prefix "Compressed_"')
+            'The given images will be compressed and saved on the same directory with a prefix "compressed_"')
         while True:
 
             self.quality = self.quality_option(jarvis)
@@ -40,7 +40,7 @@ class ImageCompressor:
                 while True:
                     image_path = jarvis.input(
                         'Enter the full path of the image: ')
-                    if os.path.isfile(image_path) and image_path.endswith(self.formats):
+                    if os.path.isfile(image_path) and image_path.endswith(tuple(self.formats)):
                         break
                     else:
                         jarvis.say(
@@ -71,7 +71,7 @@ class ImageCompressor:
         """
         jarvis.say('Select one of the following options:')
         jarvis.say('1: Compress a single image')
-        jarvis.say('2: Compress all images of the folder')
+        jarvis.say('2: Compress all images of a folder')
         jarvis.say('3: Quit')
 
     def quality_option(self, jarvis):
@@ -88,7 +88,7 @@ class ImageCompressor:
         """
         os.chdir(folder_path)
         for image in os.listdir(os.getcwd()):
-            if image.endswith(self.formats):
+            if image.endswith(tuple(self.formats)):
                 self.img_compress(
                     jarvis, os.path.join(os.getcwd(), image), from_folder=True)
 
@@ -103,7 +103,7 @@ class ImageCompressor:
         picture = Image.open(img_path, mode='r')
 
         picture.save(os.path.join(os.path.dirname(img_path), "compressed_" + os.path.basename(img_path)),
-                     "PNG" if img_path.endswith('png') else "JPEG",
+                     self.formats.get(os.path.splitext(img_path)[1]),
                      optimize=True,
                      quality=self.quality)
 
