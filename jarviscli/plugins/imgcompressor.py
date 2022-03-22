@@ -12,7 +12,7 @@ class ImageCompressor:
     """
 
     def __init__(self):
-        self.quality = 10
+        self.quality = None
         self.formats = ('.jpg', '.jpeg', '.png')
 
     def __call__(self, jarvis, s):
@@ -25,7 +25,7 @@ class ImageCompressor:
             'The given images will be compressed and saved on the same directory with a prefix "Compressed_"')
         while True:
 
-            self.quality_option(jarvis)
+            self.quality = self.quality_option(jarvis)
 
             self.available_options(jarvis)
             user_input = jarvis.input('Your choice: ')
@@ -40,7 +40,7 @@ class ImageCompressor:
                 while True:
                     image_path = jarvis.input(
                         'Enter the full path of the image: ')
-                    if os.path.exists(image_path) and image_path.endswith(self.formats):
+                    if os.path.isfile(image_path) and image_path.endswith(self.formats):
                         break
                     else:
                         jarvis.say(
@@ -51,8 +51,8 @@ class ImageCompressor:
             elif user_input == '2':
                 while True:
                     folder_path = jarvis.input(
-                        'Enter the full path of the folder: ')
-                    if os.path.exists(folder_path):
+                        'Enter the full path of a folder: ')
+                    if os.path.isdir(folder_path):
                         break
                     else:
                         jarvis.say(
@@ -86,12 +86,11 @@ class ImageCompressor:
         This function is used to compress all the images
         in a given folder path.
         """
-        if not folder_path.endswith("/"):
-            folder_path+="/"
         os.chdir(folder_path)
         for image in os.listdir(os.getcwd()):
             if image.endswith(self.formats):
-                self.img_compress(jarvis, folder_path + image, from_folder=True)
+                self.img_compress(
+                    jarvis, os.path.join(os.getcwd(), image), from_folder=True)
 
         jarvis.say(
             'Your images in the provided folder were compressed successfully', Fore.GREEN)
@@ -103,13 +102,10 @@ class ImageCompressor:
         """
         picture = Image.open(img_path, mode='r')
 
-        splitted_path = img_path.split("/")
-        img_name = splitted_path.pop()
-        folder_path = "/".join(splitted_path)
-
-        picture.save(folder_path + "/Compressed_" + img_name,
+        picture.save(os.path.join(os.path.dirname(img_path), "compressed_" + os.path.basename(img_path)),
                      "PNG" if img_path.endswith('png') else "JPEG",
                      optimize=True,
                      quality=self.quality)
+
         if not from_folder:
             jarvis.say('Your image was compressed successfully', Fore.GREEN)
