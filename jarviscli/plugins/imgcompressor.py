@@ -14,15 +14,24 @@ class ImageCompressor:
     def __init__(self):
         self.quality = None
         self.formats = {'.jpg': 'JPEG', '.jpeg': 'JPEG', '.png': 'PNG'}
+        self.prefix = 'compressed_'
 
     def __call__(self, jarvis, s):
         self.img_compressor(jarvis)
 
     def img_compressor(self, jarvis):
+        """Main function
+        
+        This function is the main menu, that will run
+        until the user says otherwise
+        """
+
         jarvis.say('')
         jarvis.say('This tool will help you compress a image')
         jarvis.say(
-            'The given images will be compressed and saved on the same directory with a prefix "compressed_"')
+            'The given images will be compressed and saved ' \
+                + f'on the same directory with a prefix {self.prefix}'
+            )
         while True:
 
             self.quality = self.quality_option(jarvis)
@@ -69,23 +78,35 @@ class ImageCompressor:
         Message displayed to prompt the user about compressing
         images.
         """
+
         jarvis.say('Select one of the following options:')
         jarvis.say('1: Compress a single image')
         jarvis.say('2: Compress all images of a folder')
         jarvis.say('3: Quit')
 
     def quality_option(self, jarvis):
-        """
+        """Get desired image quality
+
         Message displayed to prompt the user about the quality
         of compression.
         """
-        return abs(jarvis.input_number(prompt='\nEnter desired quality of compressions (0-100 where 100 is maximum compression): ', rtype=int, rmin=0, rmax=100)-100)
+
+        return abs(
+            jarvis.input_number(
+                prompt='\nEnter desired quality of compressions (0-100 where 100 is maximum compression): ',
+                rtype=int,
+                rmin=0,
+                rmax=100
+                ) - 100
+            )
 
     def folder_images_compress(self, jarvis, folder_path):
-        """
+        """Compress all images in a folder
+
         This function is used to compress all the images
         in a given folder path.
         """
+
         os.chdir(folder_path)
         for image in os.listdir(os.getcwd()):
             if image.endswith(tuple(self.formats)):
@@ -93,16 +114,19 @@ class ImageCompressor:
                     jarvis, os.path.join(os.getcwd(), image), from_folder=True)
 
         jarvis.say(
-            'Your images in the provided folder were compressed successfully', Fore.GREEN)
+            'Your images in the provided folder were compressed successfully', Fore.GREEN
+            )
 
     def img_compress(self, jarvis, img_path, from_folder=False):
-        """
+        """Save image at specific location
+
         Save the pdf to the thus supplied location
         or prompt the user to choose a new location
         """
+
         picture = Image.open(img_path, mode='r')
 
-        picture.save(os.path.join(os.path.dirname(img_path), "compressed_" + os.path.basename(img_path)),
+        picture.save(os.path.join(os.path.dirname(img_path), self.prefix + os.path.basename(img_path)),
                      self.formats.get(os.path.splitext(img_path)[1]),
                      optimize=True,
                      quality=self.quality)
