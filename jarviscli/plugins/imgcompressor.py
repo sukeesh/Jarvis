@@ -7,9 +7,7 @@ from colorama import Fore
 @alias('image compressor')
 @plugin('imgcompressor')
 class ImageCompressor:
-    """
-    A tool to compress images
-    """
+    """A tool to compress images."""
 
     def __init__(self):
         self.quality = None
@@ -20,10 +18,10 @@ class ImageCompressor:
         self.img_compressor(jarvis)
 
     def img_compressor(self, jarvis):
-        """Main function
+        """Main function.
 
         This function is the main menu, that will run
-        until the user says otherwise
+        until the user says otherwise.
         """
 
         jarvis.say('')
@@ -94,7 +92,7 @@ class ImageCompressor:
         jarvis.say('3: Quit')
 
     def quality_option(self, jarvis):
-        """Get desired image quality
+        """Get desired image quality.
 
         Message displayed to prompt the user about the quality
         of compression.
@@ -110,7 +108,7 @@ class ImageCompressor:
         )
 
     def folder_images_compress(self, jarvis, folder_path):
-        """Compress all images in a folder
+        """Compress all images in a folder.
 
         This function is used to compress all the images
         in a given folder path.
@@ -127,7 +125,7 @@ class ImageCompressor:
         )
 
     def img_compress(self, jarvis, img_path, from_folder=False):
-        """Save image at specific location
+        """Save image at specific location.
 
         TODO
         Save the image to the thus supplied location
