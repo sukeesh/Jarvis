@@ -114,11 +114,10 @@ class ImageCompressor:
         in a given folder path.
         """
 
-        os.chdir(folder_path)
-        for image in os.listdir(os.getcwd()):
+        for image in os.listdir(folder_path):
             if image.endswith(tuple(self.formats)):
                 self.img_compress(
-                    jarvis, os.path.join(os.getcwd(), image), from_folder=True)
+                    jarvis, os.path.join(folder_path, image), from_folder=True)
 
         jarvis.say(
             'Your images in the provided folder were compressed successfully', Fore.GREEN
