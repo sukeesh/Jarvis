@@ -6,6 +6,13 @@ import requests
 import os
 import shutil
 
+"""Instructions to run this test.
+
+source env/bin/activate
+cd jarviscli/
+python -m unittest tests/test_imgcompressor.py
+"""
+
 
 class ImgCompressorTest(PluginTest):
     def setUp(self):
@@ -21,11 +28,12 @@ class ImgCompressorTest(PluginTest):
 
     def tearDown(self):
         PluginTest.tearDown(self)
-        shutil.rmtree(self.image_folder)    # remove directory with the dummy images
+        # remove directory with the dummy images
+        shutil.rmtree(self.image_folder)
 
     def create_image_folder(self):
         """Create a folder with two dummy images.
-        
+
         This images will be used to test the two functionalities
         of the ImgCompressor plugin
         """
@@ -51,7 +59,7 @@ class ImgCompressorTest(PluginTest):
             self.fail('Image Couldn\'t be retrieved')
 
     def test_compress_single_image(self):
-        """Test the workflow to compress a single image."""
+        """Test workflow to compress a single image."""
 
         # insert data to be retrieved by jarvis.input()
         self.queue_input('1')           # select 1 on the menu
@@ -82,13 +90,74 @@ class ImgCompressorTest(PluginTest):
             os.path.join(self.image_folder, self.prefix + self.image1)
         ).st_size
 
-        # TODO specify exactly the numbers of bytes of the compressed image
-        self.assertTrue(
-            original_image_size > compressed_image_size
+        self.assertGreater(
+            original_image_size, compressed_image_size
         )
 
         # verify that the client quited the menu
-        self.assertEqual(self.history_say().last_text(), 'See you next time :D')
+        self.assertEqual(self.history_say().last_text(),
+                         'See you next time :D')
+
+    def test_compress_multiple_images(self):
+        """Test workflow to compress multiple images."""
+
+        # insert data to be retrieved by jarvis.input()
+        self.queue_input('2')           # select 1 on the menu
+        self.queue_input('30')          # chose 30 for image quality
+
+        # specify the image path when jarvis.input() is called
+        self.queue_input(self.image_folder)
+
+        self.queue_input('3')           # quit from the main menu
+
+        # run code
+        self.test.run('')
+
+        # verify that, there are 4 images, 2 original and other 2 compressed
+        images_on_folder = os.listdir(self.image_folder)
+
+        self.assertEqual(len(images_on_folder), 4)
+
+        self.assertEqual(
+            len(
+                [
+                    image
+                    for image in images_on_folder
+                    if image.startswith(self.prefix)
+                ]
+            ), 2
+        )
+
+        # check if the compressed images have the right size
+        image1, image1_compressed = (
+            os.stat(
+                os.path.join(self.image_folder, self.image1)
+            ).st_size,
+            os.stat(
+                os.path.join(self.image_folder, self.prefix + self.image1)
+            ).st_size
+        )
+
+        image2, image2_compressed = (
+            os.stat(
+                os.path.join(self.image_folder, self.image2)
+            ).st_size,
+            os.stat(
+                os.path.join(self.image_folder, self.prefix + self.image2)
+            ).st_size
+        )
+
+        self.assertGreater(
+            image1, image1_compressed
+        )
+
+        self.assertGreater(
+            image2, image2_compressed
+        )
+
+        # verify that the client quited the menu
+        self.assertEqual(self.history_say().last_text(),
+                         'See you next time :D')
 
 
 if __name__ == '__main__':

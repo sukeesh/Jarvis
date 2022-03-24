@@ -124,11 +124,10 @@ class ImageCompressor:
         )
 
     def img_compress(self, jarvis, img_path, from_folder=False):
-        """Save image at specific location.
+        """Save and compress image.
 
-        TODO
-        Save the image to the thus supplied location
-        or prompt the user to choose a new location
+        Save and compress the image to same location as the original
+        with the specified quality of compression.
         """
 
         picture = Image.open(img_path, mode='r')
@@ -137,8 +136,6 @@ class ImageCompressor:
                      self.formats.get(os.path.splitext(img_path)[1]),
                      optimize=True,
                      quality=self.quality)
-
-        # TODO esta a gravar sempre com a mesma qualidade
 
         if not from_folder:
             jarvis.say('Your image was compressed successfully', Fore.GREEN)
