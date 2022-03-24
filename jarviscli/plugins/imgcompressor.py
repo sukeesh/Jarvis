@@ -102,7 +102,7 @@ class ImageCompressor:
 
         return abs(
             jarvis.input_number(
-                prompt='\nEnter desired quality of compressions (0-100 where 100 is maximum compression): ',
+                prompt='\nEnter desired quality of compression (0-100 where 100 is maximum compression): ',
                 rtype=int,
                 rmin=0,
                 rmax=100
@@ -124,7 +124,7 @@ class ImageCompressor:
 
         jarvis.say(
             'Your images in the provided folder were compressed successfully', Fore.GREEN
-            )
+        )
 
     def img_compress(self, jarvis, img_path, from_folder=False):
         """Save image at specific location
