@@ -21,7 +21,7 @@ class ImageCompressor:
 
     def img_compressor(self, jarvis):
         """Main function
-        
+
         This function is the main menu, that will run
         until the user says otherwise
         """
@@ -29,12 +29,10 @@ class ImageCompressor:
         jarvis.say('')
         jarvis.say('This tool will help you compress a image')
         jarvis.say(
-            'The given images will be compressed and saved ' \
-                + f'on the same directory with a prefix {self.prefix}'
-            )
+            'The given images will be compressed and saved '
+            + f'on the same directory with a prefix {self.prefix}'
+        )
         while True:
-
-            self.quality = self.quality_option(jarvis)
 
             self.available_options(jarvis)
             user_input = jarvis.input('Your choice: ')
@@ -44,34 +42,45 @@ class ImageCompressor:
                 jarvis.say("See you next time :D", Fore.CYAN)
                 break
 
+            self.quality = self.quality_option(jarvis)
+
             # For single image to be compressed
-            elif user_input == '1':
-                while True:
-                    image_path = jarvis.input(
-                        'Enter the full path of the image: ')
-                    if os.path.isfile(image_path) and image_path.endswith(tuple(self.formats)):
-                        break
-                    else:
-                        jarvis.say(
-                            'Opps! Looks like you entered an invalid path. Kindly Re-enter', Fore.RED)
-                self.img_compress(jarvis, image_path)
+            if user_input == '1':
+                self.compress_single_image(jarvis)
 
             # For multiple images in a folder to be compressed
             elif user_input == '2':
-                while True:
-                    folder_path = jarvis.input(
-                        'Enter the full path of a folder: ')
-                    if os.path.isdir(folder_path):
-                        break
-                    else:
-                        jarvis.say(
-                            'Opps! Looks like you entered an invalid path. Kindly Re-enter', Fore.RED)
-                self.folder_images_compress(jarvis, folder_path)
-
-            # For an incorrectly entered option
+                self.compress_multiple_images(jarvis)
+                # For an incorrectly entered option
             else:
                 jarvis.incorrect_option()
                 continue
+
+    def compress_single_image(self, jarvis):
+        """Compress a single image, specifying the full path."""
+
+        while True:
+            image_path = jarvis.input(
+                'Enter the full path of the image: ')
+            if os.path.isfile(image_path) and image_path.endswith(tuple(self.formats)):
+                break
+            else:
+                jarvis.say(
+                    'Opps! Looks like you entered an invalid path. Kindly Re-enter', Fore.RED)
+        self.img_compress(jarvis, image_path)
+
+    def compress_multiple_images(self, jarvis):
+        """Compress multiple images on a folder, specifying the full path to the folder."""
+
+        while True:
+            folder_path = jarvis.input(
+                'Enter the full path of a folder: ')
+            if os.path.isdir(folder_path):
+                break
+            else:
+                jarvis.say(
+                    'Opps! Looks like you entered an invalid path. Kindly Re-enter', Fore.RED)
+        self.folder_images_compress(jarvis, folder_path)
 
     def available_options(self, jarvis):
         """
@@ -97,8 +106,8 @@ class ImageCompressor:
                 rtype=int,
                 rmin=0,
                 rmax=100
-                ) - 100
-            )
+            ) - 100
+        )
 
     def folder_images_compress(self, jarvis, folder_path):
         """Compress all images in a folder
@@ -120,7 +129,8 @@ class ImageCompressor:
     def img_compress(self, jarvis, img_path, from_folder=False):
         """Save image at specific location
 
-        Save the pdf to the thus supplied location
+        TODO
+        Save the image to the thus supplied location
         or prompt the user to choose a new location
         """
 
@@ -130,6 +140,8 @@ class ImageCompressor:
                      self.formats.get(os.path.splitext(img_path)[1]),
                      optimize=True,
                      quality=self.quality)
+
+        # TODO esta a gravar sempre com a mesma qualidade
 
         if not from_folder:
             jarvis.say('Your image was compressed successfully', Fore.GREEN)
