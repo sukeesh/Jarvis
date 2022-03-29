@@ -33,13 +33,17 @@ def start(args, jarvis):
         jarvis.activate_frontend('cli')
     if args.enable_server:
         jarvis.activate_frontend('server')
-    if args.enable_gui:
-        jarvis.activate_frontend('gui')
     voice = jarvis.get_data('voice_status')
     if args.enable_voice or voice and not args.disable_voice:
         jarvis.activate_frontend('voice')
     if args.enable_voice_control:
         jarvis.activate_frontend('voice_control')
+    if args.enable_gui:
+        gui_selection = select_gui_framework()
+        if gui_selection == 1:
+            jarvis.activate_frontend('gui')
+        elif gui_selection == 2:
+            start_pyqt5_gui(jarvis)
 
     if len(args.CMD) == 0:
         jarvis.run()
@@ -59,6 +63,42 @@ def start_gui(jarvis):
     from ui.gui.application import JarvisApp
     jarvis_gui = JarvisApp(jarvis)
     jarvis_gui.run()
+
+
+def select_gui_framework():
+    while True:
+        print("\nWith which GUI framework would you like to run Jarvis?\n")
+        print("1. Run Jarvis with Kivy Framework.")
+        print("2. Run Jarvis with PyQt5 Framework.")
+        try:
+            gui_selection = int(input("Gui Selection: "))
+        except ValueError as err:
+            print("Please enter an invalid input as integer! (e.g: 1)")
+            continue
+        if gui_selection == 1 or gui_selection == 2:
+            return gui_selection
+        else:
+            print("Please select an option in the list!")
+
+
+def start_pyqt5_gui(jarvis):
+    from frontend.pyqt5_gui.custom_circle_widget import OpenGLWidget
+    from frontend.pyqt5_gui.utils import trace_function
+    from PyQt5.QtWidgets import QApplication
+    from threading import Thread
+    from PyQt5.QtCore import Qt
+
+    sys.argv = [sys.argv[0]]
+    QApplication.setAttribute(Qt.AA_UseDesktopOpenGL)
+    a = QApplication(sys.argv)
+    w = OpenGLWidget()
+
+    jarvis.say = trace_function(jarvis.say, w)
+    jarvis_run_thread = Thread(target=jarvis.run)
+    jarvis_run_thread.start()
+
+    w.show()
+    sys.exit(a.exec_())
 
 
 def build_plugin_manager():

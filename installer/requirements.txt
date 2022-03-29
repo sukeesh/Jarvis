@@ -33,7 +33,9 @@ pydoc-markdown
 pydub
 pyjokes
 pync==1.6.1; sys_platform == 'darwin'
+pyopengl
 pypiwin32; sys_platform == 'win32'
+pyqt5
 pyreadline; sys_platform == 'win32'
 python-dateutil
 pytimeparse
