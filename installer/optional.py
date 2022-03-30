@@ -38,7 +38,7 @@ PortAudio = {
             'suse': 'python3-PyAudio python3-devel',
             'debian': 'python3-pyaudio python3-dev'
         }},
-    "description": "Required for voice control",
+    "description": "Required for voice control and music recognition",
     "instruction": """\
 Please install python-binding 'pyaudio' manually."
 For more details go to the below link:
@@ -81,7 +81,7 @@ NativeNotification = {
 FFMPEG = {
     "name": "ffmpeg",
     "executable": ['ffmpeg'],
-    "description": "Download music as .mp3 instead .webm",
+    "description": "Download music as .mp3 instead .webm. Also needed for music recognition",
     "instruction": "Please install 'ffmpeg' manually using your local package manager!",
     "package_guess": {
         "macos": "ffmpeg",
