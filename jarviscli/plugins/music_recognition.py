@@ -42,7 +42,7 @@ class MusicRecognition:
         jarvis.say('')
         jarvis.say('This tool will let you recognize a music')
         jarvis.say('To achieve this, a 15 seconds recording of your microphone is ' +
-            'done and sent to Shazam servers')
+                   'done and sent to Shazam servers')
 
         while True:
 
@@ -92,9 +92,13 @@ class MusicRecognition:
     def select_microphone(self, jarvis):
         """Select input device from the available ones"""
 
-        jarvis.say('\nSelect one of following available input devices:')
-
         input_devices = sr.Microphone.list_microphone_names()
+
+        if not input_devices:
+            jarvis.say('There are no input devices available', Fore.RED)
+            return None
+
+        jarvis.say('\nSelect one of following available input devices:')
 
         for i, val in enumerate(input_devices):
             jarvis.say(f"{i+1}: {val}")
@@ -112,7 +116,14 @@ class MusicRecognition:
 
     async def get_shazam_info(self, jarvis):
         out = await self.shazam.recognize_song(self.sound_recorded.name)
-        jarvis.say(str(out['track']), Fore.GREEN)
+
+        if not out['matches']:
+            jarvis.say('No match found', Fore.RED)
+        else:
+            jarvis.say('Match found:', Fore.GREEN)
+            jarvis.say(f"Song Title: {str(out['track']['title'])}", Fore.GREEN)
+            jarvis.say(
+                f"Song Artist: {str(out['track']['subtitle'])}", Fore.GREEN)
 
     def play_last_recorded_sound(self, jarvis):
         jarvis.say('-----Now playing last recorded sound-----', Fore.BLUE)
@@ -123,7 +134,8 @@ class MusicRecognition:
     async def recognize_music(self, jarvis):
         """Function that does the music recognition flow"""
 
-        self.record_microphone(jarvis)
+        if not self.record_microphone(jarvis):
+            return None
 
         while True:
 
@@ -137,14 +149,14 @@ class MusicRecognition:
             # To select input device
             if user_input == '1':
                 self.play_last_recorded_sound(jarvis)
-            
+
             # To get Shazam music info
             elif user_input == '2':
                 await self.get_shazam_info(jarvis)
-                
+
             # To record a new sound
             elif user_input == '3':
-                self.record_microphone(jarvis)  
+                self.record_microphone(jarvis)
 
             # For an incorrectly entered option
             else:
@@ -156,7 +168,8 @@ class MusicRecognition:
 
         if not self.selected_microphone:
             jarvis.say('Microphone not yet selected...', Fore.RED)
-            self.select_microphone(jarvis)
+            if not self.select_microphone(jarvis):
+                return None
 
         my_mic = sr.Microphone(device_index=self.selected_microphone)
 
