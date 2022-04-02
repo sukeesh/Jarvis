@@ -1,10 +1,13 @@
 from io import BytesIO
 import tempfile
+import urllib.error
+import urllib.request
 from plugin import plugin, require, alias
 from colorama import Fore
 from shazamio import Shazam
 import pydub
 import asyncio
+import climage
 
 requirements = ['ffmpeg']
 try:
@@ -117,10 +120,19 @@ class MusicRecognition:
     async def get_shazam_info(self, jarvis):
         out = await self.shazam.recognize_song(self.sound_recorded.name)
 
-        if not out['matches']:
+        if not 'track' in out:
             jarvis.say('No match found', Fore.RED)
         else:
             jarvis.say('Match found:', Fore.GREEN)
+            if 'images' in out['track'] and 'coverart' in out['track']['images']:
+                try:
+                    request = urllib.request.urlopen(
+                        out['track']['images']['coverart'])
+                    downloaded_image = BytesIO(request.read())
+                    pixel_art = climage.convert(downloaded_image, width=50)
+                    jarvis.say(pixel_art)
+                except urllib.error.URLError:
+                    pass
             jarvis.say(f"Song Title: {str(out['track']['title'])}", Fore.GREEN)
             jarvis.say(
                 f"Song Artist: {str(out['track']['subtitle'])}", Fore.GREEN)
@@ -166,7 +178,8 @@ class MusicRecognition:
     def record_microphone(self, jarvis):
         """Record microphone input for 15 seconds"""
 
-        if not self.selected_microphone:
+        # Although not following PEP 8, using is None because it can be 0
+        if self.selected_microphone is None:
             jarvis.say('Microphone not yet selected...', Fore.RED)
             if not self.select_microphone(jarvis):
                 return None

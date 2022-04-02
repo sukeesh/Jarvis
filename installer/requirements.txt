@@ -34,6 +34,7 @@ speedtest-cli
 sympy
 tabulate
 termdown
+climage
 opencv-python-headless
 whois
 wikipedia
