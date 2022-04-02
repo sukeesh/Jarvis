@@ -72,7 +72,8 @@ class MusicRecognition:
 
     def available_options(self, jarvis):
         """
-        Message displayed to prompt the user about music recognition plugin.
+        Message displayed to prompt the user about actions of 
+        music recognition plugin.
         """
 
         jarvis.say('\nSelect one of the following options:')
@@ -118,6 +119,11 @@ class MusicRecognition:
         return input_devices[self.selected_microphone]
 
     async def get_shazam_info(self, jarvis):
+        """
+        Get music match from Shazam servers
+        If available, draw a pixel art of the cover art
+        """
+
         out = await self.shazam.recognize_song(self.sound_recorded.name)
 
         if not 'track' in out:
@@ -138,6 +144,8 @@ class MusicRecognition:
                 f"Song Artist: {str(out['track']['subtitle'])}", Fore.GREEN)
 
     def play_last_recorded_sound(self, jarvis):
+        """Play the last recorded sound"""
+
         jarvis.say('-----Now playing last recorded sound-----', Fore.BLUE)
         mp3_file = pydub.AudioSegment.from_file(
             self.sound_recorded, format="mp3")

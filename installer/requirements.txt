@@ -1,6 +1,7 @@
 akinator.py
 archey4==4.6.0.post1; sys_platform != 'darwin'
 beautifulsoup4
+climage
 colorama
 distro
 flake8
@@ -34,7 +35,6 @@ speedtest-cli
 sympy
 tabulate
 termdown
-climage
 opencv-python-headless
 whois
 wikipedia
