@@ -11,6 +11,7 @@ env/
 *.pyc
 *.log
 .idea/
+venv/
 MANIFEST.in
 setup.cfg
 setup.py
