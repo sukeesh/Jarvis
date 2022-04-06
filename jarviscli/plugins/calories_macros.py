@@ -1,6 +1,10 @@
 from colorama import Fore
 from plugin import plugin, alias
-from typing import Tuple
+from typing import Callable, Tuple
+
+
+class ValueOutOfRangeError(Exception):
+    pass
 
 
 @alias("macros")
@@ -33,25 +37,28 @@ class CaloriesMacrosPlugin:
         """
         jarvis.say("Hello there! To calculate your daily calorie intake "
                    "I need to get to know you a bit more...")
-        gender = jarvis.input("What's your gender? (M/F) ")
-        while not self.validate_gender(gender):
-            print(Fore.YELLOW + "Sorry, invalid input was given! Please"
-                                " try again. (M/F) ")
-            gender = jarvis.input()
-        # Reads the input age and calls the validation method.
-        age = jarvis.input("What's your age? ")
-        while not self.validate_age(age):
-            age = jarvis.input()
-        age = int(age)
-        height = jarvis.input("What is your height? (cm) ")
-        while not self.validate_height(height):
-            height = jarvis.input()
-        height = int(height)
 
-        weight = jarvis.input("What is your weight? (kg) ")
-        while not self.validate_weight(weight):
-            weight = jarvis.input()
-        weight = int(weight)
+        input_msg = 'Gender (M/F): '
+        error_msg = 'Oops! That was not a valid gender. Please try again (M/F)...'
+        gender = self.read_gender(jarvis, input_msg, error_msg)
+
+        input_msg = 'Age: '
+        bool_expression: Callable[[int], bool] = lambda age: age < 14
+        error_msg = ('We suggest you to consult a nutrition expert if you are '
+            'under 14 years old.'
+            '\nIf you made a mistake while entering your age, try again...')
+        age = self.read_input(jarvis, input_msg, bool_expression, error_msg)
+
+        input_msg = 'Height (cm): '
+        bool_expression: Callable[[int], bool] = lambda height: height <= 0
+        error_msg = 'Oops! That was not a valid height. Try again...'
+        height = self.read_input(jarvis, input_msg, bool_expression, error_msg)
+
+        input_msg = 'Weight (kg): '
+        bool_expression: Callable[[int], bool] = lambda weight: weight <= 0
+        error_msg = 'Oops! That was not a valid weight. Try again...'
+        weight = self.read_input(jarvis, input_msg, bool_expression, error_msg)
+
         jarvis.say("Choose your workout level (1-4) ")
         message = Fore.RESET + Fore.YELLOW + "\nWorkout Levels:\n[1]" + \
             Fore.RESET + " Little or no exercise\n"
@@ -62,13 +69,14 @@ class CaloriesMacrosPlugin:
         message += Fore.RESET + Fore.YELLOW + "[4]" + \
             Fore.RESET + " Active daily exercise or physical job"
         jarvis.say(message)
-        # Reads the input workout_level and calls the validation method.
-        workout_level = jarvis.input("Please enter your choice: ")
-        while not self.validate_workout_level(workout_level):
-            workout_level = jarvis.input()
-        workout_level = int(workout_level)
+        input_msg = 'Choose your activity level (1-4): '
+        bool_expression: Callable[[int], bool] = \
+            lambda activity_level: not(1 <= activity_level <= 4)
+        error_msg = 'Oops! Invalid input. Try again (1-4)...'
+        activity_level = self.read_input(
+            jarvis, input_msg, bool_expression, error_msg)
 
-        brm_info = self.calories(gender, age, height, weight, workout_level)
+        brm_info = self.calories(gender, age, height, weight, activity_level)
         jarvis.say("\nYour personal calorie data!", Fore.CYAN)
         jarvis.say("Daily calorie intake:    " + Fore.RESET +
                    Fore.GREEN + str(brm_info[0]))
@@ -77,59 +85,35 @@ class CaloriesMacrosPlugin:
         jarvis.say("Put on  weight calories: " + Fore.RESET +
                    Fore.RED + str(brm_info[2]))
 
+    def red(self, content: str) -> str:
+        return f'{Fore.RED}{content}{Fore.RESET}'
+
+    def read_gender(self, jarvis, input_message: str, error_message: str) -> str:
+        while True:
+            gender = jarvis.input(input_message)
+            if self.validate_gender(gender):
+                return gender.upper()
+            print(self.red(error_message))
+
     def validate_gender(self, gender: str) -> bool:
-        """Function that takes as input the gender and validates it."""
-        # ignore lower or upper letters
         return (gender.upper() == "M" or gender.upper() == "F")
 
-    def validate_age(self, age: int) -> bool:
-        """Function that takes as input the age and validates it."""
-        try:
-            age = int(age)
-            if age <= 0 or age < 14:
-                raise ValueError
-            else:
-                return True
-        except ValueError:
-            print(Fore.YELLOW + "Oops! That was no valid number."
-                                " Try again...")
-            return False
+    def read_input(self, jarvis, input_message: str,
+            bool_expression: Callable[[int], bool], error_message: str) -> int:
+        while True:
+            input = jarvis.input(input_message)
+            if self.validate_input(input, bool_expression):
+                return int(input)
+            print(self.red(error_message))
 
-    def validate_height(self, height: int) -> bool:
-        """Function that takes as input the height and validates it."""
+    def validate_input(self, input: str,
+            bool_expression: Callable[[int], bool]) -> bool:
         try:
-            height = int(height)
-            if height <= 0:
-                raise ValueError
-            else:
-                return True
-        except ValueError:
-            print(Fore.YELLOW + "Oops! That was no valid input."
-                                " Try again...")
-            return False
-
-    def validate_weight(self, weight: int) -> bool:
-        """Function that takes as input the weight and validates it."""
-        try:
-            weight = int(weight)
-            if weight <= 0:
-                raise ValueError
-            else:
-                return True
-        except ValueError:
-            print(Fore.YELLOW + "Oops! That was no valid input. Try again...")
-            return False
-
-    def validate_workout_level(self, workout_level: int) -> bool:
-        """Function that takes as input the workout level and validates it."""
-        try:
-            workout_level = int(workout_level)
-            if workout_level <= 0 or workout_level > 4:
-                raise ValueError
-            else:
-                return True
-        except ValueError:
-            print(Fore.YELLOW + "Oops! That was no valid input. Try again...")
+            input = int(input)
+            if bool_expression(input):
+                raise ValueOutOfRangeError
+            return True
+        except (ValueError, ValueOutOfRangeError):
             return False
 
     def calories(self, gender: str, age: int, height: int, weight: int,
