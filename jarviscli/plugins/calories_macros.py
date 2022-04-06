@@ -35,8 +35,7 @@ class CaloriesMacrosPlugin:
         as arguments to calories method. Afterwards, the last mentioned method
         is called in order to calculate the calorie intake data.
         """
-        jarvis.say("Hello there! To calculate your daily calorie intake "
-                   "I need to get to know you a bit more...")
+        self.display_welcome_message(jarvis)
 
         input_msg = 'Gender (M/F): '
         error_msg = 'Oops! That was not a valid gender. Please try again (M/F)...'
@@ -59,16 +58,7 @@ class CaloriesMacrosPlugin:
         error_msg = 'Oops! That was not a valid weight. Try again...'
         weight = self.read_input(jarvis, input_msg, bool_expression, error_msg)
 
-        jarvis.say("Choose your workout level (1-4) ")
-        message = Fore.RESET + Fore.YELLOW + "\nWorkout Levels:\n[1]" + \
-            Fore.RESET + " Little or no exercise\n"
-        message += Fore.RESET + Fore.YELLOW + "[2]" + Fore.RESET + \
-            " Light 1-3 per week\n"
-        message += Fore.RESET + Fore.YELLOW + "[3]" + Fore.RESET + \
-            " Moderate 4-5 per week\n"
-        message += Fore.RESET + Fore.YELLOW + "[4]" + \
-            Fore.RESET + " Active daily exercise or physical job"
-        jarvis.say(message)
+        self.display_activity_levels(jarvis)
         input_msg = 'Choose your activity level (1-4): '
         bool_expression: Callable[[int], bool] = \
             lambda activity_level: not(1 <= activity_level <= 4)
@@ -77,16 +67,31 @@ class CaloriesMacrosPlugin:
             jarvis, input_msg, bool_expression, error_msg)
 
         brm_info = self.calories(gender, age, height, weight, activity_level)
-        jarvis.say("\nYour personal calorie data!", Fore.CYAN)
-        jarvis.say("Daily calorie intake:    " + Fore.RESET +
-                   Fore.GREEN + str(brm_info[0]))
-        jarvis.say("Loss weight calories:    " + Fore.RESET +
-                   Fore.YELLOW + str(brm_info[1]))
-        jarvis.say("Put on  weight calories: " + Fore.RESET +
-                   Fore.RED + str(brm_info[2]))
+        self.display_results(jarvis, brm_info)
+
+    def yellow(self, content: str) -> str:
+        return f'{Fore.YELLOW}{content}{Fore.RESET}'
 
     def red(self, content: str) -> str:
         return f'{Fore.RED}{content}{Fore.RESET}'
+
+    def display_welcome_message(self, jarvis) -> None:
+        jarvis.say(self.yellow(
+            '\nHello! In order to calculate your daily calorie intake '
+            'i will need some information about you. Lets start...'))
+
+    def display_activity_levels(self, jarvis) -> None:
+        jarvis.say(self.yellow("\nActivity levels:"))
+        jarvis.say(f'{self.yellow("[1]")} Little or no exercise')
+        jarvis.say(f'{self.yellow("[2]")} Light exercise 1-3 days a week')
+        jarvis.say(f'{self.yellow("[3]")} Moderate exercise 4-5 days a week')
+        jarvis.say(f'{self.yellow("[4]")} Hard exercise every day\n')
+
+    def display_results(self, jarvis, brm_info: Tuple[float, float, float]) -> None:
+        jarvis.say(f'{Fore.CYAN}\nYour personal calorie data!')
+        jarvis.say(f'Maintain weight calories: {Fore.GREEN}{brm_info[0]}')
+        jarvis.say(f'Lose weight calories:     {Fore.YELLOW}{brm_info[1]}')
+        jarvis.say(f'Gain weight calories:     {Fore.RED}{brm_info[2]}')
 
     def read_gender(self, jarvis, input_message: str, error_message: str) -> str:
         while True:
