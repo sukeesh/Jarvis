@@ -11,30 +11,125 @@ class ValueOutOfRangeError(Exception):
 @plugin("calories")
 class CaloriesMacrosPlugin:
     """
-    calculates recommended daily calorie
-    intake,calories for weight add and loss.
-    The calculating method is based on gender, age, height and weight.
-    since it uses the Miffin-St Jeor Equation as it is considered the
-    most accurate when we don't know our body fat percentage(Source 2).
-    Add gender(man/woman), age(15 - 80 recommended), metric height(cm),
-    weight(kg), workout level(1-4). No decimal weight for now.
-    Workout Levels:
-        [1] Little or no exercise
-        [2] Light 1-3 per week
-        [3] Moderate 4-5 per week
-        [4] Active daily exercise or physical job
-    #Example: health calories woman 27 164 60 3
-    ^Sources:
-            1) https://en.wikipedia.org/wiki/Basal_metabolic_rate
-            2) https://jandonline.org/article/S0002-8223(05)00149-5/fulltext
+    The current plugin calculates the recommended daily calorie intake and
+    the corresponding macronutrients (proteins, carbohydrates & fats) for
+    losing, maintaining or gaining weight.
     """
 
+    class CalorieCalculator:
+
+        WEIGHT_LOSS = 1
+        WEIGHT_GAIN = 3
+
+        def __init__(self, gender: str, age: int, height: int, weight: int,
+                activity_level: int, goal: int) -> None:
+            self._gender = gender
+            self._age = age
+            self._height = height
+            self._weight = weight
+            self._activity_level = activity_level
+            self._goal = goal
+
+        def _calc_rmr(self) -> float:
+            """
+            Resting metabolic rate (RMR) is the total number of calories burned
+            when your body is completely at rest.
+
+            The Miffin-St Jeor Equation is used to calculate the RMR as it
+            is considered the most accurate when we don't know our body fat
+            percentage.
+
+            Males:   10 x weight(kg) + 6.25 x height(cm) - 5 x age(y) + 5
+            Females: 10 x weight(kg) + 6.25 x height(cm) - 5 x age(y) - 161
+
+            Sources:
+                https://jandonline.org/article/S0002-8223(05)00149-5/fulltext
+                https://www.medicalnewstoday.com/articles/macro-diet
+            """
+
+            WEIGHT_FACTOR = 10
+            HEIGHT_FACTOR = 6.25
+            AGE_FACTOR = -5
+            MALE_CONSTANT = 5
+            FEMALE_CONSTANT = -161
+
+            if self._gender == 'M':
+                gender_constant = MALE_CONSTANT
+            else:
+                gender_constant = FEMALE_CONSTANT
+
+            return (WEIGHT_FACTOR * self._weight + HEIGHT_FACTOR * self._height
+                + AGE_FACTOR * self._age + gender_constant)
+
+        def _calc_tdee(self, rmr: float) -> int:
+            """
+            Total daily energy expenditure (TDEE) is the total number of
+            calories someone needs to maintain his/her current weight.
+
+            The TDEE can be estimated by multiplying the RMR by an activity
+            factor. The value of that factor depends on the daily activity
+            level of the individual.
+
+            Source: https://www.medicalnewstoday.com/articles/macro-diet
+            """
+
+            ACTIVITY_FACTORS = {
+                1: 1.2,    # Little or no exercise
+                2: 1.375,  # Light exercise 1-3 days a week
+                3: 1.55,   # Moderate exercise 4-5 days a week
+                4: 1.725   # Hard exercise every day
+            }
+
+            return round(rmr * ACTIVITY_FACTORS.get(self._activity_level))
+
+        def _calc_daily_calorie_intake(self, tdee: int) -> int:
+            DAILY_CALORIC_DEFICIT = 500  # Results to ~0.5kg/week weight loss
+            DAILY_CALORIC_SURPLUS = 500  # Results to ~0.5kg/week weight gain
+
+            if self._goal == self.WEIGHT_LOSS:
+                return tdee - DAILY_CALORIC_DEFICIT
+            elif self._goal == self.WEIGHT_GAIN:
+                return tdee + DAILY_CALORIC_SURPLUS
+            else:
+                return tdee
+
+        def calc_daily_calorie_intake(self) -> int:
+            rmr = self._calc_rmr()
+            tdee = self._calc_tdee(rmr)
+            return self._calc_daily_calorie_intake(tdee)
+
+        def display_calorie_results(self, jarvis, cal_intake: int) -> None:
+            """
+            Harvard Health Publications suggests women get at least 1,200 calories
+            and men get at least 1,500 calories a day unless supervised by doctors.
+            """
+
+            MIN_SUGGESTED_MALE_CAL_INTAKE = 1500
+            MIN_SUGGESTED_FEMALE_CAL_INTAKE = 1200
+
+            if self._gender == 'M' and cal_intake < MIN_SUGGESTED_MALE_CAL_INTAKE:
+                jarvis.say(f'{Fore.CYAN}\nThe calculated daily calorie intake was '
+                    'below the suggested of 1500 cal for males. We suggest you to '
+                    'consult a nutrition expert to help you achieve your goal!')
+                return
+
+            if self._gender == 'F' and cal_intake < MIN_SUGGESTED_FEMALE_CAL_INTAKE:
+                jarvis.say(f'{Fore.CYAN}\nThe calculated daily calorie intake was '
+                    'below the suggested of 1200 cal for females. We suggest you '
+                    'to consult a nutrition expert to help you achieve your goal!')
+                return
+
+            if self._goal == self.WEIGHT_LOSS:
+                jarvis.say('\nThe recommended daily calorie intake to achieve a '
+                    f'weight loss of ~0.5kg/week is: {Fore.YELLOW}{cal_intake}')
+            elif self._goal == self.WEIGHT_GAIN:
+                jarvis.say('\nThe recommended daily calorie intake to achieve a '
+                    f'weight gain of ~0.5kg/week is: {Fore.YELLOW}{cal_intake}')
+            else:
+                jarvis.say('\nThe recommended daily calorie intake to maintain '
+                    f'your current weight is: {Fore.YELLOW}{cal_intake}')
+
     def __call__(self, jarvis, _) -> None:
-        """
-        Calls the needed methods to validate the values that need to be parsed
-        as arguments to calories method. Afterwards, the last mentioned method
-        is called in order to calculate the calorie intake data.
-        """
         self.display_welcome_message(jarvis)
 
         input_msg = 'Gender (M/F): '
@@ -66,8 +161,16 @@ class CaloriesMacrosPlugin:
         activity_level = self.read_input(
             jarvis, input_msg, bool_expression, error_msg)
 
-        brm_info = self.calories(gender, age, height, weight, activity_level)
-        self.display_results(jarvis, brm_info)
+        self.display_goals(jarvis)
+        input_msg = 'Choose your goal (1-3): '
+        bool_expression: Callable[[int], bool] = lambda goal: not(1 <= goal <= 3)
+        error_msg = 'Oops! Invalid input. Try again (1-3)...'
+        goal = self.read_input(jarvis, input_msg, bool_expression, error_msg)
+
+        calorie_calculator = self.CalorieCalculator(
+            gender, age, height, weight, activity_level, goal)
+        daily_calorie_intake = calorie_calculator.calc_daily_calorie_intake()
+        calorie_calculator.display_calorie_results(jarvis, daily_calorie_intake)
 
     def yellow(self, content: str) -> str:
         return f'{Fore.YELLOW}{content}{Fore.RESET}'
@@ -87,11 +190,11 @@ class CaloriesMacrosPlugin:
         jarvis.say(f'{self.yellow("[3]")} Moderate exercise 4-5 days a week')
         jarvis.say(f'{self.yellow("[4]")} Hard exercise every day\n')
 
-    def display_results(self, jarvis, brm_info: Tuple[float, float, float]) -> None:
-        jarvis.say(f'{Fore.CYAN}\nYour personal calorie data!')
-        jarvis.say(f'Maintain weight calories: {Fore.GREEN}{brm_info[0]}')
-        jarvis.say(f'Lose weight calories:     {Fore.YELLOW}{brm_info[1]}')
-        jarvis.say(f'Gain weight calories:     {Fore.RED}{brm_info[2]}')
+    def display_goals(self, jarvis) -> None:
+        jarvis.say(self.yellow("\nGoals:"))
+        jarvis.say(f'{self.yellow("[1]")} Lose weight')
+        jarvis.say(f'{self.yellow("[2]")} Maintain weight')
+        jarvis.say(f'{self.yellow("[3]")} Gain weight\n')
 
     def read_gender(self, jarvis, input_message: str, error_message: str) -> str:
         while True:
@@ -120,35 +223,3 @@ class CaloriesMacrosPlugin:
             return True
         except (ValueError, ValueOutOfRangeError):
             return False
-
-    def calories(self, gender: str, age: int, height: int, weight: int,
-            workout_level: int) -> Tuple[float, float, float]:
-        """
-        Given the gender, age, height, weight and workout level arguments
-        the daily calorie intake is calculated based on the
-        Miffin-St Jeor Equation above mentioned method.
-        Three specialized rates of daily calorie intake are calculated:
-        the intake that preserves one's weight, the one to lose weight
-        and the intake to gain more weight.
-        """
-        if gender.lower == "m":
-            gender_no = 5
-        else:
-            # A constant value based on gender
-            gender_no = -161
-        brm = float(10 * weight + 6.25 * height - 5
-                    * age + gender_no) * self.exercise_level(workout_level)
-        # The calculation of the intake to lose weight
-        brm_loss = brm - 500.0
-        # The calculation of the intake to gain weight
-        brm_put_on = brm + 500.0
-        return brm, brm_loss, brm_put_on
-
-    def exercise_level(self, level: int) -> float:
-        """
-        Implements needed calculations for the calorie intake
-        calculation method based on the workout level
-        """
-        multipliers = {1: 1.2, 2: 1.4, 3: 1.6, 4: 1.95}
-        multiplier = multipliers.get(level, 1)
-        return multiplier
