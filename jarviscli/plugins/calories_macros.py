@@ -111,13 +111,13 @@ class CaloriesMacrosPlugin:
                 jarvis.say(f'{Fore.CYAN}\nThe calculated daily calorie intake was '
                     'below the suggested of 1500 cal for males. We suggest you to '
                     'consult a nutrition expert to help you achieve your goal!')
-                return
+                exit()
 
             if self._gender == 'F' and cal_intake < MIN_SUGGESTED_FEMALE_CAL_INTAKE:
                 jarvis.say(f'{Fore.CYAN}\nThe calculated daily calorie intake was '
                     'below the suggested of 1200 cal for females. We suggest you '
                     'to consult a nutrition expert to help you achieve your goal!')
-                return
+                exit()
 
             if self._goal == self.WEIGHT_LOSS:
                 jarvis.say('\nThe recommended daily calorie intake to achieve a '
@@ -128,6 +128,43 @@ class CaloriesMacrosPlugin:
             else:
                 jarvis.say('\nThe recommended daily calorie intake to maintain '
                     f'your current weight is: {Fore.YELLOW}{cal_intake}')
+
+    class MacronutrientCalculator:
+
+        def __init__(self, daily_cal_intake: int, protein_ratio: float = 0.2,
+                carb_ratio: float = 0.5, fat_ratio: float = 0.3) -> None:
+            self._daily_cal_intake = daily_cal_intake
+            self._protein_ratio = protein_ratio
+            self._carb_ratio = carb_ratio
+            self._fat_ratio = fat_ratio
+
+        def calc_macros(self) -> Tuple[int, int, int]:
+            """
+            To calculate the grams for each macronutrient we will use the
+            following formula:
+            (daily calorie intake x macro ratio) / calories per macro gram
+            """
+
+            CAL_PER_PROTEIN_GRAM = 4
+            CAL_PER_CARB_GRAM = 4
+            CAL_PER_FAT_GRAM = 9
+
+            protein_g = round(
+                (self._daily_cal_intake * self._protein_ratio) / CAL_PER_PROTEIN_GRAM)
+            carb_g = round(
+                (self._daily_cal_intake * self._carb_ratio) / CAL_PER_CARB_GRAM)
+            fat_g = round(
+                (self._daily_cal_intake * self._fat_ratio) / CAL_PER_FAT_GRAM)
+
+            return protein_g, carb_g, fat_g
+
+        def display_macros_results(self, jarvis,
+                protein_g: int, carb_g: int, fat_g: int) -> None:
+            jarvis.say('Expressed in terms of macronutrients, that means that in '
+            'a day you should eat:')
+            jarvis.say(f'Proteins: {Fore.RED}{protein_g}g')
+            jarvis.say(f'Carbs: {Fore.GREEN}{carb_g}g')
+            jarvis.say(f'Fats: {Fore.YELLOW}{fat_g}g')
 
     def __call__(self, jarvis, _) -> None:
         self.display_welcome_message(jarvis)
@@ -170,7 +207,22 @@ class CaloriesMacrosPlugin:
         calorie_calculator = self.CalorieCalculator(
             gender, age, height, weight, activity_level, goal)
         daily_calorie_intake = calorie_calculator.calc_daily_calorie_intake()
+
+        use_default_macro_ratios = self.read_use_default_macro_ratios(jarvis)
+        if use_default_macro_ratios:
+            macro_calculator = self.MacronutrientCalculator(daily_calorie_intake)
+            protein_g, carb_g, fat_g = macro_calculator.calc_macros()
+        else:
+            error_msg = "Oops! That was not a valid ratio. Try again..."
+            protein_ratio, carb_ratio, fat_ratio = \
+                self.read_macro_ratios(jarvis, error_msg)
+
+            macro_calculator = self.MacronutrientCalculator(
+                daily_calorie_intake, protein_ratio, carb_ratio, fat_ratio)
+            protein_g, carb_g, fat_g = macro_calculator.calc_macros()
+
         calorie_calculator.display_calorie_results(jarvis, daily_calorie_intake)
+        macro_calculator.display_macros_results(jarvis, protein_g, carb_g, fat_g)
 
     def yellow(self, content: str) -> str:
         return f'{Fore.YELLOW}{content}{Fore.RESET}'
@@ -223,3 +275,74 @@ class CaloriesMacrosPlugin:
             return True
         except (ValueError, ValueOutOfRangeError):
             return False
+
+    def read_use_default_macro_ratios(self, jarvis) -> bool:
+        input = jarvis.input('\nThe recommended macronutrients will be '
+            'computed using the default ratios of:\n'
+            f'  {self.yellow("20%")} for proteins\n'
+            f'  {self.yellow("50%")} for carbs\n'
+            f'  {self.yellow("30%")} for fats\n'
+            'To proceed with the default ratios type (y/Y)\n'
+            'To change the default ratios type any other button\n'
+            'Use the dafault macronutrient ratios: ')
+
+        if input.upper() == 'Y':
+            return True
+        return False
+
+    def read_macro_ratios(self, jarvis,
+            error_message: str) -> Tuple[float, float, float]:
+        while True:
+            jarvis.say('\nThe recommended ratios for proteins are: '
+                f'{self.yellow("0.1")} - {self.yellow("0.35")}\n'
+                'The recommended ratios for carbs are: '
+                f'{self.yellow("0.45")} - {self.yellow("0.65")}\n'
+                'The recommended ratios for fats are: '
+                f'{self.yellow("0.2")} - {self.yellow("0.35")}\n'
+                'The macronutrient ratios you will provide must have a sum'
+                'equal to one')
+
+            try:
+                protein_ratio = float(jarvis.input('Protein ratio: '))
+                carb_ratio = float(jarvis.input('Carb ratio: '))
+                fat_ratio = float(jarvis.input('Fat ratio: '))
+            except ValueError:
+                print(self.red(error_message))
+                continue
+
+            if self.validate_macro_ratios(protein_ratio, carb_ratio, fat_ratio):
+                return protein_ratio, carb_ratio, fat_ratio
+
+    def validate_macro_ratios(self, protein_ratio: float, carb_ratio: float,
+            fat_ratio: float) -> bool:
+        """
+        The recommended macronutrient ratios are:
+        - Proteins: 10-35% of total calories
+        - Carbs: 45-65% of total calories
+        - Fats: 20-35% of total calories
+
+        The sum of proteins, carbs & fats must be equal to one.
+
+        Source: https://www.medicalnewstoday.com/articles/macro-diet
+        """
+
+        PROT_RATIO_LOWER_BOUND = 0.1
+        PROT_RATIO_UPPER_BOUND = 0.35
+        CARB_RATIO_LOWER_BOUND = 0.45
+        CARB_RATIO_UPPER_BOUND = 0.65
+        FAT_RATIO_LOWER_BOUND = 0.2
+        FAT_RATIO_UPPER_BOUND = 0.35
+
+        if not(PROT_RATIO_LOWER_BOUND <= protein_ratio <= PROT_RATIO_UPPER_BOUND):
+            return False
+
+        if not(CARB_RATIO_LOWER_BOUND <= carb_ratio <= CARB_RATIO_UPPER_BOUND):
+            return False
+
+        if not(FAT_RATIO_LOWER_BOUND <= fat_ratio <= FAT_RATIO_UPPER_BOUND):
+            return False
+
+        if protein_ratio + carb_ratio + fat_ratio != 1:
+            return False
+
+        return True
