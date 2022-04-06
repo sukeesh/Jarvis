@@ -1,9 +1,10 @@
 from colorama import Fore
-from plugin import plugin
+from plugin import plugin, alias
 
 
+@alias("macros")
 @plugin("calories")
-class calories:
+class CaloriesMacrosPlugin:
     """
     calculates recommended daily calorie
     intake,calories for weight add and loss.
