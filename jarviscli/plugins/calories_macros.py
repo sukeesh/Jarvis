@@ -1,5 +1,6 @@
 from colorama import Fore
 from plugin import plugin, alias
+from typing import Tuple
 
 
 @alias("macros")
@@ -24,7 +25,7 @@ class CaloriesMacrosPlugin:
             2) https://jandonline.org/article/S0002-8223(05)00149-5/fulltext
     """
 
-    def __call__(self, jarvis, s):
+    def __call__(self, jarvis, _) -> None:
         """
         Calls the needed methods to validate the values that need to be parsed
         as arguments to calories method. Afterwards, the last mentioned method
@@ -76,12 +77,12 @@ class CaloriesMacrosPlugin:
         jarvis.say("Put on  weight calories: " + Fore.RESET +
                    Fore.RED + str(brm_info[2]))
 
-    def validate_gender(self, gender):
+    def validate_gender(self, gender: str) -> bool:
         """Function that takes as input the gender and validates it."""
         # ignore lower or upper letters
         return (gender.upper() == "M" or gender.upper() == "F")
 
-    def validate_age(self, age):
+    def validate_age(self, age: int) -> bool:
         """Function that takes as input the age and validates it."""
         try:
             age = int(age)
@@ -94,7 +95,7 @@ class CaloriesMacrosPlugin:
                                 " Try again...")
             return False
 
-    def validate_height(self, height):
+    def validate_height(self, height: int) -> bool:
         """Function that takes as input the height and validates it."""
         try:
             height = int(height)
@@ -107,7 +108,7 @@ class CaloriesMacrosPlugin:
                                 " Try again...")
             return False
 
-    def validate_weight(self, weight):
+    def validate_weight(self, weight: int) -> bool:
         """Function that takes as input the weight and validates it."""
         try:
             weight = int(weight)
@@ -119,7 +120,7 @@ class CaloriesMacrosPlugin:
             print(Fore.YELLOW + "Oops! That was no valid input. Try again...")
             return False
 
-    def validate_workout_level(self, workout_level):
+    def validate_workout_level(self, workout_level: int) -> bool:
         """Function that takes as input the workout level and validates it."""
         try:
             workout_level = int(workout_level)
@@ -131,7 +132,8 @@ class CaloriesMacrosPlugin:
             print(Fore.YELLOW + "Oops! That was no valid input. Try again...")
             return False
 
-    def calories(self, gender, age, height, weight, workout_level):
+    def calories(self, gender: str, age: int, height: int, weight: int,
+            workout_level: int) -> Tuple[float, float, float]:
         """
         Given the gender, age, height, weight and workout level arguments
         the daily calorie intake is calculated based on the
@@ -153,7 +155,7 @@ class CaloriesMacrosPlugin:
         brm_put_on = brm + 500.0
         return brm, brm_loss, brm_put_on
 
-    def exercise_level(self, level):
+    def exercise_level(self, level: int) -> float:
         """
         Implements needed calculations for the calorie intake
         calculation method based on the workout level
