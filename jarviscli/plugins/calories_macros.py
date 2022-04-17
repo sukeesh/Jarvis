@@ -253,7 +253,7 @@ class CaloriesMacrosPlugin:
             gender = jarvis.input(input_message)
             if self.validate_gender(gender):
                 return gender.upper()
-            print(self.red(error_message))
+            jarvis.say(self.red(error_message))
 
     def validate_gender(self, gender: str) -> bool:
         return (gender.upper() == "M" or gender.upper() == "F")
@@ -264,7 +264,7 @@ class CaloriesMacrosPlugin:
             input = jarvis.input(input_message)
             if self.validate_input(input, bool_expression):
                 return int(input)
-            print(self.red(error_message))
+            jarvis.say(self.red(error_message))
 
     def validate_input(self, input: str,
             bool_expression: Callable[[int], bool]) -> bool:
@@ -307,7 +307,7 @@ class CaloriesMacrosPlugin:
                 carb_ratio = float(jarvis.input('Carb ratio: '))
                 fat_ratio = float(jarvis.input('Fat ratio: '))
             except ValueError:
-                print(self.red(error_message))
+                jarvis.say(self.red(error_message))
                 continue
 
             if self.validate_macro_ratios(protein_ratio, carb_ratio, fat_ratio):
