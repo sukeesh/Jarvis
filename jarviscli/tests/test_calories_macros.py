@@ -9,6 +9,22 @@ class CaloriesMacrosPluginTest(PluginTest):
 
     def setUp(self):
         self.test = self.load_plugin(CaloriesMacrosPlugin)
+        self.cal_calc_m = self.test.CalorieCalculator(
+            gender="M",
+            age=21,
+            height=171,
+            weight=69,
+            activity_level=1,
+            goal=1
+        )
+        self.cal_calc_f = self.test.CalorieCalculator(
+            gender="F",
+            age=24,
+            height=166,
+            weight=63,
+            activity_level=3,
+            goal=2
+        )
 
     def test_validate_gender_valid(self):
         # Male (m/M)
@@ -339,6 +355,37 @@ class CaloriesMacrosPluginTest(PluginTest):
         self.assertEqual(
             self.history_say().view_text(3),
             f'{self.test.yellow("[3]")} Gain weight')
+
+    def test__calc_rmr(self):
+        self.assertEqual(self.cal_calc_m._calc_rmr(), 1658.75)
+        self.assertEqual(self.cal_calc_f._calc_rmr(), 1386.5)
+
+    def test__calc_tdee(self):
+        self.assertEqual(self.cal_calc_m._calc_tdee(1658.75), 1990)
+        self.assertEqual(self.cal_calc_f._calc_tdee(1386.5), 2149)
+
+    def test__calc_daily_calorie_intake(self):
+        self.assertEqual(self.cal_calc_m._calc_daily_calorie_intake(1990), 1490)
+        self.assertEqual(self.cal_calc_f._calc_daily_calorie_intake(2149), 2149)
+
+    def test_calc_daily_calorie_intake(self):
+        self.assertEqual(self.cal_calc_m.calc_daily_calorie_intake(), 1490)
+        self.assertEqual(self.cal_calc_f.calc_daily_calorie_intake(), 2149)
+
+    def test_display_calorie_results(self):
+        with self.assertRaises(SystemExit):
+            self.cal_calc_m.display_calorie_results(self.jarvis_api, 1490)
+            self.assertEqual(
+                self.history_say().last_text(),
+                (f'{Fore.CYAN}\nThe calculated daily calorie intake was '
+                'below the suggested of 1500 cal for males. We suggest you to '
+                'consult a nutrition expert to help you achieve your goal!'))
+
+        self.cal_calc_f.display_calorie_results(self.jarvis_api, 2149)
+        self.assertEqual(
+            self.history_say().last_text(),
+            ('\nThe recommended daily calorie intake to maintain '
+            f'your current weight is: {Fore.YELLOW}{2149}'))
 
 
 if __name__ == '__main__':
