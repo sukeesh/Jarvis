@@ -25,6 +25,15 @@ class CaloriesMacrosPluginTest(PluginTest):
             activity_level=3,
             goal=2
         )
+        self.macro_calc_d = self.test.MacronutrientCalculator(
+            daily_cal_intake=1750
+        )
+        self.macro_calc_p = self.test.MacronutrientCalculator(
+            daily_cal_intake=2250,
+            protein_ratio=0.3,
+            carb_ratio=0.5,
+            fat_ratio=0.2
+        )
 
     def test_validate_gender_valid(self):
         # Male (m/M)
@@ -386,6 +395,33 @@ class CaloriesMacrosPluginTest(PluginTest):
             self.history_say().last_text(),
             ('\nThe recommended daily calorie intake to maintain '
             f'your current weight is: {Fore.YELLOW}{2149}'))
+
+    def test_calc_macros(self):
+        protein_g, carb_g, fat_g = self.macro_calc_d.calc_macros()
+        self.assertEqual(protein_g, 88)
+        self.assertEqual(carb_g, 219)
+        self.assertEqual(fat_g, 58)
+
+        protein_g, carb_g, fat_g = self.macro_calc_p.calc_macros()
+        self.assertEqual(protein_g, 169)
+        self.assertEqual(carb_g, 281)
+        self.assertEqual(fat_g, 50)
+
+    def test_display_macros_results(self):
+        self.macro_calc_d.display_macros_results(self.jarvis_api, 88, 219, 58)
+        self.assertEqual(
+            self.history_say().view_text(0),
+            ('Expressed in terms of macronutrients, that means that in '
+            'a day you should eat:'))
+        self.assertEqual(
+            self.history_say().view_text(1),
+            f'Proteins: {Fore.RED}{88}g')
+        self.assertEqual(
+            self.history_say().view_text(2),
+            f'Carbs: {Fore.GREEN}{219}g')
+        self.assertEqual(
+            self.history_say().view_text(3),
+            f'Fats: {Fore.YELLOW}{58}g')
 
 
 if __name__ == '__main__':
