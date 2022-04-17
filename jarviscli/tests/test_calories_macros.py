@@ -296,6 +296,50 @@ class CaloriesMacrosPluginTest(PluginTest):
         self.assertEqual(carb_ratio, 0.45)
         self.assertEqual(fat_ratio, 0.25)
 
+    def test_display_welcome_message(self):
+        self.test.display_welcome_message(self.jarvis_api)
+
+        self.assertEqual(
+            self.history_say().last_text(),
+            self.test.yellow(
+                '\nHello! In order to calculate your daily calorie intake '
+                'i will need some information about you. Lets start...'))
+
+    def test_display_activity_levels(self):
+        self.test.display_activity_levels(self.jarvis_api)
+
+        self.assertEqual(
+            self.history_say().view_text(0),
+            self.test.yellow("\nActivity levels:"))
+        self.assertEqual(
+            self.history_say().view_text(1),
+            f'{self.test.yellow("[1]")} Little or no exercise')
+        self.assertEqual(
+            self.history_say().view_text(2),
+            f'{self.test.yellow("[2]")} Light exercise 1-3 days a week')
+        self.assertEqual(
+            self.history_say().view_text(3),
+            f'{self.test.yellow("[3]")} Moderate exercise 4-5 days a week')
+        self.assertEqual(
+            self.history_say().view_text(4),
+            f'{self.test.yellow("[4]")} Hard exercise every day')
+
+    def test_display_goals(self):
+        self.test.display_goals(self.jarvis_api)
+
+        self.assertEqual(
+            self.history_say().view_text(0),
+            self.test.yellow("\nGoals:"))
+        self.assertEqual(
+            self.history_say().view_text(1),
+            f'{self.test.yellow("[1]")} Lose weight')
+        self.assertEqual(
+            self.history_say().view_text(2),
+            f'{self.test.yellow("[2]")} Maintain weight')
+        self.assertEqual(
+            self.history_say().view_text(3),
+            f'{self.test.yellow("[3]")} Gain weight')
+
 
 if __name__ == '__main__':
     unittest.main()
