@@ -28,7 +28,7 @@ class CaloriesMacrosPluginTest(PluginTest):
         self.macro_calc_d = self.test.MacronutrientCalculator(
             daily_cal_intake=1750
         )
-        self.macro_calc_p = self.test.MacronutrientCalculator(
+        self.macro_calc = self.test.MacronutrientCalculator(
             daily_cal_intake=2250,
             protein_ratio=0.3,
             carb_ratio=0.5,
@@ -125,30 +125,30 @@ class CaloriesMacrosPluginTest(PluginTest):
         self.assertFalse(self.test.validate_input("4", bool_expression))
 
     def test_validate_macro_ratios_valid(self):
-        # Proteins at the lower bound and sum equal to 1
+        # Protein ratio at the lower bound and sum equal to 1
         self.assertTrue(self.test.validate_macro_ratios(0.1, 0.6, 0.3))
 
-        # Proteins at the upper bound and sum equal to 1
+        # Protein ratio at the upper bound and sum equal to 1
         self.assertTrue(self.test.validate_macro_ratios(0.35, 0.45, 0.2))
 
-        # Carbs at the lower bound and sum equal to 1
+        # Carb ratio at the lower bound and sum equal to 1
         self.assertTrue(self.test.validate_macro_ratios(0.25, 0.45, 0.3))
 
-        # Carbs at the upper bound and sum equal to 1
+        # Carb ratio at the upper bound and sum equal to 1
         self.assertTrue(self.test.validate_macro_ratios(0.15, 0.65, 0.2))
 
-        # Fats at the lower bound and sum equal to 1
+        # Fat ratio at the lower bound and sum equal to 1
         self.assertTrue(self.test.validate_macro_ratios(0.2, 0.6, 0.2))
 
-        # Fats at the upper bound and sum equal to 1
+        # Fat ratio at the upper bound and sum equal to 1
         self.assertTrue(self.test.validate_macro_ratios(0.15, 0.5, 0.35))
 
-        # All macros in range and sum equal to 1
+        # All macro ratios in range and sum equal to 1
         self.assertTrue(self.test.validate_macro_ratios(0.15, 0.6, 0.25))
         self.assertTrue(self.test.validate_macro_ratios(0.25, 0.55, 0.20))
 
     def test_validate_macro_ratios_invalid(self):
-        # Proteins slightly less than the lower bound and sum equal to 1
+        # Protein ratio slightly less than the lower bound and sum equal to 1
         self.assertFalse(self.test.validate_macro_ratios(0.09, 0.61, 0.3))
 
         '''
@@ -156,29 +156,31 @@ class CaloriesMacrosPluginTest(PluginTest):
         without violating the ratio of another macronutrient as well.
         '''
 
-        # Carbs slightly less than the lower bound and sum equal to 1
+        # Carb ratio slightly less than the lower bound and sum equal to 1
         self.assertFalse(self.test.validate_macro_ratios(0.3, 0.44, 0.26))
 
-        # Carbs slightly more than the upper bound and sum equal to 1
+        # Carb ratio slightly more than the upper bound and sum equal to 1
         self.assertFalse(self.test.validate_macro_ratios(0.12, 0.66, 0.22))
 
-        # Fats slightly less than the lower bound and sum equal to 1
+        # Fat ratio slightly less than the lower bound and sum equal to 1
         self.assertFalse(self.test.validate_macro_ratios(0.21, 0.6, 0.19))
 
-        # Fats slightly more than the upper bound and sum equal to 1
+        # Fat ratio slightly more than the upper bound and sum equal to 1
         self.assertFalse(self.test.validate_macro_ratios(0.14, 0.5, 0.36))
 
-        # All macros in range and sum not equal to 1
+        # All macro ratios in range and sum not equal to 1
         self.assertFalse(self.test.validate_macro_ratios(0.3, 0.6, 0.3))
         self.assertFalse(self.test.validate_macro_ratios(0.15, 0.5, 0.25))
 
     def test_yellow(self):
+        content = 'str_val'
         self.assertEqual(
-            self.test.yellow('str_val'), f'{Fore.YELLOW}str_val{Fore.RESET}')
+            self.test.yellow(content), f'{Fore.YELLOW}{content}{Fore.RESET}')
 
     def test_red(self):
+        content = 'str_val'
         self.assertEqual(
-            self.test.red('str_val'), f'{Fore.RED}str_val{Fore.RESET}')
+            self.test.red(content), f'{Fore.RED}{content}{Fore.RESET}')
 
     def test_read_gender(self):
         self.queue_input("7")  # invalid
@@ -284,7 +286,8 @@ class CaloriesMacrosPluginTest(PluginTest):
         self.assertFalse(use_default_macro_ratios)
 
     def test_read_macro_ratios(self):
-        self.queue_input("s")  # Invalid ratio
+        # Invalid ratio
+        self.queue_input("s")
 
         # Invalid combination
         self.queue_input("0.3")  # Protein ratio -> valid
@@ -390,11 +393,12 @@ class CaloriesMacrosPluginTest(PluginTest):
                 'below the suggested of 1500 cal for males. We suggest you to '
                 'consult a nutrition expert to help you achieve your goal!'))
 
-        self.cal_calc_f.display_calorie_results(self.jarvis_api, 2149)
+        cal_intake = 2149
+        self.cal_calc_f.display_calorie_results(self.jarvis_api, cal_intake)
         self.assertEqual(
             self.history_say().last_text(),
             ('\nThe recommended daily calorie intake to maintain '
-            f'your current weight is: {Fore.YELLOW}{2149}'))
+            f'your current weight is: {Fore.YELLOW}{cal_intake}'))
 
     def test_calc_macros(self):
         protein_g, carb_g, fat_g = self.macro_calc_d.calc_macros()
@@ -402,26 +406,29 @@ class CaloriesMacrosPluginTest(PluginTest):
         self.assertEqual(carb_g, 219)
         self.assertEqual(fat_g, 58)
 
-        protein_g, carb_g, fat_g = self.macro_calc_p.calc_macros()
+        protein_g, carb_g, fat_g = self.macro_calc.calc_macros()
         self.assertEqual(protein_g, 169)
         self.assertEqual(carb_g, 281)
         self.assertEqual(fat_g, 50)
 
     def test_display_macros_results(self):
-        self.macro_calc_d.display_macros_results(self.jarvis_api, 88, 219, 58)
+        protein_g, carb_g, fat_g = 88, 219, 58
+        self.macro_calc_d.display_macros_results(
+            self.jarvis_api, protein_g, carb_g, fat_g)
+
         self.assertEqual(
             self.history_say().view_text(0),
             ('Expressed in terms of macronutrients, that means that in '
             'a day you should eat:'))
         self.assertEqual(
             self.history_say().view_text(1),
-            f'Proteins: {Fore.RED}{88}g')
+            f'Proteins: {Fore.RED}{protein_g}g')
         self.assertEqual(
             self.history_say().view_text(2),
-            f'Carbs: {Fore.GREEN}{219}g')
+            f'Carbs: {Fore.GREEN}{carb_g}g')
         self.assertEqual(
             self.history_say().view_text(3),
-            f'Fats: {Fore.YELLOW}{58}g')
+            f'Fats: {Fore.YELLOW}{fat_g}g')
 
 
 if __name__ == '__main__':
