@@ -61,7 +61,7 @@ python "{PATH}/jarviscli" "$@"
                     line_already_exists = True
 
             if line_already_exists:
-                print(f"Jarvis path already added to $PATH in .{user_shell}rc!")
+                print("Jarvis path already added to $PATH in .{}rc!".format(user_shell))
             else:
                 fw = open(shell_rc, 'a')
                 fw.write(line_to_add)
