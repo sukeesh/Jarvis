@@ -50,42 +50,42 @@ class CaloriesMacrosPluginTest(PluginTest):
         self.assertFalse(self.test.validate_gender("s"))
 
     def test_validate_input_age_valid(self):
-        bool_expression: Callable[[int], bool] = lambda age: age < 14
+        bool_expression: Callable[[int], bool] = lambda age: age >= 14
 
         # Anything greater than or equal to 14
         self.assertTrue(self.test.validate_input("14", bool_expression))
         self.assertTrue(self.test.validate_input("77", bool_expression))
 
     def test_validate_input_age_invalid(self):
-        bool_expression: Callable[[int], bool] = lambda age: age < 14
+        bool_expression: Callable[[int], bool] = lambda age: age >= 14
 
         # Anything less than 14
         self.assertFalse(self.test.validate_input("13", bool_expression))
         self.assertFalse(self.test.validate_input("-1", bool_expression))
 
     def test_validate_input_height_valid(self):
-        bool_expression: Callable[[int], bool] = lambda height: height <= 0
+        bool_expression: Callable[[int], bool] = lambda height: height > 0
 
         # Anything greater than 0
         self.assertTrue(self.test.validate_input("1", bool_expression))
         self.assertTrue(self.test.validate_input("177", bool_expression))
 
     def test_validate_input_height_invalid(self):
-        bool_expression: Callable[[int], bool] = lambda height: height <= 0
+        bool_expression: Callable[[int], bool] = lambda height: height > 0
 
         # Anything less than or equal to 0
         self.assertFalse(self.test.validate_input("0", bool_expression))
         self.assertFalse(self.test.validate_input("-1", bool_expression))
 
     def test_validate_input_weight_valid(self):
-        bool_expression: Callable[[int], bool] = lambda weight: weight <= 0
+        bool_expression: Callable[[int], bool] = lambda weight: weight > 0
 
         # Anything greater than 0
         self.assertTrue(self.test.validate_input("1", bool_expression))
         self.assertTrue(self.test.validate_input("77", bool_expression))
 
     def test_validate_input_weight_invalid(self):
-        bool_expression: Callable[[int], bool] = lambda weight: weight <= 0
+        bool_expression: Callable[[int], bool] = lambda weight: weight > 0
 
         # Anything less than or equal to 0
         self.assertFalse(self.test.validate_input("0", bool_expression))
@@ -93,7 +93,7 @@ class CaloriesMacrosPluginTest(PluginTest):
 
     def test_validate_input_workout_level_valid(self):
         bool_expression: Callable[[int], bool] = \
-            lambda workout_level: not(1 <= workout_level <= 4)
+            lambda workout_level: 1 <= workout_level <= 4
 
         # Anything between 1 to 4
         self.assertTrue(self.test.validate_input("1", bool_expression))
@@ -103,14 +103,14 @@ class CaloriesMacrosPluginTest(PluginTest):
 
     def test_validate_workout_level_invalid(self):
         bool_expression: Callable[[int], bool] = \
-            lambda workout_level: not(1 <= workout_level <= 4)
+            lambda workout_level: 1 <= workout_level <= 4
 
         # Anything other than the values 1 through 4
         self.assertFalse(self.test.validate_input("0", bool_expression))
         self.assertFalse(self.test.validate_input("5", bool_expression))
 
     def test_validate_input_goal_valid(self):
-        bool_expression: Callable[[int], bool] = lambda goal: not(1 <= goal <= 3)
+        bool_expression: Callable[[int], bool] = lambda goal: 1 <= goal <= 3
 
         # Anything between 1 to 3
         self.assertTrue(self.test.validate_input("1", bool_expression))
@@ -118,7 +118,7 @@ class CaloriesMacrosPluginTest(PluginTest):
         self.assertTrue(self.test.validate_input("3", bool_expression))
 
     def test_validate_goal_invalid(self):
-        bool_expression: Callable[[int], bool] = lambda goal: not(1 <= goal <= 3)
+        bool_expression: Callable[[int], bool] = lambda goal: 1 <= goal <= 3
 
         # Anything other than the values 1 through 3
         self.assertFalse(self.test.validate_input("0", bool_expression))
@@ -199,7 +199,7 @@ class CaloriesMacrosPluginTest(PluginTest):
         self.queue_input("14")  # valid
 
         input_msg = 'Age: '
-        bool_expression: Callable[[int], bool] = lambda age: age < 14
+        bool_expression: Callable[[int], bool] = lambda age: age >= 14
         error_msg = ('We suggest you to consult a nutrition expert if you are '
             'under 14 years old.'
             '\nIf you made a mistake while entering your age, try again...')
@@ -216,7 +216,7 @@ class CaloriesMacrosPluginTest(PluginTest):
         self.queue_input("1")   # valid
 
         input_msg = 'Height (cm): '
-        bool_expression: Callable[[int], bool] = lambda height: height <= 0
+        bool_expression: Callable[[int], bool] = lambda height: height > 0
         error_msg = 'Oops! That was not a valid height. Try again...'
         height = self.test.read_input(
             self.jarvis_api, input_msg, bool_expression, error_msg)
@@ -231,7 +231,7 @@ class CaloriesMacrosPluginTest(PluginTest):
         self.queue_input("1")   # valid
 
         input_msg = 'Weight (kg): '
-        bool_expression: Callable[[int], bool] = lambda weight: weight <= 0
+        bool_expression: Callable[[int], bool] = lambda weight: weight > 0
         error_msg = 'Oops! That was not a valid weight. Try again...'
         weight = self.test.read_input(
             self.jarvis_api, input_msg, bool_expression, error_msg)
@@ -247,7 +247,7 @@ class CaloriesMacrosPluginTest(PluginTest):
 
         input_msg = 'Choose your activity level (1-4): '
         bool_expression: Callable[[int], bool] = \
-            lambda activity_level: not(1 <= activity_level <= 4)
+            lambda activity_level: 1 <= activity_level <= 4
         error_msg = 'Oops! Invalid input. Try again (1-4)...'
         activity_level = self.test.read_input(
             self.jarvis_api, input_msg, bool_expression, error_msg)
@@ -262,7 +262,7 @@ class CaloriesMacrosPluginTest(PluginTest):
         self.queue_input("3")  # valid
 
         input_msg = 'Choose your goal (1-3): '
-        bool_expression: Callable[[int], bool] = lambda goal: not(1 <= goal <= 3)
+        bool_expression: Callable[[int], bool] = lambda goal: 1 <= goal <= 3
         error_msg = 'Oops! Invalid input. Try again (1-3)...'
         goal = self.test.read_input(
             self.jarvis_api, input_msg, bool_expression, error_msg)

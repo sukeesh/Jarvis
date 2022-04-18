@@ -3,10 +3,6 @@ from plugin import plugin, alias
 from typing import Callable, Tuple
 
 
-class ValueOutOfRangeError(Exception):
-    pass
-
-
 @alias("macros")
 @plugin("calories")
 class CaloriesMacrosPlugin:
@@ -174,33 +170,33 @@ class CaloriesMacrosPlugin:
         gender = self.read_gender(jarvis, input_msg, error_msg)
 
         input_msg = 'Age: '
-        bool_expression: Callable[[int], bool] = lambda age: age < 14
+        bool_expression: Callable[[int], bool] = lambda age: age >= 14
         error_msg = ('We suggest you to consult a nutrition expert if you are '
             'under 14 years old.'
             '\nIf you made a mistake while entering your age, try again...')
         age = self.read_input(jarvis, input_msg, bool_expression, error_msg)
 
         input_msg = 'Height (cm): '
-        bool_expression: Callable[[int], bool] = lambda height: height <= 0
+        bool_expression: Callable[[int], bool] = lambda height: height > 0
         error_msg = 'Oops! That was not a valid height. Try again...'
         height = self.read_input(jarvis, input_msg, bool_expression, error_msg)
 
         input_msg = 'Weight (kg): '
-        bool_expression: Callable[[int], bool] = lambda weight: weight <= 0
+        bool_expression: Callable[[int], bool] = lambda weight: weight > 0
         error_msg = 'Oops! That was not a valid weight. Try again...'
         weight = self.read_input(jarvis, input_msg, bool_expression, error_msg)
 
         self.display_activity_levels(jarvis)
         input_msg = 'Choose your activity level (1-4): '
         bool_expression: Callable[[int], bool] = \
-            lambda activity_level: not(1 <= activity_level <= 4)
+            lambda activity_level: 1 <= activity_level <= 4
         error_msg = 'Oops! Invalid input. Try again (1-4)...'
         activity_level = self.read_input(
             jarvis, input_msg, bool_expression, error_msg)
 
         self.display_goals(jarvis)
         input_msg = 'Choose your goal (1-3): '
-        bool_expression: Callable[[int], bool] = lambda goal: not(1 <= goal <= 3)
+        bool_expression: Callable[[int], bool] = lambda goal: 1 <= goal <= 3
         error_msg = 'Oops! Invalid input. Try again (1-3)...'
         goal = self.read_input(jarvis, input_msg, bool_expression, error_msg)
 
@@ -271,9 +267,9 @@ class CaloriesMacrosPlugin:
         try:
             input = int(input)
             if bool_expression(input):
-                raise ValueOutOfRangeError
-            return True
-        except (ValueError, ValueOutOfRangeError):
+                return True
+            return False
+        except ValueError:
             return False
 
     def read_use_default_macro_ratios(self, jarvis) -> bool:
