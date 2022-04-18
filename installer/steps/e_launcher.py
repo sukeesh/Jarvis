@@ -51,7 +51,7 @@ python "{PATH}/jarviscli" "$@"
         shell_rc = '{}/.{}rc'.format(expanduser("~"), user_shell)
 
         if not os.path.exists(shell_rc):
-            print(f"NO .{user_shell}rc found!")
+            print("NO .{}rc found!".format(user_shell))
         else:
             line_already_exists = False
 
