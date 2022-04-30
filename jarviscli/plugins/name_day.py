@@ -141,7 +141,7 @@ class NameDay:
             dates = ""
             for s in j["0"]:
                 date = str(s["day"]) + "/" + str(s["month"]) + " "
-                dates += date
+                dates += date.strip()
             self.jarvis.say("Say some kind words to " + name + " at " + dates)
         else:
             self.jarvis.say("No name days found for " + name)
