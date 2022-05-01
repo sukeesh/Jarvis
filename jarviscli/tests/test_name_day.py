@@ -1,10 +1,5 @@
-import sys
-import unittest
-from io import StringIO
-
 from tests import PluginTest
 from plugins.name_day import NameDay
-from mock import patch, call
 import requests
 
 
