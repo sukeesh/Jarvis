@@ -7,6 +7,13 @@ import re
 @require(network=True)
 @plugin("name day")
 class NameDay:
+    """
+    Name Day plugin provides information about your country's name days
+
+    You can see today's, tomorrow's, or any other day's name day.
+
+    You can also see the name day of a specific name.
+    """
     def __call__(self, jarvis, s):
         self.jarvis = jarvis
         self.main()
@@ -42,6 +49,7 @@ class NameDay:
         if self.location == "":
             self.get_location()
         while True:
+            # main menu
             self.jarvis.say("It appears you are in " + self.location, color=Fore.BLUE)
             self.jarvis.say("1 See Today's name days")
             self.jarvis.say("2 See Tomorrow's name days")
@@ -49,12 +57,15 @@ class NameDay:
             self.jarvis.say("4 Chose specific name")
             self.jarvis.say("5 Chose an other country")
             self.jarvis.say("6 Exit")
+
+            # get user input
             try:
                 inp = int(self.jarvis.input("Select the desired number: ", color=Fore.GREEN))
             except ValueError:
                 self.jarvis.say("Please select a number")
                 continue
 
+            # handle input
             if inp == 1:
                 self.today()
             elif inp == 2:
@@ -71,14 +82,21 @@ class NameDay:
             else:
                 self.jarvis.say("Please select a valid number")
 
+            # ask user if he wants to continue
             inp = self.jarvis.input("Do you want to continue? (Y/N)", color=Fore.RED)
             if inp.lower() == "n":
                 break
 
     def get_country_code(self):
+        """Return the two letter country code"""
         return self.countries[self.location]
 
     def get_location(self):
+        """
+        Get the location of the user.
+        If the user is in a supported country, the country is saved in location class variable.
+        otherwise, the user is asked to enter a country from the supported list.
+        """
         self.jarvis.say("Getting Location ... ")
         send_url = 'http://api.ipstack.com/check?access_key=f16ebe59174140a634827d674e605350&output=json&legacy=1'
         js = requests.get(send_url).json()
@@ -93,6 +111,9 @@ class NameDay:
             self.change_country()
 
     def today(self):
+        """
+        Show the name days for today.
+        """
         country_code = self.get_country_code()
         j = requests.get("https://nameday.abalin.net/api/V1/today",
                          params={"country": country_code}).json()
@@ -103,6 +124,9 @@ class NameDay:
             self.jarvis.say("No name days today in " + str(self.location))
 
     def tomorrow(self):
+        """
+        Show the name days for tomorrow.
+        """
         country_code = self.get_country_code()
         j = requests.get("https://nameday.abalin.net/api/V1/tomorrow",
                          params={"country": country_code}).json()
@@ -113,6 +137,9 @@ class NameDay:
             self.jarvis.say("No name days for tomorrow in " + str(self.location))
 
     def specific_date(self):
+        """
+        Show the name days for a specific date.
+        """
         country_code = self.get_country_code()
         self.jarvis.say("Please enter day/month")
         try:
@@ -130,13 +157,16 @@ class NameDay:
             self.jarvis.say("No name days at " + day + "/" + month + " in " + self.location)
 
     def specific_name(self):
+        """
+        Show the name days for a specific name.
+        """
         country_code = self.get_country_code()
         self.jarvis.say("Please enter name")
         name = self.jarvis.input().strip()
         j = requests.get("https://nameday.abalin.net/api/V1/getname",
                          params={"country": country_code, "name": name}).json()
-        # day = j["0"]["day"]
-        # month = j["0"]["month"]
+
+        # the same name may have multiple name days
         if j["0"]:
             dates = ""
             for s in j["0"]:
@@ -147,6 +177,9 @@ class NameDay:
             self.jarvis.say("No name days found for " + name)
 
     def change_country(self):
+        """
+        Change the location of the user manually.
+        """
         self.jarvis.say("Select your country number from the list below:")
         for i, key in enumerate(self.countries.keys(), start=1):
             self.jarvis.say(str(i) + " " + key)
@@ -164,6 +197,10 @@ class NameDay:
         self.location = list(self.countries.keys())[country - 1]
 
     def check_if_date_is_valid(self, day, month):
+        """
+        Check if the date taken for user is valid.
+        :raise ValueError: if the date is invalid.
+        """
         day = int(day)
         month = int(month)
         m31 = [1, 3, 5, 7, 8, 10, 12]
