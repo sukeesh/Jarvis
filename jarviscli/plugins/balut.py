@@ -154,6 +154,117 @@ class Category:
         return self._points_calculator
 
 
+class InvalidCategoryValueError(ValueError):
+    pass
+
+
+class Scoresheet:
+    NUM_OF_FIELDS = 4
+    NUM_OF_CATEGORIES = 7
+    EMPTY_FIELD_PLACEHOLDER = -1
+
+    def init(self, categories: List[Category],
+            scoresheet_matrix: List[List[int]]) -> None:
+        self._categories = categories
+        self._scoresheet_matrix = scoresheet_matrix
+
+    def _find_first_empty_field(self, category: int) -> int:
+        for field, field_score in enumerate(self._scoresheet_matrix[category - 1]):
+            if field_score == self.EMPTY_FIELD_PLACEHOLDER:
+                return field
+
+    def _settle_score_to_field(self, category: int, field: int, hand: List[int]) -> None:
+        self._scoresheet_matrix[category - 1][field] = \
+            self._categories[category - 1].calc_score(hand)
+
+    def settle_score(self, category: int, hand: List[int]) -> None:
+        field = self._find_first_empty_field(category)
+        self._settle_score_to_field(category, field, hand)
+
+    def display(self) -> None:
+        print('\n===================== Scoresheet =====================')
+        print(f"{'': <3}{'Category': <12}{'Field 1': ^10}"
+              f"{'Field 2': ^10}{'Field 3': ^10}{'Field 4': ^10}")
+
+        for i, (field_1, field_2, field_3, field_4) in enumerate(self._scoresheet_matrix):
+            field_1 = '-' if field_1 == -1 else field_1
+            field_2 = '-' if field_2 == -1 else field_2
+            field_3 = '-' if field_3 == -1 else field_3
+            field_4 = '-' if field_4 == -1 else field_4
+
+            print(f"{i+1: <3}{self._categories[i].label: <12}{field_1: ^10}"
+                  f"{field_2: ^10}{field_3: ^10}{field_4: ^10}")
+
+        print('======================================================\n')
+
+    def display_with_score(self, hand: List[int]) -> None:
+        print('\n=========================== Scoresheet ===========================')
+        print(f"{'': <3}{'Category': <12}{'Field 1': ^10}"
+              f"{'Field 2': ^10}{'Field 3': ^10}{'Field 4': ^10}{'Score Gain': ^10}")
+
+        for i, (field_1, field_2, field_3, field_4) in enumerate(self._scoresheet_matrix):
+            field_1 = '-' if field_1 == -1 else field_1
+            field_2 = '-' if field_2 == -1 else field_2
+            field_3 = '-' if field_3 == -1 else field_3
+            field_4 = '-' if field_4 == -1 else field_4
+
+            if field_4 == '-':
+                score_gain = f"+{self._categories[i].calc_score(hand)}"
+            else:
+                score_gain = 'Full'
+
+            print(f"{i+1: <3}{self._categories[i].label: <12}{field_1: ^10}"
+                  f"{field_2: ^10}{field_3: ^10}{field_4: ^10}{score_gain: ^10}")
+
+        print('==================================================================\n')
+
+    def _calc_total_score_points(self, total_score: int) -> int:
+        if 0 <= total_score <= 299:
+            return -2
+        elif 300 <= total_score <= 349:
+            return -1
+        elif 350 <= total_score <= 399:
+            return 0
+        elif 400 <= total_score <= 449:
+            return 1
+        elif 450 <= total_score <= 499:
+            return 2
+        elif 500 <= total_score <= 549:
+            return 3
+        elif 550 <= total_score <= 599:
+            return 4
+        elif 600 <= total_score <= 649:
+            return 5
+        elif 650 <= total_score <= 812:
+            return 6
+
+    def calc_points(self) -> int:
+        total_score = 0
+        total_points = 0
+        for category, fields in enumerate(self._scoresheet_matrix):
+            total_score += sum(fields)
+            total_points += self._categories[category].calc_points(fields)
+
+        total_points += self._calc_total_score_points(total_score)
+
+        return total_points
+
+
+class Player:
+
+    def init(self, username: str, scoresheet: Scoresheet) -> None:
+        self._username = username
+        self._scoresheet = scoresheet
+
+    @property
+    def username(self) -> str:
+        return self._username
+
+    @property
+    def scoresheet(self) -> Scoresheet:
+        return self._scoresheet
+
+
 @plugin("balut")
 class BalutPlugin:
 
@@ -187,5 +298,48 @@ class BalutPlugin:
 
         return [fours, fives, sixes, straight, full_house, choice, balut]
 
+    def read_num_of_players(self) -> int:
+        while True:
+            try:
+                num_of_players = int(input('Number of players: '))
+                if num_of_players <= 0:
+                    raise ValueError()
+                return num_of_players
+            except ValueError:
+                print('Oops! Invalid number of players. Try again...\n')
+
+    def read_usernames(self, num_of_players: int) -> List[str]:
+        usernames = []
+        for i in range(num_of_players):
+            username = input(f'Player {i+1} username: ')
+            usernames.append(username)
+        return usernames
+
+    def create_scoresheets(self, num_of_players: int,
+            categories: List[Category]) -> List[Scoresheet]:
+        scoresheets = []
+        for _ in range(num_of_players):
+            scoresheet = Scoresheet()
+            scoresheet_matrix = [
+                [Scoresheet.EMPTY_FIELD_PLACEHOLDER for _ in range(Scoresheet.NUM_OF_FIELDS)]
+                for _ in range(Scoresheet.NUM_OF_CATEGORIES)
+            ]
+            scoresheet.init(categories, scoresheet_matrix)
+            scoresheets.append(scoresheet)
+        return scoresheets
+
+    def create_players(self, usernames: List[str],
+            scoresheets: List[Scoresheet]) -> List[Player]:
+        players = []
+        for username, scoresheet in zip(usernames, scoresheets):
+            player = Player()
+            player.init(username, scoresheet)
+            players.append(player)
+        return players
+
     def __call__(self, jarvis, _) -> None:
+        num_of_players = self.read_num_of_players()
+        usernames = self.read_usernames(num_of_players)
         categories = self.create_categories()
+        scoresheets = self.create_scoresheets(num_of_players, categories)
+        players = self.create_players(usernames, scoresheets)
