@@ -201,6 +201,8 @@ class CategoryTest(unittest.TestCase):
 
 
 class ScoresheetTest(PluginTest):
+    MIN_CATEGORY = 1
+    MAX_CATEGORY = 7
 
     def setUp(self) -> None:
         balut_plugin = self.load_plugin(b.BalutPlugin)
@@ -219,6 +221,54 @@ class ScoresheetTest(PluginTest):
                 [0, -1, -1, -1]
             ]
         )
+
+    def test__validate_category_valid(self) -> None:
+        self.assertTrue(self.scoresheet._validate_category(self.MIN_CATEGORY))
+        self.assertTrue(self.scoresheet._validate_category(self.MAX_CATEGORY))
+
+    def test__validate_category_invalid(self) -> None:
+        with self.assertRaises(b.InvalidCategoryValueError) as e:
+            self.scoresheet._validate_category(self.MIN_CATEGORY - 1)
+
+        self.assertEqual(
+            str(e.exception),
+            'Oops! Category should be an integer between 1 and 7. Try again...\n')
+
+
+        with self.assertRaises(b.InvalidCategoryValueError) as e:
+            self.scoresheet._validate_category(self.MAX_CATEGORY + 1)
+
+        self.assertEqual(
+            str(e.exception),
+            'Oops! Category should be an integer between 1 and 7. Try again...\n')
+
+
+        with self.assertRaises(b.InvalidCategoryValueError) as e:
+            self.scoresheet._validate_category(3)  # Category is full
+
+        self.assertEqual(
+            str(e.exception),
+            'Oops! The category you selected is already full. Try again...\n')
+
+    @patch('builtins.print')
+    @patch('builtins.input', side_effect=['txt','-1', '1'])
+    def test_select_category_to_settle_score(self, mock_inputs, mock_print) -> None:
+        category = self.scoresheet.select_category_to_settle_score()
+
+        self.assertEqual(category, 1)
+
+        calls = [
+            call('Oops! Category should be an integer. Try again...\n'),
+            call('Oops! Category should be an integer between 1 and 7. Try again...\n')
+        ]
+        mock_print.assert_has_calls(calls)
+
+        input_calls = [
+            call('Select the category to settle the score (1-7): '),
+            call('Select the category to settle the score (1-7): '),
+            call('Select the category to settle the score (1-7): ')
+        ]
+        mock_inputs.assert_has_calls(input_calls)
 
     def test__find_first_empty_field(self) -> None:
         self.assertEqual(self.scoresheet._find_first_empty_field(category=1), 3)
@@ -360,12 +410,239 @@ class PlayerTest(unittest.TestCase):
 
         self.assertEqual(player.username, "John")
 
-    def test_scoresheet(self) -> None:
+    @patch('plugins.balut.Scoresheet')
+    def test_settle_score_to_scoresheet(self, mock_scoresheet) -> None:
+        mock_scoresheet.select_category_to_settle_score.return_value = 1
         player = b.Player()
-        scoresheet = Mock()
-        player.init(None, scoresheet)
+        player.init(None, mock_scoresheet)
 
-        self.assertEqual(player.scoresheet, scoresheet)
+        hand = [1, 2, 3, 4, 5]
+        player.settle_score_to_scoresheet(hand)
+
+        mock_scoresheet.display_with_score.assert_called_once_with(hand)
+        mock_scoresheet.select_category_to_settle_score.assert_called_once_with()
+        mock_scoresheet.settle_score.assert_called_once_with(1, hand)
+        mock_scoresheet.display.assert_called_once_with()
+
+    @patch('plugins.balut.Scoresheet')
+    def test_calc_points(self, mock_scoresheet) -> None:
+        mock_scoresheet.calc_points.return_value = 9
+        player = b.Player()
+        player.init(None, mock_scoresheet)
+
+        self.assertEqual(player.calc_points(), 9)
+
+        mock_scoresheet.calc_points.assert_called_once_with()
+
+class BalutTest(unittest.TestCase):
+    MIN_DICE = 1
+    MAX_DICE = 5
+
+    def setUp(self) -> None:
+        self.balut = b.Balut()
+        self.balut.init(hand=[2, 3, 3, 4, 5])
+
+    @patch('builtins.print')
+    def test_display_instructions(self, mock_print) -> None:
+        self.balut.display_instructions()
+        mock_print.assert_called_once()
+
+    @patch('builtins.print')
+    def test_display_hand(self, mock_print) -> None:
+        self.balut.display_hand(username='John')
+
+        calls = [
+            call('\nJohn you have rolled:'),
+            call('Dice 1 has a face of 2'),
+            call('Dice 2 has a face of 3'),
+            call('Dice 3 has a face of 3'),
+            call('Dice 4 has a face of 4'),
+            call('Dice 5 has a face of 5'),
+            call()
+        ]
+        mock_print.assert_has_calls(calls)
+
+    @patch('plugins.balut.random')
+    def test_roll_dice(self, mock_random) -> None:
+        balut = b.Balut()
+        balut.init(hand=[2, 3, 3, 4, 5])
+        mock_random.randint.side_effect = [3, 6]
+
+        dice_to_roll = 1
+        balut.roll_dice(dice_to_roll)
+        self.assertEqual(balut._hand[dice_to_roll - 1], 3)
+
+        dice_to_roll = 3
+        balut.roll_dice(dice_to_roll)
+        self.assertEqual(balut._hand[dice_to_roll - 1], 6)
+
+        calls = [call(1, 6), call(1, 6)]
+        mock_random.randint.assert_has_calls(calls)
+
+    @patch('plugins.balut.Balut.roll_dice')
+    def test_roll_all_dices(self, mock_roll_dice) -> None:
+        self.balut.roll_all_dices()
+
+        calls = [call(1), call(2), call(3), call(4), call(5)]
+        mock_roll_dice.assert_has_calls(calls)
+
+    def test__validate_dice_valid(self) -> None:
+        self.assertTrue(self.balut._validate_dice(self.MIN_DICE))
+        self.assertTrue(self.balut._validate_dice(self.MAX_DICE))
+
+    def test__validate_dice_invalid(self) -> None:
+        with self.assertRaises(b.InvalidDiceValueError) as e:
+            self.balut._validate_dice(self.MIN_DICE - 1)
+
+        self.assertEqual(
+            str(e.exception),
+            'Oops! Dices should be integers between 1 and 5. Try again...\n')
+
+
+        with self.assertRaises(b.InvalidDiceValueError) as e:
+            self.balut._validate_dice(self.MAX_DICE + 1)
+
+        self.assertEqual(
+            str(e.exception),
+            'Oops! Dices should be integers between 1 and 5. Try again...\n')
+
+    def test__convert_to_dices_to_reroll(self) -> None:
+        self.assertEqual(self.balut._convert_to_dices_to_reroll('1'), [1])
+        self.assertEqual(self.balut._convert_to_dices_to_reroll('1 2 3'), [1, 2, 3])
+
+        with self.assertRaises(ValueError):
+            self.balut._convert_to_dices_to_reroll('txt')
+
+        with self.assertRaises(b.InvalidDiceValueError):
+            self.balut._convert_to_dices_to_reroll('-1')
+
+    @patch('builtins.input', return_value='\n')
+    def test_reroll_dices_preserve_hand(self, mock_input) -> None:
+        with self.assertRaises(b.PreserveHand):
+            self.balut.reroll_dices()
+
+        mock_input.assert_called_once_with(
+            'Select the dices to reroll seperated by space or press enter to continue: ')
+
+    @patch('plugins.balut.Balut.roll_dice')
+    @patch('builtins.print')
+    @patch('builtins.input', side_effect=['txt', '-1', '1 2 3'])
+    def test_reroll_dices(self, mock_inputs, mock_print, mock_roll_dice) -> None:
+        self.balut.reroll_dices()
+
+        roll_dice_calls = [call(1), call(2), call(3)]
+        mock_roll_dice.assert_has_calls(roll_dice_calls)
+
+        print_calls = [
+            call('Oops! Dices should be integers. Try again...\n'),
+            call('Oops! Dices should be integers between 1 and 5. Try again...\n')
+        ]
+        mock_print.assert_has_calls(print_calls)
+
+        input_calls = [
+            call('Select the dices to reroll seperated by space or press enter to continue: '),
+            call('Select the dices to reroll seperated by space or press enter to continue: '),
+            call('Select the dices to reroll seperated by space or press enter to continue: ')
+        ]
+        mock_inputs.assert_has_calls(input_calls)
+
+    @patch('plugins.balut.Player')
+    @patch('plugins.balut.Balut.display_hand')
+    @patch('plugins.balut.Balut.reroll_dices')
+    @patch('plugins.balut.Balut.roll_all_dices')
+    def test_play_round(self, mock_roll_all_dices, mock_reroll_dices,
+            mock_display_hand, mock_player) -> None:
+        mock_reroll_dices.side_effect = [None, b.PreserveHand()]
+
+        self.balut.play_round(mock_player)
+
+        mock_roll_all_dices.assert_called_once_with()
+        mock_display_hand.assert_has_calls(
+            [call(mock_player.username), call(mock_player.username)])
+        mock_reroll_dices.assert_has_calls([call(), call()])
+        mock_player.settle_score_to_scoresheet.assert_called_once_with(self.balut._hand)
+
+    @patch('builtins.print')
+    def test__display_winner_one_winner(self, mock_print) -> None:
+        mock_player = Mock(username='John')
+
+        self.balut._display_winner([mock_player])
+
+        mock_print.assert_called_once_with('\nCongratulations John you are the winner!')
+
+    @patch('builtins.print')
+    def test__display_winner_more_than_one_winners(self, mock_print) -> None:
+        mock_player_1 = Mock(username='John')
+        mock_player_2 = Mock(username='Hamid')
+
+        self.balut._display_winner([mock_player_1, mock_player_2])
+
+        calls = [
+            call('\nThere is a tie between:', end=''),
+            call(' John ', end='&'),
+            call(' Hamid ', end='\n')
+        ]
+        mock_print.assert_has_calls(calls)
+
+    @patch('builtins.print')
+    def test_display_results_one_player(self, mock_print) -> None:
+        mock_player = Mock(username='John')
+        mock_player.calc_points.return_value = 380
+
+        self.balut.display_results([mock_player])
+
+        mock_print.assert_called_once_with("John's total points are: 380")
+
+    @patch('builtins.print')
+    def test__display_results_more_than_one_player_with_winner(self,
+            mock_print) -> None:
+        mock_player_1 = Mock(username='John')
+        mock_player_1.calc_points.return_value = 420
+        mock_player_2 = Mock(username='Hamid')
+        mock_player_2.calc_points.return_value = 380
+
+        self.balut.display_results([mock_player_1, mock_player_2])
+
+        calls = [
+            call("John's total points are: 420"),
+            call("Hamid's total points are: 380"),
+            call('\nCongratulations John you are the winner!')
+        ]
+        mock_print.assert_has_calls(calls)
+
+    @patch('builtins.print')
+    def test__display_results_more_than_one_player_without_winner(self,
+            mock_print) -> None:
+        mock_player_1 = Mock(username='John')
+        mock_player_1.calc_points.return_value = 420
+        mock_player_2 = Mock(username='Hamid')
+        mock_player_2.calc_points.return_value = 420
+
+        self.balut.display_results([mock_player_1, mock_player_2])
+
+        calls = [
+            call("John's total points are: 420"),
+            call("Hamid's total points are: 420"),
+            call('\nThere is a tie between:', end=''),
+            call(' John ', end='&'),
+            call(' Hamid ', end='\n')
+        ]
+        mock_print.assert_has_calls(calls)
+
+    @patch('plugins.balut.Player')
+    @patch('plugins.balut.Player')
+    @patch('plugins.balut.Balut.play_round')
+    @patch('plugins.balut.Balut.display_results')
+    @patch('plugins.balut.Balut.display_instructions')
+    def test_play(self, mock_display_instructions, mock_display_results,
+            mock_play_round, mock_player_1, mock_player_2) -> None:
+        players = [mock_player_1, mock_player_2]
+
+        self.balut.play(players)
+
+        mock_display_instructions.assert_called_once_with()
+        self.assertEqual(mock_play_round.call_count, 56)
+        mock_display_results.assert_called_once_with(players)
 
 
 class BalutPluginTest(PluginTest):
@@ -470,7 +747,8 @@ class BalutPluginTest(PluginTest):
             [-1, -1, -1, -1],
         ]
 
-        scoresheets = self.balut_plugin.create_scoresheets(num_of_players, categories)
+        scoresheets = self.balut_plugin.create_scoresheets(
+            num_of_players, categories)
 
         self.assertEqual(len(scoresheets), num_of_players)
 
@@ -495,8 +773,8 @@ class BalutPluginTest(PluginTest):
 
         self.assertIsInstance(players[0], b.Player)
         self.assertEqual(players[0].username, 'John')
-        self.assertEqual(players[0].scoresheet, mock_scoresheet_1)
+        self.assertEqual(players[0]._scoresheet, mock_scoresheet_1)
 
         self.assertIsInstance(players[1], b.Player)
         self.assertEqual(players[1].username, 'Hamid')
-        self.assertEqual(players[1].scoresheet, mock_scoresheet_2)
+        self.assertEqual(players[1]._scoresheet, mock_scoresheet_2)
