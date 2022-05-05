@@ -1,3 +1,6 @@
+import random
+import textwrap
+import itertools
 import functools
 from plugin import plugin
 from typing import Callable, List
@@ -168,6 +171,30 @@ class Scoresheet:
         self._categories = categories
         self._scoresheet_matrix = scoresheet_matrix
 
+    def _validate_category(self, category: int) -> bool:
+        if not(1 <= category <= self.NUM_OF_CATEGORIES):
+            raise InvalidCategoryValueError(
+                'Oops! Category should be an integer between 1 and 7. Try again...\n')
+
+        if self.EMPTY_FIELD_PLACEHOLDER not in self._scoresheet_matrix[category - 1]:
+            raise InvalidCategoryValueError(
+                'Oops! The category you selected is already full. Try again...\n')
+
+        return True
+
+    def select_category_to_settle_score(self) -> int:
+        while True:
+            try:
+                category = \
+                    int(input('Select the category to settle the score (1-7): '))
+
+                if self._validate_category(category):
+                    return category
+            except InvalidCategoryValueError as error:
+                print(str(error))
+            except ValueError:
+                print('Oops! Category should be an integer. Try again...\n')
+
     def _find_first_empty_field(self, category: int) -> int:
         for field, field_score in enumerate(self._scoresheet_matrix[category - 1]):
             if field_score == self.EMPTY_FIELD_PLACEHOLDER:
@@ -260,9 +287,175 @@ class Player:
     def username(self) -> str:
         return self._username
 
-    @property
-    def scoresheet(self) -> Scoresheet:
-        return self._scoresheet
+    def settle_score_to_scoresheet(self, hand: List[int]) -> None:
+        self._scoresheet.display_with_score(hand)
+        category = self._scoresheet.select_category_to_settle_score()
+        self._scoresheet.settle_score(category, hand)
+        self._scoresheet.display()
+
+    def calc_points(self) -> int:
+        return self._scoresheet.calc_points()
+
+
+class InvalidDiceValueError(ValueError):
+    pass
+
+
+class PreserveHand(Exception):
+    pass
+
+
+class Balut:
+    NUM_OF_DICES = 5
+    NUM_OF_ROUNDS = 28
+
+    def init(self, hand: List[int]) -> None:
+        self._hand = hand
+
+    def display_instructions(self) -> None:
+        instructions = textwrap.dedent(f"""
+        =========================== Instructions ===========================
+        Balut is a dice game that consists of 28 rounds. In each round you
+        can roll the dices up to 3 times and then you have to enter your
+        roll in one of the 7 categories on the scoresheet. You must fill 4
+        fields in each category. Once a field is settled it cannot be changed
+        for the rest of the game. Each category has some requirements, that
+        if they are satisfied you receive the points of the category.
+        The object of the game is to maximize your number of points.
+
+        Categories:
+        1) Fours: The score for this category is the sum of 4 in your hand.
+        2) Fives: The score for this category is the sum of 5 in your hand.
+        3) Sixes: The score for this category is the sum of 6 in your hand.
+        4) Straight: The score for this category is the sum of all the dice
+           faces in your hand if the dice faces are consecutive (straight),
+           otherwise it is zero.
+        5) Full House: The score for this category is the sum of all the dice
+           faces in your hand if you have both three of a kind and a pair (full
+           house), otherwise it is zero.
+        6) Choice: The score for this category is the sum of all the dice faces
+           in your hand.
+        7) Balut: The score for this category is 20 plus the sum of all the dice
+           faces in your hand if you have five of a kind, otherwise it is zero.
+
+
+        {'CATEGORY': <14}{'REQUIREMENTS': <18}{'POINTS AWARDED': ^14}
+        {'Fours': <14}{'Score >= 52': <18}{'2': ^14}
+        {'Fives': <14}{'Score >= 65': <18}{'2': ^14}
+        {'Sixes': <14}{'Score >= 78': <18}{'2': ^14}
+        {'Straight': <14}{'All Straights': <18}{'4': ^14}
+        {'Full House': <14}{'All Full Houses': <18}{'3': ^14}
+        {'Choice': <14}{'Score >= 100': <18}{'2': ^14}
+        {'Balut': <14}{'For each Balut': <18}{'2': ^14}
+
+        {'TOTAL SCORE': <14}{'POINTS AWARDED': ^14}
+        {'0-299': ^12}{'-2': ^16}
+        {'300-349': ^12}{'-1': ^16}
+        {'350-399': ^12}{'0': ^17}
+        {'400-449': ^12}{'1': ^17}
+        {'450-499': ^12}{'2': ^17}
+        {'500-549': ^12}{'3': ^17}
+        {'550-599': ^12}{'4': ^17}
+        {'600-649': ^12}{'5': ^17}
+        {'650-812': ^12}{'6': ^17}
+        ====================================================================
+        """)
+
+        print(instructions)
+
+    def display_hand(self, username: str) -> None:
+        print(f'\n{username} you have rolled:')
+        for i, face in enumerate(self._hand):
+            print(f'Dice {i + 1} has a face of {face}')
+        print()
+
+    def roll_dice(self, dice_to_roll: int) -> None:
+        self._hand[dice_to_roll - 1] = random.randint(1, 6)
+
+    def roll_all_dices(self) -> None:
+        for dice, _ in enumerate(self._hand, start=1):
+            self.roll_dice(dice)
+
+    def _validate_dice(self, dice: int) -> bool:
+        if not(1 <= dice <= self.NUM_OF_DICES):
+            raise InvalidDiceValueError(
+                'Oops! Dices should be integers between 1 and 5. Try again...\n')
+        return True
+
+    def _convert_to_dices_to_reroll(self, selected_dices: str) -> List[int]:
+        return [int(dice) for dice in selected_dices.split(' ')
+                if self._validate_dice(int(dice))]
+
+    def reroll_dices(self) -> None:
+        while True:
+            try:
+                selected_dices = input(
+                    'Select the dices to reroll seperated by space or press enter '
+                    'to continue: '
+                ).strip()
+
+                if selected_dices == '':  # User pressed enter
+                    raise PreserveHand()
+
+                dices_to_reroll = self._convert_to_dices_to_reroll(selected_dices)
+
+                for dice_to_roll in dices_to_reroll:
+                    self.roll_dice(dice_to_roll)
+                return
+            except InvalidDiceValueError as error:
+                print(str(error))
+            except ValueError as error:
+                print('Oops! Dices should be integers. Try again...\n')
+
+    def play_round(self, player: Player) -> None:
+        self.roll_all_dices()
+        self.display_hand(player.username)
+
+        rerolls = 0
+        while rerolls < 2:
+            try:
+                self.reroll_dices()
+                self.display_hand(player.username)
+                rerolls += 1
+            except PreserveHand:
+                break
+
+        player.settle_score_to_scoresheet(self._hand)
+
+    def _display_winner(self, max_players: List[Player]) -> None:
+        if len(max_players) == 1:
+            print(f"\nCongratulations {max_players[0].username} you are the winner!")
+        elif len(max_players) > 1:
+            print(f'\nThere is a tie between:', end='')
+            for i, player in enumerate(max_players, start=1):
+                end_value = '&' if i != len(max_players) else '\n'
+                print(f' {player.username} ', end=end_value)
+
+    def display_results(self, players: List[Player]) -> None:
+        max_points = float('-inf')
+        max_players = []
+        for player in players:
+            player_points = player.calc_points()
+            print(f"{player.username}'s total points are: {player_points}")
+
+            if player_points > max_points:
+                max_points = player_points
+                max_players = [player]
+            elif player_points == max_points:
+                max_players.append(player)
+
+        if len(players) > 1:
+            self._display_winner(max_players)
+
+    def play(self, players: List[Player]) -> None:
+        self.display_instructions()
+
+        players_cycle = itertools.cycle(players)
+        for _ in range(len(players) * self.NUM_OF_ROUNDS):
+            player = next(players_cycle)
+            self.play_round(player)
+
+        self.display_results(players)
 
 
 @plugin("balut")
@@ -343,3 +536,7 @@ class BalutPlugin:
         categories = self.create_categories()
         scoresheets = self.create_scoresheets(num_of_players, categories)
         players = self.create_players(usernames, scoresheets)
+
+        balut = Balut()
+        balut.init(hand=[-1 for _ in range(Balut.NUM_OF_DICES)])
+        balut.play(players)
