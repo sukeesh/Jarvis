@@ -361,7 +361,7 @@ class CmdInterpreter(Cmd):
         if (not command):
             self._init_plugin_info()
         self._activate_plugins()
-        
+
         if self.first_reaction:
             self._api.say(self.first_reaction_text)
 

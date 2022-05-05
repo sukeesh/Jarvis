@@ -2,7 +2,6 @@ from helper import *
 from os.path import expanduser, exists
 import unix_windows
 
-
 # TODO Windows Install options?
 if unix_windows.IS_WIN:
     fw = open('jarvis.bat', 'w')
@@ -32,7 +31,7 @@ python "{PATH}/jarviscli" "$@"
     # get the SHELL of the current user
     user_shell = get_default_shell()
     _do_nothing_str = "Do nothing (Call Jarvis by full path)"
-    install_options = [("Install jarvis /usr/local/bin starter (requires root)", 0),]
+    install_options = [("Install jarvis /usr/local/bin starter (requires root)", 0), ]
     if user_shell in SUPPORTED_SHELLS:
         install_options += [
             ("Add {} to $PATH (.{}rc)".format(os.getcwd(), user_shell, ), 1),
@@ -51,7 +50,7 @@ python "{PATH}/jarviscli" "$@"
         shell_rc = '{}/.{}rc'.format(expanduser("~"), user_shell)
 
         if not os.path.exists(shell_rc):
-            print(f"NO .{user_shell}rc found!")
+            print("NO .{}rc found!".format(user_shell))
         else:
             line_already_exists = False
 
@@ -61,7 +60,7 @@ python "{PATH}/jarviscli" "$@"
                     line_already_exists = True
 
             if line_already_exists:
-                print(f"Jarvis path already added to $PATH in .{user_shell}rc!")
+                print("Jarvis path already added to $PATH in .{}rc!".format(user_shell))
             else:
                 fw = open(shell_rc, 'a')
                 fw.write(line_to_add)
