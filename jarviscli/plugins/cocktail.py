@@ -1,9 +1,9 @@
-from ast import For
 from colorama import Fore
 from plugin import plugin, require
 import requests
 import json
 import os
+
 
 @require(network=True)
 @plugin("cocktail cookbook")
@@ -11,9 +11,13 @@ class Cocktail:
     def __call__(self, jarvis, s):
         self.jarvis = jarvis
         self.main()
-    
+
     def __init__(self):
-        self.ingridients = [
+        # get the width of terminal
+        self.SCREEN_WIDTH = os.get_terminal_size().columns
+        self.RECIPE_WIDTH = 60
+        self.MARGIN = round((self.SCREEN_WIDTH - self.RECIPE_WIDTH) / 2) + 1
+        self.ingredients = [
             "Rum",
             "Light rum",
             "Dark rum",
@@ -22,7 +26,7 @@ class Cocktail:
             "Vodka",
             "Gin",
             "Tequila",
-            "Whiskey" ,
+            "Whiskey",
             "Blended whiskey",
             "Irish whiskey",
             "Bourbon",
@@ -38,21 +42,50 @@ class Cocktail:
             "Irish cream",
             "Sambuca",
             "Creme de Cassis"
-            ]
-    
+        ]
+
     def main(self):
-        self.display_data(self.ingridients)
+        """
+        Method demonstrate the functionality of Cocktail cookbook plugin.
+        """
+
+        # Continue as the user wants more cocktails
         while True:
-            selected_ingridient = self.get_ingridient()
-            retrived_cocktails = self.get_cocktails_by_ingridient(selected_ingridient - 1)
+
+            self.display_data(self.ingredients)
+
+            # User chooses an ingredient
+            selected_ingredient = self.get_input(
+                "Base Ingredient", len(self.ingredients))
+
+            if self.is_exit_input(selected_ingredient):
+                break
+            # List of cocktails that needs the given ingredient
+            retrived_cocktails = self.get_cocktails_by_ingredient(
+                selected_ingredient - 1)
+
             self.display_data(retrived_cocktails)
-            chosen_cocktail = self.get_cocktail(retrived_cocktails)
-            retrieved_cocktail_ingridients = self.get_cocktail_ingridients(chosen_cocktail - 1, retrived_cocktails)
-            self.display_cocktail_ingridients(retrieved_cocktail_ingridients)
-            retrived_cocktail_instrucions = self.get_cocktail_instructions(chosen_cocktail - 1, retrived_cocktails)
-            self.display_cocktail_instructions(retrived_cocktail_instrucions)
-            break
-    
+
+            chosen_cocktail = self.get_input(
+                "Cocktail", len(retrived_cocktails))
+
+            if self.is_exit_input(selected_ingredient):
+                break
+            # List of all ingredients that a cocktail needs
+            retrieved_cocktail_ingredients = self.get_cocktail_ingredients(
+                chosen_cocktail - 1, retrived_cocktails)
+            cocktail = retrived_cocktails[chosen_cocktail - 1]
+            self.display_cocktail_ingredients(
+                retrieved_cocktail_ingredients, cocktail)
+
+            retrived_cocktail_instructions = self.get_cocktail_instructions(
+                chosen_cocktail - 1, retrived_cocktails)
+
+            self.display_cocktail_instructions(retrived_cocktail_instructions)
+
+            if self.is_end():
+                break
+
     def get_json(self, URL: str):
         """
         Return data from given url in json format
@@ -68,100 +101,114 @@ class Cocktail:
         """
         Display available data to the user.
         """
-        # order in the list
+        # data is a list of str
         for number, d in enumerate(data):
             self.jarvis.say(
                 f'{(number + 1):{3}}.  {d}')
-    
-    def display_cocktail_ingridients(self, ingridients):
-        """
-        Display Cocktail Ingridients to the user
-        """
-        self.jarvis.say("<------------------Ingridients----------------->".center(os.get_terminal_size().columns), color=Fore.LIGHTCYAN_EX)
-        self.jarvis.say(f'{"Ingridient":{24}}  {"Measure":{10}}'.center(os.get_terminal_size().columns), color=Fore.LIGHTMAGENTA_EX)
-        for i in ingridients:
-            self.jarvis.say(
-                f'{i[0] :{21}}      {i[1]:{8}}'.center(os.get_terminal_size().columns), color=Fore.LIGHTCYAN_EX)
-    
-    def display_cocktail_instructions(self, instructions):
-        """
-        Display Cocktail Ingridients to the user
-        """
-        self.jarvis.say("<------------------Instructions----------------->".center(os.get_terminal_size().columns), color=Fore.LIGHTCYAN_EX)
-        self.jarvis.say(instructions.center(os.get_terminal_size().columns), color=Fore.LIGHTMAGENTA_EX)
 
-    def get_ingridient(self):
+    def display_cocktail_ingredients(self, ingredients, cocktail):
+        """
+        Display Cocktail ingredients to the user
+        """
+
+        self.header_msg(f"ALL YOU NEED for {cocktail}")
+
+        self.jarvis.say(f'{"INGREDIENTS":{30}}{"MEASURE":{15}}'.center(
+            self.SCREEN_WIDTH), color=Fore.LIGHTGREEN_EX)
+        for ingredient in ingredients:
+            self.jarvis.say(
+                f'{ingredient[0] :{30}}{ingredient[1]:{15}}'.center(self.SCREEN_WIDTH))
+
+    def display_cocktail_instructions(self, instructions: str):
+        """
+        Display Cocktail ingredients to the user
+        """
+        self.header_msg("HOW TO MAKE IT")
+        instructions = instructions.replace("\r\n", " ")
+
+        for line in range(0, len(instructions), self.RECIPE_WIDTH):
+            # skip space in the end of the line
+            if instructions[line] == " " and line < len(instructions):
+                line += 1
+            self.jarvis.say(
+                f'{" " * self.MARGIN}{instructions[line : line + self.RECIPE_WIDTH]}')
+
+    def header_msg(self, msg: str):
+        self.jarvis.say(
+            f'{"-" * self.RECIPE_WIDTH}'.center(self.SCREEN_WIDTH))
+        self.jarvis.say(f"{msg}".center(
+            self.SCREEN_WIDTH))
+        self.jarvis.say(
+            f'{"-" * self.RECIPE_WIDTH}'.center(self.SCREEN_WIDTH))
+
+    def get_input(self, input_is: str, upper_bound: int):
         """
         Get user input and validate it.
-        Input must be a number that corresponds to an ingridient.
+        Input must be a number that corresponds to an ingredients.
         """
-        try:
-            ingridient = int(self.jarvis.input(
-                "Select Base Ingridient number: ", color=Fore.GREEN))
-        except ValueError:
-            self.jervis.say("Please select a number", color=Fore.RED)
-        try:
-            upper_bound = len(self.ingridients)
-            if (ingridient <= 0) or (ingridient >= upper_bound) :
-                raise Exception("Number out of range")
-        except Exception:
-            self.jarvis.say(
-                f"Please select a number from 1 to {upper_bound}", color=Fore.RED)
-        return ingridient
-    
-    def get_cocktail(self, cocktails):
-        """
-        Get user input and validate it.
-        Input must be a number that corresponds to an ingridient.
-        """
-        try:
-            cocktail = int(self.jarvis.input(
-                "Select Cocktail number: ", color=Fore.GREEN))
-        except ValueError:
-            self.jervis.say("Please select a number", color=Fore.RED)
-        try:
-            upper_bound = len(cocktails)
-            if (cocktail <= 0) or (cocktail >= upper_bound) :
-                raise Exception("Number out of range")
-        except Exception:
-            self.jarvis.say(
-                f"Please select a number from 1 to {upper_bound}", color=Fore.RED)
-        return cocktail
+        input_code = None
+        # Until country code is valid
+        while not input_code:
+            try:
+                input_code = self.jarvis.input(
+                    f"Choose {input_is}: ", color=Fore.GREEN)
+                if self.is_valid_input(int(input_code), upper_bound):
+                    raise ValueError
+            except ValueError:
+                if self.is_exit_input(input_code):
+                    return 'exit'
+                self.jarvis.say(
+                    f"Please select a number (1 - {upper_bound})", color=Fore.YELLOW)
+                input_code = None
+        return int(input_code)
 
-    def get_cocktail_ingridients(self, cocktail: int, cocktails):
+    def is_exit_input(self, input):
+        if (type(input) == str and input.lower() == "exit"):
+            return True
+
+    def is_valid_input(self, input, upper_bound):
+        if type(input) == int and self.is_out_of_range(input, upper_bound):
+            return True
+
+    def is_out_of_range(self, x: int, upper_bound) -> bool:
+        return (True if (x > upper_bound or x <= 0) else False)
+
+    def is_end(self):
+        inp = self.jarvis.input(
+            "Do you want to continue? (Y/N) ", color=Fore.RED)
+        if inp.lower() == "n" or inp.lower() == "exit":
+            return True
+
+    def get_cocktail_ingredients(self, cocktail: int, cocktails):
         """
-        Get chosen cocktail's ingridients.
+        Get chosen cocktail's ingredients.
         """
         URL = f"https://www.thecocktaildb.com/api/json/v1/1/search.php?s={cocktails[cocktail]}"
         json_text = self.get_json(URL)['drinks'][0]
-        cocktail_ingridients = []
-        for i in range(1,16):
-            ingridient = json_text[f'strIngredient{i}']
+        cocktail_ingredients = []
+        for i in range(1, 16):
+            ingredient = json_text[f'strIngredient{i}']
             measure = json_text[f'strMeasure{i}']
-            if ingridient:
+            if ingredient:
                 if not measure:
-                    cocktail_ingridients.append([ingridient, "Your pref."])
+                    cocktail_ingredients.append([ingredient, "Your pref."])
                 else:
-                    cocktail_ingridients.append([ingridient, measure])
-        return cocktail_ingridients
+                    cocktail_ingredients.append([ingredient, measure])
+        return cocktail_ingredients
 
     def get_cocktail_instructions(self, cocktail: int, cocktails):
         """
         Get chosen cocktail's instructions.
         """
         URL = f"https://www.thecocktaildb.com/api/json/v1/1/search.php?s={cocktails[cocktail]}"
-        json_text = self.get_json(URL)['drinks'][0]
-        instructions = json_text["strInstructions"]
-        return instructions
-        
+        json_text = self.get_json(URL)['drinks'][0]["strInstructions"]
+        return json_text
 
-    def get_cocktails_by_ingridient(self, ingridient: int):
+    def get_cocktails_by_ingredient(self, ingredients: int):
         """
-        Get most popular cocktails with the given ingridient as base one.
+        Get most popular cocktails with the given ingredients as base one.
         """
-        URL = f"https://www.thecocktaildb.com/api/json/v1/1/filter.php?i={self.ingridients[ingridient]}"
-        json_text = self.get_json(URL)
-        cocktails = []
-        for i in json_text["drinks"]:
-            cocktails.append(i["strDrink"])
+        URL = f"https://www.thecocktaildb.com/api/json/v1/1/filter.php?i={self.ingredients[ingredients]}"
+        json_text = self.get_json(URL)["drinks"]
+        cocktails = [i["strDrink"] for i in json_text]
         return cocktails
