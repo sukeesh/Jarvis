@@ -46,7 +46,6 @@ class QRGenerator:
         self.path = self._get_path(prompt_path,jarvis)
         if self.path == "end":
             return
-        self.path = self.path + "\\"
         jarvis.say("")
 
         prompt_name = ("\nEnter the name of the png file that will be created: ")
@@ -127,7 +126,7 @@ class QRGenerator:
             jarvis.spinner_start('Creating QR ')
             response = requests.get(query)
             # where the png file will be stored
-            location = self.path + self.filename + ".png"
+            location = os.path.join(self.path,self.filename + '.png')
             file = open(location, "wb")
             file.write(response.content)
             jarvis.spinner_stop()
