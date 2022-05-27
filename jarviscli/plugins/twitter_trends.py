@@ -23,10 +23,12 @@ import json
 class TwitterTrends:
     def __call__(self, jarvis, s):
         self.jarvis = jarvis
+        if self.countries is None:
+            self.countries = self.available_countries()
         self.main()
 
     def __init__(self):
-        self.countries = self.available_countries()
+        self.countries = None
         self.exit_msg = "exit"
 
     def main(self):
