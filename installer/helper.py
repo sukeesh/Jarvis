@@ -3,6 +3,7 @@ import sys
 import distutils.spawn
 import time
 import subprocess
+from sys import platform
 from threading import Thread
 from tempfile import NamedTemporaryFile
 from unix_windows import IS_WIN
@@ -18,6 +19,13 @@ try:
 except NameError:
     pass
 
+def install(package):
+    '''Install a package using pip or apt depending upon the platform'''
+    if platform == "linux" or platform == "linux2":
+        subprocess.check_call([sys.executable, "-m", "apt", "-q", "install", package])
+    elif platform == "darwin" or platform == "win32":
+        subprocess.check_call([sys.executable, "-m", "pip", "-q", "install", package])
+    return True
 
 def executable_exists(name):
     binary_path = distutils.spawn.find_executable(name)

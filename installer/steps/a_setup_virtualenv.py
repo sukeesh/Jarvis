@@ -22,12 +22,11 @@ if not py3venv_installed.success():
     venv_installed = shell("virtualenv --version")
 
     if not venv_installed.success():
-        printlog("Please install virtualenv!")
-        printlog("https://github.com/pypa/virtualenv")
-        printlog(unix_windows.VIRTUALENV_INSTALL_MSG)
-        printlog("")
-
-    fail(">>> Apparently virtualenv on Python3 ({}) does not work. Exiting!".format(unix_windows.VIRTUALENV_CMD))
+        printlog("virtualenv not installed, installing...")
+        if install("virtualenv"):
+            printlog("Installation Complete!")
+        else:
+            fail(">>> Apparently virtualenv on Python3 ({}) does not work. Exiting!".format(unix_windows.VIRTUALENV_CMD))
 
 # Check if 'virtualenv' exists
 virtualenv_exists = os.path.isdir("env")
