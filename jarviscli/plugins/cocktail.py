@@ -1,11 +1,12 @@
 from colorama import Fore
-from plugin import plugin, require
+from plugin import plugin, require, alias
 import requests
 import json
 import os
 
 
 @require(network=True)
+@alias("cocktails")
 @plugin("cocktail cookbook")
 class Cocktail:
     def __call__(self, jarvis, s):
