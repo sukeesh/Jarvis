@@ -1,39 +1,39 @@
 from plugin import plugin
-from random_word import RandomWords
+from random_word import RandomWords as random_words
 
 
 @plugin('hangman')
 def hangman(jarvis, s):
-    initialText = "#########################################\n" \
-                  "# Hello Hangman Game Is About To Begin! #\n" \
-                  "#     Guesses Should Be Characters!     #\n" \
-                  "#        Type 'stop' To End Game!       #\n" \
-                  "#########################################\n"
-    print(initialText)
-    randomWords = RandomWords()
-    terminateFlag = 0
+    initial_text = "#########################################\n" \
+                   "# Hello Hangman Game Is About To Begin! #\n" \
+                   "#     Guesses Should Be Characters!     #\n" \
+                   "#        Type 'stop' To End Game!       #\n" \
+                   "#########################################\n"
+    print(initial_text)
+    random_words = random_words()
+    terminate_flag = 0
 
-    while not terminateFlag:
+    while not terminate_flag:
         lives = 8
-        usedLetters = ""
-        actualWordToGuess = ""
-        while len(actualWordToGuess) < 4:
+        used_letters = ""
+        actual_word_to_guess = ""
+        while len(actual_word_to_guess) < 4:
             try:
-                actualWordToGuess = randomWords.get_random_word()
+                actual_word_to_guess = random_words.get_random_word()
             except BaseException:
                 continue
-        actualWordToGuess = actualWordToGuess.lower()
-        wordToGuess = ""
-        for x in range(len(actualWordToGuess)):
-            wordToGuess = wordToGuess + "_"
+        actual_word_to_guess = actual_word_to_guess.lower()
+        word_to_guess = ""
+        for x in range(len(actual_word_to_guess)):
+            word_to_guess = word_to_guess + "_"
         while True:
             if lives == 0:
                 print("You Lost!\n")
                 break
-            if actualWordToGuess == wordToGuess:
+            if actual_word_to_guess == word_to_guess:
                 print("You Won!\n")
                 break
-            print("Word To Guess Looks Like This : " + wordToGuess + "\n")
+            print("Word To Guess Looks Like This : " + word_to_guess + "\n")
             guess = input("Enter Your Guess : ")
             print("\n")
             guess = guess.strip()
@@ -45,51 +45,51 @@ def hangman(jarvis, s):
                 print("Woops! You Have Not Entered Anything\n")
                 lives = lives - 1
                 print("Penalty! Lives Decrease By 1, Remains : " + str(lives) + "\n")
-                drawStickMan(8 - lives)
+                draw_stick_man(8 - lives)
                 continue
             if len(guess) > 1:
-                print("Woops! You Have Entered Input Longer Than Character Size\n")
+                print("Woops! You Have Entered Input Longer Than CharacterSize\n")
                 lives = lives - 1
                 print("Penalty! Lives Decrease By 1, Remains : " + str(lives) + "\n")
-                drawStickMan(8 - lives)
+                draw_stick_man(8 - lives)
                 continue
             if guess in usedLetters:
                 print("Woops! You Have Entered Letter That Is Already Used\n")
                 lives = lives - 1
                 print("Penalty! Lives Decrease By 1, Remains : " + str(lives) + "\n")
-                drawStickMan(8 - lives)
+                draw_stick_man(8 - lives)
                 continue
-            if guess not in actualWordToGuess:
+            if guess not in actual_word_to_guess:
                 print("Woops! You Have Entered Wrong Guess\n")
                 lives = lives - 1
                 print("Penalty! Lives Decrease By 1, Remains : " + str(lives) + "\n")
-                drawStickMan(8 - lives)
+                draw_stick_man(8 - lives)
                 continue
             if guess.lower() in actualWordToGuess:
                 print("YES! You Have Entered Correct Guess\n")
-                drawStickMan(8 - lives)
+                draw_stick_man(8 - lives)
 
-            usedLetters = usedLetters + guess
-            newWordToGuess = ""
-            for position in range(len(actualWordToGuess)):
-                if actualWordToGuess[position] == guess:
-                    newWordToGuess = newWordToGuess + guess
+            used_letters = used_letters + guess
+            new_word_to_guess = ""
+            for position in range(len(actual_word_to_guess)):
+                if actual_word_to_guess[position] == guess:
+                    new_word_to_guess = new_word_to_guess + guess
                 else:
-                    newWordToGuess = newWordToGuess + wordToGuess[position]
-            wordToGuess = newWordToGuess
+                    new_word_to_guess = new_word_to_guess + word_to_guess[position]
+            word_to_guess = new_word_to_guess
 
-        print("Word To Guess Was : " + actualWordToGuess.upper())
-        terminateFlag = continueOrNot()
+        print("Word To Guess Was : " + actual_word_to_guess.upper())
+        terminate_flag = continue_or_not()
 
-    goodByeText = "#########################################\n" \
-                  "#               Farewell!               #\n" \
-                  "#       May The Force Be With You!      #\n" \
-                  "#########################################\n"
-    print(goodByeText)
+    good_bye_text = "#########################################\n" \
+                    "#               Farewell!               #\n" \
+                    "#       May The Force Be With You!      #\n" \
+                    "#########################################\n"
+    print(good_bye_text)
 
 
-def continueOrNot():
-    terminationFlag = 0
+def continue_or_not():
+    termination_flag = 0
     desire = input("Do You Want To Play Again? (Y/N) ")
     print("\n")
     desire = desire.strip()
@@ -100,16 +100,16 @@ def continueOrNot():
         desire = desire.strip()
         desire = desire.lower()
     if desire == "n":
-        terminationFlag = 1
+        termination_flag = 1
     elif desire == "y":
         print("Hangman Game Resets!\n")
-    return terminationFlag
+    return termination_flag
 
 
-def drawStickMan(phaseMain):
+def draw_stick_man(phase_main):
     stickman = ""
     phase = 0
-    while phase != phaseMain:
+    while phase != phase_main:
         if phase == 0:
             stickman = stickman + "   |---\n"
             stickman = stickman + "   |   '\n"
