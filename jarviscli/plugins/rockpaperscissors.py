@@ -1,7 +1,5 @@
-import random
-
+from random import *
 from colorama import Back
-
 from plugin import plugin
 
 
@@ -9,22 +7,19 @@ from plugin import plugin
 class rockpaperscissors():
     """
     rockpaperscissors Dcoumentation.
-    rockpaperscssors is the game Rock - Paper - Scissors that we all know with Jarvis as opponent.
-
+    rockpaperscssors is the game Rock - Paper - Scissors that we all know with
+    Jarvis as opponent.
     First of all you enter how many rounds you will play (max. 100).
     And then the game starts.
     In every round you will request to enter your move.
-
     'r' for rock.
     'p' for paper.
     's' for scissors.
-
-    Also you can exit the game whenever you like by entering as move 'exit' and also you can display the score whenever
-    you want by entering 'score'.
-
+    Also you can exit the game whenever you like by entering as move 'exit' and
+    also you can display the score whenever you want by entering 'score'.
     You can display the current round by entering 'rounds'.
-
     """
+
 
     def __call__(self, jarvis, s):
         jarvis.say("!! Welcome to Rock Paper Scissors !!")
@@ -110,6 +105,7 @@ class rockpaperscissors():
 
         jarvis.say(txt)
 
+
     def get_rounds(self, prompt):
 
         while True:
@@ -118,6 +114,7 @@ class rockpaperscissors():
                 return rounds
             else:
                 prompt = 'Laps should be under 100 \n'
+
 
     def get_users(self, prompt):
 
@@ -140,11 +137,13 @@ class rockpaperscissors():
                 prompt = 'Please enter a valid move: '
                 continue
 
+
     def get_jarvis(self):
 
         moves = ["r", "p", "s"]
 
         return moves[random.randint(0, 2)]
+
 
     def game(self, umove, jmove):
 
