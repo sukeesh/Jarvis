@@ -1,4 +1,4 @@
-import math
+from math import * 
 from plugin import plugin
 
 
@@ -10,6 +10,7 @@ class Calculator:
     {Note: Trigonometric ratios take value in degrees.}
     """
 
+    
     def __call__(self, jarvis, s):
         try:
             import tkinter as tk
@@ -121,6 +122,7 @@ class Calculator:
         self.keybinds()
         self.calcwin.mainloop()
 
+        
     def plus(self):
         self.a = self.num.get()
         self.num.delete(0, 'end')
@@ -128,6 +130,7 @@ class Calculator:
         self.operator = "+"
         self.buffer["text"] = str(self.a) + " " + str(self.operator)
 
+        
     def minus(self):
         self.a = self.num.get()
         self.num.delete(0, 'end')
@@ -135,6 +138,7 @@ class Calculator:
         self.operator = "-"
         self.buffer["text"] = str(self.a) + " " + str(self.operator)
 
+        
     def mult(self):
         self.a = self.num.get()
         self.num.delete(0, 'end')
@@ -142,6 +146,7 @@ class Calculator:
         self.operator = "x"
         self.buffer["text"] = str(self.a) + " " + str(self.operator)
 
+        
     def div(self):
         self.a = self.num.get()
         self.num.delete(0, 'end')
@@ -149,6 +154,7 @@ class Calculator:
         self.operator = "/"
         self.buffer["text"] = str(self.a) + " " + str(self.operator)
 
+        
     def sqroot(self):
         try:
             self.a = self.num.get()
@@ -168,6 +174,7 @@ class Calculator:
         except OverflowError:
             self.ans["text"] = "Out of range"
 
+            
     def fact(self):
         try:
             self.a = self.num.get()
@@ -186,6 +193,7 @@ class Calculator:
         except OverflowError:
             self.ans["text"] = "Out of range"
 
+            
     def power(self):
         self.a = self.num.get()
         self.num.delete(0, 'end')
@@ -193,6 +201,7 @@ class Calculator:
         self.operator = "^"
         self.buffer["text"] = str(self.a) + str(self.operator)
 
+        
     def sin(self):
         try:
             self.a = float(self.num.get()) / 57.2958  # convert to deg
@@ -208,6 +217,7 @@ class Calculator:
         except OverflowError:
             self.ans["text"] = "Out of range"
 
+            
     def cos(self):
         try:
             self.a = float(self.num.get()) / 57.2958  # convert to deg
@@ -223,6 +233,7 @@ class Calculator:
         except OverflowError:
             self.ans["text"] = "Out of range"
 
+            
     def tan(self):
         try:
             self.a = float(self.num.get()) / 57.2958  # convert to deg
@@ -238,6 +249,7 @@ class Calculator:
         except OverflowError:
             self.ans["text"] = "Out of range"
 
+            
     def c(self):
         """clear button for calculator"""
         self.a = 0
@@ -246,6 +258,7 @@ class Calculator:
         self.ans["text"] = ""
         self.buffer["text"] = ""
 
+        
     def equal(self, event):
         try:
             self.b = self.num.get()
@@ -289,9 +302,11 @@ class Calculator:
         except OverflowError:
             self.ans["text"] = "Out of range"
 
+            
     def exit(self, event):
         self.calcwin.destroy()
 
+        
     def keybinds(self):
         self.calcwin.bind('<Return>', self.equal)
         self.calcwin.bind('<Escape>', self.exit)
