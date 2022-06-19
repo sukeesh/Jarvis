@@ -17,6 +17,7 @@ from plugin import plugin, require, alias
 import requests
 import json
 
+
 @alias("trendtwit")
 @require(network=True)
 @plugin("twitter trends")
@@ -39,6 +40,7 @@ class TwitterTrends:
             if self.is_exit_input(country_code):
                 break
             retrivied_trends = self.get_trends_from(country_code)
+
             self.display_trends(retrivied_trends)
             if self.is_end():
                 break
@@ -59,7 +61,7 @@ class TwitterTrends:
         Key: number of country,
         Value: [country name, country url suffix]
         """
-        URL = "http://api-twitter-trends.herokuapp.com/location"
+        URL = "https://twitter-trends-api.azharimm.site/location"
         json_text = self.get_json(URL)
         countries_response = json_text["data"]
         countries = dict()
@@ -77,7 +79,7 @@ class TwitterTrends:
         """
         try:
             response = requests.get(URL)
-        except Exception:
+        except:
             self.jarvis.say(
                 "Can not reach URL for the moment.")
         return json.loads(response.text)
@@ -115,12 +117,12 @@ class TwitterTrends:
         """
         Get the top 10 Twitter trends of the given country.
         """
-        URL = f"https://api-twitter-trends.herokuapp.com{self.countries[country][1]}"
+        URL = f"https://twitter-trends-api.azharimm.site{self.countries[country][1]}"
         json_text = self.get_json(URL)
         trends = list()
         # zero stands for the latest trends ranking
         trends_info = json_text["data"]["trends"][0]["data"]
-        for trend in trends_info:
+        for trend in trends_info[:10]:
             name = trend["name"]
             tweet_count = "-"
             if trend["tweet_count"]:
