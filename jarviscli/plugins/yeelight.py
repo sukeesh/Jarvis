@@ -159,13 +159,13 @@ class Yeelight:
         # Until name is valid
         while not input_name:
             try:
-                input_name = self.jarvis.input("Please enter a name:")
-                if self.is_available_name(input_name):
+                input_name = self.jarvis.input("Please enter a name: ")
+                if not self.is_available_name(input_name):
                     raise ValueError
             except ValueError:
                 if self.is_exit_input(input_name):
                     return self.exit_msg
-                self.jarvis.say("Chosen name is empty or exists.")
+                self.jarvis.say("Chosen name is empty or exists. Also tou should use one-word names")
                 input_name = ''
         return input_name
 
@@ -215,7 +215,7 @@ class Yeelight:
 
     def is_available_name(self, name) -> bool:
         # checks if the name is valid
-        if name and type(name) == str and name.lower() != 'exit' and self.is_valid_name(name):
+        if (name != '' and type(name) == str and name.lower() != 'exit' and self.is_valid_name(name) and len(name.strip().split()) == 1):
             return True
 
     def is_valid_name(self, name) -> bool:
@@ -223,6 +223,7 @@ class Yeelight:
         for bulb in self.discovered_bulbs:
             if self.discovered_bulbs[bulb]['name'] == name:
                 return False
+        return True
 
     def is_out_of_range(self, x: int, upper_bound) -> bool:
         return (True if (x > upper_bound or x <= 0) else False)
