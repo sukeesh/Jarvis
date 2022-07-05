@@ -1,0 +1,121 @@
+{
+    "templates": [
+        "<a> @group@ @action@",
+        "<a> @group@"
+    ],
+    "num": [
+        "two",
+        "three",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "eight",
+        "nine",
+        "ten"
+    ],
+    "noun": [
+        "cat",
+        "dog",
+        "bird",
+        "fish",
+        "horse",
+        "sheep",
+        "cow",
+        "pig",
+        "person",
+        "guy",
+        "girl"
+    ],
+    "nounPlural": [
+        "cats",
+        "dogs",
+        "birds",
+        "fish",
+        "horses",
+        "sheep",
+        "cows",
+        "pigs",
+        "people",
+        "guys",
+        "girls"
+    ],
+    "group": [
+        "@colour@ @noun@",
+        "group of @num@ @colour@ @nounPlural@"
+    ],
+    "action": [
+        "running away from <a> @group@",
+        "sleeping in <a> @setting@",
+        "eating <a> @food@",
+        "drinking @drink@",
+        "playing @game@ against <a> @group@",
+        "swimming in @drink@",
+        "eating a @group@"
+    ],
+    "setting": [
+        "forest",
+        "desert",
+        "mountain",
+        "city",
+        "field",
+        "river",
+        "ocean",
+        "sea of @drink@"
+    ],
+    "food": [
+        "apple",
+        "banana",
+        "orange",
+        "pear",
+        "strawberry",
+        "grape",
+        "watermelon",
+        "pineapple",
+        "peach",
+        "cherry",
+        "coconut"
+    ],
+    "drink": [
+        "water",
+        "juice",
+        "milk",
+        "tea",
+        "coffee",
+        "soda",
+        "beer",
+        "wine",
+        "whisky",
+        "vodka",
+        "rum",
+        "brandy",
+        "champagne"
+    ],
+    "game": [
+        "poker",
+        "black jack",
+        "mario kart",
+        "pong",
+        "chess",
+        "checkers",
+        "tic tac toe",
+        "snake",
+        "volleyball"
+    ],
+    "colour": [
+        "@colourOptions@",
+        ""
+    ],
+    "colourOptions": [
+        "red",
+        "green",
+        "blue",
+        "yellow",
+        "orange",
+        "purple",
+        "pink",
+        "brown",
+        "black",
+        "white"
+    ]
+}
