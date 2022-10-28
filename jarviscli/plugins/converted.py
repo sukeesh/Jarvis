@@ -108,7 +108,7 @@ def do_weather(self, s):
     self = self._jarvis
 
     word = s.strip()
-    if(len(word) > 1):
+    if (len(word) > 1):
         weatherIn.main(self, s)
     else:
         weather_pinpoint.main(self.memory, self, s)

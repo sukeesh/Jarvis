@@ -6,7 +6,7 @@ from plugin import plugin, require, LINUX
 @plugin('open')
 def open(jarvis, s):
 
-    if(s != ""):
+    if (s != ""):
         string = "gtk-launch " + "/usr/share/applications/" + s + ".desktop"
         os.system(string)
     else:
