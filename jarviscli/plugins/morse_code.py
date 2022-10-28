@@ -98,11 +98,11 @@ class morsecode:
             correct = True
             check_input = jarvis.input(text)
             for letter in check_input.upper():
-                if not(letter in self.encoded_char):
+                if not (letter in self.encoded_char):
                     correct = False
                     break
 
-            if(correct):
+            if (correct):
                 return check_input
 
             text = "Not a valid input. Try again: "
@@ -142,10 +142,10 @@ class morsecode:
             correct = True
             check_input = jarvis.input(text)
             for letter in check_input:
-                if not(letter in self.decoded_char):
+                if not (letter in self.decoded_char):
                     correct = False
                     break
-            if(correct):
+            if (correct):
                 return check_input
 
             text = "Not a valid unit. Try again: "

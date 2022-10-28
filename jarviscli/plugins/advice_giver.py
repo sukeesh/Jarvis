@@ -22,6 +22,7 @@ ANSWERS = [
   "Sorry But Your Question Does Not Make Sense"
 ]
 
+
 @plugin("give me advice")
 def advice(jarvis, s):
     while True:

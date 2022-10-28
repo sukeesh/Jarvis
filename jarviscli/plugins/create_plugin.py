@@ -33,9 +33,9 @@ def create_plugin_MAC(jarvis, s):
     """Checks if file already exists in either the plugins main folder
     or in the custom plugins folder and also asks the user if he wants to exit
     """
-    while(os.path.isfile(CUSTOM_PLUGINS_PATH + filename + ".py") or
-          os.path.isfile(PLUGINS_PATH + "/" + filename + ".py") and
-          not exit):
+    while (os.path.isfile(CUSTOM_PLUGINS_PATH + filename + ".py") or
+           os.path.isfile(PLUGINS_PATH + "/" + filename + ".py") and
+           not exit):
         jarvis.say("A plugin with the name '" + filename +
                    "' already exists", Fore.RED)
         jarvis.say("Please choose another name or type 'exit' " +
@@ -82,8 +82,8 @@ def create_plugin_LINUX(jarvis, s):
     """Checks if file already exists in either the plugins main folder
     or in the custom plugins folder and also asks the user if he wants to exit
     """
-    while(os.path.isfile(CUSTOM_PLUGINS_PATH + filename + ".py") or
-          os.path.isfile(PLUGINS_PATH + "/" + filename + ".py") and not exit):
+    while (os.path.isfile(CUSTOM_PLUGINS_PATH + filename + ".py") or
+           os.path.isfile(PLUGINS_PATH + "/" + filename + ".py") and not exit):
         jarvis.say("A plugin with the name '" + filename +
                    "' already exists", Fore.RED)
         jarvis.say("Please choose another name or type 'exit' " +

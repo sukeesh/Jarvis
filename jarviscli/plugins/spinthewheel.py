@@ -3,7 +3,7 @@ import random
 
 
 def spinit(list):
-    return(random.choice(list))
+    return (random.choice(list))
 
 
 @plugin("spinwheel")
