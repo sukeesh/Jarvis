@@ -47,3 +47,5 @@ img2pdf
 pdf2image
 python-nmap
 yeelight
+#ryanair-py
+FlightRadarAPI
