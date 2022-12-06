@@ -18,8 +18,10 @@ class Flights():
 
 
     def newRadarApp(self,jarvis, s):
-        url='https://app.goflightlabs.com/flights?access_key='
-        api_key= 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiZDFhOGFjNjgwZWZkY2Q2MGY5MzhhZTk1MTI3NjM0NDVjNjMzMjVkNGVlNWI1M2EzZmRjNzZmNWM3OTNmZjU4MTFmNTBlM2NkMzRlN2FiMTYiLCJpYXQiOjE2NjYzNDExNjksIm5iZiI6MTY2NjM0MTE2OSwiZXhwIjoxNjk3ODc3MTY5LCJzdWIiOiIxNTY5NCIsInNjb3BlcyI6W119.NRSmV9ZhyZE86sFcb0LZLJHv8V14QsPgJ9Lm_RJH46h3-aDnDzBSUezHy1isx7vaU2V5WuZdxhW_Ieb5bJlSpg'
+        url='https://app.goflightlabs.com/advanced-real-time-flights?access_key='
+        #jarvis.say('Please input your api key from :https://app.goflightlabs.com/')
+        #api_key= jarvis.input()
+        api_key=  'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiMjI2NzBiMGU5ZjM1MjQ0NTM0NTZkMGFmMWNhMTRjMjU5NGUxY2M2MzYyMjMwNjc3NGY1NmRiOTBlNzQ3ZDFiNjczYThlYzJlNjU3OWI0MDciLCJpYXQiOjE2NzAzNDY2NTksIm5iZiI6MTY3MDM0NjY1OSwiZXhwIjoxNzAxODgyNjU5LCJzdWIiOiIxOTEyNSIsInNjb3BlcyI6W119.utABbQBy23WneF4n8doTyWZzX1RqxtYiClMMRS0lkdaNuRMhVQpkST0fUwJ19SXKHyu2kp6VkWeRvpe8OYNnwg'
         query = self.getParams(jarvis)
         if query == 'q':
             return-1
@@ -34,6 +36,7 @@ class Flights():
         except:
             jarvis.say('Something went wrong during parsing JSON')
             return -1
+        print(flight['data'][1]['arrival']['iataCode'])
         jarvis.say('Filter results, select how many results to display')
         
         display= jarvis.input()
@@ -42,7 +45,7 @@ class Flights():
             jarvis.say('Please input number:')
             display= input()
         self.print_results(jarvis, flight,display)
-
+        
 
     def getParams(self,jarvis):
         jarvis.say('select params: 1-status 2-dep 3-arr 4-airline 5-flight number 6-flight code q to quit')
@@ -53,34 +56,34 @@ class Flights():
             jarvis.say('insert valid option')
             user=jarvis.input()
         if '1' in user:
-            status_state=['scheduled', 'active', 'landed', 'cancelled', 'incident', 'diverted']
-            jarvis.say('Enter flight status: scheduled, active, landed, cancelled, incident, diverted')
+            status_state=['en-route', 'started', 'landed', 'unknown']
+            jarvis.say('Enter flight status: en-route, started, landed, unknown')
             status=jarvis.input()
             while status not in status_state:
                 jarvis.say('Please input valid state')
                 status=jarvis.input()
 
-            query= query+'&flight_status='+status
+            query= query+'&status='+status
         elif '2' in user:
             jarvis.say('Enter departure airport iata code: LHR')
             dep=jarvis.input()
-            query= query+'&dep_iata='+dep.upper()
+            query= query+'&depIata='+dep.upper()
         elif '3' in user:
             jarvis.say('Enter arrival airport iata code: LHR')
             arr=jarvis.input()
-            query= query+'&arr_iata='+arr.upper()
+            query= query+'&arrIata='+arr.upper()
         elif '4' in user:
-            jarvis.say('Enter airline name: Ryanair')
+            jarvis.say('Enter airline name: AA (American airlines')
             dep=jarvis.input()
-            query= query+'&airline_name='+dep
+            query= query+'&airlineIata='+dep
         elif '5' in user:
-            jarvis.say('Enter flight number:')
+            jarvis.say('Enter flight iata:')
             num=jarvis.input()
-            query= query+'&flight_number='+num.upper()
+            query= query+'&flightIata='+num.upper()
         elif '6' in user:
-            jarvis.say('Enter flight code:')
+            jarvis.say('Enter flight number:')
             dep=jarvis.input()
-            query= query+'&flight_iata='+dep.upper()
+            query= query+'&flightNum='+dep.upper()
         elif user == 'q':
             return 'q'
         return query
@@ -105,6 +108,7 @@ class Flights():
         #print(flights)
         if 'success' in flights and flights['success'] == False:
             jarvis.say('No data found, please try again')
+            print(flights)
             return -1
         i=0
         while i<int(number_of_prints):
@@ -112,59 +116,86 @@ class Flights():
                 'FLIGHT' + Fore.RESET
             jarvis.say(text)
             
-            if 'departure' not in flights:
-                jarvis.say('No data found, please try again')
-                return -1
-            dep_airport1=flights[i]['departure']['terminal']
+            dep_airport1=flights['data'][i]['departure']['iataCode']
+            arr_airport1=flights['data'][i]['arrival']['iataCode']
+            flight1=flights['data'][i]['flight']['iataNumber']
+            aircraft=flights['data'][i]['aircraft']['iataCode']
+            speed=flights['data'][i]['speed']['horizontal']
+            longitude=flights['data'][i]['geography']['longitude']
+            latitude=flights['data'][i]['geography']['latitude']
+            altitude=flights['data'][i]['geography']['altitude']
+            jarvis.say('Flight status: ' + flights['data'][i]['status'])
+
+            text = Fore.BLUE + \
+                'DEPARTURE' + Fore.RESET
+            jarvis.say(text)
+            jarvis.say('Departure airport: ' +dep_airport1)
+            text1 = Fore.BLUE + \
+                'ARRIVAL' + Fore.RESET
+            jarvis.say(text1)
+            jarvis.say('Arrival airport: ' + arr_airport1)
+            jarvis.say('Flight: ' + flight1)
+            jarvis.say('Aircraft: ' + aircraft)
+            jarvis.say('Speed:' + str(speed))
+            jarvis.say('Longitude: ' + str(longitude))
+            jarvis.say('Latitude: ' +str(latitude))
+            jarvis.say('Altitude: ' +str(altitude))
+            i=i+1
+            
+            
+            
+            """""
+            dep_airport1=flights['data'][i]['departure']['iataCode']
             dep_airport=self.check_value(dep_airport1) 
-            dep_terminal1=flights[i]['departure']['terminal']
-            dep_terminal=self.check_value(dep_terminal1)
-            dep_country1= flights[i]['departure']['timezone']
+            flight1=flights['data'][i]['flight']['iataNumber']
+            flight_info1=self.check_value(flight1)
+            dep_country1= flights['data'][i]['departure']['timezone']
             dep_country= self.check_value(dep_country1)
-            dep_gate1=flights[i]['departure']['gate']
+            dep_gate1=flights['data'][i]['departure']['gate']
             dep_gate=self.check_value(dep_gate1)
-            dep_scheduled1=flights[i]['departure']['scheduled']
+            dep_scheduled1=flights['data'][i]['departure']['scheduled']
             dep_scheduled=self.check_value(dep_scheduled1)
 
-            arr_airport1=flights[i]['arrival']['airport']
-            arr_country1= flights[i]['arrival']['timezone']
-            arr_terminal1=flights[i]['arrival']['terminal']
-            arr_gate1=flights[i]['arrival']['gate']
+            arr_airport1=flights['data'][i]['arrival']['airport']
+            arr_country1= flights['data'][i]['arrival']['timezone']
+            arr_terminal1=flights['data'][i]['arrival']['terminal']
+            arr_gate1=flights['data'][i]['arrival']['gate']
             arr_airport=self.check_value(arr_airport1)
             arr_country=self.check_value(arr_country1)
             arr_terminal=self.check_value(arr_terminal1)
             arr_gate=self.check_value(arr_gate1)
             arr_delay1=flights[i]['arrival']['scheduled']
             arr_scheduled=self.check_value(arr_delay1)
-
-            jarvis.say('Flight status: ' + flights[i]['flight_status'])
+            
+            jarvis.say('Flight status: ' + flights['data'][i]['status'])
 
             text = Fore.BLUE + \
                 'DEPARTURE' + Fore.RESET
             jarvis.say(text)
             jarvis.say('Departure airport: ' +dep_airport)
-            jarvis.say('Departure country: ' + dep_country)
+            #jarvis.say('Departure country: ' + dep_country)
             
             #jarvis.say(flights[0]['departure']['airport'])
-            jarvis.say('Departure terminal: ' + dep_terminal)
-            jarvis.say('Departure gate: ' + dep_gate)
-            jarvis.say('Departure scheduled: '+dep_scheduled) 
+            #jarvis.say('Flight: ' + flight_info1)
+            #jarvis.say('Departure gate: ' + dep_gate)
+            #jarvis.say('Departure scheduled: '+dep_scheduled) 
             #jarvis.say(str(dep_delay))
             
             text1 = Fore.BLUE + \
                 'ARRIVAL' + Fore.RESET
             jarvis.say(text1)
             
-        
-            jarvis.say('Arrival airport: ' + arr_airport)
-            jarvis.say('Arrival country: ' + arr_country)
-            jarvis.say('Arrival terminal: ' + arr_terminal)
-            jarvis.say('Arrival gate: ' + arr_gate)
-            jarvis.say('Arrival scheduled: ') 
-            #jarvis.say(flights[0]['arrival']['delay'])
-
+        """
+            #jarvis.say('Arrival airport: ' + arr_airport)
+            #jarvis.say('Arrival country: ' + arr_country)
+            #jarvis.say('Arrival terminal: ' + arr_terminal)
+            #jarvis.say('Arrival gate: ' + arr_gate)
+            #jarvis.say('Arrival scheduled: ') 
+            ##jarvis.say(flights[0]['arrival']['delay'])
+            """
             if flights[i]['live']!=None:
                 jarvis.say('live:')
                 print( flights[i]['live'])
                 self.print_live_flights(jarvis,flights[i])
             i=i+1
+            """

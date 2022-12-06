@@ -10,6 +10,13 @@ class NewsTest(PluginTest):
         n.update_api_key(self.jarvis_api, "7488ba8ff8dc43459d36f06e7141c9e5")
         self.assertIsNotNone(n.get_headlines(self.jarvis_api))
 
+    def test_news1(self):
+        n = self.load_plugin(News)
+        n.update_api_key(self.jarvis_api,"7488ba8ff8dc43459d36f06e7141c9e5")
+        self.assertEquals(self.get_api_key(self.jarvis_api), "7488ba8ff8dc43459d36f06e7141c9e5")
+        #self.assertIsNotNone(n.get_headlines(self.jarvis_api))
+
+
 
 if __name__ == '__main__':
     unittest.main()

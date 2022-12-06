@@ -17,7 +17,7 @@ class PluginManager(object):
     def __init__(self):
         import pluginmanager.module_manager
         self._backend = pluginmanager.PluginInterface()
-
+        
         # patch to ignore import exception
         _load_source = pluginmanager.module_manager.load_source
 
@@ -47,11 +47,11 @@ class PluginManager(object):
         """Add directory to search path for plugins"""
         self._backend.add_plugin_directories(path)
         self._cache = None
-
+        
     def add_plugin(self, plugin):
         """Add singe plugin-instance"""
         self._backend.add_plugins(plugin)
-
+        
     def _load(self):
         """lazy load"""
         if self._cache is not None:

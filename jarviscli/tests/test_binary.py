@@ -30,6 +30,10 @@ class BinaryTest(PluginTest):
     def test_negative_2(self):
         self.test.run("-7289")
         self.assertEqual(self.history_say().last_text(), "-1110001111001")
+    
+    def test_letter(self):
+        self.test.run("e")
+        self.assertEqual(self.history_say().last_text(), "This is no number, right?")
 
 
 if __name__ == '__main__':
