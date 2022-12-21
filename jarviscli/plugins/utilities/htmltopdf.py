@@ -1,18 +1,17 @@
-import pdfkit
-
 from plugin import Platform, plugin, require
 
 
-@require(platform=Platform.LINUX, native=["wkhtmltopdf"])
+@require(platform=Platform.LINUX, native=["wkhtmltopdf"], imports='pdfkit')
 @plugin("htmltopdf")
 class htmltopdf:
     """Convert your html file or web page into pdf file"""
 
     def __call__(self, jarvis, s):
+        import pdfkit
         jarvis.say("Welcome to the htmltopdf convertor! \nType 'help htmltopdf' to learn how to use it")
 
 
-@require(platform=Platform.LINUX, native=["wkhtmltopdf"])
+@require(platform=Platform.LINUX, native=["wkhtmltopdf"], imports='pdfkit')
 @plugin("htmltopdf file")
 class htmltopdf_file:
     """
@@ -25,6 +24,7 @@ class htmltopdf_file:
     """
 
     def __call__(self, jarvis, s):
+        import pdfkit
         if not s:
             jarvis.say("please enter a file name after calling the plugin")
         elif "html" not in s:
@@ -37,7 +37,7 @@ class htmltopdf_file:
                     err) + "\nMake sur your file is in the source directory of Jarvis and is an html file")
 
 
-@require(platform=Platform.LINUX, native=["wkhtmltopdf"], network=True)
+@require(platform=Platform.LINUX, native=["wkhtmltopdf"], network=True, imports='pdfkit')
 @plugin("htmltopdf url")
 class htmltopdf_url:
     """
@@ -48,6 +48,7 @@ class htmltopdf_url:
     """
 
     def __call__(self, jarvis, s):
+        import pdfkit
         if not s:
             jarvis.say("please enter an url after calling the plugin")
         elif '.' not in s:

@@ -130,6 +130,13 @@ WKHTMLTOPDF = {
     }
 }
 
+PDFUTILS = {
+    "name": "pdfutils",
+    "description": "Python utilities for management pdf",
+    "instruction": "",
+    "pip": ['img2pdf', 'pdf2image', 'pdfkit'],
+}
+
 
 OPTIONAL_REQUIREMENTS = [PortAudio, RequestsSecurity, FFMPEG, ESPEAK, WKHTMLTOPDF, Fasttext]
 

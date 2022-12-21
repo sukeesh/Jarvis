@@ -1,11 +1,11 @@
 import os
 
 from colorama import Fore
-from pdf2image import convert_from_path
 
-from plugin import plugin
+from plugin import plugin, require
 
 
+@require(imports='pdf2image')
 @plugin('pdf to images')
 class PdfToImage:
     """
@@ -56,6 +56,8 @@ class PdfToImage:
         Convert all the pages in the pdf to individual
         pages option and return it
         """
+        from pdf2image import convert_from_path
+
         self.path = pdf_path
         pages = convert_from_path(pdf_path)
         return pages

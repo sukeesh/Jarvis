@@ -2,6 +2,7 @@ akinator.py
 apiclient
 archey4==4.6.0.post1; sys_platform != 'darwin'
 beautifulsoup4
+cinemagoer
 colorama
 cryptography
 distro
@@ -14,8 +15,6 @@ gitpython
 googletrans
 gtts
 Image
-IMDbPY
-img2pdf
 inquirer
 kivy
 mock
@@ -23,8 +22,6 @@ nltk
 opencv-python-headless
 pandas
 pathlib
-pdf2image
-pdfkit
 pick
 playsound
 pluginmanager

@@ -1,12 +1,11 @@
 import os
 
-import img2pdf
-from PIL import Image
 from colorama import Fore
 
-from plugin import plugin
+from plugin import plugin, require
 
 
+@require(imports=['PIL', 'img2pdf'])
 @plugin('image to pdf')
 class ImageToPDF:
     """
@@ -22,6 +21,7 @@ class ImageToPDF:
         self.imgtopdf(jarvis)
 
     def imgtopdf(self, jarvis):
+
         jarvis.say('')
         jarvis.say('This tool will help you convert image to pdf')
         while True:
@@ -85,6 +85,9 @@ class ImageToPDF:
         This function is used to convert a single image
         with a given path to a pdf file.
         """
+        from PIL import Image
+        import img2pdf
+
         self.path = image_path
         self.image = Image.open(image_path)
         pdf_bytes = img2pdf.convert(self.image.filename)
@@ -96,6 +99,8 @@ class ImageToPDF:
         This function is used to convert all the images
         in a given folder path to a single PDF file
         """
+        import img2pdf
+
         self.path = folder_path
         source_images = []
         os.chdir(self.path)

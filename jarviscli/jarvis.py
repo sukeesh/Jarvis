@@ -362,6 +362,9 @@ class Jarvis:
         for _frontend in self.active_frontends.values():
             _frontend.spinner_stop(message)
 
+    def incorrect_option(self):
+        self.say("Incorrect Option")
+
     def is_spinner_running(self):
         return self.spinner_running
 

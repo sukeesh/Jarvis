@@ -127,7 +127,7 @@ class KeyVault(Memory):
         self.data[key] = user_pass
 
     def exit_key_vault(self):
-        print("-" * 50 + "KEY-VAULT" + "-" * 50)
+        pass
 
     def enter_key_vault(self):
-        print("-" * 50 + "KEY-VAULT" + "-" * 50)
+        pass

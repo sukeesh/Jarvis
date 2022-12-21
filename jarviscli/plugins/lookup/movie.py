@@ -1,11 +1,11 @@
 from functools import lru_cache
 
-import imdb
+from imdb import Cinemagoer
 from colorama import Fore, Style
 
 from plugin import plugin, require
 
-app = imdb.IMDb()
+app = Cinemagoer()
 
 
 def main(jarvis, movie):
