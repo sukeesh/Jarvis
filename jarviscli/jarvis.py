@@ -54,7 +54,7 @@ class Jarvis:
         self.memory = Memory()
         self.key_vault = KeyVault()
 
-        dependency = Dependency(self.key_vault, int(quality))
+        dependency = Dependency(self.key_vault, int(quality), self)
         self.frontend_status = dependency.check(self.AVAILABLE_FRONTENDS.values())
 
         self.scheduler = Scheduler()

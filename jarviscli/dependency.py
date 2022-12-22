@@ -43,6 +43,9 @@ from colorama import Fore
 from utilities.GeneralUtilities import error, executable_exists, warning
 
 
+KEY_DISABLED = 'DISABLED_PLUGINS'
+
+
 class QualityLevel(enum.Enum):
     BROKEN = 0
     DEFAULT = 1
@@ -84,6 +87,9 @@ class Platform(enum.Enum):
     UNIX = -1
     # Shortcut for MACOS + LINUX + WINDOW
     DESKTOP = -2
+    # there are some plugins that should only be working on a server
+    # or when the server is enabled
+    SERVER = 4
 
 
 def get_require(plugin):
@@ -167,9 +173,13 @@ class Dependency:
     This module checks if dependencies are fulfilled.
     """
 
-    def __init__(self, key_vault, quality_level):
+    def __init__(self, key_vault, quality_level, jarvis):
         self.key_vault = key_vault
         self.quality_level = quality_level
+        self.disabled = jarvis.get_data(KEY_DISABLED)
+        if self.disabled is None:
+            self.disabled = {}
+            jarvis.update_data(KEY_DISABLED, {})
 
         # plugin shoud match these requirements
         self._requirement_has_network = True
@@ -238,7 +248,7 @@ class Dependency:
 
     def _check_disabled(self, plugin):
         # to be implemented
-        return True
+        return plugin.get_name() not in self.disabled
 
     def _check_platform(self, values):
         if not values:

@@ -17,7 +17,7 @@ CUSTOM_PLUGINS_PATH = os.path.join(PLUGINS_PATH, '..', '..', 'custom/')
 
 
 @require(platform=Platform.MACOS)
-@plugin("create plugin")
+@plugin("plugin create")
 def create_plugin_MAC(jarvis, s):
 
     # Jarvis asks for the name of the plugin to create if not provided.
