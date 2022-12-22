@@ -19,10 +19,11 @@ if __name__ == '__main__':
     parser.add_argument('--disable-cli', dest='disable_cli', action='store_true')
     parser.add_argument('--server-hostname', dest='server_hostname', nargs=1, default=None)
     parser.add_argument('--server-port', dest='server_port', nargs=1, default=None)
+    parser.add_argument('--quality-level', dest='quality', type=int,  default=1)
     parser.add_argument('CMD', type=str, nargs='*')
     args = parser.parse_args()
     sys.argv = sys.argv[0]
 
-    jarvis = main.build_jarvis()
+    jarvis = main.build_jarvis(args)
 
     main.start(args, jarvis)

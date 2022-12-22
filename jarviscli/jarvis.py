@@ -43,7 +43,7 @@ class Jarvis:
     NOTIFY_CRITICAL = NOTIFY_CRITICAL
     LOCATION_FIELDS = LocationFields
 
-    def __init__(self, language_parser_class, plugin_manager):
+    def __init__(self, language_parser_class, plugin_manager, quality):
         self._data_dir = os.path.join(os.path.dirname(__file__), 'data')
 
         self.cache = ''
@@ -54,7 +54,7 @@ class Jarvis:
         self.memory = Memory()
         self.key_vault = KeyVault()
 
-        dependency = Dependency(self.key_vault)
+        dependency = Dependency(self.key_vault, int(quality))
         self.frontend_status = dependency.check(self.AVAILABLE_FRONTENDS.values())
 
         self.scheduler = Scheduler()

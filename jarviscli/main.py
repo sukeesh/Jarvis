@@ -11,7 +11,7 @@ def assert_python_version():
         sys.exit('-1')
 
 
-def build_jarvis():
+def build_jarvis(args):
     from language import snips
 
     language_parser = snips.LanguageParser
@@ -20,7 +20,7 @@ def build_jarvis():
         plugin_manager = frontend.gui.android_plugins.build_plugin_manager()
     else:
         plugin_manager = build_plugin_manager()
-    return Jarvis(language_parser, plugin_manager)
+    return Jarvis(language_parser, plugin_manager, args.quality)
 
 
 def start(args, jarvis):

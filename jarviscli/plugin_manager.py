@@ -4,6 +4,7 @@ from functools import partial
 import pluginmanager
 
 import plugin
+from dependency import QualityLevel
 from plugin import Platform
 from utilities.GeneralUtilities import error, executable_exists, warning
 
@@ -38,6 +39,7 @@ class PluginManager(object):
         self._backend.add_blacklisted_directories("jarviscli/packages/aiml")
         self._backend.add_blacklisted_directories("jarviscli/packages/memory")
         self._backend.add_blacklisted_plugins(plugin.Platform)
+        self._backend.add_blacklisted_plugins(QualityLevel)
 
     def add_directory(self, path):
         """Add directory to search path for plugins"""

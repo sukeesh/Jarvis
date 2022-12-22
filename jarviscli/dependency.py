@@ -43,6 +43,21 @@ from colorama import Fore
 from utilities.GeneralUtilities import error, executable_exists, warning
 
 
+class QualityLevel(enum.Enum):
+    BROKEN = 0
+    DEFAULT = 1
+
+    FULLY_TESTED = 5
+    CORE = 6
+
+
+def quality(quality_level: QualityLevel = QualityLevel.DEFAULT):
+    def _quality(plugin):
+        plugin.QUALITY = quality_level
+        return plugin
+    return _quality
+
+
 def require(network=None, platform=None, native=None, api_key=None, imports=None):
     def _require(plugin):
         require = get_require(plugin)
@@ -83,6 +98,7 @@ class DependencyStatus:
         self.enabled_offline = []
         self.enabled_online = []
         self.disabled = {}
+        self.active_disabled = []
 
     def print_count(self):
         plugin_status_formatter = {
@@ -103,7 +119,8 @@ class DependencyStatus:
     def print_disabled(self):
         status = ''
         for disabled, reason in self.disabled.items():
-            reason = [x[1] for x in reason]
+            if len(reason) == 0:
+                continue
             status += "{:<20}: {}\n".format(disabled, " OR ".join(reason))
         return status
 
@@ -150,8 +167,9 @@ class Dependency:
     This module checks if dependencies are fulfilled.
     """
 
-    def __init__(self, key_vault):
+    def __init__(self, key_vault, quality_level):
         self.key_vault = key_vault
+        self.quality_level = quality_level
 
         # plugin shoud match these requirements
         self._requirement_has_network = True
@@ -179,7 +197,11 @@ class Dependency:
                 plugin_name = plugin.get_name()
                 if plugin_name not in status.disabled:
                     status.disabled[plugin_name] = []
-                status.disabled[plugin_name].append((plugin, plugin_status))
+                if plugin_status is False:
+                    status.active_disabled.append(plugin_name)
+                else:
+                    status.disabled[plugin_name].append(plugin_status)
+
         return status
 
     def _check_plugin(self, plugin):
@@ -187,9 +209,18 @@ class Dependency:
         Parses plugin.require(). Plase refere plugin.Plugin-documentation
         """
         requirements = get_require(plugin)
-        if not self._check_platform(requirements.platforms):
-            required_platform = ", ".join([x.name for x in requirements.platforms])
-            return "Requires os {}".format(required_platform)
+
+        disabled_ok = self._check_disabled(plugin)
+        if disabled_ok is not True:
+            return disabled_ok
+
+        quality_level_ok = self._check_quality_level(plugin)
+        if quality_level_ok is not True:
+            return quality_level_ok
+
+        platform_ok = self._check_platform(requirements.platforms)
+        if platform_ok is not True:
+            return platform_ok
 
         natives_ok = self._check_native(requirements.natives)
         if natives_ok is not True:
@@ -205,6 +236,10 @@ class Dependency:
 
         return True
 
+    def _check_disabled(self, plugin):
+        # to be implemented
+        return True
+
     def _check_platform(self, values):
         if not values:
             return True
@@ -214,7 +249,12 @@ class Dependency:
         if Platform.DESKTOP in values:
             values += [Platform.LINUX, Platform.WINDOWS, Platform.MACOS]
 
-        return self._requirement_platform in values
+        if self._requirement_platform in values:
+            return True
+
+        # Failed!
+        required_platform = ", ".join([x.name for x in values])
+        return "Requires os {}".format(required_platform)
 
     def _check_native(self, values):
         missing = ""
@@ -265,3 +305,11 @@ class Dependency:
 
         message = "Missing python import. Install in Jarvis virtualenv (source env/bin/activate && pip install ...)"
         return message.format(missing)
+
+    def _check_quality_level(self, plugin):
+        target = QualityLevel.DEFAULT
+        if hasattr(plugin, 'QUALITY'):
+            target = plugin.QUALITY
+        if hasattr(target, 'value'):
+            target = target.value
+        return target >= self.quality_level

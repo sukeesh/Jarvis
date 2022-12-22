@@ -3,10 +3,11 @@ import re
 
 from colorama import Fore
 
-from plugin import Platform, plugin, require
+from plugin import Platform, plugin, require, quality, QualityLevel
 from utilities.textParser import parse_number
 
 
+@quality(QualityLevel.FULLY_TESTED)
 @require(platform=[Platform.ANDROID, Platform.DESKTOP])
 @plugin('roll')
 class Roll():

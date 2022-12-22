@@ -4,6 +4,8 @@ from flask import Flask
 
 
 class JarvisServer:
+    QUALITY = 1
+
     def __init__(self, jarvis):
         self.jarvis = jarvis
 
@@ -22,6 +24,9 @@ class JarvisServer:
 
         self.init_server_endpoints(jarvis_plugins=jarvis.get_plugins().values())
         self.recorded_texts = []
+
+    def get_name():
+        return 'Remote frontend'
 
     def say(self, text, color=''):
         self.recorded_texts.append(text)

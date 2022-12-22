@@ -41,12 +41,17 @@ def remove_ansi_escape_seq(text):
 
 
 class JarvisVoice:
+    QUAITY = 1
+
     def __init__(self, jarvis):
         self.jarvis = jarvis
         self.speech_rate = self.jarvis.get_data('speech_rate')
 
         if not self.speech_rate:
             self.speech_rate = 120
+
+    def get_name():
+        return 'Jarvis voice'
 
     def start(self):
         ggts_status = self.jarvis.get_data('gtts_status')

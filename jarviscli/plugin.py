@@ -1,5 +1,5 @@
 from inspect import cleandoc, isclass
-from dependency import Requirements, require, Platform
+from dependency import Requirements, require, Platform, QualityLevel, quality
 
 import pluginmanager
 from requests import ConnectionError

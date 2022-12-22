@@ -20,6 +20,8 @@ class CmdInterpreter(Cmd):
     https://github.com/python/cpython/blob/master/Lib/cmd.py
     """
 
+    QUALITY = 5
+
     first_reaction_text = """\
 {BLUE}Jarvis' sound is by default disabled.{RESET}
 {BLUE}In order to let Jarvis talk out load type:{RESET}{RED}enable sound{RESET}
@@ -58,6 +60,9 @@ Type 'help' for a list of available actions.
 
         self._do_stop = False
         self._cancel_input = False
+
+    def get_name():
+        return 'Cli frontend'
 
     def say(self, text, color=''):
         print(color + text + Fore.RESET, flush=True)
