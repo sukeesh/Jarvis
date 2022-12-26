@@ -2,7 +2,7 @@ class JarvisGui():
     QUALITY = 1
 
     def __init__(self, jarvis):
-        from frontend.gui.application import JarvisApp
+        from frontend.gui_kivy.application import JarvisApp
 
         self.jarvis = jarvis
         self.app = JarvisApp(jarvis)

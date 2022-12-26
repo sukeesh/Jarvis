@@ -9,7 +9,7 @@ from typing import Dict, Optional
 from colorama import Fore
 
 import frontend.cli.cmd_interpreter
-import frontend.gui.jarvis_gui
+import frontend.gui_kivy.jarvis_gui
 import frontend.server.server
 import frontend.voice
 import frontend.voice_control
@@ -32,7 +32,7 @@ class Jarvis:
     _CONNECTION_ERROR_MSG = "It seems like I'm not connected to the Internet. Check your connection and type 'connect'!"
 
     AVAILABLE_FRONTENDS = {'cli': frontend.cli.cmd_interpreter.CmdInterpreter,
-                           'gui': frontend.gui.jarvis_gui.JarvisGui,
+                           'gui': frontend.gui_kivy.jarvis_gui.JarvisGui,
                            'server': frontend.server.server.JarvisServer,
                            'tts': frontend.voice.JarvisVoice,
                            'voice_control': frontend.voice_control.VoiceControl
