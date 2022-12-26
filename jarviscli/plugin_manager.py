@@ -38,6 +38,7 @@ class PluginManager(object):
         self._backend.set_file_filters(__ends_with_py)
         self._backend.add_blacklisted_directories("jarviscli/packages/aiml")
         self._backend.add_blacklisted_directories("jarviscli/packages/memory")
+        self._backend.add_blacklisted_directories("jarviscli/frontend")
         self._backend.add_blacklisted_plugins(plugin.Platform)
         self._backend.add_blacklisted_plugins(QualityLevel)
 

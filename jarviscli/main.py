@@ -31,6 +31,9 @@ def start(args, jarvis):
     if args.offline:
         jarvis.set_offline_mode()
 
+    if args.enable_gui != '':
+        jarvis.activate_frontend('gui_' + args.enable_gui)
+
     def startup(args_enable, args_disable, frontend_id):
         if args_disable:
             pass
@@ -38,7 +41,6 @@ def start(args, jarvis):
             jarvis.activate_frontend(frontend_id)
 
     startup(args.enable_server, args.disable_server, 'server')
-    startup(args.enable_gui, args.disable_gui, 'gui')
     startup(args.enable_tts, args.disable_tts, 'tts')
     startup(args.enable_voice_control, args.disable_voice_control, 'voice_control')
     startup(True, args.disable_cli, 'cli')

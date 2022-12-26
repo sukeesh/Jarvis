@@ -2,18 +2,21 @@
 import pygame
 from pygame.locals import *
 import math
-import ptext
 import sys
 import io
 import re
+import os
 
-from inputBoxClass import inputBox
+from frontend.gui_pygame.inputBoxClass import inputBox
+from frontend.gui_pygame import ptext
 
 
 # Some constants
 launch_info_window = 1
 launch_empty_window = 2
 nothing = 0
+
+IMAGE_PREFIX = 'jarviscli/frontend/gui_pygame/images'
 
 
 class JarvisWindow():
@@ -72,16 +75,16 @@ cricket\tevaluate            imgur            open         run          tell    
         # load different images (opening, logo and info)
         self.delete_logo_coords = [self.width - 45, self.height - 45, 30, 30]
 
-        self.opening_image = pygame.image.load("images/opening.png").convert()
-        self.Jarvis_logo = pygame.image.load("images/JarvisLogo.png").convert()
-        self.Jarvis_logo2 = pygame.image.load(
-            "images/JarvisLogo2.png").convert()
-        self.info_logo = pygame.image.load("images/infoIcon.png").convert()
-        self.delete_logo = pygame.image.load("images/delete.png").convert()
-        self.speaker_logo_activated = pygame.image.load(
-            "images/speakerOn.png").convert()
-        self.speaker_logo_disactivated = pygame.image.load(
-            "images/speakerOff.png").convert()
+        def load(filename):
+            return pygame.image.load(os.path.join(IMAGE_PREFIX, filename)).convert()
+
+        self.opening_image = load('opening.png')
+        self.Jarvis_logo = load('JarvisLogo.png')
+        self.Jarvis_logo2 = load('JarvisLogo2.png')
+        self.info_logo = load("infoIcon.png")
+        self.delete_logo = load("delete.png")
+        self.speaker_logo_activated = load("speakerOn.png")
+        self.speaker_logo_disactivated = load("speakerOff.png")
         self.speaker_logo = self.speaker_logo_disactivated
         # configure fonts for different titles and descriptions
         self.info_description_font = pygame.font.SysFont(
@@ -162,7 +165,7 @@ cricket\tevaluate            imgur            open         run          tell    
             pygame.K_POWER,
             pygame.K_EURO]
 
-        self.actions = self.jarvis._plugin_manager.get_plugins().keys()
+        self.actions = self.jarvis.plugins.keys()
         self.in_new_win = False
         self.max_nb_lines = self.width // 21
         self.index_answer = 0  # will help for the scrolling
