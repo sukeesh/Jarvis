@@ -25,6 +25,11 @@ class myNN(nn.Module):
 
 
 @plugin("classify")
+"""
+This script takes the path of an image, reshapes the image to 28x28 if it isn't,
+checks if it is black and white and then tells what digit this image represents,
+according to our pre-trained neural network model that we have loaded.  
+"""
 def mnist_classifier(jarvis, s):
     # Path of the image.
     imgPath = s
@@ -37,25 +42,22 @@ def mnist_classifier(jarvis, s):
 
     # Check if the shape of the image is right(28x28)
     if(not((np.shape(img)[0] == 28) and (np.shape(img)[1] == 28))):
-        jarvis.say("The image you gave me isn't Mnist type image.")
-        return
+        jarvis.say("The shape of the image you gave me isn't right. I will reshape it to 28x28.")
+        img = cv.resize(img, (28, 28), interpolation = cv.INTER_AREA)
 
-    # Check if the image is black and white
-    def is_black(pixel):
-        return pixel[0] == 0 and pixel[1] == 0 and pixel[2] == 0
-
-    def is_white(pixel):
-        return pixel[0] == 255 and pixel[1] == 255 and pixel[2] == 255
+    # Check if the image is in the shades of black and white
+    def is_black_and_white(pixel):
+        return pixel[0] == pixel[1] and pixel[1] == pixel[2]
 
     isBlackAndWhite = True
     for row in range(28):
         for col in range(28):
-            if(not(is_black(img[col][row]) or is_white(img[col][row]))):
+            if(not(is_black_and_white(img[col][row])):
                 isBlackAndWhite = False
                 break
 
     if(isBlackAndWhite == False):
-        jarvis.say("The image you gave me isn't Mnist type image.")
+        jarvis.say("The image you gave me isn't black and white.")
         return
 
     # Show the image.
