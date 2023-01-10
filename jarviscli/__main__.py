@@ -3,6 +3,8 @@ import Jarvis
 import colorama
 import sys
 
+from plugins.mnist_classifier import myNN
+
 
 def check_python_version():
     return sys.version_info[0] == 3
