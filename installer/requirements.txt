@@ -11,6 +11,7 @@ gitpython
 googletrans==3.1.0a0
 IMDbPY
 mock
+SpeechRecognition
 nltk
 pathlib2; python_version < '3.4'
 pdfkit
@@ -45,5 +46,8 @@ windows-curses; sys_platform == 'win32'
 Image
 img2pdf
 pdf2image
+pyautogui
+fasttext
+PyPDF2
 python-nmap
 yeelight
