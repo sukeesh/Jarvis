@@ -25,10 +25,7 @@ class Distances:
             url = f'https://restcountries.com/v3.1/name/{self.country_name}'
             payload = requests.get(url)
 
-            if payload.status_code == 404:
-                self.coordinates = False
-
-            elif payload.status_code != 200:
+            if payload.status_code != 200:
                 self.coordinates = False
 
             else:
