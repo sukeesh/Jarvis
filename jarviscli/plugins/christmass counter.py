@@ -1,9 +1,7 @@
-from plugin import plugin, pap35000
+from plugin import plugin
 from datetime import datetime
 
-
-@pap35000("christmas timer")
-@plugin("christmas  timer")
+@plugin ("christmass counter")
 class EndOfYearTimer:
     def __call__(self, jarvis, s):
         self.jarvis = jarvis
@@ -11,7 +9,7 @@ class EndOfYearTimer:
 
     def main(self):
         actual_datetime = datetime.now()
-        christamas_time = datetime(actual_datetime.year, 12, 25, 23, 59, 59)
+        christamas_time = datetime(actual_datetime.year, 12, 24, 23, 59, 59)
 
         time_till_end = christamas_time - actual_datetime
 
