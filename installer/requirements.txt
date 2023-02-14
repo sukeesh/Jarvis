@@ -47,3 +47,9 @@ img2pdf
 pdf2image
 python-nmap
 yeelight
+pafy
+youtube-dl==2020.12.2
+pygame
+pysqlite3
+python-vlc
+
