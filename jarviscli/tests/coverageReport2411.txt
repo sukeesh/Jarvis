@@ -1,0 +1,223 @@
+Name                                                                                      Stmts   Miss  Cover   Missing
+-----------------------------------------------------------------------------------------------------------------------
+/usr/lib/python3/dist-packages/OpenSSL/SSL.py                                               937    680    27%   195-199, 282, 289-294, 304-332, 342-371, 383-419, 432-470, 500-541, 567-600, 604-619, 628, 643-646, 701-744, 762-776, 779-782, 804-811, 833-857, 868, 883-891, 902-908, 922-930, 939-944, 953-961, 964-967, 980-990, 999-1004, 1013-1014, 1025-1029, 1042-1043, 1063-1066, 1076, 1097-1105, 1115-1118, 1127, 1136, 1147-1156, 1168, 1180-1194, 1215-1237, 1252-1257, 1268-1271, 1280, 1294-1299, 1307, 1316, 1326-1333, 1343-1346, 1356-1359, 1372-1379, 1390-1393, 1411-1413, 1429-1431, 1447-1454, 1467-1469, 1478-1490, 1507-1508, 1527-1528, 1550-1594, 1601-1606, 1609-1647, 1654, 1663-1667, 1679-1685, 1696-1702, 1711, 1725-1738, 1752-1775, 1786-1792, 1809-1830, 1833-1848, 1861-1872, 1884-1892, 1901-1904, 1914-1915, 1925, 1934, 1945-1946, 1958-1960, 1972-1975, 1985-1988, 1999-2005, 2013-2019, 2034-2048, 2057, 2066, 2075, 2084, 2093-2096, 2105, 2113-2120, 2128-2136, 2144-2152, 2163-2176, 2185, 2193-2197, 2205-2208, 2217-2227, 2236, 2245, 2254, 2263, 2274-2280, 2291-2296, 2322-2330, 2342, 2354, 2366-2371, 2383-2387, 2399-2404, 2415-2416, 2426-2427, 2439-2444, 2459-2466, 2476-2484, 2493-2496
+/usr/lib/python3/dist-packages/OpenSSL/__init__.py                                            4      0   100%
+/usr/lib/python3/dist-packages/OpenSSL/_util.py                                              52     30    42%   29-31, 43-54, 67, 82-90, 102-107, 112-115, 140-147
+/usr/lib/python3/dist-packages/OpenSSL/crypto.py                                           1166    917    21%   96-97, 106, 118-132, 139-141, 158-163, 176-203, 211, 214-216, 227-229, 242-246, 260-269, 287-325, 340-351, 359, 367, 397-399, 411-417, 431-433, 450, 465-467, 470, 479-480, 495, 510-513, 548-549, 552-585, 594-625, 629-632, 648-653, 666, 675-681, 690-706, 743-780, 784, 795-813, 819-826, 834, 847-849, 860-864, 880-883, 893-897, 911-916, 927-928, 937-942, 952-953, 963, 977-985, 995-1008, 1019-1025, 1038-1049, 1063-1070, 1094-1098, 1108-1110, 1124-1129, 1141-1144, 1153, 1162-1168, 1179-1183, 1197-1211, 1224-1228, 1241-1253, 1264, 1275-1303, 1312-1323, 1333-1337, 1346-1350, 1359-1362, 1365, 1378, 1381, 1394, 1407, 1420, 1423-1431, 1434-1437, 1451-1453, 1464-1465, 1479-1481, 1492-1493, 1504, 1514-1520, 1536-1543, 1591-1592, 1610-1622, 1638, 1662, 1680-1684, 1704-1705, 1727-1734, 1743-1747, 1755, 1765-1776, 1787, 1804-1809, 1823-1839, 1852-1866, 1879-1891, 1910-1950, 1973-1974, 1987-1997, 2009-2015, 2018-2024, 2042-2060, 2074-2087, 2099, 2109-2110, 2119-2120, 2129-2130, 2140-2144, 2158-2163, 2175-2184, 2197-2201, 2211-2216, 2227, 2230, 2245, 2260, 2279-2285, 2302-2338, 2355, 2363, 2371, 2379, 2387-2389, 2405-2408, 2417, 2428-2430, 2439, 2450-2452, 2462-2463, 2475-2484, 2495-2501, 2510, 2532-2570, 2586-2587, 2601-2614, 2628-2631, 2640-2643, 2652-2657, 2666-2667, 2679-2686, 2690-2697, 2703-2710, 2715-2723, 2726-2745, 2759-2778, 2794-2814, 2826-2842, 2854-2870, 2884-2904, 2920-2940, 2954-2968, 2981-2998, 3010-3027, 3042-3114
+/usr/lib/python3/dist-packages/OpenSSL/version.py                                            10      0   100%
+/usr/lib/python3/dist-packages/certifi/__init__.py                                            2      0   100%
+/usr/lib/python3/dist-packages/certifi/core.py                                                5      0   100%
+/usr/lib/python3/dist-packages/chardet/__init__.py                                           11      7    36%   31-39
+/usr/lib/python3/dist-packages/chardet/big5freq.py                                            3      0   100%
+/usr/lib/python3/dist-packages/chardet/big5prober.py                                         16      6    62%   36-39, 43, 47
+/usr/lib/python3/dist-packages/chardet/chardistribution.py                                  117     83    29%   49-59, 65-68, 72-82, 88-98, 103, 110, 115-118, 125-129, 134-137, 144-148, 153-156, 163-167, 172-175, 182-189, 194-197, 204-214, 219-222, 229-233
+/usr/lib/python3/dist-packages/chardet/charsetgroupprober.py                                 72     61    15%   34-37, 40-47, 51-55, 59-63, 66-83, 86-106
+/usr/lib/python3/dist-packages/chardet/charsetprober.py                                      55     36    35%   40-42, 45, 49, 52, 56, 59, 63-64, 81-101, 115-145
+/usr/lib/python3/dist-packages/chardet/codingstatemachine.py                                 28     18    36%   56-61, 64, 69-78, 81, 84, 88
+/usr/lib/python3/dist-packages/chardet/compat.py                                             10      4    60%   26-29
+/usr/lib/python3/dist-packages/chardet/cp949prober.py                                        16      6    62%   36-41, 45, 49
+/usr/lib/python3/dist-packages/chardet/enums.py                                              35      1    97%   62
+/usr/lib/python3/dist-packages/chardet/escprober.py                                          58     45    22%   43-56, 59-67, 71, 75, 78-81, 84-101
+/usr/lib/python3/dist-packages/chardet/escsm.py                                              17      0   100%
+/usr/lib/python3/dist-packages/chardet/eucjpprober.py                                        49     34    31%   38-42, 45-46, 50, 54, 57-87, 90-92
+/usr/lib/python3/dist-packages/chardet/euckrfreq.py                                           3      0   100%
+/usr/lib/python3/dist-packages/chardet/euckrprober.py                                        16      6    62%   36-39, 43, 47
+/usr/lib/python3/dist-packages/chardet/euctwfreq.py                                           3      0   100%
+/usr/lib/python3/dist-packages/chardet/euctwprober.py                                        16      6    62%   35-38, 42, 46
+/usr/lib/python3/dist-packages/chardet/gb2312freq.py                                          3      0   100%
+/usr/lib/python3/dist-packages/chardet/gb2312prober.py                                       16      6    62%   35-38, 42, 46
+/usr/lib/python3/dist-packages/chardet/hebrewprober.py                                       77     48    38%   155-162, 165-171, 175-176, 179, 193, 223-253, 259-280, 284, 289-292
+/usr/lib/python3/dist-packages/chardet/jisfreq.py                                             3      0   100%
+/usr/lib/python3/dist-packages/chardet/jpcntx.py                                             81     61    25%   124-129, 132-141, 144-168, 171, 175-178, 181, 185-186, 190, 193-210, 214-231
+/usr/lib/python3/dist-packages/chardet/langbulgarianmodel.py                                  5      0   100%
+/usr/lib/python3/dist-packages/chardet/langcyrillicmodel.py                                  13      0   100%
+/usr/lib/python3/dist-packages/chardet/langgreekmodel.py                                      5      0   100%
+/usr/lib/python3/dist-packages/chardet/langhebrewmodel.py                                     3      0   100%
+/usr/lib/python3/dist-packages/chardet/langthaimodel.py                                       3      0   100%
+/usr/lib/python3/dist-packages/chardet/langturkishmodel.py                                    3      0   100%
+/usr/lib/python3/dist-packages/chardet/latin1prober.py                                       52     29    44%   98-101, 104-106, 110, 114, 117-128, 131-145
+/usr/lib/python3/dist-packages/chardet/mbcharsetprober.py                                    44     33    25%   40-43, 46-51, 55, 59, 62-88, 91
+/usr/lib/python3/dist-packages/chardet/mbcsgroupprober.py                                    14      3    79%   43-54
+/usr/lib/python3/dist-packages/chardet/mbcssm.py                                             41      0   100%
+/usr/lib/python3/dist-packages/chardet/sbcharsetprober.py                                    75     60    20%   40-51, 54-61, 65-68, 72-75, 78-122, 125-132
+/usr/lib/python3/dist-packages/chardet/sbcsgroupprober.py                                    19      8    58%   45-73
+/usr/lib/python3/dist-packages/chardet/sjisprober.py                                         49     34    31%   38-42, 45-46, 50, 54, 57-87, 90-92
+/usr/lib/python3/dist-packages/chardet/universaldetector.py                                 124    104    16%   82-92, 100-109, 125-218, 229-286
+/usr/lib/python3/dist-packages/chardet/utf8prober.py                                         43     29    33%   39-42, 45-47, 51, 55, 58-74, 77-82
+/usr/lib/python3/dist-packages/chardet/version.py                                             2      0   100%
+/usr/lib/python3/dist-packages/colorama/__init__.py                                           4      0   100%
+/usr/lib/python3/dist-packages/colorama/ansi.py                                              74      8    89%   16, 19, 22, 38, 40, 42, 44, 46
+/usr/lib/python3/dist-packages/colorama/ansitowin32.py                                      131    100    24%   13, 25-26, 29, 35, 38, 41, 44-53, 57-61, 75-104, 114, 117-158, 161-167, 171-174, 183-190, 194-196, 200-202, 206-220, 224-242, 246-257
+/usr/lib/python3/dist-packages/colorama/initialise.py                                        48     32    33%   19-20, 25-48, 52-55, 60-64, 68-71, 75-80
+/usr/lib/python3/dist-packages/colorama/win32.py                                             78     68    13%   11, 17-152
+/usr/lib/python3/dist-packages/colorama/winterm.py                                          119     90    24%   25-34, 37, 40-42, 45-47, 50-58, 61-69, 72-75, 78-83, 86-91, 94-101, 104-109, 115-141, 147-166, 169
+/usr/lib/python3/dist-packages/cryptography/__about__.py                                     10      0   100%
+/usr/lib/python3/dist-packages/cryptography/__init__.py                                       3      0   100%
+/usr/lib/python3/dist-packages/cryptography/exceptions.py                                    35      4    89%   27-28, 53-54
+/usr/lib/python3/dist-packages/cryptography/hazmat/__init__.py                                2      0   100%
+/usr/lib/python3/dist-packages/cryptography/hazmat/_der.py                                  102     72    29%   37, 40, 43-44, 47, 50-51, 54-58, 61-65, 68-101, 104-107, 110-111, 114-116, 119-132, 136-141, 145-156
+/usr/lib/python3/dist-packages/cryptography/hazmat/_oid.py                                   33     12    64%   23-24, 29, 34, 39, 44-47, 50, 53, 64-65
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/__init__.py                       7      4    43%   14-18
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/interfaces.py                   139      0   100%
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/__init__.py               3      0   100%
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/aead.py                  91     80    12%   15-24, 28-69, 73-81, 85-89, 93-97, 101-124, 128-162
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py             1358   1112    18%   138-144, 179-185, 194, 199, 202, 205-213, 216-218, 221-222, 225, 228, 231-236, 240, 303, 306, 309, 313-327, 330, 333-352, 361-383, 386-401, 404, 408-439, 442-452, 455-458, 461-464, 473-479, 485-490, 496-501, 509-544, 552-587, 590-601, 604-618, 621-635, 638-644, 647-648, 651-654, 657-673, 676-690, 693-704, 707-710, 713, 716, 719, 724, 727-809, 812-898, 901-906, 909-914, 917-921, 924-1002, 1006-1017, 1020-1021, 1026-1055, 1060-1082, 1085, 1093-1115, 1118-1126, 1133-1140, 1148-1159, 1162-1182, 1185-1204, 1207-1219, 1222-1229, 1232-1244, 1247-1254, 1257-1269, 1272-1279, 1282-1328, 1331-1373, 1376-1396, 1402-1405, 1412-1422, 1428-1443, 1446-1451, 1454-1471, 1474-1505, 1508-1511, 1514-1521, 1524-1531, 1534-1552, 1555-1632, 1636-1648, 1651, 1657-1660, 1667-1680, 1684-1691, 1698-1719, 1727-1739, 1743-1834, 1837-1848, 1851-1909, 1912-1960, 1965-1992, 1995-2013, 2016-2019, 2022-2029, 2032, 2036-2081, 2084-2108, 2111-2126, 2129-2148, 2151, 2154-2162, 2167-2177, 2196-2211, 2214-2224, 2227-2228, 2231, 2234-2242, 2245-2254, 2257-2258, 2261, 2264, 2267-2278, 2281-2292, 2295-2296, 2299, 2302-2312, 2315-2326, 2329-2330, 2333-2361, 2364-2365, 2376-2380, 2386-2387, 2400-2410, 2413-2456, 2459, 2462-2466, 2474-2475, 2479-2480
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/ciphers.py              109     90    17%   22-120, 123-125, 128-143, 151-197, 200-219, 222-227
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/cmac.py                  45     33    27%   18-45, 50-51, 54-63, 66-74, 79-81
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/decode_asn1.py          424    348    18%   31-43, 47-55, 59-73, 77-84, 88-157, 166, 170-172, 176-178, 188-257, 261-296, 300-326, 330-342, 346-350, 356-375, 381-400, 404-416, 430-433, 437, 443, 449-453, 459-471, 475-492, 499-509, 515-526, 534-564, 591-596, 600-625, 629-630, 634-635, 639-642, 646-657, 701-708, 712-718, 724-727, 731-738, 742-745, 749-752, 756, 760, 764-775, 779-793, 797-800, 804-806
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/dh.py                   155    122    21%   14-28, 32-33, 39-40, 43-53, 60, 63-78, 86-94, 98-103, 109-112, 116, 119-134, 148-171, 174-187, 190, 193-208, 220-223, 227, 230-244, 254, 257-274
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/dsa.py                  150    108    28%   20-32, 38-44, 50-55, 58, 61-63, 71-74, 77, 80-81, 87-88, 91-98, 105, 111-120, 125-127, 130-142, 155-171, 174-179, 182, 191-194, 200-208, 213-217, 222-234, 244-248, 251-256, 265-268
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/ec.py                   177    132    25%   22-23, 29-57, 67, 73-76, 83-92, 96-101, 107-109, 112, 115-117, 123-126, 129, 132-133, 141-147, 153, 156-159, 164-191, 194-213, 216-218, 224, 233-237, 243-249, 255, 258-263, 268-284, 291-312, 315-339, 348-352
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/ed448.py                 76     57    25%   20-21, 24-47, 52-59, 62-77, 83-84, 87-95, 98-115, 118-142, 147-154
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/ed25519.py               74     57    23%   17-18, 21-44, 49-56, 59-74, 80-81, 84-92, 95-112, 115-139, 144-151
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/encode_asn1.py          367    316    14%   34-40, 44-46, 53-56, 65-70, 74-76, 80, 87-100, 104-106, 113-118, 122-134, 138, 142-160, 164-172, 176-184, 188-233, 237-252, 260-263, 267-269, 274, 278-306, 310-329, 333-343, 347-369, 373-380, 384-388, 392, 396-398, 402-484, 490-497, 513-521, 525-529, 533-537, 541-562, 566-578, 582-595, 599-609, 613
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/hashes.py                43     31    28%   16-36, 41-47, 50-54, 57-69, 72-78
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/hmac.py                  44     32    27%   18-41, 46-53, 58-60, 63-69, 72-74
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/ocsp.py                 232    142    39%   28-34, 40-47, 51-58, 62-69, 73-84, 92-115, 124-127, 132-136, 143-145, 150-159, 164-177, 182-186, 191-195, 198-204, 209-212, 217-225, 230-242, 247-265, 270-279, 284-295, 300, 305, 310, 315, 320, 323-333, 339-350, 354, 358, 362, 366, 370, 373-381
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/poly1305.py              32     22    31%   18-40, 43-47, 50-55, 58-60
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/rsa.py                  244    198    19%   30-35, 39-68, 72-124, 128-153, 157-185, 189-218, 222-255, 259-272, 278-287, 290, 293, 305-316, 319, 322, 335-345, 350-352, 355-359, 362-368, 371-392, 406, 415-418, 424-434, 439-443, 448, 451-458, 464, 473-476
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/utils.py                 36     27    25%   15-35, 39-52, 56-57, 64
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/x448.py                  57     39    32%   20-21, 24-47, 52-59, 65-66, 69-76, 79-82, 87-111, 116-123
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/x509.py                 362    243    33%   28-29, 32, 35-39, 42, 45, 48-50, 54-60, 66-68, 71-79, 83-84, 88-89, 93-95, 99-101, 105-109, 115-121, 125-130, 136-141, 145-151, 154-163, 169-178, 182-186, 190, 199, 207-208, 211-215, 218, 221-229, 236-239, 242-253, 259-263, 269-275, 279-281, 285-287, 291-293, 297-302, 306-312, 315-326, 329-332, 335-336, 339-348, 351-355, 359, 362-374, 380-381, 384-389, 392, 395, 398-401, 405-407, 411-415, 421-427, 431-440, 443-454, 458-464, 468-473, 477-486, 494-497, 501-503, 507-510, 514-516, 522-526, 530-534, 537, 540-543, 546
+/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/x25519.py                65     46    29%   23-24, 27-62, 67-76, 82-83, 86-96, 99-102, 107-131, 140-149
+/usr/lib/python3/dist-packages/cryptography/hazmat/bindings/__init__.py                       1      0   100%
+/usr/lib/python3/dist-packages/cryptography/hazmat/bindings/openssl/__init__.py               1      0   100%
+/usr/lib/python3/dist-packages/cryptography/hazmat/bindings/openssl/_conditional.py          90     41    54%   9, 17, 23, 29, 35, 41, 55, 64, 72, 78, 92, 111, 117, 123, 129, 145, 158, 164, 176, 182, 188, 209, 216, 223, 230, 237, 244, 251, 258, 264, 271, 278, 285, 293, 301, 307, 317, 332, 341, 347, 362
+/usr/lib/python3/dist-packages/cryptography/hazmat/bindings/openssl/binding.py               97     26    73%   25-28, 31, 40-52, 57-70, 150-151, 159, 177
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/__init__.py                     1      0   100%
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/asymmetric/__init__.py         15      0   100%
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/asymmetric/dh.py              100     37    63%   15, 20-28, 31-34, 40, 43, 51-59, 62-65, 71, 74, 82-95, 98-101, 108, 111
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/asymmetric/dsa.py             121     48    60%   123, 127, 131-137, 141-147, 152-163, 170, 173-176, 179, 182, 191-200, 206, 209-212, 218, 221, 229-237, 243, 246-249, 254
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/asymmetric/ec.py              243     62    74%   157-169, 321, 327, 331-340, 345-356, 359, 362-372, 379-400, 407-410, 418, 421, 424, 432-442, 445, 451-454, 460, 463, 494-497
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/asymmetric/ed448.py            36     12    67%   18-25, 44-50, 54-61
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/asymmetric/ed25519.py          38     12    68%   22-29, 48-55, 59-66
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/asymmetric/padding.py          47     20    57%   37-46, 54-59, 66-69, 73-79
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/asymmetric/rsa.py             175    102    42%   11-12, 112-119, 123-130, 135-169, 173-180, 187-193, 200, 208, 216, 231-265, 271-296, 307, 310-313, 324, 327, 340-347, 353, 356, 359-362, 365, 368
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/asymmetric/utils.py            18      9    50%   15-18, 22, 31-35
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/asymmetric/x448.py             34     12    65%   18-25, 38-44, 48-55
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/asymmetric/x25519.py           34     12    65%   18-25, 38-44, 48-55
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/ciphers/__init__.py             3      0   100%
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/ciphers/algorithms.py         113     30    73%   16-23, 35, 39, 50, 54, 65-69, 73, 84, 88, 99, 103, 112, 116, 126, 130, 141, 145, 155-161, 167
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/ciphers/base.py               134     71    47%   98-112, 115-123, 126-129, 132-138, 144, 147-149, 152-154, 157-161, 169-173, 176-181, 188-189, 192-193, 196-201, 204-209, 212-225, 232-235
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/ciphers/modes.py              124     38    69%   67-68, 74-75, 81-82, 91-92, 104-109, 114-115, 134-135, 147-148, 160-161, 173-174, 179-181, 198-212, 218
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/constant_time.py               15      8    47%   16-33
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/hashes.py                     152     37    76%   70-85, 90-93, 96-98, 103-107, 189-195, 206-212, 233-236, 250-253
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/kdf/__init__.py                 9      0   100%
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/kdf/scrypt.py                  37     24    35%   26-48, 51-56, 61-63
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/serialization/__init__.py       5      0   100%
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/serialization/base.py          48      9    81%   16, 20, 24, 28, 32, 36, 74-77
+/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/serialization/ssh.py           79     63    20%   18-53, 57-63, 67-78, 82-104, 108-113, 122-129, 138-140, 146, 150-153
+/usr/lib/python3/dist-packages/cryptography/utils.py                                        106     35    67%   30-31, 35-38, 65-69, 74-84, 94, 100, 109, 120, 137-138, 142, 145-149, 152, 167-172
+/usr/lib/python3/dist-packages/cryptography/x509/__init__.py                                 70      0   100%
+/usr/lib/python3/dist-packages/cryptography/x509/base.py                                    337    177    47%   27-29, 38-43, 52, 56, 60, 64, 68, 72, 77-78, 397-398, 404-408, 414-420, 428-430, 437-444, 450-454, 464-468, 478-487, 497-509, 519-532, 542-556, 566-572, 582-600, 606-610, 613-617, 623-635, 641-653, 662-667, 676-679, 686-695, 701-703, 706-718, 723-731, 736-741, 747-754, 758
+/usr/lib/python3/dist-packages/cryptography/x509/certificate_transparency.py                 19      0   100%
+/usr/lib/python3/dist-packages/cryptography/x509/extensions.py                              836    464    44%   34-70, 75, 78, 81, 88-89, 94-95, 109, 112-116, 119-130, 137, 147-150, 153-156, 159, 162, 165, 176-203, 207-208, 216-229, 236, 244-247, 255, 258-262, 278, 282, 287, 290-293, 296, 299, 307-314, 319, 322-325, 328, 331, 336-343, 346, 352-355, 361, 364, 375-390, 396, 400-403, 406, 409, 417-420, 425-428, 431, 434, 437, 445-454, 461, 464-467, 470, 473, 481-490, 497, 500-503, 506, 509, 514-563, 566, 573-576, 584, 587-597, 623-645, 648, 655-658, 664, 667, 684-691, 696, 699-702, 705, 708, 713-729, 732, 738-741, 747, 750-755, 763-771, 774, 780-783, 789, 792, 800-807, 810, 816-819, 825, 828, 839-845, 850, 853-856, 859, 862, 870-873, 876, 879, 882, 890-893, 896, 899, 902, 910-920, 925, 928-931, 934, 937, 959-965, 968, 971-974, 977, 980, 992-1006, 1018-1023, 1027-1032, 1035-1042, 1052-1055, 1068, 1071, 1085-1116, 1119-1122, 1128, 1131-1134, 1140, 1146-1156, 1164-1174, 1181, 1185-1188, 1195, 1198, 1203-1210, 1217-1220, 1223, 1226-1229, 1232, 1235, 1243, 1248, 1251, 1254-1257, 1260, 1263, 1271, 1276, 1279, 1282-1285, 1288, 1291, 1299, 1304, 1307, 1310-1313, 1316, 1319, 1327-1330, 1333, 1336-1339, 1342, 1345, 1355-1358, 1361, 1366-1369, 1372, 1375, 1385-1394, 1401, 1408, 1411-1414, 1420, 1428-1431, 1434-1437, 1440, 1443, 1446, 1458-1523, 1526, 1538-1541, 1553, 1556, 1584-1587, 1593, 1600-1603, 1606, 1609
+/usr/lib/python3/dist-packages/cryptography/x509/general_name.py                            200    116    42%   36-40, 49-50, 65-87, 93-95, 98-101, 104, 107-110, 113, 116, 120-126, 132-148, 154-156, 159, 162-165, 168, 171, 177-193, 199-201, 204-217, 227, 230-233, 236, 239, 245-248, 253, 256-259, 262, 265, 271-274, 279, 282-285, 288, 291, 297-312, 317, 320-323, 326, 329, 335-341, 347, 351-354, 357, 360
+/usr/lib/python3/dist-packages/cryptography/x509/name.py                                    131     78    40%   58-72, 77-113, 125-126, 129-132, 138, 141, 144, 149-160, 163, 172, 175-178, 181, 184, 187, 190, 193, 198-206, 221, 224, 228, 231, 234-237, 240, 245, 248-250, 253, 256-259
+/usr/lib/python3/dist-packages/cryptography/x509/ocsp.py                                    197     97    51%   52-53, 68-69, 73-74, 79-80, 83-93, 96-102, 107-111, 117-173, 179-182, 186-193, 199-208, 214-221, 227-233, 239-254, 260-268
+/usr/lib/python3/dist-packages/cryptography/x509/oid.py                                      95      0   100%
+/usr/lib/python3/dist-packages/idna/__init__.py                                               2      0   100%
+/usr/lib/python3/dist-packages/idna/core.py                                                 280    242    14%   37-41, 44, 47, 50, 55-57, 62-64, 70-124, 129-131, 136-140, 145-146, 151-190, 195-231, 236-263, 268-288, 293-309, 314-335, 342-368, 373-396
+/usr/lib/python3/dist-packages/idna/idnadata.py                                               4      0   100%
+/usr/lib/python3/dist-packages/idna/intranges.py                                             29     24    17%   18-29, 32, 35, 40-53
+/usr/lib/python3/dist-packages/idna/package_data.py                                           1      0   100%
+/usr/lib/python3/dist-packages/requests/__init__.py                                          55      9    84%   55, 78-79, 82-83, 88-89, 101-102
+/usr/lib/python3/dist-packages/requests/__version__.py                                       10      0   100%
+/usr/lib/python3/dist-packages/requests/_internal_utils.py                                   16     12    25%   19-27, 37-42
+/usr/lib/python3/dist-packages/requests/adapters.py                                         222    169    24%   47, 59, 77, 81, 116-129, 132, 137-143, 159-163, 178-201, 215-252, 265-290, 301-317, 325-327, 343-356, 370, 385-392, 411-533
+/usr/lib/python3/dist-packages/requests/api.py                                               22     12    45%   59-60, 74-75, 87-88, 100-101, 116, 131, 146, 158
+/usr/lib/python3/dist-packages/requests/auth.py                                             174    141    19%   38-69, 76, 83-84, 87, 93, 96-97, 104-105, 112-115, 119-125, 132-227, 231-232, 243-276, 280-296, 299, 305
+/usr/lib/python3/dist-packages/requests/certs.py                                              4      1    75%   18
+/usr/lib/python3/dist-packages/requests/compat.py                                            38     15    61%   30-31, 38-54
+/usr/lib/python3/dist-packages/requests/cookies.py                                          241    177    27%   21-22, 38-40, 43, 46, 49, 54-60, 66, 69, 72, 76, 79, 82, 86, 90, 94, 109, 112, 115, 125-132, 141-143, 151-162, 196-199, 207-216, 224-225, 233, 241-242, 250, 258-259, 268, 272-276, 280-284, 292-297, 306-313, 316-319, 328, 335, 341, 344-346, 350-354, 368-374, 388-399, 403-406, 410-412, 416-419, 423, 427-438, 447-474, 480-491, 517-526, 536-549
+/usr/lib/python3/dist-packages/requests/exceptions.py                                        35      6    83%   19-25
+/usr/lib/python3/dist-packages/requests/hooks.py                                             15     11    27%   18, 25-34
+/usr/lib/python3/dist-packages/requests/models.py                                           457    373    18%   65-80, 91-107, 119-171, 178-184, 191-195, 231-249, 252, 256-269, 292-305, 312-323, 326, 329-337, 341-343, 347-353, 362-439, 444-450, 459-519, 523-532, 538-554, 567-574, 581-583, 597-641, 644, 647, 652-655, 658-663, 666, 676, 686, 690, 701-705, 712, 717, 722, 727, 746-782, 792-813, 819-833, 849-871, 880-897, 903-915, 920-940, 948-953
+/usr/lib/python3/dist-packages/requests/packages.py                                           6      0   100%
+/usr/lib/python3/dist-packages/requests/sessions.py                                         284    233    18%   41-44, 55-77, 86-92, 105-116, 120-141, 147-254, 261-274, 288-315, 321-337, 370-418, 421, 424, 436-464, 507-535, 545-546, 556-557, 567-568, 581, 593, 605, 615, 624-688, 697-716, 725-731, 735-736, 743-747, 750-751, 754-755, 770
+/usr/lib/python3/dist-packages/requests/status_codes.py                                      15      0   100%
+/usr/lib/python3/dist-packages/requests/structures.py                                        39     19    51%   41-44, 49, 52, 55, 58, 61, 65, 72-77, 81, 84, 95, 100, 103
+/usr/lib/python3/dist-packages/requests/utils.py                                            444    376    15%   47-95, 101-104, 108-165, 171-216, 221-224, 232-256, 275-281, 299-308, 335-340, 366-375, 387-401, 411-416, 427, 435-445, 458-472, 482-493, 499-511, 516-521, 536-557, 571-586, 597-608, 619-623, 633-634, 641-645, 654-669, 680-691, 702-752, 761-764, 773-790, 799, 806, 822-848, 864-886, 895-903, 912-919, 934-944, 954-962, 969-977
+/usr/lib/python3/dist-packages/simplejson/__init__.py                                        80     57    29%   120-122, 126-130, 248-279, 372-385, 457, 514-535, 539-562, 577
+/usr/lib/python3/dist-packages/simplejson/compat.py                                          29     16    45%   5-18, 24, 26
+/usr/lib/python3/dist-packages/simplejson/decoder.py                                        225    178    21%   14-15, 26-27, 60-133, 145-234, 237-270, 368-374, 387-400
+/usr/lib/python3/dist-packages/simplejson/encoder.py                                        394    341    13%   13-14, 42-62, 69-103, 244, 247, 249, 251, 272, 284-302, 314-380, 400-404, 407-417, 441-722
+/usr/lib/python3/dist-packages/simplejson/errors.py                                          29     23    21%   7-12, 16-23, 41-50, 53
+/usr/lib/python3/dist-packages/simplejson/raw_json.py                                         3      1    67%   9
+/usr/lib/python3/dist-packages/simplejson/scanner.py                                         64     53    17%   9-10, 21-83
+/usr/lib/python3/dist-packages/six.py                                                       491    239    51%   49-72, 98-99, 112, 120-121, 131-133, 145, 154-157, 192-193, 222-223, 308, 488, 496, 501-507, 519-525, 530-532, 538-540, 545, 550, 554-568, 583, 586, 589, 592, 600-616, 628, 631, 645-647, 653-673, 679, 683, 687, 691, 698-721, 737-738, 743-795, 797-804, 814-834, 845-861, 870-873, 893-898, 912-918, 932-937, 948-955, 976-977
+/usr/lib/python3/dist-packages/urllib3/__init__.py                                           33      8    76%   56-62, 86
+/usr/lib/python3/dist-packages/urllib3/_collections.py                                      182    133    27%   5-6, 9-16, 47-51, 55-58, 61-73, 76-80, 83-84, 87, 92-99, 102-103, 141-149, 152-153, 156-157, 160, 163, 166-170, 175, 178-179, 184, 188-189, 198-206, 209-212, 223-228, 235-256, 261-268, 279, 282-287, 290-292, 296-299, 303-305, 308, 316-336
+/usr/lib/python3/dist-packages/urllib3/connection.py                                        166    112    33%   16-20, 26-29, 102-112, 131, 141, 148-172, 175-181, 184-185, 192-220, 242-252, 283-296, 300-388, 395-406, 414
+/usr/lib/python3/dist-packages/urllib3/connectionpool.py                                    315    255    19%   74-79, 82, 85, 88-90, 96, 181-214, 220-235, 249-274, 290-302, 308, 312, 316-324, 329-347, 368-450, 453, 459-471, 478-492, 600-849, 899-922, 930-942, 949-950, 956-986, 992-999, 1030-1035, 1043-1053
+/usr/lib/python3/dist-packages/urllib3/contrib/__init__.py                                    0      0   100%
+/usr/lib/python3/dist-packages/urllib3/contrib/_appengine_environ.py                         11      1    91%   36
+/usr/lib/python3/dist-packages/urllib3/contrib/pyopenssl.py                                 248    161    35%   88, 131-136, 148, 159, 179-205, 213-259, 270-274, 277, 281-284, 287-309, 312-332, 335, 339-346, 349-354, 358, 361-368, 371-379, 385, 388, 391-394, 399-401, 418-421, 425, 429-430, 434, 438, 441, 444-446, 449-455, 458-463, 473-494, 498
+/usr/lib/python3/dist-packages/urllib3/contrib/socks.py                                      75     66    12%   55-210
+/usr/lib/python3/dist-packages/urllib3/exceptions.py                                         96     21    78%   21-22, 26, 33-34, 38, 79-83, 90-92, 147-150, 222, 225, 241-242, 249-250
+/usr/lib/python3/dist-packages/urllib3/fields.py                                             90     70    22%   18-20, 38-61, 82-91, 113-118, 150-156, 176-192, 205, 218-227, 233-246, 263-273
+/usr/lib/python3/dist-packages/urllib3/filepost.py                                           43     30    30%   19-22, 33-42, 57-60, 74-98
+/usr/lib/python3/dist-packages/urllib3/packages/__init__.py                                   8      2    75%   10-11
+/usr/lib/python3/dist-packages/urllib3/packages/backports/__init__.py                         0      0   100%
+/usr/lib/python3/dist-packages/urllib3/packages/backports/makefile.py                        36     32    11%   20-52
+/usr/lib/python3/dist-packages/urllib3/packages/ssl_match_hostname/__init__.py               11      6    45%   7, 10-16
+/usr/lib/python3/dist-packages/urllib3/poolmanager.py                                       170    130    24%   89-114, 160-167, 170, 173-175, 187-202, 211, 224-234, 243-247, 257-271, 284-285, 297-307, 318-369, 408-428, 431-436, 445-453, 457-466, 470
+/usr/lib/python3/dist-packages/urllib3/request.py                                            39     28    28%   42, 54, 70-79, 88-97, 144-171
+/usr/lib/python3/dist-packages/urllib3/response.py                                          399    322    19%   34-36, 39, 42-61, 73-74, 77, 80-98, 103-118, 131, 134, 137-139, 143-152, 190, 214-258, 268-271, 274-278, 283-287, 291, 294, 302, 308-354, 362-373, 377, 383-399, 406-410, 421-467, 490-541, 559-567, 578-599, 603, 606, 610, 614-621, 625-634, 637-642, 648-653, 657, 661-666, 675, 680-689, 692-711, 727-781, 789-792, 795-809
+/usr/lib/python3/dist-packages/urllib3/util/__init__.py                                      10      0   100%
+/usr/lib/python3/dist-packages/urllib3/util/connection.py                                    66     45    32%   17-26, 51-86, 90-94, 102-105, 118, 130-131
+/usr/lib/python3/dist-packages/urllib3/util/queue.py                                         14      5    64%   7, 12, 15, 18, 21
+/usr/lib/python3/dist-packages/urllib3/util/request.py                                       50     37    26%   13, 60-87, 95-105, 119-133
+/usr/lib/python3/dist-packages/urllib3/util/response.py                                      35     29    17%   15-35, 54-71, 83-86
+/usr/lib/python3/dist-packages/urllib3/util/retry.py                                        150    102    32%   184-185, 200-216, 221-230, 238-247, 251-263, 268-273, 276-281, 284-287, 298-303, 309, 315, 321-324, 333-339, 348-353, 374-440, 443
+/usr/lib/python3/dist-packages/urllib3/util/ssl_.py                                         148    112    24%   31-34, 43-44, 50-56, 61-63, 104-149, 162-174, 192-201, 208-217, 256-293, 327-383, 393-396, 401-407
+/usr/lib/python3/dist-packages/urllib3/util/timeout.py                                       63     42    33%   96-99, 102, 120-153, 169, 183, 191-194, 204-208, 220-226, 245-258
+/usr/lib/python3/dist-packages/urllib3/util/url.py                                          203    150    26%   101-105, 112, 117-122, 127-129, 150-169, 172, 193-207, 214-241, 246-271, 275-299, 303-317, 322-327, 352-414, 429-430
+/usr/lib/python3/dist-packages/urllib3/util/wait.py                                          76     58    24%   8-9, 43-68, 72-87, 91-107, 111, 118-124, 133-139, 146, 153
+test_agenda.py                                                                                0      0   100%
+test_balut.py                                                                               457    454     1%   4-780
+test_basketball.py                                                                           48     46     4%   3-66
+test_binary.py                                                                               26     24     8%   3-36
+test_bmi.py                                                                                  30     28     7%   3-42
+test_bulkresize.py                                                                           75     71     5%   5-95
+test_calories_macros.py                                                                     230    228     1%   3-435
+test_cat_fact.py                                                                             14     12    14%   3-24
+test_chuck.py                                                                                14     12    14%   3-24
+test_cocktail.py                                                                             39     35    10%   5-49
+test_corona.py                                                                               14     12    14%   3-24
+test_create_plugin.py                                                                        34     31     9%   4-48
+test_cryptotracker.py                                                                        44     41     7%   4-73
+test_currencyconv.py                                                                         13     11    15%   3-20
+test_dice.py                                                                                 50     48     4%   3-69
+test_directions_to.py                                                                        27     25     7%   3-38
+test_evaluator.py                                                                            23     17    26%   8-34
+test_flights.py                                                                               0      0   100%
+test_football.py                                                                             28     26     7%   3-47
+test_forecast.py                                                                             36     34     6%   4-95
+test_geocode.py                                                                              35     32     9%   4-72
+test_hackernews.py                                                                           40     38     5%   3-64
+test_hex.py                                                                                  23     21     9%   3-32
+test_imgcompressor.py                                                                        60     58     3%   3-164
+test_jarvis_api.py                                                                           20     18    10%   6-28
+test_joke_of_day.py                                                                          14     12    14%   3-24
+test_lengthconv.py                                                                          141    139     1%   3-170
+test_lyrics.py                                                                               20     18    10%   4-37
+test_massconv.py                                                                            141    139     1%   3-170
+test_memory.py                                                                               19     16    16%   7-31
+test_music_recognition.py                                                                    37     34     8%   4-85
+test_name_day.py                                                                             53     52     2%   2-96
+test_near_me.py                                                                              28     26     7%   3-39
+test_news.py                                                                                 10      8    20%   4-15
+test_parser.py                                                                               31     29     6%   5-43
+test_quote.py                                                                                21     19    10%   3-39
+test_rockpaperscissors.py                                                                    54     52     4%   3-70
+test_scan_network.py                                                                         13     11    15%   3-22
+test_tasks.py                                                                                74     72     3%   3-92
+test_tempconv.py                                                                             33     31     6%   6-51
+test_timeconv.py                                                                            141    139     1%   3-170
+test_twitter_trends.py                                                                       34     30    12%   5-48
+test_weatherIn.py                                                                            13     11    15%   3-18
+test_wifi_password_getter.py                                                                 40     38     5%   3-66
+test_wiki.py                                                                                 36     34     6%   4-49
+-----------------------------------------------------------------------------------------------------------------------
+TOTAL                                                                                     20844  14537    30%
