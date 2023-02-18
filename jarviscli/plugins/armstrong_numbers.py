@@ -13,7 +13,7 @@ def element(jarvis, s):
         tmp //= 10
 
     if num == sum:
-        answer = "The number " + num + " is armstrong."
+        answer = "The number " + str(num) + " is armstrong."
     else:
-        answer = "The number " + num + " is not  armstrong."
+        answer = "The number " + str(num) + " is not  armstrong."
     jarvis.say(answer)
