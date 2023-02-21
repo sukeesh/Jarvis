@@ -232,7 +232,7 @@ class PluginTest(unittest.TestCase):
         """
         self.jarvis_api.queue_input(msg)
 
-    def histroy_call(self):
+    def history_call(self):
         """
         Returns MockHistory instance. Fields:
 
