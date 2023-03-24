@@ -25,11 +25,14 @@ class Quote():
 
     def get_quote_of_the_day(self, jarvis):
         res = requests.get(
-            'https://www.brainyquote.com/quotes_of_the_day.html')
-        soup = BeautifulSoup(res.text, 'html.parser')
-
-        quote = soup.find('img', {'class': 'p-qotd'})
-        jarvis.say(quote['alt'])
+            'https://quotes.rest/qod')
+        if res.status_code == 200:
+            data = res.text
+            parse_json = json.loads(data)
+            quote = parse_json['contents']['quotes'][0]['quote']
+            jarvis.say(quote)
+        else:
+            jarvis.say('Sorry, something went wrong. Please try again later or report this issue if it sustains.')
 
     def get_keyword_quotes(self, jarvis, keyword):
         """
