@@ -2,8 +2,6 @@ import time
 import sys
 import requests
 import json
-import re
-import curses
 from plugin import plugin, require, UNIX
 import os
 import csv
@@ -20,7 +18,7 @@ class GameState (object):
 default_text_color = Fore.WHITE
 incorrect_color = Fore.RED
 correct_color = Fore.GREEN
-n_words = 4
+n_words = 10
 
 total_time = 100
 
@@ -85,15 +83,12 @@ class Letter():
 
 
 def get_text():
-    response = requests.get('http://www.randomtext.me/api/\
-        gibberish/p-5/' + str(n_words))
-    json_data = json.loads(response.content)
-    random_text = json_data['text_out']
-    clean_text = random_text
-    clean_text = re.sub(re.compile('<.*?>'), '', random_text)
-    clean_text = clean_text.replace('\r', '').replace('\\r', '')
-    clean_text = clean_text.replace('.', '. ')
-    return clean_text
+    response = requests.get(f"https://random-word-api.vercel.app/api?words={n_words}")
+    if response.status_code == 200:
+        json_data = json.loads(response.content)
+        json_data = ' '.join(json_data)
+        print('json_data', json_data)
+        return json_data 
 
 
 def format_time(seconds):
