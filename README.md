@@ -19,15 +19,15 @@ Run **Jarvis** from anywhere by command `jarvis`, or `./jarvis` from within the 
 You can start by typing `help` within the Jarvis command line to check what Jarvis can do for you.
 
 ### Frequently encountered issues
-**Question**: When I run Jarvis, it shows an error relating to module not found
-**Platform**: Windows
-**Solution 1**: Uninstall and/or install the module package
-Example:
-Error: `ImportError: DLL load failed while importing win32api: The specified module could not be found.`
-Solution:
-`pip uninstall pywin32`
-`pip install pywin32` or `conda instapll pywin32`
-**Solution 2**: add the package to your environment variables system PATH.
+**Question**: When I run Jarvis, it shows an error relating to module not found<br>
+**Platform**: Windows<br>
+**Solution 1**: Uninstall and/or install the module package<br>
+Example:<br>
+Error: `ImportError: DLL load failed while importing win32api: The specified module could not be found.`<br>
+Solution:<br>
+`pip uninstall pywin32`<br>
+`pip install pywin32` or `conda instapll pywin32`<br>
+**Solution 2**: add the package to your environment variables system PATH.<br>
 
 
 If you find other issues and/or have found solutions to them on any platform, please consider adding to this list!
