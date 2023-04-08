@@ -22,9 +22,9 @@ PluginTest.queue_input(self, msg)
 
 Queue msg to be returned by 'jarvis.input()'
 
-## histroy_call
+## history_call
 ```python
-PluginTest.histroy_call(self)
+PluginTest.history_call(self)
 ```
 
 Returns MockHistory instance. Fields:

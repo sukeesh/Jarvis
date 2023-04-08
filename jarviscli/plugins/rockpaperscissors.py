@@ -114,10 +114,13 @@ class rockpaperscissors():
 
         while True:
             rounds = input(prompt)
-            if (int(rounds) <= 100):
-                return rounds
-            else:
-                prompt = 'Laps should be under 100 \n'
+            try:
+                if (int(rounds) <= 100):
+                    return rounds
+                else:
+                    prompt = 'Laps should be under 100 \n'
+            except:
+                prompt = 'Laps should be a number \n'
 
     def get_users(self, prompt):
 

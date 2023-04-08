@@ -1,5 +1,5 @@
 import requests
-import bs4
+from bs4 import BeautifulSoup
 
 import json
 from plugin import plugin, require
@@ -25,41 +25,56 @@ class Quote():
 
     def get_quote_of_the_day(self, jarvis):
         res = requests.get(
-            'https://www.brainyquote.com/quotes_of_the_day.html')
-        soup = bs4.BeautifulSoup(res.text, 'lxml')
-
-        quote = soup.find('img', {'class': 'p-qotd'})
-        jarvis.say(quote['alt'])
+            'https://quotes.rest/qod')
+        if res.status_code == 200:
+            data = res.text
+            parse_json = json.loads(data)
+            quote = parse_json['contents']['quotes'][0]['quote']
+            jarvis.say(quote)
+        else:
+            jarvis.say('Sorry, something went wrong. Please try again later or report this issue if it sustains.')
 
     def get_keyword_quotes(self, jarvis, keyword):
         """
         shows quotes based on a keyword given by the user
         """
 
-        res = requests.get('https://talaikis.com/api/quotes')
-        quotes = json.loads(res.text)
+        while True:
+            res = requests.get(f'https://www.brainyquote.com/search_results?x=0&y=0&q={keyword}')
+            soup = BeautifulSoup(res.text, 'html.parser')
+            quote_divs = soup.find_all('div', {'class': 'bqQt'})
 
-        flag = False
-        line = 1
-        for quote in quotes:
-            self.contains_word(quote['quote'], keyword)
-            if self.contains_word(quote['quote'], keyword):
-                jarvis.say(str(line) + '. ' + quote['quote'])
-                line = line + 1
-                flag = True  # there is at least one quote
+            quotes = []
+            for quote_div in quote_divs:
+                quote_text = quote_div.find('a', {'title': 'view quote'}).text
+                quotes.append(quote_text)
 
-        if not flag:
-            jarvis.say(
-                'No quotes inlcude this word. PLease try one more time.\n')
-            self.try_again(keyword, jarvis)
-        else:
-            jarvis.say('')
-            self.try_again(keyword, jarvis)
+            num_quotes = len(quotes)
+            current_quote = 0
 
-    def try_again(self, keyword, jarvis):
-        again = jarvis.input('Enter -again- to get more quotes or -exit- to leave: ')
-        if again.lower() == "again":
-            self.get_keyword_quotes(jarvis, keyword)
+            if num_quotes == 0:
+                response = jarvis.input(
+                    f'Sorry, no quotes were found for {keyword}. Type a new keyword to try again or "exit" to leave: ')
+                if response.lower() == 'exit':
+                    break
+                keyword = response
+                continue
+
+            while num_quotes > 0:
+                if current_quote >= num_quotes:
+                    current_quote = 0
+
+                quote = quotes[current_quote]
+                jarvis.say(quote)
+                response = jarvis.input('Type "again" for another quote or "exit" to leave: ')
+
+                if response.lower() == 'again':
+                    current_quote = (current_quote + 1) % num_quotes
+
+                if response.lower() == 'exit':
+                    break
+
+            break
 
     def contains_word(self, s, keyword):
         return (' ' + keyword.lower()) in s or (keyword.capitalize()) in s
