@@ -48,3 +48,4 @@ pdf2image
 python-nmap
 yeelight
 haversine
+FlightRadarAPI
