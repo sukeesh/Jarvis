@@ -1,8 +1,8 @@
-from plugin import plugin
+from plugin import plugin, require
 from FlightRadar24.api import FlightRadar24API
 flightapi = FlightRadar24API()
 
-
+@require(network=True)
 @plugin("flightradar")
 def flightradar(jarvis, s):
     flightapi = FlightRadar24API()
