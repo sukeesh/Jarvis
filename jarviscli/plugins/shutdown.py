@@ -60,7 +60,7 @@ def shutdown_WIN32(jarvis, s):
 
 
 @require(platform=LINUX)
-@plugin('reboot')
+@plugin('reboot_computer')
 def reboot_LINUX(jarvis, s):
     """Reboot the system"""
     if s == '':
@@ -70,15 +70,22 @@ def reboot_LINUX(jarvis, s):
 
 
 @require(platform=MACOS)
-@plugin('reboot')
+@plugin('reboot_computer')
 def reboot_MACOS(jarvis, s):
     """Reboot the system"""
-    string = 'sudo shutdown -r now'
-    os.system(string)
+    if s == '':
+        s = jarvis.input('reboot? y/n: ')
+        if s == 'y':
+            jarvis.say('rebooting system')
+            string = 'sudo shutdown -r now'
+            os.system(string)
+        if s == 'n':
+            jarvis.say('reboot cancelled')
+            return
 
 
 @require(platform=WINDOWS)
-@plugin('reboot')
+@plugin('reboot_computer')
 def reboot_WIN32(jarvis, s):
     """Reboot the system"""
     if s == '':
