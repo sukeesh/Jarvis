@@ -4,17 +4,14 @@ import sys
 import traceback
 from cmd import Cmd
 from functools import partial
-
 from colorama import Fore
-
 from packages.memory.memory import Memory
 from PluginManager import PluginManager
 from utilities import schedule
 from utilities.animations import SpinnerThread
-from utilities.GeneralUtilities import get_parent_directory
+from utilities.GeneralUtilities import get_parent_directory, theme_option
 from utilities.notification import notify
 from utilities.voice import create_voice
-
 
 class JarvisAPI(object):
     """
@@ -42,7 +39,7 @@ class JarvisAPI(object):
                       e.g. Fore.BLUE
         :param speak: False-, if text shouldn't be spoken even if speech is enabled
         """
-        print(color + text + Fore.RESET, flush=True)
+        print(color + text + theme_option('reset_text'), flush=True)
 
         if speak:
             self._jarvis.speak(text)
@@ -53,7 +50,7 @@ class JarvisAPI(object):
         """
         # we can't use input because for some reason input() and color codes do not work on
         # windows cmd
-        sys.stdout.write(color + prompt + Fore.RESET)
+        sys.stdout.write(color + prompt + theme_option('reset_text'))
         sys.stdout.flush()
         text = sys.stdin.readline()
         # return without newline
@@ -137,7 +134,7 @@ class JarvisAPI(object):
         self._jarvis.scheduler.cancel(schedule_id)
 
         spinner.stop()
-        self.say('Cancellation successful', Fore.GREEN)
+        self.say('Cancellation successful', theme_option('positive_text'))
 
     # Voice wrapper
     def enable_voice(self):
@@ -233,11 +230,13 @@ class JarvisAPI(object):
         self.spinner = SpinnerThread(message, 0.15)
         self.spinner.start()
 
-    def spinner_stop(self, message="Task executed successfully! ", color=Fore.GREEN):
+    def spinner_stop(self, message="Task executed successfully! ", color=""):
         """
         Function for stopping the spinner when prompted from a plugin
         and displaying the message after completing the task
         """
+        color = theme_option('positive_text')
+
         self.spinner.stop()
         self.say(message, color)
         self.spinner_running = False
@@ -275,8 +274,8 @@ class JarvisAPI(object):
         A function to notify the user that an incorrect option
         has been entered and prompting him to enter a correct one
         """
-        self.say("Oops! Looks like you entered an incorrect option", Fore.RED)
-        self.say("Look at the options once again:", Fore.GREEN)
+        self.say("Oops! Looks like you entered an incorrect option", theme_option('negative_text'))
+        self.say("Look at the options once again:", theme_option('info'))
 
 
 def catch_all_exceptions(do, pass_self=True):
@@ -290,12 +289,12 @@ def catch_all_exceptions(do, pass_self=True):
             if self._api.is_spinner_running():
                 self.spinner_stop("It seems some error has occured")
             print(
-                Fore.RED
+                theme_option('negative_text')
                 + "Some error occurred, please open an issue on github!")
             print("Here is error:")
             print('')
             traceback.print_exc()
-            print(Fore.RESET)
+            print(theme_option('reset_text'))
     return try_do
 
 
@@ -315,6 +314,7 @@ class CmdInterpreter(Cmd):
         This constructor contains a dictionary with Jarvis Actions (what Jarvis can do).
         In alphabetically order.
         """
+
         Cmd.__init__(self)
         command = " ".join(sys.argv[1:]).strip()
         self.first_reaction = first_reaction
@@ -346,8 +346,8 @@ class CmdInterpreter(Cmd):
             self.speech = create_voice(
                 self, gtts_status, rate=self.speech_rate)
         except Exception as e:
-            self.say("Voice not supported", Fore.RED)
-            self.say(str(e), Fore.RED)
+            self.say("Voice not supported", theme_option('negative_text'))
+            self.say(str(e), theme_option('info'))
 
         self.fixed_responses = {"what time is it": "clock",
                                 "where am i": "pinpoint",
@@ -364,20 +364,21 @@ class CmdInterpreter(Cmd):
 
         if self.first_reaction:
             self._api.say(self.first_reaction_text)
+            self.first_reaction = False # DEBUG, MIGHT BE USELESS
 
     def _init_plugin_info(self):
         plugin_status_formatter = {
             "disabled": len(self._plugin_manager.get_disabled()),
             "enabled": self._plugin_manager.get_number_plugins_loaded(),
-            "red": Fore.RED,
-            "blue": Fore.BLUE,
-            "reset": Fore.RESET
+            "info": theme_option('info'),
+            "text": theme_option('default_text'),
+            "reset": theme_option('reset_text')
         }
 
-        plugin_status = "{red}{enabled} {blue}plugins loaded"
+        plugin_status = "{info}{enabled} {text}plugins loaded"
         if plugin_status_formatter['disabled'] > 0:
-            plugin_status += " {red}{disabled} {blue}plugins disabled. More information: {red}status\n"
-        plugin_status += Fore.RESET
+            plugin_status += " {info}{disabled} {text}plugins disabled. More information: {info}status\n"
+        plugin_status += theme_option('reset_text')
 
         self.first_reaction_text += plugin_status.format(
             **plugin_status_formatter)
@@ -428,7 +429,7 @@ class CmdInterpreter(Cmd):
         if self._api.is_spinner_running():
             self._api.spinner_stop('Some error has occured')
 
-        self.say("Goodbye, see you later!", Fore.RED)
+        self.say("Goodbye, see you later!", theme_option('greeting'))
         self.scheduler.stop_all()
         sys.exit()
 
@@ -438,7 +439,7 @@ class CmdInterpreter(Cmd):
 
     def error(self):
         """Jarvis let you know if an error has occurred."""
-        self.say("I could not identify your command...", Fore.RED)
+        self.say("I could not identify your command...", theme_option('negative_text'))
 
     def interrupt_handler(self, signal, frame):
         """Closes Jarvis on SIGINT signal. (Ctrl-C)"""
@@ -469,7 +470,7 @@ class CmdInterpreter(Cmd):
             headerString = "These are valid commands for Jarvis"
             formatString = "Format: command ([aliases for command])"
             self.say(headerString)
-            self.say(formatString, Fore.BLUE)
+            self.say(formatString, theme_option('info'))
             pluginDict = self._plugin_manager.get_plugins()
             uniquePlugins = {}
             for key in pluginDict.keys():
