@@ -2,11 +2,13 @@
 import distutils.spawn
 import os
 from platform import win32_ver
+import json
 import sys
 import warnings
 
 from colorama import Fore
 
+USER_THEME_FILEPATH = "jarviscli/data/user_theme.json"
 MACOS = 'darwin'
 WIN = 'win32'
 IS_MACOS = sys.platform == MACOS
@@ -15,6 +17,24 @@ WIN_VER = None
 if IS_WIN:
     WIN_VER = win32_ver()[0]
 
+def get_user_theme(filepath=USER_THEME_FILEPATH):
+    """
+        Returns a dictionary corresponding to the current user theme.
+        :param filepath: the filepath to the JSON theme file
+    """
+    # Load user-theme from JSON
+    f = open(filepath)
+    data = json.load(f)
+    return data['current']
+
+def theme_option(option):
+    """
+        Returns a color corresponding to specified theme option.
+        :param option: a string specifying the theme option 
+        (greeting, default_text, info, negative_text, positive_text)
+    """
+    theme = get_user_theme()
+    return theme[option]
 
 def print_say(text, self, color=""):
     """
@@ -32,7 +52,7 @@ def print_say(text, self, color=""):
         removed in the future. Please use \
         ``JarvisAPI.say(text, color=\"\", speak=True))`` instead.",
         DeprecationWarning)
-    print(color + text + Fore.RESET)
+    print(color + text + theme_option('reset_text'))
     if self.enable_voice:
         self.speech.text_to_speech(text)
 
@@ -40,7 +60,7 @@ def print_say(text, self, color=""):
 # Functions for printing user output
 # TODO decide which ones use print_say instead of print
 def critical(string):
-    print(Fore.RED + string + Fore.RESET)
+    print(theme_option('negative_text') + string + theme_option('reset_text'))
 
 
 def error(string):
@@ -48,7 +68,7 @@ def error(string):
 
 
 def important(string):
-    print(Fore.YELLOW + string + Fore.RESET)
+    print(theme_option('greeting') + string + theme_option('reset_text'))
 
 
 def warning(string):
@@ -56,7 +76,7 @@ def warning(string):
 
 
 def info(string):
-    print(Fore.BLUE + string + Fore.RESET)
+    print(theme_option('info') + string + theme_option('reset_text'))
 
 
 def unsupported(platform, silent=False):
@@ -66,7 +86,7 @@ def unsupported(platform, silent=False):
                 if not silent:
                     print(
                         '{}Command is unsupported for platform `{}`{}'.format(
-                            Fore.RED, sys.platform, Fore.RESET))
+                            theme_option('negative_text'), sys.platform, theme_option('reset_text')))
             else:
                 func(*args, **kwargs)
 

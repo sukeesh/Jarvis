@@ -6,13 +6,11 @@ import nltk
 import re
 import sys
 import tempfile
-from utilities.GeneralUtilities import print_say
+from utilities.GeneralUtilities import print_say, theme_option
 from CmdInterpreter import CmdInterpreter
 
 # register hist path
 HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
-
-
 PROMPT_CHAR = '~>'
 
 """
@@ -29,31 +27,37 @@ PROMPT_CHAR = '~>'
         the actual location of our laptops.
 """
 
-
 class Jarvis(CmdInterpreter, object):
-    # variable used at Breakpoint #1.
-    # allows Jarvis say "Hi", only at the first interaction.
+    """
+    variable used at Breakpoint #1.
+    allows Jarvis say "Hi", only at the first interaction.
+    specified colors are immediately overwritten, but is 
+    kept to ensure nothing accidentally breaks
+    """
     first_reaction_text = ""
-    first_reaction_text += Fore.BLUE + \
-        'Jarvis\' sound is by default disabled.' + Fore.RESET
-    first_reaction_text += "\n"
-    first_reaction_text += Fore.BLUE + 'In order to let Jarvis talk out loud type: '
-    first_reaction_text += Fore.RESET + Fore.RED + 'enable sound' + Fore.RESET
-    first_reaction_text += "\n"
-    first_reaction_text += Fore.BLUE + \
-        "Type 'help' for a list of available actions." + Fore.RESET
-    first_reaction_text += "\n"
-    prompt = (
-        Fore.RED
-        + "{} Hi, what can I do for you?\n".format(PROMPT_CHAR)
-        + Fore.RESET)
+    prompt = ()
 
     # Used to store user specific data
-
     def __init__(self, first_reaction_text=first_reaction_text,
                  prompt=prompt, first_reaction=True,
                  directories=["jarviscli/plugins", "custom"]):
+        
         directories = self._rel_path_fix(directories)
+
+        # Reset first_reaction_text on init in order to change theme
+        first_reaction_text += theme_option('default_text') + \
+        'Jarvis\' sound is by default disabled.' + theme_option('reset_text')
+        first_reaction_text += "\n"
+        first_reaction_text += theme_option('default_text') + 'In order to let Jarvis talk out loud type: '
+        first_reaction_text += theme_option('reset_text') + theme_option('info') + 'enable sound' + theme_option('reset_text')
+        first_reaction_text += "\n"
+        first_reaction_text += theme_option('default_text') + \
+            "Type " + theme_option('info') + " 'help' " + "for a list of available actions." + theme_option('reset_text')
+        first_reaction_text += "\n"
+        prompt = (
+            theme_option('greeting')
+            + "{} Hi, what can I do for you?\n".format(PROMPT_CHAR)
+            + theme_option('reset_text'))
 
         if sys.platform == 'win32':
             self.use_rawinput = False
@@ -79,7 +83,7 @@ class Jarvis(CmdInterpreter, object):
 
     def default(self, data):
         """Jarvis let's you know if an error has occurred."""
-        print_say("I could not identify your command...", self, Fore.RED)
+        print_say("I could not identify your command...", self, theme_option('negative_text'))
 
     def precmd(self, line):
         """Hook that executes before every command."""
@@ -104,12 +108,13 @@ class Jarvis(CmdInterpreter, object):
 
     def postcmd(self, stop, line):
         """Hook that executes after every command."""
-        if self.first_reaction:
-            self.prompt = (
-                Fore.RED
+        # if self.first_reaction:
+        self.prompt = (
+                theme_option('greeting')
                 + "{} What can I do for you?\n".format(PROMPT_CHAR)
-                + Fore.RESET)
-            self.first_reaction = False
+                + theme_option('reset_text'))
+            # self.first_reaction = False
+
         if self.enable_voice:
             self.speech.text_to_speech("What can I do for you?\n")
 
@@ -128,7 +133,7 @@ class Jarvis(CmdInterpreter, object):
 
             # input sanitisation to not mess up urls / numbers
             data = self.regex_dot.sub("", data)
-
+        
         # Check if Jarvis has a fixed response to this data
         if data in self.fixed_responses:
             output = self.fixed_responses[data]
