@@ -34,17 +34,17 @@ class Jarvis(CmdInterpreter, object):
     # variable used at Breakpoint #1.
     # allows Jarvis say "Hi", only at the first interaction.
     first_reaction_text = ""
-    first_reaction_text += Fore.BLUE + \
+    first_reaction_text += Fore.CYAN + \
         'Jarvis\' sound is by default disabled.' + Fore.RESET
     first_reaction_text += "\n"
-    first_reaction_text += Fore.BLUE + 'In order to let Jarvis talk out loud type: '
-    first_reaction_text += Fore.RESET + Fore.RED + 'enable sound' + Fore.RESET
+    first_reaction_text += Fore.CYAN + 'In order to let Jarvis talk out loud type: '
+    first_reaction_text += Fore.RESET + Fore.MAGENTA + 'enable sound' + Fore.RESET
     first_reaction_text += "\n"
-    first_reaction_text += Fore.BLUE + \
+    first_reaction_text += Fore.CYAN + \
         "Type 'help' for a list of available actions." + Fore.RESET
     first_reaction_text += "\n"
     prompt = (
-        Fore.RED
+        Fore.MAGENTA
         + "{} Hi, what can I do for you?\n".format(PROMPT_CHAR)
         + Fore.RESET)
 
@@ -79,7 +79,7 @@ class Jarvis(CmdInterpreter, object):
 
     def default(self, data):
         """Jarvis let's you know if an error has occurred."""
-        print_say("I could not identify your command...", self, Fore.RED)
+        print_say("I could not identify your command...", self, Fore.MAGENTA)
 
     def precmd(self, line):
         """Hook that executes before every command."""
@@ -106,7 +106,7 @@ class Jarvis(CmdInterpreter, object):
         """Hook that executes after every command."""
         if self.first_reaction:
             self.prompt = (
-                Fore.RED
+                Fore.MAGENTA
                 + "{} What can I do for you?\n".format(PROMPT_CHAR)
                 + Fore.RESET)
             self.first_reaction = False
