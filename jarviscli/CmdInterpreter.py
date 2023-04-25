@@ -39,7 +39,7 @@ class JarvisAPI(object):
         and talk when sound is enable.
         :param text: the text to print (or talk)
         :param color: for text - use colorama (https://pypi.org/project/colorama/)
-                      e.g. Fore.BLUE
+                      e.g. Fore.CYAN
         :param speak: False-, if text shouldn't be spoken even if speech is enabled
         """
         print(color + text + Fore.RESET, flush=True)
@@ -275,7 +275,7 @@ class JarvisAPI(object):
         A function to notify the user that an incorrect option
         has been entered and prompting him to enter a correct one
         """
-        self.say("Oops! Looks like you entered an incorrect option", Fore.RED)
+        self.say("Oops! Looks like you entered an incorrect option", Fore.MAGENTA)
         self.say("Look at the options once again:", Fore.GREEN)
 
 
@@ -290,7 +290,7 @@ def catch_all_exceptions(do, pass_self=True):
             if self._api.is_spinner_running():
                 self.spinner_stop("It seems some error has occured")
             print(
-                Fore.RED
+                Fore.MAGENTA
                 + "Some error occurred, please open an issue on github!")
             print("Here is error:")
             print('')
@@ -346,8 +346,8 @@ class CmdInterpreter(Cmd):
             self.speech = create_voice(
                 self, gtts_status, rate=self.speech_rate)
         except Exception as e:
-            self.say("Voice not supported", Fore.RED)
-            self.say(str(e), Fore.RED)
+            self.say("Voice not supported", Fore.MAGENTA)
+            self.say(str(e), Fore.MAGENTA)
 
         self.fixed_responses = {"what time is it": "clock",
                                 "where am i": "pinpoint",
@@ -369,14 +369,14 @@ class CmdInterpreter(Cmd):
         plugin_status_formatter = {
             "disabled": len(self._plugin_manager.get_disabled()),
             "enabled": self._plugin_manager.get_number_plugins_loaded(),
-            "red": Fore.RED,
-            "blue": Fore.BLUE,
+            "magenta": Fore.MAGENTA,
+            "cyan": Fore.CYAN,
             "reset": Fore.RESET
         }
 
-        plugin_status = "{red}{enabled} {blue}plugins loaded"
+        plugin_status = "{magenta}{enabled} {cyan}plugins loaded"
         if plugin_status_formatter['disabled'] > 0:
-            plugin_status += " {red}{disabled} {blue}plugins disabled. More information: {red}status\n"
+            plugin_status += " {magenta}{disabled} {cyan}plugins disabled. More information: {magenta}status\n"
         plugin_status += Fore.RESET
 
         self.first_reaction_text += plugin_status.format(
@@ -428,7 +428,7 @@ class CmdInterpreter(Cmd):
         if self._api.is_spinner_running():
             self._api.spinner_stop('Some error has occured')
 
-        self.say("Goodbye, see you later!", Fore.RED)
+        self.say("Goodbye, see you later!", Fore.MAGENTA)
         self.scheduler.stop_all()
         sys.exit()
 
@@ -438,7 +438,7 @@ class CmdInterpreter(Cmd):
 
     def error(self):
         """Jarvis let you know if an error has occurred."""
-        self.say("I could not identify your command...", Fore.RED)
+        self.say("I could not identify your command...", Fore.MAGENTA)
 
     def interrupt_handler(self, signal, frame):
         """Closes Jarvis on SIGINT signal. (Ctrl-C)"""
@@ -469,7 +469,7 @@ class CmdInterpreter(Cmd):
             headerString = "These are valid commands for Jarvis"
             formatString = "Format: command ([aliases for command])"
             self.say(headerString)
-            self.say(formatString, Fore.BLUE)
+            self.say(formatString, Fore.CYAN)
             pluginDict = self._plugin_manager.get_plugins()
             uniquePlugins = {}
             for key in pluginDict.keys():
