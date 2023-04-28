@@ -3,7 +3,7 @@ import requests
 
 
 @require(network=True)
-@plugin('countryinfo')
+@plugin("countryinfo")
 class country_info:
     """
     Welcome to the Countryinfo plugin documentation! Here you will be able
@@ -27,13 +27,14 @@ class country_info:
         """
         while True:
             country = jarvis.input(
-                "Enter the name of the country or type exit to leave: ")
-            if country == '':
+                "Enter the name of the country or type exit to leave: "
+            )
+            if country == "":
                 jarvis.say("Please enter valid input.")
-            elif country == 'exit':
+            elif country == "exit":
                 return
             else:
-                url = "https://restcountries.eu/rest/v2/name/%s?fullText=true" % country
+                url = "https://restcountries.com/v3.1/name/" + country
                 r = requests.get(url)
                 if isinstance(r.json(), dict):
                     jarvis.say("Country not found.")
@@ -41,21 +42,35 @@ class country_info:
                     return r.json()
 
     def country_info(self, jarvis, country_fetch):
-        capital = country_fetch[0]["capital"]
-        calling_code = country_fetch[0]["callingCodes"][0]
+        capital = country_fetch[0]["capital"][0]
         population = country_fetch[0]["population"]
         region = country_fetch[0]["region"]
-        currency = country_fetch[0]["currencies"][0]["name"]
-        currency_symbol = country_fetch[0]["currencies"][0]["symbol"]
+        currency = list(country_fetch[0]["currencies"].values())[0]["name"]
+        currency_symbol = list(country_fetch[0]["currencies"].values())[0]["symbol"]
         time_zone = country_fetch[0]["timezones"][0]
+        iso_code = country_fetch[0]["cca2"]
+        income = self.get_income(jarvis, iso_code)[1][0]["incomeLevel"]["value"]
 
         print()
-        jarvis.say("Capital: " + capital)
-        jarvis.say("Calling Code: " + calling_code)
-        jarvis.say("Currency: " + currency)
-        jarvis.say("Currency Symbol: " + currency_symbol)
+        jarvis.say("Capital: " + str(capital))
+        jarvis.say("Currency: " + str(currency))
+        jarvis.say("Currency Symbol: " + str(currency_symbol))
         jarvis.say("Population: " + str(population))
-        jarvis.say("Region: " + region)
-        jarvis.say("Time Zone: " + time_zone)
+        jarvis.say("Region: " + str(region))
+        jarvis.say("Time Zone: " + str(time_zone))
+        jarvis.say("Country Code: " + str(iso_code))
+        jarvis.say("Income Level: " + str(income))
 
         return
+
+    def get_income(self, jarvis, iso_code):
+        """
+        this is a fetch function to get income level of one country, given their ISO code
+        """
+        while True:
+            url = "http://api.worldbank.org/v2/country/%s?format=json" % iso_code
+            r = requests.get(url)
+            if isinstance(r.json(), dict):
+                jarvis.say("Country not found.")
+            else:
+                return r.json()
