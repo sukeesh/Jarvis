@@ -17,10 +17,11 @@ class Jumble():
                     dict[sorted_word].append(word)
             else:
                 dict[sorted_word] = [word]
-        while(True):
-            jumble = jarvis.input("Enter a jumble to solve or 'quit' to quit:\n")
+        while (True):
+            jumble = jarvis.input(
+                "Enter a jumble to solve or 'quit' to quit:\n")
             jumble = jumble.lower()
-            if(jumble == "quit"):
+            if (jumble == "quit"):
                 break
             jumble = ''.join(sorted(jumble))
             if jumble in dict:
