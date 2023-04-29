@@ -49,3 +49,4 @@ python-nmap
 yeelight
 haversine
 FlightRadarAPI
+stockfish==3.28.0
