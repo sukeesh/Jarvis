@@ -14,14 +14,21 @@ class trivia:
     """
 
     def __call__(self, jarvis, s):
-        trivia_fetch = self.get_trivia(jarvis)
-        question_type = trivia_fetch["results"][0]["type"]
-        options = trivia_fetch["results"][0]["incorrect_answers"]
-        if trivia_fetch is not None:
-            if (question_type == "multiple"):
-                self.mcq_question(jarvis, trivia_fetch)
+        cont = True
+        while cont:
+            trivia_fetch = self.get_trivia(jarvis)
+            question_type = trivia_fetch["results"][0]["type"]
+            options = trivia_fetch["results"][0]["incorrect_answers"]
+            if trivia_fetch is not None:
+                if (question_type == "multiple"):
+                    self.mcq_question(jarvis, trivia_fetch)
+                else:
+                    self.true_false_question(jarvis, trivia_fetch)
+            contAns = (jarvis.input("Continue? (y/n)")).lower()
+            if contAns == "y":
+                cont = True
             else:
-                self.true_false_question(jarvis, trivia_fetch)
+                cont = False
 
     def get_trivia(self, jarvis):
         """
