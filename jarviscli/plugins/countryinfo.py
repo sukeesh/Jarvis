@@ -3,7 +3,7 @@ import requests
 
 
 @require(network=True)
-@plugin("countryinfo")
+@plugin('countryinfo')
 class country_info:
     """
     Welcome to the Countryinfo plugin documentation! Here you will be able
@@ -27,11 +27,10 @@ class country_info:
         """
         while True:
             country = jarvis.input(
-                "Enter the name of the country or type exit to leave: "
-            )
-            if country == "":
+                "Enter the name of the country or type exit to leave: ")
+            if country == '':
                 jarvis.say("Please enter valid input.")
-            elif country == "exit":
+            elif country == 'exit':
                 return
             else:
                 url = "https://restcountries.eu/rest/v2/name/%s?fullText=true" % country
