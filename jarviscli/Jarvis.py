@@ -78,7 +78,7 @@ class Jarvis(CmdInterpreter, object):
         return dirs_abs
 
     def default(self, data):
-        """Jarvis let's you know if an error has occurred."""
+        """Jarvis lets you know if an error has occurred."""
         print_say("I could not identify your command...", self, Fore.MAGENTA)
 
     def precmd(self, line):
