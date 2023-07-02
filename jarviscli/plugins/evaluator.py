@@ -116,14 +116,19 @@ def plot(jarvis, s):
         plot y=x(x+1)(x-1)
     """
     def _plot(expr):
-        sympy.plotting.plot(expr)
+        plots = sympy.plot(expr[0], show=False)
+
+        for i in range(1, len(expr)):
+            expr[i] = sympy.plot(expr[i], show=False)
+            plots.append(expr[i][0])
+
+        plots.show()
         return ""
 
     if len(s) == 0:
         jarvis.say("Missing parameter: function (e.g. call 'plot x**2')")
         return
 
-    s = remove_equals(jarvis, s)
     try:
         calc(jarvis, s, calculator=solve_y, formatter=_plot, do_evalf=False)
     except ValueError:
@@ -170,7 +175,7 @@ def limit(jarvis, s):
     term = format_expression(term)
 
     try:
-        term = solve_y(term)
+        term = solve_y(jarvis, term)
     except (sympy.SympifyError, TypeError):
         jarvis.say('Error, not a valid term')
         return
@@ -232,25 +237,32 @@ def format_expression(s):
     return s
 
 
-def solve_y(s):
+def solve_y(jarvis, s):
     if 'y' in s:
-        y = sympy.Symbol('y')
-        try:
-            results = sympy.solve(s, y)
-        except NotImplementedError:
-            return 'unknown'
-        if len(results) == 0:
-            return '0'
-        else:
-            return results[0]
+        symbol = sympy.Symbol('y')
+    elif 'x' in s and '=' in s:
+        symbol = sympy.Symbol('x')
     else:
-        return solve_y("({}) -y".format(s))
+        return solve_y(jarvis, "({}) -y".format(s))
+    
+    s = remove_equals(jarvis, s)
+
+    try:
+        results = sympy.solve(s, symbol)
+    except NotImplementedError:
+        return 'unknown'
+    
+    if len(results) == 0:
+        return '0'
+    else:
+        return results
 
 
 def calc(jarvis, s, calculator=sympy.sympify, formatter=None, do_evalf=True):
     s = format_expression(s)
+
     try:
-        result = calculator(s)
+        result = calculator(jarvis, s)
     except sympy.SympifyError:
         jarvis.say("Error: Something is wrong with your expression", Fore.RED)
         return
@@ -259,7 +271,11 @@ def calc(jarvis, s, calculator=sympy.sympify, formatter=None, do_evalf=True):
         return
 
     if formatter is not None:
-        result = formatter(result)
+        if 'x' in s and '=' in s and 'y' not in s:
+            x = sympy.Symbol('x')
+            result = sympy.plotting.plot_implicit(sympy.Eq(x, result[0]), (x, result[0] - 5, result[0] + 5))
+        else:
+            result = formatter(result)
 
     if do_evalf:
         result = result.evalf()
@@ -291,7 +307,7 @@ def curvesketch(jarvis, s):
 
     term = remove_equals(jarvis, s)
     term = format_expression(term)
-    term = solve_y(term)
+    term = solve_y(jarvis, term)
 
     def get_y(x_val, func=term):
         x = sympy.Symbol('x')
