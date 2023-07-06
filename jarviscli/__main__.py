@@ -21,4 +21,4 @@ if __name__ == '__main__':
     if check_python_version():
         main()
     else:
-        print("Sorry! Only Python 3 supported.")
+        print("Sorry! Only Python 3 supported, Download Python 3 through the official website.")
