@@ -123,6 +123,13 @@ def user_input(items):
         else:
             log("> User input {} - out of range {} - {}".format(number, 1, len(items)))
 
+def confirm_user_input(confirmation_message : str) -> bool:
+    log("User Confirmation")
+    printlog(confirmation_message)
+    confirm = input("input 'y' to confirm, 'n' to cancel: ")
+    confirm_bool = True if confirm in ['y', 'Y', 'yes', 'YES'] else False;
+    log("User chose to {} the operation.".format("cancel" if confirm_bool == False else "confirm"))
+    return confirm_bool
 
 def shell(cmd):
     class Fail:
