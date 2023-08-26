@@ -228,7 +228,15 @@ def game(jarvis, s):
 
         printBoard()
         while True:
-            column = int(input('Pick a column (1-7):\n'))
+
+            # Make sure column is numeric. If not then ask user for numeric input again instead of throwing error.
+            notNumericInputFlag = True
+            while notNumericInputFlag == True:
+                try:
+                    column = int(input('Pick a column (1-7):\n'))
+                    notNumericInputFlag = False
+                except ValueError:
+                    print("Enter a valid numeric input.")
             column -= 1
 
             # Make sure column is inbounds
