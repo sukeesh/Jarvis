@@ -262,7 +262,7 @@ def calc(jarvis, s, calculator=sympy.sympify, formatter=None, do_evalf=True):
     s = format_expression(s)
 
     try:
-        result = calculator(jarvis, s)
+        result = calculator(s)
     except sympy.SympifyError:
         jarvis.say("Error: Something is wrong with your expression", Fore.RED)
         return
