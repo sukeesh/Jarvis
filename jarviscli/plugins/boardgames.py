@@ -47,9 +47,10 @@ def boardgames(jarvis, s):
     r = requests.get(f'https://boardgames.pythonanywhere.com/search?category={category}&playerCount={players}&age={age}&rating={rate}')
     data = r.json()
     counter = 0
+    jarvis.say('Here are the games I found: ')
     for game in data:
         counter += 1
-        print(f"""Game {counter}
+        jarvis.say(f"""Game {counter}
         Name: {game['Name']}
         Year Published: {game['YearPublished']}
         Players: {game['MinPlayers']} to {game['MaxPlayers']}
