@@ -26,95 +26,95 @@ class Calculator:
         self.calcwin.resizable(False, False)
         self.calcwin.attributes('-type', 'dialog')
         self.calcwin.attributes('-topmost', True)
-        self.calcwin.config(bg="blue")
+        self.calcwin.config(bg=“#37474F”)
 
         """Buttons and other widgets"""
         self.num = tk.Entry(self.calcwin, width=18,
-                            font=("Arial black", 20))
+                            font=(“Helvetica”, 20))
         self.num.place(x=17, y=45)
         self.num.focus_set()
 
-        self.buffer = tk.Label(self.calcwin, bg="yellow", width=27,
-                               fg="red", anchor='w', font=("", 13))
+        self.buffer = tk.Label(self.calcwin, bg=“#607D8B”, width=27,
+                               fg=“white”, anchor='w', font=("", 13))
         self.buffer.place(x=23, y=10)
 
-        self.ans = tk.Label(self.calcwin, bg="light green", width=17,
-                            fg="black", font=("Arial black", 20))
+        self.ans = tk.Label(self.calcwin, bg=“#607D8b”, width=17,
+                            fg=“white”, font=("Helvetica", 20))
         self.ans.place(x=27, y=95)
 
         self.plusbtn = tk.Button(self.calcwin, text="+",
-                                 font=("Elephant", 20), command=self.plus)
+                                 font=("Helvetica", 20), command=self.plus)
         self.plusbtn.config(width=3)
         self.plusbtn.place(x=8, y=165)
 
         self.minusbtn = tk.Button(
-            self.calcwin, text="-", font=("Elephant", 20),
+            self.calcwin, text="-", font=("Helvetica", 20),
             command=self.minus)
         self.minusbtn.config(width=3)
         self.minusbtn.place(x=93, y=165)
 
         self.multbtn = tk.Button(
-            self.calcwin, text="x", font=("Elephant", 20),
+            self.calcwin, text="×", font=("Helvetica", 20),
             command=self.mult)
         self.multbtn.config(width=3)
         self.multbtn.place(x=178, y=165)
 
         self.divbtn = tk.Button(
-            self.calcwin, text="/", font=("Elephant", 20),
+            self.calcwin, text="÷", font=("Helvetica", 20),
             command=self.div)
         self.divbtn.config(width=3)
         self.divbtn.place(x=263, y=165)
 
         self.sqrootbtn = tk.Button(
-            self.calcwin, text="sqrt", font=("Elephant", 20),
+            self.calcwin, text="√", font=("Helvetica", 20),
             command=self.sqroot)
         self.sqrootbtn.config(height=1, width=3)
         self.sqrootbtn.place(x=8, y=245)
 
         self.factbtn = tk.Button(
-            self.calcwin, text="!", font=("Elephant", 20),
+            self.calcwin, text="!", font=("Helvetica", 20),
             command=self.fact)
         self.factbtn.config(width=3)
         self.factbtn.place(x=93, y=245)
 
         self.powerbtn = tk.Button(
-            self.calcwin, text="x^y", font=("Elephant", 20),
+            self.calcwin, text="x^y", font=("Helvetica", 20),
             command=self.power)
         self.powerbtn.config(height=1, width=3)
         self.powerbtn.place(x=178, y=245)
 
         self.c_btn = tk.Button(self.calcwin, text="C",
-                               font=("Elephant", 20),
+                               font=("Helvetica", 20),
                                command=self.c)
         self.c_btn.config(height=1, width=3)
         self.c_btn.place(x=263, y=245)
 
         self.sinbtn = tk.Button(
-            self.calcwin, text="sin", font=("Elephant", 20),
+            self.calcwin, text="sin", font=("Helvetica", 20),
             command=self.sin)
         self.sinbtn.config(height=1, width=3)
         self.sinbtn.place(x=8, y=325)
 
         self.cosbtn = tk.Button(
-            self.calcwin, text="cos", font=("Elephant", 20),
+            self.calcwin, text="cos", font=("Helvetica", 20),
             command=self.cos)
         self.cosbtn.config(height=1, width=3)
         self.cosbtn.place(x=93, y=325)
 
         self.tanbtn = tk.Button(
-            self.calcwin, text="tan", font=("Elephant", 20),
+            self.calcwin, text="tan", font=("Helvetica", 20),
             command=self.tan)
         self.tanbtn.config(height=1, width=3)
         self.tanbtn.place(x=178, y=325)
 
         self.equalbtn = tk.Button(
-            self.calcwin, text="=", font=("Elephant", 20),
+            self.calcwin, text="=", font=("Helvetica", 20),
             command=lambda: self.equal(0))
         self.equalbtn.config(width=3)
         self.equalbtn.place(x=263, y=325)
 
         self.exitbtn = tk.Button(
-            self.calcwin, text="EXIT", bg="red", fg="white",
+            self.calcwin, text="EXIT", bg=“#EF5350”, fg="white",
             command=lambda: self.exit(0))
         self.exitbtn.place(x=150, y=405)
 
