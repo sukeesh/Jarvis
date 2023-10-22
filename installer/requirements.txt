@@ -50,3 +50,4 @@ python-nmap
 yeelight
 haversine
 FlightRadarAPI
+gpt-2-simple
