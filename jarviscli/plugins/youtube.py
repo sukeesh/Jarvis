@@ -37,6 +37,7 @@ def youtube(jarvis, s):
     parser.add_argument(
         "-v", "--version", action="version", version="%(prog)s 1.1 : The Search Update"
     )
+    parser.add_argument("-o", help="Open Latest Video in mpv", action="store_true")
     parser.add_argument("-c", help="Channel Info", action="store_true")
     parser.add_argument(
         "-p", help="Play the Video Link or First Relevant Video", action="store_true"
