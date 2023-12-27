@@ -1,6 +1,6 @@
 import os
 import sys
-import distutils.spawn
+import shutil
 import time
 import subprocess
 from threading import Thread
@@ -20,7 +20,7 @@ except NameError:
 
 
 def executable_exists(name):
-    binary_path = distutils.spawn.find_executable(name)
+    binary_path = shutil.which(name)
     return binary_path is not None and os.access(binary_path, os.X_OK)
 
 

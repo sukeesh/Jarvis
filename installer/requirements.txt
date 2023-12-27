@@ -1,4 +1,3 @@
-akinator.py
 archey4==4.6.0.post1; sys_platform != 'darwin'
 beautifulsoup4
 climage
@@ -8,7 +7,7 @@ flake8
 forex-python
 geopy
 gitpython
-googletrans==3.1.0a0
+googletrans
 IMDbPY
 matplotlib
 mock
@@ -20,9 +19,8 @@ pluginmanager
 psutil; sys_platform == 'win32'
 pycricbuzz
 pydoc-markdown
-pydub
 pyjokes
-pync==1.6.1; sys_platform == 'darwin'
+pync; sys_platform == 'darwin'
 pypiwin32; sys_platform == 'win32'
 pyreadline; sys_platform == 'win32'
 python-dateutil
@@ -31,7 +29,6 @@ pyttsx3 == 2.71; sys_platform != 'darwin'
 pywin32; sys_platform == 'win32'
 random-word
 requests[security]
-shazamio==0.1.0.1
 speedtest-cli
 sympy
 tabulate
