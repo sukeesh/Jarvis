@@ -3,13 +3,21 @@ from utilities.GeneralUtilities import IS_MACOS, IS_WIN
 import os
 import subprocess
 from gtts import gTTS
-from pydub import AudioSegment, playback
+
+try:
+    from pydub import AudioSegment, playback
+
+    # patch pydup - hide std output
+    FNULL = open(os.devnull, 'w')
+    _subprocess_call = playback.subprocess.call
+    playback.subprocess.call = lambda cmd: _subprocess_call(cmd, stdout=FNULL, stderr=subprocess.STDOUT)
 
 
-# patch pydup - hide std output
-FNULL = open(os.devnull, 'w')
-_subprocess_call = playback.subprocess.call
-playback.subprocess.call = lambda cmd: _subprocess_call(cmd, stdout=FNULL, stderr=subprocess.STDOUT)
+    PYDUB_AVAILABLE = True
+except ImportError:
+    PYDUB_AVAILABLE = False
+
+
 
 
 if IS_MACOS:
@@ -24,7 +32,7 @@ def create_voice(self, gtts_status, rate=180):
     :param rate: Speech rate for the engine (if supported by the OS)
     """
 
-    if gtts_status is True:
+    if PYDUB_AVAILABLE and gtts_status is True:
         return VoiceGTTS()
     else:
         if IS_MACOS:
