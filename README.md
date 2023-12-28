@@ -31,13 +31,9 @@ Solution:<br>
 
 **Question**: After cloning the repo in terminal it gives an error when running python3 installer saying please install virtual environemnt
 **Solution**: 
-- Make sure you are correctly navigated into javis directory
 - Install virtual env using this command "python3 -m pip install virtualenv"
-- create the virtual env using the command "python3 -m virtualenv venv"
-- Activate the virtual env using the below command
-macOS: source venv/bin/activate
-windows: venv\Scripts\activate
-This should resolve the "virtualenv" related issue
+- OR: On Linux use package manager (e.g. Ubuntu sudo apt install python3-venv)
+- Restart Installer
 
 
 If you find other issues and/or have found solutions to them on any platform, please consider adding to this list!
