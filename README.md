@@ -29,6 +29,12 @@ Solution:<br>
 `pip install pywin32` or `conda instapll pywin32`<br>
 **Solution 2**: add the package to your environment variables system PATH.<br>
 
+**Question**: After cloning the repo in terminal it gives an error when running python3 installer saying please install virtual environemnt
+**Solution**: 
+- Install virtual env using this command "python3 -m pip install virtualenv"
+- OR: On Linux use package manager (e.g. Ubuntu sudo apt install python3-venv)
+- Restart Installer
+
 
 If you find other issues and/or have found solutions to them on any platform, please consider adding to this list!
 
