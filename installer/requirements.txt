@@ -1,20 +1,31 @@
 archey4==4.6.0.post1; sys_platform != 'darwin'
 beautifulsoup4
 climage
+cryptography
 colorama
 distro
 flake8
+flask
+FlightRadarAPI
 forex-python
 geopy
 gitpython
 googletrans
+gtts
+haversine
+Image
 IMDbPY
+img2pdf
+inquirer
 matplotlib
 mock
 nltk
+opencv-python-headless
 pathlib2; python_version < '3.4'
+pdf2image
 pdfkit
 pick
+playsound
 pluginmanager
 psutil; sys_platform == 'win32'
 pycricbuzz
@@ -24,6 +35,7 @@ pync; sys_platform == 'darwin'
 pypiwin32; sys_platform == 'win32'
 pyreadline; sys_platform == 'win32'
 python-dateutil
+python-nmap
 pytimeparse
 pyttsx3 == 2.71; sys_platform != 'darwin'
 pywin32; sys_platform == 'win32'
@@ -33,17 +45,8 @@ speedtest-cli
 sympy
 tabulate
 termdown
-opencv-python-headless
 whois
 wikipedia
 win10toast; sys_platform == 'win32'
-gtts
-playsound
 windows-curses; sys_platform == 'win32'
-Image
-img2pdf
-pdf2image
-python-nmap
 yeelight
-haversine
-FlightRadarAPI
