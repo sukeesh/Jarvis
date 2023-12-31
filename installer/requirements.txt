@@ -47,3 +47,4 @@ python-nmap
 yeelight
 haversine
 FlightRadarAPI
+github3.py
