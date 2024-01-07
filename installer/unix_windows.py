@@ -1,36 +1,37 @@
 import os
 
-if os.name == 'nt':
-    IS_WIN = True
-else:
-    IS_WIN = False
+def get_system_commands():
+    is_windows = os.name == 'nt'
 
+    if is_windows:
+        if os.system('py --version') == 0:
+            py3_cmd = "py -3"
+            virtualenv_cmd = "py -3 -m virtualenv"
+        else:
+            py3_cmd = "python"
+            virtualenv_cmd = "python -m virtualenv"
+        virtualenv_python = "env\\Scripts\\python.exe"
+        virtualenv_pip = "env\\Scripts\\pip.exe"
+        virtualenv_install_msg = f"""\
+    Note that virtualenv must work with Python 3!
 
-if IS_WIN:
-    if os.system('py --version') == 0:
-        PY3 = "py -3"
-        VIRTUALENV_CMD = "py -3 -m virtualenv"
+    You could do:
+    {py3_cmd} -m ensurepip
+    {py3_cmd} -m pip install virtualenv
+    """
+
     else:
-        PY3 = "python"
-        VIRTUALENV_CMD = "python -m virtualenv"
-    VIRTUALENV_PYTHON = "env\\Scripts\\python.exe"
-    VIRTUALENV_PIP = "env\\Scripts\\pip.exe"
-    VIRTUALENV_INSTALL_MSG = """\
-Note that virtualenv must work with Python 3!
+        py3_cmd = "python3"
+        virtualenv_cmd = "virtualenv --python=python3"
+        virtualenv_python = "env/bin/python"
+        virtualenv_pip = "env/bin/pip"
+        virtualenv_install_msg = """\
+    For example on Ubuntu you could do
+        > [sudo] apt install virtualenv
+    Or use Pip:
+        > [sudo] pip install virtualenv
+    """
 
-You could do:
-{PY3} -m ensurepip
-{PY3} -m pip install virtualenv
-""".format(PY3=PY3)
+    return py3_cmd, virtualenv_cmd, virtualenv_python, virtualenv_pip, virtualenv_install_msg
 
-else:
-    PY3 = "python3"
-    VIRTUALENV_CMD = "virtualenv --python=python3"
-    VIRTUALENV_PYTHON = "env/bin/python"
-    VIRTUALENV_PIP = "env/bin/pip"
-    VIRTUALENV_INSTALL_MSG = """\
-For example on Ubuntu you could do
-    > [sudo] apt install virtualenv
-Or use Pip:
-    > [sudo] pip install virtualenv
-"""
+PY3, VIRTUALENV_CMD, VIRTUALENV_PYTHON, VIRTUALENV_PIP, VIRTUALENV_INSTALL_MSG = get_system_commands()
