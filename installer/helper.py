@@ -1,22 +1,48 @@
 import os
-import sys
 import shutil
-import time
 import subprocess
-from threading import Thread
+import sys
+import time
 from tempfile import NamedTemporaryFile
-from unix_windows import IS_WIN
+from threading import Thread
 
-SUPPORTED_SHELLS = [
-    'bash',
-    'zsh',
-]
+# Read environment
+if os.name == 'nt':
+    IS_WIN = True
+else:
+    IS_WIN = False
 
-# python 2/3 compatibility
-try:
-    input = raw_input
-except NameError:
-    pass
+
+if IS_WIN:
+    if os.system('py --version') == 0:
+        PY3 = "py -3"
+        VIRTUALENV_CMD = "py -3 -m virtualenv"
+    else:
+        PY3 = "python"
+        VIRTUALENV_CMD = "python -m virtualenv"
+    VIRTUALENV_PYTHON = "env\\Scripts\\python.exe"
+    VIRTUALENV_PIP = "env\\Scripts\\pip.exe"
+    VIRTUALENV_INSTALL_MSG = """\
+Note that virtualenv must work with Python 3!
+
+You could do:
+{PY3} -m ensurepip
+{PY3} -m pip install virtualenv
+""".format(PY3=PY3)
+    START = "jarvis.sh"
+
+else:
+    PY3 = "python3"
+    VIRTUALENV_CMD = "virtualenv --python=python3"
+    VIRTUALENV_PYTHON = "env/bin/python"
+    VIRTUALENV_PIP = "env/bin/pip"
+    VIRTUALENV_INSTALL_MSG = """\
+For example on Ubuntu you could do
+    > [sudo] apt install virtualenv
+Or use Pip:
+    > [sudo] pip install virtualenv
+"""
+    START = "jarvis.bat"
 
 
 def executable_exists(name):
@@ -24,60 +50,15 @@ def executable_exists(name):
     return binary_path is not None and os.access(binary_path, os.X_OK)
 
 
-debug_log = None
-
-
-def log_init():
-    global debug_log
-    debug_log = NamedTemporaryFile(delete=False, mode="w")
-    print("Logging to {}".format(debug_log.name))
-
-
-def log_close():
-    debug_log.close()
-
-
 def fail(msg, fatal=False):
-    log("Installation failed")
-    log(msg)
     print(msg)
     print('')
     print('')
     if fatal:
-        log("FATAL!")
         print("Installation failed with unexpected error - This should not have happened.")
-        print("Please check logs at \"{}\". If you open a bug report, please include this file.".format(debug_log.name))
     else:
         print("Installation failed!")
-    debug_log.close()
     sys.exit(1)
-
-
-def log(msg):
-    try:
-        debug_log.write(msg)
-        debug_log.write('\n')
-    except Exception as e:
-        print('------------------------------')
-        print("Logging failed?")
-        print(repr(e))
-        print(str(e))
-        print(str(e.args))
-        print('msg:')
-        try:
-            print(str(msg))
-        except BaseException:
-            print('msg unprintable')
-        print('-----------------------------')
-
-
-def printlog(msg):
-    log(msg)
-    print(msg)
-
-
-def section(title):
-    printlog("\n{:=^50}".format(" {} ".format(title)))
 
 
 spinning = True
@@ -104,33 +85,6 @@ def spinning_cursor_stop():
     spinning = False
 
 
-def user_input(items):
-    log("User input:")
-    for x, item in enumerate(items):
-        printlog("{}) {}".format((x + 1), item[0]))
-
-    while True:
-        number = input("Select number {}-{}: ".format(1, len(items)))
-        try:
-            number = int(number) - 1
-        except ValueError:
-            log("> User input {} - not a number".format(number))
-            continue
-
-        if number >= 0 and number < len(items):
-            log("> User input {} - ok: {}".format(number, items[number][1]))
-            return items[number][1]
-        else:
-            log("> User input {} - out of range {} - {}".format(number, 1, len(items)))
-
-def confirm_user_input(confirmation_message : str) -> bool:
-    log("User Confirmation")
-    printlog(confirmation_message)
-    confirm = input("input 'y' to confirm, 'n' to cancel: ")
-    confirm_bool = True if confirm in ['y', 'Y', 'yes', 'YES'] else False;
-    log("User chose to {} the operation.".format("cancel" if confirm_bool == False else "confirm"))
-    return confirm_bool
-
 def shell(cmd):
     class Fail:
         def should_not_fail(self, msg=''):
@@ -154,13 +108,12 @@ def shell(cmd):
 
     exit_code = Success()
 
-    log("_" * 40)
-    log("Shell: {}".format(cmd))
     spinning_cursor_start()
 
     cli_output = ''
     try:
-        cli_output = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
+        cli_output = subprocess.check_output(
+            cmd, shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
     except subprocess.CalledProcessError as e:
         exit_code = Fail()
         exit_code.exception = str(e)
@@ -173,30 +126,8 @@ def shell(cmd):
         pass
     exit_code.cli_output = cli_output
 
-    log(cli_output)
-    log("Shell: Exit {}".format(str(exit_code)))
-    log("-" * 40)
-    log("")
-
     spinning_cursor_stop()
     time.sleep(0.5)
     sys.stdout.write(' \b')
 
     return exit_code
-
-
-def get_default_shell():
-    '''
-    Determine and return the default shell
-    of the current logged in user.
-    Args:
-        None
-    Returns:
-        shell name (str)
-    '''
-    try:
-        bin_path = os.environ.get('SHELL')
-        return bin_path.split(os.path.sep)[-1]
-    except AttributeError:
-        # SHELL environment not set
-        return None
