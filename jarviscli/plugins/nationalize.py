@@ -1,10 +1,9 @@
 import requests
 from colorama import Fore
-from plugin import plugin, require
+from jarviscli import entrypoint
 
 
-@require(network=True)
-@plugin("nationalize")
+@entrypoint
 def nationalize(jarvis, s):
     """Tells the nationality of someone based on his name, powered by www.boredapi.com"""
     req = requests.get("https://api.nationalize.io?name=" + s)

@@ -1,9 +1,8 @@
 from colorama import Fore
+from jarviscli import entrypoint
 
-from plugin import plugin
 
-
-@plugin("caesar cipher")
+@entrypoint
 def caesar_cipher_converter(jarvis, s):
     option = get_option(jarvis)
     if option == 1:

@@ -1,9 +1,9 @@
 # Converts a given string to a given case.
-from plugin import plugin
 from colorama import Fore
+from jarviscli import entrypoint
 
 
-@plugin("string_convert")
+@entrypoint
 def string_convert(jarvis, s):
     inputString = str(
         jarvis.input(

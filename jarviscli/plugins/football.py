@@ -1,10 +1,9 @@
 import requests
 from colorama import Fore
-
-from plugin import plugin, require
+from jarviscli import entrypoint, get_api_key
 from tabulate import tabulate
 
-API_KEY = '1ebd3b92bf5041249f8c1e7a540ce98c'
+API_KEY = get_api_key('football')
 url = 'https://api.football-data.org/v2'
 headers = {'X-Auth-Token': API_KEY}
 
@@ -17,8 +16,7 @@ def fetch(route):
     return r
 
 
-@require(network=True)
-@plugin('football')
+@entrypoint
 class Football():
     """
     Provides football competition information (tournament/league standings) and daily match info.
@@ -81,7 +79,8 @@ class Football():
         jarvis.spinner_start('Fetching ')
         r = fetch("/competitions?plan=TIER_ONE")
         if r is None:
-            jarvis.spinner_stop("Error in fetching data - try again later.", Fore.YELLOW)
+            jarvis.spinner_stop(
+                "Error in fetching data - try again later.", Fore.YELLOW)
             return
         comps = r["competitions"]
         jarvis.spinner_stop("Pick a competition:", Fore.BLUE)
@@ -117,7 +116,8 @@ class Football():
         jarvis.spinner_start('Fetching ')
         r = fetch("/competitions/{}/standings".format(compId))
         if r is None:
-            jarvis.spinner_stop("Error in fetching data - try again later.", Fore.YELLOW)
+            jarvis.spinner_stop(
+                "Error in fetching data - try again later.", Fore.YELLOW)
             return
 
         jarvis.spinner_stop('')
@@ -173,7 +173,8 @@ class Football():
         jarvis.spinner_start('Fetching ')
         r = fetch("/matches?competitions={}".format(compId))
         if r is None:
-            jarvis.spinner_stop("Error in fetching data - try again later.", Fore.YELLOW)
+            jarvis.spinner_stop(
+                "Error in fetching data - try again later.", Fore.YELLOW)
             return
 
         jarvis.spinner_stop('')

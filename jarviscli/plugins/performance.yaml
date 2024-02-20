@@ -1,0 +1,8 @@
+name: performance
+requirements:
+  native:
+    - sudo
+    - htop
+  os:
+    - unix
+quality: legacy

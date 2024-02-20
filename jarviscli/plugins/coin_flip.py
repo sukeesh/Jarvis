@@ -1,8 +1,10 @@
 import random
-from plugin import plugin
+
+from jarviscli import entrypoint
+
+entrypoint
 
 
-@plugin('coin flip')
 def coin_flip(jarvis, s):
     """
     Randomizes between Heads and Tails

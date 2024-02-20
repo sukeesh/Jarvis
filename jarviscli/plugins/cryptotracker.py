@@ -1,7 +1,6 @@
 import requests
 from colorama import Fore
-from plugin import plugin
-
+from jarviscli import entrypoint
 
 # List of default crypto pairs
 FAVORITES = [
@@ -77,7 +76,7 @@ def check_prices(base, target):
               target.upper(), price, print_in_color(change)))
 
 
-@plugin("cryptotracker")
+@entrypoint
 def main(jarvis, s):
     """
     Finds the price and the change of the price, for

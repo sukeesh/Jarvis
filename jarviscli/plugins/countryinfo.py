@@ -1,9 +1,8 @@
-from plugin import plugin, require
 import requests
+from jarviscli import entrypoint
 
 
-@require(network=True)
-@plugin("countryinfo")
+@entrypoint
 class country_info:
     """
     Welcome to the Countryinfo plugin documentation! Here you will be able
@@ -46,10 +45,12 @@ class country_info:
         population = country_fetch[0]["population"]
         region = country_fetch[0]["region"]
         currency = list(country_fetch[0]["currencies"].values())[0]["name"]
-        currency_symbol = list(country_fetch[0]["currencies"].values())[0]["symbol"]
+        currency_symbol = list(country_fetch[0]["currencies"].values())[
+            0]["symbol"]
         time_zone = country_fetch[0]["timezones"][0]
         iso_code = country_fetch[0]["cca2"]
-        income = self.get_income(jarvis, iso_code)[1][0]["incomeLevel"]["value"]
+        income = self.get_income(jarvis, iso_code)[
+            1][0]["incomeLevel"]["value"]
 
         print()
         jarvis.say("Capital: " + str(capital))

@@ -1,12 +1,15 @@
 import random
 
 from colorama import Back
+from jarviscli import entrypoint
 
-from plugin import plugin
+
+@entrypoint
+def run(jarvis, s):
+    Rockpaperscissors()(jarvis, s)
 
 
-@plugin('rockpaperscissors')
-class rockpaperscissors():
+class Rockpaperscissors:
     """
     rockpaperscissors Dcoumentation.
     rockpaperscssors is the game Rock - Paper - Scissors that we all know with Jarvis as opponent.
@@ -30,7 +33,8 @@ class rockpaperscissors():
         jarvis.say("!! Welcome to Rock Paper Scissors !!")
         jarvis.say("!A game to play with Jarvis as rival!")
 
-        rounds = self.get_rounds("Enter how many rounds you will play (max. 100): ")
+        rounds = self.get_rounds(
+            "Enter how many rounds you will play (max. 100): ")
 
         jarvis.say("OK")
         jarvis.say("The game begins")
@@ -42,7 +46,7 @@ class rockpaperscissors():
 
         i = 1
 
-        while(i <= int(rounds)):
+        while (i <= int(rounds)):
 
             user_move = self.get_users("Enter your move: ")
 
@@ -51,10 +55,11 @@ class rockpaperscissors():
                 break
 
             if (user_move == "score"):
-                txt = "You:" + str(user_score) + "  Jarvis:" + str(jarvis_score) + "  "
+                txt = "You:" + str(user_score) + "  Jarvis:" + \
+                    str(jarvis_score) + "  "
                 if (user_score > jarvis_score):
                     txt = txt + Back.GREEN + "You Winning" + Back.RESET
-                elif(user_score < jarvis_score):
+                elif (user_score < jarvis_score):
                     txt = txt + Back.RED + "You Losing" + Back.RESET
                 else:
                     txt = txt + Back.WHITE + "Tie" + Back.RESET
@@ -63,7 +68,8 @@ class rockpaperscissors():
                 continue
 
             if (user_move == "rounds"):
-                jarvis.say("The current rounds is " + str(i) + "/" + str(rounds))
+                jarvis.say("The current rounds is " +
+                           str(i) + "/" + str(rounds))
                 continue
 
             jarvis_move = self.get_jarvis()
@@ -86,7 +92,8 @@ class rockpaperscissors():
         jarvis.say("")
         jarvis.say("\t\t" + "GAME OVER")
         jarvis.say("\t\t" + "--SCORE--")
-        jarvis.say("\t" + "YOU: " + str(user_score) + "\t" + "JARVIS: " + str(jarvis_score))
+        jarvis.say("\t" + "YOU: " + str(user_score) +
+                   "\t" + "JARVIS: " + str(jarvis_score))
 
         if (user_score > jarvis_score):
             txt = Back.GREEN + "\t\tYOU WIN!!" + Back.RESET
@@ -124,7 +131,8 @@ class rockpaperscissors():
 
     def get_users(self, prompt):
 
-        moves = ["rock", "r", "paper", "p", "scissors", "s", "exit", "score", "rounds"]
+        moves = ["rock", "r", "paper", "p",
+                 "scissors", "s", "exit", "score", "rounds"]
 
         while True:
             u = input(prompt).lower()

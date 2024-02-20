@@ -1,11 +1,10 @@
 import requests
-from plugin import plugin, require
-from colorama import Fore
 from bs4 import BeautifulSoup
+from colorama import Fore
+from jarviscli import entrypoint
 
 
-@require(network=True)
-@plugin("food recipe")
+@entrypoint
 def getChoices(jarvis, s):
     """
     function gets the choice of the type of cuisine the user wants.
@@ -49,7 +48,8 @@ def getChoices(jarvis, s):
         "18": "Jewish"
     }
 
-    cuisine_input = jarvis.input("Enter Cuisine (no. of the cuisine): ", Fore.RED)
+    cuisine_input = jarvis.input(
+        "Enter Cuisine (no. of the cuisine): ", Fore.RED)
 
     # Check if the user's input exists in the dictionary
     if cuisine_input in cuisine_dict:
@@ -86,7 +86,8 @@ def getAllRecipes(apiKey, cuisine):
         # Asking the user to select a title
         while True:
             try:
-                selected_index = int(input("Enter the number corresponding to the title you want: ", ))
+                selected_index = int(
+                    input("Enter the number corresponding to the title you want: ", ))
                 print()
                 if 1 <= selected_index <= len(titles):
                     break

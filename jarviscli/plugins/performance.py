@@ -1,9 +1,9 @@
 import os
-from plugin import plugin, require, UNIX
+
+from jarviscli import entrypoint
 
 
-@require(platform=UNIX)
-@plugin("performance")
+@entrypoint
 def performance_UNIX(jarvis, s):
     """
         Displays Hardware Performance using 'htop'

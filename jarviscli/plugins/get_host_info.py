@@ -1,8 +1,9 @@
-from whois import query, exceptions
-from pprint import pprint
 from os import popen
+from pprint import pprint
 from re import findall
-from plugin import plugin, require, UNIX
+
+from jarvisclil import entrypoint
+from whois import exceptions, query
 
 
 # https://pypi.org/project/nslookup/
@@ -80,7 +81,6 @@ def get_host_info(jarvis, s):
     return None
 
 
-@require(platform=UNIX, network=True, native=['whois', 'nslookup', 'ping'])
-@plugin("hostinfo")
+@entrypoint
 def main(jarvis, s):
     get_host_info(jarvis, s)

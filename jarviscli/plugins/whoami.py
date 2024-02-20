@@ -1,11 +1,10 @@
 import os
 import re
-from plugin import plugin, require, LINUX
+
+from jarviscli import entrypoint
 
 
-@require(native="id")
-@require(platform=LINUX)
-@plugin("whoami")
+@entrypoint
 def whoami(jarvis, s):
     """
     Tells you the current user name

@@ -1,12 +1,15 @@
-from __future__ import print_function
-from colorama import Fore
 import os
 import sys
-from plugin import plugin, require, UNIX
+
+from colorama import Fore
+from jarviscli import entrypoint
 
 
-@require(platform=UNIX)
-@plugin('file organise')
+@entrypoint
+def run(jarvis, s):
+    File_Organise()(jarvis, s)
+
+
 class File_Organise():
     """
     Type file_organise and follow instructions
@@ -117,7 +120,8 @@ class File_Organise():
         print(Fore.LIGHTMAGENTA_EX + "\nCLEANED\n" + Fore.RESET)
 
     def file_manage(self, jarvis):
-        dir_name = jarvis.input('Enter the name of directory you want to clear: ')
+        dir_name = jarvis.input(
+            'Enter the name of directory you want to clear: ')
         dir_path = self.source_path(jarvis, dir_name)
         self.print_before(dir_path)
         new_dir_path, new_dir, extension = self.destination_path(dir_path)

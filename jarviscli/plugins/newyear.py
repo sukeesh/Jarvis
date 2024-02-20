@@ -1,7 +1,7 @@
-from plugin import plugin
+from jarviscli import entrypoint
 
 
-@plugin("christmas")
+@entrypoint
 def newyear(jarvis, s):
     tree = "     *\n"\
            "    ###\n"\

@@ -1,8 +1,9 @@
-from plugin import plugin
 import random
 
+from jarviscli import entrypoint
 
-@plugin("random number")
+
+@entrypoint
 def generate_random_number(jarvis, numbers):
 
     if numbers != "":

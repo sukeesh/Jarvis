@@ -1,10 +1,9 @@
 import requests
 from colorama import Fore
-from plugin import plugin, require
+from jarviscli import entrypoint
 
 
-@require(network=True)
-@plugin("agify")
+@entrypoint
 def agify(jarvis, s):
     """Tells the age of someone based on his name, powered by www.boredapi.com"""
 

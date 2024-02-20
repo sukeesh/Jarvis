@@ -1,0 +1,6 @@
+name: basketball
+requirements:
+  apikey:
+    - basketball
+online: true
+quality: legacy

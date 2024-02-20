@@ -1,0 +1,8 @@
+name: whoami
+requirements:
+  pip:
+    - id
+  os:
+    - linux
+online: False
+quality: legacy

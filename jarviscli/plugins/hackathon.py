@@ -1,12 +1,11 @@
-import bs4
-import requests
 import json
 
-from plugin import plugin, require
+import bs4
+import requests
+from jarviscli import entrypoint
 
 
-@require(network=True)
-@plugin('hackathon')
+@entrypoint
 class Hackathon():
     """
     Find upcoming hackathons from hackerearth

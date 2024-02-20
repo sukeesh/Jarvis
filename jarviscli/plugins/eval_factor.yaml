@@ -1,0 +1,5 @@
+name: factor
+requirements:
+  pip:
+    - sympy
+quality: legacy

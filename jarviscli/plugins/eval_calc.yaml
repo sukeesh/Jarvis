@@ -1,0 +1,5 @@
+name: Name
+requirements:
+  pip:
+    - sympy
+quality: legacy

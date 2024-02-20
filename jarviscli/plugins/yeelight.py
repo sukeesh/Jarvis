@@ -12,16 +12,21 @@
 	@Author: Leonidha Mara @leonidhaMara & Emmanouil Manousakis @manousakis01
 	@Date: 21st June 2022
 """
-from colorama import Fore
-from plugin import plugin, require
-from yeelight import discover_bulbs
-import yeelight
-from typing import List
 import time
+from typing import List
+
+from colorama import Fore
+from jarviscli import entrypoint
+
+import yeelight
+from yeelight import discover_bulbs
 
 
-@require(network=True)
-@plugin("yeelight")
+@entrypoint
+def run(jarvis, s):
+    Yeelight()(jarvis, s)
+
+
 class Yeelight:
     def __call__(self, jarvis, s):
         self.jarvis = jarvis
@@ -165,7 +170,8 @@ class Yeelight:
             except ValueError:
                 if self.is_exit_input(input_name):
                     return self.exit_msg
-                self.jarvis.say("Chosen name is empty or exists. Also tou should use one-word names")
+                self.jarvis.say(
+                    "Chosen name is empty or exists. Also tou should use one-word names")
                 input_name = ''
         return input_name
 

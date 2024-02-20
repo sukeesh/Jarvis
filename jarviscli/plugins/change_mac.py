@@ -1,12 +1,16 @@
 import re
 import subprocess
 from platform import system as sys
+
 from colorama import Fore
-from plugin import LINUX, plugin, require
+from jarviscli import entrypoint
 
 
-@require(platform=LINUX)
-@plugin("mac")
+@entrypoint
+def call(jarvis, s):
+    MacManagerLinux()(jarvis, s)
+
+
 class MacManagerLinux():
     """
     Jarvis plugin for viewing and changing any devices MAC

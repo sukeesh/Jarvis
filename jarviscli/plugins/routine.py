@@ -1,5 +1,4 @@
-from plugin import plugin
-
+from jarviscli import entrypoint
 
 ROUTINES = "routines"
 

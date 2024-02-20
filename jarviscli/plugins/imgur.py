@@ -4,8 +4,7 @@ import json
 import os
 
 import requests
-
-from plugin import plugin, require
+from jarviscli import entrypoint
 from utilities.GeneralUtilities import IS_WIN
 
 if IS_WIN:
@@ -19,8 +18,7 @@ def complete(text, state):
     return (glob.glob(text + '*') + [None])[state]
 
 
-@require(network=True)
-@plugin('imgur')
+@entrypoint
 def imgur(jarvis, s):
     """
     Uploads an image to imgur

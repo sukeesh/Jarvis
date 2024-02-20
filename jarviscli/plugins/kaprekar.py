@@ -1,7 +1,7 @@
-from plugin import plugin
+from jarviscli import entrypoint
 
 
-@plugin("kaprekar")
+@entrypoint
 def kaprekar(jarvis, s):
     n1 = int(input("Enter a number: "))
     if n1 > 0:
@@ -21,5 +21,3 @@ def kaprekar(jarvis, s):
         else:
             answer = "Not kaprekar number"
         jarvis.say(answer)
-
-

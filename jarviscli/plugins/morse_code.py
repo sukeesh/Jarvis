@@ -1,8 +1,12 @@
-from plugin import plugin
+from jarviscli import entrypoint
 
 
-@plugin("morsecode")
-class morsecode:
+@entrypoint
+def run(jarvis, s):
+    Morsecode()(jarvis, s)
+
+
+class Morsecode:
     """
     morsecode is a morse code translator
     supports letters A-Z,a-z , numbers 0-9

@@ -1,14 +1,13 @@
-from plugin import plugin, alias
-import os
 import json
+import os
+
 from colorama import Fore
+from jarviscli import entrypoint
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
-@alias('phone code of',
-       'dialing code of')
-@plugin('dial code of')
+@entrypoint
 class DialCode:
     """
     Get dial code of a country
@@ -60,9 +59,9 @@ class DialCode:
         for i in data:
             if country in [i["country_name"].lower(), i["country_code"].lower()]:
                 code = i["dial_code"]
-                return(code)
+                return (code)
 
-        return(False)
+        return (False)
 
 
 @alias('country with phone code',
@@ -90,7 +89,8 @@ class CountryByhDC:
             countries_str = '; '.join(countries)
             jarvis.say(Fore.GREEN + countries_str)
         else:
-            jarvis.say(Fore.RED + "Can't find country with code " + Fore.WHITE + "'" + s + "'")
+            jarvis.say(Fore.RED + "Can't find country with code " +
+                       Fore.WHITE + "'" + s + "'")
 
     def handle_input(self, code):
         # Open the file with dial codes
@@ -111,6 +111,6 @@ class CountryByhDC:
                 countries.append(i["country_name"])
 
         if len(countries) >= 1:
-            return(countries)
+            return (countries)
         else:
-            return(False)
+            return (False)

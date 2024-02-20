@@ -3,13 +3,15 @@ import random
 
 import requests
 from colorama import Fore
+from jarviscli import entrypoint
 
-from plugin import plugin, require
+
+@entrypoint
+def run(jarvis, s):
+    History()(jarvis, s)
 
 
-@require(network=True)
-@plugin('history')
-class history:
+class History:
     """
     Provides you with a random hisotry fact
 

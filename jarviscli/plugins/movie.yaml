@@ -1,0 +1,6 @@
+name: movie
+requirements:
+  pip:
+    - imdb
+online: true
+quality: legacy

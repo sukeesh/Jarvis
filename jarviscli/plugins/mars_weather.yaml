@@ -1,0 +1,14 @@
+name: Name
+requirements:
+  pip:
+    - x
+  native:
+    - foo
+    - y
+  apikey:
+    - x
+    - y
+  os:
+    - unix
+online: False
+quality: legacy

@@ -1,0 +1,7 @@
+name: ip
+requirements:
+  native:
+    - curl
+  os:
+    - unix
+quality: legacy

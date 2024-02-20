@@ -1,0 +1,6 @@
+name: hackernews
+requirements:
+  pip:
+    - beautifulsoup4
+online: False
+quality: legacy

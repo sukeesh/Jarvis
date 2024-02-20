@@ -1,0 +1,7 @@
+name: notes
+requirements:
+  native:
+    - gedit
+  os:
+    - linux
+quality: legacy

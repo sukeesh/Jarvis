@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 import re
+
 from colorama import Fore
-from plugin import plugin
+from jarviscli import entrypoint
 
 
-@plugin('tempconv')
+@entrypoint
+def run(jarvis, s):
+    Tempconv()(jarvis, s)
+
+
 class Tempconv():
     """
     Convert temperature from Fahrenheit to Celsius and vice versa

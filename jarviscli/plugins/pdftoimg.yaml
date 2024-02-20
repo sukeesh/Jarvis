@@ -1,0 +1,5 @@
+name: pdf2image
+requirements:
+  pip:
+    - pdf2image
+quality: legacy

@@ -1,7 +1,7 @@
-from plugin import plugin
+from jarviscli import entrypoint
 
 
-@plugin("check simple expression")
+@entrypoint
 def expression_checker(jarvis, s):
     validCharacters = "()+-*/0123456789"
     digits = "0123456789"
@@ -29,7 +29,8 @@ def expression_checker(jarvis, s):
         for character in expression:
             if character in operators:
                 if previousIsOperator or previousIsOpenBracket:
-                    print("Not Valid Expression! Invalid Expression Character Progression")
+                    print(
+                        "Not Valid Expression! Invalid Expression Character Progression")
                     terminateCurrentAnalyzation = 1
                     break
                 previousIsOperator = 1
@@ -38,7 +39,8 @@ def expression_checker(jarvis, s):
                 previousIsCloseBracket = 0
             elif character in digits:
                 if previousIsCloseBracket:
-                    print("Not Valid Expression! Invalid Expression Character Progression")
+                    print(
+                        "Not Valid Expression! Invalid Expression Character Progression")
                     terminateCurrentAnalyzation = 1
                     break
                 previousIsOperator = 0
@@ -47,7 +49,8 @@ def expression_checker(jarvis, s):
                 previousIsCloseBracket = 0
             elif character == '(':
                 if previousIsDigit or previousIsCloseBracket:
-                    print("Not Valid Expression! Invalid Expression Character Progression")
+                    print(
+                        "Not Valid Expression! Invalid Expression Character Progression")
                     terminateCurrentAnalyzation = 1
                     break
                 previousIsOperator = 0
@@ -56,7 +59,8 @@ def expression_checker(jarvis, s):
                 previousIsCloseBracket = 0
             elif character == ')':
                 if previousIsOperator or previousIsOpenBracket:
-                    print("Not Valid Expression! Invalid Expression Character Progression")
+                    print(
+                        "Not Valid Expression! Invalid Expression Character Progression")
                     terminateCurrentAnalyzation = 1
                     break
                 previousIsOperator = 0

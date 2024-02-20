@@ -1,14 +1,17 @@
 import requests
-from plugin import plugin, require
 from colorama import Fore
-from packages.memory.memory import Memory
+from jarviscli import entrypoint, get_api_key
 
 URL = "https://api.sportradar.com/tennis/trial/v3/en/rankings"
+KEY = get_api_key(sportradar)
 
 
-@require(network=True)
-@plugin("tennis")
-class tennis():
+@entrypoint
+def run(jarvis, s):
+    Tennis()(jarvis, s)
+
+
+class Tennis():
     """
     Tennis Plugin for getting information about ATP and
     !!! needs api.sportradar.com/tennis API_KEY for usage
@@ -16,7 +19,6 @@ class tennis():
 
     def __call__(self, jarvis, s):
         print("\nTennis data provided by the sportradar.com")
-        self.get_api_key(jarvis)
         while True:
             option = self.get_option(jarvis)
             if option is None:
@@ -29,7 +31,7 @@ class tennis():
         either getting and printing ATP rankings,
         getting and printing WTA rankings, or resetting API key
         """
-        data = self.fetch_data(f'?api_key={self.key}')
+        data = self.fetch_data(f'?api_key={KEY}')
         if data is None:
             jarvis.spinner_stop("Error While Loading Data - "
                                 "Try Again Later.", Fore.YELLOW)
@@ -38,8 +40,6 @@ class tennis():
             self.get_atp_top10(data)
         if option == 'wta':
             self.get_wta_top10(data)
-        if option == 'new_key':
-            self.update_api_key(jarvis)
 
     def get_atp_top10(self, data):
         """
@@ -81,32 +81,6 @@ class tennis():
             return None
         return r
 
-    def get_api_key(self, jarvis):
-        """
-        Either gets API key from memory or, if one is not there,
-        asks the user for an API key and stores it in memory
-        """
-        m = Memory("tennis.json")
-        if m.get_data("API_KEY") is None:
-            user_api_key = jarvis.input("Enter api.sportradar.com/tennis "
-                                        "API_KEY: ", Fore.GREEN)
-            m.add_data("API_KEY", user_api_key)
-            m.save()
-            self.key = user_api_key
-        else:
-            self.key = m.get_data("API_KEY")
-
-    def update_api_key(self, jarvis):
-        """
-        Prompts user to enter a new API key and stores this key in memory
-        """
-        user_api_key = jarvis.input("Enter New api.sportradar.com/tennis "
-                                    "API_KEY: ", Fore.GREEN)
-        m = Memory("tennis.json")
-        m.update_data("API_KEY", user_api_key)
-        m.save()
-        self.key = user_api_key
-
     def get_option(self, jarvis):
         """
         Prompts user for what feature of the tennis plugin they'd like
@@ -119,7 +93,6 @@ class tennis():
         print()
         print("1: Get ATP (mens) tennis rankings")
         print("2: Get WTA (womens) tennis rankings")
-        print("3: Insert new API_KEY")
         print("4: exit")
         print()
         choice = self.get_choice(jarvis)

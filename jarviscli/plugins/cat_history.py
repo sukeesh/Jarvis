@@ -1,10 +1,9 @@
 from colorama import Fore
+from core.jarvis import HISTORY_FILENAME
+from jarviscli import entrypoint
 
-from Jarvis import HISTORY_FILENAME
-from plugin import plugin
 
-
-@plugin('cat his')
+@entrypoint
 def cat_history(jarvis, s):
     """Prints the history of commands"""
     HISTORY_FILENAME.seek(0)

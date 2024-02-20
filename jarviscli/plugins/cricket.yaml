@@ -1,0 +1,6 @@
+name: cricket
+requirements:
+  pip:
+    - pycricbuzz
+online: true
+quality: legacy

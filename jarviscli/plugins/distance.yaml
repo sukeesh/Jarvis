@@ -1,0 +1,6 @@
+name: distance
+requirements:
+  pip:
+    - haversine
+online: true
+quality: legacy

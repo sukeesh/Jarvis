@@ -1,0 +1,7 @@
+name: battery
+requirements:
+  native:
+    - !upower
+  os:
+    - linux
+quality: legacy

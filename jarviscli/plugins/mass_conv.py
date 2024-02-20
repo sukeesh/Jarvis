@@ -1,8 +1,7 @@
-from __future__ import division
-from plugin import plugin
+from jarviscli import entrypoint
 
 
-@plugin('massconv')
+@entrypoint
 class massconv():
     """
     massconv Documentation.
@@ -70,12 +69,14 @@ class massconv():
 
         precision = 0
         if (convamount.is_integer() is False):
-            precision = jarvis.input_number("Please enter precision (max:12): ")
+            precision = jarvis.input_number(
+                "Please enter precision (max:12): ")
             while True:
                 if (precision.is_integer() and precision <= 12):
                     break
                 else:
-                    precision = jarvis.input_number("Please enter an integer (max:12): ")
+                    precision = jarvis.input_number(
+                        "Please enter an integer (max:12): ")
 
         convamount = round(convamount, int(precision))
 
@@ -148,6 +149,7 @@ class massconv():
         else:
             todisp = self.units.get(to_unit) + "s"
 
-        txt = str(amount) + " " + fromdisp + " is equal to " + str(convamount) + " " + todisp
+        txt = str(amount) + " " + fromdisp + " is equal to " + \
+            str(convamount) + " " + todisp
 
         return txt

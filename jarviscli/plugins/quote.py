@@ -1,12 +1,15 @@
+import json
+
 import requests
 from bs4 import BeautifulSoup
-
-import json
-from plugin import plugin, require
+from jarviscli import entrypoint
 
 
-@require(network=True)
-@plugin('quote')
+@entrypoint
+def run(jarvis, s):
+    Quote()(jarvis, s)
+
+
 class Quote():
     """
     quote prints quote for the day for you or quotes based on a given keyword
@@ -32,7 +35,8 @@ class Quote():
             quote = parse_json['contents']['quotes'][0]['quote']
             jarvis.say(quote)
         else:
-            jarvis.say('Sorry, something went wrong. Please try again later or report this issue if it sustains.')
+            jarvis.say(
+                'Sorry, something went wrong. Please try again later or report this issue if it sustains.')
 
     def get_keyword_quotes(self, jarvis, keyword):
         """
@@ -40,7 +44,8 @@ class Quote():
         """
 
         while True:
-            res = requests.get(f'https://www.brainyquote.com/search_results?x=0&y=0&q={keyword}')
+            res = requests.get(
+                f'https://www.brainyquote.com/search_results?x=0&y=0&q={keyword}')
             soup = BeautifulSoup(res.text, 'html.parser')
             quote_divs = soup.find_all('div', {'class': 'bqQt'})
 
@@ -66,7 +71,8 @@ class Quote():
 
                 quote = quotes[current_quote]
                 jarvis.say(quote)
-                response = jarvis.input('Type "again" for another quote or "exit" to leave: ')
+                response = jarvis.input(
+                    'Type "again" for another quote or "exit" to leave: ')
 
                 if response.lower() == 'again':
                     current_quote = (current_quote + 1) % num_quotes

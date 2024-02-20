@@ -5,12 +5,17 @@ The plugin also validates the user input before generating the curl output.
 """
 
 
-from plugin import plugin
 import json
+
 from colorama import Fore
+from jarviscli import entrypoint
 
 
-@plugin("generate curl")
+@entrypoint
+def run(jarvis, s):
+    GenerateCurl()(jarvis, s)
+
+
 class GenerateCurl(object):
 
     def __call__(self, jarvis, s):
@@ -22,9 +27,11 @@ class GenerateCurl(object):
     def _collect_parameters(self, jarvis):
         http_method = jarvis.input(prompt="HTTP Method: ", color=Fore.BLUE)
         jarvis.say(text="Select Content Type\n\n1. JSON\n2. No Data\n")
-        content_type = jarvis.input_number(prompt="Enter you choice: ", color=Fore.BLUE, rtype=int, rmin=1, rmax=2)
+        content_type = jarvis.input_number(
+            prompt="Enter you choice: ", color=Fore.BLUE, rtype=int, rmin=1, rmax=2)
         data = jarvis.input(prompt="Enter / copy the data: ", color=Fore.BLUE)
-        endpoint = jarvis.input(prompt="Specify the HTTP endpoint: ", color=Fore.BLUE)
+        endpoint = jarvis.input(
+            prompt="Specify the HTTP endpoint: ", color=Fore.BLUE)
 
         self._input_params = {
             "method": http_method.upper(),
@@ -44,7 +51,8 @@ class GenerateCurl(object):
             jarvis.exit()
 
         if "data" not in self._input_params:
-            jarvis.say(text="Data missing. Could be empty but should be present.", color=Fore.RED)
+            jarvis.say(
+                text="Data missing. Could be empty but should be present.", color=Fore.RED)
             jarvis.exit()
 
         if "endpoint" not in self._input_params:
@@ -82,7 +90,8 @@ class GenerateCurl(object):
                 json.loads(data)
                 return True
             except ValueError as e:
-                jarvis.say(text="Invalid data format based on content type.", color=Fore.RED)
+                jarvis.say(
+                    text="Invalid data format based on content type.", color=Fore.RED)
                 return False
 
     def _valid_endpoint(self, jarvis):

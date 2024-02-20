@@ -1,11 +1,12 @@
-import time
-import sys
-import requests
-import json
-from plugin import plugin, require, UNIX
-import os
 import csv
+import json
+import os
+import sys
+import time
+
+import requests
 from colorama import Fore
+from jarviscli import entrypoint
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
@@ -38,8 +39,8 @@ screen."""
 
 class _GetchUnix:
     def __call__(self):
-        import tty
         import termios
+        import tty
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
         try:
@@ -83,12 +84,13 @@ class Letter():
 
 
 def get_text():
-    response = requests.get(f"https://random-word-api.vercel.app/api?words={n_words}")
+    response = requests.get(
+        f"https://random-word-api.vercel.app/api?words={n_words}")
     if response.status_code == 200:
         json_data = json.loads(response.content)
         json_data = ' '.join(json_data)
         print('json_data', json_data)
-        return json_data 
+        return json_data
 
 
 def format_time(seconds):
@@ -189,7 +191,6 @@ def print_screen():
     sys.stdout.write(string)
 
 
-@require(network=True, platform=UNIX)
-@plugin("typingtest")
+@entrypoint
 def typingtest(jarvis, s):
     game_start()

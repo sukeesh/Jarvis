@@ -1,8 +1,12 @@
-from plugin import plugin
+from jarviscli import entrypoint
 
 
-@plugin("speedconv")
-class speedconv:
+@entrypoint
+def run(jarvis, s):
+    Speedconv()(jarvis, s)
+
+
+class Speedconv:
     """
     speedconv is a speed converter.
     The supported input speed measurement units are:

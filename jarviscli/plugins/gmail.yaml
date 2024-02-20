@@ -1,0 +1,6 @@
+name: gmail
+requirements:
+  pip:
+    - smtplib
+online: true
+quality: legacy

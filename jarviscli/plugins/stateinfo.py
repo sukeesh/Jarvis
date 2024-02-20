@@ -1,9 +1,12 @@
-from plugin import plugin, alias
+from jarviscli import entrypoint
 
 
-@alias("state capital", "state abbreviation")
-@plugin("stateinfo")
-class stateinfo:
+@entrypoint
+def run(jarvis, s):
+    Stateinfo()(jarvis, s)
+
+
+class Stateinfo:
     """
     Get the postal abbreviation and state capital of a given U.S. state
     Usage: stateinfo [command]

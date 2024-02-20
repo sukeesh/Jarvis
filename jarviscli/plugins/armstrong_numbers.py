@@ -1,7 +1,7 @@
-from plugin import plugin
+from jarviscli import entrypoint
 
 
-@plugin("armstrong_numbers")
+@entrypoint
 def element(jarvis, s):
     num = int(input("Enter a number: "))
     length = len(str(num))

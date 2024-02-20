@@ -1,5 +1,6 @@
 import random
-from plugin import plugin, alias
+
+from jarviscli import entrypoint
 
 ball_top = """       _.a$$$$$a._
       ,$$$$$$$$$$$$$.
@@ -46,49 +47,45 @@ class BColors:
     UNDERLINE = '\033[4m'
 
 
-@alias("magic 8 ball")
-@plugin("magic8ball")
-class Magic8Ball:
+@entrypoint
+def magic8ball_question(s, jarvis):
+    print(f"{BColors.GREEN} +=== What is thy inquiry, great end-user? Or enter 'quit' "
+          f"if you wish to remain blind to the truth. ===+\n{BColors.ENDC}")
+    question = input("=> ")
 
-    def __call__(self, jarvis, s):
-        self.jarvis = jarvis
-        self.s = s
-        self.magic8ball_question(jarvis, s)
-        
-    def magic8ball_question(self, s, jarvis):
-        print(f"{BColors.GREEN} +=== What is thy inquiry, great end-user? Or enter 'quit' "
-              f"if you wish to remain blind to the truth. ===+\n{BColors.ENDC}")
+    magic8ball_response(jarvis, question)
+
+
+def magic8ball_response(jarvis, question):
+    # Checks if user inputs 'quit' as an answer to continue using the program to ask another question.
+    if question.casefold() == "quit":
+        print("\n", "+=== ", random.choice(exitList), " ===+")
+
+    # Checks for blank user inputs and responds to try again
+    elif question == "":
+        print("\n", BColors.FAIL, "+=== ",
+              random.choice(emptyList), " ===+", "\n", BColors.ENDC)
+
+        print(f"{BColors.GREEN} +=== What is thy inquiry, great end-user? "
+              f"Or enter 'quit' if you wish to remain blind to the truth. ===+\n{BColors.ENDC}")
         question = input("=> ")
 
-        self.magic8ball_response(question)
+        magic8ball_response(jarvis, question)
 
-    def magic8ball_response(self, question):
-        # Checks if user inputs 'quit' as an answer to continue using the program to ask another question.
-        if question.casefold() == "quit":
-            print("\n", "+=== ", random.choice(exitList), " ===+")
+    # Displays response from list and asks user if they want to ask more questions, otherwise ends
+    else:
+        response = random.choice(responseList)
 
-        # Checks for blank user inputs and responds to try again
-        elif question == "":
-            print("\n", BColors.FAIL, "+=== ", random.choice(emptyList), " ===+", "\n", BColors.ENDC)
+        print(BColors.BLUE, "\n", ball_top, BColors.ENDC)
+        print(BColors.GREEN, response.center(26, " "), BColors.ENDC)
+        print(BColors.BLUE, ball_bot, BColors.ENDC, "\n")
 
-            print(f"{BColors.GREEN} +=== What is thy inquiry, great end-user? "
-                  f"Or enter 'quit' if you wish to remain blind to the truth. ===+\n{BColors.ENDC}")
-            question = input("=> ")
+        print(
+            BColors.GREEN, " +=== Do you have any further inquiries you wish to input? ===+\n", BColors.ENDC)
+        question_2 = input("=> ")
 
-            self.magic8ball_response(question)
-
-        # Displays response from list and asks user if they want to ask more questions, otherwise ends
+        if question_2.casefold() == "yes":
+            return magic8ball_question('', jarvis)
         else:
-            response = random.choice(responseList)
-
-            print(BColors.BLUE, "\n", ball_top, BColors.ENDC)
-            print(BColors.GREEN, response.center(26, " "), BColors.ENDC)
-            print(BColors.BLUE, ball_bot, BColors.ENDC, "\n")
-
-            print(BColors.GREEN, " +=== Do you have any further inquiries you wish to input? ===+\n", BColors.ENDC)
-            question_2 = input("=> ")
-
-            if question_2.casefold() == "yes":
-                return self.magic8ball_question(self.s, self.jarvis)
-            else:
-                print(BColors.GREEN, "\n", "+=== ", random.choice(exitList), " ===+", BColors.ENDC)
+            print(BColors.GREEN, "\n", "+=== ",
+                  random.choice(exitList), " ===+", BColors.ENDC)

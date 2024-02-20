@@ -1,0 +1,5 @@
+name: curvesketch
+requirements:
+  pip:
+    - sympy
+quality: legacy

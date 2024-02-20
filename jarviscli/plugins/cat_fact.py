@@ -1,10 +1,9 @@
 import requests
 from colorama import Fore
-from plugin import plugin, require
+from jarviscli import entrypoint
 
 
-@require(network=True)
-@plugin('cat fact')
+@entrypoint
 def cat_fact(jarvis, s):
     """Tells a random cat fact"""
 

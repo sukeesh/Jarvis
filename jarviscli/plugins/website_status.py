@@ -1,9 +1,10 @@
-from plugin import plugin
 import urllib.request
+
 from colorama import Fore
+from jarviscli import entrypoint
 
 
-@plugin("website status")
+@entrypoint
 def check_website_status(jarvis, s):
     prompt = "Please enter a website URL: "
     while True:

@@ -1,0 +1,5 @@
+name: clear
+requirements:
+  os:
+    - unix
+quality: legacy

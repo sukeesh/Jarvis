@@ -1,0 +1,6 @@
+name: curl
+requirements:
+  os:
+    - unix
+online: False
+quality: legacy

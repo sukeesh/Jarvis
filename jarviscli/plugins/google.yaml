@@ -1,0 +1,6 @@
+name: google
+requirements:
+  pip:
+    - beautifulsoup4
+online: true
+quality: legacy

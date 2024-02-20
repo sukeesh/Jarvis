@@ -1,0 +1,5 @@
+name: limit
+requirements:
+  pip:
+    - sympy
+quality: legacy

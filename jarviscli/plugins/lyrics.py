@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
-import requests
 import bs4
-from plugin import plugin, require
+import requests
+from jarviscli import entrypoint
 
 # TODO: handle errors and instructions better
 
 
-@require(network=True)
-@plugin('lyrics')
-class lyrics():
+@entrypoint
+def run(jarvis, s):
+    Lyrics()(jarvis, s)
+
+
+class Lyrics():
     """
     finds lyrics
     the format is song,artist

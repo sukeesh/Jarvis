@@ -1,0 +1,5 @@
+name: notes
+requirements:
+  os:
+    - macos
+quality: legacy

@@ -1,0 +1,5 @@
+name: imagecompressor
+requirements:
+  pip:
+    - pillow
+quality: legacy

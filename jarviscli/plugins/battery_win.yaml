@@ -1,0 +1,8 @@
+name: battery
+requirements:
+  pip:
+    - psutil
+  os:
+    - windows
+online: False
+quality: legacy

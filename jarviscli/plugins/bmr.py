@@ -1,8 +1,8 @@
 from colorama import Fore
-from plugin import plugin
+from jarviscli import entrypoint
 
 
-@plugin("bmr")
+@entrypoint
 def bmr(jarvis, s):
     """calculates
     your Basal  Metabolic Rate (BMR) and

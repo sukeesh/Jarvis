@@ -1,10 +1,15 @@
 import os
-from plugin import plugin
+
 from colorama import Fore
+from jarviscli import entrypoint
 from pdf2image import convert_from_path
 
 
-@plugin('pdf to images')
+@entrypoint
+def run(jarvis, s):
+    PdfToImage()(jarvis, s)
+
+
 class PdfToImage:
     """
     A tool for converting and storing all the

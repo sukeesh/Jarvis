@@ -2,18 +2,10 @@
 import os
 import subprocess
 
-from plugin import plugin, require, LINUX, MACOS
+from jarviscli import entrypoint
 
 
-@require(platform=MACOS)
-@plugin("update system")
-def update_system__macos(jarvis, s):
-    os.system('brew upgrade && brew update')
-
-
-@require(platform=LINUX)
-@require(native='lsb_release')
-@plugin("update system")
+@entrypoitn
 def update_system(jarvis, s):
     user_distributor_id = subprocess.check_output('lsb_release -i', shell=True)
     user_distribution = user_distributor_id.decode("utf-8").split('\t')[1]

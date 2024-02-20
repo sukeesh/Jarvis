@@ -1,0 +1,8 @@
+name: football
+requirements:
+  apikey:
+    - football
+  pip:
+    - tabulate
+online: true
+quality: legacy

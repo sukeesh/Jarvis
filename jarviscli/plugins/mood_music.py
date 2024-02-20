@@ -8,13 +8,12 @@ your mood.
 
 """
 import webbrowser
-from plugin import plugin
-from plugin import require
+
 from colorama import Fore
+from jarviscli import entrypoint
 
 
-@require(network=True)
-@plugin("mood music")
+@entrypoint
 def open_spotify(jarvis, s):
     jarvis.say("\nHello! What's your mood for today? \n")
     # list that stores the available mood choices

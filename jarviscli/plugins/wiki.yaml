@@ -1,0 +1,6 @@
+name: wikipedia
+requirements:
+  pip:
+    - wikipedia
+online: True
+quality: legacy

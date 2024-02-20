@@ -1,10 +1,15 @@
-from plugin import plugin
-import time
 import random
 import sys
+import time
+
+from jarviscli import entrypoint
 
 
-@plugin('memory')
+@entrypoint
+def run(jarvis, s):
+    Memory()(jarvis, s)
+
+
 class Memory:
     """
     Welcome to the Short-Term Memory Trainer! Here you can find
@@ -64,7 +69,8 @@ class Memory:
                 jarvis.say("Correct guess of " + str(len(number)) + " digits")
             else:
                 jarvis.say("Wrong guess.")
-                jarvis.say("You remembered " + str(len(number) - 1) + " digits")
+                jarvis.say("You remembered " +
+                           str(len(number) - 1) + " digits")
                 jarvis.say("Be sure to train again.")
                 lost = True
         return

@@ -1,6 +1,6 @@
-from plugin import plugin, require
 import requests
 from bs4 import BeautifulSoup
+from jarviscli import entrypoint
 
 valid_genres = [
     "comedy",
@@ -21,9 +21,12 @@ valid_genres = [
 ]
 
 
-@require(network=True)
-@plugin("topmedia")
-class topmedia:
+@entrypoint
+def run(jarvis, s):
+    Topmedia()(jarvis, s)
+
+
+class Topmedia:
     """
     Plugin to extract most popular movies and TV shows from IMDB by genre
     """

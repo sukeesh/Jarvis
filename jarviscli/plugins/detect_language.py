@@ -2,15 +2,14 @@ import contextlib
 import json
 import os
 
-from colorama import Fore
-
 import fasttext
-from plugin import plugin
+from colorama import Fore
+from jarviscli import entrypoint
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
-@plugin("detect lang")
+@entrypoint
 def detect_language(jarvis, s):
     """
     Detects the language of an input string
@@ -36,7 +35,8 @@ def generate_response(jarvis, output):
     if score > 0.5:
         jarvis.say('The language of the text is ' + language, Fore.GREEN)
     elif score > 0.25:
-        jarvis.say("I'm not sure, but the language might be " + language, Fore.YELLOW)
+        jarvis.say("I'm not sure, but the language might be " +
+                   language, Fore.YELLOW)
     else:
         jarvis.say("I couldn't identify the language", Fore.BLUE)
 

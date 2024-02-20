@@ -1,30 +1,32 @@
 
-from plugin import plugin,require
-from colorama import Fore
-import requests
 import os
 import re
 
+import requests
+from colorama import Fore
+from jarviscli import entrypoint
 
-@require(network=True)
-@plugin("qr")
+
+@entrypoint
+def run(jarvis, s):
+    QRGenerator()(jarvis, s)
+
 
 class QRGenerator:
     """
     Provides you with a png image of a QR for a specified URL
 
     Enter 'qr' or 'QR' to use:
-    
+
 
     Attribution:
         QR generated from https://goqr.me/api/
     """
-    
+
     def __init__(self):
         self.url = "http://api.qrserver.com/v1/create-qr-code/"
-    
 
-    def __call__(self,jarvis,s):
+    def __call__(self, jarvis, s):
         if s == 'help':
             self._print_help(jarvis)
             return
@@ -32,10 +34,10 @@ class QRGenerator:
         jarvis.say("\ntype 'qr  help' for additional information")
         jarvis.say("")
 
-        prompt_url = ("\nType the URL that you want to create a QR code \n" 
+        prompt_url = ("\nType the URL that you want to create a QR code \n"
                       "or 'end' if you wish to exit: ")
         # get url from user prompt
-        url = self._get_url(prompt_url,jarvis)
+        url = self._get_url(prompt_url, jarvis)
         if url == "end":
             return
         jarvis.say("")
@@ -43,25 +45,24 @@ class QRGenerator:
         prompt_path = ("\nType the filepath where you want the QR to be stored \n"
                        "or 'end' if you wish to exit: ")
         # get path from user prompt
-        self.path = self._get_path(prompt_path,jarvis)
+        self.path = self._get_path(prompt_path, jarvis)
         if self.path == "end":
             return
         jarvis.say("")
 
-        prompt_name = ("\nEnter the name of the png file that will be created: ")
+        prompt_name = (
+            "\nEnter the name of the png file that will be created: ")
         # get filename from user prompt
-        name = jarvis.input(prompt_name,Fore.CYAN)
+        name = jarvis.input(prompt_name, Fore.CYAN)
         # replace whitespaces with underscores
         name = name.strip().replace(' ', '_')
         self.filename = re.sub(r'(?u)[^-\w.]', '', name)
-        # generate query and add the needed parameters 
+        # generate query and add the needed parameters
         query = self.url + "?data=" + url + "&size=250x250"
         # generate QR code from the query
-        self._generate_qr(jarvis,query)
+        self._generate_qr(jarvis, query)
 
         return
-    
-
 
     def _get_url(self, prompt, jarvis):
         """
@@ -72,30 +73,33 @@ class QRGenerator:
 
         while True:
             try:
-                response = jarvis.input(prompt,Fore.CYAN)
+                response = jarvis.input(prompt, Fore.CYAN)
                 # the user wants to exit
                 if response == "end":
                     break
-                # tries to get website from URL 
+                # tries to get website from URL
                 website = requests.get(response)
                 break
             # list of possible exceptions from URLs with invalid form
             except requests.exceptions.MissingSchema:
-                jarvis.say("\nSorry, your input URL is not valid.",Fore.RED)
-                jarvis.say("Try something in this form 'https://github.com/.../...'")
+                jarvis.say("\nSorry, your input URL is not valid.", Fore.RED)
+                jarvis.say(
+                    "Try something in this form 'https://github.com/.../...'")
             # handles the exception where the user misses part of the 'http' part of the URL
             except requests.exceptions.InvalidSchema:
-                jarvis.say("\nSorry, your input URL is not valid.",Fore.RED)
-                jarvis.say("Try something in this form 'https://github.com/.../...'")
+                jarvis.say("\nSorry, your input URL is not valid.", Fore.RED)
+                jarvis.say(
+                    "Try something in this form 'https://github.com/.../...'")
             except requests.exceptions.ConnectionError:
-                jarvis.say("\nSorry, your input URL is not valid.",Fore.RED)
-                jarvis.say("Try something in this form 'https://github.com/.../...'")
+                jarvis.say("\nSorry, your input URL is not valid.", Fore.RED)
+                jarvis.say(
+                    "Try something in this form 'https://github.com/.../...'")
             except requests.exceptions.InvalidURL:
-                jarvis.say("\nSorry, your input URL is not valid.",Fore.RED)
-                jarvis.say("Try something in this form 'https://github.com/.../...'")
-                
+                jarvis.say("\nSorry, your input URL is not valid.", Fore.RED)
+                jarvis.say(
+                    "Try something in this form 'https://github.com/.../...'")
+
         return response
-    
 
     def _get_path(self, prompt, jarvis):
         """
@@ -104,7 +108,7 @@ class QRGenerator:
         """
 
         while True:
-            path = jarvis.input(prompt,Fore.CYAN)
+            path = jarvis.input(prompt, Fore.CYAN)
             # the user wants to exit
             if path == "end":
                 response = path
@@ -114,11 +118,12 @@ class QRGenerator:
             if isFile:
                 response = path
                 break
-            jarvis.say("\nSorry, the path that you specified couldn't be found",Fore.RED)
-            jarvis.say("Try something in this form 'C:\..\..' if you are using Windows for example.")
-            
+            jarvis.say(
+                "\nSorry, the path that you specified couldn't be found", Fore.RED)
+            jarvis.say(
+                "Try something in this form 'C:\..\..' if you are using Windows for example.")
+
         return response
-    
 
     def _generate_qr(self, jarvis, query):
         try:
@@ -126,31 +131,30 @@ class QRGenerator:
             jarvis.spinner_start('Creating QR ')
             response = requests.get(query)
             # where the png file will be stored
-            location = os.path.join(self.path,self.filename + '.png')
+            location = os.path.join(self.path, self.filename + '.png')
             file = open(location, "wb")
             file.write(response.content)
             jarvis.spinner_stop()
             file.close
         except BaseException:
             jarvis.spinner_stop(
-            message="\nTask execution Failed!", color=Fore.RED)
+                message="\nTask execution Failed!", color=Fore.RED)
             jarvis.say(
                 "Please check that the URL you have entered is valid!", Fore.RED)
             jarvis.say(
                 "If error occures again, then API might have crashed. Try again later.\n", Fore.RED)
         finally:
-            return 
-
-        
+            return
 
     # manual for plugin
+
     def _print_help(self, jarvis):
         jarvis.say("\nWelcome to QR Generator!", Fore.CYAN)
         jarvis.say("You can use current plugin as follows:", Fore.CYAN)
         jarvis.say("    'qr' or 'QR' ", Fore.CYAN)
-        jarvis.say(    
+        jarvis.say(
             "Result: The user receives a png image containing a QR.", Fore.CYAN)
-        jarvis.say(    
+        jarvis.say(
             "        The QR code leads to the URL the user specified, and it is stored on a directory of his choice!", Fore.CYAN)
         jarvis.say("\nExample: ", Fore.CYAN)
         jarvis.say(
@@ -163,5 +167,3 @@ class QRGenerator:
             "         'jarvis_qr' - name of the png file ", Fore.CYAN)
         jarvis.say(
             "The steps above create a QR code on the specified directory that leads to Jarvi's central page on GitHub!", Fore.CYAN)
-
-    

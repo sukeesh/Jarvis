@@ -1,17 +1,19 @@
 """Plugin that creates templated workspace folders for various languages."""
-import git
-from distutils.dir_util import copy_tree
 import os
 import pathlib
+from distutils.dir_util import copy_tree
+
+import git
 from colorama import Fore
+from jarviscli import entrypoint
+
 # All plugins should inherite from this library
-from plugin import plugin
 
 DATA_PATH = os.path.abspath(os.path.dirname(__file__))
 DATA_PATH = DATA_PATH[:-8] + '/data/workspaces'
 
 
-@plugin("workspace")
+@entrypoint
 def generate_workspace(jarvis, s):
     """Generate a template workspace in the directory specified by the user."""
     path = pathlib.Path(jarvis.input(

@@ -1,29 +1,30 @@
 import random
-from plugin import plugin
+
+from jarviscli import entrypoint
 
 ANSWERS = [
-  "No",
-  "Yes",
-  "You Can Do It!",
-  "I Cant Help You",
-  "Sorry To hear That, But You Must Forget :(",
-  "Keep It Up!",
-  "Nice",
-  "Dont Do It Ever Again",
-  "I Like It, Good Job",
-  "I Am Not Certain",
-  "Too Bad For You, Try To Find Something Else To Do And Enjoy",
-  "Time Will Pass And You Will Forget",
-  "Dont Do It",
-  "Do It",
-  "Never Ask Me About That Again",
-  "I Cant Give Advice Now I Am Sleepy",
-  "Sorry I Cant Hear This Language",
-  "Sorry But Your Question Does Not Make Sense"
+    "No",
+    "Yes",
+    "You Can Do It!",
+    "I Cant Help You",
+    "Sorry To hear That, But You Must Forget :(",
+    "Keep It Up!",
+    "Nice",
+    "Dont Do It Ever Again",
+    "I Like It, Good Job",
+    "I Am Not Certain",
+    "Too Bad For You, Try To Find Something Else To Do And Enjoy",
+    "Time Will Pass And You Will Forget",
+    "Dont Do It",
+    "Do It",
+    "Never Ask Me About That Again",
+    "I Cant Give Advice Now I Am Sleepy",
+    "Sorry I Cant Hear This Language",
+    "Sorry But Your Question Does Not Make Sense"
 ]
 
 
-@plugin("give me advice")
+@entrypoint
 def advice(jarvis, s):
     while True:
         question = input("Ask Me A Question : ").strip()

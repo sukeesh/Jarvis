@@ -1,0 +1,5 @@
+name: camera
+requirements:
+  os:
+    - macos
+quality: legacy

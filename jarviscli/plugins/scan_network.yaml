@@ -1,0 +1,9 @@
+name: Name
+requirements:
+  pip:
+    - nmap
+  native:
+    - nmap
+  os:
+    - linux
+quality: legacy

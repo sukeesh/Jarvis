@@ -1,8 +1,9 @@
-from plugin import plugin
 import csv
 
+from jarviscli import entrypoint
 
-@plugin("myinfo")
+
+@entrypoint
 def myinfo(jarvis, s):
     # Save personal information about the user for future configuration
 

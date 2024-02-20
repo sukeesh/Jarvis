@@ -12,15 +12,18 @@
     @Author: Leonidha Mara @leonidhaMara & Emmanouil Manousakis @manousakis01
     @Date: 7th May, 2022
 """
-from colorama import Fore
-from plugin import plugin, require, alias
-import requests
 import json
 
+import requests
+from colorama import Fore
+from jarviscli import entrypoint
 
-@alias("trendtwit")
-@require(network=True)
-@plugin("twitter trends")
+
+@entrypoint
+def run(jarvis, s):
+    TwitterTrends()(jarvis, s)
+
+
 class TwitterTrends:
     def __call__(self, jarvis, s):
         self.jarvis = jarvis

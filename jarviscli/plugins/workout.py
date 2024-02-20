@@ -1,19 +1,18 @@
 import time
 
 from colorama import Fore
-
-from plugin import plugin
+from jarviscli import entrypoint
 from utilities.notification import *
 
 
 def push_compute_rest(maximum):
-    if(maximum < 25):
+    if (maximum < 25):
         rest = 30
-    elif(maximum < 50):
+    elif (maximum < 50):
         rest = 45
-    elif(maximum < 75):
+    elif (maximum < 75):
         rest = 60
-    elif(maximum < 100):
+    elif (maximum < 100):
         rest = 75
     else:
         rest = 90
@@ -27,13 +26,13 @@ def push_compute_num(maximum, jarvis):
 
 
 def pull_compute_rest(maximum):
-    if(maximum < 10):
+    if (maximum < 10):
         rest = 30
-    elif(maximum < 15):
+    elif (maximum < 15):
         rest = 45
-    elif(maximum < 20):
+    elif (maximum < 20):
         rest = 60
-    elif(maximum < 25):
+    elif (maximum < 25):
         rest = 75
     else:
         rest = 90
@@ -59,7 +58,7 @@ def pushups(jarvis, s):
         jarvis.say("Please enter an integer only!", Fore.BLUE)
         quit(jarvis)
         return
-    if(maximum < 15):
+    if (maximum < 15):
         jarvis.say(
             "Firstly, try to reach your maximum to at least 15, then call me again!", Fore.BLUE)
         quit(jarvis)
@@ -98,7 +97,7 @@ def pullups(jarvis, s):
         jarvis.say("Please enter an integer only!", Fore.BLUE)
         quit(jarvis)
         return
-    if(maximum < 7):
+    if (maximum < 7):
         jarvis.say(
             "Firstly, try to reach your maximum to at least 7, then call me again!", Fore.BLUE)
         quit(jarvis)
@@ -135,7 +134,7 @@ def quit(jarvis):
     jarvis.say("Stay fit - do workout!", Fore.BLUE)
 
 
-@plugin("workout")
+@entrypoint
 def workout(jarvis, s):
     """Provides a workout programm according to user's abilities
     Formula to generate a relevant program is taken from:

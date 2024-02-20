@@ -1,15 +1,13 @@
 import requests
-from plugin import plugin, require, alias
+from jarviscli import entrypoint
 
 """
 Tells a random dad joke from https://icanhazdadjoke.com
 """
 
 
-@alias('Tell me a dad joke', 'dad joke')
-@require(network=True)
-@plugin('dadjoke')
-class dad_joke:
+@entrypoint
+def dadjoke(self, jarvis, s):
     """
     Tells a Dad Joke every time you type one of the aliases:
         1) Tell me a dad joke
@@ -17,9 +15,8 @@ class dad_joke:
         3) dadjoke
     """
 
-    def __call__(self, jarvis, s):
-        api_url = 'https://icanhazdadjoke.com'
-        header = {'Accept': 'application/json'}
-        r = requests.get(api_url, headers=header)
+    api_url = 'https://icanhazdadjoke.com'
+    header = {'Accept': 'application/json'}
+    r = requests.get(api_url, headers=header)
 
-        jarvis.say(r.json()['joke'])
+    jarvis.say(r.json()['joke'])

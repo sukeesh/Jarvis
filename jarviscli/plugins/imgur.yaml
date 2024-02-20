@@ -1,0 +1,6 @@
+name: imgur
+requirements:
+  pip:
+    - pyreadline; sys_platform == 'win32'
+online: true
+quality: legacy

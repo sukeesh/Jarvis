@@ -1,0 +1,6 @@
+name: remind
+requirements:
+  pip:
+    - pick
+    - pytimeparse
+quality: broken

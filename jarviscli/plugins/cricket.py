@@ -1,11 +1,13 @@
 from colorama import Fore
-
-from plugin import plugin, require
+from jarviscli import entrypoint
 from pycricbuzz import Cricbuzz
 
 
-@require(network=True)
-@plugin('cricket')
+@entrypoint
+def run(jarvis, s):
+    Cricket()(jarvis, s)
+
+
 class Cricket():
     """
     Enter cricket and follow the instructions
@@ -32,7 +34,7 @@ class Cricket():
 
     def live_score(self, index):
         if self.all_match_data[index]['mchstate'] == 'preview':
-            return(Fore.RED + "MATCH YET TO BEGIN")
+            return (Fore.RED + "MATCH YET TO BEGIN")
         selected_match = self.all_match_data[index]
         data = self.c.livescore(self.matches[index]['id'])
         score = {}
@@ -116,14 +118,16 @@ class Cricket():
                 scr['batteam'], scr['inng_num'], scr['runs'], scr['wickets'], scr['overs'])
             text += Fore.BLUE + "Batting\n"
             text += Fore.RED + \
-                "{:<17} {:<3} {:<3} {:<3} {}\n\n".format('Name', 'R', 'B', '4', '6')
+                "{:<17} {:<3} {:<3} {:<3} {}\n\n".format(
+                    'Name', 'R', 'B', '4', '6')
             for b in scr['batcard']:
                 text += Fore.BLACK + "{:<17} {:<3} {:<3} {:<3} {}\n{}\n\n".format(
                     b['name'], b['runs'], b['balls'], b['fours'], b['six'], b['dismissal'])
             text += Fore.LIGHTYELLOW_EX + "-" * 35 + "\n\n"
             text += Fore.BLUE + "Bowling\n"
             text += Fore.RED + \
-                "{:<17} {:<5} {:<3} {:<3} {}\n\n".format('Name', 'O', 'M', 'R', 'W')
+                "{:<17} {:<5} {:<3} {:<3} {}\n\n".format(
+                    'Name', 'O', 'M', 'R', 'W')
             for b in scr['bowlcard']:
                 text += Fore.BLACK + "{:<17} {:<5} {:<3} {:<3} {}\n\n".format(
                     b['name'], b['overs'], b['maidens'], b['runs'], b['wickets'])
@@ -139,10 +143,12 @@ class Cricket():
             print("{}. {} {}".format(str(i), m['srs'], m['mnum']))
         while True:
             try:
-                choice = int(jarvis.input('\nEnter choice (number): ', Fore.RED))
+                choice = int(jarvis.input(
+                    '\nEnter choice (number): ', Fore.RED))
                 while choice < 1 or choice > len(self.matches):
                     print(Fore.BLACK + '\nWrong choice')
-                    choice = int(jarvis.input('\nEnter choice again: ', Fore.RED))
+                    choice = int(jarvis.input(
+                        '\nEnter choice again: ', Fore.RED))
                 break
             except ValueError:
                 print("Invalid type of choice. Please enter an integer number")
@@ -163,10 +169,12 @@ class Cricket():
 
             while True:
                 try:
-                    choice = int(jarvis.input('\nEnter choice (number): ', Fore.RED))
+                    choice = int(jarvis.input(
+                        '\nEnter choice (number): ', Fore.RED))
                     while choice < 1 or choice > 4:
                         print(Fore.BLACK + '\nWrong choice')
-                        choice = int(jarvis.input('\nEnter choice again: ', Fore.RED))
+                        choice = int(jarvis.input(
+                            '\nEnter choice again: ', Fore.RED))
                     break
                 except ValueError:
                     print("Invalid type of choice. Please enter an integer number")
@@ -177,20 +185,23 @@ class Cricket():
                 ref = jarvis.input('Do you want to refresh:(y/n) ', Fore.RED)
                 while ref == 'y':
                     print(self.scorecard(selected_match_id))
-                    ref = jarvis.input('Do you want to refresh:(y/n) ', Fore.RED)
+                    ref = jarvis.input(
+                        'Do you want to refresh:(y/n) ', Fore.RED)
 
             elif choice == 2:
                 print(self.commentary(selected_match_id))
                 ref = jarvis.input('Do you want to refresh:(y/n) ', Fore.RED)
                 while ref == 'y':
                     print(self.commentary(selected_match_id))
-                    ref = jarvis.input('Do you want to refresh:(y/n) ', Fore.RED)
+                    ref = jarvis.input(
+                        'Do you want to refresh:(y/n) ', Fore.RED)
 
             elif choice == 3:
                 ref = 'y'
                 while ref == 'y':
                     print(self.live_score(selected_match_id))
-                    ref = jarvis.input('Do you want to refresh:(y/n) ', Fore.RED)
+                    ref = jarvis.input(
+                        'Do you want to refresh:(y/n) ', Fore.RED)
 
             else:
                 return

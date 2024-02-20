@@ -1,0 +1,10 @@
+name: htmltopdf
+requirements:
+  native:
+    wkhtmltopdf
+  pip:
+    - pdfkit
+  os:
+    - linux
+online: False
+quality: legacy

@@ -1,6 +1,7 @@
-from plugin import LINUX, WINDOWS, plugin, require
-from colorama import Fore
 import subprocess
+
+from colorama import Fore
+from jarviscli import entrypoint
 
 
 @require(platform=LINUX)

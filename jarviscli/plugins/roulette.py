@@ -1,14 +1,13 @@
 import random
 
 from colorama import Fore
-
-from plugin import plugin
+from jarviscli import entrypoint
 
 reds = [1, 3, 5, 7, 9, 12, 14, 16, 18,
         19, 21, 23, 25, 27, 30, 32, 34, 36]
 
 
-@plugin("roulette")
+@entrypoint
 def roulette(jarvis, s):
     print("")
     cash = 100
@@ -284,7 +283,8 @@ def bet_three_choice(jarvis):
 def bet_number(jarvis):
     while True:
         try:
-            option = int(jarvis.input("Enter your choice (0-36): ", Fore.GREEN))
+            option = int(jarvis.input(
+                "Enter your choice (0-36): ", Fore.GREEN))
             if option >= 0 and option <= 36:
                 return option
             else:

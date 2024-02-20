@@ -1,11 +1,13 @@
 import nltk
+from jarviscli import entrypoint
 from nltk.corpus import wordnet
-from plugin import plugin
+
+# TODO install ntlk package
 
 nltk.data.path.append("jarviscli/data/ntlk")
 
 
-@plugin('dictionary')
+@entrypoint
 def dictionary(jarvis, s):
     """
     Get meaning, synonym and antonym of any word
@@ -42,7 +44,8 @@ def dictionary(jarvis, s):
     def input_detail_id():
         jarvis.say("")
         synlen = len(syns)
-        detail_id = jarvis.input("Details of meaning (1-{}): ? ".format(synlen))
+        detail_id = jarvis.input(
+            "Details of meaning (1-{}): ? ".format(synlen))
         if detail_id == '':
             return None
 

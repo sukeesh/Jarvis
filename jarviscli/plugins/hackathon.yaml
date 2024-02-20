@@ -1,0 +1,6 @@
+name: hackathon
+requirements:
+  pip:
+    - beautifulsoup4
+online: True
+quality: legacy

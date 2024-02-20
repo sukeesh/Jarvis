@@ -9,13 +9,14 @@ upcoming event.
 
 """
 import csv
+import datetime
 import os
 import time
-import datetime
-from plugin import plugin
+
+from jarviscli import entrypoint
 
 
-@plugin("write agenda")
+@entrypoint
 def write_agenda(jarvis, s):
     loop = True
     # variables to check invalid inputs in while loop

@@ -1,0 +1,6 @@
+name: asteroids
+requirements:
+  apikey:
+    - nasa_neo
+online: true
+quality: legacy

@@ -1,8 +1,7 @@
 import socket
 
 from colorama import Fore
-
-from plugin import plugin
+from jarviscli import entrypoint
 
 
 def ip_lookup(hostname):
@@ -34,11 +33,13 @@ def dns_lookup(jarvis, s, txt, func):
                 return
 
 
-@plugin("dns forward")
+@entrypoint
 def ip_lookup1(jarvis, s):
-    dns_lookup(jarvis, s, "hostname", ip_lookup)
-
-
-@plugin("dns reverse")
-def hostname_lookup1(jarvis, s):
-    dns_lookup(jarvis, s, "ip", hostname_lookup)
+    if s.startswith('forward'):
+        s = s.replace('forward', '')
+        dns_lookup(jarvis, s, "hostname", ip_lookup)
+    elif s.startswith('reverse'):
+        s = s.replace('reverse', '')
+        dns_lookup(jarvis, s, "ip", hostname_lookup)
+    else:
+        jarvis.say('Say dns forward/reverse Hostname/IP')

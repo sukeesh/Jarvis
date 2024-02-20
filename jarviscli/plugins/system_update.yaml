@@ -1,0 +1,6 @@
+name: Name
+requirements:
+  native:
+    - lsb_release
+    - sudo
+quality: legacy

@@ -1,0 +1,6 @@
+name: tennis
+requirements:
+  apikey:
+    - sportradar
+online: True
+quality: legacy

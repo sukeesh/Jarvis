@@ -1,11 +1,13 @@
 import requests
+from jarviscli import entrypoint
 
-from plugin import plugin, require
+
+@entrypoint
+def run(jarvis, s):
+    Trivia()(jarvis, s)
 
 
-@require(network=True)
-@plugin('trivia')
-class trivia:
+class Trivia:
     errCode = "An error occurred. Please try again later."
     """
     Usage: Type trivia and follow the instructions.

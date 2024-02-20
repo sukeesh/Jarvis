@@ -1,8 +1,8 @@
-from plugin import plugin
 from colorama import Fore
+from jarviscli import entrypoint
 
 
-@plugin("binary")
+@entrypoint
 def binary(jarvis, s):
     """
     Converts an integer into a binary number

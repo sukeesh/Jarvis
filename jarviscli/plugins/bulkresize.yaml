@@ -1,0 +1,6 @@
+name: Name
+requirements:
+  pip:
+    - opencv-python
+online: False
+quality: legacy

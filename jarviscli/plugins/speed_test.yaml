@@ -1,0 +1,6 @@
+name: speedtest
+requirements:
+  pip:
+    - speedtest
+online: True
+quality: legacy

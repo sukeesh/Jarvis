@@ -1,26 +1,22 @@
-from io import BytesIO
+import asyncio
 import tempfile
 import urllib.error
 import urllib.request
-from plugin import plugin, require, alias
-from colorama import Fore
-from shazamio import Shazam
-import pydub
-import asyncio
+from io import BytesIO
+
 import climage
-
-requirements = ['ffmpeg']
-try:
-    import pyaudio
-    import speech_recognition as sr
-except ImportError:
-    requirements.append(
-        'voice_control_requirements (install portaudio + re-run setup.sh)')
+import pydub
+import speech_recognition as sr
+from colorama import Fore
+from jarviscli import entrypoint
+from shazamio import Shazam
 
 
-@require(network=True, native=requirements)
-@alias("shazam")
-@plugin("music recognition")
+@entrypoint
+def run(jarvis, s):
+    MusicRecognition()(jarvis, s)
+
+
 class MusicRecognition:
     """A tool to recognize music through Shazam API."""
 
@@ -72,7 +68,7 @@ class MusicRecognition:
 
     def available_options(self, jarvis):
         """
-        Message displayed to prompt the user about actions of 
+        Message displayed to prompt the user about actions of
         music recognition plugin.
         """
 
@@ -83,7 +79,7 @@ class MusicRecognition:
 
     def after_recording_options(self, jarvis):
         """
-        Message displayed to prompt the user about actions 
+        Message displayed to prompt the user about actions
         after microphone recording.
         """
 

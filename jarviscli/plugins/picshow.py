@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 import webbrowser
-from plugin import plugin, require, alias
+
+from jarviscli import entrypoint
 
 
-@alias('show pics')
-@require(network=True)
-@plugin('display pics')
+@entrypoint
 def display_pics(jarvis, string):
     """
     Displays photos of the topic you choose.

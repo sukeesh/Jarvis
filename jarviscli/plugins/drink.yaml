@@ -1,0 +1,4 @@
+name: drink
+requirements:
+online: true
+quality: legacy

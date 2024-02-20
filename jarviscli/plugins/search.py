@@ -1,9 +1,13 @@
 import webbrowser
-from plugin import require, plugin
+
+from jarviscli import entrypoint
 
 
-@require(network=True)
-@plugin("search")
+@entrypoint
+def run(jarvis, s):
+    Search()(jarvis, s)
+
+
 class Search:
     """
     The 'search' command launches a browser search

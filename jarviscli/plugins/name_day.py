@@ -1,11 +1,15 @@
-from colorama import Fore
-from plugin import plugin, require
-import requests
 import re
 
+import requests
+from colorama import Fore
+from jarviscli import entrypoint
 
-@require(network=True)
-@plugin("name day")
+
+@entrypoint
+def run(jarvis, s):
+    NameDay()(jarvis, s)
+
+
 class NameDay:
     """
     Name Day plugin provides information about your country's name days
@@ -14,6 +18,7 @@ class NameDay:
 
     You can also see the name day of a specific name.
     """
+
     def __call__(self, jarvis, s):
         self.jarvis = jarvis
         self.main()
@@ -50,7 +55,8 @@ class NameDay:
             self.get_location()
         while True:
             # main menu
-            self.jarvis.say("It appears you are in " + self.location, color=Fore.BLUE)
+            self.jarvis.say("It appears you are in " +
+                            self.location, color=Fore.BLUE)
             self.jarvis.say("1 See Today's name days")
             self.jarvis.say("2 See Tomorrow's name days")
             self.jarvis.say("3 Chose specific date")
@@ -60,7 +66,8 @@ class NameDay:
 
             # get user input
             try:
-                inp = int(self.jarvis.input("Select the desired number: ", color=Fore.GREEN))
+                inp = int(self.jarvis.input(
+                    "Select the desired number: ", color=Fore.GREEN))
             except ValueError:
                 self.jarvis.say("Please select a number")
                 continue
@@ -83,7 +90,8 @@ class NameDay:
                 self.jarvis.say("Please select a valid number")
 
             # ask user if he wants to continue
-            inp = self.jarvis.input("Do you want to continue? (Y/N)", color=Fore.RED)
+            inp = self.jarvis.input(
+                "Do you want to continue? (Y/N)", color=Fore.RED)
             if inp.lower() == "n":
                 break
 
@@ -134,7 +142,8 @@ class NameDay:
         if names != "n/a":
             self.jarvis.say("Say some kind words to " + names)
         else:
-            self.jarvis.say("No name days for tomorrow in " + str(self.location))
+            self.jarvis.say("No name days for tomorrow in " +
+                            str(self.location))
 
     def specific_date(self):
         """
@@ -152,9 +161,11 @@ class NameDay:
                          params={"country": country_code, "day": day, "month": month}).json()
         names = j["nameday"][country_code]
         if names != "n/a":
-            self.jarvis.say("Say some kind words to " + names + " on " + day + "/" + month)
+            self.jarvis.say("Say some kind words to " +
+                            names + " on " + day + "/" + month)
         else:
-            self.jarvis.say("No name days at " + day + "/" + month + " in " + self.location)
+            self.jarvis.say("No name days at " + day + "/" +
+                            month + " in " + self.location)
 
     def specific_name(self):
         """

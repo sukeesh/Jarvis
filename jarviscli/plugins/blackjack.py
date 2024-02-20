@@ -1,10 +1,11 @@
 import random
-from plugin import plugin
+
 from colorama import Fore
+from jarviscli import entrypoint
 
 
 def delay():  # method to pause after a series of actions have been completed.
-    n = input("Press enter to continue")
+    input("Press enter to continue")
 
 
 def wiped_slate(player):  # resets all hands and bets
@@ -14,7 +15,8 @@ def wiped_slate(player):  # resets all hands and bets
     return player
 
 
-def pprinthand(hand, suit, type='visible'):  # returns hand as a string which may or may not be hidden.
+# returns hand as a string which may or may not be hidden.
+def pprinthand(hand, suit, type='visible'):
     temphand = hand[:]
     for i in range(len(temphand)):
         if temphand[i] == 1 or temphand[i] == 11:
@@ -33,10 +35,12 @@ def pprinthandlist(handlist, suitlist):  # returns handlist as a string
     return str(newhandlist)
 
 
-def blackjacksum(orig_hand):  # computes the sum by assuming appropriate value of Ace.
+# computes the sum by assuming appropriate value of Ace.
+def blackjacksum(orig_hand):
     hand = orig_hand[:]
     for i in range(len(hand)):
-        if str(hand[i]) in 'JQK':  # converts face card to their value,that is,10.
+        # converts face card to their value,that is,10.
+        if str(hand[i]) in 'JQK':
             hand[i] = 10
     if sum(hand) <= 11:  # of Ace card(either 1 or 11) acc. to the sum.
         for i in range(len(hand)):
@@ -69,7 +73,8 @@ def move(hand, suit, cards, suits,
         return hand, suit, bet
 
     while True:
-        choice = input("Press H to Hit, S to Stand, D to Double-Down, P to sPlit\n")
+        choice = input(
+            "Press H to Hit, S to Stand, D to Double-Down, P to sPlit\n")
         if choice in ['H', 'h']:
             newcard = random.choice(cards)
             newsuit = random.choice(suits)
@@ -108,10 +113,12 @@ def move(hand, suit, cards, suits,
                     splitSuit2 = [[0, 0]]
                     newcard1 = random.choice(cards)
                     newsuit1 = random.choice(suits)
-                    print("Newcard for first split is", str(newcard1) + " of " + newsuit1)
+                    print("Newcard for first split is",
+                          str(newcard1) + " of " + newsuit1)
                     newcard2 = random.choice(cards)
                     newsuit2 = random.choice(suits)
-                    print("Newcard for second split is", str(newcard2) + " of " + newsuit2)
+                    print("Newcard for second split is",
+                          str(newcard2) + " of " + newsuit2)
                     splitHand1[0][0] = hand[0][0]
                     splitHand2[0][0] = hand[0][1]
                     splitHand1[0][1] = newcard1
@@ -128,9 +135,12 @@ def move(hand, suit, cards, suits,
                     print("Your sum for split 2 is", sum2)
                     bet1 = bet[:]
                     bet2 = bet[:]
-                    splitHand1, splitSuit1, bet1 = move(splitHand1, splitSuit1, cards, suits, bet1)
-                    splitHand2, splitSuit2, bet2 = move(splitHand2, splitSuit2, cards, suits, bet2)
-                    splitHand1.extend(splitHand2)  # converting both hands to a single list
+                    splitHand1, splitSuit1, bet1 = move(
+                        splitHand1, splitSuit1, cards, suits, bet1)
+                    splitHand2, splitSuit2, bet2 = move(
+                        splitHand2, splitSuit2, cards, suits, bet2)
+                    # converting both hands to a single list
+                    splitHand1.extend(splitHand2)
                     splitSuit1.extend(splitSuit2)
                     bet1.extend(bet2)  # converting both bets to a single list
                     return splitHand1, splitSuit1, bet1
@@ -146,7 +156,7 @@ def move(hand, suit, cards, suits,
             print("Please try again with a valid choice.")
 
 
-@plugin('blackjack')
+@entrypoint
 def blackjack(jarvis, s):
     jarvis.say("Welcome to the casino! Let's play blackjack!", Fore.GREEN)
     player = {"hands": [], "suits": [], "bets": [], 'profit': []}
@@ -157,20 +167,30 @@ def blackjack(jarvis, s):
 
     # Instructions
     jarvis.say('How to play:', Fore.GREEN)
-    jarvis.say('-->The goal of blackjack is to beat the dealer\'s hand without going over 21.', Fore.CYAN)
-    jarvis.say('-->Face cards are worth 10. Aces are worth 1 or 11, whichever makes a better hand.', Fore.CYAN)
-    jarvis.say('-->Each player starts with two cards, one of the dealer\'s cards is hidden until the end.', Fore.CYAN)
+    jarvis.say(
+        '-->The goal of blackjack is to beat the dealer\'s hand without going over 21.', Fore.CYAN)
+    jarvis.say(
+        '-->Face cards are worth 10. Aces are worth 1 or 11, whichever makes a better hand.', Fore.CYAN)
+    jarvis.say(
+        '-->Each player starts with two cards, one of the dealer\'s cards is hidden until the end.', Fore.CYAN)
     jarvis.say('-->To \'Hit\' is to ask for another card. To \'Stand\' is to hold your total and end your turn.',
                Fore.CYAN)
-    jarvis.say('-->If you go over 21 you bust, and the dealer wins regardless of the dealer\'s hand.', Fore.CYAN)
-    jarvis.say('-->If you are dealt 21 from the start (Ace & 10), you got a blackjack.', Fore.CYAN)
+    jarvis.say(
+        '-->If you go over 21 you bust, and the dealer wins regardless of the dealer\'s hand.', Fore.CYAN)
+    jarvis.say(
+        '-->If you are dealt 21 from the start (Ace & 10), you got a blackjack.', Fore.CYAN)
     jarvis.say('-->Blackjack means you win 1.5 the amount of your bet.', Fore.CYAN)
-    jarvis.say('-->Dealer will hit until his/her cards total 17 or higher.', Fore.CYAN)
-    jarvis.say('-->Doubling is like a hit, only the bet is doubled and you only get one more card.', Fore.CYAN)
-    jarvis.say('-->Split can be done when you have two of the same card - the pair is split into two hands.', Fore.CYAN)
-    jarvis.say('-->Splitting also doubles the bet, because each new hand is worth the original bet.', Fore.CYAN)
+    jarvis.say(
+        '-->Dealer will hit until his/her cards total 17 or higher.', Fore.CYAN)
+    jarvis.say(
+        '-->Doubling is like a hit, only the bet is doubled and you only get one more card.', Fore.CYAN)
+    jarvis.say(
+        '-->Split can be done when you have two of the same card - the pair is split into two hands.', Fore.CYAN)
+    jarvis.say(
+        '-->Splitting also doubles the bet, because each new hand is worth the original bet.', Fore.CYAN)
     jarvis.say('-->You cannot split two aces.', Fore.CYAN)
-    jarvis.say('-->You can double on a hand resulting from a split, tripling or quadrupling you bet.', Fore.CYAN)
+    jarvis.say(
+        '-->You can double on a hand resulting from a split, tripling or quadrupling you bet.', Fore.CYAN)
 
     while choice in "Yy":
         jarvis.say('Shuffling the cards....', Fore.BLUE)
@@ -196,7 +216,8 @@ def blackjack(jarvis, s):
         # Dealer's cards
         dealerhand = [random.choice(cards), random.choice(cards)]
         dealersuit = [random.choice(suits), random.choice(suits)]
-        jarvis.say("Dealer hand: " + pprinthand(dealerhand, dealersuit, type='partially-visible'), Fore.MAGENTA)
+        jarvis.say("Dealer hand: " + pprinthand(dealerhand,
+                   dealersuit, type='partially-visible'), Fore.MAGENTA)
         delay()
         jarvis.say('---------------------------')
 
@@ -204,13 +225,16 @@ def blackjack(jarvis, s):
         jarvis.say("It's your turn, make your choice!", Fore.BLUE)
         player['hands'], player['suits'], player['bets'] = move(player['hands'], player['suits'], cards, suits,
                                                                 player['bets'])
-        jarvis.say("Your hands and respective bets for this round are:", Fore.BLUE)
-        jarvis.say(pprinthandlist(player['hands'], player['suits']) + "      " + str(player['bets']), Fore.BLUE)
+        jarvis.say(
+            "Your hands and respective bets for this round are:", Fore.BLUE)
+        jarvis.say(pprinthandlist(
+            player['hands'], player['suits']) + "      " + str(player['bets']), Fore.BLUE)
         delay()
         jarvis.say('---------------------------')
 
         # Dealer's moves
-        jarvis.say("Dealer hand: " + pprinthand(dealerhand, dealersuit), Fore.MAGENTA)
+        jarvis.say("Dealer hand: " +
+                   pprinthand(dealerhand, dealersuit), Fore.MAGENTA)
         dealersum, dealerhand = blackjacksum(dealerhand)
         jarvis.say("Dealer's sum is " + str(dealersum), Fore.MAGENTA)
         while dealersum < 17 or (
@@ -218,10 +242,12 @@ def blackjack(jarvis, s):
             jarvis.say("Dealer draws another card", Fore.MAGENTA)
             dealerhand.append(random.choice(cards))
             dealersuit.append(random.choice(suits))
-            jarvis.say("Newcard is " + str(dealerhand[-1]) + " of " + str(dealersuit[-1]), Fore.MAGENTA)
+            jarvis.say(
+                "Newcard is " + str(dealerhand[-1]) + " of " + str(dealersuit[-1]), Fore.MAGENTA)
             dealersum, dealerhand = blackjacksum(dealerhand)
             jarvis.say("Dealer's sum is " + str(dealersum), Fore.MAGENTA)
-            jarvis.say("Dealer's hand is " + pprinthand(dealerhand, dealersuit), Fore.MAGENTA)
+            jarvis.say("Dealer's hand is " +
+                       pprinthand(dealerhand, dealersuit), Fore.MAGENTA)
         delay()
         jarvis.say('---------------------------')
 
@@ -233,7 +259,8 @@ def blackjack(jarvis, s):
             bet = player['bets'][j]
             sum_, hand = blackjacksum(hand)
             dealersum, dealerhand = blackjacksum(dealerhand)
-            jarvis.say("For the hand- " + pprinthand(hand, suit) + '  sum is-' + str(sum_), Fore.BLUE)
+            jarvis.say("For the hand- " + pprinthand(hand, suit) +
+                       '  sum is-' + str(sum_), Fore.BLUE)
             if len(hand) == 2 and sum_ == 21:
                 jarvis.say("Blackjack!", Fore.BLUE)
                 profit = bet * 1.5
@@ -264,7 +291,8 @@ def blackjack(jarvis, s):
                 player['profit'].append(bet * 0)
             jarvis.say("Profit is- " + str(profit), Fore.BLUE)
         players = wiped_slate(player)
-        choice = jarvis.input("Do you wish to play another round?Y/n \n", Fore.GREEN)
+        choice = jarvis.input(
+            "Do you wish to play another round?Y/n \n", Fore.GREEN)
 
     jarvis.say("OK then, Let's see the results", Fore.GREEN)
     jarvis.say('---------------------------')

@@ -1,0 +1,5 @@
+name: screencapture
+requirements:
+  pip:
+    - PyAutoGUI
+quality: legacy

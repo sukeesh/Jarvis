@@ -1,0 +1,6 @@
+name: hangman
+requirements:
+  pip:
+    - random-word
+online: true
+quality: legacy

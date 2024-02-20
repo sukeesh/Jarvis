@@ -3,13 +3,14 @@ import random
 import bs4
 import requests
 from colorama import Fore
+from jarviscli import entrypoint
 
-from plugin import alias, plugin, require
+
+@entrypoint
+def run(jarvis, s):
+    Euler()(jarvis, s)
 
 
-@alias('project euler')
-@require(network=True)
-@plugin('euler')
 class Euler():
     """
     Gives acces to problems from https://www.projecteuler.net via jarvis
@@ -36,7 +37,8 @@ class Euler():
         self.jarvis.say('3) Info')
         # Just do nothing
         self.jarvis.say('4) Exit')
-        choice = self.jarvis.input_number('Your choice: ', rtype=int, rmin=1, rmax=4)
+        choice = self.jarvis.input_number(
+            'Your choice: ', rtype=int, rmin=1, rmax=4)
 
         if choice == 1:
             problem_number = self.jarvis.input_number('Please, enter the desired number: ',
@@ -102,7 +104,8 @@ class Euler():
         # Print the text
         self.jarvis.say(problem_text)
 
-        self.jarvis.say("If it seems to you that text is not displayed correctly you can follow the link below.", Fore.GREEN)
+        self.jarvis.say(
+            "If it seems to you that text is not displayed correctly you can follow the link below.", Fore.GREEN)
         self.jarvis.say(url)
 
     def show_info(self):
@@ -140,4 +143,4 @@ class Euler():
         # The id is in the first column ('td' tag)
         last_problem_id = int(last_problem_row.find('td').get_text())
 
-        return(last_problem_id)
+        return (last_problem_id)

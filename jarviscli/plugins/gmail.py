@@ -1,8 +1,9 @@
-import smtplib                                               # import stmplib
-from plugin import plugin                                    # import plugin
+import smtplib  # import stmplib
+
+from jarviscli import entrypoint
 
 
-@plugin('gmail')                                             # decorator
+@entrypoint
 def gmail(jarvis, s):
     '''
     Sending email from a gmail account using SMTP services.
@@ -21,7 +22,8 @@ def gmail(jarvis, s):
         print("Could Not connect to Gmail")
         return
     user = jarvis.input("Enter User id\n")                          # YOUR ID
-    Pass_w = jarvis.input("\nEnter your Password\n")                # YOUR Password
+    # YOUR Password
+    Pass_w = jarvis.input("\nEnter your Password\n")
 
     try:
         server.login(user, Pass_w)                           # user log in
@@ -35,7 +37,8 @@ def gmail(jarvis, s):
         server.quit()
         return
 
-    receiver_id = jarvis.input("\nEnter receiver id\n")             # Reciever ID
+    receiver_id = jarvis.input(
+        "\nEnter receiver id\n")             # Reciever ID
     msg = jarvis.input("\nEnter message\n")                         # message
     server.sendmail(user, receiver_id, msg)
 

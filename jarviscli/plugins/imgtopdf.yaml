@@ -1,0 +1,6 @@
+name: img2pdf
+requirements:
+  pip:
+    - pillow
+    - img2pdf
+quality: legacy

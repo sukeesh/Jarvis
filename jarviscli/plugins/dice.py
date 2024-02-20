@@ -1,11 +1,16 @@
-from colorama import Fore
-import re
 import random
+import re
+
+from colorama import Fore
+from jarviscli import entrypoint
 from utilities.textParser import parse_number
-from plugin import plugin
 
 
-@plugin('roll')
+@entrypoint
+def run(jarvis, s):
+    Roll()(jarvis, s)
+
+
 class Roll():
     """
     Roll a dice

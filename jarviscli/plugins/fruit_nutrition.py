@@ -1,9 +1,10 @@
 import requests
-from plugin import plugin
+from jarviscli import entrypoint
 
 BASE_URL = "https://www.fruityvice.com/api/fruit/"
 
-@plugin("fruit nutrition")
+
+@entrypoint
 def fruit_nutrition(jarvis, s):
     """Fetches the nutrition facts for the given fruit name from the Fruityvice API and prints them."""
 
@@ -40,7 +41,8 @@ def fruit_nutrition(jarvis, s):
 
         # Calculate recommended fruit intake based on calories
         fruit_calories_per_100g = nutritions['calories']
-        recommended_grams = (0.1 * daily_calories) / (fruit_calories_per_100g / 100)
+        recommended_grams = (0.1 * daily_calories) / \
+            (fruit_calories_per_100g / 100)
 
         # Check nutrition limits
         max_sugar = 50  # assuming a max intake of 50g of sugar per day
@@ -50,11 +52,13 @@ def fruit_nutrition(jarvis, s):
 
         # You can add more nutrition limits as needed
 
-        jarvis.say(f"Based on your details, it's recommended to consume approximately {recommended_grams:.2f} grams of {data['name']} per day.")
+        jarvis.say(
+            f"Based on your details, it's recommended to consume approximately {recommended_grams:.2f} grams of {data['name']} per day.")
 
     except requests.HTTPError:
         jarvis.say("Error fetching the nutrition facts. Please try again.")
     except requests.ConnectionError:
-        jarvis.say("Failed to connect to the Fruityvice API. Please check your internet connection.")
+        jarvis.say(
+            "Failed to connect to the Fruityvice API. Please check your internet connection.")
     except Exception as e:
         jarvis.say(f"An error occurred: {e}")

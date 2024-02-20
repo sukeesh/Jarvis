@@ -1,0 +1,5 @@
+name: dictionary
+requirements:
+  pip:
+    - nltk
+quality: broken

@@ -1,11 +1,15 @@
 import os
 import shutil
 
-from plugin import plugin
+from jarviscli import entrypoint
 
 
-@plugin("file manage")
-class file_manage:
+@entrypoint
+def run(jarvis, s):
+    FileManager()(jarvis, s)
+
+
+class FileManager:
     """"
     Can manipulate files and folders by deleting, moving, or renaming.
     """
@@ -28,7 +32,8 @@ class file_manage:
             self.folder = True
 
     def get_file_directory(self, jarvis):
-        self.file = jarvis.input("Enter the directory of the file you would like to edit: ")
+        self.file = jarvis.input(
+            "Enter the directory of the file you would like to edit: ")
 
     def get_cmd(self, jarvis):
         # function to find command to be performed to file
@@ -63,7 +68,8 @@ class file_manage:
                 yes = True
                 while yes:
                     # confirm that file should be deleted
-                    confirmation = jarvis.input("Are you sure you want to delete this file? This cannot be undone. (y/n)").lower()
+                    confirmation = jarvis.input(
+                        "Are you sure you want to delete this file? This cannot be undone. (y/n)").lower()
 
                     if confirmation == "y":
                         try:
@@ -109,7 +115,8 @@ class file_manage:
         path_invalid = True
         while path_invalid:
             # get new name
-            new_name = jarvis.input("What would you like to rename this file to? :")
+            new_name = jarvis.input(
+                "What would you like to rename this file to? :")
 
             # get root directory
             root = os.path.split(file)[0]

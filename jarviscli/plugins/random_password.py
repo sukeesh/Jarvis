@@ -1,10 +1,11 @@
-from plugin import plugin
 import random
 import string
+
 from colorama import Fore
+from jarviscli import entrypoint
 
 
-@plugin("random password")
+@entrypoint
 def random_password(jarvis, s):
     while True:
         try:

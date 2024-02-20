@@ -1,0 +1,7 @@
+name: workspace
+requirements:
+  pip:
+    - git
+  native:
+    - git
+quality: legacy

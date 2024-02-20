@@ -1,5 +1,5 @@
-from plugin import plugin
 from colorama import Fore
+from jarviscli import entrypoint
 
 
 def get_matrix(jarvis, r, c):
@@ -34,7 +34,7 @@ def print_matrix(matrix, r, c):
         print(matrix[i])
 
 
-@plugin("matrix add")
+@entrypoint
 def matrix_add(jarvis, s):
     jarvis.say("Sum of matrices with dimensions M x N", Fore.GREEN)
 

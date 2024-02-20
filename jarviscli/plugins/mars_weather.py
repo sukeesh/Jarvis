@@ -1,15 +1,16 @@
-import requests
-from colorama import Fore
-from plugin import plugin, require
 import datetime
 
-API_KEY = 'OsZ9DfFtdgR6zPlVjxFTch1Np5zAcqt9g9i34ga2'
+import requests
+from colorama import Fore
+from jarviscli import entrypoint, get_api_key
+
+API_KEY = get_api_key('mars')
 headers = {'X-Auth-Token': API_KEY}
-url = 'https://api.nasa.gov/insight_weather/?api_key=OsZ9DfFtdgR6zPlVjxFTch1Np5zAcqt9g9i34ga2&feedtype=json&ver=1.0'
+url = 'https://api.nasa.gov/insight_weather/?api_key={}&feedtype=json&ver=1.0'.format(
+    API_KEY)
 
 
-@require(network=True)
-@plugin('mars weather')
+@entrypoint
 def mars_weather(jarvis, s):
     print("")
     jarvis.say("~> I'll show you MARS weather forecast", Fore.RED)

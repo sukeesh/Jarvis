@@ -1,9 +1,8 @@
 from colorama import Back, Style
+from jarviscli import entrypoint
 
-from plugin import plugin
 
-
-@plugin('bmi')
+@entrypoint
 class Bmi:
     """
     Welcome to the Body Mass Index plugin documentation! Here you can find all the functionalitites
@@ -34,8 +33,10 @@ class Bmi:
         """
         syst = {1: 'metric', 2: 'imperial'}
         jarvis.say("Metric system: Type your height in centimeter, weight in kg")
-        jarvis.say("Imperial system: Type your height in ft and inches, weight in lbs")
-        jarvis.say("All measurements should be Integers. Default is Metric system")
+        jarvis.say(
+            "Imperial system: Type your height in ft and inches, weight in lbs")
+        jarvis.say(
+            "All measurements should be Integers. Default is Metric system")
         print()
         prompt = "Please choose the system you would like to use. \n 1: Metric system \n 2: Imperial system \n 3: Exit"
         valid_input = False

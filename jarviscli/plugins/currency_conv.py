@@ -1,15 +1,19 @@
-import os
 import csv
+import os
 from decimal import Decimal
+
 from forex_python.bitcoin import BtcConverter
 from forex_python.converter import CurrencyRates
-from plugin import plugin, require
+from jarviscli import entrypoint
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
-@require(network=True)
-@plugin('currencyconv')
+@entrypoint
+def run(jarvis, s):
+    Currencyconv()(jarvis, s)
+
+
 class Currencyconv():
     """
     Convert an amount of money from a currency to another.
@@ -20,8 +24,10 @@ class Currencyconv():
         currencies = self.find_currencies()
 
         amount = jarvis.input_number('Enter an amount: ')
-        from_currency = self.get_currency(jarvis, 'Enter from which currency: ', currencies)
-        to_currency = self.get_currency(jarvis, 'Enter to which currency: ', currencies)
+        from_currency = self.get_currency(
+            jarvis, 'Enter from which currency: ', currencies)
+        to_currency = self.get_currency(
+            jarvis, 'Enter to which currency: ', currencies)
 
         self.currencyconv(jarvis, amount, from_currency, to_currency)
 

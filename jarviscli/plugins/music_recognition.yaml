@@ -1,0 +1,11 @@
+name: musicrecognise
+requirements:
+  pip:
+    - shazamio
+  native:
+    - ffmpeg
+    - SpeechRecognition
+    - pydub
+    - climage
+online: True
+quality: legacy

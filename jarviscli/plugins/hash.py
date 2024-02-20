@@ -1,10 +1,9 @@
-from plugin import plugin, complete
 import hashlib
-import os
+
+from jarviscli import entrypoint
 
 
-@complete("hash")
-@plugin("hash")
+@entrypoint
 def hash_data(jarvis, s: str) -> None:
     """
     Hashes a given string or file using the specified hash function.

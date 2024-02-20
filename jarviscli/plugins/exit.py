@@ -1,8 +1,7 @@
-from plugin import alias, plugin
+from jarviscli import entrypoint
 
 
-@alias("bye", "goodbye", "q", "quit")
-@plugin('exit')
+@entrypoint
 def exit(jarvis, s):
     """Closing jarvis"""
     jarvis.exit()

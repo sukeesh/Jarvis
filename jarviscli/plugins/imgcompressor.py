@@ -1,11 +1,15 @@
-from PIL import Image
 import os
-from plugin import plugin, alias
+
 from colorama import Fore
+from jarviscli import entrypoint
+from PIL import Image
 
 
-@alias('image compressor')
-@plugin('imgcompressor')
+@entrypoint
+def run(jarvis, s):
+    ImageCompressor()(jarvis, s)
+
+
 class ImageCompressor:
     """A tool to compress images."""
 

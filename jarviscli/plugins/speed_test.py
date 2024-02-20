@@ -1,11 +1,8 @@
 from colorama import Fore
-
-import speedtest as st
-from plugin import plugin, require
+from jarviscli import entrypoint
 
 
-@require(network=True)
-@plugin('speedtest')
+@entrypoint
 def speedtest(jarvis, s):
     """Runs a speedtest on your internet connection"""
     try:

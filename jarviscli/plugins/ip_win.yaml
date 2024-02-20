@@ -1,0 +1,5 @@
+name: ip
+requirements:
+  os:
+    - windows
+quality: legacy

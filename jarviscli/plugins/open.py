@@ -1,9 +1,9 @@
 import os
-from plugin import plugin, require, LINUX
+
+from jarviscli import entrypoint
 
 
-@require(platform=LINUX)
-@plugin('open')
+@entrypoint
 def open(jarvis, s):
 
     if (s != ""):

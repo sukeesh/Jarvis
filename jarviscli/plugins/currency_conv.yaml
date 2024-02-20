@@ -1,0 +1,6 @@
+name: currency
+requirements:
+  pip:
+    - forex-python
+online: True
+quality: legacy

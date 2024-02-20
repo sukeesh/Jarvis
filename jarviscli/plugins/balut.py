@@ -1,10 +1,10 @@
+import functools
+import itertools
 import random
 import textwrap
-import itertools
-import functools
-from plugin import plugin
 from typing import Callable, List
 
+from jarviscli import entrypoint
 
 ScoreCalculator = Callable[[List[int]], int]
 PointsCalculator = Callable[[List[int]], int]
@@ -139,7 +139,7 @@ def calc_balut_points(fields: List[int]) -> int:
 class Category:
 
     def init(self, label: str, score_calculator: ScoreCalculator,
-            points_calculator: PointsCalculator) -> None:
+             points_calculator: PointsCalculator) -> None:
         self._label = label
         self._score_calculator = score_calculator
         self._points_calculator = points_calculator
@@ -167,12 +167,12 @@ class Scoresheet:
     EMPTY_FIELD_PLACEHOLDER = -1
 
     def init(self, categories: List[Category],
-            scoresheet_matrix: List[List[int]]) -> None:
+             scoresheet_matrix: List[List[int]]) -> None:
         self._categories = categories
         self._scoresheet_matrix = scoresheet_matrix
 
     def _validate_category(self, category: int) -> bool:
-        if not(1 <= category <= self.NUM_OF_CATEGORIES):
+        if not (1 <= category <= self.NUM_OF_CATEGORIES):
             raise InvalidCategoryValueError(
                 'Oops! Category should be an integer between 1 and 7. Try again...\n')
 
@@ -377,7 +377,7 @@ class Balut:
             self.roll_dice(dice)
 
     def _validate_dice(self, dice: int) -> bool:
-        if not(1 <= dice <= self.NUM_OF_DICES):
+        if not (1 <= dice <= self.NUM_OF_DICES):
             raise InvalidDiceValueError(
                 'Oops! Dices should be integers between 1 and 5. Try again...\n')
         return True
@@ -397,7 +397,8 @@ class Balut:
                 if selected_dices == '':  # User pressed enter
                     raise PreserveHand()
 
-                dices_to_reroll = self._convert_to_dices_to_reroll(selected_dices)
+                dices_to_reroll = self._convert_to_dices_to_reroll(
+                    selected_dices)
 
                 for dice_to_roll in dices_to_reroll:
                     self.roll_dice(dice_to_roll)
@@ -424,7 +425,8 @@ class Balut:
 
     def _display_winner(self, max_players: List[Player]) -> None:
         if len(max_players) == 1:
-            print(f"\nCongratulations {max_players[0].username} you are the winner!")
+            print(
+                f"\nCongratulations {max_players[0].username} you are the winner!")
         elif len(max_players) > 1:
             print(f'\nThere is a tie between:', end='')
             for i, player in enumerate(max_players, start=1):
@@ -457,31 +459,28 @@ class Balut:
 
         self.display_results(players)
 
-
-@plugin("balut")
-class BalutPlugin:
-
     def create_categories(self) -> List[Category]:
         fours = Category()
         fours.init("Fours",
-            functools.partial(calc_same_face_score, face=4),
-            functools.partial(calc_same_face_points, face=4))
+                   functools.partial(calc_same_face_score, face=4),
+                   functools.partial(calc_same_face_points, face=4))
 
         fives = Category()
         fives.init("Fives",
-            functools.partial(calc_same_face_score, face=5),
-            functools.partial(calc_same_face_points, face=5))
+                   functools.partial(calc_same_face_score, face=5),
+                   functools.partial(calc_same_face_points, face=5))
 
         sixes = Category()
         sixes.init("Sixes",
-            functools.partial(calc_same_face_score, face=6),
-            functools.partial(calc_same_face_points, face=6))
+                   functools.partial(calc_same_face_score, face=6),
+                   functools.partial(calc_same_face_points, face=6))
 
         straight = Category()
         straight.init("Straight", calc_straight_score, calc_straight_points)
 
         full_house = Category()
-        full_house.init("Full House", calc_full_house_score, calc_full_house_points)
+        full_house.init("Full House", calc_full_house_score,
+                        calc_full_house_points)
 
         choice = Category()
         choice.init("Choice", calc_choice_score, calc_choice_points)
@@ -509,12 +508,13 @@ class BalutPlugin:
         return usernames
 
     def create_scoresheets(self, num_of_players: int,
-            categories: List[Category]) -> List[Scoresheet]:
+                           categories: List[Category]) -> List[Scoresheet]:
         scoresheets = []
         for _ in range(num_of_players):
             scoresheet = Scoresheet()
             scoresheet_matrix = [
-                [Scoresheet.EMPTY_FIELD_PLACEHOLDER for _ in range(Scoresheet.NUM_OF_FIELDS)]
+                [Scoresheet.EMPTY_FIELD_PLACEHOLDER for _ in range(
+                    Scoresheet.NUM_OF_FIELDS)]
                 for _ in range(Scoresheet.NUM_OF_CATEGORIES)
             ]
             scoresheet.init(categories, scoresheet_matrix)
@@ -522,7 +522,7 @@ class BalutPlugin:
         return scoresheets
 
     def create_players(self, usernames: List[str],
-            scoresheets: List[Scoresheet]) -> List[Player]:
+                       scoresheets: List[Scoresheet]) -> List[Player]:
         players = []
         for username, scoresheet in zip(usernames, scoresheets):
             player = Player()
@@ -530,13 +530,16 @@ class BalutPlugin:
             players.append(player)
         return players
 
-    def __call__(self, jarvis, _) -> None:
-        num_of_players = self.read_num_of_players()
-        usernames = self.read_usernames(num_of_players)
-        categories = self.create_categories()
-        scoresheets = self.create_scoresheets(num_of_players, categories)
-        players = self.create_players(usernames, scoresheets)
 
-        balut = Balut()
-        balut.init(hand=[-1 for _ in range(Balut.NUM_OF_DICES)])
-        balut.play(players)
+@entrypoint
+def call_balut(jarvis, _) -> None:
+    balut = Balut()
+
+    num_of_players = balut.read_num_of_players()
+    usernames = balut.read_usernames(num_of_players)
+    categories = balut.create_categories()
+    scoresheets = balut.create_scoresheets(num_of_players, categories)
+    players = balut.create_players(usernames, scoresheets)
+
+    balut.init(hand=[-1 for _ in range(Balut.NUM_OF_DICES)])
+    balut.play(players)

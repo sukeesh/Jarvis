@@ -1,0 +1,6 @@
+name: flightradar
+requirements:
+  pip:
+    - FlightRadarAPI
+online: true
+quality: legacy

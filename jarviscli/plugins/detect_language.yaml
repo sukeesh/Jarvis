@@ -1,0 +1,5 @@
+name: detect
+requirements:
+  pip:
+    - fasttext
+quality: legacy

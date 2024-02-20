@@ -1,0 +1,6 @@
+name: yeelight
+requirements:
+  pip:
+    - yeelight
+online: True
+quality: legacy

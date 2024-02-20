@@ -1,0 +1,6 @@
+name: joke
+requirements:
+  pip:
+    - pyjokes
+online: true
+quality: legacy

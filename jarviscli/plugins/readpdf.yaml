@@ -1,0 +1,5 @@
+name: readpdf
+requirements:
+  pip:
+    - PyPDF2
+quality: legacy

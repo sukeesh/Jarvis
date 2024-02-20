@@ -1,10 +1,10 @@
 import os
 import random
-from colorama import Fore, Back, Style
-import webbrowser
 import time
-from plugin import plugin
+import webbrowser
 
+from colorama import Back, Fore, Style
+from jarviscli import entrypoint
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
@@ -18,7 +18,7 @@ def read_questions():
     return Q
 
 
-@plugin("personality")
+@entrypoint
 class personality_test:
     """
     Runs Personality test

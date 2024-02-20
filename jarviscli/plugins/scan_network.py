@@ -1,6 +1,6 @@
 import nmap
-from plugin import plugin, require, LINUX
 from colorama import Fore
+from jarviscli import entrypoint
 
 
 def error_output(jarvis, nm_scan) -> None:
@@ -21,15 +21,16 @@ def show_output(jarvis, results: dict) -> None:
             tcp_ports: dict = devices[d]['tcp']
             for port in tcp_ports:
                 jarvis.say('\tOpen TCP Port: ' + str(port), Fore.GREEN)
-                jarvis.say('\t\tProtocol Name: ' + tcp_ports[port]['name'], Fore.GREEN)
-                jarvis.say('\t\tProduct: ' + tcp_ports[port]['product'], Fore.GREEN)
-                jarvis.say('\t\tVersion: ' + tcp_ports[port]['version'], Fore.GREEN)
+                jarvis.say('\t\tProtocol Name: ' +
+                           tcp_ports[port]['name'], Fore.GREEN)
+                jarvis.say('\t\tProduct: ' +
+                           tcp_ports[port]['product'], Fore.GREEN)
+                jarvis.say('\t\tVersion: ' +
+                           tcp_ports[port]['version'], Fore.GREEN)
         print('----------------------------\n')
 
 
-@require(network=True)
-@require(native="nmap", platform=LINUX)
-@plugin('scan_network')
+@entrypoint
 def scan(jarvis, s: str) -> None:
     """
     Scans provided network for all connected devices

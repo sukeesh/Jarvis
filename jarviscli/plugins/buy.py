@@ -1,9 +1,9 @@
 import webbrowser
 
-from plugin import plugin
+from jarviscli import entrypoint
 
 
-@plugin("buy")
+@entrypoint
 def buy(jarvis, s):
     """
     Searches the string you provide on amazon or ebay.
@@ -49,7 +49,7 @@ def shop(shopName):
 
 
 def generateURL(startingURL, searchTerm, splitted):
-    if(splitted):
+    if (splitted):
         splittedTerm = searchTerm
     else:
         splittedTerm = searchTerm.split(" ")

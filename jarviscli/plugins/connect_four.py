@@ -1,4 +1,4 @@
-from plugin import plugin
+from jarviscli import entrypoint
 
 # General values for connect 4 game and board
 numberRows = 6
@@ -213,7 +213,7 @@ def printBoard():
     print(ss)
 
 
-@plugin("connect_four")
+@entrypoint
 def game(jarvis, s):
     # Welcome message and rules explanation
     print('Welcome to Connect Four! This is a two player game.\n')

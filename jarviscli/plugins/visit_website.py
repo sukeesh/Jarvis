@@ -1,15 +1,18 @@
-import webbrowser
 import os
 import socket
+import webbrowser
 from urllib.parse import urlparse
-from plugin import plugin, alias, require
+
+from jarviscli import entrypoint
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
-@require(network=True)
-@alias("visit website")
-@plugin("website")
+@entrypoint
+def run(jarvis, s):
+    OpenWebsite()(jarvis, s)
+
+
 class OpenWebsite:
     """
     This plugin will visit a website using some parameters.

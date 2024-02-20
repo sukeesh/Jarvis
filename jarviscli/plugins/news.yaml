@@ -1,0 +1,6 @@
+name: news
+requirements:
+  apikey:
+    - newsapi
+online: False
+quality: legacy

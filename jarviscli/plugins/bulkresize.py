@@ -2,8 +2,7 @@ import os
 
 import cv2
 from colorama import Fore
-
-from plugin import plugin
+from jarviscli import entrypoint
 
 IMAGE_FORMATS = ['.jpg', '.png', '.jpeg', '.svg']
 
@@ -193,7 +192,7 @@ def bulk_resizer(input_path, output_path, desired_size=32,
         cv2.imwrite(output_path1, new_im)
 
 
-@plugin("bulkresizer")
+@entrypoint
 def spin(jarvis, s):
     """
     This resizes all the images in a given directory

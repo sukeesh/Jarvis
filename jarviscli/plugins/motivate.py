@@ -1,8 +1,8 @@
-from plugin import plugin
 from colorama import Fore
+from jarviscli import entrypoint
 
 
-@plugin("motivate me")
+@entrypoint
 def motivate(jarvis, s):
     quotes = ["You're gonna wake up and work hard at it", "Don't let you're dreams be dreams",
               "Make your dreams come true", "Nothing is impossible"]

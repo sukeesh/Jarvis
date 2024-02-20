@@ -1,10 +1,8 @@
-from plugin import plugin
-from plugin import complete
 import requests
+from jarviscli import entrypoint
 
 
-@complete("fruit")
-@plugin("fruit")
+@entrypoint
 def fruit(jarvis, s: str) -> None:
     """
     Retrieves information about a specific fruit from the Fruityvice API and outputs it to the user.
@@ -54,4 +52,5 @@ def fruit(jarvis, s: str) -> None:
 
     # Handle errors
     except (requests.exceptions.RequestException, KeyError, ValueError):
-        jarvis.say("Error occurred while fetching the fruit information. Please try again.")
+        jarvis.say(
+            "Error occurred while fetching the fruit information. Please try again.")

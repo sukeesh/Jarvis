@@ -1,11 +1,16 @@
-import img2pdf
-from PIL import Image
 import os
-from plugin import plugin
+
+import img2pdf
 from colorama import Fore
+from jarviscli import entrypoint
+from PIL import Image
 
 
-@plugin('image to pdf')
+@entrypoint
+def run(jarvis, s):
+    ImageToPDF()(jarvis, s)
+
+
 class ImageToPDF:
     """
     A tool to converrt images to pdf file

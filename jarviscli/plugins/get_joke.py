@@ -1,10 +1,9 @@
 import pyjokes
 from colorama import Fore
-from plugin import plugin, require
+from jarviscli import entrypoint
 
 
-@require(network=True)
-@plugin('joke')
+@entrypoint
 def joke(jarvis, s):
     """Tells a random joke"""
     joke = pyjokes.get_joke()

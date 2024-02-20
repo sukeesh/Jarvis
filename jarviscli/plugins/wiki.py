@@ -1,10 +1,12 @@
 import wikipedia
-from plugin import plugin, complete, require
+from jarviscli import entrypoint
 
 
-@require(network=True)
-@complete("search", "sumary", "content")
-@plugin('wiki')
+@entrypoint
+def run(jarvis, s):
+    Wiki()(jarvis, s)
+
+
 class Wiki():
     """
     Jarvis has now wiki feature

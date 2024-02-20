@@ -1,0 +1,12 @@
+name: whois
+requirements:
+  native:
+    - whois
+    - nslookup
+    - ping
+  pip:
+    - whois
+  os:
+    - unix
+online: true
+quality: legacy

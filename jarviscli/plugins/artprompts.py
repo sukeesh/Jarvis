@@ -1,14 +1,14 @@
-from plugin import plugin
-import random
-from colorama import Fore
 import json
-from packages.memory.memory import Memory
 import os
+import random
+
+from colorama import Fore
+from jarviscli import entrypoint
 
 FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
-@plugin("prompt")
+@entrypoint
 class art_promps():
     template = "@templates@"
 

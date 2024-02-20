@@ -1,14 +1,16 @@
 # !!! This uses the https://newsapi.org/ api. TO comply with the TOU
 # !!! we must link back to this site whenever we display results.
 import json
-import requests
 import webbrowser
+
+import requests
 from colorama import Fore
-from plugin import plugin, require
+from jarviscli import entrypoint, get_api_key
+
+API_KEY = get_api_key('newsapi')
 
 
-@require(network=True)
-@plugin('news')
+@entrypoint
 class News:
 
     def __init__(self):
@@ -33,15 +35,7 @@ class News:
             self.source_dict[str(self.sources.index(source) + 1)] = source
 
     def __call__(self, jarvis, s):
-        if s == "updatekey":
-            key = jarvis.input(
-                "Please enter your NEWS API key (q or Enter go back): ")
-            if key.lower() == "q" or key.lower() == "":
-                jarvis.say("Could not update the NEWS API key! ", Fore.RED)
-            else:
-                self.update_api_key(jarvis, key)
-                jarvis.say("NEWS API key successfully updated! ", Fore.GREEN)
-        elif s == "configure":
+        if s == "configure":
             self.configure(jarvis)
         elif s == "remove":
             self.remove_source(jarvis)
@@ -50,8 +44,6 @@ class News:
             jarvis.say("Command\t\t | Description")
             jarvis.say("-------------------------------------")
             jarvis.say("news\t\t : Finds top headlines")
-            jarvis.say(
-                "news updatekey\t : Updates the news API key of the user")
             jarvis.say(
                 "news configure\t : Configures the news channel of the user")
             jarvis.say("news sources\t : List the configured news sources")
@@ -71,12 +63,6 @@ class News:
 
                 for index in sorted([int(x) for x in dic.keys()]):
                     jarvis.say(str(index) + " : " + dic[str(index)])
-        elif self.get_api_key(jarvis) is None:
-            jarvis.say("Missing API key", Fore.RED)
-            jarvis.say("Visit https://newsapi.org/ to get the key", Fore.RED)
-            jarvis.say(
-                "Use \'news updatekey\' command to add a key\n",
-                Fore.RED)
         elif s == "" or s == " ":
             self.parse_articles(self.get_headlines(jarvis), jarvis)
         else:
@@ -86,21 +72,6 @@ class News:
             if " " in searchlist:
                 searchlist.remove(" ")
             self.parse_articles(self.get_news(jarvis, searchlist), jarvis)
-
-    @staticmethod
-    def get_api_key(jarvis):
-        """
-            will return either the news_api key of the user, already stored in the memory.json
-            file or None in case the user does not have his own api
-        """
-        return jarvis.get_data("news-settings")
-
-    def update_api_key(self, jarvis, api_key):
-        """
-            the user might have a news api key and they might want to add to memory.json or update an old one
-        """
-        jarvis.update_data("news-settings", api_key)
-        return self.get_api_key(jarvis)
 
     def get_news_sources(self, jarvis):
         """
@@ -193,13 +164,12 @@ class News:
             jarvis.say(
                 "You have not configured any source. Getting top headlines\n",
                 Fore.GREEN)
-            url = "https://newsapi.org/v2/top-headlines?country=us&apiKey=" + \
-                self.get_api_key(jarvis)
+            url = "https://newsapi.org/v2/top-headlines?country=us&apiKey=" + API_KEY
         else:
             url = "https://newsapi.org/v2/top-headlines?sources="
             for source in sources:
                 url += source + ","
-            url += "&apiKey=" + self.get_api_key(jarvis)
+            url += "&apiKey=" + API_KEY
         return self._get(jarvis, url)
 
     def get_news(self, jarvis, searchlist):
@@ -216,7 +186,7 @@ class News:
             url += "&sources="
             for source in sources:
                 url += source + ","
-        url += "&apiKey=" + self.get_api_key(jarvis)
+        url += "&apiKey=" + API_KEY
         return self._get(jarvis, url)
 
     def _get(self, jarvis, url):

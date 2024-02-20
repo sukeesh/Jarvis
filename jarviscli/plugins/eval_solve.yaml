@@ -1,0 +1,5 @@
+name: solve
+requirements:
+  pip:
+    - sympy
+quality: legacy

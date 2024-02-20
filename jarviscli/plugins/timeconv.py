@@ -1,8 +1,12 @@
-from plugin import plugin
+from jarviscli import entrypoint
 
 
-@plugin('timeconv')
-class timeconv():
+@entrypoint
+def run(jarvis, s):
+    Timeconv()(jarvis, s)
+
+
+class Timeconv():
     """
     timeconv Documentation.
     timeconv is a time converter.
@@ -71,12 +75,14 @@ class timeconv():
 
         precision = 0
         if (convamount.is_integer() is False):
-            precision = jarvis.input_number("Please enter precision (max:12): ")
+            precision = jarvis.input_number(
+                "Please enter precision (max:12): ")
             while True:
                 if (precision.is_integer() and precision <= 12):
                     break
                 else:
-                    precision = jarvis.input_number("Please enter an integer (max:12): ")
+                    precision = jarvis.input_number(
+                        "Please enter an integer (max:12): ")
 
         convamount = round(convamount, int(precision))
 
@@ -143,6 +149,7 @@ class timeconv():
         else:
             todisp = self.units.get(to_unit) + "s"
 
-        txt = str(amount) + " " + fromdisp + " is equal to " + str(convamount) + " " + todisp
+        txt = str(amount) + " " + fromdisp + " is equal to " + \
+            str(convamount) + " " + todisp
 
         return txt

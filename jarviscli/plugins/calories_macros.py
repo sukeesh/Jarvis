@@ -1,10 +1,14 @@
-from colorama import Fore
-from plugin import plugin, alias
 from typing import Callable, Tuple
 
+from colorama import Fore
+from jarviscli import entrypoint
 
-@alias("macros")
-@plugin("calories")
+
+@entrypoint
+def cal(jarvis, s):
+    CaloriesMacrosPlugin()(jarvis, s)
+
+
 class CaloriesMacrosPlugin:
     """
     The current plugin calculates the recommended daily calorie intake and
@@ -18,7 +22,7 @@ class CaloriesMacrosPlugin:
         WEIGHT_GAIN = 3
 
         def __init__(self, gender: str, age: int, height: int, weight: int,
-                activity_level: int, goal: int) -> None:
+                     activity_level: int, goal: int) -> None:
             self._gender = gender
             self._age = age
             self._height = height
@@ -55,7 +59,7 @@ class CaloriesMacrosPlugin:
                 gender_constant = FEMALE_CONSTANT
 
             return (WEIGHT_FACTOR * self._weight + HEIGHT_FACTOR * self._height
-                + AGE_FACTOR * self._age + gender_constant)
+                    + AGE_FACTOR * self._age + gender_constant)
 
         def _calc_tdee(self, rmr: float) -> int:
             """
@@ -105,30 +109,30 @@ class CaloriesMacrosPlugin:
 
             if self._gender == 'M' and cal_intake < MIN_SUGGESTED_MALE_CAL_INTAKE:
                 jarvis.say(f'{Fore.CYAN}\nThe calculated daily calorie intake was '
-                    'below the suggested of 1500 cal for males. We suggest you to '
-                    'consult a nutrition expert to help you achieve your goal!')
+                           'below the suggested of 1500 cal for males. We suggest you to '
+                           'consult a nutrition expert to help you achieve your goal!')
                 exit()
 
             if self._gender == 'F' and cal_intake < MIN_SUGGESTED_FEMALE_CAL_INTAKE:
                 jarvis.say(f'{Fore.CYAN}\nThe calculated daily calorie intake was '
-                    'below the suggested of 1200 cal for females. We suggest you '
-                    'to consult a nutrition expert to help you achieve your goal!')
+                           'below the suggested of 1200 cal for females. We suggest you '
+                           'to consult a nutrition expert to help you achieve your goal!')
                 exit()
 
             if self._goal == self.WEIGHT_LOSS:
                 jarvis.say('\nThe recommended daily calorie intake to achieve a '
-                    f'weight loss of ~0.5kg/week is: {Fore.YELLOW}{cal_intake}')
+                           f'weight loss of ~0.5kg/week is: {Fore.YELLOW}{cal_intake}')
             elif self._goal == self.WEIGHT_GAIN:
                 jarvis.say('\nThe recommended daily calorie intake to achieve a '
-                    f'weight gain of ~0.5kg/week is: {Fore.YELLOW}{cal_intake}')
+                           f'weight gain of ~0.5kg/week is: {Fore.YELLOW}{cal_intake}')
             else:
                 jarvis.say('\nThe recommended daily calorie intake to maintain '
-                    f'your current weight is: {Fore.YELLOW}{cal_intake}')
+                           f'your current weight is: {Fore.YELLOW}{cal_intake}')
 
     class MacronutrientCalculator:
 
         def __init__(self, daily_cal_intake: int, protein_ratio: float = 0.2,
-                carb_ratio: float = 0.5, fat_ratio: float = 0.3) -> None:
+                     carb_ratio: float = 0.5, fat_ratio: float = 0.3) -> None:
             self._daily_cal_intake = daily_cal_intake
             self._protein_ratio = protein_ratio
             self._carb_ratio = carb_ratio
@@ -155,9 +159,9 @@ class CaloriesMacrosPlugin:
             return protein_g, carb_g, fat_g
 
         def display_macros_results(self, jarvis,
-                protein_g: int, carb_g: int, fat_g: int) -> None:
+                                   protein_g: int, carb_g: int, fat_g: int) -> None:
             jarvis.say('Expressed in terms of macronutrients, that means that in '
-            'a day you should eat:')
+                       'a day you should eat:')
             jarvis.say(f'Proteins: {Fore.RED}{protein_g}g')
             jarvis.say(f'Carbs: {Fore.GREEN}{carb_g}g')
             jarvis.say(f'Fats: {Fore.YELLOW}{fat_g}g')
@@ -172,8 +176,8 @@ class CaloriesMacrosPlugin:
         input_msg = 'Age: '
         bool_expression: Callable[[int], bool] = lambda age: age >= 14
         error_msg = ('We suggest you to consult a nutrition expert if you are '
-            'under 14 years old.'
-            '\nIf you made a mistake while entering your age, try again...')
+                     'under 14 years old.'
+                     '\nIf you made a mistake while entering your age, try again...')
         age = self.read_input(jarvis, input_msg, bool_expression, error_msg)
 
         input_msg = 'Height (cm): '
@@ -206,7 +210,8 @@ class CaloriesMacrosPlugin:
 
         use_default_macro_ratios = self.read_use_default_macro_ratios(jarvis)
         if use_default_macro_ratios:
-            macro_calculator = self.MacronutrientCalculator(daily_calorie_intake)
+            macro_calculator = self.MacronutrientCalculator(
+                daily_calorie_intake)
             protein_g, carb_g, fat_g = macro_calculator.calc_macros()
         else:
             error_msg = "Oops! That was not a valid ratio. Try again..."
@@ -217,8 +222,10 @@ class CaloriesMacrosPlugin:
                 daily_calorie_intake, protein_ratio, carb_ratio, fat_ratio)
             protein_g, carb_g, fat_g = macro_calculator.calc_macros()
 
-        calorie_calculator.display_calorie_results(jarvis, daily_calorie_intake)
-        macro_calculator.display_macros_results(jarvis, protein_g, carb_g, fat_g)
+        calorie_calculator.display_calorie_results(
+            jarvis, daily_calorie_intake)
+        macro_calculator.display_macros_results(
+            jarvis, protein_g, carb_g, fat_g)
 
     def yellow(self, content: str) -> str:
         return f'{Fore.YELLOW}{content}{Fore.RESET}'
@@ -255,7 +262,7 @@ class CaloriesMacrosPlugin:
         return (gender.upper() == "M" or gender.upper() == "F")
 
     def read_input(self, jarvis, input_message: str,
-            bool_expression: Callable[[int], bool], error_message: str) -> int:
+                   bool_expression: Callable[[int], bool], error_message: str) -> int:
         while True:
             input = jarvis.input(input_message)
             if self.validate_input(input, bool_expression):
@@ -263,7 +270,7 @@ class CaloriesMacrosPlugin:
             jarvis.say(self.red(error_message))
 
     def validate_input(self, input: str,
-            bool_expression: Callable[[int], bool]) -> bool:
+                       bool_expression: Callable[[int], bool]) -> bool:
         try:
             input = int(input)
             if bool_expression(input):
@@ -274,29 +281,29 @@ class CaloriesMacrosPlugin:
 
     def read_use_default_macro_ratios(self, jarvis) -> bool:
         input = jarvis.input('\nThe recommended macronutrients will be '
-            'computed using the default ratios of:\n'
-            f'  {self.yellow("20%")} for proteins\n'
-            f'  {self.yellow("50%")} for carbs\n'
-            f'  {self.yellow("30%")} for fats\n'
-            'To proceed with the default ratios type (y/Y)\n'
-            'To change the default ratios type any other button\n'
-            'Use the dafault macronutrient ratios: ')
+                             'computed using the default ratios of:\n'
+                             f'  {self.yellow("20%")} for proteins\n'
+                             f'  {self.yellow("50%")} for carbs\n'
+                             f'  {self.yellow("30%")} for fats\n'
+                             'To proceed with the default ratios type (y/Y)\n'
+                             'To change the default ratios type any other button\n'
+                             'Use the dafault macronutrient ratios: ')
 
         if input.upper() == 'Y':
             return True
         return False
 
     def read_macro_ratios(self, jarvis,
-            error_message: str) -> Tuple[float, float, float]:
+                          error_message: str) -> Tuple[float, float, float]:
         while True:
             jarvis.say('\nThe recommended ratios for proteins are: '
-                f'{self.yellow("0.1")} - {self.yellow("0.35")}\n'
-                'The recommended ratios for carbs are: '
-                f'{self.yellow("0.45")} - {self.yellow("0.65")}\n'
-                'The recommended ratios for fats are: '
-                f'{self.yellow("0.2")} - {self.yellow("0.35")}\n'
-                'The macronutrient ratios you will provide must have a sum'
-                'equal to one')
+                       f'{self.yellow("0.1")} - {self.yellow("0.35")}\n'
+                       'The recommended ratios for carbs are: '
+                       f'{self.yellow("0.45")} - {self.yellow("0.65")}\n'
+                       'The recommended ratios for fats are: '
+                       f'{self.yellow("0.2")} - {self.yellow("0.35")}\n'
+                       'The macronutrient ratios you will provide must have a sum'
+                       'equal to one')
 
             try:
                 protein_ratio = float(jarvis.input('Protein ratio: '))
@@ -310,7 +317,7 @@ class CaloriesMacrosPlugin:
                 return protein_ratio, carb_ratio, fat_ratio
 
     def validate_macro_ratios(self, protein_ratio: float, carb_ratio: float,
-            fat_ratio: float) -> bool:
+                              fat_ratio: float) -> bool:
         """
         The recommended macronutrient ratios are:
         - Proteins: 10-35% of total calories
@@ -329,13 +336,13 @@ class CaloriesMacrosPlugin:
         FAT_RATIO_LOWER_BOUND = 0.2
         FAT_RATIO_UPPER_BOUND = 0.35
 
-        if not(PROT_RATIO_LOWER_BOUND <= protein_ratio <= PROT_RATIO_UPPER_BOUND):
+        if not (PROT_RATIO_LOWER_BOUND <= protein_ratio <= PROT_RATIO_UPPER_BOUND):
             return False
 
-        if not(CARB_RATIO_LOWER_BOUND <= carb_ratio <= CARB_RATIO_UPPER_BOUND):
+        if not (CARB_RATIO_LOWER_BOUND <= carb_ratio <= CARB_RATIO_UPPER_BOUND):
             return False
 
-        if not(FAT_RATIO_LOWER_BOUND <= fat_ratio <= FAT_RATIO_UPPER_BOUND):
+        if not (FAT_RATIO_LOWER_BOUND <= fat_ratio <= FAT_RATIO_UPPER_BOUND):
             return False
 
         if protein_ratio + carb_ratio + fat_ratio != 1:

@@ -1,0 +1,5 @@
+name: akinator
+requirements:
+  pip:
+    - akinator
+online: true

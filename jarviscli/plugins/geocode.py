@@ -1,11 +1,15 @@
 import re
+
 import requests
 from colorama import Fore
-from plugin import plugin, require
+from jarviscli import entrypoint
 
 
-@require(network=True)
-@plugin('geocode')
+@entrypoint
+def run(jarvis, s):
+    Geocoder()(jarvis, s)
+
+
 class Geocoder:
     """
     Geocoding tool to convert street addresses to latitude and longitude.

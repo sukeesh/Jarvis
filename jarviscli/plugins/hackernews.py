@@ -1,11 +1,10 @@
-from typing import List, Tuple, Set
 import webbrowser
+from typing import List, Set, Tuple
 
+import requests
 from bs4 import BeautifulSoup
 from colorama import Fore
-import requests
-
-from plugin import plugin, alias, require
+from jarviscli import entrypoint
 
 
 class HackerNewsRequestException(Exception):
@@ -16,9 +15,7 @@ class HackerNewsInvalidInputException(Exception):
     """Custom exception class for invalid inputs"""
 
 
-@require(network=True)
-@alias("readhn")
-@plugin("hackernews")
+@entrypoint
 class HackerNews:
     """List titles from https://news.ycombinator.com/
 
@@ -94,7 +91,8 @@ class HackerNews:
             prompt="\nEnter requested title indexes: ", color=Fore.YELLOW
         )
 
-        selected_indexes = [int(index) for index in indexes.split() if index.isdigit()]
+        selected_indexes = [int(index)
+                            for index in indexes.split() if index.isdigit()]
 
         if not selected_indexes:
             raise HackerNewsInvalidInputException("No index selected!")

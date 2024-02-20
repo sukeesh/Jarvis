@@ -1,13 +1,12 @@
-from colorama import Fore
-from plugin import plugin, require, alias
-import requests
 import json
 import os
 
+import requests
+from colorama import Fore
+from jarviscli import entrypoint
 
-@require(network=True)
-@alias("cocktails")
-@plugin("cocktail cookbook")
+
+@entrypoint
 class Cocktail:
     def __call__(self, jarvis, s):
         self.jarvis = jarvis

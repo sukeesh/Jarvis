@@ -1,11 +1,11 @@
-from plugin import plugin
-from colorama import Fore
 import requests
-
+from colorama import Fore
+from jarviscli import entrypoint
 
 
 @plugin("fact")
-def hello_world(jarvis,s):
+@entrypoint
+def hello_world(jarvis, s):
     url = 'https://uselessfacts.jsph.pl/random.json?language=en'
     resp = requests.get(url)
 
@@ -14,7 +14,4 @@ def hello_world(jarvis,s):
         jarvis.say(data['text'])
 
     else:
-        jarvis.say("No fact was encountered",Fore.RED)
-
-
-                
+        jarvis.say("No fact was encountered", Fore.RED)

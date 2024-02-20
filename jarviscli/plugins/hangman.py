@@ -1,8 +1,8 @@
-from plugin import plugin
+from jarviscli import entrypoint
 from random_word import RandomWords
 
 
-@plugin('hangman')
+@entrypoint
 def hangman(jarvis, s):
     initialText = "#########################################\n" \
                   "# Hello Hangman Game Is About To Begin! #\n" \

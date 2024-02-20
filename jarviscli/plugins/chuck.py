@@ -1,11 +1,9 @@
 import requests
 from colorama import Fore
-from plugin import alias, plugin, require
+from jarviscli import entrypoint
 
 
-@alias("tell joke")
-@require(network=True)
-@plugin('joke chuck')
+@entrypoint
 def chuck(jarvis, s):
     """Tell a joke about Chuck Norris"""
     req = requests.get("https://api.chucknorris.io/jokes/random")

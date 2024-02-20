@@ -1,10 +1,11 @@
 import requests
 from colorama import Fore
-from plugin import plugin, require
+from jarviscli import entrypoint
 
 
 @require(network=True)
 @plugin("numbersapi")
+@entrypoint
 def numbersapi(jarvis, s):
     """
     numbersapi: Displays API

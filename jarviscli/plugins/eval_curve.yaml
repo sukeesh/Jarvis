@@ -1,0 +1,5 @@
+name: curve
+requirements:
+  pip:
+    - sympy
+quality: legacy

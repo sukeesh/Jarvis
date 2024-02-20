@@ -1,10 +1,10 @@
 from os import system
+
 from colorama import Fore
-from plugin import plugin, require
+from jarviscli import entrypoint
 
 
-@require(native='grep')
-@plugin('match')
+@entrypoint
 def match(jarvis, string):
     """
     Matches a string pattern in a file using regex.

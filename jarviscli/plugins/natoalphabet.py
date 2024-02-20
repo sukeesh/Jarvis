@@ -1,7 +1,7 @@
-from plugin import plugin
+from jarviscli import entrypoint
 
 
-@plugin('natoalphabet')
+@entrypoint
 def natoalphabet(jarvis, s):
     if len(s) == 0:
         jarvis.say('\nEnter word')

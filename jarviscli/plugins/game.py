@@ -1,8 +1,7 @@
 from random import randint
 
 from colorama import Fore
-
-from plugin import alias, plugin
+from jarviscli import entrypoint
 
 
 # function for generating 4-digit number
@@ -31,8 +30,7 @@ def check(checker, guess_num, div, md, true_rank, cows, bulls):
     return cows, bulls
 
 
-@alias("bulls")
-@plugin("game")
+@entrypoint
 def bulls_and_cows(jarvis, s):
     """"""
     jarvis.say('')
@@ -52,7 +50,8 @@ def bulls_and_cows(jarvis, s):
     while True:
         st = jarvis.input()
         if st == 'q':
-            jarvis.say('Thank you for playing! New games are coming soon!', Fore.CYAN)
+            jarvis.say(
+                'Thank you for playing! New games are coming soon!', Fore.CYAN)
             break
         else:
             tries = int(0)
@@ -68,7 +67,8 @@ def bulls_and_cows(jarvis, s):
 
             # loop while the secret number is found or user quits
             while True:
-                jarvis.say('Enter your guess, please (type "q" to quit):', Fore.CYAN)
+                jarvis.say(
+                    'Enter your guess, please (type "q" to quit):', Fore.CYAN)
                 guess_num = jarvis.input()
                 if guess_num == 'q':
                     jarvis.say('Thank you for playing!', Fore.CYAN)
@@ -77,7 +77,8 @@ def bulls_and_cows(jarvis, s):
                 try:
                     guess_num = int(guess_num)
                 except ValueError:
-                    jarvis.say(Fore.RED + 'Invalid guess! ' + Fore.RESET + '(should be a number)')
+                    jarvis.say(Fore.RED + 'Invalid guess! ' +
+                               Fore.RESET + '(should be a number)')
                     continue
 
                 tries += 1
@@ -100,7 +101,8 @@ def bulls_and_cows(jarvis, s):
                     + str(bulls)
                     + '\n')
                 if bulls == 4:
-                    jarvis.say('Congratulations! Your guess is right:', Fore.CYAN)
+                    jarvis.say(
+                        'Congratulations! Your guess is right:', Fore.CYAN)
                     jarvis.say(
                         '\t'
                         + Fore.GREEN
@@ -115,5 +117,6 @@ def bulls_and_cows(jarvis, s):
                         + str(tries)
                         + Fore.CYAN
                         + ' tries.')
-                    jarvis.say('Start a new game or quit? (Type "s" or "q"):', Fore.CYAN)
+                    jarvis.say(
+                        'Start a new game or quit? (Type "s" or "q"):', Fore.CYAN)
                     break
