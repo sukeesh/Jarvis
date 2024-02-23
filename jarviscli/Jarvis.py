@@ -90,10 +90,8 @@ class Jarvis(CmdInterpreter, object):
         if words and (words[0].isdigit() or line[0] == "-"):
             line = "calculate " + line
             words = line.split()
-
-        if line.startswith("help"):
-            return line
-        if line.startswith("status"):
+        
+        if line.startswith("help") or line.startswith("status"):
             return line
 
         if not words:
