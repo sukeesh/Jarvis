@@ -3,6 +3,7 @@ import shutil
 import subprocess
 import sys
 import time
+import traceback
 from tempfile import NamedTemporaryFile
 from threading import Thread
 
@@ -88,6 +89,7 @@ def spinning_cursor_stop():
 def shell(cmd):
     class Fail:
         def should_not_fail(self, msg=''):
+            print(self)
             fail(msg, fatal=True)
 
         def success(self):

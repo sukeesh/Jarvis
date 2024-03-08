@@ -1,3 +1,5 @@
 colorama
 requests
 pluginmanager
+pickpack
+PyYAML
