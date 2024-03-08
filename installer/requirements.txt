@@ -3,3 +3,5 @@ requests
 pluginmanager
 pickpack
 PyYAML
+inquirer
+cryptography

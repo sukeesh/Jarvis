@@ -1,189 +1,523 @@
-# -*- encoding: utf-8 -*-
-
 import os
-from colorama import Fore
-import nltk
-import re
-import sys
 import tempfile
-from utilities.GeneralUtilities import print_say
-from CmdInterpreter import CmdInterpreter
+import threading
+import traceback
+from cmd import Cmd
+from threading import Semaphore
+from typing import Dict, Optional
 
-# register hist path
+import frontend.cli.cmd_interpreter
+from colorama import Fore
+from packages.geolocation import Location, LocationFields
+from packages.memory.key_vault import KeyVault
+from packages.memory.memory import Memory
+from packages.notification import (NOTIFY_CRITICAL, NOTIFY_LOW, NOTIFY_NORMAL,
+                                   notify)
+from packages.online_status import OnlineStatus
+from packages.schedule import Scheduler
+from utilities.GeneralUtilities import error, warning
+
+# import frontend.gui_kivy.jarvis_gui
+# import frontend.gui_pygame.jarvis_gui
+# import frontend.server.server
+# import frontend.voice
+# import frontend.voice_control
+
+# register hist path via tempfile
 HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
 
 
-PROMPT_CHAR = '~>'
+class Jarvis:
+    _CONNECTION_ERROR_MSG = "It seems like I'm not connected to the Internet. Check your connection and type 'connect'!"
 
-"""
-    AUTHORS' SCOPE:
-        We thought that the source code of Jarvis would
-        be more organized if we treat Jarvis as Object.
-        So we decided to create this Jarvis Class which
-        implements the core functionality of Jarvis in a
-        simpler way than the original __main__.py.
-    HOW TO EXTEND JARVIS:
-        In progress..
-    DETECTED ISSUES:
-        * Furthermore, "near me" command is unable to find
-        the actual location of our laptops.
-"""
+    AVAILABLE_FRONTENDS = {'cli': frontend.cli.cmd_interpreter.CmdInterpreter,
+                           # 'gui_kivy': frontend.gui_kivy.jarvis_gui.JarvisGui,
+                           # 'gui_pygame': frontend.gui_pygame.jarvis_gui.JarvisGui,
+                           # 'server': frontend.server.server.JarvisServer,
+                           # 'tts': frontend.voice.JarvisVoice,
+                           # 'voice_control': frontend.voice_control.VoiceControl
+                           }
 
+    NOTIFY_LOW = NOTIFY_LOW
+    NOTIFY_NORMAL = NOTIFY_NORMAL
+    NOTIFY_CRITICAL = NOTIFY_CRITICAL
+    LOCATION_FIELDS = LocationFields
 
-class Jarvis(CmdInterpreter, object):
-    # variable used at Breakpoint #1.
-    # allows Jarvis say "Hi", only at the first interaction.
-    first_reaction_text = ""
-    first_reaction_text += Fore.CYAN + \
-        'Jarvis\' sound is by default disabled.' + Fore.RESET
-    first_reaction_text += "\n"
-    first_reaction_text += Fore.CYAN + 'In order to let Jarvis talk out loud type: '
-    first_reaction_text += Fore.RESET + Fore.MAGENTA + 'enable sound' + Fore.RESET
-    first_reaction_text += "\n"
-    first_reaction_text += Fore.CYAN + \
-        "Type 'help' for a list of available actions." + Fore.RESET
-    first_reaction_text += "\n"
-    prompt = (
-        Fore.MAGENTA
-        + "{} Hi, what can I do for you?\n".format(PROMPT_CHAR)
-        + Fore.RESET)
+    def __init__(self, language_parser_class, plugin_manager, quality):
+        self._data_dir = os.path.join(os.path.dirname(__file__), 'data')
 
-    # Used to store user specific data
+        self.cache = ''
+        self.stdout = self
 
-    def __init__(self, first_reaction_text=first_reaction_text,
-                 prompt=prompt, first_reaction=True,
-                 directories=["jarviscli/plugins", "custom"]):
-        directories = self._rel_path_fix(directories)
+        self.spinner_running = False
 
-        if sys.platform == 'win32':
-            self.use_rawinput = False
-        self.regex_dot = re.compile('\\.(?!\\w)')
-        CmdInterpreter.__init__(self, first_reaction_text, prompt,
-                                directories, first_reaction)
+        self.memory = Memory()
+        self.key_vault = KeyVault()
 
-    def _rel_path_fix(self, dirs):
-        dirs_abs = []
-        work_dir = os.path.dirname(__file__)
-        # remove 'jarviscli/' from path
-        work_dir = os.path.dirname(work_dir)
+        dependency = Dependency(self.key_vault, int(quality), self)
+        self.frontend_status = dependency.check(
+            self.AVAILABLE_FRONTENDS.values())
 
-        # fix nltk path
-        nltk.data.path.append(os.path.join(work_dir, "jarviscli/data/nltk"))
+        self.scheduler = Scheduler()
+        self.location = Location(dependency)
 
-        # relative -> absolute paths
-        for directory in dirs:
-            if not directory.startswith(work_dir):
-                directory = os.path.join(work_dir, directory)
-            dirs_abs.append(directory)
-        return dirs_abs
+        self.active_frontends = {}
+        self.running = Semaphore()
 
-    def default(self, data):
-        """Jarvis let's you know if an error has occurred."""
-        print_say("I could not identify your command...", self, Fore.MAGENTA)
+        self.online_status = OnlineStatus()
+        self.offline_only = False
+        self.plugins_offline = {}
+        self.plugins_online = {}
 
-    def precmd(self, line):
-        """Hook that executes before every command."""
-        words = line.split()
-        HISTORY_FILENAME.write(line + '\n')
+        self.dependency_status, self.plugins = plugin_manager.load(dependency)
 
-        # append calculate keyword to front of leading char digit (or '-') in line
-        if words and (words[0].isdigit() or line[0] == "-"):
-            line = "calculate " + line
-            words = line.split()
+        for name, plugin in self.plugins.items():
+            # plugin.run = catch_all_exceptions(plugin.run)
+            try:
+                plugin.init(self)
+            except Exception as e:
+                print("Failed init plugin")
+                print(e)
+                traceback.print_exc()
 
-        if line.startswith("help"):
-            return line
-        if line.startswith("status"):
-            return line
+            if plugin.require().network:
+                self.plugins_online[name] = plugin
+            else:
+                self.plugins_offline[name] = plugin
 
-        if not words:
-            line = "None"
+        self.language_parser_online = language_parser_class()
+        self.language_parser_online.train(self.plugins.values())
+        self.language_parser_offline = language_parser_class()
+        self.language_parser_offline.train(self.plugins_offline.values())
+
+    def set_offline_mode(self, state=True):
+        self.offline_only = state
+
+    def has_internet(self):
+        return not self.offline_only and self.online_status.get_online_status()
+
+    def get_plugins(self):
+        if self.has_internet():
+            return self.plugins
         else:
-            line = self.parse_input(line)
-        return line
+            return self.plugins_offline
 
-    def postcmd(self, stop, line):
-        """Hook that executes after every command."""
-        if self.first_reaction:
-            self.prompt = (
-                Fore.MAGENTA
-                + "{} What can I do for you?\n".format(PROMPT_CHAR)
-                + Fore.RESET)
-            self.first_reaction = False
-        if self.enable_voice:
-            self.speech.text_to_speech("What can I do for you?\n")
+    def get_language_parser(self):
+        if self.has_internet():
+            return self.language_parser_online
+        else:
+            return self.language_parser_offline
 
-    def speak(self, text):
+    def activate_frontend(self, frontend):
+        if frontend not in self.active_frontends:
+            if self.AVAILABLE_FRONTENDS[frontend] not in self.frontend_status.enabled:
+                error(
+                    "Frontend {} not enabled. For more details type 'status'".format(frontend))
+                return
+            _f = self.AVAILABLE_FRONTENDS[frontend](self)
+            self.active_frontends[frontend] = _f
+            _f.thread = threading.Thread(target=_f.start)
+            if self.running._value == 0:
+                _f.thread.start()
+
+    def disable_frontend(self, frontend):
+        if frontend in self.active_frontends:
+            if self.spinner_running:
+                self.active_frontends[frontend].spinner_stop()
+            self.active_frontends[frontend].stop()
+            thread = self.active_frontends[frontend].thread
+            del self.active_frontends[frontend]
+            return thread
+
+    def frontend_info(self):
+        frontend_status_formatter = {
+            "available": len(self.AVAILABLE_FRONTENDS),
+            "active": len(self.active_frontends),
+            "red": Fore.RED,
+            "blue": Fore.BLUE,
+            "reset": Fore.RESET
+        }
+
+        frontend_status = "Jarvis can only be active on {active} frontends for now.\n" \
+                          "We are working on getting the other frontends working.\n"
+
+        frontend_status += "{red}{active} {blue}frontends loaded of" \
+                           " {red}{available} {blue}frontends. More information: {red}status\n"
+        frontend_status += Fore.RESET
+
+        return frontend_status.format(**frontend_status_formatter)
+
+    def run(self):
+        self.location.init(self)
+        for _frontend in self.active_frontends.values():
+            _frontend.thread.start()
+        self._prompt()
+
+        self.running.acquire()
+
+        # Stop Jarvis -> release self.running
+        # exit-code should be executed from main thread
+        # to avoid strange behaviour
+
+        self.running.acquire()
+
+        self.say("Goodbye, see you later!", Fore.RED)
+        self.scheduler.stop_all()
+
+        for _frontend_name in [x for x in self.active_frontends.keys()]:
+            print('Stopping {}'.format(_frontend_name))
+            self.disable_frontend(_frontend_name).join()
+
+        import sys
+        sys.exit(0)
+
+    def say(self, text, color="", speak=True):
+        """
+        This method give the jarvis the ability to print a text
+        and talk when sound is enable.
+        :param text: the text to print (or talk)
+        :param color: for text - use colorama (https://pypi.org/project/colorama/)
+                      e.g. Fore.BLUE
+        :param speak: False-, if text shouldn't be spoken even if speech is enabled
+        """
+        for _frontend in self.active_frontends.values():
+            _frontend.say(text, color)
+
+    def input(self, prompt="", color="", password=False):
+        """
+        Get user input
+        """
+        for _frontend in self.active_frontends.values():
+            # TODO LOGIC
+            value = _frontend.input(prompt, color, password)
+            if value is not None:
+                return value
+
+    def choose(self, options_dict):
+        """
+        Dict which consists out of Key and a tuple
+          * Message
+          * Default value or list of possible values or None
+        """
+        if not isinstance(options_dict, dict):
+            options_dict = {'main': options_dict}
+            return self.choose(options_dict)['main']
+
+        for _frontend in self.active_frontends.values():
+            # TODO LOGIC
+            value = _frontend.choose(options_dict)
+            if value is not None:
+                return value
+
+    def choose_path(self, message):
+        for _frontend in self.active_frontends.values():
+            # TODO LOGIC
+            value = _frontend.choose_path(message)
+            if value is not None:
+                return value
+
+    def exit(self):
+        """Immediately exit Jarvis"""
+        print('EXIT IMMEDIATELY')
+        self.running.release()
+
+    def _speak(self, text):
         if self.enable_voice:
             self.speech.text_to_speech(text)
 
-    def parse_input(self, data):
-        """This method gets the data and assigns it to an action"""
-        data = data.lower()
-        # say command is better if data has punctuation marks
-        if "say" not in data:
+    def input_number(self, prompt="", color="", rtype=float, rmin=None, rmax=None):
+        """
+        Get user input: As number.
+
+        Guaranteed only returns number - ask user till correct number entered.
+
+        :param prompt: Printed to console
+        :param color: Color of prompot
+        :param rtype: type of return value; e.g. float (default) or int
+        :param rmin: Minum of values returned
+        :param rmax: Maximum of values returned
+        """
+        while True:
+            try:
+                value = rtype(self.input(prompt, color).replace(',', '.'))
+                if (rmin is not None and value < rmin) or (rmax is not None and value > rmax):
+                    prompt = "Sorry, needs to be between {} and {}. Try again: ".format(
+                        rmin, rmax)
+                else:
+                    return value
+            except ValueError:
+                prompt = 'Sorry, needs to be a number. Try again: '
+                continue
+
+    def connection_error(self):
+        """Print generic connection error"""
+
+        self.online_status.refresh()
+
+        if self.is_spinner_running():
+            self.spinner_stop('')
+
+        self.say(self._CONNECTION_ERROR_MSG)
+
+    def notification(self, msg, time_seconds=0, urgency=NOTIFY_NORMAL):
+        """
+        Sends notification msg in time_in milliseconds
+        :param msg: Message. Either String (message body) or tuple (headline, message body)
+        :param time_seconds: Time in seconds to wait before showing notification
+        """
+        if isinstance(msg, tuple):
+            headline, message = msg
+        elif isinstance(msg, str):
+            headline = "Jarvis"
+            message = msg
+        else:
+            raise ValueError("msg not a string or tuple")
+
+        if time_seconds == 0:
+            notify(headline, message)
+        else:
+            self.schedule(time_seconds, notify, headline, message)
+
+    def schedule(self, time_seconds, function, *args):
+        """
+        Schedules function
+        After time_seconds call function with these parameter:
+           - reference to this JarvisAPI instance
+           - schedule_id (return value of this function)
+           - *args
+        :return: integer, id - use with cancel
+        """
+        return self.scheduler.create_event(
+            time_seconds, function, self, *args)
+
+    def cancel(self, schedule_id):
+        """
+        Cancel event scheduled with schedule
+        :param schedule_id: id returned by schedule
+        """
+        self.scheduler.cancel(schedule_id)
+        self.say('Cancellation successful', Fore.GREEN)
+
+    # MEMORY WRAPPER
+    def get_data(self, key):
+        """
+        Get a specific key from memory
+        """
+        return self.memory.get_data(key)
+
+    def add_data(self, key, value):
+        """
+        Add a key and value to memory
+        """
+        self.memory.add_data(key, value)
+        self.memory.save()
+
+    def update_data(self, key, value):
+        """
+        Updates a key with supplied value.
+        """
+        self.memory.update_data(key, value)
+        self.memory.save()
+
+    def del_data(self, key):
+        """
+        Delete a key from memory
+        """
+        self.memory.del_data(key)
+        self.memory.save()
+
+    # KEY VAULT WRAPPER
+    def save_user_pass(self, key, user, password):
+        """
+        Saves the username and password combination
+        """
+        self.key_vault.save_user_pass(key, user, password)
+        self.key_vault.save()
+
+    def update_user_pass(self, key, user, password):
+        """
+        Updates the username and password combination
+        """
+        self.key_vault.update_user_pass(key, user, password)
+        self.key_vault.save()
+
+    def get_user_pass(self, key):
+        """
+        Gets the username and password combination
+        """
+        return self.key_vault.get_user_pass(key)
+
+    def spinner_start(self, message="Starting "):
+        """
+        Function for starting a spinner when prompted from a plugin
+        and a default message for performing the task
+        """
+        self.spinner_running = True
+        for _frontend in self.active_frontends.values():
+            _frontend.spinner_start(message)
+
+    def spinner_stop(self, message="Task executed successfully! ", color=Fore.GREEN):
+        """
+        Function for stopping the spinner when prompted from a plugin
+        and displaying the message after completing the task
+        """
+        self.spinner_running = False
+        for _frontend in self.active_frontends.values():
+            _frontend.spinner_stop(message)
+
+    def incorrect_option(self):
+        self.say("Incorrect Option")
+
+    def is_spinner_running(self):
+        return self.spinner_running
+
+    def get_location(self, field):
+        return self.location.get(field, self)
+
+    def data_file(self, *path):
+        return os.path.join(self._data_dir, *path)
+
+    def eval(self, command: str) -> Optional[bool]:
+        # save commands' history
+        HISTORY_FILENAME.write(command + '\n')
+
+        plugin = self.get_language_parser().identify_action(command)
+
+        if command.startswith('help'):
+            self.do_help(plugin)
+        elif plugin is None:
+            self.say("I could not identify your command...", Fore.RED)
+        else:
+            s = self._build_s_string(command, plugin)
+            call_args = {}
+            for api_key in plugin.require().api_keys:
+                call_args[api_key] = self.get_user_pass(api_key)[1]
+
+            plugin.run(self, s, **call_args)
+
+    def execute_once(self, command: str) -> Optional[bool]:
+        self.eval(command)
+        self._prompt()
+
+    def internal_execute(self, command: str, s: str, **kwargs):
+        # save commands' history
+        HISTORY_FILENAME.write(command + '\n')
+
+        plugin = self.get_language_parser().identify_action(command)
+
+        if command.startswith('help'):
+            self.do_help(plugin)
+            return True
+
+        if plugin is None:
+            return None
+
+        return plugin.internal_execute(self, s)
+
+    def _prompt(self):
+        for _f in self.active_frontends.values():
+            _f.show_prompt()
+
+    def _build_s_string(self, data: str, plugin):
+        features = self._parse_plugin_features(plugin.feature())
+
+        if not features['punctuation']:
             data = data.replace("?", "")
             data = data.replace("!", "")
             data = data.replace(",", "")
 
-            # input sanitisation to not mess up urls / numbers
-            data = self.regex_dot.sub("", data)
+        if not features['case_sensitive']:
+            data = data.lower()
 
-        # Check if Jarvis has a fixed response to this data
-        if data in self.fixed_responses:
-            output = self.fixed_responses[data]
+        data = data.replace(plugin.get_name(), '')
+        for alias in plugin.alias():
+            data = data.replace(alias, '')
+        data = data.strip()
+        data = " ".join(data.split())
+        return data
+
+    def _parse_plugin_features(self, features_iter):
+        plugin_features = {
+            "case_sensitive": False,
+            "punctuation": True
+        }
+
+        if features_iter is None:
+            return plugin_features
+
+        for feature in features_iter:
+            key = feature[0]
+            value = feature[1]
+
+            if not isinstance(value, bool):
+                warning("{}={}: No supported requirement".format(key, value))
+
+            if key in plugin_features:
+                plugin_features[key] = value
+            else:
+                warning("{}={}: No supported requirement".format(key, value))
+
+        return plugin_features
+
+    def do_help(self, plugin):
+        self.say('currently unsupported')
+        return
+        if plugin is not None:
+            self.say(plugin.get_doc())
         else:
-            # if it doesn't have a fixed response, look if the data corresponds
-            # to an action
-            output = self.find_action(
-                data, self._plugin_manager.get_plugins().keys())
-        return output
+            self.say("")
+            headerString = "These are valid commands for Jarvis"
+            formatString = "Format: command ([aliases for command])"
+            self.say(headerString)
+            self.say(formatString, Fore.BLUE)
+            pluginDict = self.get_plugins()
+            uniquePlugins: Dict[str, Plugin] = {}
+            for key in pluginDict.keys():
+                plugin = pluginDict[key]
+                if (plugin not in uniquePlugins.keys()):
+                    uniquePlugins[plugin.get_name()] = plugin
+            helpOutput = []
+            for name in sorted(uniquePlugins.keys()):
+                if (name == "help"):
+                    continue
+                try:
+                    aliasString = ", ".join(uniquePlugins[name].alias())
+                    if (aliasString != ""):
+                        pluginOutput = "* " + name + " (" + aliasString + ")"
+                        helpOutput.append(pluginOutput)
+                    else:
+                        helpOutput.append("* " + name)
+                except AttributeError:
+                    helpOutput.append("* " + name)
 
-    def find_action(self, data, actions):
-        """Checks if input is a defined action.
-        :return: returns the action"""
-        output = "None"
-        if not actions:
-            return output
+            Cmd.columnize(self, helpOutput, displaywidth=100)
 
-        action_found = False
-        words = data.split()
-        actions = list(actions)
-
-        # return longest matching word
-        # TODO: Implement real and good natural language processing
-        # But for now, this code returns acceptable results
-        actions.sort(key=lambda l: len(l), reverse=True)
-
-        # check word by word if exists an action with the same name
-        for action in actions:
-            words_remaining = data.split()
-            for word in words:
-                words_remaining.remove(word)
-                # For the 'near' keyword, the words before 'near' are also needed
-                if word == "near":
-                    initial_words = words[:words.index('near')]
-                    output = word + " " +\
-                        " ".join(initial_words + ["|"] + words_remaining)
-                elif word == action:  # command name exists
-                    action_found = True
-                    output = word + " " + " ".join(words_remaining)
-                    break
-            if action_found:
-                break
-        return output
-
-    def executor(self, command):
-        """
-        If command is not empty, we execute it and terminate.
-        Else, this method opens a terminal session with the user.
-        We can say that it is the core function of this whole class
-        and it joins all the function above to work together like a
-        clockwork. (Terminates when the user send the "exit", "quit"
-        or "goodbye command")
-        :return: Nothing to return.
-        """
-        if command:
-            self.execute_once(command)
+    def write(self, line):
+        if line.endswith('\n'):
+            self.say(self.cache + line[:-1])
+            self.cache = ''
         else:
-            self.cmdloop()
+            self.cache += line
+
+
+def catch_all_exceptions(do, pass_self=True):
+    def try_do(self, s, **args):
+        try:
+            if pass_self:
+                do(self, s, **args)
+            else:
+                do(s, **args)
+        # except ConnectionError:
+        #    # TODO GO OFFLINE
+        #    pass
+        except Exception:
+            if self.is_spinner_running():
+                self.spinner_stop("It seems some error has occured")
+            print(
+                Fore.RED
+                + "Some error occurred, please open an issue on github!")
+            print("Here is error:")
+            print('')
+            traceback.print_exc()
+            print(Fore.RESET)
+    return try_do
