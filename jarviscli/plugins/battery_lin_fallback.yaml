@@ -1,7 +1,7 @@
 name: battery
 requirements:
   native:
-    - !upower
+    - '!upower'
   os:
     - linux
 quality: legacy

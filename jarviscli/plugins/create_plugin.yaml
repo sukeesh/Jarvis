@@ -1,14 +1,3 @@
-name: Name
-requirements:
-  pip:
-    - x
-  native:
-    - foo
-    - y
-  apikey:
-    - x
-    - y
-  os:
-    - unix
+name: create_plugin
 online: False
 quality: legacy

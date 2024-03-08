@@ -1,14 +1,8 @@
-name: Name
+name: camera
 requirements:
-  pip:
-    - x
   native:
-    - foo
-    - y
-  apikey:
-    - x
-    - y
+    - cheese
   os:
-    - unix
+    - linux
 online: False
 quality: legacy

@@ -1,6 +1,6 @@
 name: movie
 requirements:
   pip:
-    - imdb
+    - IMDbPY
 online: true
 quality: legacy

@@ -33,6 +33,13 @@ class DependencyStatus:
         self.enabled = []
         self.disabled = {}
 
+    def clean(self):
+        _enabled_names = [plug['name'] for plug in self.enabled]
+        self.disabled = {key: value
+                         for key, value in self.disabled.items()
+                         if key not in _enabled_names
+                         }
+
     def print_count(self):
         plugin_status_formatter = {
             "disabled": len(self.disabled),
@@ -66,7 +73,7 @@ class Dependency:
     This module checks if dependencies are fulfilled.
     """
 
-    def __init__(self, quality_level='default', require_offline_only=False):
+    def __init__(self, quality_level='legacy', require_offline_only=False):
         self.quality_level = quality_level
 
         # plugin should match these requirements
@@ -94,6 +101,7 @@ class Dependency:
                 else:
                     status.disabled[plugin_name].append(str(plugin_status))
 
+        status.clean()
         return status
 
     def _check_plugin(self, plugin):
@@ -116,7 +124,7 @@ class Dependency:
         if natives_ok is not True:
             return natives_ok
 
-        api_key_ok = self._check_api_key(plugin['requirements']['apikey'])
+        api_key_ok = self._check_api_keys(plugin['requirements']['apikey'])
         if api_key_ok is not True:
             return api_key_ok
 
@@ -130,7 +138,7 @@ class Dependency:
             return True
 
         # Failed!
-        required_platform = ", ".join([x.name for x in values])
+        required_platform = ", ".join(values)
         return "Requires os {}".format(required_platform)
 
     def _check_native(self, values):

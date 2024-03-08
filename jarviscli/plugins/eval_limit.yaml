@@ -2,4 +2,5 @@ name: limit
 requirements:
   pip:
     - sympy
+online: False
 quality: legacy

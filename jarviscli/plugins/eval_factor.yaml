@@ -2,4 +2,5 @@ name: factor
 requirements:
   pip:
     - sympy
+online: False
 quality: legacy

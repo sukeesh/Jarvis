@@ -1,14 +1,3 @@
-name: histroyfact
-requirements:
-  pip:
-    - x
-  native:
-    - foo
-    - y
-  apikey:
-    - x
-    - y
-  os:
-    - unix
+name: histroy
 online: False
 quality: legacy

@@ -1,5 +1,6 @@
-name: Name
+name: calc
 requirements:
   pip:
     - sympy
+category: eval
 quality: legacy

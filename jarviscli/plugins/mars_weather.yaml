@@ -1,14 +1,6 @@
-name: Name
+name: mars_weather
 requirements:
-  pip:
-    - x
-  native:
-    - foo
-    - y
   apikey:
-    - x
-    - y
-  os:
-    - unix
-online: False
+    - mars
+online: True
 quality: legacy

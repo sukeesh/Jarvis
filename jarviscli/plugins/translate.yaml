@@ -1,14 +1,3 @@
-name: Name
-requirements:
-  pip:
-    - x
-  native:
-    - foo
-    - y
-  apikey:
-    - x
-    - y
-  os:
-    - unix
+name: translate
 online: False
 quality: broken

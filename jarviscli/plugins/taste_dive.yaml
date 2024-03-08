@@ -1,6 +1,3 @@
 name: tastedive
-requirements:
-  pip:
-    - textwrap
 online: True
 quality: legacy

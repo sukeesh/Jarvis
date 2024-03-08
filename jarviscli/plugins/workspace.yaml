@@ -1,7 +1,7 @@
 name: workspace
 requirements:
   pip:
-    - git
+    - gitpython
   native:
     - git
 quality: legacy

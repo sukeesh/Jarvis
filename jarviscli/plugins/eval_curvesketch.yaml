@@ -2,4 +2,5 @@ name: curvesketch
 requirements:
   pip:
     - sympy
+category: eval
 quality: legacy
