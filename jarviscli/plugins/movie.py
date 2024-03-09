@@ -1,7 +1,8 @@
+from functools import lru_cache
+
 import imdb
 from colorama import Fore, Style
-from plugin import plugin, require
-from functools import lru_cache
+from jarviscli import entrypoint
 
 app = imdb.IMDb()
 

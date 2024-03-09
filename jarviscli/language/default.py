@@ -32,36 +32,17 @@ class DefaultLanguageParser:
 
         # if it doesn't have a fixed response, look if the data corresponds
         # to an action
+        return self._find_action(data)
 
-        plugins = self.plugins
-        last_plugin = None
-        plugin_prefix = ''
-
-        while True:
-            sub_command, data = self._find_action(data, plugins, plugin_prefix)
-            if sub_command is None:
-                return last_plugin
-
-            last_plugin = sub_command
-            plugin_prefix += last_plugin.get_name() + ' '
-            plugins = sub_command.get_plugins().values()
-
-    def _find_action(self, data, actions, prefix):
+    def _find_action(self, data):
         """Checks if input is a defined action.
         :return: returns the action"""
         output = "None"
         action_plugin = None
-        if not actions:
-            return action_plugin, output
 
         words = data.split()
 
-        action_map = {}
-        for plugin in actions:
-            for alias in [plugin.get_name()] + plugin.alias():
-                if alias.startswith(prefix):
-                    action_map[alias[len(prefix):]] = plugin
-        actions = list(action_map.keys())
+        actions = list(self.plugins.keys())
 
         # return longest matching word
         # For now, this code returns acceptable results
@@ -74,8 +55,8 @@ class DefaultLanguageParser:
                 if word == action:
                     words_remaining.remove(word)
                     output = " ".join(words_remaining)
-                    action_plugin = action_map[action]
+                    action_plugin = self.plugins[action]
 
-                    return action_plugin, output
+                    return action_plugin
 
-        return None, None
+        return None

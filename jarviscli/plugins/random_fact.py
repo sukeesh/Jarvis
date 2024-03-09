@@ -3,7 +3,6 @@ from colorama import Fore
 from jarviscli import entrypoint
 
 
-@plugin("fact")
 @entrypoint
 def hello_world(jarvis, s):
     url = 'https://uselessfacts.jsph.pl/random.json?language=en'

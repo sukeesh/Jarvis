@@ -2,7 +2,7 @@ import datetime
 
 import requests
 from colorama import Fore
-from jarviscli import basketball, entrypoint
+from jarviscli import entrypoint, get_api_key
 
 APIKEY = get_api_key('basketball')
 URL = "https://api-basketball.p.rapidapi.com/"

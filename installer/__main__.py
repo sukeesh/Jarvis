@@ -51,4 +51,5 @@ CMD = "{} install -U -r installer/requirements.txt"
 CMD = CMD.format(helper.VIRTUALENV_PIP)
 helper.shell(CMD).should_not_fail()
 
+# select plugins
 print("Jarvis is installed. Run with " + helper.START)

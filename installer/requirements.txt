@@ -5,3 +5,4 @@ pickpack
 PyYAML
 inquirer
 cryptography
+python-dateutil

@@ -3,7 +3,7 @@ from colorama import Fore
 from jarviscli import entrypoint, get_api_key
 
 URL = "https://api.sportradar.com/tennis/trial/v3/en/rankings"
-KEY = get_api_key(sportradar)
+KEY = get_api_key("sportradar")
 
 
 @entrypoint

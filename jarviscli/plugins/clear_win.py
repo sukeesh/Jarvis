@@ -1,19 +1,12 @@
 """
 Jarvis plugin for clearing the terminal
 """
-from plugin import plugin, require, WINDOWS, UNIX
 import os
 
-
-@require(platform=UNIX)
-@plugin("clear")
-def clear_unix(jarvis, s):
-    # Unix/Linux/MacOS/BSD/etc
-    os.system('clear')
+from jarviscli import entrypoint
 
 
-@require(platform=WINDOWS)
-@plugin("clear")
+@entrypoint
 def clear_windows(jarvis, s):
     # DOS/Windows
     os.system("cls")

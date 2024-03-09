@@ -5,9 +5,8 @@ from cmd import Cmd
 from getpass import getpass
 
 import colorama
-from colorama import Fore
-
 import inquirer
+from colorama import Fore
 from frontend.cli.spinner import SpinnerThread
 from utilities.cli import cancel, input
 
@@ -49,9 +48,6 @@ Type 'help' for a list of available actions.
 
         # Register do_quit() function to SIGINT signal (Ctrl-C)
         signal.signal(signal.SIGINT, self.interrupt_handler)
-        self.first_reaction_text += self._jarvis.dependency_status.print_count()
-        self.first_reaction_text += '  More information: {red}status{reset}\n'.format(
-            red=Fore.RED, reset=Fore.RESET)
 
         for plugin in self._jarvis.get_plugins().values():
             self._add_plugin(plugin)
@@ -125,7 +121,8 @@ Type 'help' for a list of available actions.
                 return inquirer.confirm(message=text)
             assert False, 'unknown parameter for choose'
 
-        questions = [build_question(key, text, params) for key, (text, params) in options_dict.items()]
+        questions = [build_question(key, text, params)
+                     for key, (text, params) in options_dict.items()]
         return inquirer.prompt(questions)
 
     def choose_path(self, message):
@@ -140,6 +137,7 @@ Type 'help' for a list of available actions.
         self.say(message, color)
 
     def _add_plugin(self, plugin):
+        return
 
         completions = [i for i in plugin.complete()]
         if len(completions) > 0:

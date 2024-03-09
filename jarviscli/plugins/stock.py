@@ -3,9 +3,10 @@ from inspect import cleandoc
 
 import requests
 from colorama import Fore
-from plugin import plugin
+from jarviscli import entrypoint
 
 
+@entrypoint
 def run(jarvis, s):
     Stock()(jarvis, s)
 

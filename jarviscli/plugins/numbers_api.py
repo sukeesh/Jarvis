@@ -3,8 +3,6 @@ from colorama import Fore
 from jarviscli import entrypoint
 
 
-@require(network=True)
-@plugin("numbersapi")
 @entrypoint
 def numbersapi(jarvis, s):
     """

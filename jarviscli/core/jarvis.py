@@ -7,6 +7,12 @@ from threading import Semaphore
 from typing import Dict, Optional
 
 import frontend.cli.cmd_interpreter
+# import frontend.gui_kivy.jarvis_gui
+# import frontend.gui_pygame.jarvis_gui
+# import frontend.server.server
+# import frontend.voice
+# import frontend.voice_control
+import language.default
 from colorama import Fore
 from packages.geolocation import Location, LocationFields
 from packages.memory.key_vault import KeyVault
@@ -17,12 +23,6 @@ from packages.online_status import OnlineStatus
 from packages.schedule import Scheduler
 from utilities.GeneralUtilities import error, warning
 
-# import frontend.gui_kivy.jarvis_gui
-# import frontend.gui_pygame.jarvis_gui
-# import frontend.server.server
-# import frontend.voice
-# import frontend.voice_control
-
 # register hist path via tempfile
 HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
 
@@ -30,20 +30,25 @@ HISTORY_FILENAME = tempfile.TemporaryFile('w+t')
 class Jarvis:
     _CONNECTION_ERROR_MSG = "It seems like I'm not connected to the Internet. Check your connection and type 'connect'!"
 
-    AVAILABLE_FRONTENDS = {'cli': frontend.cli.cmd_interpreter.CmdInterpreter,
-                           # 'gui_kivy': frontend.gui_kivy.jarvis_gui.JarvisGui,
-                           # 'gui_pygame': frontend.gui_pygame.jarvis_gui.JarvisGui,
-                           # 'server': frontend.server.server.JarvisServer,
-                           # 'tts': frontend.voice.JarvisVoice,
-                           # 'voice_control': frontend.voice_control.VoiceControl
-                           }
+    AVAILABLE_FRONTENDS = {
+        'cli': frontend.cli.cmd_interpreter.CmdInterpreter,
+        # 'gui_kivy': frontend.gui_kivy.jarvis_gui.JarvisGui,
+        # 'gui_pygame': frontend.gui_pygame.jarvis_gui.JarvisGui,
+        # 'server': frontend.server.server.JarvisServer,
+        # 'tts': frontend.voice.JarvisVoice,
+        # 'voice_control': frontend.voice_control.VoiceControl
+    }
+
+    AVAILABLE_LANGUAGE = {
+        'default': language.default.DefaultLanguageParser
+    }
 
     NOTIFY_LOW = NOTIFY_LOW
     NOTIFY_NORMAL = NOTIFY_NORMAL
     NOTIFY_CRITICAL = NOTIFY_CRITICAL
     LOCATION_FIELDS = LocationFields
 
-    def __init__(self, language_parser_class, plugin_manager, quality):
+    def __init__(self, plugins, frontends, language):
         self._data_dir = os.path.join(os.path.dirname(__file__), 'data')
 
         self.cache = ''
@@ -54,41 +59,23 @@ class Jarvis:
         self.memory = Memory()
         self.key_vault = KeyVault()
 
-        dependency = Dependency(self.key_vault, int(quality), self)
-        self.frontend_status = dependency.check(
-            self.AVAILABLE_FRONTENDS.values())
-
         self.scheduler = Scheduler()
-        self.location = Location(dependency)
+        # self.location = Location()
 
         self.active_frontends = {}
         self.running = Semaphore()
 
         self.online_status = OnlineStatus()
-        self.offline_only = False
-        self.plugins_offline = {}
-        self.plugins_online = {}
 
-        self.dependency_status, self.plugins = plugin_manager.load(dependency)
+        self.plugins = plugins
+        for frontend in frontends:
+            self.activate_frontend(frontend)
 
-        for name, plugin in self.plugins.items():
-            # plugin.run = catch_all_exceptions(plugin.run)
-            try:
-                plugin.init(self)
-            except Exception as e:
-                print("Failed init plugin")
-                print(e)
-                traceback.print_exc()
+        self.language = self.AVAILABLE_LANGUAGE[language]()
+        self.language.train(self.plugins)
 
-            if plugin.require().network:
-                self.plugins_online[name] = plugin
-            else:
-                self.plugins_offline[name] = plugin
-
-        self.language_parser_online = language_parser_class()
-        self.language_parser_online.train(self.plugins.values())
-        self.language_parser_offline = language_parser_class()
-        self.language_parser_offline.train(self.plugins_offline.values())
+    def get_plugins(self):
+        return self.plugins
 
     def set_offline_mode(self, state=True):
         self.offline_only = state
@@ -96,24 +83,8 @@ class Jarvis:
     def has_internet(self):
         return not self.offline_only and self.online_status.get_online_status()
 
-    def get_plugins(self):
-        if self.has_internet():
-            return self.plugins
-        else:
-            return self.plugins_offline
-
-    def get_language_parser(self):
-        if self.has_internet():
-            return self.language_parser_online
-        else:
-            return self.language_parser_offline
-
     def activate_frontend(self, frontend):
         if frontend not in self.active_frontends:
-            if self.AVAILABLE_FRONTENDS[frontend] not in self.frontend_status.enabled:
-                error(
-                    "Frontend {} not enabled. For more details type 'status'".format(frontend))
-                return
             _f = self.AVAILABLE_FRONTENDS[frontend](self)
             self.active_frontends[frontend] = _f
             _f.thread = threading.Thread(target=_f.start)
@@ -148,7 +119,7 @@ class Jarvis:
         return frontend_status.format(**frontend_status_formatter)
 
     def run(self):
-        self.location.init(self)
+        # self.location.init(self)
         for _frontend in self.active_frontends.values():
             _frontend.thread.start()
         self._prompt()
@@ -381,7 +352,7 @@ class Jarvis:
         # save commands' history
         HISTORY_FILENAME.write(command + '\n')
 
-        plugin = self.get_language_parser().identify_action(command)
+        plugin = self.language.identify_action(command)
 
         if command.startswith('help'):
             self.do_help(plugin)
@@ -389,11 +360,7 @@ class Jarvis:
             self.say("I could not identify your command...", Fore.RED)
         else:
             s = self._build_s_string(command, plugin)
-            call_args = {}
-            for api_key in plugin.require().api_keys:
-                call_args[api_key] = self.get_user_pass(api_key)[1]
-
-            plugin.run(self, s, **call_args)
+            plugin(self, s)
 
     def execute_once(self, command: str) -> Optional[bool]:
         self.eval(command)
@@ -403,7 +370,7 @@ class Jarvis:
         # save commands' history
         HISTORY_FILENAME.write(command + '\n')
 
-        plugin = self.get_language_parser().identify_action(command)
+        plugin = self.language.identify_action(command)
 
         if command.startswith('help'):
             self.do_help(plugin)
@@ -419,8 +386,8 @@ class Jarvis:
             _f.show_prompt()
 
     def _build_s_string(self, data: str, plugin):
+        """
         features = self._parse_plugin_features(plugin.feature())
-
         if not features['punctuation']:
             data = data.replace("?", "")
             data = data.replace("!", "")
@@ -428,10 +395,11 @@ class Jarvis:
 
         if not features['case_sensitive']:
             data = data.lower()
+        """
 
-        data = data.replace(plugin.get_name(), '')
-        for alias in plugin.alias():
-            data = data.replace(alias, '')
+        # data = data.replace(plugin.get_name(), '')
+        # for alias in plugin.alias():
+        #    data = data.replace(alias, '')
         data = data.strip()
         data = " ".join(data.split())
         return data

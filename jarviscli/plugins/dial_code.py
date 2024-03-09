@@ -64,12 +64,6 @@ class DialCode:
         return (False)
 
 
-@alias('country with phone code',
-       'countries with dial code',
-       'countries with phone code',
-       'country with dialing code',
-       'countries with dialing code')
-@plugin('country with dial code')
 class CountryByhDC:
     """
     Get country by dial code

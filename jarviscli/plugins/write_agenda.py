@@ -103,7 +103,6 @@ def write_agenda(jarvis, s):
             print("I/O error!")
 
 
-@plugin("read agenda")
 def read_agenda(jarvis, s):
     try:
         file = open('agenda.csv', 'r')

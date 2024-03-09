@@ -1,7 +1,7 @@
 name: nmap
 requirements:
   pip:
-    - python3-nmap
+    - python-nmap
   native:
     - nmap
   os:

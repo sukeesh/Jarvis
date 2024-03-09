@@ -1,4 +1,3 @@
-import pyautogui as pg
 from jarviscli import entrypoint
 
 
@@ -7,6 +6,7 @@ def screencapture(jarvis, s):
     """
     By holding Ctrl + Alt + Shift + R key we start screen capture in
     """
+    import pyautogui as pg
 
     def engine():
         pg.keyDown("ctrl")

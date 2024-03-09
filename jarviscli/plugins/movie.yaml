@@ -3,4 +3,4 @@ requirements:
   pip:
     - IMDbPY
 online: true
-quality: legacy
+quality: broken
