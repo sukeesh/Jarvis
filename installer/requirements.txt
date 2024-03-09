@@ -48,3 +48,5 @@ yeelight
 haversine
 FlightRadarAPI
 github3.py
+wonderwords
+pyenchant
