@@ -94,6 +94,7 @@ Creating a test is optional but never a bad idea ;).
 - Portaudio + python-devel packages for voice control
 - ``notify-send`` on Linux if you want to receive *nice* and desktop-notification instead of *ugly* pop up windows (e.g. Ubuntu do ``sudo apt install libnotify-bin``)
 - ``ffmpeg`` if you want ``music`` to download songs as .mp3 instead of .webm
+- ``nba-api`` if you want ``nbastats`` to run
 
 ## Docker
 
