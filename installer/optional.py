@@ -57,7 +57,7 @@ Fasttext = {
     "name": "Fasttext language recognition",
     "pip": ['fasttext'],
     "description": "Fasttext is a text classification library capable of detecting 176 languages.",
-    "instructions": "https://github.com/facebookresearch/fastText/#requirements"
+    "instruction": "https://github.com/facebookresearch/fastText/#requirements"
 }
 
 
