@@ -4,6 +4,10 @@ from colorama import Fore
 
 from plugin import plugin
 
+from halo import Halo
+
+import time
+
 reds = [1, 3, 5, 7, 9, 12, 14, 16, 18,
         19, 21, 23, 25, 27, 30, 32, 34, 36]
 
@@ -15,6 +19,27 @@ def roulette(jarvis, s):
     jarvis.say("~> Hello, it's roulette game", Fore.RED)
     n = input("Press enter to play")
     start_game(jarvis, cash)
+
+
+# this function adds "spinning animation" before presenting result
+# animation consists of numbers available on roulette board in respective colors
+# for 0 and 00 its green, and for others its alternating between red and grey (black wouldn't be visible in terminal)
+def spinning_animation(duration):
+    frames = [
+                 "\033[92m00\033[0m"
+             ] + [
+                 f'\033[92m{i}\033[0m' if i == 0 or i == "00" else (
+                     f'\033[90m{i}\033[0m' if i % 2 == 0 else f'\033[91m{i}\033[0m'
+                 ) for i in random.sample(range(37), 37)
+             ]
+
+    spinner = Halo(
+        text='Spinning...\n',
+        spinner={'interval': 700, 'frames': frames}
+    )
+    spinner.start()
+    time.sleep(duration)
+    spinner.stop()
 
 
 def start_game(jarvis, cash):
@@ -81,6 +106,8 @@ def first_choice(jarvis, cash):
     result = random.randint(0, 36)
     cash -= bet
 
+    spinning_animation(5)
+
     print("")
     jarvis.say("Result: " + str(result), Fore.YELLOW)
 
@@ -114,6 +141,8 @@ def second_choice(jarvis, cash):
     n = input("Press enter to spin roulette")
     result = random.randint(0, 36)
     cash -= bet
+
+    spinning_animation(5)
 
     print("")
     jarvis.say("Result: " + str(result), Fore.YELLOW)
@@ -153,6 +182,8 @@ def third_choice(jarvis, cash):
     result = random.randint(0, 36)
     cash -= bet
 
+    spinning_animation(5)
+
     print("")
     jarvis.say("Result: " + str(result), Fore.YELLOW)
 
@@ -189,6 +220,8 @@ def fourth_choice(jarvis, cash):
     n = input("Press enter to spin roulette")
     result = random.randint(0, 36)
     cash -= bet
+
+    spinning_animation(5)
 
     print("")
     jarvis.say("Result: " + str(result), Fore.YELLOW)
@@ -236,6 +269,8 @@ def fifth_choice(jarvis, cash):
     n = input("Press enter to spin roulette")
     result = random.randint(0, 36)
     cash -= bet
+
+    spinning_animation(5)
 
     print("")
     jarvis.say("Result: " + str(result), Fore.YELLOW)

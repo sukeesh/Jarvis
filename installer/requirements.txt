@@ -50,3 +50,4 @@ FlightRadarAPI
 github3.py
 wonderwords
 pyenchant
+halo
