@@ -8,6 +8,28 @@ A Personal Assistant for Linux, MacOS and Windows
 
 Jarvis is a simple personal assistant for Linux, MacOS and Windows which works on the command line. He can talk to you if you enable his voice. He can tell you the weather, he can find restaurants and other places near you. He can do some great stuff for you.
 
+## 20 Different Tasks That Jarvis Can Do For You ("Plugin Name" Included)
+1. Suggest a random activity for you to do if you're bored ("activity", "bored")
+2. Give ideas for what to draw, watch, do, listen to (“prompt”, “top_media”, “taste dive”, “mood music”)
+3. Receive up-to-date information about different sports such as team ranking, match starts times, player stats ( “basketball” , “cricket”, “soccer”, “tennis”)
+4. Play games (“blackjack”, “connect_four”, “guess_number_game”, “hangman”, “rockpaperscissors”. “roulette”, “tic_tac_toe”,”word_game”, “wordle”)
+5. Help you stay fit by giving food nutrition facts, recipes, workout programs, and health trackers (“bmi”, “bmr”, “calories”, “food recipe”, “fruit”, “fruit nutrition”, “workout”)
+6. Teach you how to make a cocktail (“cocktail”, “drink”)
+7. Generate random lists, numbers, passwords (“random list”, “random number”, “random password”)
+8. Perform conversions for binary numbers, money, hexadecimal numbers, distance, mass, speed, strings, temp, time (“binary”, “currencyconv”, “hex”, “lengthconv”, “massconv”, “speedconv”, “string_convert”, “tempconv”, “timveconv”)
+9. Take pictures (“open camera”, “screencapture”)
+10. Tell you different specifications for your current computer system (“battery”,  “cat his”, “dns forward”, “dns reverse”, “hostinfo”, “ip”, “scan_network”, “speedtest”, “os”, “check ram”, “systeminfo”)
+11. Manage files on your computer (“file manage”, “file organize”
+12. Upload, edit, and convert images (“imgur”, “image to pdg”,  “image compressor”)
+13. Convert webpages to PDF or PDFs to images (“htmptopdg”, “pdf to images”)
+14. Tell jokes (“dadjoke”, “joke daily”, “joke chuck”, “joke”) 
+15. Perform arithmetic and calculations (“calculate”, “factor”, “solve”, “equations”, “plot”, “matrix add”)
+16. Generate a QR code to attach to a URL (“qr”)
+17. Check the weather (“weather report”)
+18. Provide language translations (“translate”)
+19. Tell random facts (“fact”, “cat fact”)
+20. Display stock market information (“stock”, “cryptotracker”)
+
 ## Getting Started With Installation
 
 In order to install Jarvis, follow these steps:
