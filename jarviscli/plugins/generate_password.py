@@ -41,7 +41,7 @@ def password_generator(jarvis, s):
             length, exclude_numbers, exclude_special_chars
         )
 
-        # API request with the provided API key
+        # API request with the provided(api-ninjas) API key
         response = requests.get(api_url, headers={'X-Api-Key': '1Qt7QsAeXgXjOonxgMlaKQ==bv6Et3TdqFmYsOje'})
 
         # Check if the request was successful
