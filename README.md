@@ -48,7 +48,7 @@ Example:<br>
 Error: `ImportError: DLL load failed while importing win32api: The specified module could not be found.`<br>
 Solution:<br>
 `pip uninstall pywin32`<br>
-`pip install pywin32` or `conda instapll pywin32`<br>
+`pip install pywin32` or `conda install pywin32`<br>
 **Solution 2**: add the package to your environment variables system PATH.<br>
 
 **Question**: After cloning the repo in terminal it gives an error when running python3 installer saying please install virtual environemnt
