@@ -9,4 +9,3 @@ API_KEY = "API_KEY"
 @require(network=True)
 @plugin("soccer")
 class soccer():
-    
