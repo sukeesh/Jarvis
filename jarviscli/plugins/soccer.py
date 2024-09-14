@@ -1,10 +1,15 @@
 import requests
 
+# API KEY = 0209778eaa6148d8b68b6484ff217a4f
 
 BASE_URL = "http://api.football-data.org/v4/"
-API_KEY = "0209778eaa6148d8b68b6484ff217a4f"
-
+API_KEY = "NULL"
 class Soccer():
+    def __call__(self, jarvis, s):
+        print('\nFeature powered by football-data.org APIs')
+        if API_KEY == 'NULL':
+            primn
+
     def get_competitions(self):
         headers = {
             'X-Auth-Token': API_KEY
