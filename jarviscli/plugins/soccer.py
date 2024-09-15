@@ -1,20 +1,20 @@
 import requests
 from datetime import datetime as dt
 
-# API KEY = 0209778eaa6148d8b68b6484ff217a4f
 
 class Soccer:
+    API_KEY = None
     BASE_URL = "http://api.football-data.org/v4/"
-    API_KEY = '0209778eaa6148d8b68b6484ff217a4f'
     def __call__(self, jarvis, s):
         print('\nFeature powered by football-data.org APIs')
-        if self.API_KEY is None:
-            self.API_KEY = input('Enter an API key by registering at football-data.org/client/register: ')
-            while requests.get(self.BASE_URL + 'competitions/2013/matches', headers = {'X-Auth-Token': self.API_KEY}).status_code == 403:
-                self.API_KEY = input('Please enter a valid API key: ')
-        self.get_competitions()
-        competition_id = input("Enter ID: ")
-        self.get_matches(competition_id)
+        self.API_KEY = input('Enter an API key by registering at football-data.org/client/register: ')
+        while requests.get(self.BASE_URL + 'competitions/2013/matches', headers = {'X-Auth-Token': self.API_KEY}).status_code == 403:
+            self.API_KEY = input('Please enter a valid API key: ')
+        end = False
+        while not end:
+            self.get_competitions()
+            competition_id = input("Enter ID or \\0 to exit: ")
+            self.get_matches(competition_id)
 
     def get_competitions(self):
         headers = {
@@ -24,7 +24,6 @@ class Soccer:
         if response.status_code == 200:
             payload = response.json()
             competitions = payload['competitions']
-            print('\nPlease select a competition ID from the following:\n')
             print(f"\033[90m{' Competitions ':—^40}")
             for competition in competitions:
                 print(f"\033[0m{competition['name']:<30} (ID: \033[90m{competition['id']}\033[0m{''})")
@@ -63,7 +62,7 @@ class Soccer:
                 return
             count = 0
             for match in matches:
-                if count == 10:
+                if count == 15:
                     break
                 count += 1
                 home = f'{match["homeTeam"]["shortName"]} ({match["homeTeam"]["tla"]})'
