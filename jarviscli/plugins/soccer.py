@@ -13,7 +13,7 @@ class Soccer:
             while requests.get(self.BASE_URL + 'competitions/2013/matches', headers = {'X-Auth-Token': self.API_KEY}).status_code == 403:
                 self.API_KEY = input('Please enter a valid API key: ')
         self.get_competitions()
-        competition_id = input()
+        competition_id = input("Enter ID: ")
         self.get_matches(competition_id)
 
     def get_competitions(self):
@@ -25,15 +25,16 @@ class Soccer:
             payload = response.json()
             competitions = payload['competitions']
             print('\nPlease select a competition ID from the following:\n')
-            print(f"{' Competitions ':—^40}")
+            print(f"\033[90m{' Competitions ':—^40}")
             for competition in competitions:
-                print(f"{competition['name']:<30} (ID: {competition['id']})")
+                print(f"\033[0m{competition['name']:<30} (ID: \033[90m{competition['id']}\033[0m{''})")
             print()
         else:
             print('Error retrieving API based data - ' + str(response.status_code))
 
 
     def get_matches(self, competition_id: str):
+        print()
         headers = {
             'X-Auth-Token': self.API_KEY
         }
@@ -41,13 +42,18 @@ class Soccer:
         year_to = curr.year
         if curr.month == 12:
             year_to += 1
+        day = ''+str(curr.day)
+        if curr.day < 10:
+            day = '0' + day
         parameters = {
-            'dateFrom'  :   f'{curr.year}-{curr.month}-{curr.day}',
-            'dateTo'    :   f'{year_to}-{(curr.month + 1)%12}-{curr.day}'
+            'dateFrom'  :   f'{curr.year}-{curr.month}-{day}',
+            'dateTo'    :   f'{year_to}-{(curr.month + 1)%12}-{day}'
         }
+        if curr.month < 10:
+            parameters['dateFrom'] = f'{curr.year}-0{curr.month}-{day}'
+        if curr.month < 9:
+            parameters['dateTo'] = f'{year_to}-0{(curr.month + 1)%12}-{day}'
         URL = f'{self.BASE_URL}competitions/{competition_id}/matches'
-        print(parameters['dateTo'] + parameters['dateFrom'])
-        print(URL)
         response = requests.get(URL, params=parameters, headers=headers)
         payload = response.json()
         if response.status_code == 200:
@@ -55,15 +61,22 @@ class Soccer:
             if len(matches) == 0:
                 print('No match data available in the upcoming month')
                 return
+            count = 0
             for match in matches:
+                if count == 10:
+                    break
+                count += 1
                 home = f'{match["homeTeam"]["shortName"]} ({match["homeTeam"]["tla"]})'
                 away = f'{match["awayTeam"]["shortName"]} ({match["awayTeam"]["tla"]})'
                 finished = match["status"] == "FINISHED"
                 home_goals = match["score"]["fullTime"]["home"]
                 away_goals = match["score"]["fullTime"]["away"]
+                if home_goals is None:
+                    home_goals = ' '
+                    away_goals = ' '
                 time = match["utcDate"]
-                print(f'{time:—^40}')
-                print(f'\033[91m{home:<30} {home_goals} --- {away_goals} \033[0m{away:>30}')
+                print(f'\033[0m{time[0:10]:—^68}')
+                print(f'\033[94m{home:<30}{home_goals}  \033[0m--- \033[95m{away_goals} {away:>30}\n')
         else:
             print('Error retrieving API based data - ' + str(response.status_code))
 
