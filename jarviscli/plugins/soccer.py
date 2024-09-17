@@ -6,15 +6,33 @@ class Soccer:
     API_KEY = None
     BASE_URL = "http://api.football-data.org/v4/"
     def __call__(self, jarvis, s):
-        print('\nFeature powered by football-data.org APIs')
+        print('\nPowered by football-data.org APIs')
         self.API_KEY = input('Enter an API key by registering at football-data.org/client/register: ')
-        while requests.get(self.BASE_URL + 'competitions/2013/matches', headers = {'X-Auth-Token': self.API_KEY}).status_code == 403:
+        sample_request = requests.get(self.BASE_URL + 'competitions/2013/matches', headers = {'X-Auth-Token': self.API_KEY})
+        while sample_request.status_code == 403:
             self.API_KEY = input('Please enter a valid API key: ')
-        end = False
-        while not end:
-            self.get_competitions()
-            competition_id = input("Enter ID or \\0 to exit: ")
-            self.get_matches(competition_id)
+            sample_request = requests.get(self.BASE_URL + 'competitions/2013/matches', headers={'X-Auth-Token': self.API_KEY})
+        print()
+        self.get_competitions()
+        while True:
+            competition_id = input("Enter ID to view matches for a competition, \\table to view competitions, \\key to re-enter API key, or \\exit to exit: ")
+            if competition_id == '\\table':
+                self.get_competitions()
+            elif competition_id == '\\exit':
+                break
+            elif competition_id == '\\key':
+                self.API_KEY = input('Enter an API key by registering at football-data.org/client/register: ')
+                sample_request = requests.get(self.BASE_URL + 'competitions/2013/matches', headers={'X-Auth-Token': self.API_KEY})
+                if sample_request.status_code == 200:
+                    print('API Key is validated')
+                else:
+                    print('Invalid API key')
+            else:
+                try:
+                    self.get_matches(competition_id)
+                except:
+                    print('Invalid competition ID\n')
+
 
     def get_competitions(self):
         headers = {
@@ -29,7 +47,8 @@ class Soccer:
                 print(f"\033[0m{competition['name']:<30} (ID: \033[90m{competition['id']}\033[0m{''})")
             print()
         else:
-            print('Error retrieving API based data - ' + str(response.status_code))
+            print('Error retrieving API based data (most likely invalid API key) - ' + str(response.status_code))
+            print()
 
 
     def get_matches(self, competition_id: str):
@@ -77,7 +96,8 @@ class Soccer:
                 print(f'\033[0m{time[0:10]:—^68}')
                 print(f'\033[94m{home:<30}{home_goals}  \033[0m--- \033[95m{away_goals} {away:>30}\n')
         else:
-            print('Error retrieving API based data - ' + str(response.status_code))
+            print('Error retrieving API based data (most likely invalid competition ID) - ' + str(response.status_code))
+            print()
 
 
 def main():
