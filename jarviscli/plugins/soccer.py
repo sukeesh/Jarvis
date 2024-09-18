@@ -1,14 +1,19 @@
 import requests
 from datetime import datetime as dt
 from plugin import plugin, require
-
+# Used https://gist.github.com/vratiu/9780109 for CLI coloring codes
 
 @require(network=True)
 @plugin("soccer")
 class Soccer:
+    """
+        This plugin offers functionality to check upcoming and recently played matches for soccer competitions.
+        This plugin requires a free API key from football-data.org which can be acquired at football-data.org/client/register
+    """
     API_KEY = None
     BASE_URL = "http://api.football-data.org/v4/"
     def __call__(self, jarvis, s):
+        # Process API key
         print('\nPowered by football-data.org APIs')
         self.API_KEY = input('Enter an API key by registering at football-data.org/client/register: ')
         sample_request = requests.get(self.BASE_URL + 'competitions/2013/matches', headers = {'X-Auth-Token': self.API_KEY})
@@ -16,7 +21,9 @@ class Soccer:
             self.API_KEY = input('Please enter a valid API key: ')
             sample_request = requests.get(self.BASE_URL + 'competitions/2013/matches', headers={'X-Auth-Token': self.API_KEY})
         print()
+        # Print available competitions
         self.get_competitions()
+        # Main program control: select competition ID, revisit table, enter API key, or exit
         while True:
             competition_id = input("Enter ID to view matches for a competition, \\table to view competitions, \\key to re-enter API key, or \\exit to exit: ")
             print()
@@ -38,6 +45,7 @@ class Soccer:
                     print('Invalid competition ID\n')
 
 
+    # Print competitions using GET request
     def get_competitions(self):
         headers = {
             'X-Auth-Token': self.API_KEY
@@ -55,6 +63,7 @@ class Soccer:
             print()
 
 
+    # Print matches using GET request based off competition ID that user entered
     def get_matches(self, competition_id: str):
         print()
         headers = {
@@ -103,11 +112,3 @@ class Soccer:
             print('Error retrieving API based data (most likely invalid competition ID) - ' + str(response.status_code))
             print()
 
-
-def main():
-    soccer = Soccer()
-    soccer("","")
-
-
-if __name__ == '__main__':
-    main()
