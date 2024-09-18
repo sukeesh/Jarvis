@@ -1,7 +1,10 @@
 import requests
 from datetime import datetime as dt
+from plugin import plugin, require
 
 
+@require(network=True)
+@plugin("soccer")
 class Soccer:
     API_KEY = None
     BASE_URL = "http://api.football-data.org/v4/"
@@ -16,6 +19,7 @@ class Soccer:
         self.get_competitions()
         while True:
             competition_id = input("Enter ID to view matches for a competition, \\table to view competitions, \\key to re-enter API key, or \\exit to exit: ")
+            print()
             if competition_id == '\\table':
                 self.get_competitions()
             elif competition_id == '\\exit':
@@ -24,9 +28,9 @@ class Soccer:
                 self.API_KEY = input('Enter an API key by registering at football-data.org/client/register: ')
                 sample_request = requests.get(self.BASE_URL + 'competitions/2013/matches', headers={'X-Auth-Token': self.API_KEY})
                 if sample_request.status_code == 200:
-                    print('API Key is validated')
+                    print('API Key is validated\n')
                 else:
-                    print('Invalid API key')
+                    print('Invalid API key\n')
             else:
                 try:
                     self.get_matches(competition_id)
