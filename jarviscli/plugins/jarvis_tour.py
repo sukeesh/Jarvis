@@ -612,10 +612,9 @@ plugin_data = {
     },
     "Fitness & Health": {
         "Fitness": {
-            "plugins": ["workout", "bmi"],
+            "plugins": ["workout"],
             "descriptions": {
-                "workout": "Customized push-up and pull-up workout plans based on user's fitness level.",
-                "bmi": "Calculate your Body Mass Index (BMI)."
+                "workout": "Customized push-up and pull-up workout plans based on user's fitness level."
             },
             "tutorials": {
                 "workout":
@@ -637,8 +636,18 @@ plugin_data = {
                 
                 5. Completion
                 After finishing all sets, you will see your total reps and a motivational message.
-                """,
-
+                """
+            }
+        },
+        "Health": {
+            "plugins": ["bmi", "bmr", "calories_macros","drink"],
+            "descriptions": {
+                "bmi": "Calculate your Body Mass Index (BMI).",
+                "bmr": "Calculate your Basal Metabolic Rate (BMR).",
+                "calories_macros": "Calculate personalized daily calorie and macronutrient recommendations for weight management goals.",
+                "drink": "Fetch details about a specific cocktail, including ingredients and preparation instructions, from an external API."
+            },
+            "tutorials": {
                 "bmi":
                 """
                 BMI Plugin Tutorial
@@ -677,20 +686,77 @@ plugin_data = {
                 - Healthy: BMI 18.5-24.9
                 - Pre-obese: BMI 25-29.9
                 - Obese: BMI ≥ 30
+                """,
+
+                "bmr":
                 """
-            }
-        },
-        "Health": {
-            "plugins": ["bmi", "bmr", "calories_macros"],
-            "descriptions": {
-                "bmi": "Calculate your Body Mass Index (BMI).",
-                "bmr": "Calculate your Basal Metabolic Rate (BMR).",
-                "calories_macros": "Calculate personalized daily calorie and macronutrient recommendations for weight management goals."
-            },
-            "tutorials": {
-                "bmi": "",
-                "bmr": "",
-                "calories_macros": ""
+                BMR Plugin Tutorial
+
+                1. Start the Plugin
+                Type:
+                bmr
+
+                2. Choose to Proceed
+                - 1: Start calculating BMR.
+                - 2: Learn what BMR is before calculating.
+
+                3. Enter Personal Information
+                - Gender (M/F)
+                - Height (cm)
+                - Weight (kg)
+                - Age (years)
+
+                4. Example Input
+                bmr
+                Gender: M
+                Height: 180
+                Weight: 75
+                Age: 25
+                Output: BMR: 1700.5
+
+                5. Calculate AMR (Optional)
+                After calculating BMR, you can calculate your AMR based on activity level:
+                - 1: Low (no or little exercise)
+                - 2: Average (light exercise)
+                - 3: High (moderate exercise)
+                - 4: Every Day (intense exercise)
+                - 5: Athletic (very intense exercise)
+
+                6. Example AMR Input
+                Would you like to calculate your AMR? (Y/N): Y
+                Activity level: 3
+                Output: AMR: 2635.7
+                """,
+
+                "calories_macros":
+                """
+                Calories Macros Plugin Tutorial
+
+                1. Start the Plugin
+                Type:
+                calories
+
+                2. Example Command
+                - Calculate daily calorie intake and macros for weight maintenance:
+                calories
+
+                3. Step-by-Step Usage
+                - Follow prompts to provide:
+                    1. Gender (M/F)
+                    2. Age (in years)
+                    3. Height (cm)
+                    4. Weight (kg)
+                    5. Activity level (1-4)
+                    6. Goal (1-3 for Lose, Maintain, Gain)
+
+                4. Default Macronutrient Ratios
+                - Proteins: 20%
+                - Carbs: 50%
+                - Fats: 30%
+
+                5. Custom Macronutrient Ratios
+                - If not using default, specify custom ratios for each macro ensuring the total equals 1.
+                """
             }
         }
     },
@@ -701,7 +767,40 @@ plugin_data = {
                 "drink": "Fetch details about a specific cocktail, including ingredients and preparation instructions, from an external API."
             },
             "tutorials": {
-                "drink": ""
+                
+                "drink":
+                """
+                Drink Plugin Tutorial
+
+                1. Start the Plugin
+                Run the command:
+                drink
+
+                2. Enter a Drink Name
+                Input the name of the drink you want information about (e.g., Mojito):
+                Enter a drink: Mojito
+
+                3. View Ingredients
+                The plugin will display the ingredients used for the drink, example output:
+                -----
+                Mojito
+                -----
+                Ingredients: 
+                White Rum
+                Sugar
+                Lime Juice
+                Soda Water
+                Mint
+                -----
+
+                4. View Instructions
+                Instructions for preparing the drink will be displayed after the ingredients, example output:
+                "Muddle mint leaves with sugar and lime juice. Add a splash of soda water and fill the glass with ice. Pour the rum and top with soda water. Garnish with mint leaves."
+
+                5. Error Handling
+                If the drink is not found, the plugin will show:
+                Drink not found. Please try again.
+                """
             }
         }
     },
@@ -712,7 +811,36 @@ plugin_data = {
                 "stateinfo": "Get information about U.S. states."
             },
             "tutorials": {
-                "stateinfo": ""
+                "stateinfo":
+
+                """
+                State Info Plugin Tutorial
+
+                1. Start the State Info Plugin
+                Command: stateinfo [state]
+                Alias: state
+                        state capital
+                        state abbreviation
+
+                2. Enter State Name
+                Example usage:
+                stateinfo california
+                state capital new york
+                state abbreviation texas
+
+                3. Get State Information
+                The plugin will provide:
+                - The capital of the specified U.S. state.
+                - The postal abbreviation for the specified U.S. state.
+
+                Example output:
+                The capital of California is Sacramento
+                The postal abbreviation is CA
+
+                4. Invalid Input
+                If an invalid state is provided, the plugin will prompt:
+                Please enter a valid U.S. state
+                """
             }
         },
         "Information": {
@@ -725,11 +853,133 @@ plugin_data = {
                 "weekday": "Tells what day of the week any date falls on."
             },
             "tutorials": {
-                "dial_code": "",
-                "google": "",
-                "history": "",
-                "name_day": "",
-                "weekday": ""
+                "dial_code":
+
+                """
+                Dial Code Plugin Tutorial
+
+                1. Get Dial Code by Country
+                Use the command to get the dial code of a specific country:
+                dial code of <COUNTRY NAME/ COUNTRY CODE>
+                Example:
+                dial code of United States
+
+                2. Display All Available Countries (Optional)
+                If no code is found, the plugin will ask:
+                Print available countries? (y/N)
+                Choose 'y' to print all countries or press Enter to skip.
+
+                3. Get Country by Dial Code
+                To get a country name by its dial code, use the following:
+                country with dial code <DIAL CODE>
+                Example:
+                country with dial code +1
+
+                4. Multiple Country Codes
+                If a code is shared by multiple countries, they will all be listed together, separated by semicolons.
+                """,
+
+                "google":
+                """
+                Google Scraper Plugin Tutorial
+
+                1. Perform a Google Search
+                Run the command:
+                google [your query]
+                Example:
+                google What is the Large Hadron Collider?
+
+                2. View the Result
+                The result will be displayed in the console. If a direct answer is available, it will be returned. Otherwise, you'll see a message like "No Answers Found."
+
+                3. Supported Queries
+                You can ask questions related to general knowledge or specific topics. Google will try to provide the best possible answer from its default answers section.
+                """,
+
+                "history":
+                """
+                History Plugin Tutorial
+
+                1. Fetch a Historical Fact
+                Run the command:
+                history
+
+                2. Get a Random Event
+                Get a random historical event for a specific day and month:
+                history <event> <day> <month>
+                Example:
+                history events 10 june
+
+                3. Use Keywords
+                You can use the following keywords to specify the date:
+                * yesterday
+                * today
+                * tomorrow
+                Example:
+                history today
+
+                4. Specify Event Type
+                Choose a specific type of historical event:
+                * births
+                * deaths
+                * events
+                Example:
+                history births today
+
+                5. Random Day or Month
+                If you don't provide a specific day or month, a random one will be used.
+                Example:
+                history deaths 5
+                """,
+
+                "name_day":
+                """
+                Name Day Plugin Tutorial
+
+                1. Start the Plugin
+                Run the command:
+                name day
+
+                2. Main Menu
+                You will be presented with the following options:
+                1 See Today's name days
+                2 See Tomorrow's name days
+                3 Choose specific date
+                4 Choose specific name
+                5 Choose another country
+                6 Exit
+
+                3. Selecting an Option
+                - To see name days for today or tomorrow, select options 1 or 2.
+                - To check name days for a specific date, select option 3 and enter the date in "day/month" format.
+                - To search for a name day by a specific name, select option 4 and provide the name.
+                - To change the country for name days, select option 5 and pick a country from the list.
+                - Select option 6 to exit the plugin.
+
+                4. Example Flow
+                - Choose option 1 to see today's name days for your current location.
+                - Choose option 4 to enter a name and find name days related to that name.
+
+                5. Continue or Exit
+                After each action, the plugin will ask if you want to continue. Type 'Y' to continue or 'N' to exit.
+                """,
+
+                "weekday":
+                """
+                1. Start the Plugin
+                Run the command:
+                day of the week or weekday
+
+                2. Enter a Date
+                Provide a date in the dd/mm/yyyy format:
+                Example: 21/09/2021
+
+                3. View Weekday
+                The plugin will display which weekday the provided date falls on.
+
+                4. Exit
+                After displaying the weekday, the plugin will terminate automatically.
+                """
             }
         },
         "Investment": {
@@ -738,7 +988,35 @@ plugin_data = {
                 "cryptotracker": "Track the price and 24-hour price change of cryptocurrency pairs, or check a default list of favorite pairs."
             },
             "tutorials": {
-                "cryptotracker": ""
+                "cryptotracker":
+
+                """
+                CryptoTracker Plugin Tutorial
+
+                1. Start the Plugin
+                Run the command:
+                cryptotracker
+
+                2. Check Prices for Specific Pair
+                Enter a specific crypto pair (e.g., BTC/USDT):
+                cryptotracker BTC/USDT
+
+                3. Check Prices for Default Favorites
+                To view prices and changes for default favorite pairs, simply run:
+                cryptotracker
+
+                4. View Results
+                After running the command, you will see the price and percentage change:
+                Example output:
+                BTC/USDT
+                Price: 34000.25
+                Change: +2.5%
+
+                5. Handle Errors
+                If you enter an invalid pair, you'll see:
+                Example:
+                Wrong pair BTC/USD! Please use USDT for USD prices.
+                """
             }
         },
         "Language": {
@@ -747,7 +1025,42 @@ plugin_data = {
                 "dictionary": "Look up the meaning, synonyms, and antonyms of any word, and provide additional details if needed."
             },
             "tutorials": {
-                "dictionary": ""
+                "dictionary":
+                """
+                Dictionary Plugin Tutorial
+
+                1. Start the Plugin
+                Run the command:
+                dictionary
+
+                2. Input Word
+                If no word is provided, the plugin will prompt:
+                Enter word: example
+
+                3. Display Meanings
+                The plugin will list possible meanings of the word:
+                1. A representative form or pattern
+                2. Something to be imitated
+
+                4. Display Synonyms and Antonyms
+                Synonyms and antonyms of the word are displayed:
+                Synonyms: instance, illustration
+                Antonyms: non-example
+
+                5. Choose Meaning for Details (Optional)
+                Select a meaning for more details (1-N):
+                Details of meaning (1-2): 1
+
+                6. View Detailed Meaning
+                The plugin provides detailed information on the selected meaning, including synonyms, antonyms, and example usage:
+                Meaning  : A representative form or pattern
+                Synonyms : instance, illustration
+                Antonyms : non-example
+                Examples : This painting is an example of surrealism
+
+                7. Repeat or Exit
+                You can choose another meaning or leave the plugin by pressing Enter.
+                """
             }
         }
     },
@@ -759,8 +1072,58 @@ plugin_data = {
                 "voice_control": "Activates voice mode for commands and listens for 'stop' to deactivate."
             },
             "tutorials": {
-                "voice": "",
-                "voice_control": ""
+                "voice":
+                """
+                1. Enable Sound
+                Run the command:
+                enable sound
+                Jarvis will use a voice engine. Consent for data collection by typing "gtts".
+
+                2. Disable Sound
+                Run the command:
+                disable sound
+                Jarvis will stop using voice output.
+
+                3. Use Google Text-to-Speech (GTTS)
+                Run the command:
+                gtts
+                Jarvis will use Google’s speech engine for voice output.
+
+                4. Disable GTTS
+                Run the command:
+                disable gtts
+                Switch back to the built-in speech engine if GTTS is enabled.
+
+                5. Change Speech Rate
+                Run the commands:
+                talk faster
+                talk slower
+                Adjust the speech speed of Jarvis (Linux and Windows only).
+
+                6. Make Jarvis Speak
+                Run the command:
+                say <message>
+                Jarvis will say the message out loud.
+                """,
+
+                "voice_control":
+                """
+                1. Start the Plugin
+                Run the command:
+                hear
+
+                2. Enter Voice Mode
+                Say "listen" to activate voice mode. The system will now listen for commands.
+
+                3. Speak Commands
+                After activation, speak any valid command to Jarvis, which will execute it.
+
+                4. Stop Listening
+                Say "stop" to end the listening mode.
+
+                5. Handling Errors
+                If speech is unclear or not recognized, you will be prompted to try again. No results will be processed from unrecognized speech.
+                """
             }
         }
     },
@@ -771,7 +1134,36 @@ plugin_data = {
                 "caesar_cipher": "Encode or decode messages using Caesar cipher."
             },
             "tutorials": {
-                "caesar_cipher": ""
+            "caesar_cipher":
+
+            """
+            Caesar Cipher Plugin Tutorial
+
+            1. Start the Plugin
+            Type:
+            caesar cipher
+
+            2. Choose an Option
+            - 1: Convert plain text to Caesar cipher.
+            - 2: Convert Caesar cipher back to plain text.
+            - 3: Exit the plugin.
+
+            3. Example Plain to Cipher
+            caesar cipher
+            Enter your choice: 1
+            Enter string to convert: hello
+            Output: khoor (displayed in yellow)
+
+            4. Example Cipher to Plain
+            caesar cipher
+            Enter your choice: 2
+            Enter string to convert: khoor
+            Output: hello (displayed in yellow)
+
+            5. Shift Details
+            - Plain text is shifted by 3 positions to convert to cipher.
+            - Cipher text is shifted by -3 positions to convert back to plain text.
+            """
             }
         },
         "Math": {
@@ -784,11 +1176,137 @@ plugin_data = {
                 "matrix_add": "Perform matrix addition."
             },
             "tutorials": {
-                "binary": "",
-                "evaluator": "",
-                "factor": "",
-                "kaprekar": "",
-                "matrix_add": ""
+                "binary":
+                """
+                Binary Plugin Tutorial
+
+                1. Start the Plugin
+                Run the command:
+                binary [number]
+
+                If no number is provided, the plugin will prompt you for input.
+
+                2. Example Usage
+                binary 10
+                Output:
+                1010 (displayed in yellow)
+
+                If you provide a negative number:
+                binary -10
+                Output:
+                -1010 (displayed in yellow)
+
+                3. Error Handling
+                If the input is not a valid number:
+                binary abc
+                Output:
+                This is no number, right? (displayed in red)
+                """,
+
+                "evaluator":
+                """
+                Calculate Plugin Tutorial
+
+                1. Perform a Calculation
+                Run the command:
+                calc 3 + 5
+
+                2. Solve an Equation
+                Solve an expression or equation:
+                solve x**2 + 5*x + 3
+
+                3. Solve a System of Equations
+                Input equations and variables:
+                equations
+                1. Equation: x**2 + 2y - z = 6
+                2. Equation: (x-1)(y-1) = 0
+                3. Equation: y**2 - x - 10 = y**2 - y
+
+                4. Factor an Expression
+                Factor an algebraic expression:
+                factor x**2 - y**2
+
+                5. Plot a Graph
+                Plot a graph of a function:
+                plot x**2
+
+                6. Calculate Limits
+                Calculate limits as x approaches infinity or a number:
+                limit 1/x
+                limit @1 1/(1-x)
+
+                7. Sketch a Curve
+                Perform curve sketching analysis:
+                curvesketch y=x**2+10x-5
+                """,
+
+                "factor":
+                """
+                Prime Factorization Plugin Tutorial
+
+                1. Enter a Number
+                Provide a number to factorize:
+                factor
+                Enter a number for me to factorize: 56
+
+                2. View Prime Factors
+                The prime factors will be displayed:
+                2 x 2 x 2 x 7
+                """,
+
+                "kaprekar":
+                """
+                Kaprekar Plugin Tutorial
+
+                1. Check Kaprekar Number
+                Run the command:
+                kaprekar
+
+                2. Enter a Number
+                Input a positive integer to check if it's a Kaprekar number:
+                Enter a number: 9
+
+                3. Result Output
+                The plugin will return whether the number is a Kaprekar number:
+                Yes, kaprekar number
+                or
+                Not kaprekar number
+                """,
+                "matrix_add":
+                """
+                Matrix Addition Plugin Tutorial
+
+                1. Start Matrix Addition
+                Run the command:
+                matrix add
+
+                2. Set Matrix Dimensions
+                Enter the number of rows (M) and columns (N):
+                Enter M (rows): 2
+                Enter N (cols): 2
+
+                3. Input First Matrix
+                Enter each row, separating numbers with spaces:
+                enter row #0: 1 2
+                enter row #1: 3 4
+
+                4. Add More Matrices
+                When asked "Continue with next matrix?", type:
+                yes
+                Then input the next matrix as before
+
+                5. View Current Sum
+                When asked "Print current sum matrix?", type:
+                yes
+
+                6. Finish Addition
+                To stop adding matrices, type:
+                no
+                when asked "Continue with next matrix?"
+
+                7. View Final Result
+                The final sum matrix will be displayed
+                """
             }
         },
         "Utilities": {
@@ -798,8 +1316,76 @@ plugin_data = {
                 "create_plugin": "Create a plugin for Jarvis."
             },
             "tutorials": {
-                "bulkresize": "",
-                "create_plugin": ""
+                "bulkresize":
+                """
+                Bulk Resizer Plugin Tutorial
+
+                1. Start the Plugin
+                Type:
+                bulkresizer
+
+                2. Input Image Directory
+                - Enter the path to the directory containing the images you want to resize.
+
+                3. Rename Images
+                - Choose whether to rename images to non-repeating numbers:
+                    - y: Yes
+                    - n: No (keep original names)
+
+                4. Output Directory
+                - Enter the path to the directory where resized images will be saved.
+                - If the output directory does not exist, the plugin will ask if you want to create it.
+
+                5. Target Size
+                - Enter the desired size for the images (e.g., 32 for 32x32 pixels).
+
+                6. Example Input
+                bulkresizer
+                Enter image directory: /path/to/images
+                Rename images? (y/n): y
+                Enter output directory: /path/to/output
+                Target size: 32
+
+                7. Completion
+                - Once the resizing process is done, you'll receive confirmation:
+                Output: Resizing Completed!! Thank you for using jarvis
+                """,
+
+                "create_plugin":
+                """
+                Create Plugin Tutorial
+
+                1. Start the Plugin
+                Type:
+                create plugin [plugin name]
+
+                2. Example One-Line Command
+                - Create a plugin named "my_cool_plugin":
+                create plugin my_cool_plugin
+
+                3. Step-by-Step Usage
+                - If no plugin name is provided, you'll be prompted:
+                    1. Enter the desired plugin name when aske
+
+                4. Example Step-by-Step
+                create plugin
+                Please insert the name of your plugin: my_cool_plugin
+
+                5. Plugin Creation Process
+                - Checks if the plugin name already exists
+                - Creates a new .py file in the Jarvis/custom folder
+                - Opens the newly created file in your default text editor
+
+                6. Plugin Template
+                - A basic plugin structure is automatically generated
+                - Includes necessary imports and a sample function
+
+                7. Next Steps
+                - Modify the generated plugin file to add your desired functionality
+                - Restart Jarvis to apply changes
+
+                Note: Use lowercase letters, numbers, and underscores for plugin names.
+                """
             }
         }
     },
