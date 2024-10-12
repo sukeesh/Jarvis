@@ -160,19 +160,425 @@ plugin_data = {
                        Play continues for 28 rounds. After the final round, total points are displayed, and the winner is announced.
                     """
                 ,
-                "blackjack": "",
-                "coin_flip": "",
-                "connect_four": "",
-                "guess_number_game": "",
-                "hangman": "",
-                "magic_8_ball": "",
-                "memory": "",
-                "rockpaperscissors": "",
-                "roulette": "",
-                "spinthewheel": "",
-                "tic_tac_toe": "",
-                "wordgame": "",
-                "wordle": ""
+                "blackjack":
+                    """
+                    Blackjack Plugin Tutorial
+                    
+                    1. Start the Game
+                       Type:
+                       blackjack
+                    
+                    2. Game Setup
+                       - The game will ask for your bet.
+                       - Two cards will be dealt to you and the dealer.
+                    
+                    3. Player Actions
+                       - You will see your hand and its sum. You can choose to:
+                         - Hit (H): Get another card.
+                         - Stand (S): Keep your hand.
+                         - Double Down (D): Double your bet and get one final card.
+                         - Split (P): Split your hand into two if you have identical cards.
+                    
+                    4. Dealer’s Turn
+                       - The dealer will play after your turn, drawing cards until they reach 17 or more.
+                    
+                    5. Results & Profit
+                       - Compare hands with the dealer. Profit or loss will be calculated based on your bets.
+                    
+                    6. Example Gameplay
+                       blackjack
+                       How much are you betting? 50
+                       Your cards: ['5 of hearts', '6 of spades']
+                       Dealer hand: ['9 of diamonds', 'hidden']
+                       Press H to Hit, S to Stand, D to Double-Down, P to Split: H
+                       Newcard is 10 of hearts
+                       Updated hand: ['5 of hearts', '6 of spades', '10 of hearts']
+                    """
+                ,
+                "coin_flip":
+                    """
+                    Coin Flip Plugin Tutorial
+                    
+                    1. Usage
+                       Type:
+                       coin flip
+                    
+                    2. Function
+                       Randomly outputs either "Heads" or "Tails"
+                    
+                    3. Example
+                       Input: coin flip
+                       Output: Heads
+                    
+                       Input: coin flip
+                       Output: Tails
+                    
+                    4. Notes
+                       - No additional arguments needed
+                       - Each execution gives a 50/50 chance of Heads or Tails
+                    """,
+                "connect_four":
+                    """
+                    Connect Four Plugin Tutorial
+                    
+                    1. Start the Game
+                       Type:
+                       connect_four
+                    
+                    2. Gameplay
+                       - Two players take turns
+                       - Choose a column (1-7) to drop your token
+                       - First to connect four tokens horizontally, vertically, or diagonally wins
+                    
+                    3. Commands
+                       - Enter a number (1-7) to place your token
+                       - 'Y' to play again after a game ends
+                       - 'N' to quit after a game ends
+                    
+                    4. Tips
+                       - Plan ahead to block your opponent
+                       - Try to create multiple winning opportunities
+                       - Watch for diagonal connections
+                    
+                    5. Example Game Flow
+                       connect_four
+                       Pick a column (1-7):
+                       3
+                       [Game board displays]
+                       Pick a column (1-7):
+                       4
+                       [Game continues until win or tie]
+                       Would you like to play again? (Y/N)
+                       Y
+                       [New game starts]
+                    
+                    6. Error Handling
+                       - Invalid column: "Out of bounds. Pick another column."
+                       - Full column: "Column is full. Pick another."
+                       - Non-numeric input: "Enter a valid numeric input."
+                                """
+                ,
+                "guess_number_game":
+                    """
+                    Guess Number Game Plugin Tutorial
+                    
+                    1. Start the Game
+                       Run the command:
+                       guess_number_game
+                    
+                    2. Game Introduction
+                       Jarvis will introduce the rules and start the game.
+                    
+                    3. Choose Difficulty Mode
+                       Select between Hard (6 lives) or Normal (8 lives):
+                       Choose mode: Hard(6 lives) or Normal(8 lives)
+                    
+                    4. Guess the Number
+                       Input a number between 1 and 100:
+                       give me a number between(1-100): 50
+                    
+                    5. Feedback
+                       Jarvis will inform you if the number is bigger or smaller:
+                       The number that I am thinking is smaller than the one you guessed
+                    
+                    6. Continue Guessing
+                       Keep guessing until you find the correct number or run out of lives:
+                       make the next guess (lives: 5)
+                    
+                    7. Game Over
+                       If you guess the correct number, Jarvis will congratulate you. If you run out of lives, the game will end.
+                    """
+                ,
+                "hangman":
+                    """
+                    Hangman Plugin Tutorial
+                    
+                    1. Start the Game
+                       Run the command:
+                       hangman
+                    
+                    2. Game Objective
+                       The goal is to guess the word by inputting one letter at a time.
+                    
+                    3. Input Guess
+                       Enter a letter:
+                       Enter Your Guess: a
+                    
+                    4. Stop the Game
+                       Type 'stop' to end the game:
+                       Enter Your Guess: stop
+                    
+                    5. Lose a Life
+                       Enter an incorrect guess or repeat a letter:
+                       Woops! You Have Entered Wrong Guess
+                       Lives Decrease By 1, Remaining Lives: 7
+                    
+                    6. Winning the Game
+                       Successfully guess all letters of the word:
+                       You Won!
+                    
+                    7. Losing the Game
+                       If you run out of lives, the game ends:
+                       You Lost!
+                    
+                    8. Play Again
+                       After finishing, you can choose to play again or quit:
+                       Do You Want To Play Again? (Y/N)            
+                    """
+                ,
+                "magic_8_ball":
+                    """
+                    Magic 8 Ball Plugin Tutorial
+                    
+                    1. Start the Magic 8 Ball
+                       Run the command:
+                       magic8ball
+                    
+                    2. Ask a Question
+                       When prompted, type your question:
+                       => Will I have a good day today?
+                    
+                    3. Receive an Answer
+                       The Magic 8 Ball will display an ASCII art and provide a random answer:
+                       [ASCII Art of Magic 8 Ball]
+                       It is certain.
+                    
+                    4. Continue or Quit
+                       You'll be asked if you have more questions:
+                       => Do you have any further inquiries you wish to input?
+                    
+                       To ask another question, type:
+                       yes
+                    
+                       To exit, type anything else or 'quit'
+                    
+                    5. Exit Message
+                       When you're done, you'll see a random exit message:
+                       May the gods shine upon you.
+                    """
+                ,
+                "memory":
+                    """
+                    Memory Trainer Plugin Tutorial
+                    
+                    1. Start Memory Trainer
+                       Run the command:
+                       memory
+                    
+                    2. Start the Game
+                       When asked "Are you ready to play?", type:
+                       1
+                    
+                    3. Remember the Number
+                       A number will be displayed briefly
+                    
+                    4. Guess the Number
+                       Type your guess when prompted:
+                       Type your guess: 123
+                    
+                    5. Continue Playing
+                       If correct, a new number with one more digit will be shown
+                       If incorrect, the game ends
+                    
+                    6. View Score
+                       Your score (number of digits remembered) is shown when you make a mistake
+                    """
+                ,
+                "rockpaperscissors":
+                    """
+                    Rock Paper Scissors Plugin Tutorial
+                    
+                    1. Start the Game
+                       Run the command:
+                       rockpaperscissors
+                    
+                    2. Enter Number of Rounds
+                       Specify how many rounds you want to play (max. 100):
+                       Enter how many rounds you will play (max. 100): 5
+                    
+                    3. Make Your Move
+                       Input your move for each round:
+                       'r' for rock
+                       'p' for paper
+                       's' for scissors
+                       To end the game early, type 'exit'.
+                       To view the current score, type 'score'.
+                       To see the current round, type 'rounds'.
+                       Example input:
+                       Enter your move: r
+                    
+                    4. Jarvis Makes a Move
+                       Jarvis will also make a move, and the winner of the round will be announced.
+                    
+                    5. Game End
+                       After all rounds are played or you choose to exit, the game ends, displaying the final score.
+                       Example output:
+                       YOU: 3  JARVIS: 2
+                       YOU WIN!!
+                    """
+                ,
+                "roulette":
+                    """
+                    Roulette Plugin Tutorial
+                    
+                    1. Start the Game
+                       Launch the roulette game:
+                       roulette
+                    
+                    2. Welcome and Starting Cash
+                       You begin with a cash balance of $100.
+                    
+                    3. Choose a Bet Type
+                       Choose from the following betting options:
+                       1. Bet on a specific number (win: 36x)
+                       2. Bet on RED/BLACK (win: 2x)
+                       3. Bet on ODD/EVEN (win: 2x)
+                       4. Bet on ranges (1-12, 13-24, 25-36) (win: 3x)
+                       5. Bet on ranges (1-18, 19-36) (win: 2x)
+                       6. Exit the game
+                       Enter your choice: 1-6
+                    
+                    4. Enter Bet Details
+                       Depending on your chosen bet:
+                       - If you select a specific number, enter a number between 0 and 36.
+                       - If you select RED/BLACK, ODD/EVEN, or a range, make your choice accordingly.
+                       - Enter the amount you want to bet (must be within your available cash balance).
+                    
+                    5. Spin the Roulette
+                       Press Enter to spin the roulette wheel. The result will be displayed, showing whether you won or lost the bet.
+                    
+                    6. Game Progress
+                       Your current cash balance will be updated after each round.
+                       Continue playing by selecting new bets until you decide to exit or run out of cash.
+                    
+                    7. End Game
+                       Choose option 6 to exit the game, and your final cash balance will be displayed.
+                    
+                    Example gameplay:
+                    1. Enter bet type: 2 (RED/BLACK)
+                    2. Enter your choice: 1 (RED)
+                    3. Enter bet amount: 20
+                    4. Press Enter to spin the roulette
+                    5. Result: 18 (RED) - WIN
+                    """
+                ,
+                "spinthewheel":
+                    """
+                    Spin Wheel Plugin Tutorial
+                    
+                    1. Start the Spin Wheel
+                       Command: spinwheel
+                    
+                    2. Enter Number of Elements
+                       Specify how many elements will be on the wheel:
+                       enter the number of elements in the wheel: 4
+                    
+                    3. Enter Elements
+                       Enter each element one by one:
+                       Example:
+                       - pizza
+                       - burger
+                       - pasta
+                       - salad
+                    
+                    4. Spin the Wheel
+                       The wheel will spin, and a graphical wheel will appear showing the selected element.
+                    
+                    5. Spin Again (Optional)
+                       You can spin the wheel again by pressing 'y', or end the session by pressing any other key.
+                    
+                    6. End Game
+                       Thank you message will be displayed when the game is complete.
+                    
+                    Example:
+                    Do you want to spin again?? press: y
+                    """
+                ,
+                "tic_tac_toe":
+                    """
+                    Tic Tac Toe Plugin Tutorial
+                    
+                    1. Start the Game
+                       Command: tic_tac_toe
+                    
+                    2. Game Modes
+                       After starting the game, choose one of the following modes:
+                       1. Play against Jarvis.
+                       2. Play against a friend (two players).
+                    
+                    3. Board Layout
+                       The board layout is as follows:
+                       7 | 8 | 9
+                       -----------
+                       4 | 5 | 6
+                       -----------
+                       1 | 2 | 3
+                    
+                    4. How to Play
+                       - Player X goes first, followed by Player O.
+                       - Input a number (1-9) corresponding to the board position to place your piece.
+                       - For single-player mode, Jarvis will make its move after the user.
+                    
+                    5. Winning the Game
+                       - The game ends when a player gets three pieces in a row (horizontally, vertically, or diagonally).
+                       - If all nine positions are filled without a winner, the game is declared a draw.
+                    
+                    6. Example Gameplay
+                       - X turn. Choose a position: 5
+                       - O turn. Choose a position: 1
+                       - Jarvis will make its move automatically in single-player mode.
+                    """
+                ,
+                "wordgame":
+                    """
+                    1. Start the Game
+                       Run the command:
+                       word_game
+                    
+                    2. Set Game Options
+                       Enter the number of seconds to answer:
+                       Give how many seconds: (e.g., 10)
+                       Enter the number of rounds:
+                       Number of rounds: (e.g., 5)
+                    
+                    3. Begin the Game
+                       Enter your first word:
+                       Give a word: (e.g., apple)
+                    
+                    4. Continue Playing
+                       Jarvis will give a word starting with the last letter of your word:
+                       Jarvis' answer is: eagle
+                       You must then provide a word starting with the last letter of Jarvis' word.
+                    
+                    5. Win or Lose
+                       If you win all rounds or lose by mistake or timeout, the game ends.
+                    
+                    6. Play Again
+                       If you wish to play again, type 'Y'. To exit, type 'N'.
+                    """
+                ,
+                "wordle":
+                    """
+                    1. Start the Game
+                       Run the command:
+                       wordle
+                    
+                    2. Guess the Word
+                       You have 6 attempts to guess a 5-letter word:
+                       Enter Guess #1: (e.g., apple)
+                    
+                    3. Get Feedback
+                       Letters will be colored:
+                       Green: Correct letter and position
+                       Yellow: Correct letter but wrong position
+                       White: Incorrect letter
+                    
+                    4. Continue Guessing
+                       Repeat until you guess the word or run out of attempts.
+                    
+                    5. Quit Anytime
+                       Type 'q' to quit the game.
+                    """
             }
         },
         "Media": {
@@ -181,7 +587,26 @@ plugin_data = {
                 "mood_music": "Get music recommendations based on your mood."
             },
             "tutorials": {
-                "mood_music": ""
+                "mood_music":
+                    """
+                    Mood Music Plugin Tutorial
+                    
+                    1. Start Mood Music
+                       Run the command:
+                       mood music
+                    
+                    2. View Mood Options
+                       The plugin will display 12 mood options
+                    
+                    3. Select Mood
+                       Enter a number between 1-12 corresponding to your mood
+                    
+                    4. Open Spotify Playlist
+                       A Spotify playlist matching your mood will open in your web browser
+                    
+                    5. Continue or Exit
+                       Type 'NO' to exit, or anything else to choose another mood
+                    """
             }
         }
     },
