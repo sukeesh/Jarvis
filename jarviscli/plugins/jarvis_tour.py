@@ -774,16 +774,279 @@ Note:
                 "temp_conv": "Convert between different temperature scales."
             },
             "tutorials": {
-                "hash": "",
-                "hex": "",
-                "length_conv": "",
-                "massconv": "",
-                "mips": "",
-                "morse_code": "",
-                "natoalphabet": "",
-                "qr_generator": "",
-                "speed_conv": "",
-                "temp_conv": ""
+                "hash": """
+Hash Plugin Tutorial
+ 
+1. Start the Hash Process
+Run the command:
+hash
+
+2. Choose Input Type
+Decide whether to hash a string or a file:
+Do you want to hash a string or a file? (Enter 'string' or 'file'): string
+
+3. Choose Hash Function
+Enter the desired hash function (e.g., md5, sha1, sha256):
+Enter the hash function (md5, sha1, sha256, etc.): sha256
+
+4. Hash a String (if chosen)
+Provide the string you want to hash:
+Enter the string to hash: example_string
+
+5. Hash a File (if chosen)
+Provide the file path for the file to be hashed:
+Enter the path to the file: /path/to/file.txt
+
+6. View the Hashed Result
+The hashed result will be displayed after processing.
+ """,
+                "hex": """
+Hex Plugin Tutorial
+
+1. Invoke the Plugin
+Run the command:
+hex
+
+2. Input a Number
+If no number is provided, you will be prompted:
+What's your number?
+
+3. Enter an Integer
+Provide a valid integer. Example input:
+255
+
+4. View Result
+The output will display the hexadecimal representation:
+FF
+(If the number is negative, it will show as -FF)
+
+5. Error Handling
+If the input is not a valid number, you will see:
+That's not a number!
+""",
+                "length_conv": """
+Length Converter Plugin Tutorial
+
+1. Start the Length Converter
+   Command: lengthconv
+
+2. Supported Units
+   The following length units are supported for conversion:
+   nm   : nanometer
+   mum  : micrometer
+   mm   : millimeter
+   cm   : centimeter
+   dm   : decimeter
+   m    : meter
+   km   : kilometer
+   mi   : mile
+   yd   : yard
+   ft   : foot
+   in   : inch
+
+3. Enter Conversion Details
+   - Enter the amount to convert.
+   - Enter the unit of the value to convert from.
+   - Enter the unit to convert to.
+
+4. Precision
+   If the result is not an integer, specify the precision (max 12).
+
+5. Example Usage
+   - Enter an amount: 1000
+   - Enter from which unit: mm
+   - Enter to which unit: cm
+   - Output: 1000 millimeters is equal to 100 centimeters
+
+6. Invalid Input
+   If an invalid unit or the same units are entered for conversion, the plugin will prompt to enter valid or different units.
+                """,
+                "massconv": """
+Mass Converter Plugin Tutorial
+
+1. Start the Mass Converter
+   Run the command:
+   massconv
+
+2. Enter Amount
+   When prompted, input the amount you want to convert:
+   Enter an amount: 100
+
+3. Specify Source Unit
+   Enter the unit you're converting from (short or full name):
+   Enter from which unit: kg (or use 'kilogram')
+
+4. Specify Target Unit
+   Enter the unit you're converting to (short or full name):
+   Enter to which unit: lb (or use 'pound')
+
+5. Set Precision (Optional)
+   If result isn't a whole number, you'll be asked for precision:
+   Please enter precision (max:12): 2
+
+6. View Result
+   The converted amount will be displayed:
+   100 kilograms is equal to 220.46 pounds
+
+Supported Units:
+mcg (microgram), mg (milligram), g (gram), kg (kilogram),
+t (tonne), oz (ounce), lb (pound), st (stone), cwt (hundredweight)
+                """,
+                "mips": """
+MIPS Plugin Tutorial
+
+1. Convert Assembly to Machine Code:
+   mips <assembly instruction>
+
+   Example:
+   mips Addi $t2, $t1, 0x12
+
+2. Convert Machine Code to Assembly:
+   mips <8-digit hex code>
+
+   Example:
+   21490012
+
+3. Formatting Tips:
+   - Use spaces between instruction parts
+   - Separate registers with commas
+   - Use $ before register names
+   - Use 0x prefix for hex values
+
+4. Supported Instructions:
+   - R-type: ADD, ADDU, AND, JR, NOR, OR, SLT, SLTU, SLL, SRL, SUB, SUBU
+   - I-type: ADDI, ADDIU, ANDI, BEQ, BNE, LW, ORI, SLTI, SLTIU, SW
+   - J-type: J, JAL
+
+5. Register Names:
+   $zero, $at, $v0-$v1, $a0-$a3, $t0-$t7, $s0-$s7, $t8-$t9, $k0-$k1, $gp, $sp, $fp, $ra
+
+6. Examples:
+   Assembly to Machine Code:
+   mips ADD $t0, $s1, $s2
+
+   Machine Code to Assembly:
+   mips 02324020
+                """,
+                "morse_code": """
+Morse Code Translator Plugin Tutorial
+
+1. Start Morse Code Translator
+   Run the command:
+   morsecode
+
+2. Choose Operation
+   Enter 1 for encoding or 2 for decoding
+
+3. Enter Text
+   For encoding: Enter text using A-Z, 0-9, and some punctuation
+   For decoding: Use '.' for dot, '-' for dash, space between letters, '|' between words
+
+4. View Result
+   The plugin will display the translated text
+
+Example:
+Encoding: HELLO WORLD
+Decoding: .... . .-.. .-.. --- | .-- --- .-. .-.. -..
+                """,
+                "natoalphabet": """
+NATO Alphabet Plugin Tutorial
+
+1. Start the Plugin
+   Run the command:
+   natoalphabet
+
+2. Enter a Word
+   You can either provide a word immediately after the command or input it when prompted.
+   Example: natoalphabet hello
+
+3. View Results
+   The plugin will return the NATO phonetic alphabet equivalent for each letter in the word.
+   Example Output:
+   h - hotel
+   e - echo
+   l - lima
+   l - lima
+   o - oscar
+
+                """,
+                "qr_generator": """
+QR Code Generator Plugin
+
+1. Start QR Generation
+   Run the command:
+   qr
+
+2. Enter URL
+   Input the URL you want to generate a QR code for:
+   Example: https://github.com/sukeesh/Jarvis
+
+3. Specify Filepath
+   Enter the path where the QR code image will be saved:
+   Example: C:/Users/Public/Downloads
+
+4. Name the File
+   Provide a name for the QR image file:
+   Example: jarvis_qr
+
+5. Result
+   Your QR code will be saved as a PNG file in the specified directory. 
+
+                """,
+                "speed_conv": """
+Speed Converter Plugin Tutorial
+
+1. Start the Speed Converter
+   Command: speedconv
+
+2. Supported Units
+   The following speed units are supported:
+   m/s  : meter per second
+   km/h : kilometer per hour
+   ft/s : foot per second
+   mi/h : miles per hour
+   kn   : knot
+   Use the abbreviated forms for input.
+
+3. Enter Value to Convert
+   Input the speed value to convert:
+   value to convert: 50
+
+4. Enter Original Unit
+   Enter the speed unit of the value:
+   from which unit: km/h
+
+5. Enter Target Unit
+   Enter the speed unit to convert to:
+   to which unit: m/s
+
+6. Conversion Result
+   The converted value will be displayed:
+   Example output:
+   13.888889
+                """,
+                "temp_conv": """
+Temperature Converter Plugin Tutorial
+
+1. Start the Temperature Converter
+   Command: tempconv
+
+2. Supported Conversion
+   Convert between Fahrenheit and Celsius:
+   - To convert Fahrenheit to Celsius, append 'F' or 'f' to the value (e.g., 32f, -20F).
+   - To convert Celsius to Fahrenheit, append 'C' or 'c' to the value (e.g., 18C, -8c).
+
+3. Example Usage
+   - Enter a temperature: 32f
+   - Output: 32.0° F is 0.0° C
+
+   - Enter a temperature: 18C
+   - Output: 18.0° C is 64.4° F
+
+4. Invalid Input
+   If an invalid input is provided, the plugin will prompt:
+   "I'm sorry, invalid input. Please see 'help tempconv' for syntax."
+"""
             }
         },
         "File Operations": {
@@ -793,8 +1056,69 @@ Note:
                 "imgtopdf": "Converts single or multiple images into a PDF file."
             },
             "tutorials": {
-                "imgcompressor": "",
-                "imgtopdf": ""
+                "imgcompressor": """
+Image Compressor Plugin Tutorial
+
+1. Start the Image Compressor
+   Run the command:
+   image compressor
+
+2. Choose Compression Option
+   You will be prompted to choose:
+   1: Compress a single image
+   2: Compress all images in a folder
+   3: Quit
+
+3. Compress a Single Image
+   If you choose option 1, you will be asked to enter the full path of the image:
+   Enter the full path of the image: /path/to/your/image.jpg
+
+4. Compress Multiple Images in a Folder
+   If you choose option 2, you will be asked to enter the full path of a folder:
+   Enter the full path of a folder: /path/to/your/folder
+
+5. Set Compression Quality
+   For both single and multiple images, you will be prompted to enter a quality value:
+   Enter desired quality of compression (0-100 where 100 is maximum compression): 85
+
+6. Compressed Image Output
+   The compressed images will be saved in the same directory with a prefix "compressed_".
+
+7. Quit the Plugin
+   To quit the plugin, choose option 3 or type 'q' or 'quit'.
+
+                """,
+                "imgtopdf": """
+Image to PDF Plugin Tutorial
+
+1. Start Image to PDF Conversion
+   Run the command:
+   image to pdf
+
+2. Select Conversion Option
+   Choose one of the following options:
+   1: Convert a single image
+   2: Convert all images in a folder
+   3: Quit
+
+3. Convert a Single Image
+   Enter the full path of the image you want to convert:
+   Enter the full path of the image: /path/to/image.jpg
+
+4. Convert Multiple Images in a Folder
+   Enter the full path of the folder containing images:
+   Enter the full path of the folder: /path/to/folder
+
+5. Save PDF
+   After conversion, choose where to save the PDF file:
+   What would you like to name your pdf? myfile
+   Final Destination: /path/to/save/myfile.pdf
+
+6. Completion Message
+   Once the PDF is created successfully, you will see:
+   Your pdf is created successfully
+
+"""
             }
         },
         "Random Generator": {
@@ -803,7 +1127,26 @@ Note:
                 "random_password": "Generate secure random passwords."
             },
             "tutorials": {
-                "random_password": ""
+                "random_password": """
+1. Generate Random Password
+   Run the command:
+   random password
+   Generate a secure random password with customizable length and characters.
+
+2. Enter Password Length
+   Input the desired length of the password:
+   Enter password length: 12
+
+3. Special Characters Option
+   Choose whether to include special characters:
+   Do you want special characters?(y/n): y
+
+4. Result
+   Get your randomly generated password:
+   Example output:
+   Your random password is: aB3!kT9#L1x
+
+"""
             }
         },
         "Reminder": {
@@ -812,7 +1155,62 @@ Note:
                 "reminder": "Set reminders for important tasks or events."
             },
             "tutorials": {
-                "reminder": ""
+                "reminder": """
+Todo and Remind Plugin Tutorial
+
+1. List Todos
+   Run the command:
+   todo
+
+2. Add a Todo
+   Run the command:
+   todo add buy groceries
+
+3. Set Progress on a Todo
+   Run the command:
+   todo progress
+   Select a todo from the list
+   Enter progress (0-100): 50
+
+4. Add a Tag to a Todo
+   Run the command:
+   todo tag
+   Select a todo from the list
+   Select a tag to add
+
+5. Filter Todos by Tag
+   Run the command:
+   todo filter
+   Select a tag to filter by
+
+6. Create a Reminder
+   For a specific time:
+   remind at 18:00 to cook dinner
+
+   For a duration:
+   remind in 1 hour to take a break
+
+7. List Reminders
+   Run the command:
+   remind
+
+8. Remove a Todo or Reminder
+   For todos:
+   todo remove
+
+   For reminders:
+   remind remove
+
+9. Manage Tags
+   List tags:
+   tags
+
+   Create a new tag:
+   tags new work
+
+   Remove a tag:
+   tags remove
+"""
             }
         },
         "Tools": {
@@ -824,10 +1222,108 @@ Note:
                 "write_agenda": "Create and manage meeting agendas."
             },
             "tutorials": {
-                "tasks": "",
-                "timeconv": "",
-                "website_status": "",
-                "write_agenda": ""
+                "tasks": """
+Task Manager Plugin Tutorial
+
+1. Start the Task Manager
+   Command: tasks
+
+2. Available Options
+   After starting the plugin, choose one of the following options:
+   1. List All My Tasks
+      - View all tasks currently in the task list.
+   2. Add New Task
+      - Add a new task to your list.
+   3. Edit Existing Task
+      - Update the name of an existing task.
+   4. Delete Task
+      - Remove a task from your list.
+   5. Add Priority to Task
+      - Set priority for a task (High, Medium, Low).
+   6. Sort
+      - Sort tasks by name or by priority.
+   7. Exit
+      - Exit the Task Manager.
+
+3. Task Priority
+   - You can add priority to a task: High, Medium, or Low.
+   - Tasks are displayed in different colors based on priority (Red for High, Yellow for Medium, Green for Low).
+
+4. Example Usage
+   1. To add a new task, select option 2.
+   2. Enter the name of the new task.
+   3. To add priority, select option 5 and choose the task.
+   4. To list all tasks, select option 1.
+                """,
+                "timeconv": """
+1. Convert Time Units
+   Run the command:
+   timeconv
+   Convert between different time units such as seconds, minutes, hours, and more.
+
+2. Enter Amount
+   Input the amount of time to convert:
+   Enter an amount: 1000
+
+3. Choose Source Unit
+   Input the time unit of the amount:
+   Enter from which unit: s
+
+4. Choose Target Unit
+   Input the time unit to convert to:
+   Enter to which unit: min
+
+5. Result
+   Get the converted result with precision options.
+   Example output:
+   1000 seconds is equal to 16.6667 minutes
+                
+                """,
+                "website_status": """
+1. Start the Plugin
+   Run the command:
+   website status
+
+2. Enter Website URL
+   Input the website URL to check its status:
+   Example: www.example.com
+
+3. View Status Code
+   The plugin will display the HTTP status code for the entered URL.
+
+4. Error Handling
+   If an error occurs, you can choose to try again or exit by typing 'y' or 'n'.
+
+5. Exit
+   After checking the website status or exiting, the plugin will terminate automatically.
+
+                """,
+                "write_agenda": """
+1. Write an Event to the Agenda
+   Run the command:
+   write agenda
+
+2. Input Event Details
+   Enter the required details as prompted:
+   - Event Date (e.g., 2021-09-21)
+   - Event Time (e.g., 13:00)
+   - Event Place
+   - Event Title
+   - Event Description
+
+3. Add More Events
+   You will be asked if you'd like to add another event:
+   Would you like to add anything more? (y/n)
+
+4. Save the Event
+   After you finish adding events, they will be saved to `agenda.csv`.
+
+5. Read the Agenda
+   Run the command:
+   read agenda
+   The list of all saved events will be displayed.
+
+"""
             }
         }
     }
