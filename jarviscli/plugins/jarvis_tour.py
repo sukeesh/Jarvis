@@ -268,8 +268,56 @@ plugin_data = {
                 "temp_conv": "Convert between different temperature scales."
             },
             "tutorials": {
-                "hash": "",
-                "hex": "",
+                "hash": """
+                        Hash Plugin Tutorial
+ 
+                        1. Start the Hash Process
+                        Run the command:
+                        hash
+
+                        2. Choose Input Type
+                        Decide whether to hash a string or a file:
+                        Do you want to hash a string or a file? (Enter 'string' or 'file'): string
+
+                        3. Choose Hash Function
+                        Enter the desired hash function (e.g., md5, sha1, sha256):
+                        Enter the hash function (md5, sha1, sha256, etc.): sha256
+
+                        4. Hash a String (if chosen)
+                        Provide the string you want to hash:
+                        Enter the string to hash: example_string
+
+                        5. Hash a File (if chosen)
+                        Provide the file path for the file to be hashed:
+                        Enter the path to the file: /path/to/file.txt
+
+                        6. View the Hashed Result
+                        The hashed result will be displayed after processing.
+                        """,
+                "hex": """
+                       Hex Plugin Tutorial
+
+                       1. Invoke the Plugin
+                       Run the command:
+                       hex
+
+                       2. Input a Number
+                       If no number is provided, you will be prompted:
+                       What's your number?
+
+                       3. Enter an Integer
+                       Provide a valid integer. Example input:
+                       255
+
+                       4. View Result
+                       The output will display the hexadecimal representation:
+                       FF
+                       (If the number is negative, it will show as -FF)
+
+                       5. Error Handling
+                       If the input is not a valid number, you will see:
+                       That's not a number!
+                       """,
                 "length_conv": "",
                 "massconv": "",
                 "mips": "",
