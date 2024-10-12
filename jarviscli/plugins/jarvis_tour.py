@@ -187,12 +187,72 @@ plugin_data = {
     },
     "Fitness & Health": {
         "Fitness": {
-            "plugins": ["workout"],
+            "plugins": ["workout", "bmi"],
             "descriptions": {
-                "workout": "Customized push-up and pull-up workout plans based on user's fitness level."
+                "workout": "Customized push-up and pull-up workout plans based on user's fitness level.",
+                "bmi": "Calculate your Body Mass Index (BMI)."
             },
             "tutorials": {
-                "workout": ""
+                "workout":
+                """
+                1. Start Workout
+                Run the command:
+                workout
+
+                2. Choose an Exercise
+                Select between pushups or pullups:
+                Write 'push' for pushups, 'pull' for pullups, or 'q' to quit
+
+                3. Enter Your Maximum Reps
+                Input how many times you can do the chosen exercise:
+                Enter an integer (e.g., 15)
+
+                4. Follow the Program
+                Jarvis will generate a personalized workout routine and guide you through sets with rest intervals.
+                
+                5. Completion
+                After finishing all sets, you will see your total reps and a motivational message.
+                """,
+
+                "bmi":
+                """
+                BMI Plugin Tutorial
+
+                1. Start the Plugin
+                Type:
+                bmi
+
+                2. Choose Measurement System
+                - 1: Metric system (cm for height, kg for weight)
+                - 2: Imperial system (ft and inches for height, lbs for weight)
+                - Default is Metric system
+
+                3. Enter Measurements
+                - For Metric: Enter height in cm and weight in kg.
+                - For Imperial: Enter height in ft and inches, then weight in lbs.
+
+                4. Example Metric Input
+                bmi
+                Your choice: 1
+                Please insert your height in cm: 170
+                Please insert your weight in kg: 70
+                Output: BMI: 24.2 (Healthy)
+
+                5. Example Imperial Input
+                bmi
+                Your choice: 2
+                Please insert your height in ft: 5
+                Please insert your height in inches: 9
+                Please insert your weight in lbs: 160
+                Output: BMI: 23.6 (Healthy)
+
+                6. Body State
+                - Severe thinness: BMI < 16
+                - Mild thinness: BMI 16-18.5
+                - Healthy: BMI 18.5-24.9
+                - Pre-obese: BMI 25-29.9
+                - Obese: BMI ≥ 30
+                """
             }
         },
         "Health": {
