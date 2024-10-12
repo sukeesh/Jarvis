@@ -2,320 +2,326 @@ from plugin import plugin
 
 # Dictionary containing categories, subcategories, plugins, and their descriptions
 plugin_data = {
-    "Entertainment": {
-        "Games": {
-            "plugins": ["akinator", "asteroids_neows", "blackjack", "coin_flip", "connect_four", "dice", "guess_number_game", "hangman", "magic_8_ball", "rockpaperscissors", "roulette", "spinthewheel", "tic_tac_toe", "trivia", "wordgame", "wordle"],
+    "Entertainment & Games": {
+        "Entertainment": {
+            "plugins": ["check_if_game_runs_on_linux", "movie", "buy"],
             "descriptions": {
-                "akinator": "Play the Akinator guessing game.",
-                "asteroids_neows": "Get information about near Earth objects.",
-                "blackjack": "Play a game of Blackjack.",
+                "check_if_game_runs_on_linux": "Retrieves ProtonDB compatibility ratings for a Steam game.",
+                "movie": "Look up movie information on IMDB.",
+                "buy": "Search for products on Amazon or eBay"
+            },
+            "tutorials": {
+                "check_if_game_runs_on_linux": "",
+                "movie": "",
+                "buy": ""
+            }
+        },
+        "Games": {
+            "plugins": ["balut", "blackjack", "coin_flip", "connect_four", "guess_number_game", "hangman", "magic_8_ball", "memory", "rockpaperscissors", "roulette", "spinthewheel", "tic_tac_toe", "wordgame", "wordle"],
+            "descriptions": {
+                "balut": "A strategic multi-player dice game.",
+                "blackjack": "Play a game of Blackjack, following standard casino rules.",
                 "coin_flip": "Simulate a coin flip.",
                 "connect_four": "Play Connect Four against the computer.",
-                "dice": "Roll virtual dice.",
-                "guess_number_game": "Play a number guessing game.",
-                "hangman": "Play the classic Hangman word game.",
+                "guess_number_game": "This plugin initiates a number guessing game where the user selects between two modes (Hard or Normal) and tries to guess a number between 1 and 100, with feedback on whether the guess is higher or lower.",
+                "hangman": "This plugin plays a game of Hangman where the player guesses letters to reveal a hidden word.",
                 "magic_8_ball": "Ask the Magic 8 Ball a question.",
-                "rockpaperscissors": "Play Rock, Paper, Scissors.",
-                "roulette": "Play a game of Roulette.",
+                "memory": "Train your short-term memory with increasing difficulty.",
+                "rockpaperscissors": "Play Rock-Paper-Scissors against Jarvis with score tracking and up to 100 rounds.",
+                "roulette": "Play a simple roulette game where you place bets and spin the wheel to win or lose virtual cash.",
                 "spinthewheel": "Spin a virtual wheel for random selection.",
                 "tic_tac_toe": "Play Tic-Tac-Toe against the computer.",
-                "trivia": "Answer trivia questions on various topics.",
                 "wordgame": "Play a word guessing game.",
                 "wordle": "Play the popular Wordle game."
+            },
+            "tutorials": {
+                "balut": "",
+                "blackjack": "",
+                "coin_flip": "",
+                "connect_four": "",
+                "guess_number_game": "",
+                "hangman": "",
+                "magic_8_ball": "",
+                "memory": "",
+                "rockpaperscissors": "",
+                "roulette": "",
+                "spinthewheel": "",
+                "tic_tac_toe": "",
+                "wordgame": "",
+                "wordle": ""
             }
         },
         "Media": {
-            "plugins": ["artprompts", "cat_fact", "chuck", "dad_jokes", "goodreads", "joke_of_day", "lyrics", "mood_music", "movies", "music_recognition", "picshow", "quote", "random_fact", "taste_dive", "top_media"],
+            "plugins": ["mood_music"],
             "descriptions": {
-                "artprompts": "Get random art prompts for inspiration.",
-                "cat_fact": "Learn interesting facts about cats.",
-                "chuck": "Get Chuck Norris jokes.",
-                "dad_jokes": "Hear some classic dad jokes.",
-                "goodreads": "Get book recommendations and reviews.",
-                "joke_of_day": "Hear the joke of the day.",
-                "lyrics": "Find and display song lyrics.",
-                "mood_music": "Get music recommendations based on your mood.",
-                "movies": "Get movie recommendations and information.",
-                "music_recognition": "Identify songs playing around you.",
-                "picshow": "Display random images or create slideshows.",
-                "quote": "Get inspirational or famous quotes.",
-                "random_fact": "Learn random interesting facts.",
-                "taste_dive": "Get recommendations for movies, TV shows, books, and more.",
-                "top_media": "See top trending media content."
-            }
-        }
-    },
-    "Productivity": {
-        "Task Management": {
-            "plugins": ["create_plugin", "notes", "reminder", "routine", "tasks", "write_agenda"],
-            "descriptions": {
-                "create_plugin": "Create a new Jarvis plugin.",
-                "notes": "Take and manage notes.",
-                "reminder": "Set reminders for important tasks or events.",
-                "routine": "Set up and manage daily routines.",
-                "tasks": "Manage your to-do list.",
-                "write_agenda": "Create and manage meeting agendas."
-            }
-        },
-        "Time Management": {
-            "plugins": ["clock", "event_timer", "timeconv", "typing_test"],
-            "descriptions": {
-                "clock": "Display the current time and date.",
-                "event_timer": "Set timers for events or tasks.",
-                "timeconv": "Convert time between different time zones.",
-                "typing_test": "Test and improve your typing speed."
+                "mood_music": "Get music recommendations based on your mood."
+            },
+            "tutorials": {
+                "mood_music": ""
             }
         }
     },
     "Fitness & Health": {
-        "Health Metrics": {
+        "Fitness": {
+            "plugins": ["workout"],
+            "descriptions": {
+                "workout": "Customized push-up and pull-up workout plans based on user's fitness level."
+            },
+            "tutorials": {
+                "workout": ""
+            }
+        },
+        "Health": {
             "plugins": ["bmi", "bmr", "calories_macros"],
             "descriptions": {
                 "bmi": "Calculate your Body Mass Index (BMI).",
                 "bmr": "Calculate your Basal Metabolic Rate (BMR).",
-                "calories_macros": "Track calories and macronutrients."
-            }
-        },
-        "Fitness": {
-            "plugins": ["workout"],
-            "descriptions": {
-                "workout": "Get workout suggestions and routines."
+                "calories_macros": "Calculate personalized daily calorie and macronutrient recommendations for weight management goals."
+            },
+            "tutorials": {
+                "bmi": "",
+                "bmr": "",
+                "calories_macros": ""
             }
         }
     },
-    "Information & Reference": {
-        "General Knowledge": {
-            "plugins": ["dictionary", "element", "wiki", "numbers_api"],
+    "Food & Drink": {
+        "Recipe": {
+            "plugins": ["drink"],
             "descriptions": {
-                "dictionary": "Look up word definitions.",
-                "element": "Get information about chemical elements.",
-                "wiki": "Search Wikipedia for information.",
-                "numbers_api": "Get interesting facts about numbers."
+                "drink": "Fetch details about a specific cocktail, including ingredients and preparation instructions, from an external API."
+            },
+            "tutorials": {
+                "drink": ""
             }
-        },
-        "News & Current Events": {
-            "plugins": ["hackernews", "news", "corona"],
+        }
+    },
+    "Information & Facts": {
+        "Facts": {
+            "plugins": ["stateinfo"],
             "descriptions": {
-                "hackernews": "Get top stories from Hacker News.",
-                "news": "Get the latest news headlines.",
-                "corona": "Get updates on COVID-19 statistics."
-            }
-        },
-        "Geography & Location": {
-            "plugins": ["countryinfo", "geocode", "location", "stateinfo"],
-            "descriptions": {
-                "countryinfo": "Get information about countries.",
-                "geocode": "Convert addresses to geographic coordinates and vice versa.",
-                "location": "Get your current location information.",
                 "stateinfo": "Get information about U.S. states."
+            },
+            "tutorials": {
+                "stateinfo": ""
+            }
+        },
+        "Information": {
+            "plugins": ["dial_code", "google", "history", "name_day", "weekday"],
+            "descriptions": {
+                "dial_code": "Lookup or retrieve a country's dialing code, or find the country associated with a given dialing code.",
+                "google": "This plugin performs a Google search using a provided query, retrieves the first answer from Google's default result snippets, and returns it.",
+                "history": "Get historical events for a specific date.",
+                "name_day": "Find the name day for a given name.",
+                "weekday": "Tells what day of the week any date falls on."
+            },
+            "tutorials": {
+                "dial_code": "",
+                "google": "",
+                "history": "",
+                "name_day": "",
+                "weekday": ""
+            }
+        },
+        "Investment": {
+            "plugins": ["cryptotracker"],
+            "descriptions": {
+                "cryptotracker": "Track the price and 24-hour price change of cryptocurrency pairs, or check a default list of favorite pairs."
+            },
+            "tutorials": {
+                "cryptotracker": ""
+            }
+        },
+        "Language": {
+            "plugins": ["dictionary"],
+            "descriptions": {
+                "dictionary": "Look up the meaning, synonyms, and antonyms of any word, and provide additional details if needed."
+            },
+            "tutorials": {
+                "dictionary": ""
+            }
+        }
+    },
+    "Media": {
+        "": {
+            "plugins": ["voice", "voice_control"],
+            "descriptions": {
+                "voice": "Enable or disable Jarvis's voice and control speech speed.",
+                "voice_control": "Activates voice mode for commands and listens for 'stop' to deactivate."
+            },
+            "tutorials": {
+                "voice": "",
+                "voice_control": ""
+            }
+        }
+    },
+    "Programming & Math": {
+        "Encryption": {
+            "plugins": ["caesar_cipher"],
+            "descriptions": {
+                "caesar_cipher": "Encode or decode messages using Caesar cipher."
+            },
+            "tutorials": {
+                "caesar_cipher": ""
+            }
+        },
+        "Math": {
+            "plugins": ["binary", "evaluator", "factor", "kaprekar", "matrix_add"],
+            "descriptions": {
+                "binary": "Convert between binary and decimal.",
+                "evaluator": "This plugin performs various mathematical operations such as solving equations, calculating expressions, factoring, plotting graphs, and analyzing limits, derivatives, and integrals.",
+                "factor": "This plugin calculates the prime factors of a given number and prints them in a factorized form.",
+                "kaprekar": "Checks if a number is a Kaprekar number.",
+                "matrix_add": "Perform matrix addition."
+            },
+            "tutorials": {
+                "binary": "",
+                "evaluator": "",
+                "factor": "",
+                "kaprekar": "",
+                "matrix_add": ""
+            }
+        },
+        "Utilities": {
+            "plugins": ["bulkresize", "create_plugin"],
+            "descriptions": {
+                "bulkresize": "Resize and optionally renames all images in a directory, tailored for deep learning data preparation.",
+                "create_plugin": "Create a plugin for Jarvis."
+            },
+            "tutorials": {
+                "bulkresize": "",
+                "create_plugin": ""
+            }
+        }
+    },
+    "System": {
+        "Command Line Utilities": {
+            "plugins": ["battery", "cat_history", "clear", "volume", "whoami"],
+            "descriptions": {
+                "battery": "Check your device's battery status.",
+                "cat_history": "Print the history of commands",
+                "clear": "Clear the terminal screen, supporting both Unix and Windows platforms.",
+                "volume": "Increases, decreases, or mutes the speaker volume on Linux or macOS systems.",
+                "whoami": "Display current user information."
+            },
+            "tutorials": {
+                "battery": "",
+                "cat_history": "",
+                "clear": "",
+                "volume": "",
+                "whoami": ""
+            }
+        },
+        "File Management": {
+            "plugins": ["file_organise"],
+            "descriptions": {
+                "file_organise": "Organize files in a directory."
+            },
+            "tutorials": {
+                "file_organise": ""
+            }
+        },
+        "Networking": {
+            "plugins": ["change_mac", "curl", "dns_lookup", "get_host_info", "ip", "wifi_password_getter"],
+            "descriptions": {
+                "change_mac": "View and change the MAC address of any network device connected to your Linux system.",
+                "curl": "Generate a curl request by specifying the HTTP method, content type, data, and endpoint, while ensuring the input parameters are valid.",
+                "dns_lookup": "Look up an IP address from a hostname or a hostname from an IP address using DNS forward and reverse queries.",
+                "get_host_info": "Get information about a host.",
+                "ip": "Displays local and public IP addresses for UNIX and Windows systems.",
+                "wifi_password_getter": "Retrieve saved Wi-Fi passwords."
+            },
+            "tutorials": {
+                "change_mac": "",
+                "curl": "",
+                "dns_lookup": "",
+                "get_host_info": "",
+                "ip": "",
+                "wifi_password_getter": ""
+            }
+        },
+        "Tools": {
+            "plugins": ["clock", "system_update"],
+            "descriptions": {
+                "clock": "Display the current time, run a stopwatch, and set a timer with customizable durations.",
+                "system_update": "Check for and install system updates."
+            },
+            "tutorials": {
+                "clock": "",
+                "system_update": ""
             }
         }
     },
     "Utilities": {
         "Conversion Tools": {
-            "plugins": ["caesar_cipher", "currency_conv", "length_conv", "mass_conv", "morse_code", "speed_conv", "temp_conv", "binary", "hex", "mips_conv", "string_converter"],
+            "plugins": ["hash", "hex", "length_conv", "massconv", "mips", "morse_code", "natoalphabet", "qr_generator", "speed_conv", "temp_conv"],
             "descriptions": {
-                "caesar_cipher": "Encode or decode messages using Caesar cipher.",
-                "currency_conv": "Convert between different currencies.",
-                "length_conv": "Convert between different units of length.",
-                "mass_conv": "Convert between different units of mass.",
+                "hash": "This plugin allows the user to hash a string or a file using a specified hash function like `md5`, `sha1`, or `sha256`.",
+                "hex": "This plugin converts a given integer to its hexadecimal representation and prints it.",
+                "length_conv": "Converts between different length measurement units.",
+                "massconv": "Convert between different units of mass.",
+                "mips": "Conversion between MIPS and machine code.",
                 "morse_code": "Translate text to and from Morse code.",
-                "speed_conv": "Convert between different units of speed.",
-                "temp_conv": "Convert between different temperature scales.",
-                "binary": "Convert between binary and decimal.",
-                "hex": "Convert between hexadecimal and decimal.",
-                "mips_conv": "Convert MIPS assembly to machine code.",
-                "string_converter": "Convert strings to various formats."
-            }
-        },
-        "System Tools": {
-            "plugins": ["battery", "clear", "file_manager", "file_organise", "scan_network", "screen_capture", "shutdown", "system_options", "system_update", "change_mac", "hotspot", "wifi_password_getter"],
-            "descriptions": {
-                "battery": "Check your device's battery status.",
-                "clear": "Clear the console screen.",
-                "file_manager": "Manage files and directories.",
-                "file_organise": "Organize files in a directory.",
-                "scan_network": "Scan your local network for devices.",
-                "screen_capture": "Take screenshots or record your screen.",
-                "shutdown": "Shutdown or restart your computer.",
-                "system_options": "Manage system settings and options.",
-                "system_update": "Check for and install system updates.",
-                "change_mac": "Change your device's MAC address.",
-                "hotspot": "Create a Wi-Fi hotspot.",
-                "wifi_password_getter": "Retrieve saved Wi-Fi passwords."
-            }
-        },
-        "Web Tools": {
-            "plugins": ["curl", "dns_lookup", "get_host_info", "ip", "visit_website", "website_status"],
-            "descriptions": {
-                "curl": "Make HTTP requests from the command line.",
-                "dns_lookup": "Perform DNS lookups.",
-                "get_host_info": "Get information about a host or domain.",
-                "ip": "Get your public IP address.",
-                "visit_website": "Open a website in your default browser.",
-                "website_status": "Check the status of a website."
+                "natoalphabet": "Convert text to NATO phonetic alphabet.",
+                "qr_generator": "Generate QR codes.",
+                "speed_conv": "Convert speed between m/s km/h ft/s mi/h and knots.",
+                "temp_conv": "Convert between different temperature scales."
+            },
+            "tutorials": {
+                "hash": "",
+                "hex": "",
+                "length_conv": "",
+                "massconv": "",
+                "mips": "",
+                "morse_code": "",
+                "natoalphabet": "",
+                "qr_generator": "",
+                "speed_conv": "",
+                "temp_conv": ""
             }
         },
         "File Operations": {
-            "plugins": ["bulkresize", "htmltopdf", "imgcompressor", "imgtopdf", "pdftoimg", "readpdf"],
+            "plugins": ["imgcompressor", "imgtopdf"],
             "descriptions": {
-                "bulkresize": "Resize multiple images at once.",
-                "htmltopdf": "Convert HTML files to PDF.",
                 "imgcompressor": "Compress image files.",
-                "imgtopdf": "Convert images to PDF.",
-                "pdftoimg": "Convert PDF files to images.",
-                "readpdf": "Read the contents of a PDF file."
-            }
-        }
-    },
-    "Math & Calculation": {
-        "Basic Math": {
-            "plugins": ["evaluator", "expression_checker", "factor", "matrix_add"],
-            "descriptions": {
-                "evaluator": "Evaluate mathematical expressions.",
-                "expression_checker": "Check the validity of mathematical expressions.",
-                "factor": "Find factors of a number.",
-                "matrix_add": "Perform matrix addition."
+                "imgtopdf": "Converts single or multiple images into a PDF file."
+            },
+            "tutorials": {
+                "imgcompressor": "",
+                "imgtopdf": ""
             }
         },
-        "Advanced Math": {
-            "plugins": ["armstrong_numbers", "kaprekar", "pi", "project_euler"],
+        "Random Generator": {
+            "plugins": ["random_password"],
             "descriptions": {
-                "armstrong_numbers": "Find Armstrong numbers.",
-                "kaprekar": "Find Kaprekar numbers.",
-                "pi": "Calculate pi to a specified number of digits.",
-                "project_euler": "Solve Project Euler problems."
-            }
-        }
-    },
-    "Personal Information": {
-        "Personal Data": {
-            "plugins": ["age", "agify", "myinfo", "name_day", "nationalize"],
-            "descriptions": {
-                "age": "Calculate age based on birthdate.",
-                "agify": "Predict age based on name.",
-                "myinfo": "Store and retrieve personal information.",
-                "name_day": "Find the name day for a given name.",
-                "nationalize": "Predict nationality based on name."
+                "random_password": "Generate secure random passwords."
+            },
+            "tutorials": {
+                "random_password": ""
             }
         },
-        "Personal Assistant": {
-            "plugins": ["activity", "advice_giver", "motivate", "personality"],
+        "Reminder": {
+            "plugins": ["reminder"],
             "descriptions": {
-                "activity": "Get suggestions for activities.",
-                "advice_giver": "Get advice on various topics.",
-                "motivate": "Get motivational quotes and messages.",
-                "personality": "Take a personality test."
-            }
-        }
-    },
-    "Communication": {
-        "Social Media": {
-            "plugins": ["imgur", "twitter_trends"],
-            "descriptions": {
-                "imgur": "Upload images to Imgur.",
-                "twitter_trends": "See current Twitter trends."
+                "reminder": "Set reminders for important tasks or events."
+            },
+            "tutorials": {
+                "reminder": ""
             }
         },
-        "Messaging": {
-            "plugins": ["gmail", "natoalphabet"],
+        "Tools": {
+            "plugins": ["tasks", "timeconv", "website_status", "write_agenda"],
             "descriptions": {
-                "gmail": "Check and send Gmail emails.",
-                "natoalphabet": "Convert text to NATO phonetic alphabet."
-            }
-        },
-        "Voice & Audio": {
-            "plugins": ["voice", "voice_control"],
-            "descriptions": {
-                "voice": "Convert text to speech.",
-                "voice_control": "Control Jarvis using voice commands."
-            }
-        }
-    },
-    "Travel & Transportation": {
-        "Travel Information": {
-            "plugins": ["distance", "flightradar", "moon_phase", "weather_report"],
-            "descriptions": {
-                "distance": "Calculate distance between two locations.",
-                "flightradar": "Track flights in real-time.",
-                "moon_phase": "Get current moon phase information.",
-                "weather_report": "Get weather forecasts for a location."
-            }
-        },
-        "Space": {
-            "plugins": ["mars_weather"],
-            "descriptions": {
-                "mars_weather": "Get weather information for Mars."
-            }
-        }
-    },
-    "Sports & Games": {
-        "Sports Information": {
-            "plugins": ["basketball", "cricket", "football", "tennis", "world_cup"],
-            "descriptions": {
-                "basketball": "Get basketball-related information.",
-                "cricket": "Get cricket match scores and information.",
-                "football": "Get football (soccer) match information.",
-                "tennis": "Get tennis match information.",
-                "world_cup": "Get World Cup tournament information."
-            }
-        },
-        "Game Tools": {
-            "plugins": ["check_if_game_runs_on_linux", "game"],
-            "descriptions": {
-                "check_if_game_runs_on_linux": "Check if a game can run on Linux.",
-                "game": "Launch or manage games."
-            }
-        }
-    },
-    "Miscellaneous": {
-        "Random Generators": {
-            "plugins": ["random_list", "random_number", "random_password", "random_repo"],
-            "descriptions": {
-                "random_list": "Generate a random list of items.",
-                "random_number": "Generate random numbers.",
-                "random_password": "Generate secure random passwords.",
-                "random_repo": "Get a random GitHub repository."
-            }
-        },
-        "Other Tools": {
-            "plugins": ["balut", "boredAPI", "buy", "camera", "cat_history", "cocktail", "detect_language", "dial_code", "drink", "exit", "food_recipe", "fruit", "fruit_nutrition", "get_joke", "google", "hackathon", "hash", "history", "leap_year", "memory", "newyear", "open", "performance", "qr_generator", "search", "speed_test", "stock", "switchingwin", "translate", "upside_down", "volume", "voter_info", "weekday", "whoami", "yeelight"],
-            "descriptions": {
-                "balut": "Information about the Filipino dish Balut.",
-                "boredAPI": "Get suggestions for activities when you're bored.",
-                "buy": "Get product recommendations or shopping information.",
-                "camera": "Access and control device camera.",
-                "cat_history": "Learn about the history of cats.",
-                "cocktail": "Get cocktail recipes and information.",
-                "detect_language": "Detect the language of a given text.",
-                "dial_code": "Get country dial codes.",
-                "drink": "Get information about various drinks.",
-                "exit": "Exit the Jarvis application.",
-                "food_recipe": "Get recipes for various dishes.",
-                "fruit": "Get information about different fruits.",
-                "fruit_nutrition": "Get nutritional information about fruits.",
-                "get_joke": "Get a random joke.",
-                "google": "Perform a Google search.",
-                "hackathon": "Get information about hackathons.",
-                "hash": "Generate hash values for strings.",
-                "history": "Get historical events for a specific date.",
-                "leap_year": "Check if a year is a leap year.",
-                "memory": "Check system memory usage.",
-                "newyear": "New Year related functions or information.",
-                "open": "Open files or applications.",
-                "performance": "Check system performance metrics.",
-                "qr_generator": "Generate QR codes.",
-                "search": "Perform web searches.",
-                "speed_test": "Test internet connection speed.",
-                "stock": "Get stock market information.",
-                "switchingwin": "Switch between windows.",
-                "translate": "Translate text between languages.",
-                "upside_down": "Convert text to upside-down Unicode characters.",
-                "volume": "Control system volume.",
-                "voter_info": "Get voter information.",
-                "weekday": "Find the day of the week for a given date.",
-                "whoami": "Display current user information.",
-                "yeelight": "Control Yeelight smart bulbs."
+                "tasks": "Manage your to-do list.",
+                "timeconv": "Convert time between different time zones.",
+                "website_status": "Checks the status of a website by requesting its URL.",
+                "write_agenda": "Create and manage meeting agendas."
+            },
+            "tutorials": {
+                "tasks": "",
+                "timeconv": "",
+                "website_status": "",
+                "write_agenda": ""
             }
         }
     }
@@ -384,6 +390,7 @@ def show_plugins_in_subcategory(jarvis, category, subcategory):
     """
     plugins = plugin_data[category][subcategory]["plugins"]
     descriptions = plugin_data[category][subcategory]["descriptions"]
+    tutorials = plugin_data[category][subcategory]["tutorials"]
 
     jarvis.say(f"Here are the plugins in {subcategory}:")
     for idx, plugin in enumerate(plugins, 1):
@@ -398,7 +405,7 @@ def show_plugins_in_subcategory(jarvis, category, subcategory):
         if plugin_input.isdigit() and 1 <= int(plugin_input) <= len(plugins):
             selected_plugin = plugins[int(plugin_input) - 1]
             jarvis.say(f"You selected {selected_plugin}.")
-            # jarvis.say(f"Type 'help {selected_plugin}' for additional information.")
+            jarvis.say(f"Tutorial: {tutorials[selected_plugin]}")  # Displaying tutorial when selected
 
             action = jarvis.input(
                 "Type 'back' to select another plugin, or 'main' to return to main menu: ")
