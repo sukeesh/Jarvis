@@ -11,13 +11,104 @@ plugin_data = {
                 "buy": "Search for products on Amazon or eBay"
             },
             "tutorials": {
-                "check_if_game_runs_on_linux": "",
-                "movie": "",
-                "buy": ""
+                "check_if_game_runs_on_linux":
+                    """
+                    Proton Compatible Game Plugin Tutorial
+                    
+                    1. Start the Plugin
+                       Type:
+                       Proton game
+                    
+                    2. Usage Options
+                       Choose from:
+                       1 - Provide Steam game AppId
+                       2 - Provide Steam game Title
+                       3 - Close
+                    
+                    3. Using AppId (Option 1)
+                       - Enter the Steam game AppId when prompted
+                       - Get the ProtonDB rating for the game
+                    
+                    4. Using Game Title (Option 2)
+                       - Enter the Steam game title when prompted
+                       - Plugin searches for the game and retrieves its AppId
+                       - Get the ProtonDB rating for the game
+                    
+                    5. Notes
+                       - Option 2 may not find the game or find an incorrect game
+                       - For accurate results, use Option 1 with the correct AppId from Steam
+                       - If the game is not found or has no ratings, you'll receive an error message
+                    
+                    6. Example
+                       Proton game
+                       Enter your choice: 1
+                       Enter Game AppId: 570
+                       Output: Displays ProtonDB rating for the game (e.g., AppId 570 is Dota 2)
+                    
+                    7. Closing the Plugin
+                       Choose option 3 to exit
+                                        """
+                ,
+                "movie":
+                    """
+                    Movie Plugin Tutorial
+                    
+                    1. Search for a movie:
+                       movie search <movie name>
+                    
+                    2. Get movie information:
+                       movie info <movie name>
+                    
+                    3. View specific movie details:
+                       movie cast <movie name>
+                       movie director <movie name>
+                       movie plot <movie name>
+                       movie producer <movie name>
+                       movie rating <movie name>
+                       movie year <movie name>
+                       movie runtime <movie name>
+                       movie countries <movie name>
+                       movie genres <movie name>
+                    
+                    Example:
+                    movie search Inception
+                    movie info Inception
+                    movie cast Inception
+                    """,
+                "buy":
+                    """
+                    Buy Plugin Tutorial
+                    
+                    1. Start the Plugin
+                       Type:
+                       buy [shop] [search term]
+                    
+                    2. Example One-Line Command
+                       - Search directly on Amazon or eBay by specifying the shop and search term:
+                       buy amazon laptop
+                       Output: Opens the Amazon search page for "laptop"
+                    
+                    3. Step-by-Step Usage
+                       - If no shop and search term are provided, the plugin will guide you through the steps:
+                         1. Choose a shop: "Amazon" or "eBay"
+                         2. Provide a search term: e.g., "smartphone"
+                    
+                    4. Example Step-by-Step
+                       buy
+                       Pick a site (Amazon or Ebay): amazon
+                       What you need to buy? laptop
+                       Output: Opens the Amazon search page for "laptop"
+                    
+                    5. Supported Shops
+                       - Amazon
+                       - eBay
+                    """
             }
         },
         "Games": {
-            "plugins": ["balut", "blackjack", "coin_flip", "connect_four", "guess_number_game", "hangman", "magic_8_ball", "memory", "rockpaperscissors", "roulette", "spinthewheel", "tic_tac_toe", "wordgame", "wordle"],
+            "plugins": ["balut", "blackjack", "coin_flip", "connect_four", "guess_number_game", "hangman",
+                        "magic_8_ball", "memory", "rockpaperscissors", "roulette", "spinthewheel", "tic_tac_toe",
+                        "wordgame", "wordle"],
             "descriptions": {
                 "balut": "A strategic multi-player dice game.",
                 "blackjack": "Play a game of Blackjack, following standard casino rules.",
@@ -35,7 +126,40 @@ plugin_data = {
                 "wordle": "Play the popular Wordle game."
             },
             "tutorials": {
-                "balut": "",
+                "balut":
+                    """
+                    Balut Plugin Tutorial
+                    
+                    1. Start the Game
+                       Run the command:
+                       balut
+                    
+                    2. Enter Number of Players
+                       Input the number of players (e.g., 2):
+                       Number of players: 2
+                    
+                    3. Enter Player Names
+                       Provide a username for each player:
+                       Player 1 username: Alice
+                       Player 2 username: Bob
+                    
+                    4. Roll Dice
+                       Dice will be rolled automatically. Example output:
+                       Alice you have rolled:
+                       Dice 1: 4, Dice 2: 6, Dice 3: 5, Dice 4: 2, Dice 5: 3
+                    
+                    5. Re-roll (Optional)
+                       Reroll specific dice by typing numbers:
+                       Select dice to reroll (e.g., 2 4 5) or press Enter to keep:
+                    
+                    6. Settle Score
+                       Choose a category to settle the score (1-7):
+                       Select category (1-7): 3
+                    
+                    7. Rounds & Results
+                       Play continues for 28 rounds. After the final round, total points are displayed, and the winner is announced.
+                    """
+                ,
                 "blackjack": "",
                 "coin_flip": "",
                 "connect_four": "",
@@ -254,7 +378,8 @@ plugin_data = {
     },
     "Utilities": {
         "Conversion Tools": {
-            "plugins": ["hash", "hex", "length_conv", "massconv", "mips", "morse_code", "natoalphabet", "qr_generator", "speed_conv", "temp_conv"],
+            "plugins": ["hash", "hex", "length_conv", "massconv", "mips", "morse_code", "natoalphabet", "qr_generator",
+                        "speed_conv", "temp_conv"],
             "descriptions": {
                 "hash": "This plugin allows the user to hash a string or a file using a specified hash function like `md5`, `sha1`, or `sha256`.",
                 "hex": "This plugin converts a given integer to its hexadecimal representation and prints it.",
