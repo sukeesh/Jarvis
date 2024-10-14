@@ -1,4 +1,4 @@
-from plugin import plugin
+from plugin import plugin, alias
 
 # Dictionary containing categories, subcategories, plugins, and their descriptions
 plugin_data = {
@@ -2291,82 +2291,83 @@ plugin_data = {
                        2. Enter the name of the new task.
                        3. To add priority, select option 5 and choose the task.
                        4. To list all tasks, select option 1.
+                    """,
+                "timeconv":
+                    """
+                    1. Convert Time Units
+                       Run the command:
+                       timeconv
+                       Convert between different time units such as seconds, minutes, hours, and more.
+                    
+                    2. Enter Amount
+                       Input the amount of time to convert:
+                       Enter an amount: 1000
+                    
+                    3. Choose Source Unit
+                       Input the time unit of the amount:
+                       Enter from which unit: s
+                    
+                    4. Choose Target Unit
+                       Input the time unit to convert to:
+                       Enter to which unit: min
+                    
+                    5. Result
+                       Get the converted result with precision options.
+                       Example output:
+                       1000 seconds is equal to 16.6667 minutes
                                     """,
-                "timeconv": """
-1. Convert Time Units
-   Run the command:
-   timeconv
-   Convert between different time units such as seconds, minutes, hours, and more.
-
-2. Enter Amount
-   Input the amount of time to convert:
-   Enter an amount: 1000
-
-3. Choose Source Unit
-   Input the time unit of the amount:
-   Enter from which unit: s
-
-4. Choose Target Unit
-   Input the time unit to convert to:
-   Enter to which unit: min
-
-5. Result
-   Get the converted result with precision options.
-   Example output:
-   1000 seconds is equal to 16.6667 minutes
-                
-                """,
-                "website_status": """
-1. Start the Plugin
-   Run the command:
-   website status
-
-2. Enter Website URL
-   Input the website URL to check its status:
-   Example: www.example.com
-
-3. View Status Code
-   The plugin will display the HTTP status code for the entered URL.
-
-4. Error Handling
-   If an error occurs, you can choose to try again or exit by typing 'y' or 'n'.
-
-5. Exit
-   After checking the website status or exiting, the plugin will terminate automatically.
-
-                """,
-                "write_agenda": """
-1. Write an Event to the Agenda
-   Run the command:
-   write agenda
-
-2. Input Event Details
-   Enter the required details as prompted:
-   - Event Date (e.g., 2021-09-21)
-   - Event Time (e.g., 13:00)
-   - Event Place
-   - Event Title
-   - Event Description
-
-3. Add More Events
-   You will be asked if you'd like to add another event:
-   Would you like to add anything more? (y/n)
-
-4. Save the Event
-   After you finish adding events, they will be saved to `agenda.csv`.
-
-5. Read the Agenda
-   Run the command:
-   read agenda
-   The list of all saved events will be displayed.
-
-"""
+                "website_status":
+                    """
+                    1. Start the Plugin
+                       Run the command:
+                       website status
+                    
+                    2. Enter Website URL
+                       Input the website URL to check its status:
+                       Example: www.example.com
+                    
+                    3. View Status Code
+                       The plugin will display the HTTP status code for the entered URL.
+                    
+                    4. Error Handling
+                       If an error occurs, you can choose to try again or exit by typing 'y' or 'n'.
+                    
+                    5. Exit
+                       After checking the website status or exiting, the plugin will terminate automatically.
+                    """,
+                "write_agenda":
+                    """
+                    1. Write an Event to the Agenda
+                       Run the command:
+                       write agenda
+                    
+                    2. Input Event Details
+                       Enter the required details as prompted:
+                       - Event Date (e.g., 2021-09-21)
+                       - Event Time (e.g., 13:00)
+                       - Event Place
+                       - Event Title
+                       - Event Description
+                    
+                    3. Add More Events
+                       You will be asked if you'd like to add another event:
+                       Would you like to add anything more? (y/n)
+                    
+                    4. Save the Event
+                       After you finish adding events, they will be saved to `agenda.csv`.
+                    
+                    5. Read the Agenda
+                       Run the command:
+                       read agenda
+                       The list of all saved events will be displayed.
+                    """
             }
         }
     }
 }
 
 
+@alias("tour")
 @plugin("jarvis tour")
 def start_tour(jarvis, s):
     """
