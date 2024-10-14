@@ -56,7 +56,7 @@ def npcNames(jarvis):
             command = userInput[0]
             match command:
                 case "help":
-                    jarvis.say("\nRaces: Dwarf, Elf, Halfling, Human, Dragonborn, Gnome, Half-elf, Half-orc, Tiefling\nf-female, m-male\n")
+                    jarvis.say("\nRaces: Dwarf, Elf, Halfling, Human, Dragonborn, Gnome, Half-elf, Half-orc, Tiefling\nfemale, male\n")
                 case "exit":
                     stillUsing = False
                     break
