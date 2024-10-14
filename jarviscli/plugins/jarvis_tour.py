@@ -2371,8 +2371,18 @@ plugin_data = {
 @plugin("jarvis tour")
 def start_tour(jarvis, s):
     """
-    Start the Jarvis tour, guiding the user through plugin categories,
-    subcategories, and demonstrating how to use selected plugins.
+    Start the Jarvis tour, guiding the user through a curated subset of
+    plugin categories, subcategories, and demonstrating how to use selected plugins.
+
+    The tour aims to familiarize users with Jarvis' capabilities and demonstrate
+    how to effectively use the plugins. It serves as an interactive introduction
+    to Jarvis, making it an ideal starting point for new users.
+
+    Note:
+    -----
+    We have selected a subset of Jarvis plugins for this tour to provide
+    a structured experience. However, contributions to the tour are encouraged—
+    adding new plugins is more than welcomed!
     """
     jarvis.say("Welcome to the Jarvis Tour!")
     show_categories(jarvis)
