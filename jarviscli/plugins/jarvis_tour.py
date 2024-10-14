@@ -8,11 +8,10 @@ plugin_data = {
             "descriptions": {
                 "check_if_game_runs_on_linux": "Retrieves ProtonDB compatibility ratings for a Steam game.",
                 "movie": "Look up movie information on IMDB.",
-                "buy": "Search for products on Amazon or eBay"
+                "buy": "Search for products on Amazon or eBay",
             },
             "tutorials": {
-                "check_if_game_runs_on_linux":
-                    """
+                "check_if_game_runs_on_linux": """
                     Proton Compatible Game Plugin Tutorial
                     
                     1. Start the Plugin
@@ -47,10 +46,8 @@ plugin_data = {
                     
                     7. Closing the Plugin
                        Choose option 3 to exit
-                                        """
-                ,
-                "movie":
-                    """
+                                        """,
+                "movie": """
                     Movie Plugin Tutorial
                     
                     1. Search for a movie:
@@ -75,8 +72,7 @@ plugin_data = {
                     movie info Inception
                     movie cast Inception
                     """,
-                "buy":
-                    """
+                "buy": """
                     Buy Plugin Tutorial
                     
                     1. Start the Plugin
@@ -102,13 +98,26 @@ plugin_data = {
                     5. Supported Shops
                        - Amazon
                        - eBay
-                    """
-            }
+                    """,
+            },
         },
         "Games": {
-            "plugins": ["balut", "blackjack", "coin_flip", "connect_four", "guess_number_game", "hangman",
-                        "magic_8_ball", "memory", "rockpaperscissors", "roulette", "spinthewheel", "tic_tac_toe",
-                        "wordgame", "wordle"],
+            "plugins": [
+                "balut",
+                "blackjack",
+                "coin_flip",
+                "connect_four",
+                "guess_number_game",
+                "hangman",
+                "magic_8_ball",
+                "memory",
+                "rockpaperscissors",
+                "roulette",
+                "spinthewheel",
+                "tic_tac_toe",
+                "wordgame",
+                "wordle",
+            ],
             "descriptions": {
                 "balut": "A strategic multi-player dice game.",
                 "blackjack": "Play a game of Blackjack, following standard casino rules.",
@@ -123,11 +132,10 @@ plugin_data = {
                 "spinthewheel": "Spin a virtual wheel for random selection.",
                 "tic_tac_toe": "Play Tic-Tac-Toe against the computer.",
                 "wordgame": "Play a word guessing game.",
-                "wordle": "Play the popular Wordle game."
+                "wordle": "Play the popular Wordle game.",
             },
             "tutorials": {
-                "balut":
-                    """
+                "balut": """
                     Balut Plugin Tutorial
                     
                     1. Start the Game
@@ -158,10 +166,8 @@ plugin_data = {
                     
                     7. Rounds & Results
                        Play continues for 28 rounds. After the final round, total points are displayed, and the winner is announced.
-                    """
-                ,
-                "blackjack":
-                    """
+                    """,
+                "blackjack": """
                     Blackjack Plugin Tutorial
                     
                     1. Start the Game
@@ -193,10 +199,8 @@ plugin_data = {
                        Press H to Hit, S to Stand, D to Double-Down, P to Split: H
                        Newcard is 10 of hearts
                        Updated hand: ['5 of hearts', '6 of spades', '10 of hearts']
-                    """
-                ,
-                "coin_flip":
-                    """
+                    """,
+                "coin_flip": """
                     Coin Flip Plugin Tutorial
                     
                     1. Usage
@@ -217,8 +221,7 @@ plugin_data = {
                        - No additional arguments needed
                        - Each execution gives a 50/50 chance of Heads or Tails
                     """,
-                "connect_four":
-                    """
+                "connect_four": """
                     Connect Four Plugin Tutorial
                     
                     1. Start the Game
@@ -256,10 +259,8 @@ plugin_data = {
                        - Invalid column: "Out of bounds. Pick another column."
                        - Full column: "Column is full. Pick another."
                        - Non-numeric input: "Enter a valid numeric input."
-                                """
-                ,
-                "guess_number_game":
-                    """
+                                """,
+                "guess_number_game": """
                     Guess Number Game Plugin Tutorial
                     
                     1. Start the Game
@@ -287,10 +288,8 @@ plugin_data = {
                     
                     7. Game Over
                        If you guess the correct number, Jarvis will congratulate you. If you run out of lives, the game will end.
-                    """
-                ,
-                "hangman":
-                    """
+                    """,
+                "hangman": """
                     Hangman Plugin Tutorial
                     
                     1. Start the Game
@@ -324,10 +323,8 @@ plugin_data = {
                     8. Play Again
                        After finishing, you can choose to play again or quit:
                        Do You Want To Play Again? (Y/N)            
-                    """
-                ,
-                "magic_8_ball":
-                    """
+                    """,
+                "magic_8_ball": """
                     Magic 8 Ball Plugin Tutorial
                     
                     1. Start the Magic 8 Ball
@@ -355,10 +352,8 @@ plugin_data = {
                     5. Exit Message
                        When you're done, you'll see a random exit message:
                        May the gods shine upon you.
-                    """
-                ,
-                "memory":
-                    """
+                    """,
+                "memory": """
                     Memory Trainer Plugin Tutorial
                     
                     1. Start Memory Trainer
@@ -382,10 +377,8 @@ plugin_data = {
                     
                     6. View Score
                        Your score (number of digits remembered) is shown when you make a mistake
-                    """
-                ,
-                "rockpaperscissors":
-                    """
+                    """,
+                "rockpaperscissors": """
                     Rock Paper Scissors Plugin Tutorial
                     
                     1. Start the Game
@@ -415,10 +408,8 @@ plugin_data = {
                        Example output:
                        YOU: 3  JARVIS: 2
                        YOU WIN!!
-                    """
-                ,
-                "roulette":
-                    """
+                    """,
+                "roulette": """
                     Roulette Plugin Tutorial
                     
                     1. Start the Game
@@ -460,10 +451,8 @@ plugin_data = {
                     3. Enter bet amount: 20
                     4. Press Enter to spin the roulette
                     5. Result: 18 (RED) - WIN
-                    """
-                ,
-                "spinthewheel":
-                    """
+                    """,
+                "spinthewheel": """
                     Spin Wheel Plugin Tutorial
                     
                     1. Start the Spin Wheel
@@ -492,10 +481,8 @@ plugin_data = {
                     
                     Example:
                     Do you want to spin again?? press: y
-                    """
-                ,
-                "tic_tac_toe":
-                    """
+                    """,
+                "tic_tac_toe": """
                     Tic Tac Toe Plugin Tutorial
                     
                     1. Start the Game
@@ -527,10 +514,8 @@ plugin_data = {
                        - X turn. Choose a position: 5
                        - O turn. Choose a position: 1
                        - Jarvis will make its move automatically in single-player mode.
-                    """
-                ,
-                "wordgame":
-                    """
+                    """,
+                "wordgame": """
                     1. Start the Game
                        Run the command:
                        word_game
@@ -555,10 +540,8 @@ plugin_data = {
                     
                     6. Play Again
                        If you wish to play again, type 'Y'. To exit, type 'N'.
-                    """
-                ,
-                "wordle":
-                    """
+                    """,
+                "wordle": """
                     1. Start the Game
                        Run the command:
                        wordle
@@ -578,8 +561,8 @@ plugin_data = {
                     
                     5. Quit Anytime
                        Type 'q' to quit the game.
-                    """
-            }
+                    """,
+            },
         },
         "Media": {
             "plugins": ["mood_music"],
@@ -587,8 +570,7 @@ plugin_data = {
                 "mood_music": "Get music recommendations based on your mood."
             },
             "tutorials": {
-                "mood_music":
-                    """
+                "mood_music": """
                     Mood Music Plugin Tutorial
                     
                     1. Start Mood Music
@@ -607,8 +589,8 @@ plugin_data = {
                     5. Continue or Exit
                        Type 'NO' to exit, or anything else to choose another mood
                     """
-            }
-        }
+            },
+        },
     },
     "Fitness & Health": {
         "Fitness": {
@@ -617,8 +599,7 @@ plugin_data = {
                 "workout": "Customized push-up and pull-up workout plans based on user's fitness level."
             },
             "tutorials": {
-                "workout":
-                    """
+                "workout": """
                     1. Start Workout
                     Run the command:
                     workout
@@ -637,7 +618,7 @@ plugin_data = {
                     5. Completion
                     After finishing all sets, you will see your total reps and a motivational message.
                     """
-            }
+            },
         },
         "Health": {
             "plugins": ["bmi", "bmr", "calories_macros", "drink"],
@@ -645,11 +626,10 @@ plugin_data = {
                 "bmi": "Calculate your Body Mass Index (BMI).",
                 "bmr": "Calculate your Basal Metabolic Rate (BMR).",
                 "calories_macros": "Calculate personalized daily calorie and macronutrient recommendations for weight management goals.",
-                "drink": "Fetch details about a specific cocktail, including ingredients and preparation instructions, from an external API."
+                "drink": "Fetch details about a specific cocktail, including ingredients and preparation instructions, from an external API.",
             },
             "tutorials": {
-                "bmi":
-                    """
+                "bmi": """
                     BMI Plugin Tutorial
     
                     1. Start the Plugin
@@ -687,9 +667,7 @@ plugin_data = {
                     - Pre-obese: BMI 25-29.9
                     - Obese: BMI ≥ 30
                     """,
-
-                "bmr":
-                    """
+                "bmr": """
                     BMR Plugin Tutorial
     
                     1. Start the Plugin
@@ -727,9 +705,7 @@ plugin_data = {
                     Activity level: 3
                     Output: AMR: 2635.7
                     """,
-
-                "calories_macros":
-                    """
+                "calories_macros": """
                     Calories Macros Plugin Tutorial
     
                     1. Start the Plugin
@@ -756,9 +732,9 @@ plugin_data = {
     
                     5. Custom Macronutrient Ratios
                     - If not using default, specify custom ratios for each macro ensuring the total equals 1.
-                    """
-            }
-        }
+                    """,
+            },
+        },
     },
     "Food & Drink": {
         "Recipe": {
@@ -767,9 +743,7 @@ plugin_data = {
                 "drink": "Fetch details about a specific cocktail, including ingredients and preparation instructions, from an external API."
             },
             "tutorials": {
-
-                "drink":
-                    """
+                "drink": """
                     Drink Plugin Tutorial
     
                     1. Start the Plugin
@@ -801,19 +775,15 @@ plugin_data = {
                     If the drink is not found, the plugin will show:
                     Drink not found. Please try again.
                     """
-            }
+            },
         }
     },
     "Information & Facts": {
         "Facts": {
             "plugins": ["stateinfo"],
-            "descriptions": {
-                "stateinfo": "Get information about U.S. states."
-            },
+            "descriptions": {"stateinfo": "Get information about U.S. states."},
             "tutorials": {
-                "stateinfo":
-
-                    """
+                "stateinfo": """
                     State Info Plugin Tutorial
     
                     1. Start the State Info Plugin
@@ -841,7 +811,7 @@ plugin_data = {
                     If an invalid state is provided, the plugin will prompt:
                     Please enter a valid U.S. state
                     """
-            }
+            },
         },
         "Information": {
             "plugins": ["dial_code", "google", "history", "name_day", "weekday"],
@@ -850,12 +820,10 @@ plugin_data = {
                 "google": "This plugin performs a Google search using a provided query, retrieves the first answer from Google's default result snippets, and returns it.",
                 "history": "Get historical events for a specific date.",
                 "name_day": "Find the name day for a given name.",
-                "weekday": "Tells what day of the week any date falls on."
+                "weekday": "Tells what day of the week any date falls on.",
             },
             "tutorials": {
-                "dial_code":
-
-                    """
+                "dial_code": """
                     Dial Code Plugin Tutorial
     
                     1. Get Dial Code by Country
@@ -878,9 +846,7 @@ plugin_data = {
                     4. Multiple Country Codes
                     If a code is shared by multiple countries, they will all be listed together, separated by semicolons.
                     """,
-
-                "google":
-                    """
+                "google": """
                     Google Scraper Plugin Tutorial
     
                     1. Perform a Google Search
@@ -895,9 +861,7 @@ plugin_data = {
                     3. Supported Queries
                     You can ask questions related to general knowledge or specific topics. Google will try to provide the best possible answer from its default answers section.
                     """,
-
-                "history":
-                    """
+                "history": """
                     History Plugin Tutorial
     
                     1. Fetch a Historical Fact
@@ -931,9 +895,7 @@ plugin_data = {
                     Example:
                     history deaths 5
                     """,
-
-                "name_day":
-                    """
+                "name_day": """
                     Name Day Plugin Tutorial
     
                     1. Start the Plugin
@@ -963,9 +925,7 @@ plugin_data = {
                     5. Continue or Exit
                     After each action, the plugin will ask if you want to continue. Type 'Y' to continue or 'N' to exit.
                     """,
-
-                "weekday":
-                    """
+                "weekday": """
                     1. Start the Plugin
                     Run the command:
                     day of the week or weekday
@@ -979,8 +939,8 @@ plugin_data = {
     
                     4. Exit
                     After displaying the weekday, the plugin will terminate automatically.
-                    """
-            }
+                    """,
+            },
         },
         "Investment": {
             "plugins": ["cryptotracker"],
@@ -988,9 +948,7 @@ plugin_data = {
                 "cryptotracker": "Track the price and 24-hour price change of cryptocurrency pairs, or check a default list of favorite pairs."
             },
             "tutorials": {
-                "cryptotracker":
-
-                    """
+                "cryptotracker": """
                     CryptoTracker Plugin Tutorial
     
                     1. Start the Plugin
@@ -1017,7 +975,7 @@ plugin_data = {
                     Example:
                     Wrong pair BTC/USD! Please use USDT for USD prices.
                     """
-            }
+            },
         },
         "Language": {
             "plugins": ["dictionary"],
@@ -1025,8 +983,7 @@ plugin_data = {
                 "dictionary": "Look up the meaning, synonyms, and antonyms of any word, and provide additional details if needed."
             },
             "tutorials": {
-                "dictionary":
-                    """
+                "dictionary": """
                     Dictionary Plugin Tutorial
     
                     1. Start the Plugin
@@ -1061,19 +1018,18 @@ plugin_data = {
                     7. Repeat or Exit
                     You can choose another meaning or leave the plugin by pressing Enter.
                     """
-            }
-        }
+            },
+        },
     },
     "Media": {
         "": {
             "plugins": ["voice", "voice_control"],
             "descriptions": {
                 "voice": "Enable or disable Jarvis's voice and control speech speed.",
-                "voice_control": "Activates voice mode for commands and listens for 'stop' to deactivate."
+                "voice_control": "Activates voice mode for commands and listens for 'stop' to deactivate.",
             },
             "tutorials": {
-                "voice":
-                    """
+                "voice": """
                     1. Enable Sound
                     Run the command:
                     enable sound
@@ -1105,9 +1061,7 @@ plugin_data = {
                     say <message>
                     Jarvis will say the message out loud.
                     """,
-
-                "voice_control":
-                    """
+                "voice_control": """
                     1. Start the Plugin
                     Run the command:
                     hear
@@ -1123,8 +1077,8 @@ plugin_data = {
     
                     5. Handling Errors
                     If speech is unclear or not recognized, you will be prompted to try again. No results will be processed from unrecognized speech.
-                    """
-            }
+                    """,
+            },
         }
     },
     "Programming & Math": {
@@ -1134,9 +1088,7 @@ plugin_data = {
                 "caesar_cipher": "Encode or decode messages using Caesar cipher."
             },
             "tutorials": {
-                "caesar_cipher":
-
-                    """
+                "caesar_cipher": """
                     Caesar Cipher Plugin Tutorial
         
                     1. Start the Plugin
@@ -1164,7 +1116,7 @@ plugin_data = {
                     - Plain text is shifted by 3 positions to convert to cipher.
                     - Cipher text is shifted by -3 positions to convert back to plain text.
                     """
-            }
+            },
         },
         "Math": {
             "plugins": ["binary", "evaluator", "factor", "kaprekar", "matrix_add"],
@@ -1173,11 +1125,10 @@ plugin_data = {
                 "evaluator": "This plugin performs various mathematical operations such as solving equations, calculating expressions, factoring, plotting graphs, and analyzing limits, derivatives, and integrals.",
                 "factor": "This plugin calculates the prime factors of a given number and prints them in a factorized form.",
                 "kaprekar": "Checks if a number is a Kaprekar number.",
-                "matrix_add": "Perform matrix addition."
+                "matrix_add": "Perform matrix addition.",
             },
             "tutorials": {
-                "binary":
-                    """
+                "binary": """
                     Binary Plugin Tutorial
     
                     1. Start the Plugin
@@ -1202,9 +1153,7 @@ plugin_data = {
                     Output:
                     This is no number, right? (displayed in red)
                     """,
-
-                "evaluator":
-                    """
+                "evaluator": """
                     Calculate Plugin Tutorial
     
                     1. Perform a Calculation
@@ -1239,9 +1188,7 @@ plugin_data = {
                     Perform curve sketching analysis:
                     curvesketch y=x**2+10x-5
                     """,
-
-                "factor":
-                    """
+                "factor": """
                     Prime Factorization Plugin Tutorial
     
                     1. Enter a Number
@@ -1253,9 +1200,7 @@ plugin_data = {
                     The prime factors will be displayed:
                     2 x 2 x 2 x 7
                     """,
-
-                "kaprekar":
-                    """
+                "kaprekar": """
                     Kaprekar Plugin Tutorial
     
                     1. Check Kaprekar Number
@@ -1272,8 +1217,7 @@ plugin_data = {
                     or
                     Not kaprekar number
                     """,
-                "matrix_add":
-                    """
+                "matrix_add": """
                     Matrix Addition Plugin Tutorial
     
                     1. Start Matrix Addition
@@ -1306,18 +1250,17 @@ plugin_data = {
     
                     7. View Final Result
                     The final sum matrix will be displayed
-                    """
-            }
+                    """,
+            },
         },
         "Utilities": {
             "plugins": ["bulkresize", "create_plugin"],
             "descriptions": {
                 "bulkresize": "Resize and optionally renames all images in a directory, tailored for deep learning data preparation.",
-                "create_plugin": "Create a plugin for Jarvis."
+                "create_plugin": "Create a plugin for Jarvis.",
             },
             "tutorials": {
-                "bulkresize":
-                    """
+                "bulkresize": """
                     Bulk Resizer Plugin Tutorial
     
                     1. Start the Plugin
@@ -1350,9 +1293,7 @@ plugin_data = {
                     - Once the resizing process is done, you'll receive confirmation:
                     Output: Resizing Completed!! Thank you for using jarvis
                     """,
-
-                "create_plugin":
-                    """
+                "create_plugin": """
                     Create Plugin Tutorial
     
                     1. Start the Plugin
@@ -1385,9 +1326,9 @@ plugin_data = {
                     - Restart Jarvis to apply changes
     
                     Note: Use lowercase letters, numbers, and underscores for plugin names.
-                    """
-            }
-        }
+                    """,
+            },
+        },
     },
     "System": {
         "Command Line Utilities": {
@@ -1397,11 +1338,10 @@ plugin_data = {
                 "cat_history": "Print the history of commands",
                 "clear": "Clear the terminal screen, supporting both Unix and Windows platforms.",
                 "volume": "Increases, decreases, or mutes the speaker volume on Linux or macOS systems.",
-                "whoami": "Display current user information."
+                "whoami": "Display current user information.",
             },
             "tutorials": {
-                "battery":
-                    """
+                "battery": """
                     Battery Plugin Tutorial
                     
                     1. Start the Plugin
@@ -1436,8 +1376,7 @@ plugin_data = {
                        Status: Discharging
                        Charge: 75%
                     """,
-                "cat_history":
-                    """
+                "cat_history": """
                     Cat History Plugin Tutorial
                     
                     1. Start the Plugin
@@ -1458,8 +1397,7 @@ plugin_data = {
                     5. Notes
                        - No additional parameters required
                        - History is read from a predefined file (HISTORY_FILENAME)""",
-                "clear":
-                    """Clear Plugin Tutorial
+                "clear": """Clear Plugin Tutorial
                     
                     1. Usage
                        Type:
@@ -1478,8 +1416,7 @@ plugin_data = {
                     5. Example
                        clear
                        Output: Clears the terminal screen""",
-                "volume":
-                    """1. Start the Plugin
+                "volume": """1. Start the Plugin
                        Use the following commands based on your platform:
                        - increase volume
                        - decrease volume
@@ -1494,10 +1431,8 @@ plugin_data = {
                     
                     4. Exit
                        After adjusting the volume or muting, the plugin will terminate automatically.
-                    """
-                ,
-                "whoami":
-                    """1. Start the Plugin
+                    """,
+                "whoami": """1. Start the Plugin
                        Run the command:
                        whoami
                     
@@ -1511,17 +1446,14 @@ plugin_data = {
                        
                     4. Exit
                        Once you receive the information, the plugin will terminate automatically.
-                    """
-            }
+                    """,
+            },
         },
         "File Management": {
             "plugins": ["file_organise"],
-            "descriptions": {
-                "file_organise": "Organize files in a directory."
-            },
+            "descriptions": {"file_organise": "Organize files in a directory."},
             "tutorials": {
-                "file_organise":
-                    """File Organise Plugin Tutorial
+                "file_organise": """File Organise Plugin Tutorial
                     
                     1. Start the Plugin
                        Type:
@@ -1549,21 +1481,27 @@ plugin_data = {
                     5. Tips
                        - Ensure you have necessary permissions for target directory
                        - Be cautious when organizing system directories"""
-            }
+            },
         },
         "Networking": {
-            "plugins": ["change_mac", "curl", "dns_lookup", "get_host_info", "ip", "wifi_password_getter"],
+            "plugins": [
+                "change_mac",
+                "curl",
+                "dns_lookup",
+                "get_host_info",
+                "ip",
+                "wifi_password_getter",
+            ],
             "descriptions": {
                 "change_mac": "View and change the MAC address of any network device connected to your Linux system.",
                 "curl": "Generate a curl request by specifying the HTTP method, content type, data, and endpoint, while ensuring the input parameters are valid.",
                 "dns_lookup": "Look up an IP address from a hostname or a hostname from an IP address using DNS forward and reverse queries.",
                 "get_host_info": "Get information about a host.",
                 "ip": "Displays local and public IP addresses for UNIX and Windows systems.",
-                "wifi_password_getter": "Retrieve saved Wi-Fi passwords."
+                "wifi_password_getter": "Retrieve saved Wi-Fi passwords.",
             },
             "tutorials": {
-                "change_mac":
-                    """MAC Manager Plugin Tutorial
+                "change_mac": """MAC Manager Plugin Tutorial
                     
                     1. Start the Plugin
                        Type:
@@ -1589,8 +1527,7 @@ plugin_data = {
                        - The plugin will show the updated MAC address for the selected device
                     
                     Note: This plugin requires sudo privileges to modify network settings.""",
-                "curl":
-                    """Generate Curl Plugin Tutorial
+                "curl": """Generate Curl Plugin Tutorial
                     
                     1. Start the Plugin
                        Run the command:
@@ -1618,8 +1555,7 @@ plugin_data = {
                        The curl request is generated and displayed:
                        curl -XPOST -H "Content-type: application/json" -d '{"name": "test"}' 'https://api.example.com/resource'
                     """,
-                "dns_lookup":
-                    """DNS Plugin Tutorial
+                "dns_lookup": """DNS Plugin Tutorial
                     
                     1. Forward DNS Lookup (Hostname to IP)
                        To find the IP address of a hostname, run the command:
@@ -1651,8 +1587,7 @@ plugin_data = {
                        Please input a valid ip
                        Do you want to try again (y/n): y
                     """,
-                "get_host_info":
-                    """Host Info Plugin Tutorial
+                "get_host_info": """Host Info Plugin Tutorial
                     
                     1. Start the Plugin
                        Run the command:
@@ -1678,8 +1613,7 @@ plugin_data = {
                     5. Exiting the Plugin
                        - Type 'q' or 'quit' at any prompt to exit the plugin.
                     """,
-                "ip":
-                    """IP Plugin Tutorial
+                "ip": """IP Plugin Tutorial
                     
                     1. Display Local and Public IP Address
                        Run the command:
@@ -1697,8 +1631,7 @@ plugin_data = {
                     5. Windows IP Information
                        On Windows, the command will return the IP address of the host machine.
                     """,
-                "wifi_password_getter":
-                    """1. Start the Plugin
+                "wifi_password_getter": """1. Start the Plugin
                        Run the command:
                        wifi
                     
@@ -1714,18 +1647,17 @@ plugin_data = {
                     
                     4. Exit
                        Type the number associated with 'Exit' to quit the plugin.
-                    """
-            }
+                    """,
+            },
         },
         "Tools": {
             "plugins": ["clock", "system_update"],
             "descriptions": {
                 "clock": "Display the current time, run a stopwatch, and set a timer with customizable durations.",
-                "system_update": "Check for and install system updates."
+                "system_update": "Check for and install system updates.",
             },
             "tutorials": {
-                "clock":
-                    """Time Plugins Tutorial
+                "clock": """Time Plugins Tutorial
                     
                     1. Clock Plugin
                        Display current date and time:
@@ -1756,8 +1688,7 @@ plugin_data = {
                     
                        Note: Specify duration in seconds or use format: XhYmZs
                        (X hours, Y minutes, Z seconds)""",
-                "system_update":
-                    """Update System Plugin Tutorial
+                "system_update": """Update System Plugin Tutorial
                     
                     1. Start the Update System Plugin
                        Command: update system
@@ -1776,14 +1707,24 @@ plugin_data = {
                     
                     Note:
                     - Make sure you have the appropriate permissions (may require `sudo`).
-                    - Only supported on macOS and Linux."""
-            }
-        }
+                    - Only supported on macOS and Linux.""",
+            },
+        },
     },
     "Utilities": {
         "Conversion Tools": {
-            "plugins": ["hash", "hex", "length_conv", "massconv", "mips", "morse_code", "natoalphabet", "qr_generator",
-                        "speed_conv", "temp_conv"],
+            "plugins": [
+                "hash",
+                "hex",
+                "length_conv",
+                "massconv",
+                "mips",
+                "morse_code",
+                "natoalphabet",
+                "qr_generator",
+                "speed_conv",
+                "temp_conv",
+            ],
             "descriptions": {
                 "hash": "This plugin allows the user to hash a string or a file using a specified hash function like `md5`, `sha1`, or `sha256`.",
                 "hex": "This plugin converts a given integer to its hexadecimal representation and prints it.",
@@ -1794,11 +1735,10 @@ plugin_data = {
                 "natoalphabet": "Convert text to NATO phonetic alphabet.",
                 "qr_generator": "Generate QR codes.",
                 "speed_conv": "Convert speed between m/s km/h ft/s mi/h and knots.",
-                "temp_conv": "Convert between different temperature scales."
+                "temp_conv": "Convert between different temperature scales.",
             },
             "tutorials": {
-                "hash":
-                    """
+                "hash": """
                     Hash Plugin Tutorial
                      
                     1. Start the Hash Process
@@ -1824,8 +1764,7 @@ plugin_data = {
                     6. View the Hashed Result
                     The hashed result will be displayed after processing.
                      """,
-                "hex":
-                    """
+                "hex": """
                     Hex Plugin Tutorial
                     
                     1. Invoke the Plugin
@@ -1849,8 +1788,7 @@ plugin_data = {
                     If the input is not a valid number, you will see:
                     That's not a number!
                     """,
-                "length_conv":
-                    """
+                "length_conv": """
                     Length Converter Plugin Tutorial
                     
                     1. Start the Length Converter
@@ -1887,8 +1825,7 @@ plugin_data = {
                     6. Invalid Input
                        If an invalid unit or the same units are entered for conversion, the plugin will prompt to enter valid or different units.
                                     """,
-                "massconv":
-                    """
+                "massconv": """
                     Mass Converter Plugin Tutorial
                     
                     1. Start the Mass Converter
@@ -1919,8 +1856,7 @@ plugin_data = {
                     mcg (microgram), mg (milligram), g (gram), kg (kilogram),
                     t (tonne), oz (ounce), lb (pound), st (stone), cwt (hundredweight)
                                     """,
-                "mips":
-                    """
+                "mips": """
                     MIPS Plugin Tutorial
                     
                     1. Convert Assembly to Machine Code:
@@ -1956,8 +1892,7 @@ plugin_data = {
                        Machine Code to Assembly:
                        mips 02324020
                                     """,
-                "morse_code":
-                    """
+                "morse_code": """
                     Morse Code Translator Plugin Tutorial
                     
                     1. Start Morse Code Translator
@@ -1978,8 +1913,7 @@ plugin_data = {
                     Encoding: HELLO WORLD
                     Decoding: .... . .-.. .-.. --- | .-- --- .-. .-.. -..
                                     """,
-                "natoalphabet":
-                    """
+                "natoalphabet": """
                     NATO Alphabet Plugin Tutorial
                     
                     1. Start the Plugin
@@ -2000,8 +1934,7 @@ plugin_data = {
                        o - oscar
                     
                                     """,
-                "qr_generator":
-                    """
+                "qr_generator": """
                     QR Code Generator Plugin
                     
                     1. Start QR Generation
@@ -2023,8 +1956,7 @@ plugin_data = {
                     5. Result
                        Your QR code will be saved as a PNG file in the specified directory. 
                     """,
-                "speed_conv":
-                    """
+                "speed_conv": """
                     Speed Converter Plugin Tutorial
                     
                     1. Start the Speed Converter
@@ -2056,8 +1988,7 @@ plugin_data = {
                        Example output:
                        13.888889
                     """,
-                "temp_conv":
-                    """
+                "temp_conv": """
                     Temperature Converter Plugin Tutorial
                     
                     1. Start the Temperature Converter
@@ -2078,18 +2009,17 @@ plugin_data = {
                     4. Invalid Input
                        If an invalid input is provided, the plugin will prompt:
                        "I'm sorry, invalid input. Please see 'help tempconv' for syntax."
-                    """
-            }
+                    """,
+            },
         },
         "File Operations": {
             "plugins": ["imgcompressor", "imgtopdf"],
             "descriptions": {
                 "imgcompressor": "Compress image files.",
-                "imgtopdf": "Converts single or multiple images into a PDF file."
+                "imgtopdf": "Converts single or multiple images into a PDF file.",
             },
             "tutorials": {
-                "imgcompressor":
-                    """
+                "imgcompressor": """
                     Image Compressor Plugin Tutorial
                     
                     1. Start the Image Compressor
@@ -2121,8 +2051,7 @@ plugin_data = {
                        To quit the plugin, choose option 3 or type 'q' or 'quit'.
                     
                                     """,
-                "imgtopdf":
-                    """
+                "imgtopdf": """
                     Image to PDF Plugin Tutorial
                     
                     1. Start Image to PDF Conversion
@@ -2152,17 +2081,14 @@ plugin_data = {
                        Once the PDF is created successfully, you will see:
                        Your pdf is created successfully
                     
-                    """
-            }
+                    """,
+            },
         },
         "Random Generator": {
             "plugins": ["random_password"],
-            "descriptions": {
-                "random_password": "Generate secure random passwords."
-            },
+            "descriptions": {"random_password": "Generate secure random passwords."},
             "tutorials": {
-                "random_password":
-                    """
+                "random_password": """
                     1. Generate Random Password
                        Run the command:
                        random password
@@ -2182,7 +2108,7 @@ plugin_data = {
                        Your random password is: aB3!kT9#L1x
                     
                     """
-            }
+            },
         },
         "Reminder": {
             "plugins": ["reminder"],
@@ -2190,8 +2116,7 @@ plugin_data = {
                 "reminder": "Set reminders for important tasks or events."
             },
             "tutorials": {
-                "reminder":
-                    """
+                "reminder": """
                     Todo and Remind Plugin Tutorial
                     
                     1. List Todos
@@ -2247,7 +2172,7 @@ plugin_data = {
                        Remove a tag:
                        tags remove
                     """
-            }
+            },
         },
         "Tools": {
             "plugins": ["tasks", "timeconv", "website_status", "write_agenda"],
@@ -2255,11 +2180,10 @@ plugin_data = {
                 "tasks": "Manage your to-do list.",
                 "timeconv": "Convert time between different time zones.",
                 "website_status": "Checks the status of a website by requesting its URL.",
-                "write_agenda": "Create and manage meeting agendas."
+                "write_agenda": "Create and manage meeting agendas.",
             },
             "tutorials": {
-                "tasks":
-                    """
+                "tasks": """
                     Task Manager Plugin Tutorial
                     
                     1. Start the Task Manager
@@ -2292,8 +2216,7 @@ plugin_data = {
                        3. To add priority, select option 5 and choose the task.
                        4. To list all tasks, select option 1.
                     """,
-                "timeconv":
-                    """
+                "timeconv": """
                     1. Convert Time Units
                        Run the command:
                        timeconv
@@ -2316,8 +2239,7 @@ plugin_data = {
                        Example output:
                        1000 seconds is equal to 16.6667 minutes
                                     """,
-                "website_status":
-                    """
+                "website_status": """
                     1. Start the Plugin
                        Run the command:
                        website status
@@ -2335,8 +2257,7 @@ plugin_data = {
                     5. Exit
                        After checking the website status or exiting, the plugin will terminate automatically.
                     """,
-                "write_agenda":
-                    """
+                "write_agenda": """
                     1. Write an Event to the Agenda
                        Run the command:
                        write agenda
@@ -2360,10 +2281,10 @@ plugin_data = {
                        Run the command:
                        read agenda
                        The list of all saved events will be displayed.
-                    """
-            }
-        }
-    }
+                    """,
+            },
+        },
+    },
 }
 
 
@@ -2398,8 +2319,10 @@ def show_categories(jarvis):
         jarvis.say(f"{idx}. {category}")
 
     while True:
-        category_input = jarvis.input("Please select a category by number (or 'q' to quit): ")
-        if category_input.lower() == 'q':
+        category_input = jarvis.input(
+            "Please select a category by number (or 'q' to quit): "
+        )
+        if category_input.lower() == "q":
             jarvis.say("Thank you for using the Jarvis Tour!")
             return
 
@@ -2421,12 +2344,16 @@ def show_subcategories(jarvis, category):
         jarvis.say(f"{idx}. {subcategory}")
 
     while True:
-        subcategory_input = jarvis.input("Select a subcategory by number (or 'b' to go back): ")
-        if subcategory_input.lower() == 'b':
+        subcategory_input = jarvis.input(
+            "Select a subcategory by number (or 'b' to go back): "
+        )
+        if subcategory_input.lower() == "b":
             show_categories(jarvis)
             return
 
-        if subcategory_input.isdigit() and 1 <= int(subcategory_input) <= len(subcategories):
+        if subcategory_input.isdigit() and 1 <= int(subcategory_input) <= len(
+            subcategories
+        ):
             selected_subcategory = subcategories[int(subcategory_input) - 1]
             show_plugins_in_subcategory(jarvis, category, selected_subcategory)
             break
@@ -2447,21 +2374,25 @@ def show_plugins_in_subcategory(jarvis, category, subcategory):
         jarvis.say(f"{idx}. {plugin} - {descriptions[plugin]}")
 
     while True:
-        plugin_input = jarvis.input("Select a plugin to get more info or run a demo by number (or 'b' to go back): ")
-        if plugin_input.lower() == 'b':
+        plugin_input = jarvis.input(
+            "Select a plugin to get more info or run a demo by number (or 'b' to go back): "
+        )
+        if plugin_input.lower() == "b":
             show_subcategories(jarvis, category)
             return
 
         if plugin_input.isdigit() and 1 <= int(plugin_input) <= len(plugins):
             selected_plugin = plugins[int(plugin_input) - 1]
             jarvis.say(f"You selected {selected_plugin}.")
-            jarvis.say(f"Tutorial: {tutorials[selected_plugin]}")  # Displaying tutorial when selected
+            # Displaying tutorial when selected
+            jarvis.say(f"Tutorial: {tutorials[selected_plugin]}")
 
             action = jarvis.input(
-                "Type 'back' to select another plugin, or 'main' to return to main menu: ")
-            if action.lower() == 'back':
+                "Type 'back' to select another plugin, or 'main' to return to main menu: "
+            )
+            if action.lower() == "back":
                 continue
-            elif action.lower() == 'main':
+            elif action.lower() == "main":
                 show_categories(jarvis)
                 return
             else:
