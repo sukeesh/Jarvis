@@ -440,7 +440,7 @@ class CmdInterpreter(Cmd):
         """Jarvis let you know if an error has occurred."""
         self.say("I could not identify your command...", Fore.MAGENTA)
 
-    def interrupt_handler(self):
+    def interrupt_handler(self, signal, frame):
         """Closes Jarvis on SIGINT signal. (Ctrl-C)"""
         self.close()
 
