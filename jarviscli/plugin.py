@@ -43,47 +43,70 @@ def plugin(name):
 
 
 def require(network=None, platform=None, native=None):
-    require = []
+    """Decorator to specify requirements for a plugin."""
+    requirements = []
     if network is not None:
-        require.append(('network', network))
+        requirements.append(('network', network))
     if platform is not None:
-        require.append(('platform', platform))
+        requirements.append(('platform', platform))
     if native is not None:
-        require.append(('native', native))
+        requirements.append(('native', native))
 
-    def __require(plugin):
-        plugin._require.extend(require)
-        return plugin
+    def __require(plugin_instance):
+        plugin_instance._require.extend(requirements)
+        return plugin_instance
+
     return __require
 
 
-def complete(*complete):
-    def __complete(plugin):
-        plugin._complete.extend(complete)
-        return plugin
+def complete(*complete_args):
+    """Decorator to specify completion options for a plugin."""
+    def __complete(plugin_instance):
+        plugin_instance._complete.extend(complete_args)
+        return plugin_instance
     return __complete
 
 
-def alias(*alias):
-    def __alias(plugin):
-        plugin._alias.extend(alias)
-        return plugin
+def alias(*alias_args):
+    """Decorator to specify aliases for a plugin."""
+    def __alias(plugin_instance):
+        plugin_instance._alias.extend(alias_args)
+        return plugin_instance
     return __alias
 
 
 def _yield_something(values):
-    for value in values:
-        yield value
+    yield from values
 
 
-class PluginStorage(object):
+class PluginStorage():
+    """ A storage class for managing sub-plugins."""
+
     def __init__(self):
         self._sub_plugins = {}
 
     def add_plugin(self, name, plugin_to_add):
+        """
+        Adds a sub-plugin to the storage.
+
+        Args:
+            name: The name of the sub-plugin.
+            plugin_to_add: The sub-plugin to add.
+        """
+
         self._sub_plugins[name] = plugin_to_add
 
     def get_plugins(self, name=None):
+        """
+        Retrieves sub-plugins from the storage.
+
+        Args:
+            name: The name of the sub-plugin to retrieve. If None, all sub-plugins are returned.
+
+        Returns:
+            All sub-plugins if name is None, otherwise the specified sub-plugin or None if not found
+        """
+
         if name is None:
             return self._sub_plugins
         if name in self._sub_plugins:
@@ -91,11 +114,22 @@ class PluginStorage(object):
         return None
 
     def change_with(self, plugin_new):
+        """
+        Replaces the sub-plugins of another PluginStorage instance with the current sub-plugins.
+
+        Args:
+            plugin_new: The PluginStorage instance whose sub-plugins will be replaced.
+        """
+
         plugin_new._sub_plugins = self._sub_plugins
 
 
 class Plugin(pluginmanager.IPlugin, PluginStorage):
     """
+    Base class for all plugins.
+
+    This class inherits from both IPlugin and PluginStorage, providing a structure
+    for plugins to be managed and initialized within the Jarvis framework.
     """
     _backend = None
 
@@ -117,8 +151,8 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
                     self._backend[0].__class__,
                     "init")):
                 self._backend[0].init(jarvis_api)
-        for plugin in self.get_plugins().values():
-            plugin.init(jarvis_api)
+        for sub_plugin in self.get_plugins().values():
+            sub_plugin.init(jarvis_api)
 
     def is_callable_plugin(self):
         """
@@ -144,12 +178,10 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
         """Set with @complete"""
         # return default complete() if possible
         if self.is_callable_plugin():
-            for complete in self._complete:
-                yield complete
+            yield from self._complete
 
         # yield each sub command
-        for complete in self.get_plugins().keys():
-            yield complete
+        yield from self.get_plugins().keys()
 
     def get_doc(self):
         """Parses plugin doc string"""
@@ -172,7 +204,7 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
 
         # sub command complete
         for name, sub_command in self.get_plugins().items():
-            doc += "\n-> {}: ".format(name)
+            doc += f"\n-> {name}: "
 
             sub_command_doc = sub_command.get_doc()
             sub_command_doc = sub_command_doc.split("-- Example:")
@@ -183,7 +215,7 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
             if '\n' not in sub_command_doc:
                 doc += sub_command_doc
             else:
-                extended_doc += "\n  {}:\n".format(name)
+                extended_doc += f"\n  {name}:\n"
                 extended_doc += sub_command_doc
                 if not sub_command_doc.endswith("\n"):
                     extended_doc += "\n"
@@ -208,8 +240,8 @@ class Plugin(pluginmanager.IPlugin, PluginStorage):
                 self._backend[0](jarvis.get_api(), s)
             else:
                 jarvis.get_api().say("Sorry, I could not recognise your command. Did you mean:")
-                for sub_command in self._sub_plugins.keys():
-                    jarvis.get_api().say("    * {} {}".format(self.get_name(), sub_command))
+                for sub_command in self._sub_plugins:
+                    jarvis.get_api().say(f"    * {self.get_name()} {sub_command}")
         else:
             command = sub_command.split()[0]
             new_s = " ".join(sub_command.split()[1:])
