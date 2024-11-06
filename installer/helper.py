@@ -30,7 +30,7 @@ debug_log = None
 def log_init():
     global debug_log
     debug_log = NamedTemporaryFile(delete=False, mode="w")
-    print("Logging to {}".format(debug_log.name))
+    print(f"Logging to {debug_log.name}")
 
 
 def log_close():
@@ -46,7 +46,8 @@ def fail(msg, fatal=False):
     if fatal:
         log("FATAL!")
         print("Installation failed with unexpected error - This should not have happened.")
-        print("Please check logs at \"{}\". If you open a bug report, please include this file.".format(debug_log.name))
+        print(f"""Please check logs at {debug_log.name}. 
+              If you open a bug report, please include this file.""")
     else:
         print("Installation failed!")
     debug_log.close()
@@ -107,28 +108,28 @@ def spinning_cursor_stop():
 def user_input(items):
     log("User input:")
     for x, item in enumerate(items):
-        printlog("{}) {}".format((x + 1), item[0]))
+        printlog(f"{x + 1}) {item[0]}")
 
     while True:
-        number = input("Select number {}-{}: ".format(1, len(items)))
+        number = input(f"Select number 1-{len(items)}: ")
         try:
             number = int(number) - 1
         except ValueError:
-            log("> User input {} - not a number".format(number))
+            log(f"> User input {number} - not a number")
             continue
 
         if number >= 0 and number < len(items):
-            log("> User input {} - ok: {}".format(number, items[number][1]))
+            log(f"> User input {number} - ok: {items[number][1]}")
             return items[number][1]
-        else:
-            log("> User input {} - out of range {} - {}".format(number, 1, len(items)))
+        
+        log(f"> User input {number} - out of range 1-{len(items)}")
 
 def confirm_user_input(confirmation_message : str) -> bool:
     log("User Confirmation")
     printlog(confirmation_message)
     confirm = input("input 'y' to confirm, 'n' to cancel: ")
-    confirm_bool = True if confirm in ['y', 'Y', 'yes', 'YES'] else False;
-    log("User chose to {} the operation.".format("cancel" if confirm_bool == False else "confirm"))
+    confirm_bool = True if confirm in ['y', 'Y', 'yes', 'YES'] else False
+    log(f"> User input {confirm} - {'confirm' if confirm_bool else 'cancel'}")
     return confirm_bool
 
 def shell(cmd):
@@ -140,8 +141,7 @@ def shell(cmd):
             return False
 
         def __str__(self):
-            return "FAIL {}".format(self.exception)
-
+            return f"Fail {self.exception}"
     class Success:
         def should_not_fail(self, msg=''):
             pass
@@ -155,12 +155,13 @@ def shell(cmd):
     exit_code = Success()
 
     log("_" * 40)
-    log("Shell: {}".format(cmd))
+    log(f"Shell: {cmd}")
     spinning_cursor_start()
 
     cli_output = ''
     try:
-        cli_output = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
+        cli_output = subprocess.check_output(cmd, shell=True, 
+                                             stderr=subprocess.STDOUT, universal_newlines=True)
     except subprocess.CalledProcessError as e:
         exit_code = Fail()
         exit_code.exception = str(e)
@@ -174,7 +175,7 @@ def shell(cmd):
     exit_code.cli_output = cli_output
 
     log(cli_output)
-    log("Shell: Exit {}".format(str(exit_code)))
+    log(f"Shell: Exit {str(exit_code)}")
     log("-" * 40)
     log("")
 
