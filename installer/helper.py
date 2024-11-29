@@ -5,12 +5,6 @@ import time
 import subprocess
 from threading import Thread
 from tempfile import NamedTemporaryFile
-from unix_windows import IS_WIN
-
-SUPPORTED_SHELLS = [
-    'bash',
-    'zsh',
-]
 
 # python 2/3 compatibility
 try:
@@ -18,77 +12,92 @@ try:
 except NameError:
     pass
 
+SUPPORTED_SHELLS = ['bash', 'zsh']
 
 def executable_exists(name):
+    """
+    Check if an executable exists and is accessible.
+    Args:
+        name (str): Name of the executable.
+    Returns:
+        bool: True if the executable exists, False otherwise.
+    """
     binary_path = shutil.which(name)
     return binary_path is not None and os.access(binary_path, os.X_OK)
 
-
 debug_log = None
 
-
 def log_init():
+    """
+    Initialize a temporary file for logging.
+    """
     global debug_log
     debug_log = NamedTemporaryFile(delete=False, mode="w")
-    print("Logging to {}".format(debug_log.name))
-
+    print(f"Logging to {debug_log.name}")
 
 def log_close():
+    """
+    Close the log file.
+    """
     debug_log.close()
 
-
 def fail(msg, fatal=False):
+    """
+    Handle installation failures by logging and displaying the error message.
+    Args:
+        msg (str): Error message to display.
+        fatal (bool): If True, indicates a fatal error.
+    """
     log("Installation failed")
     log(msg)
     print(msg)
-    print('')
-    print('')
     if fatal:
         log("FATAL!")
-        print("Installation failed with unexpected error - This should not have happened.")
-        print("Please check logs at \"{}\". If you open a bug report, please include this file.".format(debug_log.name))
+        print("Installation failed with unexpected error.")
+        print(f"Please check logs at \"{debug_log.name}\". If you open a bug report, include this file.")
     else:
         print("Installation failed!")
     debug_log.close()
     sys.exit(1)
 
-
 def log(msg):
+    """
+    Write a message to the log file.
+    Args:
+        msg (str): Message to log.
+    """
     try:
-        debug_log.write(msg)
-        debug_log.write('\n')
+        debug_log.write(f"{msg}\n")
     except Exception as e:
-        print('------------------------------')
-        print("Logging failed?")
-        print(repr(e))
-        print(str(e))
-        print(str(e.args))
-        print('msg:')
-        try:
-            print(str(msg))
-        except BaseException:
-            print('msg unprintable')
-        print('-----------------------------')
-
+        print(f"Logging failed: {e}")
 
 def printlog(msg):
+    """
+    Log a message and print it to the console.
+    Args:
+        msg (str): Message to log and print.
+    """
     log(msg)
     print(msg)
 
-
 def section(title):
-    printlog("\n{:=^50}".format(" {} ".format(title)))
-
+    """
+    Print and log a section title.
+    Args:
+        title (str): Title of the section.
+    """
+    printlog(f"\n{'=' * 50}\n{title:^50}\n{'=' * 50}")
 
 spinning = True
 
-
 def spinning_cursor_start():
+    """
+    Start a spinning cursor in the console.
+    """
     global spinning
     spinning = True
 
     def spin_start():
-        time.sleep(0.1)
         while spinning:
             for cursor in '|/-\\':
                 sys.stdout.write(cursor)
@@ -98,105 +107,96 @@ def spinning_cursor_start():
 
     Thread(target=spin_start).start()
 
-
 def spinning_cursor_stop():
+    """
+    Stop the spinning cursor.
+    """
     global spinning
     spinning = False
 
-
 def user_input(items):
+    """
+    Prompt the user to select an item from a list.
+    Args:
+        items (list): List of tuples where each tuple contains a description and a value.
+    Returns:
+        value: The selected value.
+    """
     log("User input:")
     for x, item in enumerate(items):
-        printlog("{}) {}".format((x + 1), item[0]))
+        printlog(f"{x + 1}) {item[0]}")
 
     while True:
-        number = input("Select number {}-{}: ".format(1, len(items)))
+        number = input(f"Select number 1-{len(items)}: ")
         try:
             number = int(number) - 1
         except ValueError:
-            log("> User input {} - not a number".format(number))
+            log(f"Invalid input: {number}")
             continue
 
-        if number >= 0 and number < len(items):
-            log("> User input {} - ok: {}".format(number, items[number][1]))
+        if 0 <= number < len(items):
+            log(f"Selected: {items[number][1]}")
             return items[number][1]
         else:
-            log("> User input {} - out of range {} - {}".format(number, 1, len(items)))
+            log(f"Input out of range: {number}")
 
-def confirm_user_input(confirmation_message : str) -> bool:
+def confirm_user_input(confirmation_message):
+    """
+    Prompt the user to confirm an action.
+    Args:
+        confirmation_message (str): Confirmation message to display.
+    Returns:
+        bool: True if the user confirms, False otherwise.
+    """
     log("User Confirmation")
     printlog(confirmation_message)
-    confirm = input("input 'y' to confirm, 'n' to cancel: ")
-    confirm_bool = True if confirm in ['y', 'Y', 'yes', 'YES'] else False;
-    log("User chose to {} the operation.".format("cancel" if confirm_bool == False else "confirm"))
+    confirm = input("Input 'y' to confirm, 'n' to cancel: ").strip().lower()
+    confirm_bool = confirm in ['y', 'yes']
+    log(f"User chose to {'confirm' if confirm_bool else 'cancel'} the operation.")
     return confirm_bool
 
 def shell(cmd):
-    class Fail:
-        def should_not_fail(self, msg=''):
-            fail(msg, fatal=True)
-
-        def success(self):
-            return False
+    """
+    Execute a shell command and return its result.
+    Args:
+        cmd (str): Shell command to execute.
+    Returns:
+        Success or Fail object depending on the command execution result.
+    """
+    class ShellResult:
+        """
+        Represents the result of a shell command.
+        """
+        def __init__(self, success, output='', exception=None):
+            self.success = success
+            self.output = output
+            self.exception = exception
 
         def __str__(self):
-            return "FAIL {}".format(self.exception)
-
-    class Success:
-        def should_not_fail(self, msg=''):
-            pass
-
-        def success(self):
-            return True
-
-        def __str__(self):
-            return "OK"
-
-    exit_code = Success()
+            return "OK" if self.success else f"FAIL {self.exception}"
 
     log("_" * 40)
-    log("Shell: {}".format(cmd))
+    log(f"Shell: {cmd}")
     spinning_cursor_start()
 
-    cli_output = ''
+    result = ShellResult(success=True)
     try:
-        cli_output = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
+        result.output = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
     except subprocess.CalledProcessError as e:
-        exit_code = Fail()
-        exit_code.exception = str(e)
-        cli_output += str(e.output)
+        result.success = False
+        result.exception = str(e)
+        result.output += str(e.output)
 
-    # python 2 compatibility
-    try:
-        cli_output = cli_output.decode("utf-8")
-    except AttributeError:
-        pass
-    exit_code.cli_output = cli_output
-
-    log(cli_output)
-    log("Shell: Exit {}".format(str(exit_code)))
-    log("-" * 40)
-    log("")
-
+    log(result.output)
+    log(f"Shell: Exit {str(result)}")
     spinning_cursor_stop()
-    time.sleep(0.5)
-    sys.stdout.write(' \b')
-
-    return exit_code
-
+    return result
 
 def get_default_shell():
-    '''
-    Determine and return the default shell
-    of the current logged in user.
-    Args:
-        None
+    """
+    Determine and return the default shell of the current logged-in user.
     Returns:
-        shell name (str)
-    '''
-    try:
-        bin_path = os.environ.get('SHELL')
-        return bin_path.split(os.path.sep)[-1]
-    except AttributeError:
-        # SHELL environment not set
-        return None
+        str: Name of the default shell.
+    """
+    bin_path = os.environ.get('SHELL')
+    return os.path.basename(bin_path) if bin_path else None
