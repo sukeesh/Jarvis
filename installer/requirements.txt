@@ -20,6 +20,7 @@ psutil; sys_platform == 'win32'
 pycricbuzz
 pydoc-markdown
 pyjokes
+markdown
 pync; sys_platform == 'darwin'
 pypiwin32; sys_platform == 'win32'
 pyreadline; sys_platform == 'win32'
