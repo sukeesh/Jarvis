@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forums</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        /* Navbar */
+        nav {
+            background-color: #333;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav .nav-links a {
+            background-color: #0078d7;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        nav .nav-links a:hover {
+            background-color: #0056a3;
+        }
+
+        /* Forums Container */
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        a.create-post {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        a.create-post:hover {
+            background-color: #218838;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #f9f9f9;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        li a {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #0078d7;
+            text-decoration: none;
+        }
+
+        li a:hover {
+            color: #0056a3;
+        }
+
+        li form {
+            display: inline;
+        }
+
+        li form button {
+            background-color: #0078d7;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        li form button:hover {
+            background-color: #0056a3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <a href="/">JarvisCLI</a>
+        <div class="nav-links">
+            <a href="/forums/">Forums</a>
+            <a href="/account/">Account</a>
+            <a href="/logout/">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Forums Container -->
+    <div class="container">
+        <h1>Forums</h1>
+        <a href="{% url 'create_post' %}" class="create-post">Create a New Post</a>
+        <ul>
+            {% for post in posts %}
+            <li>
+                <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a> by {{ post.author.username }} ({{ post.likes.count }} likes)
+                <form action="{% url 'like_post' post.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">{% if user in post.likes.all %}Unlike{% else %}Like{% endif %}</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

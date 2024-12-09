@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        /* Navbar */
+        nav {
+            background-color: #333;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav .nav-links a {
+            background-color: #0078d7;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        nav .nav-links a:hover {
+            background-color: #0056a3;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2rem;
+        }
+
+        p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .post-actions {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .delete-button {
+            background-color: #d9534f;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            background-color: #c9302c;
+        }
+
+        /* Replies Section */
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            background-color: #f9f9f9;
+            margin: 10px 0;
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .reply-delete-button {
+            background-color: #d9534f;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .reply-delete-button:hover {
+            background-color: #c9302c;
+        }
+
+        form button {
+            background-color: #0078d7;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #0056a3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <a href="/">JarvisCLI</a>
+        <div class="nav-links">
+            <a href="/forums/">Forums</a>
+            <a href="/account/">Account</a>
+            <a href="/logout/">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>{{ post.title }}</h1>
+        <p>{{ post.content }}</p>
+        <p><strong>By:</strong> {{ post.author.username }} <br><strong>On:</strong> {{ post.created_at }}</p>
+
+        <!-- Post Actions -->
+        {% if user == post.author %}
+        <div class="post-actions">
+            <form action="{% url 'delete_post' post.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="delete-button">Delete Post</button>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- Replies Section -->
+        <h2>Replies</h2>
+        <ul>
+            {% for reply in replies %}
+            <li>
+                {{ reply.content }} <br>
+                <small><strong>By:</strong> {{ reply.author.username }} <br><strong>On:</strong> {{ reply.created_at }}</small>
+                {% if user == reply.author %}
+                <form action="{% url 'delete_reply' reply.id %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="reply-delete-button">Delete Reply</button>
+                </form>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Reply Form -->
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ reply_form.as_p }}
+            <button type="submit">Reply</button>
+        </form>
+    </div>
+</body>
+</html>
