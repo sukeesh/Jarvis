@@ -1,6 +1,9 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+
 
 class UpdateEmailForm(forms.ModelForm):
     class Meta:
@@ -10,16 +13,23 @@ class UpdateEmailForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
         }
 
+
 class ChangePasswordForm(PasswordChangeForm):
-    old_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    old_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    new_password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    new_password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
 
 class DeleteAccountForm(forms.Form):
     password = forms.CharField(
         label='Password',
         widget=forms.PasswordInput(attrs={'class': 'form-control'}),
     )
+
+
 class CreateAccountForm(forms.ModelForm):
     password1 = forms.CharField(
         label="Password",
@@ -49,5 +59,6 @@ class CreateAccountForm(forms.ModelForm):
         password1 = cleaned_data.get("password1")
         password2 = cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
-            self.add_error("password2", "The two password fields didn’t match.")
+            self.add_error(
+                "password2", "The two password fields didn’t match.")
         return cleaned_data

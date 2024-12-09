@@ -14,7 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-JARVIS_DIR = BASE_DIR.parent.parent # Adjust path as needed
+JARVIS_DIR = BASE_DIR.parent.parent  # Adjust path as needed
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -137,5 +137,3 @@ AUTHENTICATION_BACKENDS = [
     'downloads.auth_backends.UsernameOrEmailBackend',  # Custom backend
     'django.contrib.auth.backends.ModelBackend',      # Default backend
 ]
-
-

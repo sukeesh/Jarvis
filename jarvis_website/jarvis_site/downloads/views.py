@@ -1,3 +1,8 @@
+import os
+from django.http import HttpResponse
+from django.conf import settings
+import tempfile
+import zipfile
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views
@@ -11,11 +16,15 @@ from .forums import UpdateEmailForm, ChangePasswordForm, DeleteAccountForm
 from django.contrib.auth.password_validation import validate_password
 from django.core.validators import EmailValidator
 from django.core.exceptions import ValidationError
+
+
 def home(request):
     return render(request, 'downloads/home.html')
 
+
 def downloads(request):
     return render(request, 'downloads/downloads.html')
+
 
 @login_required
 def forums(request):
@@ -78,24 +87,29 @@ def create_account(request):
 
         # Check if the email already exists
         if User.objects.filter(email=email).exists():
-            messages.error(request, "An account with this email already exists.")
+            messages.error(
+                request, "An account with this email already exists.")
             return render(request, 'downloads/create_account.html', {
                 'username': username,
                 'email': email,
             })
 
         # Create the user
-        user = User.objects.create_user(username=username, email=email, password=password)
+        user = User.objects.create_user(
+            username=username, email=email, password=password)
         user.save()
 
-        messages.success(request, "Account created successfully! Please log in.")
+        messages.success(
+            request, "Account created successfully! Please log in.")
         return redirect('login')
 
     return render(request, 'downloads/create_account.html')
 
+
 @login_required
 def account_page(request):
     return render(request, 'downloads/account.html', {'user': request.user})
+
 
 @login_required
 def update_email(request):
@@ -122,7 +136,8 @@ def update_email(request):
 
         # Check if the email already exists
         if User.objects.filter(email=email).exists():
-            messages.error(request, "An account with this email already exists.")
+            messages.error(
+                request, "An account with this email already exists.")
             return render(request, 'downloads/update_email.html', {
                 'email': email,
             })
@@ -134,11 +149,12 @@ def update_email(request):
 
         messages.success(request, "Email updated successfully!")
         return redirect('account')
-    
+
     # Render form with initial data
     return render(request, 'downloads/update_email.html', {
         'email': request.user.email,
     })
+
 
 @login_required
 def change_password(request):
@@ -146,7 +162,8 @@ def change_password(request):
         form = ChangePasswordForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(request, user)  # Important: Keeps the user logged in
+            # Important: Keeps the user logged in
+            update_session_auth_hash(request, user)
             messages.success(request, "Password changed successfully!")
             return redirect('account')
         else:
@@ -155,13 +172,15 @@ def change_password(request):
         form = ChangePasswordForm(request.user)
     return render(request, 'downloads/change_password.html', {'form': form})
 
+
 @login_required
 def delete_account(request):
     if request.method == 'POST':
         form = DeleteAccountForm(request.POST)
         if form.is_valid():
             password = form.cleaned_data.get('password')
-            user = authenticate(username=request.user.username, password=password)
+            user = authenticate(
+                username=request.user.username, password=password)
             if user:
                 user.delete()
                 messages.success(request, "Your account has been deleted.")
@@ -172,18 +191,13 @@ def delete_account(request):
         form = DeleteAccountForm()
     return render(request, 'downloads/delete_account.html', {'form': form})
 
-import os
-import zipfile
-import tempfile
-from django.conf import settings
-from django.http import HttpResponse
 
 def create_and_download_zip(request):
     # Define the directory to zip and the excluded directory
     jarvis_dir = settings.JARVIS_DIR  # Adjust path as needed
     exclude_dir = os.path.join(jarvis_dir, 'jarvis_website')
-    
-     # Content of setup.sh
+
+    # Content of setup.sh
     setup_script_content = """#!/bin/bash
 
 # Exit immediately if a command exits with a non-zero status
@@ -240,13 +254,14 @@ Setting up this version:
                 continue
             for file in files:
                 file_path = os.path.join(root, file)
-                arcname = os.path.join('Jarvis', os.path.relpath(file_path, jarvis_dir))
+                arcname = os.path.join(
+                    'Jarvis', os.path.relpath(file_path, jarvis_dir))
                 zipf.write(file_path, arcname)
-        
+
         # Add the bin folder and setup.sh script at the root level
         bin_folder = 'bin'
         setup_script_path = os.path.join(bin_folder, 'setup.sh')
-        
+
         # Add the folder structure
         zipf.writestr(os.path.join(bin_folder, ''), '')
         # Add the setup.sh file
@@ -254,12 +269,13 @@ Setting up this version:
 
         # Add setup.txt at the root level
         zipf.writestr('setup.txt', setup_txt_content)
-    
+
     # Serve the file for download
-    response = HttpResponse(open(zip_file_path, 'rb'), content_type='application/zip')
+    response = HttpResponse(open(zip_file_path, 'rb'),
+                            content_type='application/zip')
     response['Content-Disposition'] = f'attachment; filename="{zip_file_path}"'
-    
+
     # Optionally clean up the ZIP file after serving
     os.remove(zip_file_path)
-    
+
     return response

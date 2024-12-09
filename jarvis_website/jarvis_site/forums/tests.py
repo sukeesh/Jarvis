@@ -7,11 +7,13 @@ from django.urls import reverse
 class ForumsTests(TestCase):
     def setUp(self):
         # Create a user for authentication
-        self.user = User.objects.create_user(username='testuser', password='password123')
+        self.user = User.objects.create_user(
+            username='testuser', password='password123')
         self.client.login(username='testuser', password='password123')
 
         # Create a post for testing
-        self.post = Post.objects.create(title="Test Post", content="This is a test post.", author=self.user)
+        self.post = Post.objects.create(
+            title="Test Post", content="This is a test post.", author=self.user)
 
     def test_forums_home_view(self):
         response = self.client.get(reverse('forums_home'))
@@ -30,7 +32,8 @@ class ForumsTests(TestCase):
             'title': 'Another Test Post',
             'content': 'Content of the new test post.',
         })
-        self.assertEqual(response.status_code, 302)  # Redirects after successful post creation
+        # Redirects after successful post creation
+        self.assertEqual(response.status_code, 302)
         self.assertEqual(Post.objects.count(), 2)  # Ensure post is created
 
     def test_like_post(self):
@@ -45,7 +48,8 @@ class ForumsTests(TestCase):
         self.assertEqual(self.post.likes.count(), 0)
 
     def test_delete_post(self):
-        response = self.client.post(reverse('delete_post', args=[self.post.id]))
+        response = self.client.post(
+            reverse('delete_post', args=[self.post.id]))
         self.assertEqual(response.status_code, 302)  # Redirects after delete
         self.assertEqual(Post.objects.count(), 0)  # Ensure post is deleted
 
@@ -53,14 +57,16 @@ class ForumsTests(TestCase):
         response = self.client.post(reverse('post_detail', args=[self.post.id]), {
             'content': 'This is a test reply.',
         })
-        self.assertEqual(response.status_code, 302)  # Redirects after reply creation
+        # Redirects after reply creation
+        self.assertEqual(response.status_code, 302)
         self.assertEqual(Reply.objects.count(), 1)  # Ensure reply is created
         reply = Reply.objects.first()
         self.assertEqual(reply.content, 'This is a test reply.')
         self.assertEqual(reply.post, self.post)
 
     def test_delete_reply(self):
-        reply = Reply.objects.create(content="Test Reply", post=self.post, author=self.user)
+        reply = Reply.objects.create(
+            content="Test Reply", post=self.post, author=self.user)
         response = self.client.post(reverse('delete_reply', args=[reply.id]))
         self.assertEqual(response.status_code, 302)  # Redirects after delete
         self.assertEqual(Reply.objects.count(), 0)  # Ensure reply is deleted
@@ -72,7 +78,8 @@ class ForumsTests(TestCase):
         self.assertContains(response, "Test Post")
 
     def test_my_replies_view(self):
-        reply = Reply.objects.create(content="Test Reply", post=self.post, author=self.user)
+        reply = Reply.objects.create(
+            content="Test Reply", post=self.post, author=self.user)
         response = self.client.get(reverse('my_replies'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'forums/my_replies.html')

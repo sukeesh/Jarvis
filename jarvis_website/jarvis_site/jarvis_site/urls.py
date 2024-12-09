@@ -25,7 +25,8 @@ urlpatterns = [
     path('', include('downloads.urls')),  # Include the downloads app's URLs
     path('login/', auth_views.LoginView.as_view(template_name='downloads/login.html'), name='login'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
-    path('create_account/', downloads_views.create_account, name='create_account'),  # Add this line
+    path('create_account/', downloads_views.create_account,
+         name='create_account'),  # Add this line
     path('forums/', include('forums.urls')),
-    
+
 ]
