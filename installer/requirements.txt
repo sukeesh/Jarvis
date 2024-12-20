@@ -23,7 +23,7 @@ pyjokes
 markdown
 pync; sys_platform == 'darwin'
 pypiwin32; sys_platform == 'win32'
-pyreadline; sys_platform == 'win32'
+pyreadline3; sys_platform == 'win32'
 python-dateutil
 pytimeparse
 pyttsx3 == 2.71; sys_platform != 'darwin'
