@@ -3,64 +3,53 @@ from utilities.GeneralUtilities import print_say
 from . import mapps
 from . import umbrella
 
+def handle_new_location(self, city):
+    print_say("Enter Name of city: ", self)
+    city = input()
+    return city
+
+def handle_location_change(memory, self, new_city, old_location):
+    print_say(
+        f"It appears you are in {new_city}. But you set your location to {old_location}", 
+        self, Fore.RED)
+    print_say(f"Do you want weather for {new_city} instead? (y/n)", self, Fore.RED)
+    if input().lower() in ['y', 'yes']:
+        if ask_set_new_location(self, new_city):
+            memory.update_data('city', new_city)
+            memory.save()
+        return new_city
+    return old_location
+
+def ask_set_new_location(self, city):
+    print_say(f"Would you like to set {city} as your new location? (y/n)", self, Fore.RED)
+    return input().lower() in ['y', 'yes']
+
+def get_weather_for_city(self, city, s):
+    try:
+        if s == 'umbrella':
+            umbrella.main(city)
+        else:
+            return mapps.weather(city)
+        return True
+    except BaseException:
+        print_say("I couldn't locate you", self, Fore.RED)
+        return False
 
 def main(memory, self, s):
-    location = memory.get_data('city')  # Will return None if no value
+    location = memory.get_data('city')
     if location is None:
         city = mapps.get_location()['city']
-        print_say("It appears you are in {CITY} Is this correct? (y/n)"
-                  .format(CITY=city), self, Fore.RED)
-        i = input()
-        if i == 'n' or i == 'no':
-            print_say("Enter Name of city: ", self)
-            i = input()
-            city = i
-        city_found = True
-        if s == 'umbrella':
-            umbrella.main(str(city))
-        else:
-            city_found = mapps.weather(str(city))
-        if city_found:
+        print_say(f"It appears you are in {city} Is this correct? (y/n)", self, Fore.RED)
+        if input().lower() in ['n', 'no']:
+            city = handle_new_location(self, city)
+        
+        if get_weather_for_city(self, city, s):
             memory.update_data('city', city)
             memory.save()
     else:
-        loc = str(location)
-        city = mapps.get_location()['city']
-        if city != loc:
-            print_say(
-                "It appears you are in {CITY}. But you set your location to {LOC}" .format(
-                    CITY=city, LOC=loc), self, Fore.RED)
-            print_say("Do you want weather for {CITY} instead? (y/n)"
-                      .format(CITY=city), self, Fore.RED)
-            i = input()
-            if i == 'y' or i == 'yes':
-                try:
-                    print_say(
-                        "Would you like to set {CITY} as your new location? (y/n)" .format(
-                            CITY=city), self, Fore.RED)
-                    i = input()
-                    if i == 'y' or i == 'yes':
-                        memory.update_data('city', city)
-                        memory.save()
-                    if s == 'umbrella':
-                        umbrella.main(city)
-                    else:
-                        mapps.weather(city)
-                except BaseException:
-                    print_say("I couldn't locate you", self, Fore.RED)
-            else:
-                try:
-                    if s == 'umbrella':
-                        umbrella.main(loc)
-                    else:
-                        mapps.weather(loc)
-                except BaseException:
-                    print_say("I couldn't locate you", self, Fore.RED)
+        current_city = mapps.get_location()['city']
+        if current_city != location:
+            city = handle_location_change(memory, self, current_city, location)
         else:
-            try:
-                if s == 'umbrella':
-                    umbrella.main(loc)
-                else:
-                    mapps.weather(loc)
-            except BaseException:
-                print_say("I couldn't locate you", self, Fore.RED)
+            city = location
+        get_weather_for_city(self, city, s)
