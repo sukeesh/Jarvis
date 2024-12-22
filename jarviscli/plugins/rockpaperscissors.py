@@ -157,7 +157,8 @@ class rockpaperscissors():
             condition = "T"
 
         else:
-            if ((umove == "r" and jmove == "s") or (umove == "s" and jmove == "p") or (umove == "p" and jmove == "r")):
+            moves_that_win = {'r': 's', 's': 'p', 'p': 'r'}
+            if jmove == moves_that_win[umove]:
                 condition = "W"
             else:
                 condition = "L"
