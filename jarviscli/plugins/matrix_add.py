@@ -10,7 +10,7 @@ def get_matrix(jarvis, r, c):
         for n in row_str.split():
             try:
                 int(n)
-            except BaseException:
+            except ValueError:
                 cur_row.append(0)
             else:
                 cur_row.append(int(n))
@@ -21,7 +21,7 @@ def get_matrix(jarvis, r, c):
             for n in row_str.split():
                 try:
                     int(n)
-                except BaseException:
+                except ValueError:
                     cur_row.append(0)
                 else:
                     cur_row.append(int(n))
