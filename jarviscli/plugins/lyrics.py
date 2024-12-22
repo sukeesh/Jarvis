@@ -97,7 +97,4 @@ def get_lyric(singer, song):
     # output = str(lyrics).encode('utf-8', errors = 'replace')[22:-6:] \
     #     .decode('utf-8').replace('\n','').replace('<br/>','\n')
     output = str(lyrics).replace('\n', '').replace('<br/>', '\n')[22:-6:]
-    try:
-        return output
-    except BaseException:
-        return output.encode('utf-8')
+    return output
