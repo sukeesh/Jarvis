@@ -56,5 +56,7 @@ def fruit_nutrition(jarvis, s):
         jarvis.say("Error fetching the nutrition facts. Please try again.")
     except requests.ConnectionError:
         jarvis.say("Failed to connect to the Fruityvice API. Please check your internet connection.")
-    except Exception as e:
-        jarvis.say(f"An error occurred: {e}")
+    except ValueError:
+        jarvis.say("Please enter valid numeric values for age, height, and weight.")
+    except KeyError:
+        jarvis.say("Invalid data format received from the API.")
