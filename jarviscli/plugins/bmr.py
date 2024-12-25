@@ -8,6 +8,19 @@ def bmr(jarvis, s):
     your Basal  Metabolic Rate (BMR) and
     your Active Metabolic Rate(AMR)"""
 
+    
+    def get_valid_input(prompt, valid_options=None, convert_type=str):
+        while True:
+            try:
+                value = convert_type(jarvis.input(prompt))
+                if valid_options is None or value in valid_options:
+                    if convert_type in (int, float) and value <= 0:
+                        raise ValueError
+                    return value
+                raise ValueError
+            except ValueError:
+                jarvis.say("Invalid input. Please try again.")
+
     jarvis.say("Hello there! Ready to count your BMR? \n")
     jarvis.say("1. Yes, let's start! \n2. Sorry,"
                " I don't know what BMR is :( \n ")
@@ -28,41 +41,11 @@ def bmr(jarvis, s):
                    "life-sustaining functions. \n")
         jarvis.say("Since you know now, let's calculate it! \n")
 
-    # gets inputs and makes the necessary checks
-    jarvis.say("What's your gender? (M/F)")
-    while True:
-        sex = jarvis.input()
-        if sex.upper() == "M" or sex.upper() == "F":
-            break
-        jarvis.say("Sorry, invalid input was given!"
-                   "Please try again. (M/F)")
-    jarvis.say("What is your height (cm) ?")
-    while True:
-        try:
-            height = int(jarvis.input())
-            if height <= 0:
-                raise ValueError
-            break
-        except ValueError:
-            print("Oops! That was no valid number. Try again...")
-    jarvis.say("What is your weight (kg) ?")
-    while True:
-        try:
-            weight = int(jarvis.input())
-            if weight <= 0:
-                raise ValueError
-            break
-        except ValueError:
-            print("Oops! That was no valid number. Try again...")
-    jarvis.say("What is your age ?")
-    while True:
-        try:
-            age = int(jarvis.input())
-            if age <= 0:
-                raise ValueError
-            break
-        except ValueError:
-            print("Oops! That was no valid number. Try again...")
+    # Get user inputs
+    sex = get_valid_input("What's your gender? (M/F)", valid_options=['M', 'F', 'm', 'f']).upper()
+    height = get_valid_input("What is your height (cm)? ", convert_type=int)
+    weight = get_valid_input("What is your weight (kg)? ", convert_type=int)
+    age = get_valid_input("What is your age? ", convert_type=int)
 
     # formula changes based on sex
     if sex.upper() == 'F':
