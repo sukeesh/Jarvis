@@ -26,7 +26,8 @@ def checkForWin(c):
     for i in range(numberRows):
         if whatsAtPos(i, c) != ' ':
             row = i
-            if checkHorizWin(row, c, whatsAtPos(row, c)) or checkVertWin(row, c, whatsAtPos(row, c)) \
+            if checkHorizWin(row, c, whatsAtPos(row, c)) \
+                    or checkVertWin(row, c, whatsAtPos(row, c)) \
                     or checkDiagWin(row, c, whatsAtPos(row, c)):
                 return True
             break
@@ -229,7 +230,8 @@ def game(jarvis, s):
         printBoard()
         while True:
 
-            # Make sure column is numeric. If not then ask user for numeric input again instead of throwing error.
+            # Make sure column is numeric.
+            #  If not then ask user for numeric input again instead of throwing error.
             notNumericInputFlag = True
             while notNumericInputFlag == True:
                 try:
