@@ -20,7 +20,10 @@ def goodreads(jarvis,s):
     
   elif choice=='2':
     URL="https://www.goodreads.com/search?q="
-    title = jarvis.input("Tell me the title  or the ISBN of the book you are looking for:", Fore.GREEN)
+    title = jarvis.input(
+      "Tell me the title or the ISBN of the book you are looking for:", 
+      Fore.GREEN
+    )
     URL= GenerateURL(title, 'search', URL)
     webbrowser.open(URL)
     return None
