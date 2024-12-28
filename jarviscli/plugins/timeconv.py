@@ -6,7 +6,8 @@ class timeconv():
     """
     timeconv Documentation.
     timeconv is a time converter.
-    Supports: picosecond, nanosecond, microsecond, millisecond, second, minute, hour, day, week, month, year
+    Supports: picosecond, nanosecond, microsecond, millisecond, second,
+                 minute, hour, day, week, month, year
     Usage: The input time measurement units are:
         ps : picosecond,
         ns : nanosecond,
