@@ -171,7 +171,7 @@ def checkDiagWin(r, c, p):
     return False
 
 
-# Fonction pour obtenir la valeur d'une position avec couleur
+# Function to return value of gameboard location
 def whatsAtPos(r, c):
     if GameBoard[r][c] == 'X':
         return f"{RED}X{RESET}"
