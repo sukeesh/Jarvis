@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JarvisCLI Downloads</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: #333;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav .nav-links a {
+            background-color: #0078d7;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        nav .nav-links a:hover {
+            background-color: #0056a3;
+        }
+
+        /* Container */
+        .container {
+            background-color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+            margin: 50px auto;
+        }
+
+        /* Header */
+        h1 {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        /* Paragraph */
+        p {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        /* Links */
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin: 10px 0;
+        }
+
+        a {
+            display: inline-block;
+            background-color: #0078d7;
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        a:hover {
+            background-color: #0056a3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="/">JarvisCLI</a>
+        <div class="nav-links">
+            <a href="/downloads/">Downloads</a>
+            <a href="/forums/">Forums</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Welcome to JarvisCLI Downloads</h1>
+        <p>Click the links below to download JarvisCLI for your platform:</p>
+        <ul>
+            <li><a href="{% url 'download_jarvis_zip' %}?platform=macos">Download for macOS</a></li>
+            <li><a href="{% url 'download_jarvis_zip' %}?platform=linux">Download for Linux</a></li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JarvisCLI - Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        /* Navigation Bar */
+        /* Navigation Bar */
+    nav {
+        background-color: #333;
+        color: white;
+        display: flex;
+        justify-content: space-between; /* Align elements to the sides */
+        align-items: center;
+        padding: 10px 20px;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    nav .nav-links {
+        display: flex;
+        align-items: center; /* Ensure items are vertically aligned */
+        gap: 15px; /* Space between buttons */
+        margin-left: auto; /* Push items to the right */
+    }
+
+    nav .nav-links a {
+        background-color: #0078d7;
+        padding: 8px 12px;
+        border-radius: 5px;
+        font-size: 1rem;
+        text-align: center;
+        color: white;
+    }
+
+    nav .nav-links a:hover {
+        background-color: #0056a3;
+    }
+
+    nav .user-dropdown a {
+        background-color: #0078d7;
+        padding: 8px 12px;
+        border-radius: 5px;
+        font-size: 1rem;
+        color: white;
+        text-align: center;
+    }
+
+    nav .user-dropdown a:hover {
+        background-color: #0056a3;
+    }
+
+    .login-button {
+        background-color: #0078d7;
+        padding: 8px 12px;
+        border-radius: 5px;
+        color: white;
+        font-size: 1rem;
+    }
+
+    .login-button:hover {
+        background-color: #0056a3;
+    }
+
+
+        /* Main Content */
+        .container {
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        p, ul {
+            font-size: 1.2rem;
+            color: #555;
+            max-width: 800px;
+            margin: 20px auto;
+            text-align: left;
+        }
+
+        ul {
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-top: 30px;
+        }
+
+        iframe {
+            margin-top: 20px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="{% url 'home' %}">JarvisCLI</a>
+        <div class="nav-links">
+            <a href="{% url 'downloads' %}">Downloads</a>
+            <a href="{% url 'forums' %}">Forums</a>
+            {% if user.is_authenticated %}
+                <div class="user-dropdown">
+                    <a href="{% url 'account' %}">{{ user.username }}</a>
+                </div>
+            {% else %}
+                <a href="{% url 'login' %}" class="login-button">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+    
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Welcome to JarvisCLI</h1>
+        <p>
+            JarvisCLI is a simple personal assistant for Linux, macOS, and Windows that operates from the command line. It can talk to you, provide weather updates, find nearby restaurants, and perform various tasks to simplify your life.
+        </p>
+        
+        <iframe 
+            width="560" 
+            height="315" 
+            src="https://www.youtube.com/embed/PR-nxqmG3V8?si=B-Kf80GdLlx0joo9" 
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            allowfullscreen>
+        </iframe>
+
+        <div class="section-title">🚀 20 Different Tasks That Jarvis Can Do For You:</div>
+        <ul>
+            <li><strong>Entertainment & Suggestions:</strong> Suggest activities if you're bored or provide ideas on what to draw, watch, or listen to.</li>
+            <li><strong>Sports Updates:</strong> Get up-to-date sports information, including team rankings, match times, and player stats.</li>
+            <li><strong>Games:</strong> Play games like Blackjack, Connect Four, Hangman, Rock-Paper-Scissors, and more.</li>
+            <li><strong>Health & Fitness:</strong> Access nutrition facts, recipes, workout programs, and health trackers.</li>
+            <li><strong>Cocktail Recipes:</strong> Learn how to make cocktails.</li>
+            <li><strong>Random Generators:</strong> Generate random lists, numbers, and passwords.</li>
+            <li><strong>Unit Conversions:</strong> Convert units such as binary, currency, hex, length, mass, speed, temperature, and time.</li>
+            <li><strong>Photography:</strong> Take pictures and screenshots.</li>
+            <li><strong>System Information:</strong> Get detailed computer specifications.</li>
+            <li><strong>File Management:</strong> Manage and organize files effectively.</li>
+            <li><strong>Image Processing:</strong> Upload, edit, and convert images.</li>
+            <li><strong>PDF Conversion:</strong> Convert webpages to PDFs or PDFs to images.</li>
+            <li><strong>Jokes & Facts:</strong> Enjoy jokes and random facts.</li>
+            <li><strong>Calculations:</strong> Perform calculations and solve equations.</li>
+            <li><strong>QR Code Generation:</strong> Generate QR codes for URLs.</li>
+            <li><strong>Weather Updates:</strong> Check the weather forecast.</li>
+            <li><strong>Language Translation:</strong> Translate languages with ease.</li>
+            <li><strong>Stock Market Information:</strong> Display stock and cryptocurrency information.</li>
+        </ul>
+    </div>
+</body>
+</html>

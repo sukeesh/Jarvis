@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Account</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        /* Navbar */
+        nav {
+            background-color: #333;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav .nav-links a {
+            background-color: #0078d7;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        nav .nav-links a:hover {
+            background-color: #0056a3;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.2rem;
+        }
+
+        .links {
+            margin: 30px 0;
+        }
+
+        .links a {
+            display: inline-block;
+            margin: 10px;
+            background-color: #0078d7;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .links a:hover {
+            background-color: #0056a3;
+        }
+
+        .logout-button {
+            margin-top: 20px;
+            background-color: #d9534f;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background-color: #c9302c;
+        }
+
+        /* Account Actions */
+        .account-actions {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .account-actions .btn {
+            display: inline-block;
+            background-color: #f0ad4e;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .account-actions .btn:hover {
+            background-color: #ec971f;
+        }
+
+        .account-actions .btn.danger {
+            background-color: #d9534f;
+        }
+
+        .account-actions .btn.danger:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <a href="/">JarvisCLI</a>
+        <div class="nav-links">
+            <a href="/forums/">Forums</a>
+            <a href="/account/">Account</a>
+            <a href="/logout/">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Account Details -->
+    <div class="container">
+        <h1>Welcome, {{ user.username }}!</h1>
+        <p>Email: {{ user.email }}</p>
+        <p>Joined: {{ user.date_joined }}</p>
+
+        <!-- Navigation Links -->
+        <div class="links">
+            <a href="{% url 'my_posts' %}">My Posts</a>
+            <a href="{% url 'my_replies' %}">My Replies</a>
+            <a href="{% url 'my_likes' %}">My Likes</a>
+        </div>
+        
+        <!-- Account Actions -->
+        <div class="account-actions">
+            <a href="{% url 'update_email' %}" class="btn">Update Email</a>
+            <a href="{% url 'change_password' %}" class="btn">Change Password</a>
+            <a href="{% url 'delete_account' %}" class="btn danger">Delete Account</a>
+        </div>
+        
+        <!-- Logout Form -->
+        <form action="{% url 'logout' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="logout-button">Logout</button>
+        </form>
+    </div>
+</body>
+</html>
