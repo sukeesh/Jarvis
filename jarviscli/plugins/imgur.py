@@ -9,7 +9,7 @@ from plugin import plugin, require
 from utilities.GeneralUtilities import IS_WIN
 
 if IS_WIN:
-    from pyreadline import Readline
+    from pyreadline3 import Readline
     readline = Readline()
 else:
     import readline
