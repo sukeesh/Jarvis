@@ -5,6 +5,9 @@ numberRows = 6
 numberColumns = 7
 numToWin = 4
 GameBoard = [[0] * numberColumns for j in range(numberRows)]
+YELLOW = '\033[93m'
+RED = '\033[91m'
+RESET = '\033[0m'
 
 
 def restartBoard():
@@ -170,7 +173,11 @@ def checkDiagWin(r, c, p):
 
 # Function to return value of gameboard location
 def whatsAtPos(r, c):
-    if not GameBoard[r][c]:
+    if GameBoard[r][c] == 'X':
+        return f"{RED}X{RESET}"
+    elif GameBoard[r][c] == 'O':
+        return f"{YELLOW}O{RESET}"
+    elif GameBoard[r][c] == ' ':
         return ' '
     else:
         return str(GameBoard[r][c])
