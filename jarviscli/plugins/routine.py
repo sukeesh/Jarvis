@@ -19,7 +19,8 @@ def create_routine(jarvis, commands, name):
 
 def execute_routine(jarvis, name):
     """
-    Executes a routine saved in memory based on its name. If the routine doesn't exist, returns False.
+    Executes a routine saved in memory based on its name.
+    If the routine doesn't exist, returns False.
 
     :return: Whether or not the requested routine exists.
     """

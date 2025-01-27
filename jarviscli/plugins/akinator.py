@@ -37,7 +37,8 @@ def opening_message(jarvis):
 
     jarvis.say('')
     jarvis.say('Let\'s play !')
-    jarvis.say('You have to think of a public personality, answer to some questions and I will try to guess who it is !')
+    jarvis.say('You have to think of a public personality,' 
+               + ' answer to some questions and I will try to guess who it is !')
     jarvis.say('Rules: ')
     print_help(jarvis)
 

@@ -3,7 +3,7 @@ import time
 from colorama import Fore
 
 from plugin import plugin
-from utilities.notification import *
+from utilities.notification import notify, NOTIFY_NORMAL
 
 
 def push_compute_rest(maximum):

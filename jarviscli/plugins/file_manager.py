@@ -53,40 +53,28 @@ class file_manage:
             else:
                 cmdValid = True
 
+    def _confirm_deletion(self, jarvis):
+        while True:
+            confirmation = jarvis.input("Are you sure you want to delete this file? This cannot be undone. (y/n)").lower()
+            if confirmation == "y":
+                return True
+            elif confirmation == "n":
+                return False
+            jarvis.say("Invalid input")
+
     def delete(self, jarvis, file):
         # function to delete files
-
-        if self.folder is False:
-            # first, check if file exists
-            if os.path.exists(file):
-
-                yes = True
-                while yes:
-                    # confirm that file should be deleted
-                    confirmation = jarvis.input("Are you sure you want to delete this file? This cannot be undone. (y/n)").lower()
-
-                    if confirmation == "y":
-                        try:
-                            # delete file
-                            if not self.folder:
-                                os.remove(file)
-                            else:
-                                os.rmdir(file)
-                        except:
-                            jarvis.say("Invalid file path")
-
-                        # break loop after removing file
-                        yes = False
-
-                    elif confirmation == "n":
-
-                        # break loop if no confirmation
-                        yes = False
+        if self.folder is False and os.path.exists(file):
+            if self._confirm_deletion(jarvis):
+                try:
+                    if not self.folder:
+                        os.remove(file)
                     else:
-                        jarvis.say("Invalid input")
-
-            else:
-                jarvis.say("file does not exist")
+                        os.rmdir(file)
+                except:
+                    jarvis.say("Invalid file path")
+        else:
+            jarvis.say("file does not exist")
 
     def move(self, jarvis, file):
         # function to move files

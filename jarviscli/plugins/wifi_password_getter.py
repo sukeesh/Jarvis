@@ -226,5 +226,6 @@ class WifiPasswordGetterWINDOWS:
 
         except subprocess.CalledProcessError:
             jarvis.say(
-                "Unable to get the password for this wifi. Make sure you enter the correct wifi name!",
+                "Unable to get the password for this wifi. "
+                "Make sure you enter the correct wifi name!",
                 Fore.YELLOW)

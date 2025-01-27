@@ -28,7 +28,7 @@ def check_website_status(jarvis, s):
             jarvis.say('The website ' + url_request +
                        ' has returned a ' + code + ' code', Fore.BLUE)
             break
-        except Exception as e:
+        except (urllib.error.URLError, urllib.error.HTTPError) as e:
             # if there is an error it will ask if you want to try again
             jarvis.say(str(e), Fore.RED)
             jarvis.say("Make sure you are entering a valid URL")

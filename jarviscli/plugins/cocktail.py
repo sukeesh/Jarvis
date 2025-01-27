@@ -209,7 +209,9 @@ class Cocktail:
         """
         Get most popular cocktails with the given ingredients as base one.
         """
-        URL = f"https://www.thecocktaildb.com/api/json/v1/1/filter.php?i={self.ingredients[ingredients]}"
+        base_url = "https://www.thecocktaildb.com/api/json/v1/1/filter.php"
+        ingredient = self.ingredients[ingredients]
+        URL = f"{base_url}?i={ingredient}"
         json_text = self.get_json(URL)["drinks"]
         cocktails = [i["strDrink"] for i in json_text]
         return cocktails

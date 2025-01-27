@@ -61,97 +61,79 @@ def getChoices(jarvis, s):
     getAllRecipes(user_api_key, cuisine)
 
 
+def get_recipe_titles(content):
+    """Extract recipe titles from API response"""
+    titles = []
+    for item in content["results"]:
+        titles.append(item["title"])
+    return titles
+
+def print_titles(titles):
+    """Display numbered list of recipe titles"""
+    print("--------------------------FOOD ITEM----------------------------")
+    for index, title in enumerate(titles, 1):
+        print(f"{index}. {title}")
+
+def get_user_selection(titles):
+    """Get valid title selection from user"""
+    while True:
+        try:
+            selected_index = int(input("Enter the number corresponding to the title you want: "))
+            print()
+            if 1 <= selected_index <= len(titles):
+                return selected_index
+            print("Invalid selection. Please enter a valid number.", Fore.RED)
+        except ValueError:
+            print("Invalid input. Please enter a number.", Fore.RED)
+
+def get_recipe_id(content, selected_title):
+    """Get recipe ID for selected title"""
+    for item in content['results']:
+        if item['title'] == selected_title:
+            return item['id']
+    return None
+
+def print_recipe_details(content2):
+    """Print recipe summary, description, URL and ingredients"""
+    soup = BeautifulSoup(content2['summary'], 'html.parser')
+    summary_text = soup.get_text()
+    
+    print("Summary:")
+    print(summary_text)
+    print("\nDescription:")
+    print(content2['analyzedInstructions'][0]['steps'][0]['step'])
+    print("\nSource URL:")
+    print(content2['sourceUrl'])
+    
+    print("\nIngredients:")
+    for ingredient in content2['extendedIngredients']:
+        print(f"- {ingredient['original']} (Aisle: {ingredient['aisle']})", Fore.GREEN)
+    
+    print("\nHope you enjoy your food!", Fore.BLUE)
+
 def getAllRecipes(apiKey, cuisine):
     url = f"https://api.spoonacular.com/recipes/complexSearch?apiKey={apiKey}&cuisine={cuisine}&includeNutrition=true."
-
     response = requests.get(url)
-    # print(response)
 
-    if response.status_code == 200:
-        content = response.json()
-
-        # for debugging purposes, need import json
-        # with open("contentFood.json", "w") as f:
-        #     json.dump(content, f, indent=2)
-
-        # extracting titles
-        titles = []
-        for item in content["results"]:
-            titles.append(item["title"])
-
-        print("--------------------------FOOD ITEM----------------------------")
-        for index, title in enumerate(titles, 1):
-            print(f"{index}. {title}")
-
-        # Asking the user to select a title
-        while True:
-            try:
-                selected_index = int(input("Enter the number corresponding to the title you want: ", ))
-                print()
-                if 1 <= selected_index <= len(titles):
-                    break
-                else:
-                    print("Invalid selection. Please enter a valid number.", Fore.RED)
-            except ValueError:
-                print("Invalid input. Please enter a number.", Fore.RED)
-
-        # Get the ID number for the selected title
-        selectedTitle = titles[selected_index - 1]
-        for item in content['results']:
-            if item['title'] == selectedTitle:
-                selectedId = item['id']
-                break
-
-        print(f"Selected Title: {selectedTitle}", Fore.CYAN)
-        # print(f"ID Number for Selected Title: {selected_id}")
-
-        # now get the recipe info from the id
-        url2 = f"https://api.spoonacular.com/recipes/{selectedId}/information?apiKey={apiKey}&includeNutrition=false"
-        responseRecipeInformation = requests.get(url2)
-
-        if responseRecipeInformation.status_code == 200:
-
-            content2 = responseRecipeInformation.json()
-
-            # debugging purposes again
-            # with open("recipeInfo.json", "w") as f2:
-            #     json.dump(content2, f2, indent=2)
-
-            """
-            below code gets the ingredients, summary and description
-            uses the beautiful soup module for cutting out the html tags.
-            source code has been outputted for reference
-            """
-
-            summary_html = content2['summary']
-
-            # Cleaning the summary text from HTML tags (cutting out the html tags)
-            soup = BeautifulSoup(summary_html, 'html.parser')
-            summary_text = soup.get_text()
-
-            source_url = content2['sourceUrl']
-            description = content2['analyzedInstructions'][0]['steps'][0][
-                'step']
-
-            print("Summary:")
-            print(summary_text)
-            print("\nDescription:")
-            print(description)
-
-            print("\nSource URL:")
-            print(source_url)
-
-            # Extracting the list of ingredients with their corresponding aisle
-            ingredients = content2['extendedIngredients']
-            print("\nIngredients:")
-            for ingredient in ingredients:
-                original_value = ingredient['original']
-                aisle = ingredient['aisle']
-                print(f"- {original_value} (Aisle: {aisle})", Fore.GREEN)
-
-            print("\nHope you enjoy your food!", Fore.BLUE)
-        else:
-            print("Network down. Please try again later.")
-    else:
+    if response.status_code != 200:
         print("Network down. Please try again later.")
-    return
+        return
+
+    content = response.json()
+    titles = get_recipe_titles(content)
+    print_titles(titles)
+    
+    selected_index = get_user_selection(titles)
+    selected_title = titles[selected_index - 1]
+    selected_id = get_recipe_id(content, selected_title)
+    
+    print(f"Selected Title: {selected_title}", Fore.CYAN)
+    
+    url2 = f"https://api.spoonacular.com/recipes/{selected_id}/information?apiKey={apiKey}&includeNutrition=false"
+    response_recipe = requests.get(url2)
+    
+    if response_recipe.status_code != 200:
+        print("Network down. Please try again later.")
+        return
+        
+    print_recipe_details(response_recipe.json())

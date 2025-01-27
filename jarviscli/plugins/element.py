@@ -121,9 +121,9 @@ def element(jarvis, s):
     found = False
     element = str(input("Enter a periodic element: ").strip().capitalize())
     for key,value in elements.items():
-      if(element == key):
-        jarvis.say('Symbol: ' + value[0] + '\nAtomic Number: ' + value[1] + '\nAtomic Mass: ' + value[2] + '\nGroup: ' + value[3])
-        found = True
+        if element == key:
+            jarvis.say('Symbol: ' + value[0] + '\nAtomic Number: ' + value[1] + '\nAtomic Mass: ' + value[2] + '\nGroup: ' + value[3])
+            found = True
     if not found:
         jarvis.say('Please make sure you typed the element correctly.')
 

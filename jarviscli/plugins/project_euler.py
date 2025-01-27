@@ -140,4 +140,4 @@ class Euler():
         # The id is in the first column ('td' tag)
         last_problem_id = int(last_problem_row.find('td').get_text())
 
-        return(last_problem_id)
+        return last_problem_id

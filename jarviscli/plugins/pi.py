@@ -19,7 +19,7 @@ def next_pi(jarvis, s):
     index = 4
     while True:
         user_input = jarvis.input("Enter \'n\' to print next {} digits : ".format(str(NUM_NEXT)))
-        if (user_input != 'n'):
+        if user_input != 'n':
             break
         jarvis.say(pi_number[index: index + NUM_NEXT], Fore.GREEN)
         index += NUM_NEXT

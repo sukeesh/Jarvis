@@ -59,7 +59,7 @@ class Memory:
     def get_data(self, key):
         try:
             return self.data[key]
-        except BaseException:
+        except (AttributeError, KeyError):
             return None
 
     '''

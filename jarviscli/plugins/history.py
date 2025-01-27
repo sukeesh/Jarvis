@@ -1,6 +1,7 @@
 import datetime
 import random
 
+import json
 import requests
 from colorama import Fore
 
@@ -224,11 +225,16 @@ class history:
                 'links': fact['links']
             }
             jarvis.spinner_stop()
-        except BaseException:
+        except requests.exceptions.RequestException:
             jarvis.spinner_stop(
-                message="\nTask execution Failed!", color=Fore.RED)
+            message="\nNetwork error occurred!", color=Fore.RED)
             jarvis.say(
-                "Please check that arguments are correct and day of month is valid!", Fore.RED)
+            "Please check your internet connection and try again.", Fore.RED)
+        except (KeyError, json.JSONDecodeError):
+            jarvis.spinner_stop(
+            message="\nInvalid data received!", color=Fore.RED) 
+            jarvis.say(
+               "Please check that arguments are correct and day of month is valid!", Fore.RED)
             jarvis.say(
                 "If error occures again, then API might have crashed. Try again later.\n", Fore.RED)
         finally:
