@@ -266,7 +266,7 @@ class News:
                 return
             elif int(idx) == 0:
                 return
-        except BaseException:
+        except ValueError:
             jarvis.say("Not a valid index", Fore.RED)
             return
 

@@ -32,7 +32,10 @@ class Quote():
             quote = parse_json['contents']['quotes'][0]['quote']
             jarvis.say(quote)
         else:
-            jarvis.say('Sorry, something went wrong. Please try again later or report this issue if it sustains.')
+            jarvis.say(
+                'Sorry, something went wrong. '
+                'Please try again later or report this issue if it sustains.'
+            )
 
     def get_keyword_quotes(self, jarvis, keyword):
         """
@@ -54,7 +57,8 @@ class Quote():
 
             if num_quotes == 0:
                 response = jarvis.input(
-                    f'Sorry, no quotes were found for {keyword}. Type a new keyword to try again or "exit" to leave: ')
+                    f'Sorry, no quotes were found for {keyword}. '
+                    'Type a new keyword to try again or "exit" to leave: ')
                 if response.lower() == 'exit':
                     break
                 keyword = response

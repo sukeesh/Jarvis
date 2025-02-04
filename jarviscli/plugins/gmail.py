@@ -16,7 +16,7 @@ def gmail(jarvis, s):
         server.ehlo()
         server.starttls()
         print("SERVER CONNECTED")
-    except BaseException:
+    except (ConnectionRefusedError, TimeoutError, smtplib.SMTPConnectError):
         # in case of failure
         print("Could Not connect to Gmail")
         return
@@ -26,7 +26,7 @@ def gmail(jarvis, s):
     try:
         server.login(user, Pass_w)                           # user log in
         print("User Logged in")
-    except BaseException:
+    except (smtplib.SMTPAuthenticationError):
         print(
             '''Allow Less secure apps in GOOGLE ACCOUNT SETTINGS to use SMTP services by following the given steps:
                                                                       \n\t\tStep 1. Log in to email using your browser.

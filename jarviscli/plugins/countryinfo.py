@@ -9,7 +9,8 @@ class country_info:
     Welcome to the Countryinfo plugin documentation! Here you will be able
     to find all the functionalities of the plugin.
     Usage: Type countryinfo and follow the instructions.
-    This plugin gives you several important details corresponding to country which is asked as an input
+    This plugin gives you several important details corresponding to country
+    which is asked as an input
     Please enter country name in smallcase
     Go on and explore your information!!
     """

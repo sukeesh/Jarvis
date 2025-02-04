@@ -53,98 +53,86 @@ def blackjacksum(orig_hand):  # computes the sum by assuming appropriate value o
     return sum(hand), orig_hand
 
 
-def move(hand, suit, cards, suits,
-         bet):  # Here, hand is a nested list inside a list. It is a list of all hands of a player.
-    # Player can have multiple hands if he/she chooses to split.
+def handle_hit(hand, suit, cards, suits, bet):
+    newcard = random.choice(cards)
+    newsuit = random.choice(suits)
+    print("Newcard is", str(newcard) + " of " + newsuit)
+    hand[0].append(newcard)
+    suit[0].append(newsuit)
+    print("Updated hand is", pprinthand(hand[0], suit[0]))
+    sum_, hand[0] = blackjacksum(hand[0])
+    return move(hand, suit, cards, suits, bet)
+
+def handle_double_down(hand, suit, cards, suits, bet):
+    newcard = random.choice(cards)
+    newsuit = random.choice(suits)
+    print("Newcard is", str(newcard) + " of " + newsuit)
+    hand[0].append(newcard)
+    suit[0].append(newsuit)
+    print("Updated hand is", pprinthand(hand[0], suit[0]))
+    sum_, hand[0] = blackjacksum(hand[0])
+    print("Your sum is", sum_)
+    if sum_ > 21:
+        print("You got busted!")
+    bet[0] = bet[0] * 2
+    print("Your new bet is", bet[0])
+    return hand, suit, bet
+
+def handle_split(hand, suit, cards, suits, bet):
+    if hand[0][0] != hand[0][1]:
+        print("Sorry, you can only split hands with identical cards")
+        return move(hand, suit, cards, suits, bet)
+    
+    if hand[0][0] == 1:
+        print("Sorry,you can't split aces")
+        return move(hand, suit, cards, suits, bet)
+
+    splitHand1, splitHand2 = [[hand[0][0], random.choice(cards)]], [[hand[0][1], random.choice(cards)]]
+    splitSuit1, splitSuit2 = [[suit[0][0], random.choice(suits)]], [[suit[0][1], random.choice(suits)]]
+    
+    print(f"Newcard for first split is {splitHand1[0][1]} of {splitSuit1[0][1]}")
+    print(f"Newcard for second split is {splitHand2[0][1]} of {splitSuit2[0][1]}")
+    print("Split hands are", pprinthand(splitHand1[0], splitSuit1[0]), ",", pprinthand(splitHand2[0], splitSuit2[0]))
+    
+    sum1, splitHand1[0] = blackjacksum(splitHand1[0])
+    sum2, splitHand2[0] = blackjacksum(splitHand2[0])
+    print(f"Your sum for split 1 is {sum1}")
+    print(f"Your sum for split 2 is {sum2}")
+    
+    bet1, bet2 = bet[:], bet[:]
+    splitHand1, splitSuit1, bet1 = move(splitHand1, splitSuit1, cards, suits, bet1)
+    splitHand2, splitSuit2, bet2 = move(splitHand2, splitSuit2, cards, suits, bet2)
+    
+    splitHand1.extend(splitHand2)
+    splitSuit1.extend(splitSuit2)
+    bet1.extend(bet2)
+    return splitHand1, splitSuit1, bet1
+
+def move(hand, suit, cards, suits, bet):
     sum_, hand[0] = blackjacksum(hand[0])
     print("Your hand is", pprinthand(hand[0], suit[0]))
     print("Your sum is", sum_)
     print('---------------------------')
-    # checks for bust or blackjack.
+    
     if sum_ > 21:
         print("You got busted!")
         return hand, suit, bet
-    elif sum_ == 21 and len(hand) == 2:
+    if sum_ == 21 and len(hand) == 2:
         print("Blackjack!")
         return hand, suit, bet
 
     while True:
-        choice = input("Press H to Hit, S to Stand, D to Double-Down, P to sPlit\n")
-        if choice in ['H', 'h']:
-            newcard = random.choice(cards)
-            newsuit = random.choice(suits)
-            print("Newcard is", str(newcard) + " of " + newsuit)
-            hand[0].append(newcard)
-            suit[0].append(newsuit)
-            print("Updated hand is", pprinthand(hand[0], suit[0]))
-            sum_, hand[0] = blackjacksum(hand[0])
-            hand, suit, bet = move(hand, suit, cards, suits, bet)
+        choice = input("Press H to Hit, S to Stand, D to Double-Down, P to sPlit\n").upper()
+        if choice == 'H':
+            return handle_hit(hand, suit, cards, suits, bet)
+        elif choice == 'S':
             return hand, suit, bet
-
-        elif choice in ['S', 's']:
-            return hand, suit, bet
-
-        elif choice in ['D', 'd']:
-            newcard = random.choice(cards)
-            print("Newcard is", newcard)
-            newsuit = random.choice(suits)
-            hand[0].append(newcard)
-            suit[0].append(newsuit)
-            print("Updated hand is", pprinthand(hand[0], suit[0]))
-            sum_, hand[0] = blackjacksum(hand[0])
-            print("Your sum is", sum_)
-            if sum_ > 21:
-                print("You got busted!")
-            bet[0] = bet[0] * 2
-            print("Your new bet is", bet[0])
-            return hand, suit, bet
-
-        elif choice in ['P', 'p']:
-            if hand[0][0] == hand[0][1]:
-                if not hand[0][0] == 1:
-                    splitHand1 = [[0, 0]]
-                    splitHand2 = [[0, 0]]
-                    splitSuit1 = [[0, 0]]
-                    splitSuit2 = [[0, 0]]
-                    newcard1 = random.choice(cards)
-                    newsuit1 = random.choice(suits)
-                    print("Newcard for first split is", str(newcard1) + " of " + newsuit1)
-                    newcard2 = random.choice(cards)
-                    newsuit2 = random.choice(suits)
-                    print("Newcard for second split is", str(newcard2) + " of " + newsuit2)
-                    splitHand1[0][0] = hand[0][0]
-                    splitHand2[0][0] = hand[0][1]
-                    splitHand1[0][1] = newcard1
-                    splitHand2[0][1] = newcard2
-                    splitSuit1[0][0] = suit[0][0]
-                    splitSuit2[0][0] = suit[0][1]
-                    splitSuit1[0][1] = newsuit1
-                    splitSuit2[0][1] = newsuit2
-                    print("Split hands are", pprinthand(splitHand1[0], splitSuit1[0]), ", ",
-                          pprinthand(splitHand2[0], splitSuit2[0]))
-                    sum1, splitHand1[0] = blackjacksum(splitHand1[0])
-                    sum2, splitHand2[0] = blackjacksum(splitHand2[0])
-                    print("Your sum for split 1 is", sum1)
-                    print("Your sum for split 2 is", sum2)
-                    bet1 = bet[:]
-                    bet2 = bet[:]
-                    splitHand1, splitSuit1, bet1 = move(splitHand1, splitSuit1, cards, suits, bet1)
-                    splitHand2, splitSuit2, bet2 = move(splitHand2, splitSuit2, cards, suits, bet2)
-                    splitHand1.extend(splitHand2)  # converting both hands to a single list
-                    splitSuit1.extend(splitSuit2)
-                    bet1.extend(bet2)  # converting both bets to a single list
-                    return splitHand1, splitSuit1, bet1
-                else:
-                    print("Sorry,you can't split aces")
-                    hand, suit, bet = move(hand, suit, cards, suits, bet)
-                    return hand, suit, bet
-            else:
-                print("Sorry, you can only split hands with identical cards")
-                hand, suit, bet = move(hand, suit, cards, suits, bet)
-                return hand, suit, bet
+        elif choice == 'D':
+            return handle_double_down(hand, suit, cards, suits, bet)
+        elif choice == 'P':
+            return handle_split(hand, suit, cards, suits, bet)
         else:
             print("Please try again with a valid choice.")
-
 
 @plugin('blackjack')
 def blackjack(jarvis, s):

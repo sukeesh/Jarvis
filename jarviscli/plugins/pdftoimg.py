@@ -38,7 +38,9 @@ class PdfToImage:
                         break
                     else:
                         jarvis.say(
-                            'Opps! Looks like you entered an invalid path. Kindly Re-enter', Fore.RED)
+                            'Opps! Looks like you entered an invalid path. '
+                            'Kindly Re-enter',
+                            Fore.RED)
                 pages = self.convert_to_images(pdf_path, jarvis)
 
             # For an incorrectly entered option

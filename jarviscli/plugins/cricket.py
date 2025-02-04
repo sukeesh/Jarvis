@@ -68,9 +68,10 @@ class Cricket():
     def commentary(self, index):
         selected_match = self.all_match_data[index]
         data = self.c.commentary(self.matches[index]['id'])
-        comm = {'matchinfo': "{}, {}".format(
-            selected_match['srs'], selected_match['mnum']), 'status': "{}".format(selected_match['status']),
-            'commentary': data['commentary']}
+        comm = {'matchinfo': "{}, {}".format(selected_match['srs']
+                                             , selected_match['mnum'])
+                    , 'status': "{}".format(selected_match['status'])
+                    , 'commentary': data['commentary']}
         text = []
         for com in comm['commentary']:
             line = ''
@@ -104,7 +105,9 @@ class Cricket():
         selected_match = self.all_match_data[index]
         data = self.c.scorecard(self.matches[index]['id'])
         card = {'matchinfo': "{}, {}".format(
-            selected_match['srs'], selected_match['mnum']), 'status': "{}".format(selected_match['status']),
+                                            selected_match['srs']
+                                            , selected_match['mnum'])
+            , 'status': "{}".format(selected_match['status']),
             'scorecard': data['scorecard']}
         text = ''
         text += Fore.LIGHTYELLOW_EX + \

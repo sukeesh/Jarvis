@@ -75,7 +75,7 @@ class Memory:
         """
         new = ""
         i = 0
-        while (i <= len(number)):
+        while i <= len(number):
             digit = str(random.randint(0, 9))
             new = new + digit
             i = i + 1

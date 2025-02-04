@@ -137,8 +137,10 @@ class TwitterTrends:
         # order in the list
         country_name_position = 0
         for country_key in self.countries:
-            self.jarvis.say(
-                f"{country_key:{2}}{'.':{2}}{self.countries[country_key][country_name_position].upper()}")
+            country_num = f"{country_key:{2}}"
+            dot = f"{'.':{2}}"
+            country = self.countries[country_key][country_name_position].upper()
+            self.jarvis.say(f"{country_num}{dot}{country}")
 
     def display_trends(self, trends):
         self.jarvis.say(f"     {'Trend':{24}}{'Tweets':{23}}")

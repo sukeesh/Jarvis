@@ -19,40 +19,41 @@ def isMovesLeft(board) :
 def evaluate(b) :
 
 	# Checking for Rows for X or O victory.
+	score = 0
 	for row in range(3) :	
 		if (b[row][0] == b[row][1] and b[row][1] == b[row][2]) :	
 			if (b[row][0] == player) :
-				return 10
+				score = 10
 			elif (b[row][0] == opponent) :
-				return -10
+				score = -10
 
 	# Checking for Columns for X or O victory.
 	for col in range(3) :
 	
-		if (b[0][col] == b[1][col] and b[1][col] == b[2][col]) :
+		if (score == 0 and b[0][col] == b[1][col] and b[1][col] == b[2][col]) :
 		
 			if (b[0][col] == player) :
-				return 10
+				score = 10
 			elif (b[0][col] == opponent) :
-				return -10
+				score = -10
 
 	# Checking for Diagonals for X or O victory.
-	if (b[0][0] == b[1][1] and b[1][1] == b[2][2]) :
+	if (score == 0 and b[0][0] == b[1][1] and b[1][1] == b[2][2]) :
 	
 		if (b[0][0] == player) :
-			return 10
+			score = 10
 		elif (b[0][0] == opponent) :
-			return -10
+			score = -10
 
-	if (b[0][2] == b[1][1] and b[1][1] == b[2][0]) :
+	if (score == 0 and b[0][2] == b[1][1] and b[1][1] == b[2][0]) :
 	
 		if (b[0][2] == player) :
-			return 10
+			score = 10
 		elif (b[0][2] == opponent) :
-			return -10
+			score = -10
 
 	# Else if none of them have won then return 0
-	return 0
+	return score
 
 # This is the minimax function. It considers all
 # the possible ways the game can go and returns
@@ -191,42 +192,15 @@ def printBoard(board):
 
 
 def checkWinner(board, jarvis,turn):
-    if board['7'] == board['8'] == board['9'] != '   ':
-        printBoard(board)
-        jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
-        jarvis.say(turn + " won!", Fore.GREEN)
-        return True
-    elif board['4'] == board['5'] == board['6'] != '   ':
-        printBoard(board)
-        jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
-        jarvis.say(turn + " won!", Fore.GREEN)
-        return True
-    elif board['1'] == board['2'] == board['3'] != '   ':
-        printBoard(board)
-        jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
-        jarvis.say(turn + " won!", Fore.GREEN)
-        return True
-    elif board['1'] == board['4'] == board['7'] != '   ':
-        printBoard(board)
-        jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
-        jarvis.say(turn + " won!", Fore.GREEN)
-        return True
-    elif board['2'] == board['5'] == board['8'] != '   ':
-        printBoard(board)
-        jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
-        jarvis.say(turn + " won!", Fore.GREEN)
-        return True
-    elif board['3'] == board['6'] == board['9'] != '   ':
-        printBoard(board)
-        jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
-        jarvis.say(turn + " won!", Fore.GREEN)
-        return True
-    elif board['7'] == board['5'] == board['3'] != '   ':
-        printBoard(board)
-        jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
-        jarvis.say(turn + " won!", Fore.GREEN)
-        return True
-    elif board['1'] == board['5'] == board['9'] != '   ':
+    if ((board['7'] == board['8'] == board['9'] != '   ')
+		or (board['4'] == board['5'] == board['6'] != '   ')
+		or (board['1'] == board['2'] == board['3'] != '   ')
+		or (board['7'] == board['4'] == board['1'] != '   ')
+		or (board['8'] == board['5'] == board['2'] != '   ')
+		or (board['9'] == board['6'] == board['3'] != '   ')
+		or (board['7'] == board['5'] == board['3'] != '   ')
+		or (board['1'] == board['5'] == board['9'] != '   ')
+        ):
         printBoard(board)
         jarvis.say("\n--- Game Over ---\n", Fore.GREEN)
         jarvis.say(turn + " won!", Fore.GREEN)

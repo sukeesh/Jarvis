@@ -49,7 +49,7 @@ def shop(shopName):
 
 
 def generateURL(startingURL, searchTerm, splitted):
-    if(splitted):
+    if splitted:
         splittedTerm = searchTerm
     else:
         splittedTerm = searchTerm.split(" ")

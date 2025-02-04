@@ -19,7 +19,7 @@ def supported_shell_install(rc_line_to_add : str, confirm_addition: bool) -> boo
         return True;
 
     print("")
-    if (not confirm_user_input("Allow Jarvis installation to add {} to .{}rc?".format(rc_line_to_add, user_shell))):
+    if not confirm_user_input("Allow Jarvis installation to add {} to .{}rc?".format(rc_line_to_add, user_shell)):
         print('Jarvis will not add "{}" to .{}rc.'.format(shell_rc, user_shell))
         print('In order to use Jarvis please manually add \'{}\' to your $PATH'.format(rc_line_to_add))
         return False

@@ -19,7 +19,7 @@ def valid_path(path):
     path: a path (str)
         a string variable that represents a path
     """
-    return True if os.path.isdir(path) else False
+    return os.path.isdir(path)
 
 
 def dir_exist(path):
@@ -33,7 +33,7 @@ def dir_exist(path):
     path: a path (str)
         a string that represents a path
     """
-    return True if os.path.exists(path) else False
+    return os.path.exists(path)
 
 
 def create_dir(path):

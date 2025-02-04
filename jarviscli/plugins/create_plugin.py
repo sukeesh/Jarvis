@@ -114,11 +114,7 @@ def file_exists(filename):
     """This method is used to check if a file with
     the name "filename" exists in the Jarvis/custom folder
     """
-    if os.path.isfile(CUSTOM_PLUGINS_PATH + filename + ".py"):
-        return True
-    else:
-        return False
-
+    return os.path.isfile(CUSTOM_PLUGINS_PATH + filename + ".py")
 
 def format_filename(name):
     """Take a string and return a valid filename constructed from the string.

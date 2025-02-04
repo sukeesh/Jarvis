@@ -246,24 +246,22 @@ class Scoresheet:
         print('==================================================================\n')
 
     def _calc_total_score_points(self, total_score: int) -> int:
-        if 0 <= total_score <= 299:
-            return -2
-        elif 300 <= total_score <= 349:
-            return -1
-        elif 350 <= total_score <= 399:
-            return 0
-        elif 400 <= total_score <= 449:
-            return 1
-        elif 450 <= total_score <= 499:
-            return 2
-        elif 500 <= total_score <= 549:
-            return 3
-        elif 550 <= total_score <= 599:
-            return 4
-        elif 600 <= total_score <= 649:
-            return 5
-        elif 650 <= total_score <= 812:
-            return 6
+        score_ranges = [
+            (299, -2),
+            (349, -1),
+            (399, 0),
+            (449, 1),
+            (499, 2),
+            (549, 3),
+            (599, 4),
+            (649, 5),
+            (812, 6)
+        ]
+        
+        for max_score, points in score_ranges:
+            if total_score <= max_score:
+                return points
+        return 0
 
     def calc_points(self) -> int:
         total_score = 0

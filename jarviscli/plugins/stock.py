@@ -20,38 +20,39 @@ class Stock:
     Data provided for free by IEX (https://iextrading.com/developer). View IEX’s Terms of Use (https://iextrading.com/api-exhibit-a/).
     """
 
+    def handle_getid(self, jarvis, parts):
+        parts.pop(0)
+        name = ' '.join(parts) if parts else jarvis.input("Enter the name of the stock: ")
+        self.get_stock_id(jarvis, name)
+
+    def handle_profile_or_fstatement(self, jarvis, parts, command):
+        if len(parts) != 2:
+            jarvis.say("You forgot to mention the symbol", Fore.RED)
+        else:
+            symbol = parts[1]
+            if command == 'profile':
+                self.get_profile(jarvis, symbol)
+            else:
+                self.get_financial_stmt(jarvis, symbol)
+
     def __call__(self, jarvis, s):
         if not s or 'help' in s:
             jarvis.say(cleandoc(self.__doc__), Fore.GREEN)
-        else:
-            ps = s.split()
-            if ps[0] == 'getid':
-                ps.pop(0)
-                if ps:
-                    name = ' '.join(ps)
-                else:
-                    name = jarvis.input("Enter the name of the stock: ")
-                self.get_stock_id(jarvis, name)
-            elif ps[0] == 'profile':
-                if(len(ps) != 2):
-                    jarvis.say("You forgot to mention the symbol", Fore.RED)
-                else:
-                    symbol = ps[1]
-                    self.get_profile(jarvis, symbol)
-            elif ps[0] == 'fstatement':
-                if(len(ps) != 2):
-                    jarvis.say("You forgot to mention the symbol", Fore.RED)
-                else:
-                    symbol = ps[1]
-                    self.get_financial_stmt(jarvis, symbol)
-            elif ps[0] == 'gainers':
-                self.get_gainers(jarvis)
-            elif ps[0] == 'losers':
-                self.get_losers(jarvis)
-            # anything else is treated as a stock symbol
-            else:
-                self.get_stock_data(jarvis, s)
+            return
 
+        parts = s.split()
+        command = parts[0]
+
+        if command == 'getid':
+            self.handle_getid(jarvis, parts)
+        elif command in ['profile', 'fstatement']:
+            self.handle_profile_or_fstatement(jarvis, parts, command)
+        elif command == 'gainers':
+            self.get_gainers(jarvis)
+        elif command == 'losers':
+            self.get_losers(jarvis)
+        else:
+            self.get_stock_data(jarvis, s)
     def get_stock_data(self, jarvis, quote):
         ''' Given a stock symbol, get the real time price of the stock '''
         url = 'https://financialmodelingprep.com/api/v3/stock/real-time-price/' + quote

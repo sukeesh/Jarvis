@@ -273,7 +273,10 @@ def calc(jarvis, s, calculator=sympy.sympify, formatter=None, do_evalf=True):
     if formatter is not None:
         if 'x' in s and '=' in s and 'y' not in s:
             x = sympy.Symbol('x')
-            result = sympy.plotting.plot_implicit(sympy.Eq(x, result[0]), (x, result[0] - 5, result[0] + 5))
+            eq = sympy.Eq(x, result[0])
+            x_val = result[0]
+            x_range = (x, x_val - 5, x_val + 5)
+            result = sympy.plotting.plot_implicit(eq, x_range)
         else:
             result = formatter(result)
 

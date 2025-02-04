@@ -1,6 +1,7 @@
 
 from plugin import plugin,require
 from colorama import Fore
+import json
 import requests
 import textwrap
  
@@ -135,7 +136,7 @@ class TasteDive:
             for suggestion in re:
                 data.append( suggestion["Name"])
             jarvis.spinner_stop()
-        except BaseException:
+        except (requests.RequestException, KeyError, ValueError, json.JSONDecodeError):
             jarvis.spinner_stop(
             message="\nTask execution Failed!", color=Fore.RED)
             jarvis.say(

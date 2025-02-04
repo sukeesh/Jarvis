@@ -19,10 +19,10 @@ def motivate(jarvis, s):
         motivational_quote = quotes[ind]
         jarvis.say(motivational_quote, Fore.GREEN)
         user_input = jarvis.input()
-        if (user_input != 'n'):
+        if user_input != 'n':
             break
         ind += 1
-        if (ind == len(quotes)):
+        if ind == len(quotes):
             break
 
     jarvis.say('That\'s it, go and work now!')

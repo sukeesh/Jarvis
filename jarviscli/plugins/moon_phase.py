@@ -135,7 +135,8 @@ def help_text():
     """
     return help_text
 
-# Receives the current lunar phase in integer form and returns the current lunar phase's scientific name
+# Receives the current lunar phase in integer form 
+# and returns the current lunar phase's scientific name
 def phase(index):
    return {
       0: "New Moon", 

@@ -54,12 +54,17 @@ def imgur(jarvis, s):
             # Treat response
             if objresp.get('success', False):
                 jarvis.say('Here is your image: '
-                           + str(objresp['data']['link']))
+                   + str(objresp['data']['link']))
             else:
                 jarvis.say('Error: ' + str(objresp['data']['error']))
-        except Exception as e:
-            # Print exception as string
-            jarvis.say("Error {0}".format(str(e.args[0])).encode("utf-8"))
+        except requests.RequestException as e:
+            jarvis.say(f"Network error: {str(e)}")
+        except json.JSONDecodeError as e:
+            jarvis.say(f"Invalid JSON response: {str(e)}")
+        except IOError as e:
+            jarvis.say(f"File error: {str(e)}")
+        except KeyError as e:
+            jarvis.say(f"Unexpected API response format: {str(e)}")
     else:
         jarvis.say("No such file")
 

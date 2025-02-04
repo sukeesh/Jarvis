@@ -13,7 +13,9 @@ from plugin import alias, plugin, require
 class ProtonCompatibleGame:
 
     def getAppIdFromTitle(self,jarvis):
-        jarvis.say("Warning: This option may not find the game or find an incorrect game. Find the game's AppId from Steam for accurate results!",color=Fore.RED)
+        jarvis.say("Warning: This option may not find the game or find an incorrect game. "
+                   + "Find the game's AppId from Steam for accurate results!"
+                   ,color=Fore.RED)
         title=jarvis.input("Enter Game Title: ",color=Fore.GREEN).strip();
         games = requests.get("https://protondb.max-p.me/games").text
         games = json.loads(games) 
@@ -47,7 +49,10 @@ class ProtonCompatibleGame:
             if (appid!=-1):
                 self.getRating(jarvis,appid)
             else:
-                jarvis.say("This game does not exist or there are no ratings for this game",color=Fore.RED)
+                jarvis.say(
+                    "This game does not exist or there are no ratings for this game",
+                    color=Fore.RED
+                )
 
 @alias('Proton compatible game')
 @require(network=True)

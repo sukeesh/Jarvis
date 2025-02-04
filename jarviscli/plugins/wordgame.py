@@ -22,7 +22,7 @@ def word_game(jarvis,s):
         rounds=int(jarvis.input("Give the number of rounds after which you will win the game \n",color=Fore.GREEN))
         current_rounds=1
         
-        while (True):
+        while True:
             word=jarvis.input("Give a word: \n",color=Fore.GREEN)
             if not ((not d.check(word)) or len(word)<2):
                 break
