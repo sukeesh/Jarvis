@@ -14,10 +14,12 @@ def check_link(jarvis, s):
     encoded_url = urllib.parse.quote(url, safe="")
     full_api_url = API + encoded_url + APISettings
 
+    # Check for redirects
     try:
         response = requests.get(full_api_url, timeout=10)
         json_data = response.json()
 
+        # Print the redirect chain
         if "data" in json_data and json_data["data"]:
             print(f"\n[Redirect Chain for {url}]")
             for i, entry in enumerate(json_data["data"], start=1):
