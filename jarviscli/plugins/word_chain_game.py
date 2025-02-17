@@ -10,22 +10,11 @@ english_words = set(words.words())
 
 @plugin("word chain game")
 def word_chain_game(jarvis, s):
-    """
-    Starts a word chain game with varied starting words and no repeats.
-
-    Gameplay: Jarvis starts with a word from a pre-defined list.
-    Players take turns entering words, each starting with the last letter
-    of the previous word. Words cannot be repeated.
-    The Dictionary API validates player words. Jarvis uses NLTK word list.
-
-    Usage: word chain game
-    """
     if s:
         jarvis.say("This command does not take arguments. Just type 'word chain game' to start.")
         return
 
     def is_valid_word(word_to_check):
-        """Checks if a word is valid using Dictionary API."""
         api_url = f"https://api.dictionaryapi.dev/api/v2/entries/en/{word_to_check}"
         try:
             response = requests.get(api_url)
@@ -34,7 +23,6 @@ def word_chain_game(jarvis, s):
             return False
 
     def get_jarvis_word(starting_letter, used_words):
-        """Jarvis finds a valid, unused word starting with the given letter."""
         possible_words = [word for word in english_words
                           if word.startswith(starting_letter) and word.lower() not in used_words]
         if possible_words:
@@ -42,14 +30,13 @@ def word_chain_game(jarvis, s):
         return None
 
     def get_initial_word():
-        """Selects a random starting word from the pre-defined list."""
         initial_words = [
             "example", "banana", "grape", "orange", "kiwi", "apple", "lemon", "melon", "olive", "peach",
             "rhythm", "synergy", "wizard", "oxygen", "quartz", "sphinx", "voyage", "utopia", "yacht", "zebra",
             "azure", "bronze", "crimson", "daisy", "ebony", "frost", "golden", "hazel", "indigo", "jade",
             "amber", "beige", "coral", "denim", "ivory", "khaki", "lavender", "magenta", "ochre", "pearl",
             "apricot", "burgundy", "cyan", "fuchsia", "ginger", "lime", "maroon", "navy", "orchid", "plum"
-        ] # 50 diverse starting words
+        ]
         return random.choice(initial_words).lower()
 
     jarvis.say("\nLet's play Word Chain! No word repeats allowed in this game.")
@@ -58,7 +45,6 @@ def word_chain_game(jarvis, s):
     last_letter = None
     used_words = set()
 
-    # Jarvis starts first - using pre-defined initial word list
     initial_word = get_initial_word()
     current_word = initial_word
     word_chain.append(current_word)
@@ -91,14 +77,12 @@ def word_chain_game(jarvis, s):
             jarvis.say(f"Invalid! '{user_word}' not recognized. Game Over!")
             break
 
-        # Valid word
         word_chain.append(user_word)
         used_words.add(user_word)
         score += 1
         last_letter = user_word[-1].lower()
         jarvis.say(f"Valid word! '{user_word}'. My turn...")
 
-        # Jarvis's Turn
         next_word = get_jarvis_word(last_letter, used_words)
         if next_word:
             current_word = next_word
