@@ -19,6 +19,7 @@ def weekday(jarvis, s):
     Says what weekday any date is.
     """
     m_with_31 = [1,3,5,7,8,10,12]
+    weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
     if s == "":
         s = jarvis.input("Tell me any date using the dd/mm/aaaa format:\n")
@@ -57,25 +58,6 @@ def weekday(jarvis, s):
     # calculate weekday
     week_day = dayofweek(d, m, a)
 
-    if week_day == 0:
-        jarvis.say(f"{s} is a Sunday!", Fore.GREEN)
-
-    elif week_day == 1:
-        jarvis.say(f"{s} is a Monday!", Fore.GREEN)
-
-    elif week_day == 2:
-        jarvis.say(f"{s} is a Tuesday!", Fore.GREEN)
-
-    elif week_day == 3:
-        jarvis.say(f"{s} is a Wednesday!", Fore.GREEN)
-
-    elif week_day == 4:
-        jarvis.say(f"{s} is a Thursday!", Fore.GREEN)
-
-    elif week_day == 5:
-        jarvis.say(f"{s} is a Friday!", Fore.GREEN)
-
-    elif week_day == 6:
-        jarvis.say(f"{s} is a Saturday!", Fore.GREEN)
+    jarvis.say(f"{s} is a {weekdays[week_day]}!", Fore.GREEN)
 
     return

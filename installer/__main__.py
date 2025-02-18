@@ -20,9 +20,15 @@ try:
 except SystemExit:
     # Expected Error
     pass
-except BaseException:
+except ImportError:
     print("\n\n")
     print("An unexpected error occurred. Please open an issue on github!")
-    print("here is the error:")
+    print("Could not import required modules.")
+    print('')
+    traceback.print_exc()
+except OSError:
+    print("\n\n")
+    print("An unexpected error occurred. Please open an issue on github!")
+    print("File system or OS related error occurred.")
     print('')
     traceback.print_exc()

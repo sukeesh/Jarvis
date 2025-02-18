@@ -17,7 +17,10 @@ class Wiki():
         k = s.split(' ', 1)
         if len(k) == 1:
             jarvis.say(
-                "Do you mean:\n1. wiki search <subject>\n2. wiki summary <subject>\n3. wiki content <subject>")
+                "Do you mean:\n"
+                "1. wiki search <subject>\n"
+                "2. wiki summary <subject>\n"
+                "3. wiki content <subject>")
         else:
             data = None
             if k[0] == "search":

@@ -67,7 +67,7 @@ def spinit(list):
     """
     Returns a random element from the list towards which the arrow will point
     """
-    return (random.choice(list))
+    return random.choice(list)
 
 
 @plugin("spinwheel")
@@ -87,7 +87,7 @@ def spin(jarvis, s):
         entry = jarvis.input()
         wheel.append(entry)
     reply = 'y'
-    while (reply == 'y'):
+    while reply == 'y':
         create_wheel(wheel)
         print('Do you want to spin again?? press:y ')
         reply = input()

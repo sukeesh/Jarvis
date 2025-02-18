@@ -24,7 +24,9 @@ def main(self, s):
             + 'key_timein.json')
         print(
             Fore.RED
-            + "Generate api key here: https://developers.google.com/maps/documentation/geocoding/start?hl=en_US")
+            + "Generate api key here: "
+            + "https://developers.google.com/maps/documentation/geocoding/start?hl=en_US"
+        )
         print(
             Fore.RED
             + "and add it to jarviscli/data/key_timein.json"
@@ -57,13 +59,12 @@ def getLocation(s):
         data = json.load(json_file)
     if 'timein' not in data or data['timein'] == 'insertyourkeyhere':
         print(Fore.RED + "API key not added")
-        print(
-            Fore.RED
-            + "Generate api key here: https://developers.google.com/maps/documentation/geocoding/start?hl=en_US")
-        print(
-            Fore.RED
-            + "and add it to jarviscli/data/key_timein.json"
-            + Fore.RESET)
+        print(Fore.RED + 
+              "Generate api key here: "
+              "https://developers.google.com/maps/documentation/geocoding/start?hl=en_US")
+        print(Fore.RED + 
+              "and add it to jarviscli/data/key_timein.json" + 
+              Fore.RESET)
         return None
     key = data['timein']
     send_url = (

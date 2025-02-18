@@ -21,19 +21,7 @@ def dictionary(jarvis, s):
         jarvis.say("Don't recognise that word")
         return
 
-    synonyms = set()
-    antonyms = set()
-
-    count = 0
-    for meaning in syns:
-        count = count + 1
-        jarvis.say("{:>3}. {}".format(count, meaning.definition()))
-
-        for synonym in meaning.lemmas():
-            if synonym.name() != word:
-                synonyms.add(synonym.name())
-            for antonym in synonym.antonyms():
-                antonyms.add(antonym.name())
+    synonyms, antonyms = build_datasets(jarvis, word, syns)
 
     jarvis.say('\nSynonyms:\n' + ", ".join(synonyms))
     jarvis.say('\nAntonyms:\n' + ", ".join(antonyms))
@@ -70,17 +58,36 @@ def dictionary(jarvis, s):
             for antonym in synonym.antonyms():
                 antonyms.add(antonym.name())
 
-        jarvis.say('')
-        jarvis.say('== {}. =='.format(detail_id))
-        jarvis.say("Meaning  : {}".format(meaning.definition()))
-        if len(synonyms) > 0:
-            jarvis.say("Synonyms : {}".format(", ".join(synonyms)))
-        if len(antonyms) > 0:
-            jarvis.say("Antonyms : {}".format(", ".join(antonyms)))
-        if len(examples) > 0:
-            if len(examples) == 1:
-                jarvis.say("Examples : {}".format(examples[0]))
-            else:
-                jarvis.say("Examples :\n-{}".format("\n- ".join(examples)))
+        present_results(jarvis, synonyms, antonyms, detail_id, meaning, examples)
 
         detail_id = input_detail_id()
+
+def present_results(jarvis, synonyms, antonyms, detail_id, meaning, examples):
+    jarvis.say('')
+    jarvis.say('== {}. =='.format(detail_id))
+    jarvis.say("Meaning  : {}".format(meaning.definition()))
+    if len(synonyms) > 0:
+        jarvis.say("Synonyms : {}".format(", ".join(synonyms)))
+    if len(antonyms) > 0:
+        jarvis.say("Antonyms : {}".format(", ".join(antonyms)))
+    if len(examples) > 0:
+        if len(examples) == 1:
+            jarvis.say("Examples : {}".format(examples[0]))
+        else:
+            jarvis.say("Examples :\n-{}".format("\n- ".join(examples)))
+
+def build_datasets(jarvis, word, syns):
+    synonyms = set()
+    antonyms = set()
+
+    count = 0
+    for meaning in syns:
+        count = count + 1
+        jarvis.say("{:>3}. {}".format(count, meaning.definition()))
+
+        for synonym in meaning.lemmas():
+            if synonym.name() != word:
+                synonyms.add(synonym.name())
+            for antonym in synonym.antonyms():
+                antonyms.add(antonym.name())
+    return synonyms,antonyms

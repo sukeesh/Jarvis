@@ -25,10 +25,7 @@ class trivia:
                 else:
                     self.true_false_question(jarvis, trivia_fetch)
             contAns = (jarvis.input("Continue? (y/n)")).lower()
-            if contAns == "y":
-                cont = True
-            else:
-                cont = False
+            cont = contAns == "y"
 
     def get_trivia(self, jarvis):
         """

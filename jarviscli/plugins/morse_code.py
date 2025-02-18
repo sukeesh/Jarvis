@@ -128,7 +128,7 @@ class morsecode:
                         decoded += list(self.morse_code.keys()
                                         )[list(self.morse_code.values()
                                                ).index(current)]
-                    except BaseException:
+                    except ValueError:
                         decoded = "This is a false morse code"
                         return decoded
 

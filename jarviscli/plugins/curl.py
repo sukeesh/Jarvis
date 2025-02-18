@@ -22,7 +22,13 @@ class GenerateCurl(object):
     def _collect_parameters(self, jarvis):
         http_method = jarvis.input(prompt="HTTP Method: ", color=Fore.BLUE)
         jarvis.say(text="Select Content Type\n\n1. JSON\n2. No Data\n")
-        content_type = jarvis.input_number(prompt="Enter you choice: ", color=Fore.BLUE, rtype=int, rmin=1, rmax=2)
+        content_type = jarvis.input_number(
+            prompt="Enter your choice: ", 
+            color=Fore.BLUE, 
+            rtype=int, 
+            rmin=1, 
+            rmax=2
+        )
         data = jarvis.input(prompt="Enter / copy the data: ", color=Fore.BLUE)
         endpoint = jarvis.input(prompt="Specify the HTTP endpoint: ", color=Fore.BLUE)
 

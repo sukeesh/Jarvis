@@ -14,19 +14,7 @@ import time
 import datetime
 from plugin import plugin
 
-
-@plugin("write agenda")
-def write_agenda(jarvis, s):
-    loop = True
-    # variables to check invalid inputs in while loop
-    invalid_input = False
-    invalid_time = True
-    invalid_date = True
-    # list of column names
-    header = ['DATE', 'TIME', 'PLACE', 'TITLE', 'DESCRIPTION']
-    # list with event's details
-    events_list = []
-
+def check_agenda_file():
     # warning message in case agenda file is already open before
     # actually implementing write agenda feature
     while True:
@@ -36,31 +24,59 @@ def write_agenda(jarvis, s):
                 break
         except IOError:
             input("Agenda file is open! "
-                  "Please close the Excel file and press Enter to retry.")
+                    "Please close the Excel file and press Enter to retry.")
+
+
+def get_valid_date(jarvis):
+    # check for the date input to fit the proper format
+    invalid_date = True
+    while invalid_date:
+        event_date = jarvis.input("Write down the event date"
+                                          " (ex. 2021-09-21): ")
+        try:
+            datetime.datetime.strptime(event_date, '%Y-%m-%d')
+            invalid_date = False
+        except ValueError:
+            invalid_date = True
+            print("Please enter a valid date!")
+    return event_date
+
+
+def get_valid_time(jarvis):
+    # check for the time input to fit the proper format
+    invalid_time = True
+
+    while invalid_time:
+        event_time = jarvis.input("Write down the event time"
+                                    " (ex. 13:00): ")
+        try:
+            time.strptime(event_time, '%H:%M')
+            invalid_time = False
+        except ValueError:
+            invalid_time = True
+            print("Please enter a valid time!")
+    return event_time
+
+@plugin("write agenda")
+def write_agenda(jarvis, s):
+    loop = True
+    # variables to check invalid inputs in while loop
+    invalid_input = False
+    # list of column names
+    header = ['DATE', 'TIME', 'PLACE', 'TITLE', 'DESCRIPTION']
+    # list with event's details
+    events_list = []
+
+
+    check_agenda_file()
 
     # passing new event's inputs
     while loop:
         if not invalid_input:
             # check for the date input to fit the proper format
-            while invalid_date:
-                event_date = jarvis.input("Write down the event date"
-                                          " (ex. 2021-09-21): ")
-                try:
-                    datetime.datetime.strptime(event_date, '%Y-%m-%d')
-                    invalid_date = False
-                except ValueError:
-                    invalid_date = True
-                    print("Please enter a valid date!")
+            event_date = get_valid_date(jarvis)
             # check for the time input to fit the proper format
-            while invalid_time:
-                event_time = jarvis.input("Write down the event time"
-                                          " (ex. 13:00): ")
-                try:
-                    time.strptime(event_time, '%H:%M')
-                    invalid_time = False
-                except ValueError:
-                    invalid_time = True
-                    print("Please enter a valid time!")
+            event_time = get_valid_time(jarvis)
             event_place = jarvis.input("Write down the event place: ")
             event_title = jarvis.input("Write down the event title: ")
             event_description = jarvis.input("Write down "
@@ -75,8 +91,6 @@ def write_agenda(jarvis, s):
             # restart variable's values
             # in case invalid input was given before
             invalid_input = False
-            invalid_date = True
-            invalid_time = True
         elif event_option == 'n':
             loop = False
         else:

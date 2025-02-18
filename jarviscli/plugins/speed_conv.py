@@ -46,7 +46,7 @@ class speedconv:
             unit_in = self.units_input(jarvis, "from which unit : ")
             unit_out = self.units_input(jarvis, "to which unit : ")
 
-            if (unit_in != unit_out):
+            if unit_in != unit_out:
                 flag = False
             else:
                 jarvis.say("Please enter different units")

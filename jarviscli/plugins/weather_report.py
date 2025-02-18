@@ -7,8 +7,9 @@ from colorama import Fore
 @alias("forecast")
 @plugin("weather report")
 class WeatherReport:
-    """The user will input a location as a string, and the WeatherDB database will be used to make a GET request and
-    fetch data. Then, the user can see the weather forecast for the upcoming week if they wish. """
+    """The user will input a location as a string, and the WeatherDB database will be
+    used to make a GET request and fetch data. Then, the user can see the weather
+    forecast for the upcoming week if they wish."""
 
     def __call__(self, jarvis: "JarvisAPI", s: str) -> None:
         self.print_weather(jarvis)
@@ -38,7 +39,9 @@ class WeatherReport:
             self.ask_for_forecast(jarvis, y)
 
     def ask_for_forecast(self, jarvis: "JarvisAPI", jason):
-        selected_days = jarvis.input("Would you like to see the weather forecast for the next week? Y/N ")
+        selected_days = jarvis.input(
+            "Would you like to see the weather forecast "
+            "for the next week? Y/N ")
         selected_days = selected_days.lower()
         if selected_days == 'y':
             for p in jason['next_days']:

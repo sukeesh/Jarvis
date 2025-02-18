@@ -557,11 +557,16 @@ class Todo_Progress(TodoBase):
 
     def __call__(self, jarvis, s):
         entry = self.select_one_remind(jarvis)
-        inp = jarvis.input("Set a progress level between 0 and 100, as a percentage: ").replace("%", "")
+        prompt = "Set a progress level between 0 and 100, as a percentage: "
+        inp = jarvis.input(prompt).replace("%", "")
+
         if inp.isnumeric() and 0 <= int(inp) <= 100:
             entry['progress'] = int(inp)
         else:
-            jarvis.say("The progress level must be an integer between 0 and 100.", color=Fore.MAGENTA)
+            jarvis.say(
+                "The progress level must be an integer between 0 and 100.",
+                color=Fore.MAGENTA
+            )
 
         self.modify(jarvis, entry)
 

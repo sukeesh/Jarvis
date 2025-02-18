@@ -118,7 +118,10 @@ def battery_linux_fallback(jarvis, s):
     def get_battery_info(info):
         return subprocess.check_output(["cat", battery_dir + info]).decode("utf-8")[:-1]
 
-    battery_text = ["Status: " + get_battery_info("status"), "Charge: " + get_battery_info("capacity") + "%"]
+    battery_text = [
+        "Status: " + get_battery_info("status"),
+        "Charge: " + get_battery_info("capacity") + "%"
+    ]
 
     battery_info = '\n'.join(battery_text)
 

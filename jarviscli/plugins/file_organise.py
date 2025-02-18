@@ -93,20 +93,23 @@ class File_Organise():
                         os.rename(f, os.path.join(folder, f))
 
             else:
-                for f in os.listdir(path):
-                    if f != new_dir and os.path.splitext(
+                self.orgnise_directory(new_dir_path, new_dir, path, ext)
+
+    def orgnise_directory(self, new_dir_path, new_dir, path, ext):
+        for f in os.listdir(path):
+            if f != new_dir and os.path.splitext(
                             f)[1].strip('.') == ext:
-                        inner_folder = os.path.join(new_dir_path, f)
+                inner_folder = os.path.join(new_dir_path, f)
 
-                        if os.path.exists(inner_folder):
-                            os.chdir(os.path.join(path, f))
-                            for file in os.listdir():
-                                new_path = os.path.join(inner_folder, file)
-                                os.rename(file, new_path)
-                            os.rmdir(os.path.join(path, f))
+                if os.path.exists(inner_folder):
+                    os.chdir(os.path.join(path, f))
+                    for file in os.listdir():
+                        new_path = os.path.join(inner_folder, file)
+                        os.rename(file, new_path)
+                    os.rmdir(os.path.join(path, f))
 
-                        else:
-                            os.rename(f, inner_folder)
+                else:
+                    os.rename(f, inner_folder)
 
     def print_after(self, path):
         print(Fore.LIGHTBLUE_EX + "\nFolders after cleaning\n" + Fore.RESET)

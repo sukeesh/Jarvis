@@ -37,7 +37,10 @@ class Bmi:
         jarvis.say("Imperial system: Type your height in ft and inches, weight in lbs")
         jarvis.say("All measurements should be Integers. Default is Metric system")
         print()
-        prompt = "Please choose the system you would like to use. \n 1: Metric system \n 2: Imperial system \n 3: Exit"
+        prompt = ("Please choose the system you would like to use.\n"
+             " 1: Metric system\n"
+             " 2: Imperial system\n"
+             " 3: Exit")
         valid_input = False
         while not valid_input:
             try:

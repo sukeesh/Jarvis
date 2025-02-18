@@ -34,9 +34,9 @@ class Currencyconv():
         b = BtcConverter(force_decimal=True)
         c = CurrencyRates(force_decimal=True)
 
-        if (to == "BTC"):
+        if to == "BTC":
             result = b.convert_to_btc(Decimal(amount), fr)
-        elif (fr == "BTC"):
+        elif fr == "BTC":
             result = b.convert_btc_to_cur(Decimal(amount), to)
         else:
             result = c.convert(fr, to, Decimal(amount))
