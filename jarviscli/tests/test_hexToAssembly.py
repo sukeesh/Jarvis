@@ -31,6 +31,16 @@ class AssemblyToHexTest(PluginTest):
         output = self.history_say().last_text()
         self.assertEqual(output[:len(expected_prefix)], expected_prefix)
 
+    def test_invalid_command(self):
+        """
+        Test conversion with an invalid assembly command.
+        The output should indicate that no such command exists.
+        """
+        TEST_STRING = "FOO $t0, $t1, 0x1"
+        self.test.run(TEST_STRING)
+        expected_output = "NO SUCH COMMAND IN ASSEMBLY"
+        self.assertEqual(self.history_say().last_text(), expected_output)
+
 
 if __name__ == '__main__':
     unittest.main()
