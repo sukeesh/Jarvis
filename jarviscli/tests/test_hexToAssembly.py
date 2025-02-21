@@ -25,5 +25,10 @@ class TestMipsConverter(PluginTest):
         self.test.run("212A0012")
         self.assertIn("ADDI $t2 $t1 0x0012", self.history_say().last_text())
 
+    def test_no_command_exists(self):
+        """Test that invalid hex commands are properly handled"""
+        self.test.run("FFFFFFFF")
+        self.assertIn("No such command exists", self.history_say().last_text())
+
 if __name__ == "__main__":
     unittest.main()
