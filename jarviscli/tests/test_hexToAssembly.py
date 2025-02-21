@@ -20,6 +20,17 @@ class AssemblyToHexTest(PluginTest):
         # Compare only the prefix since the complete hex value depends on internal data.
         self.assertEqual(output[:len(expected_prefix)], expected_prefix)
 
+    def test_valid_sll(self):
+        """
+        Test conversion of a valid R-type instruction.
+        The final output should include a hex conversion message.
+        """
+        TEST_STRING = "SLL $t2, $t1, 2"
+        self.test.run(TEST_STRING)
+        expected_prefix = "Statement in Hex: 0x"
+        output = self.history_say().last_text()
+        self.assertEqual(output[:len(expected_prefix)], expected_prefix)
+
 
 if __name__ == '__main__':
     unittest.main()
