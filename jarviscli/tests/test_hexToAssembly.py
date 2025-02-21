@@ -41,6 +41,16 @@ class AssemblyToHexTest(PluginTest):
         expected_output = "NO SUCH COMMAND IN ASSEMBLY"
         self.assertEqual(self.history_say().last_text(), expected_output)
 
+    def test_immediate_too_large(self):
+        """
+        Test conversion with an immediate value that is too large.
+        The output should indicate that the immediate is too large.
+        """
+        TEST_STRING = "ADDI $t2, $t1, 70000"
+        self.test.run(TEST_STRING)
+        expected_output = "Immediate is too large"
+        self.assertEqual(self.history_say().last_text(), expected_output)
+
 
 if __name__ == '__main__':
     unittest.main()
