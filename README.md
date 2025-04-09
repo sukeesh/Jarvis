@@ -84,6 +84,20 @@ Jarvis is a simple personal assistant for Linux, MacOS and Windows which works o
    python3 installer
    ```
 
+-----------------------------------------------------------------
+
+## For macos using python3
+1. **install virtualenv**
+```bash
+pip3 install virtualenv
+```
+
+2. **Run the installer** 
+   ```bash
+   python3 installer
+   ```
+
+
 ### Running Jarvis
 
 - Run Jarvis from anywhere:
