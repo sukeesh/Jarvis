@@ -1,6 +1,6 @@
 from colorama import Fore
 
-import speedtest as st
+import speedtest as speedtest
 from plugin import plugin, require
 
 
@@ -9,11 +9,13 @@ from plugin import plugin, require
 def speedtest(jarvis, s):
     """Runs a speedtest on your internet connection"""
     try:
-        res = st.Speedtest()
-    except st.ConfigRetrievalError:
+        res = speedtest.Speedtest()
+    except speedtest.ConfigRetrievalError:
+        #fix crash, (no server found instead)
         return jarvis.connection_error()
 
     # Create a spinner on command line to show that its running
+
     jarvis.spinner_start('Running the test ')
 
     res.get_best_server()
@@ -24,8 +26,8 @@ def speedtest(jarvis, s):
 
     # Print the results
     jarvis.say('Speed test results:', Fore.GREEN)
-    jarvis.say('Download: ' + pretty_speed(download_speed), Fore.GREEN)
-    jarvis.say('Upload: ' + pretty_speed(upload_speed), Fore.GREEN)
+    jarvis.say('Download Speed: ' + pretty_speed(download_speed), Fore.YELLOW)
+    jarvis.say('Upload Speed: ' + pretty_speed(upload_speed), Fore.GREEN)
 
 
 def pretty_speed(speed):
