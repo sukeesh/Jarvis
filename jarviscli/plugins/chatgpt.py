@@ -10,9 +10,8 @@ import os
 # Load API key from environment variable
 openai.api_key = os.getenv("")
 
-# work in progress!!!
 
-from locked import Api
+from unlocked import Api
 
 def generate_names_chat(theme, number_of_names=3):
     """Generates names using the Chat Completion API."""
