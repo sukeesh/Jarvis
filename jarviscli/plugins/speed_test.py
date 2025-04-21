@@ -1,18 +1,18 @@
 from colorama import Fore
-
 import speedtest as speedtest
 import speedtest as speedtest
 from plugin import plugin, require
 
-
 @require(network=True)
 @plugin('speedtest')
+
 def speedtest(jarvis, s):
     """Runs a speedtest on your internet connection"""
     try:
         res = speedtest.Speedtest()
     except speedtest.ConfigRetrievalError:
         #fix crash, (no server found instead)
+        #still working on finding the root to where else the spinner is
         return jarvis.connection_error()
 
     # Create a spinner on command line to show that its running
