@@ -23,4 +23,4 @@ VoterInfo.json
 myinfo\.csv
 .vscode
 agenda.csv
-/jarviscli/plugins/unlocked.py
+/jarviscli/plugins/api_secrets.py

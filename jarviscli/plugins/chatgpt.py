@@ -1,18 +1,16 @@
 # OPENAI_API_KEY
 
-# JD
+# DOMPREH
 # If you don't want to use an environment variable (less secure),
 # you can set the API key directly:
 # openai.api_key = "YOUR_API_KEY"  # Replace with your actual API key
 
 import openai
-import os
+import api_secrets
 
-# Load API key from environment variable
-openai.api_key = os.getenv("")
+openai.api_key = api_secrets
 
 
-from unlocked import Api
 
 def generate_names_chat(theme, number_of_names=3):
     """Generates names using the Chat Completion API."""

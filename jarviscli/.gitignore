@@ -1,1 +1,2 @@
 *.pyc
+/plugins/api_secrets.py
