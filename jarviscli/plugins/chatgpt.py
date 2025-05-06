@@ -1,6 +1,6 @@
 # OPENAI_API_KEY
 
-# Jesse Dompreh
+# JD
 # If you don't want to use an environment variable (less secure),
 # you can set the API key directly:
 # openai.api_key = "YOUR_API_KEY"  # Replace with your actual API key
