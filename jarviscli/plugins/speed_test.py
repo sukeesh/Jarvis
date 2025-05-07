@@ -1,6 +1,7 @@
 from colorama import Fore
 import speedtest as speedtest
 import speedtest as speedtest
+import speedtest as speedtest
 from plugin import plugin, require
 
 @require(network=True)
