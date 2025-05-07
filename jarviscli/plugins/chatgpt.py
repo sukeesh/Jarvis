@@ -5,30 +5,28 @@
 # you can set the API key directly:
 # openai.api_key = "YOUR_API_KEY"  # Replace with your actual API key
 
-import openai
+from openai import OpenAI
 import api_secrets
 
-openai.api_key = api_secrets
-
-
+# Create a client instance with your API key
+client = OpenAI(api_key=api_secrets.api_key)
 
 def generate_names_chat(theme, number_of_names=3):
     """Generates names using the Chat Completion API."""
     try:
         messages = [
-            {"role": "system", "content": "You are a creative naming assistant.  You generate lists of names related to a given theme."},
+            {"role": "system", "content": "You are a creative naming assistant. You generate lists of names related to a given theme."},
             {"role": "user", "content": f"Generate {number_of_names} names that fit the theme: {theme}."},
         ]
 
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # Or gpt-4
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
             messages=messages,
-            max_tokens=100,  # Adjust as needed
+            max_tokens=100,
             temperature=0.7,
         )
 
-        # Extract and split the names from the response
-        name_string = response.choices[0].message["content"].strip()
+        name_string = response.choices[0].message.content.strip()
         names = [name.strip() for name in name_string.split("\n") if name.strip()]
 
         return names
@@ -38,23 +36,22 @@ def generate_names_chat(theme, number_of_names=3):
         return []
 
 
-
 def draft_email_chat(recipient, topic, main_points, tone="professional"):
     """Drafts an email using the Chat Completion API with customizable tone."""
     try:
         messages = [
-            {"role": "system", "content": f"You are an expert email writer.  Your writing style is {tone}."},
-            {"role": "user", "content": f"Draft an email to {recipient} about the topic: {topic}.  Include these main points: {', '.join(main_points)}."},
+            {"role": "system", "content": f"You are an expert email writer. Your writing style is {tone}."},
+            {"role": "user", "content": f"Draft an email to {recipient} about the topic: {topic}. Include these main points: {', '.join(main_points)}."},
         ]
 
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # Or gpt-4
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
             messages=messages,
-            max_tokens=250,  # Adjust as needed
+            max_tokens=250,
             temperature=0.7,
         )
 
-        email_draft = response.choices[0].message["content"].strip()
+        email_draft = response.choices[0].message.content.strip()
         return email_draft
 
     except Exception as e:
@@ -74,7 +71,6 @@ if __name__ == "__main__":
     else:
         print("Could not generate names.")
 
-
     # Email drafting example
     recipient = "Alex Johnson"
     topic = "Project Kickoff Meeting"
@@ -86,3 +82,19 @@ if __name__ == "__main__":
         print(email_draft)
     else:
         print("Could not draft email.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
