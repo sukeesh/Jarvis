@@ -37,7 +37,7 @@ class WeatherReport:
             "limit": 1
         }
         headers = {
-            "User-Agent": "JarvisWeather/1.0 (https://github.com/sukeesh/Jarvis)"  # ⚠️ Change to your info
+            "User-Agent": "JarvisWeather/1.0 (https://github.com/sukeesh/Jarvis)"
         }
 
         try:
@@ -59,7 +59,7 @@ class WeatherReport:
     def get_forecast_url(self, lat, lon):
         url = f"https://api.weather.gov/points/{lat},{lon}"
         headers = {
-            "User-Agent": "JarvisWeather/1.0 (https://github.com/sukeesh/Jarvis)",  # ✅ Already good
+            "User-Agent": "JarvisWeather/1.0 (https://github.com/sukeesh/Jarvis)",
             "Accept": "application/geo+json"
         }
 
@@ -104,7 +104,7 @@ class WeatherReport:
             self.say(f"↪️ {p['detailedForecast']}\n")
 
     def enterLoc(self):
-        location = input("📍 Enter a U.S. city or address: ").strip()
+        location = input("📍 Enter a U.S. city and state: ").strip()
         lat, lon = self.geocode_nominatim(location)
 
         if lat is None or lon is None:
