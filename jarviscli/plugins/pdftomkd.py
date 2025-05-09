@@ -29,7 +29,7 @@ class PdfToMarkdown:
 
             messagebox.showinfo("Success", f"Markdown saved to '{self.output_file}'")
         except FileNotFoundError:
-            messagebox.showerror("Error", f"File '{pdf_path}' not found.")
+            messagebox.showerror("Found", f"File '{pdf_path}' not found.")
         except Exception as e:
             messagebox.showerror("Error", f"An error occurred:\n{e}")
 
