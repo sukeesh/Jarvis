@@ -1,53 +1,42 @@
 import PyPDF2
-import os
+import tkinter as tk
+from tkinter import filedialog, messagebox
+
 
 class PdfToMarkdown:
-    """Extracts text from a PDF using PyPDF2 and attempts to format it as Markdown."""
+    """ Extracts text from a PDF using PyPDF2 and saves in a mkdvisual.md """
 
     def __init__(self):
-        self.path = None
+        self.output_file = "mkdvisual.md"
 
-    def pdf_to_mkd(self):
-        print('')
-        #would be jarvis.say('')
-        print('This tool will help you convert a pdf to markdown')
-        # would be jarvis.say()
-        pdf_input = input("Enter the path to the PDF file: ")
-        # would be jarvis.input()
-        output_markdown = input("Create a name for your output markdown file: ")
-
-        try:
-            with open(pdf_input, 'rb') as pdf_file:
-                pdf_reader = PyPDF2.PdfReader(pdf_file)
-                num_pages = len(pdf_reader.pages)
-
-                markdown_content = ""
-                for page_num in range(num_pages):
-                    page = pdf_reader.pages[page_num]
-                    text = page.extract_text()
-
-                    text = "\n".join(line.strip() for line in text.splitlines() if line.strip())
-                    markdown_content += text + "\n\n"  # paragraph break between pages
-
-                self.markdown_text(output_markdown, markdown_content, pdf_input)  # Pass pdf_input
-        except FileNotFoundError:
-            print(f"File {pdf_input} not found")
-
-        except Exception as e:  # Catch errors in the process
-            print(f"An error occurred during PDF processing: {e}")
-
-    def markdown_text(self, output_markdown, markdown_content, pdf_input):
+    def select_pdf_and_convert(self):
+        pdf_path = filedialog.askopenfilename(
+            title="Select a PDF file in your current directory",
+            filetypes=[("PDF files only", "*.pdf")]
+        )
+        if not pdf_path:
+            messagebox.showinfo("User has quit", "You did not select a PDF file.")
+            return
 
         try:
-            with open(output_markdown, 'w', encoding='utf-8') as md_file:
+            with open(pdf_path, 'rb') as pdf_file:
+                reader = PyPDF2.PdfReader(pdf_file)
+                markdown_content = "\n\n".join(
+                    page.extract_text() or '' for page in reader.pages
+                )
+            with open(self.output_file, 'w', encoding='utf-8') as md_file:
                 md_file.write(markdown_content)
 
-            print(f"Successfully extracted text from '{pdf_input}' and saved to '{output_markdown}'") # Success message # Equivalent of jarvis.say()
-        except Exception as e: # Catch errors
-            print(f"An error occurred: {e}")
-
+            messagebox.showinfo("Success", f"Markdown saved to '{self.output_file}'")
+        except FileNotFoundError:
+            messagebox.showerror("Error", f"File '{pdf_path}' not found.")
+        except Exception as e:
+            messagebox.showerror("Error", f"An error occurred:\n{e}")
 
 if __name__ == "__main__":
+    root = tk.Tk()
+    root.withdraw()  # Hide main TK window
+
     converter = PdfToMarkdown()
-    converter.pdf_to_mkd()
-    #
+    converter.select_pdf_and_convert()
+#
