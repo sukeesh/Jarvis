@@ -1,4 +1,4 @@
-from jarviscli.plugin import plugin
+from plugin import plugin
 from colorama import Fore
 import re
 

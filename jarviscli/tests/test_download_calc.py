@@ -1,6 +1,6 @@
 import unittest
-from jarviscli.tests import PluginTest
-from jarviscli.plugins import download_calc
+from tests import PluginTest
+from plugins import download_calc
 
 
 class DownloadCalcTest(PluginTest):
