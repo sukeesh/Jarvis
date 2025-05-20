@@ -1,4 +1,4 @@
-from plugin import plugin
+from jarviscli.plugin import plugin
 from colorama import Fore
 import re
 
@@ -48,7 +48,8 @@ def download_calc(jarvis, s):
     # ensure input is correct format, i.e. digits followed by a denominator
     valid = re.match(r'([\d.]+)\s*(MB|GB|TB|mb|gb|tb)', s)
     while not valid:
-        s = jarvis.input("Invalid format, please try again, or cancel with c: ", Fore.RED)
+        jarvis.say("Invalid format, please try again, or cancel with c: ", Fore.RED)
+        s = jarvis.input("")
         if s == "c":
             return
         valid = re.match(r'([\d.]+)\s*(MB|GB|TB|mb|gb|tb)', s)
@@ -66,7 +67,8 @@ def download_calc(jarvis, s):
     # ensure input is correct format, i.e. digits followed by a denominator
     valid = re.match(r'([\d.]+)\s*(KB|MB|GB|TB|kb|mb|gb|tb)', s)
     while not valid:
-        s = jarvis.input("Invalid format, please try again, or cancel with c: ", Fore.RED)
+        jarvis.say("Invalid format, please try again, or cancel with c: ", Fore.RED)
+        s = jarvis.input("")
         if s == "c":
             return
         valid = re.match(r'([\d.]+)\s*(KB|MB|GB|TB|kb|mb|gb|tb)', s)
