@@ -64,12 +64,12 @@ def download_calc(jarvis, s):
     s = jarvis.input("Please enter your download speed (per second), with the denomination KB, MB or GB: ", Fore.YELLOW)
 
     # ensure input is correct format, i.e. digits followed by a denominator
-    valid = re.match(r'([\d.]+)\s*(MB|GB|TB|mb|gb|tb)', s)
+    valid = re.match(r'([\d.]+)\s*(KB|MB|GB|TB|kb|mb|gb|tb)', s)
     while not valid:
         s = jarvis.input("Invalid format, please try again, or cancel with c: ", Fore.RED)
         if s == "c":
             return
-        valid = re.match(r'([\d.]+)\s*(MB|GB|TB|mb|gb|tb)', s)
+        valid = re.match(r'([\d.]+)\s*(KB|MB|GB|TB|kb|mb|gb|tb)', s)
 
     # extract data from download speed input
     try:
