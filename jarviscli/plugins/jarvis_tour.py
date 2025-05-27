@@ -114,6 +114,7 @@ plugin_data = {
                 "rockpaperscissors",
                 "roulette",
                 "spinthewheel",
+                "tac_toe",
                 "tic_tac_toe",
                 "wordgame",
                 "wordle",
@@ -130,6 +131,7 @@ plugin_data = {
                 "rockpaperscissors": "Play Rock-Paper-Scissors against Jarvis with score tracking and up to 100 rounds.",
                 "roulette": "Play a simple roulette game where you place bets and spin the wheel to win or lose virtual cash.",
                 "spinthewheel": "Spin a virtual wheel for random selection.",
+                "tac_toe": "Play Tic-Tac-Toe against a local opponent, but old moves dissapear.",
                 "tic_tac_toe": "Play Tic-Tac-Toe against the computer.",
                 "wordgame": "Play a word guessing game.",
                 "wordle": "Play the popular Wordle game.",
@@ -481,6 +483,9 @@ plugin_data = {
                     
                     Example:
                     Do you want to spin again?? press: y
+                    """,
+                "tac_toe": """
+                     Tac-Toe
                     """,
                 "tic_tac_toe": """
                     Tic Tac Toe Plugin Tutorial
