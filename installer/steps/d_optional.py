@@ -12,20 +12,14 @@ def check_optional_requirement(requirement):
     if 'pip' in requirement.keys():
         packages = " ".join(requirement['pip'])
         CMD = "{} install -U {}".format(unix_windows.VIRTUALENV_PIP, packages)
-        if shell(CMD).success():
-            return True
-        else:
-            return False
+        return shell(CMD).success()
     elif 'executable' in requirement.keys():
         requirement_ok = True
         for executable in requirement['executable']:
             if not executable_exists(executable):
                 requirement_ok = False
 
-        if requirement_ok:
-            return True
-        else:
-            return False
+        return requirement_ok
 
 
 for requirement in optional.OPTIONAL_REQUIREMENTS:

@@ -31,57 +31,54 @@ class Yeelight:
         self.discovered_bulbs = {}
         self.exit_msg = "exit"
 
+    def handle_help_command(self):
+        """Display help information about available commands"""
+        self.jarvis.say('[ bulb name | all][status]')
+        self.jarvis.say('-The first argument is the name of the bulb or the keyword "all".')
+        self.jarvis.say('-The second argument specify turning on or off the light or all the lights.')
+
+    def find_bulb_ip(self, bulb_name):
+        """Find IP address for given bulb name"""
+        for ip, info in self.discovered_bulbs.items():
+            if info['name'].lower() == bulb_name.lower():
+                return ip
+        return None
+
+    def handle_power_command(self, bulb_name, power_state):
+        """Handle power on/off commands for single bulb or all bulbs"""
+        ip = self.find_bulb_ip(bulb_name) if bulb_name.lower() != 'all' else None
+
+        if power_state == 'on':
+            if ip:
+                yeelight.Bulb(ip).turn_on()
+                self.jarvis.say(f"Bulb {self.discovered_bulbs[ip]['name']} is on.")
+            else:
+                self.power_on_all()
+        elif power_state == 'off':
+            if ip:
+                yeelight.Bulb(ip).turn_off()
+                self.jarvis.say(f"Bulb {self.discovered_bulbs[ip]['name']} is off.")
+            else:
+                self.power_off_all()
+
     def main(self):
         self.jarvis.say("To exit enter word 'exit'", color=Fore.YELLOW)
-        # Find the connected bulbs to the router
         self.discover()
-        # We can not continue if the bulbs has not a name to reference them.
+        
         if self.find_unknown_bulbs():
             self.name_bulbs()
 
         while True:
-            # See the light status
             self.display_cond()
-            # cmd [0] -> bulb name | all | exit | help
-            # cmd [1] -> on | off | None |
-
-            cmd = self.jarvis.input(
-                "Command (Use 'help' for details):", color=Fore.GREEN).split()
+            cmd = self.jarvis.input("Command (Use 'help' for details):", color=Fore.GREEN).split()
+            
             if self.is_exit_input(cmd[0]):
                 break
 
             if cmd[0].lower() == 'help':
-                self.jarvis.say('[ bulb name | all][status]')
-                self.jarvis.say(
-                    '-The first argument is the name of the bulb or the keyword "all".')
-                self.jarvis.say(
-                    '-The second argument specify turning on or off the light or all the lights.')
+                self.handle_help_command()
             else:
-                # i is each bulb ip
-                for i in self.discovered_bulbs:
-                    if self.discovered_bulbs[i]['name'].lower() == cmd[0].lower():
-                        ip = i
-                        break
-                    elif cmd[0].lower() == 'all':
-                        ip = None
-                if cmd[1].lower() == 'on':
-                    if type(ip) == str:
-                        # INPUT: name on
-                        yeelight.Bulb(ip).turn_on()
-                        self.jarvis.say(
-                            f"Bulb {self.discovered_bulbs[ip]['name']} is on.")
-                    else:
-                        # INPUT: all on
-                        self.power_on_all()
-                elif cmd[1].lower() == 'off':
-                    if type(ip) == str:
-                        # INPUT: name off
-                        yeelight.Bulb(ip).turn_off()
-                        self.jarvis.say(
-                            f"Bulb {self.discovered_bulbs[ip]['name']} is off.")
-                    else:
-                        # INPUT: all off
-                        self.power_off_all()
+                self.handle_power_command(cmd[0], cmd[1].lower())
 
     def display_cond(self):
         """

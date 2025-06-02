@@ -119,7 +119,6 @@ class QRGenerator:
             
         return response
     
-
     def _generate_qr(self, jarvis, query):
         try:
             # send request
@@ -130,16 +129,15 @@ class QRGenerator:
             file = open(location, "wb")
             file.write(response.content)
             jarvis.spinner_stop()
-            file.close
-        except BaseException:
+            file.close()
+        except requests.exceptions.RequestException as e:
             jarvis.spinner_stop(
-            message="\nTask execution Failed!", color=Fore.RED)
-            jarvis.say(
-                "Please check that the URL you have entered is valid!", Fore.RED)
-            jarvis.say(
-                "If error occures again, then API might have crashed. Try again later.\n", Fore.RED)
+            message="\nUrl request failed!", color=Fore.RED)
+        except IOError as e:
+            jarvis.spinner_stop(
+            message="\nFile operation failed!", color=Fore.RED)
         finally:
-            return 
+            return
 
         
 

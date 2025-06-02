@@ -48,5 +48,8 @@ class Distances:
         
         if country_1.coordinates and country_2.coordinates:
             haversine_distance = haversine(country_1.coordinates, country_2.coordinates)
-            jarvis.say(f'The distance between {country_1} and {country_2} is {haversine_distance:.2f} km')
+            jarvis.say(
+                f'The distance between {country_1} and {country_2} is '
+                f'{haversine_distance:.2f} km'
+            )
 

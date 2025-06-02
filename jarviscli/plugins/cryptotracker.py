@@ -5,11 +5,12 @@ from plugin import plugin
 
 # List of default crypto pairs
 FAVORITES = [
-    'BTC/USD',
-    'ETH/USD',
-    'LTC/USD',
-    'XRP/USD',
-    'ADA/USD'
+    'BTC/USDT',
+    'ETH/USDT',
+    'LTC/USDT',
+    'XRP/USDT',
+    'ADA/USDT',
+    'XMR/USDT'
 ]
 
 
@@ -24,15 +25,15 @@ def print_in_color(change):
         The price change.
     """
     if float(change) < 0:
-        return Fore.RED + str(change) + Fore.RESET
+        return Fore.RED + str(change) + '%' + Fore.RESET
     else:
-        return Fore.GREEN + str(change) + Fore.RESET
+        return Fore.GREEN + '+' + str(change) + '%' + Fore.RESET
 
 
 def check_prices(base, target):
     """"
     It requires the base and target currency symbols,
-    e.g. [BTC, XRP], to build the URL and print the price
+    e.g. [btc, usdt], to build the URL and print the price
     and  the price change.
 
     Parameters
@@ -43,23 +44,27 @@ def check_prices(base, target):
         The target currency
     """
 
-    # build the api url
-    url = 'https://api.cryptonator.com/api/ticker/{}-{}'.format(
-        base.lower(), target.lower())
+    # build the api request
+    url = 'https://api.binance.com/api/v3/ticker/24hr'
+    params = {
+        "symbol": (base.upper() + target.upper()),
+    }
 
     try:
         response = requests.get(
             url, headers={
-                'User-Agent': 'Jarvis'}).json()
-        price = response['ticker']['price']
-        change = response['ticker']['change']
+                'User-Agent': 'Jarvis'}, params=params).json()
+
+        price = response['askPrice']
+        change = response['priceChangePercent']
 
     # this error occurs if the pair is non-existent
     except KeyError:
         print(
             "{WARNING}Wrong pair {}/{}!{COLOR_RESET} "
             "\nFull list of symbols is here: "
-            "https://coinmarketcap.com/all/views/all/"
+            "https://api.binance.com/api/v3/ticker/price"
+            "\nDue to API Changes please use USDT for USD Prices"
             "\n".format(
                 base,
                 target,
@@ -78,7 +83,7 @@ def main(jarvis, s):
     Finds the price and the change of the price, for
     a pair of currencies or for the default list of favorite pairs.
     -- Example:
-        cryptotracker BTC/USD
+        cryptotracker BTC/USDT
     """
 
     # for a specific pair of currencies

@@ -1,11 +1,12 @@
 import requests
 from colorama import Fore
 from plugin import plugin, require
+import re
 
-def fetch(route):
+def fetch(name):
     
     url = 'https://api.agify.io?name='
-    r = requests.get(url + route)
+    r = requests.get(url + name)
     r = r.json()
     if "errorCode" in r.keys():
         return None
@@ -16,20 +17,20 @@ def fetch(route):
 class Age():
     
     def __call__(self, jarvis, s):
-        option = self.get_option(jarvis)
-        if option is None:
+        name = self.get_name(jarvis)
+        name = re.sub("[^A-Za-z]", "", name)
+
+        if name is None:
             return
         
-        r = fetch((str(option)))
-        print("Your age is "+str(r["age"]))        
+        r = fetch((str(name)))
+        print("The average age for this name is "+str(r["age"]))
+        print()        
         
-        
-    def get_option(self, jarvis):
-        
-        # Ask for the option
-        jarvis.say("Give a name :", Fore.BLUE)
+    def get_name(self, jarvis):
+        # Ask for the name
         print()
         while True:
-            option = str(jarvis.input("Enter your choice: ", Fore.GREEN))
-            return option
+            name = str(jarvis.input("Give a name: ", Fore.BLUE))
+            return name
         

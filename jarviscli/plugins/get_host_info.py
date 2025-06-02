@@ -31,7 +31,7 @@ def ping(host):
 # cutom regex to extract (sub)domain from string and prevents cmd injection
 def sanitize_host(host, jarvis, s):
     try:
-        domain_regex = (r'([a-z,A-Z,0-9,.]+[.][a-z,A-Z]{1,9})')
+        domain_regex = r'([a-z,A-Z,0-9,.]+[.][a-z,A-Z]{1,9})'
         host = findall(domain_regex, host)[0]
     except IndexError:
         try:

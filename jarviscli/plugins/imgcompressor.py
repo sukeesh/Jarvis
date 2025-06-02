@@ -98,14 +98,17 @@ class ImageCompressor:
         of compression.
         """
 
-        return abs(
-            jarvis.input_number(
-                prompt='\nEnter desired quality of compression (0-100 where 100 is maximum compression): ',
-                rtype=int,
-                rmin=0,
-                rmax=100
-            ) - 100
+        prompt = '\nEnter desired quality of compression '
+        prompt += '(0-100 where 100 is maximum compression): '
+        
+        quality = jarvis.input_number(
+            prompt=prompt,
+            rtype=int,
+            rmin=0,
+            rmax=100
         )
+        
+        return abs(quality - 100)
 
     def folder_images_compress(self, jarvis, folder_path):
         """Compress all images in a folder.
@@ -132,10 +135,17 @@ class ImageCompressor:
 
         picture = Image.open(img_path, mode='r')
 
-        picture.save(os.path.join(os.path.dirname(img_path), self.prefix + os.path.basename(img_path)),
-                     self.formats.get(os.path.splitext(img_path)[1]),
-                     optimize=True,
-                     quality=self.quality)
+        output_path = os.path.join(
+            os.path.dirname(img_path),
+            self.prefix + os.path.basename(img_path)
+        )
+        format_type = self.formats.get(os.path.splitext(img_path)[1])
+        picture.save(
+            output_path,
+            format_type,
+            optimize=True,
+            quality=self.quality
+        )
 
         if not from_folder:
             jarvis.say('Your image was compressed successfully', Fore.GREEN)

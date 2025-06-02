@@ -57,7 +57,7 @@ Fasttext = {
     "name": "Fasttext language recognition",
     "pip": ['fasttext'],
     "description": "Fasttext is a text classification library capable of detecting 176 languages.",
-    "instructions": "https://github.com/facebookresearch/fastText/#requirements"
+    "instruction": "https://github.com/facebookresearch/fastText/#requirements"
 }
 
 
@@ -154,7 +154,24 @@ PYAUTOGUI = {
 }
 
 
-OPTIONAL_REQUIREMENTS = [PortAudio, RequestsSecurity, FFMPEG, ESPEAK, WKHTMLTOPDF, Fasttext, HTOP]
+AKINATOR = {
+    "name": "akinator.py",
+    "pip": ['akinator.py'],
+    "description": "Required for akinator",
+    "instrauction": ""
+}
+
+
+PYDUB = {
+    "name": "pydub",
+    "pip": ['pydub', 'shazamio'],
+    "description": "Required for voice / music recognision",
+    "instrauction": ""
+}
+
+
+
+OPTIONAL_REQUIREMENTS = [PortAudio, RequestsSecurity, FFMPEG, ESPEAK, WKHTMLTOPDF, Fasttext, HTOP, AKINATOR, PYDUB]
 
 
 if not sys.platform == "darwin":

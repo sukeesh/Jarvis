@@ -60,6 +60,76 @@ def parse_number(string, numwords=None):
     value += current
     return skip, value
 
+def _parse_day_format(d, ret_date):
+    """Handle parsing of 'next day' format"""
+    d += dt.today().strftime(" %Y %W")
+    try:
+        ret_date = dt.strptime(d, "%a %Y %W").date()
+    except ValueError:
+        try:
+            ret_date = dt.strptime(d, "%A %Y %W").date()
+        except ValueError:
+            return None
+    if ret_date <= dt.now().date():
+        ret_date += timedelta(days=7)
+    return ret_date
+
+
+def _handle_time_delta(unit, delta_value, ret_date, ret_time):
+    """Handle time delta calculations"""
+    new_time = dt.combine(ret_date, ret_time)
+    if "year" in unit:
+        ret_date += relativedelta(years=delta_value)
+    elif "month" in unit:
+        ret_date += relativedelta(months=delta_value)
+    elif "week" in unit:
+        ret_date += timedelta(weeks=delta_value)
+    elif "day" in unit:
+        ret_date += timedelta(days=delta_value)
+    elif "hour" in unit:
+        new_time += timedelta(hours=delta_value)
+        ret_date, ret_time = new_time.date(), new_time.time()
+    elif "minute" in unit:
+        new_time += timedelta(minutes=delta_value)
+        ret_date, ret_time = new_time.date(), new_time.time()
+    elif "second" in unit:
+        new_time += timedelta(seconds=delta_value)
+        ret_date, ret_time = new_time.date(), new_time.time()
+    return ret_date, ret_time
+
+def _parse_date_formats(d):
+    """Parse various date string formats"""
+    if re.match("^[0-9]{2}-[0-1][0-9]-[0-3][0-9]$", d):
+        return dt.strptime(d, "%y-%m-%d").date()
+    elif re.match("^[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]$", d):
+        return dt.strptime(d, "%Y-%m-%d").date()
+    elif re.match("^[0-3][0-9]\\.[0-1][0-9]\\.[0-9]{2}$", d):
+        return dt.strptime(d, "%d.%m.%y").date()
+    elif re.match("^[0-3][0-9]\\.[0-1][0-9]\\.[1-9][0-9]{3}$", d):
+        return dt.strptime(d, "%d.%m.%Y").date()
+    return None
+
+def _parse_time_formats(d):
+    """Parse various time string formats"""
+    try:
+        if re.match("^[0-1][0-9]:[0-5][0-9][AP]M$", d):
+            return dt.strptime(d, "%I:%M%p").time()
+        elif re.match("^[1-9]:[0-5][0-9][AP]M$", d):
+            return dt.strptime("0" + d, "%I:%M%p").time()
+        elif re.match("^[0-2][0-9]:[0-5][0-9]$", d):
+            return dt.strptime(d, "%H:%M").time()
+        elif re.match("^[1-9]:[0-5][0-9]$", d):
+            return dt.strptime("0" + d, "%H:%M").time()
+        return None
+    except ValueError:
+        return None
+
+
+def _update_parse_delta_unit(parse_delta_unit):
+    if parse_delta_unit == 1:
+        print("Missing time unit")
+    parse_delta_unit -= 1
+
 
 def parse_date(string):
     """
@@ -90,70 +160,31 @@ def parse_date(string):
     skip = 0
     for index, d in enumerate(elements):
         if parse_day:
-            d += dt.today().strftime(" %Y %W")
-            try:
-                ret_date = dt.strptime(d, "%a %Y %W").date()
-            except ValueError:
-                try:
-                    ret_date = dt.strptime(d, "%A %Y %W").date()
-                except ValueError:
-                    break
-            if ret_date <= dt.now().date():
-                ret_date += timedelta(days=7)
+            result = _parse_day_format(d, ret_date)
+            if result is None:
+                break
+            ret_date = result
             parse_day = False
         elif parse_delta_value:
             parse_delta_unit, delta_value = parse_number(
                 " ".join(elements[index:]))
             parse_delta_value = False
         elif parse_delta_unit:
-            new_time = dt.combine(ret_date, ret_time)
-            if "year" in d:
-                ret_date += relativedelta(years=delta_value)
-            elif "month" in d:
-                ret_date += relativedelta(months=delta_value)
-            elif "week" in d:
-                ret_date += timedelta(weeks=delta_value)
-            elif "day" in d:
-                ret_date += timedelta(days=delta_value)
-            elif "hour" in d:
-                new_time += timedelta(hours=delta_value)
-                ret_date = new_time.date()
-                ret_time = new_time.time()
-            elif "minute" in d:
-                new_time += timedelta(minutes=delta_value)
-                ret_date = new_time.date()
-                ret_time = new_time.time()
-            elif "second" in d:
-                new_time += timedelta(seconds=delta_value)
-                ret_date = new_time.date()
-                ret_time = new_time.time()
-            elif parse_delta_unit == 1:
-                print("Missing time unit")
-            parse_delta_unit -= 1
-
-        elif re.match("^[0-9]{2}-[0-1][0-9]-[0-3][0-9]$", d):
-            ret_date = dt.strptime(d, "%y-%m-%d").date()
-        elif re.match("^[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]$", d):
-            ret_date = dt.strptime(d, "%Y-%m-%d").date()
-        elif re.match("^[0-3][0-9]\\.[0-1][0-9]\\.[0-9]{2}$", d):
-            ret_date = dt.strptime(d, "%d.%m.%y").date()
-        elif re.match("^[0-3][0-9]\\.[0-1][0-9]\\.[1-9][0-9]{3}$", d):
-            ret_date = dt.strptime(d, "%d.%m.%Y").date()
-
-        elif re.match("^[0-1][0-9]:[0-5][0-9][AP]M$", d):
-            ret_time = dt.strptime(d, "%I:%M%p").time()
-        elif re.match("^[1-9]:[0-5][0-9][AP]M$", d):
-            ret_time = dt.strptime("0" + d, "%I:%M%p").time()
-        elif re.match("^[0-2][0-9]:[0-5][0-9]$", d):
-            ret_time = dt.strptime(d, "%H:%M").time()
-        elif re.match("^[1-9]:[0-5][0-9]$", d):
-            ret_time = dt.strptime("0" + d, "%H:%M").time()
-
-        elif d == "next":
-            parse_day = True
-        elif d == "in" or d == "and":
-            parse_delta_value = True
+            ret_date, ret_time = _handle_time_delta(d, delta_value, ret_date, ret_time)
+            _update_parse_delta_unit(parse_delta_unit)
         else:
-            break
+            date_result = _parse_date_formats(d)
+            if date_result:
+                ret_date = date_result
+            else:
+                time_result = _parse_time_formats(d)
+                if time_result:
+                    ret_time = time_result
+                elif d == "next":
+                    parse_day = True
+                elif d == "in" or d == "and":
+                    parse_delta_value = True
+                else:
+                    break
         skip += 1
     return skip, dt.combine(ret_date, ret_time)

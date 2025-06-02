@@ -25,7 +25,14 @@ WIN_URGENCY_CONVERTER = {0: None, 1: 'icons\\default.ico', 2: "icons\\warn.ico"}
 
 
 def notify__WIN10(name, body, urgency=NOTIFY_NORMAL):
-    win10toast.ToastNotifier().show_toast(name, body, duration=5, icon_path=WIN_URGENCY_CONVERTER[urgency])
+    toaster = win10toast.ToastNotifier()
+    icon = WIN_URGENCY_CONVERTER[urgency]
+    toaster.show_toast(
+        name,
+        body,
+        duration=5,
+        icon_path=icon
+    )
 
 
 GUI_FALLBACK_DISPLAY_TIME = 3000

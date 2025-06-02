@@ -90,39 +90,12 @@ class topmedia:
                 )  # The a tag has the name of the movie/show
                 i += 1
 
-    # function to convert number to valid genres
     def conv_num(self, jarvis, input_genre):
-        if input_genre == "1":
-            return "comedy"
-        elif input_genre == "2":
-            return "sci-fi"
-        elif input_genre == "3":
-            return "horror"
-        elif input_genre == "4":
-            return "romance"
-        elif input_genre == "5":
-            return "action"
-        elif input_genre == "6":
-            return "thriller"
-        elif input_genre == "7":
-            return "drama"
-        elif input_genre == "8":
-            return "mystery"
-        elif input_genre == "9":
-            return "crime"
-        elif input_genre == "10":
-            return "animation"
-
-        elif input_genre == "11":
-            return "adventure"
-
-        elif input_genre == "12":
-            return "fantasy"
-
-        elif input_genre == "13":
-            return "comedy,romance"
-        elif input_genre == "14":
-            return "action,comedy"
-
-        elif input_genre == "15":
-            return "superhero"
+        try:
+            index = int(input_genre) - 1
+            if 0 <= index < len(valid_genres):
+                return valid_genres[index]
+            else:
+                return None
+        except ValueError:
+            return None

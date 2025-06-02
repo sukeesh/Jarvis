@@ -30,6 +30,14 @@ class PluginManager(object):
             return sys
         pluginmanager.module_manager.load_source = patched_load_source
 
+        _handle_class_instance = self._backend.plugin_manager._handle_class_instance
+        def patched_handle_class_instance(*args):
+            try:
+                _handle_class_instance(*args)
+            except:
+                pass
+        self._backend.plugin_manager._handle_class_instance = patched_handle_class_instance
+
         self._plugin_dependency = PluginDependency()
 
         self._cache = None
@@ -42,6 +50,7 @@ class PluginManager(object):
         self._backend.set_file_filters(__ends_with_py)
         self._backend.add_blacklisted_directories("jarviscli/packages/aiml")
         self._backend.add_blacklisted_directories("jarviscli/packages/memory")
+        self._backend.add_blacklisted_directories("env")
 
     def add_directory(self, path):
         """Add directory to search path for plugins"""

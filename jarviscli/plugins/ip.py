@@ -17,8 +17,10 @@ class IP():
                     grep -Eo '([0-9]*\\.){3}[0-9]*' | grep -v '127.0.0.1'"""
 
         # 10 seconds time out if not connected to internet
-        self._public_ip_v4 = "curl -4 ifconfig.co --connect-timeout 10 2> /dev/null || echo 'not available'"
-        self._public_ip_v6 = "curl -6 ifconfig.co --connect-timeout 10 2> /dev/null || echo 'not available'"
+        self._public_ip_v4 = ("curl -4 ifconfig.co --connect-timeout 10 2> /dev/null" 
+                                + " || echo 'not available'")
+        self._public_ip_v6 = ("curl -6 ifconfig.co --connect-timeout 10 2> /dev/null" 
+                                + " || echo 'not available'")
 
     def __call__(self, jarvis, s):
         if executable_exists('ifconfig'):
