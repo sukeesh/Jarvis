@@ -39,7 +39,7 @@ whois
 wikipedia
 win10toast; sys_platform == 'win32'
 gtts
-playsound ; python_version < "3.12"
+playsound==1.2.2 ; python_version < "3.12"
 git+https://github.com/taconi/playsound.git#egg=playsound ; python_version >= "3.12"
 windows-curses; sys_platform == 'win32'
 Image
