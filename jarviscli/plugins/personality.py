@@ -62,7 +62,7 @@ class personality_test:
 
     def open_analysis(self):
         url = "https://www.16personalities.com/{}-personality"
-        webbrowser.open_new(url.format(self.type.lower()))
+        webbrowser.open_new(url.format(self.type[0].lower()))
 
     def __call__(self, jarvis, s):
         prompt = "{black}Q{Q_id} {cyan}{left} {black}--- {green}{right}"
