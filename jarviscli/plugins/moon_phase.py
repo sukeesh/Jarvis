@@ -2,7 +2,6 @@ from hashlib import new
 import math, decimal, datetime, random
 from multiprocessing.dummy import current_process
 from operator import index
-from numpy import who
 
 
 from plugin import plugin
