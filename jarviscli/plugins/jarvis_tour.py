@@ -114,6 +114,7 @@ plugin_data = {
                 "rockpaperscissors",
                 "roulette",
                 "spinthewheel",
+                "tac_toe (Mac Only)",
                 "tic_tac_toe",
                 "wordgame",
                 "wordle",
@@ -130,6 +131,7 @@ plugin_data = {
                 "rockpaperscissors": "Play Rock-Paper-Scissors against Jarvis with score tracking and up to 100 rounds.",
                 "roulette": "Play a simple roulette game where you place bets and spin the wheel to win or lose virtual cash.",
                 "spinthewheel": "Spin a virtual wheel for random selection.",
+                "tac_toe (Mac Only)": "Play Tic-Tac-Toe against a local opponent, but old moves dissapear.",
                 "tic_tac_toe": "Play Tic-Tac-Toe against the computer.",
                 "wordgame": "Play a word guessing game.",
                 "wordle": "Play the popular Wordle game.",
@@ -482,11 +484,35 @@ plugin_data = {
                     Example:
                     Do you want to spin again?? press: y
                     """,
+                "tac_toe (Mac Only)": """
+                     Tac-Toe Plugin Tutorial
+
+                    1. Start the Game
+                       Command: tac_toe
+                    
+                    2. Board Layout
+                       The board layout is as follows:
+                       7 | 8 | 9
+                       -----------
+                       4 | 5 | 6
+                       -----------
+                       1 | 2 | 3
+                                         
+                    4. How to Play
+                       - Player X goes first, followed by Player O.
+                       - Use the arrow buttons to navigate the board.
+                       - Press 'X' or 'O' to place your piece in the selected position.
+                    
+                    5. Winning the Game
+                       - The game ends when a player gets three pieces in a row (horizontally, vertically, or diagonally).
+                       - There is no such thing as a draw. 
+                    """,
                 "tic_tac_toe": """
                     Tic Tac Toe Plugin Tutorial
                     
                     1. Start the Game
                        Command: tic_tac_toe
+                       
                     
                     2. Game Modes
                        After starting the game, choose one of the following modes:
