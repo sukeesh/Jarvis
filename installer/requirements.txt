@@ -53,3 +53,4 @@ github3.py
 wonderwords
 pyenchant
 halo
+spotipy
