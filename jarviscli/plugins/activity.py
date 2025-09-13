@@ -6,7 +6,7 @@ from plugin import plugin, require
 @require(network=True)
 @plugin("activity")
 def activity(jarvis, s):
-    """Tells a activity to do when you're bored, powered by www.boredapi.com"""
+    """Tells an activity to do when you're bored, powered by www.boredapi.com"""
 
     req = requests.get("https://www.boredapi.com/api/activity")
     data = req.json()
@@ -17,7 +17,7 @@ def activity(jarvis, s):
         return
 
     if data.get('accessibility') < 0.4:
-        response += "I can purpose something interesting but it's not easy and "
+        response += "I can propose something interesting but it's not easy and "
     elif data.get('accessibility') < 0.6:
         response += "I have something easy for you and "
 
