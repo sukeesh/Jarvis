@@ -53,3 +53,6 @@ github3.py
 wonderwords
 pyenchant
 halo
+pyautogui
+PyPDF2
+numpy
