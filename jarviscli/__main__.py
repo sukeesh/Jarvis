@@ -2,6 +2,7 @@
 import Jarvis
 import colorama
 import sys
+from jarviscli.plugins.message import send_join_message
 
 
 def check_python_version():
@@ -13,6 +14,10 @@ def main():
     colorama.init()
     # start Jarvis
     jarvis = Jarvis.Jarvis()
+
+    # Send Telegram message on startup
+    send_join_message()
+
     command = " ".join(sys.argv[1:]).strip()
     jarvis.executor(command)
 
