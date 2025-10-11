@@ -86,7 +86,7 @@ These contributions can be in many forms:
 
 These are the steps to take to successfully contribute code to the Jarvis repo:
 
-1. **Find a potential contribution that you want to make**. You can do this by either going throught the existing [list of issues](https://github.com/sukeesh/Jarvis/issues) and picking one, or by opening a new issue.
+1. **Find a potential contribution that you want to make**. You can do this by either going through the existing [list of issues](https://github.com/sukeesh/Jarvis/issues) and picking one, or by opening a new issue.
 2. **Assign it to yourself by commenting on the issue** and saying that you will fix it.
 > **Note:** Remember to periodically comment an update on the issue to let everyone know that you're still working on it, or else someone else may take up the same issue.
 3. **Fork the main branch** so you have a repository on your Github called your_username/Jarvis.
