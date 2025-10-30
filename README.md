@@ -135,7 +135,7 @@ Error: `ImportError: DLL load failed while importing win32api: The specified mod
 
 **If you find other issues and/or have found solutions to them on any platform, please consider adding to this list!**
 
-## 💻 Youtube Video Showing Jarvis
+## 💻 YouTube Video Showing Jarvis
 
 [Click here](https://www.youtube.com/watch?v=PR-nxqmG3V8)
 
