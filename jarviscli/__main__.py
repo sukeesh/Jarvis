@@ -22,8 +22,5 @@ def main():
     jarvis.executor(command)
 
 
-if __name__ == '__main__':
-    if check_python_version():
-        main()
-    else:
-        print("Sorry! Only Python 3 supported.")
+if __name__ == "__main__":
+    main()
