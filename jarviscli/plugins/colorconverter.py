@@ -77,7 +77,7 @@ def color_converter(jarvis, s):
 
     # RGB conversion
     elif original_format == 'rgb':
-        try:Ò
+        try:
             rgb = tuple(map(int, color_value.split(',')))
             if any(not (0 <= x <= 255) for x in rgb):
                 raise ValueError
