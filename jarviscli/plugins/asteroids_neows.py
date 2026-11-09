@@ -3,9 +3,9 @@ from colorama import Fore
 from plugin import plugin, require
 import datetime
 
-API_KEY = '1ebd3b92bf5041249f8c1e7a540ce98c'
+API_KEY = 'DEMO_KEY'  # NASA demo key; get a free personal key at https://api.nasa.gov
 headers = {'X-Auth-Token': API_KEY}
-# url = 'https://api.nasa.gov/neo/rest/v1/feed?start_date=2020-07-10&end_date=2020-07-10&api_key=DqXuTRFieGmR5EbdTpPA0tIbDybBhuVmWNerhOdN'
+# url = 'https://api.nasa.gov/neo/rest/v1/feed?start_date=2020-07-10&end_date=2020-07-10&api_key=DEMO_KEY'
 
 
 @require(network=True)
@@ -22,7 +22,7 @@ def neows(jarvis, s):
 def print_objects(jarvis, dt):
     url = 'https://api.nasa.gov/neo/rest/v1/feed?start_date=' + dt
     url += '&end_date=' + dt
-    url += '&api_key=DqXuTRFieGmR5EbdTpPA0tIbDybBhuVmWNerhOdN'
+    url += '&api_key=' + API_KEY
 
     r = fetch(url)
     day = r["near_earth_objects"]
