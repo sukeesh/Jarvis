@@ -171,7 +171,10 @@ class VoiceWin():
         self.create()
         self.engine.setProperty('rate', 170)  # setting up new voice rate
         voices = self.engine.getProperty('voices')  # getting details of current voice
-        self.engine.setProperty('voices', voices[1].id)  # changing index, changes voices. 1 for female
+        if voices:
+            # Prefer the second voice (usually female) when the engine
+            # offers one; systems with a single voice must not crash here.
+            self.engine.setProperty('voice', voices[min(1, len(voices) - 1)].id)
         self.engine.say(speech)
         self.engine.runAndWait()
         self.destroy()
